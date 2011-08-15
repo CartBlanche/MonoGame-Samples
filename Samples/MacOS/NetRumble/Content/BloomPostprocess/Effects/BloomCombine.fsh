@@ -1,5 +1,5 @@
-uniform sampler2D BloomSampler;
-uniform sampler2D BaseSampler;
+uniform sampler2D BloomSampler_s0;
+uniform sampler2D BaseSampler_s1;
 
 uniform float BloomIntensity;
 uniform float BaseIntensity;
@@ -25,8 +25,8 @@ vec4 AdjustSaturation(vec4 color, float saturation)
 void main()
 {
 	// Look up the bloom and original base image colors.
-	vec4 bloom = gl_Color * texture2D(BloomSampler, gl_TexCoord[0].xy);
-	vec4 base = gl_Color * texture2D(BaseSampler, gl_TexCoord[0].xy);	
+	vec4 bloom = gl_Color * texture2D(BloomSampler_s0, gl_TexCoord[0].xy);
+	vec4 base = gl_Color * texture2D(BaseSampler_s1, gl_TexCoord[0].xy);	
 	// Adjust color saturation and intensity.
 	bloom = AdjustSaturation(bloom, BloomSaturation) * BloomIntensity;
 	base = AdjustSaturation(base, BaseSaturation) * BaseIntensity;
