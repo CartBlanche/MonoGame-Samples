@@ -1,0 +1,67 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lidgren.Network.MacOS", "..\..\MonoGame\ThirdParty\Lidgren.Network\Lidgren.Network.MacOS.csproj", "{AE483C29-042E-4226-BA52-D247CE7676DA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonoGame.Framework.MacOS", "..\..\MonoGame\MonoGame.Framework\MonoGame.Framework.MacOS.csproj", "{36C538E6-C32A-4A8D-A39C-566173D7118E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Marblets", "MacOS\Marblets\Marblets.csproj", "{2BCFC6F4-5C08-467A-B310-5C0A009018CE}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Cards", "Cards", "{4A2BA8B5-D400-43E7-A721-8114838CCFE1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CardsFramework.MacOS", "MacOS\Cards\CardsFramework\CardsFramework.MacOS.csproj", "{B35097FE-CBF0-4CAD-8B93-36C9587057DE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlackJack.MacOS", "MacOS\Cards\CardsGame\BlackJack.MacOS.csproj", "{F4D3F373-0259-43BD-9EC3-6DDAD2AE2C1B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Platformer", "MacOS\Platformer\Platformer.csproj", "{1D099BD4-805E-4C04-B33D-9F2D16D42B86}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+		Distribution|Any CPU = Distribution|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{1D099BD4-805E-4C04-B33D-9F2D16D42B86}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1D099BD4-805E-4C04-B33D-9F2D16D42B86}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1D099BD4-805E-4C04-B33D-9F2D16D42B86}.Distribution|Any CPU.ActiveCfg = Debug|Any CPU
+		{1D099BD4-805E-4C04-B33D-9F2D16D42B86}.Distribution|Any CPU.Build.0 = Debug|Any CPU
+		{1D099BD4-805E-4C04-B33D-9F2D16D42B86}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1D099BD4-805E-4C04-B33D-9F2D16D42B86}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2BCFC6F4-5C08-467A-B310-5C0A009018CE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2BCFC6F4-5C08-467A-B310-5C0A009018CE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2BCFC6F4-5C08-467A-B310-5C0A009018CE}.Distribution|Any CPU.ActiveCfg = Debug|Any CPU
+		{2BCFC6F4-5C08-467A-B310-5C0A009018CE}.Distribution|Any CPU.Build.0 = Debug|Any CPU
+		{2BCFC6F4-5C08-467A-B310-5C0A009018CE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2BCFC6F4-5C08-467A-B310-5C0A009018CE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{36C538E6-C32A-4A8D-A39C-566173D7118E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{36C538E6-C32A-4A8D-A39C-566173D7118E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{36C538E6-C32A-4A8D-A39C-566173D7118E}.Distribution|Any CPU.ActiveCfg = Distribution|Any CPU
+		{36C538E6-C32A-4A8D-A39C-566173D7118E}.Distribution|Any CPU.Build.0 = Distribution|Any CPU
+		{36C538E6-C32A-4A8D-A39C-566173D7118E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{36C538E6-C32A-4A8D-A39C-566173D7118E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AE483C29-042E-4226-BA52-D247CE7676DA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AE483C29-042E-4226-BA52-D247CE7676DA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AE483C29-042E-4226-BA52-D247CE7676DA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AE483C29-042E-4226-BA52-D247CE7676DA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B35097FE-CBF0-4CAD-8B93-36C9587057DE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B35097FE-CBF0-4CAD-8B93-36C9587057DE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B35097FE-CBF0-4CAD-8B93-36C9587057DE}.Distribution|Any CPU.ActiveCfg = Debug|Any CPU
+		{B35097FE-CBF0-4CAD-8B93-36C9587057DE}.Distribution|Any CPU.Build.0 = Debug|Any CPU
+		{B35097FE-CBF0-4CAD-8B93-36C9587057DE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B35097FE-CBF0-4CAD-8B93-36C9587057DE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F4D3F373-0259-43BD-9EC3-6DDAD2AE2C1B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F4D3F373-0259-43BD-9EC3-6DDAD2AE2C1B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F4D3F373-0259-43BD-9EC3-6DDAD2AE2C1B}.Distribution|Any CPU.ActiveCfg = Debug|Any CPU
+		{F4D3F373-0259-43BD-9EC3-6DDAD2AE2C1B}.Distribution|Any CPU.Build.0 = Debug|Any CPU
+		{F4D3F373-0259-43BD-9EC3-6DDAD2AE2C1B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F4D3F373-0259-43BD-9EC3-6DDAD2AE2C1B}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{B35097FE-CBF0-4CAD-8B93-36C9587057DE} = {4A2BA8B5-D400-43E7-A721-8114838CCFE1}
+		{F4D3F373-0259-43BD-9EC3-6DDAD2AE2C1B} = {4A2BA8B5-D400-43E7-A721-8114838CCFE1}
+	EndGlobalSection
+	GlobalSection(MonoDevelopProperties) = preSolution
+		StartupItem = ..\..\MonoGame\ThirdParty\Lidgren.Network\Lidgren.Network.MacOS.csproj
+	EndGlobalSection
+EndGlobal
