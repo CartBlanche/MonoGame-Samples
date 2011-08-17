@@ -19,6 +19,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GemstoneHunter", "MacOS\Boo
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RobotRampage", "MacOS\BookSourceCode\XNAGameDevelopmentbyExampleCode\RobotRampage\RobotRampage.csproj", "{9522776F-02BA-4BED-B8BB-6BAE580F4068}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tile Engine", "MacOS\BookSourceCode\XNAGameDevelopmentbyExampleCode\GemstoneHunter\TileEngine\Tile Engine.csproj", "{521972FD-1A9B-4CFD-A435-EB2224985131}"
+EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonoGame.Samples.ChaseAndEvade.MacOS", "MacOS\ChaseAndEvade\MonoGame.Samples.ChaseAndEvade.MacOS.csproj", "{D03F3BAF-E4D0-4B6B-A567-9A0E2F882335}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GameStateManagement", "MacOS\GameStateManagement\GameStateManagement.csproj", "{4AD6BC7A-DB9A-4A6F-9EE2-DAD9B0BBA2A8}"
@@ -176,6 +178,16 @@ Global
 		{4AD6BC7A-DB9A-4A6F-9EE2-DAD9B0BBA2A8}.Release|Any CPU.Build.0 = Release|Any CPU
 		{4AD6BC7A-DB9A-4A6F-9EE2-DAD9B0BBA2A8}.Release|x86.ActiveCfg = Release|Any CPU
 		{4AD6BC7A-DB9A-4A6F-9EE2-DAD9B0BBA2A8}.Release|x86.Build.0 = Release|Any CPU
+		{521972FD-1A9B-4CFD-A435-EB2224985131}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{521972FD-1A9B-4CFD-A435-EB2224985131}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{521972FD-1A9B-4CFD-A435-EB2224985131}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{521972FD-1A9B-4CFD-A435-EB2224985131}.Debug|x86.Build.0 = Debug|Any CPU
+		{521972FD-1A9B-4CFD-A435-EB2224985131}.Distribution|Any CPU.ActiveCfg = Debug|Any CPU
+		{521972FD-1A9B-4CFD-A435-EB2224985131}.Distribution|Any CPU.Build.0 = Debug|Any CPU
+		{521972FD-1A9B-4CFD-A435-EB2224985131}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{521972FD-1A9B-4CFD-A435-EB2224985131}.Release|Any CPU.Build.0 = Release|Any CPU
+		{521972FD-1A9B-4CFD-A435-EB2224985131}.Release|x86.ActiveCfg = Release|Any CPU
+		{521972FD-1A9B-4CFD-A435-EB2224985131}.Release|x86.Build.0 = Release|Any CPU
 		{52735207-2136-433B-A3E4-4C082728EED8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{52735207-2136-433B-A3E4-4C082728EED8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{52735207-2136-433B-A3E4-4C082728EED8}.Debug|x86.ActiveCfg = Debug|Any CPU
@@ -292,6 +304,7 @@ Global
 		{F3115910-E6D1-450D-97FB-A8168A5D622E} = {80262DC5-B246-4DF4-88CD-D1742CCF81BA}
 		{81313197-A8DF-4465-B503-2DD8248B80A9} = {80262DC5-B246-4DF4-88CD-D1742CCF81BA}
 		{9522776F-02BA-4BED-B8BB-6BAE580F4068} = {80262DC5-B246-4DF4-88CD-D1742CCF81BA}
+		{521972FD-1A9B-4CFD-A435-EB2224985131} = {80262DC5-B246-4DF4-88CD-D1742CCF81BA}
 	EndGlobalSection
 	GlobalSection(MonoDevelopProperties) = preSolution
 		StartupItem = MacOS\Draw2D\MonoGame.Samples.Draw2D.MacOS.csproj
