@@ -66,9 +66,9 @@ namespace TiledSprites
 
 	#region Initialization
 		public TileGrid (int tileWidth,int tileHeight,int numXTiles,int numYTiles,
-		Vector2 offset,SpriteSheet tileSheet,
-		GraphicsDeviceManager graphicsComponent)
-			{
+					Vector2 offset,SpriteSheet tileSheet,
+					GraphicsDeviceManager graphicsComponent)
+		{
 			if (graphicsComponent == null) {
 				throw new ArgumentNullException ("graphicsComponent");
 			}
@@ -93,22 +93,31 @@ namespace TiledSprites
 			scaleValue = Vector2.One;
 			zoomValue = 1.0f;
 			CameraPosition = Vector2.Zero;
+			graphicsComponent.DeviceReset += delegate(object sender, EventArgs e) {
+				displaySize.X = 320;
+				// TODO graphics.GraphicsDevice.PresentationParameters.BackBufferWidth;
+	
+				displaySize.Y = 480;
+				// TODO graphics.GraphicsDevice.PresentationParameters.BackBufferHeight;
+	
+				visibilityChanged = true;
+			};
+//			graphicsComponent.DeviceReset +=
+//		new EventHandler (OnGraphicsComponentDeviceReset);
+//
+//			OnGraphicsComponentDeviceReset (this, new EventArgs ());
+//		}
 
-			graphicsComponent.DeviceReset += 
-		new EventHandler (OnGraphicsComponentDeviceReset);
-
-			OnGraphicsComponentDeviceReset (this, new EventArgs ());
-		}
-
-		void OnGraphicsComponentDeviceReset (object sender, EventArgs e)
-		{
-			displaySize.X = 320;
-			// TODO graphics.GraphicsDevice.PresentationParameters.BackBufferWidth;
-
-			displaySize.Y = 480;
-			// TODO graphics.GraphicsDevice.PresentationParameters.BackBufferHeight;
-
-			visibilityChanged = true;
+//		void OnGraphicsComponentDeviceReset (object sender, EventArgs e)
+//		{
+//			displaySize.X = 320;
+//			// TODO graphics.GraphicsDevice.PresentationParameters.BackBufferWidth;
+//
+//			displaySize.Y = 480;
+//			// TODO graphics.GraphicsDevice.PresentationParameters.BackBufferHeight;
+//
+//			visibilityChanged = true;
+//		}
 		}
 
 	#endregion
