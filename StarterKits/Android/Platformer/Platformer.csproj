@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>10.0.0</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{9FA77471-A020-4452-928B-7D72BF15C991}</ProjectGuid>
+    <ProjectTypeGuids>{EFBA0AD7-5A72-4C68-AF49-83D382785DCF};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <RootNamespace>PlatformerTwo</RootNamespace>
+    <MonoAndroidResourcePrefix>Resources</MonoAndroidResourcePrefix>
+    <MonoAndroidAssetsPrefix>Assets</MonoAndroidAssetsPrefix>
+    <AndroidResgenClass>Resource</AndroidResgenClass>
+    <AndroidApplication>True</AndroidApplication>
+    <AndroidResgenFile>Resources\Resource.designer.cs</AndroidResgenFile>
+    <AssemblyName>PlatformerTwo</AssemblyName>
+    <TargetFrameworkVersion>v2.2</TargetFrameworkVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug</OutputPath>
+    <DefineConstants>DEBUG;ANDROID</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <ConsolePause>false</ConsolePause>
+    <AndroidLinkMode>None</AndroidLinkMode>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>none</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Release</OutputPath>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <AndroidUseSharedRuntime>false</AndroidUseSharedRuntime>
+    <ConsolePause>false</ConsolePause>
+    <AndroidLinkMode>SdkOnly</AndroidLinkMode>
+    <DefineConstants>ANDROID</DefineConstants>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Core" />
+    <Reference Include="Mono.Android" />
+    <Reference Include="OpenTK" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Activity1.cs" />
+    <Compile Include="Resources\Resource.designer.cs" />
+    <Compile Include="Animation.cs" />
+    <Compile Include="AnimationPlayer.cs" />
+    <Compile Include="Circle.cs" />
+    <Compile Include="Enemy.cs" />
+    <Compile Include="Gem.cs" />
+    <Compile Include="Level.cs" />
+    <Compile Include="PlatformerGame.cs" />
+    <Compile Include="Player.cs" />
+    <Compile Include="RectangleExtensions.cs" />
+    <Compile Include="Tile.cs" />
+    <Compile Include="TouchCollectionExtensions.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\AboutResources.txt" />
+    <None Include="Assets\AboutAssets.txt" />
+    <None Include="Background.png" />
+    <None Include="Game.ico" />
+    <None Include="GameThumbnail.png" />
+    <None Include="Properties\AppManifest.xml" />
+    <None Include="Properties\WMAppManifest.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\layout\Main.axml" />
+    <AndroidResource Include="Resources\values\Strings.xml" />
+    <AndroidResource Include="Resources\drawable\Icon.png" />
+  </ItemGroup>
+  <Import Project="$(MSBuildExtensionsPath)\Novell\Novell.MonoDroid.CSharp.targets" />
+  <ItemGroup>
+    <Folder Include="Properties\" />
+    <Folder Include="Assets\Content\Fonts\" />
+    <Folder Include="Assets\Content\Sounds\" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidAsset Include="Assets\Content\Backgrounds\Layer0_0.png" />
+    <AndroidAsset Include="Assets\Content\Backgrounds\Layer0_1.png" />
+    <AndroidAsset Include="Assets\Content\Backgrounds\Layer0_2.png" />
+    <AndroidAsset Include="Assets\Content\Backgrounds\Layer1_0.png" />
+    <AndroidAsset Include="Assets\Content\Backgrounds\Layer1_1.png" />
+    <AndroidAsset Include="Assets\Content\Backgrounds\Layer1_2.png" />
+    <AndroidAsset Include="Assets\Content\Backgrounds\Layer2_0.png" />
+    <AndroidAsset Include="Assets\Content\Backgrounds\Layer2_1.png" />
+    <AndroidAsset Include="Assets\Content\Backgrounds\Layer2_2.png" />
+    <AndroidAsset Include="Assets\Content\Levels\0.txt" />
+    <AndroidAsset Include="Assets\Content\Levels\1.txt" />
+    <AndroidAsset Include="Assets\Content\Levels\2.txt" />
+    <AndroidAsset Include="Assets\Content\Overlays\you_died.png" />
+    <AndroidAsset Include="Assets\Content\Overlays\you_lose.png" />
+    <AndroidAsset Include="Assets\Content\Overlays\you_win.png" />
+    <AndroidAsset Include="Assets\Content\Sprites\Gem.png" />
+    <AndroidAsset Include="Assets\Content\Sprites\MonsterA\Idle.png" />
+    <AndroidAsset Include="Assets\Content\Sprites\MonsterA\Run.png" />
+    <AndroidAsset Include="Assets\Content\Sprites\MonsterB\Idle.png" />
+    <AndroidAsset Include="Assets\Content\Sprites\MonsterB\Run.png" />
+    <AndroidAsset Include="Assets\Content\Sprites\MonsterC\Idle.png" />
+    <AndroidAsset Include="Assets\Content\Sprites\MonsterC\Run.png" />
+    <AndroidAsset Include="Assets\Content\Sprites\MonsterD\Idle.png" />
+    <AndroidAsset Include="Assets\Content\Sprites\MonsterD\Run.png" />
+    <AndroidAsset Include="Assets\Content\Sprites\Player\Celebrate.png" />
+    <AndroidAsset Include="Assets\Content\Sprites\Player\Die.png" />
+    <AndroidAsset Include="Assets\Content\Sprites\Player\Idle.png" />
+    <AndroidAsset Include="Assets\Content\Sprites\Player\Jump.png" />
+    <AndroidAsset Include="Assets\Content\Sprites\Player\Run.png" />
+    <AndroidAsset Include="Assets\Content\Tiles\BlockA0.png" />
+    <AndroidAsset Include="Assets\Content\Tiles\BlockA1.png" />
+    <AndroidAsset Include="Assets\Content\Tiles\BlockA2.png" />
+    <AndroidAsset Include="Assets\Content\Tiles\BlockA3.png" />
+    <AndroidAsset Include="Assets\Content\Tiles\BlockA4.png" />
+    <AndroidAsset Include="Assets\Content\Tiles\BlockA5.png" />
+    <AndroidAsset Include="Assets\Content\Tiles\BlockA6.png" />
+    <AndroidAsset Include="Assets\Content\Tiles\BlockB0.png" />
+    <AndroidAsset Include="Assets\Content\Tiles\BlockB1.png" />
+    <AndroidAsset Include="Assets\Content\Tiles\Exit.png" />
+    <AndroidAsset Include="Assets\Content\Tiles\Platform.png" />
+    <AndroidAsset Include="Assets\Content\Fonts\Hud.xnb" />
+    <AndroidAsset Include="Assets\Content\Sounds\ExitReached.wav" />
+    <AndroidAsset Include="Assets\Content\Sounds\GemCollected.wav" />
+    <AndroidAsset Include="Assets\Content\Sounds\MonsterKilled.wav" />
+    <AndroidAsset Include="Assets\Content\Sounds\Music.wav" />
+    <AndroidAsset Include="Assets\Content\Sounds\PlayerFall.wav" />
+    <AndroidAsset Include="Assets\Content\Sounds\PlayerJump.wav" />
+    <AndroidAsset Include="Assets\Content\Sounds\PlayerKilled.wav" />
+    <AndroidAsset Include="Assets\Content\Sounds\PowerUp.wav" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\MonoGame\MonoGame.Framework\MonoGame.Framework.Android.csproj">
+      <Project>{BA9476CF-99BA-4D03-92F2-73D2C5E58883}</Project>
+      <Name>MonoGame.Framework.Android</Name>
+    </ProjectReference>
+  </ItemGroup>
+</Project>
