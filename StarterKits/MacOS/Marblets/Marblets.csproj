@@ -10,6 +10,7 @@
     <OutputType>Exe</OutputType>
     <RootNamespace>Marblets</RootNamespace>
     <AssemblyName>Marblets</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -43,7 +44,7 @@
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath)\Mono\MonoMac\v0.0\Mono.MonoMac.targets" />
   <ItemGroup>
-    <ProjectReference Include="..\..\..\MonoGame.Framework\MonoGame.Framework.MacOS.csproj">
+    <ProjectReference Include="..\..\..\..\MonoGame\MonoGame.Framework\MonoGame.Framework.MacOS.csproj">
       <Project>{36C538E6-C32A-4A8D-A39C-566173D7118E}</Project>
       <Name>MonoGame.Framework.MacOS</Name>
     </ProjectReference>
@@ -89,38 +90,11 @@
     <Compile Include="..\..\iOS\Marblets\TutorialGameBoard.cs">
       <Link>TutorialGameBoard.cs</Link>
     </Compile>
+    <Compile Include="..\..\iOS\Marblets\Sound.cs">
+      <Link>Sound.cs</Link>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="..\..\iOS\Marblets\Content\game_over_frame_zunehd.tga">
-      <Link>Content\game_over_frame_zunehd.tga</Link>
-    </Content>
-    <Content Include="..\..\iOS\Marblets\Content\marble_burst_zunehd.tga">
-      <Link>Content\marble_burst_zunehd.tga</Link>
-    </Content>
-    <Content Include="..\..\iOS\Marblets\Content\marble_cursor_zunehd.tga">
-      <Link>Content\marble_cursor_zunehd.tga</Link>
-    </Content>
-    <Content Include="..\..\iOS\Marblets\Content\marble_glow_1ring_zunehd.tga">
-      <Link>Content\marble_glow_1ring_zunehd.tga</Link>
-    </Content>
-    <Content Include="..\..\iOS\Marblets\Content\marble_glow_2rings_zunehd.tga">
-      <Link>Content\marble_glow_2rings_zunehd.tga</Link>
-    </Content>
-    <Content Include="..\..\iOS\Marblets\Content\marble_zunehd.tga">
-      <Link>Content\marble_zunehd.tga</Link>
-    </Content>
-    <Content Include="..\..\iOS\Marblets\Content\numbers_large.tga">
-      <Link>Content\numbers_large.tga</Link>
-    </Content>
-    <Content Include="..\..\iOS\Marblets\Content\numbers_small.tga">
-      <Link>Content\numbers_small.tga</Link>
-    </Content>
-    <Content Include="..\..\iOS\Marblets\Content\play_frame_zunehd.tga">
-      <Link>Content\play_frame_zunehd.tga</Link>
-    </Content>
-    <Content Include="..\..\iOS\Marblets\Content\title_frame_zunehd.tga">
-      <Link>Content\title_frame_zunehd.tga</Link>
-    </Content>
     <Content Include="..\..\iOS\Marblets\Content\Textures\game_over_frame.png">
       <Link>Content\Textures\game_over_frame.png</Link>
     </Content>
