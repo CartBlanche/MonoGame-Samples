@@ -69,7 +69,7 @@ namespace Platformer
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
 
-#if WINDOWS_PHONE
+#if WINDOWS_PHONE || ANDROID
             TargetElapsedTime = TimeSpan.FromTicks(333333);
 #endif
 
