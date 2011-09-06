@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CardsFramework.Android", "A
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Blackjack.Android", "Android\Cards\Blackjack.Android.csproj", "{9B7D8FCF-5A3B-48D6-B9E7-4C3C0D0632F6}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Platformer", "Android\Platformer\Platformer.csproj", "{9FA77471-A020-4452-928B-7D72BF15C991}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -29,6 +31,10 @@ Global
 		{9B7D8FCF-5A3B-48D6-B9E7-4C3C0D0632F6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9B7D8FCF-5A3B-48D6-B9E7-4C3C0D0632F6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9B7D8FCF-5A3B-48D6-B9E7-4C3C0D0632F6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9FA77471-A020-4452-928B-7D72BF15C991}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9FA77471-A020-4452-928B-7D72BF15C991}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9FA77471-A020-4452-928B-7D72BF15C991}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9FA77471-A020-4452-928B-7D72BF15C991}.Release|Any CPU.Build.0 = Release|Any CPU
 		{BA9476CF-99BA-4D03-92F2-73D2C5E58883}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{BA9476CF-99BA-4D03-92F2-73D2C5E58883}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BA9476CF-99BA-4D03-92F2-73D2C5E58883}.Release|Any CPU.ActiveCfg = Release|Any CPU
