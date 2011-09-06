@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -8,13 +8,13 @@
     <ProjectGuid>{9FA77471-A020-4452-928B-7D72BF15C991}</ProjectGuid>
     <ProjectTypeGuids>{EFBA0AD7-5A72-4C68-AF49-83D382785DCF};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <OutputType>Library</OutputType>
-    <RootNamespace>PlatformerTwo</RootNamespace>
+    <RootNamespace>Platformer</RootNamespace>
     <MonoAndroidResourcePrefix>Resources</MonoAndroidResourcePrefix>
     <MonoAndroidAssetsPrefix>Assets</MonoAndroidAssetsPrefix>
     <AndroidResgenClass>Resource</AndroidResgenClass>
     <AndroidApplication>True</AndroidApplication>
     <AndroidResgenFile>Resources\Resource.designer.cs</AndroidResgenFile>
-    <AssemblyName>PlatformerTwo</AssemblyName>
+    <AssemblyName>Platformer</AssemblyName>
     <TargetFrameworkVersion>v2.2</TargetFrameworkVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -49,17 +49,42 @@
   <ItemGroup>
     <Compile Include="Activity1.cs" />
     <Compile Include="Resources\Resource.designer.cs" />
-    <Compile Include="Animation.cs" />
-    <Compile Include="AnimationPlayer.cs" />
-    <Compile Include="Circle.cs" />
-    <Compile Include="Enemy.cs" />
-    <Compile Include="Gem.cs" />
-    <Compile Include="Level.cs" />
-    <Compile Include="PlatformerGame.cs" />
-    <Compile Include="Player.cs" />
-    <Compile Include="RectangleExtensions.cs" />
-    <Compile Include="Tile.cs" />
-    <Compile Include="TouchCollectionExtensions.cs" />
+    <Compile Include="..\..\iOS\Platformer\Accelerometer.cs">
+      <Link>Accelerometer.cs</Link>
+    </Compile>
+    <Compile Include="..\..\iOS\Platformer\Animation.cs">
+      <Link>Animation.cs</Link>
+    </Compile>
+    <Compile Include="..\..\iOS\Platformer\AnimationPlayer.cs">
+      <Link>AnimationPlayer.cs</Link>
+    </Compile>
+    <Compile Include="..\..\iOS\Platformer\Circle.cs">
+      <Link>Circle.cs</Link>
+    </Compile>
+    <Compile Include="..\..\iOS\Platformer\Enemy.cs">
+      <Link>Enemy.cs</Link>
+    </Compile>
+    <Compile Include="..\..\iOS\Platformer\Gem.cs">
+      <Link>Gem.cs</Link>
+    </Compile>
+    <Compile Include="..\..\iOS\Platformer\Level.cs">
+      <Link>Level.cs</Link>
+    </Compile>
+    <Compile Include="..\..\iOS\Platformer\PlatformerGame.cs">
+      <Link>PlatformerGame.cs</Link>
+    </Compile>
+    <Compile Include="..\..\iOS\Platformer\Player.cs">
+      <Link>Player.cs</Link>
+    </Compile>
+    <Compile Include="..\..\iOS\Platformer\RectangleExtensions.cs">
+      <Link>RectangleExtensions.cs</Link>
+    </Compile>
+    <Compile Include="..\..\iOS\Platformer\Tile.cs">
+      <Link>Tile.cs</Link>
+    </Compile>
+    <Compile Include="..\..\iOS\Platformer\TouchCollectionExtensions.cs">
+      <Link>TouchCollectionExtensions.cs</Link>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -70,6 +95,177 @@
     <None Include="GameThumbnail.png" />
     <None Include="Properties\AppManifest.xml" />
     <None Include="Properties\WMAppManifest.xml" />
+    <AndroidAsset Include="..\..\iOS\Platformer\Content\Backgrounds\Layer0_0.png">
+      <Link>Assets\Content\Backgrounds\Layer0_0.png</Link>
+    </AndroidAsset>
+    <AndroidAsset Include="..\..\iOS\Platformer\Content\Backgrounds\Layer0_1.png">
+      <Link>Assets\Content\Backgrounds\Layer0_1.png</Link>
+    </AndroidAsset>
+    <AndroidAsset Include="..\..\iOS\Platformer\Content\Backgrounds\Layer0_2.png">
+      <Link>Assets\Content\Backgrounds\Layer0_2.png</Link>
+    </AndroidAsset>
+    <AndroidAsset Include="..\..\iOS\Platformer\Content\Backgrounds\Layer1_0.png">
+      <Link>Assets\Content\Backgrounds\Layer1_0.png</Link>
+    </AndroidAsset>
+    <AndroidAsset Include="..\..\iOS\Platformer\Content\Backgrounds\Layer1_1.png">
+      <Link>Assets\Content\Backgrounds\Layer1_1.png</Link>
+    </AndroidAsset>
+    <AndroidAsset Include="..\..\iOS\Platformer\Content\Backgrounds\Layer1_2.png">
+      <Link>Assets\Content\Backgrounds\Layer1_2.png</Link>
+    </AndroidAsset>
+    <AndroidAsset Include="..\..\iOS\Platformer\Content\Backgrounds\Layer2_0.png">
+      <Link>Assets\Content\Backgrounds\Layer2_0.png</Link>
+    </AndroidAsset>
+    <AndroidAsset Include="..\..\iOS\Platformer\Content\Backgrounds\Layer2_1.png">
+      <Link>Assets\Content\Backgrounds\Layer2_1.png</Link>
+    </AndroidAsset>
+    <AndroidAsset Include="..\..\iOS\Platformer\Content\Backgrounds\Layer2_2.png">
+      <Link>Assets\Content\Backgrounds\Layer2_2.png</Link>
+    </AndroidAsset>
+    <AndroidAsset Include="..\..\iOS\Platformer\Content\Fonts\Hud.xnb">
+      <Link>Assets\Content\Fonts\Hud.xnb</Link>
+    </AndroidAsset>
+    <AndroidAsset Include="..\..\iOS\Platformer\Content\Levels\0.txt">
+      <Link>Assets\Content\Levels\0.txt</Link>
+    </AndroidAsset>
+    <AndroidAsset Include="..\..\iOS\Platformer\Content\Levels\1.txt">
+      <Link>Assets\Content\Levels\1.txt</Link>
+    </AndroidAsset>
+    <AndroidAsset Include="..\..\iOS\Platformer\Content\Levels\2.txt">
+      <Link>Assets\Content\Levels\2.txt</Link>
+    </AndroidAsset>
+    <AndroidAsset Include="..\..\iOS\Platformer\Content\Overlays\you_died.png">
+      <Link>Assets\Content\Overlays\you_died.png</Link>
+    </AndroidAsset>
+    <AndroidAsset Include="..\..\iOS\Platformer\Content\Overlays\you_lose.png">
+      <Link>Assets\Content\Overlays\you_lose.png</Link>
+    </AndroidAsset>
+    <AndroidAsset Include="..\..\iOS\Platformer\Content\Overlays\you_win.png">
+      <Link>Assets\Content\Overlays\you_win.png</Link>
+    </AndroidAsset>
+    <AndroidAsset Include="..\..\iOS\Platformer\Content\Sounds\ExitReached.mp3">
+      <Link>Assets\Content\Sounds\ExitReached.mp3</Link>
+    </AndroidAsset>
+    <AndroidAsset Include="..\..\iOS\Platformer\Content\Sounds\ExitReached.wav">
+      <Link>Assets\Content\Sounds\ExitReached.wav</Link>
+    </AndroidAsset>
+    <AndroidAsset Include="..\..\iOS\Platformer\Content\Sounds\GemCollected.mp3">
+      <Link>Assets\Content\Sounds\GemCollected.mp3</Link>
+    </AndroidAsset>
+    <AndroidAsset Include="..\..\iOS\Platformer\Content\Sounds\GemCollected.wav">
+      <Link>Assets\Content\Sounds\GemCollected.wav</Link>
+    </AndroidAsset>
+    <AndroidAsset Include="..\..\iOS\Platformer\Content\Sounds\MonsterKilled.mp3">
+      <Link>Assets\Content\Sounds\MonsterKilled.mp3</Link>
+    </AndroidAsset>
+    <AndroidAsset Include="..\..\iOS\Platformer\Content\Sounds\MonsterKilled.wav">
+      <Link>Assets\Content\Sounds\MonsterKilled.wav</Link>
+    </AndroidAsset>
+    <AndroidAsset Include="..\..\iOS\Platformer\Content\Sounds\Music.mp3">
+      <Link>Assets\Content\Sounds\Music.mp3</Link>
+    </AndroidAsset>
+    <AndroidAsset Include="..\..\iOS\Platformer\Content\Sounds\Music.wav">
+      <Link>Assets\Content\Sounds\Music.wav</Link>
+    </AndroidAsset>
+    <AndroidAsset Include="..\..\iOS\Platformer\Content\Sounds\PlayerFall.mp3">
+      <Link>Assets\Content\Sounds\PlayerFall.mp3</Link>
+    </AndroidAsset>
+    <AndroidAsset Include="..\..\iOS\Platformer\Content\Sounds\PlayerFall.wav">
+      <Link>Assets\Content\Sounds\PlayerFall.wav</Link>
+    </AndroidAsset>
+    <AndroidAsset Include="..\..\iOS\Platformer\Content\Sounds\PlayerJump.mp3">
+      <Link>Assets\Content\Sounds\PlayerJump.mp3</Link>
+    </AndroidAsset>
+    <AndroidAsset Include="..\..\iOS\Platformer\Content\Sounds\PlayerJump.wav">
+      <Link>Assets\Content\Sounds\PlayerJump.wav</Link>
+    </AndroidAsset>
+    <AndroidAsset Include="..\..\iOS\Platformer\Content\Sounds\PlayerKilled.mp3">
+      <Link>Assets\Content\Sounds\PlayerKilled.mp3</Link>
+    </AndroidAsset>
+    <AndroidAsset Include="..\..\iOS\Platformer\Content\Sounds\PlayerKilled.wav">
+      <Link>Assets\Content\Sounds\PlayerKilled.wav</Link>
+    </AndroidAsset>
+    <AndroidAsset Include="..\..\iOS\Platformer\Content\Sounds\PowerUp.mp3">
+      <Link>Assets\Content\Sounds\PowerUp.mp3</Link>
+    </AndroidAsset>
+    <AndroidAsset Include="..\..\iOS\Platformer\Content\Sounds\PowerUp.wav">
+      <Link>Assets\Content\Sounds\PowerUp.wav</Link>
+    </AndroidAsset>
+    <AndroidAsset Include="..\..\iOS\Platformer\Content\Sprites\Gem.png">
+      <Link>Assets\Content\Sprites\Gem.png</Link>
+    </AndroidAsset>
+    <AndroidAsset Include="..\..\iOS\Platformer\Content\Sprites\MonsterA\Idle.png">
+      <Link>Assets\Content\Sprites\MonsterA\Idle.png</Link>
+    </AndroidAsset>
+    <AndroidAsset Include="..\..\iOS\Platformer\Content\Sprites\MonsterA\Run.png">
+      <Link>Assets\Content\Sprites\MonsterA\Run.png</Link>
+    </AndroidAsset>
+    <AndroidAsset Include="..\..\iOS\Platformer\Content\Sprites\MonsterB\Idle.png">
+      <Link>Assets\Content\Sprites\MonsterB\Idle.png</Link>
+    </AndroidAsset>
+    <AndroidAsset Include="..\..\iOS\Platformer\Content\Sprites\MonsterB\Run.png">
+      <Link>Assets\Content\Sprites\MonsterB\Run.png</Link>
+    </AndroidAsset>
+    <AndroidAsset Include="..\..\iOS\Platformer\Content\Sprites\MonsterC\Idle.png">
+      <Link>Assets\Content\Sprites\MonsterC\Idle.png</Link>
+    </AndroidAsset>
+    <AndroidAsset Include="..\..\iOS\Platformer\Content\Sprites\MonsterC\Run.png">
+      <Link>Assets\Content\Sprites\MonsterC\Run.png</Link>
+    </AndroidAsset>
+    <AndroidAsset Include="..\..\iOS\Platformer\Content\Sprites\MonsterD\Idle.png">
+      <Link>Assets\Content\Sprites\MonsterD\Idle.png</Link>
+    </AndroidAsset>
+    <AndroidAsset Include="..\..\iOS\Platformer\Content\Sprites\MonsterD\Run.png">
+      <Link>Assets\Content\Sprites\MonsterD\Run.png</Link>
+    </AndroidAsset>
+    <AndroidAsset Include="..\..\iOS\Platformer\Content\Sprites\Player\Celebrate.png">
+      <Link>Assets\Content\Sprites\Player\Celebrate.png</Link>
+    </AndroidAsset>
+    <AndroidAsset Include="..\..\iOS\Platformer\Content\Sprites\Player\Die.png">
+      <Link>Assets\Content\Sprites\Player\Die.png</Link>
+    </AndroidAsset>
+    <AndroidAsset Include="..\..\iOS\Platformer\Content\Sprites\Player\Idle.png">
+      <Link>Assets\Content\Sprites\Player\Idle.png</Link>
+    </AndroidAsset>
+    <AndroidAsset Include="..\..\iOS\Platformer\Content\Sprites\Player\Jump.png">
+      <Link>Assets\Content\Sprites\Player\Jump.png</Link>
+    </AndroidAsset>
+    <AndroidAsset Include="..\..\iOS\Platformer\Content\Sprites\Player\Run.png">
+      <Link>Assets\Content\Sprites\Player\Run.png</Link>
+    </AndroidAsset>
+    <AndroidAsset Include="..\..\iOS\Platformer\Content\Tiles\BlockA0.png">
+      <Link>Assets\Content\Tiles\BlockA0.png</Link>
+    </AndroidAsset>
+    <AndroidAsset Include="..\..\iOS\Platformer\Content\Tiles\BlockA1.png">
+      <Link>Assets\Content\Tiles\BlockA1.png</Link>
+    </AndroidAsset>
+    <AndroidAsset Include="..\..\iOS\Platformer\Content\Tiles\BlockA2.png">
+      <Link>Assets\Content\Tiles\BlockA2.png</Link>
+    </AndroidAsset>
+    <AndroidAsset Include="..\..\iOS\Platformer\Content\Tiles\BlockA3.png">
+      <Link>Assets\Content\Tiles\BlockA3.png</Link>
+    </AndroidAsset>
+    <AndroidAsset Include="..\..\iOS\Platformer\Content\Tiles\BlockA4.png">
+      <Link>Assets\Content\Tiles\BlockA4.png</Link>
+    </AndroidAsset>
+    <AndroidAsset Include="..\..\iOS\Platformer\Content\Tiles\BlockA5.png">
+      <Link>Assets\Content\Tiles\BlockA5.png</Link>
+    </AndroidAsset>
+    <AndroidAsset Include="..\..\iOS\Platformer\Content\Tiles\BlockA6.png">
+      <Link>Assets\Content\Tiles\BlockA6.png</Link>
+    </AndroidAsset>
+    <AndroidAsset Include="..\..\iOS\Platformer\Content\Tiles\BlockB0.png">
+      <Link>Assets\Content\Tiles\BlockB0.png</Link>
+    </AndroidAsset>
+    <AndroidAsset Include="..\..\iOS\Platformer\Content\Tiles\BlockB1.png">
+      <Link>Assets\Content\Tiles\BlockB1.png</Link>
+    </AndroidAsset>
+    <AndroidAsset Include="..\..\iOS\Platformer\Content\Tiles\Exit.png">
+      <Link>Assets\Content\Tiles\Exit.png</Link>
+    </AndroidAsset>
+    <AndroidAsset Include="..\..\iOS\Platformer\Content\Tiles\Platform.png">
+      <Link>Assets\Content\Tiles\Platform.png</Link>
+    </AndroidAsset>
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\layout\Main.axml" />
@@ -77,57 +273,9 @@
     <AndroidResource Include="Resources\drawable\Icon.png" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Novell\Novell.MonoDroid.CSharp.targets" />
-  <ItemGroup />
   <ItemGroup>
-    <AndroidAsset Include="Assets\Content\Backgrounds\Layer0_0.png" />
-    <AndroidAsset Include="Assets\Content\Backgrounds\Layer0_1.png" />
-    <AndroidAsset Include="Assets\Content\Backgrounds\Layer0_2.png" />
-    <AndroidAsset Include="Assets\Content\Backgrounds\Layer1_0.png" />
-    <AndroidAsset Include="Assets\Content\Backgrounds\Layer1_1.png" />
-    <AndroidAsset Include="Assets\Content\Backgrounds\Layer1_2.png" />
-    <AndroidAsset Include="Assets\Content\Backgrounds\Layer2_0.png" />
-    <AndroidAsset Include="Assets\Content\Backgrounds\Layer2_1.png" />
-    <AndroidAsset Include="Assets\Content\Backgrounds\Layer2_2.png" />
-    <AndroidAsset Include="Assets\Content\Levels\0.txt" />
-    <AndroidAsset Include="Assets\Content\Levels\1.txt" />
-    <AndroidAsset Include="Assets\Content\Levels\2.txt" />
-    <AndroidAsset Include="Assets\Content\Overlays\you_died.png" />
-    <AndroidAsset Include="Assets\Content\Overlays\you_lose.png" />
-    <AndroidAsset Include="Assets\Content\Overlays\you_win.png" />
-    <AndroidAsset Include="Assets\Content\Sprites\Gem.png" />
-    <AndroidAsset Include="Assets\Content\Sprites\MonsterA\Idle.png" />
-    <AndroidAsset Include="Assets\Content\Sprites\MonsterA\Run.png" />
-    <AndroidAsset Include="Assets\Content\Sprites\MonsterB\Idle.png" />
-    <AndroidAsset Include="Assets\Content\Sprites\MonsterB\Run.png" />
-    <AndroidAsset Include="Assets\Content\Sprites\MonsterC\Idle.png" />
-    <AndroidAsset Include="Assets\Content\Sprites\MonsterC\Run.png" />
-    <AndroidAsset Include="Assets\Content\Sprites\MonsterD\Idle.png" />
-    <AndroidAsset Include="Assets\Content\Sprites\MonsterD\Run.png" />
-    <AndroidAsset Include="Assets\Content\Sprites\Player\Celebrate.png" />
-    <AndroidAsset Include="Assets\Content\Sprites\Player\Die.png" />
-    <AndroidAsset Include="Assets\Content\Sprites\Player\Idle.png" />
-    <AndroidAsset Include="Assets\Content\Sprites\Player\Jump.png" />
-    <AndroidAsset Include="Assets\Content\Sprites\Player\Run.png" />
-    <AndroidAsset Include="Assets\Content\Tiles\BlockA0.png" />
-    <AndroidAsset Include="Assets\Content\Tiles\BlockA1.png" />
-    <AndroidAsset Include="Assets\Content\Tiles\BlockA2.png" />
-    <AndroidAsset Include="Assets\Content\Tiles\BlockA3.png" />
-    <AndroidAsset Include="Assets\Content\Tiles\BlockA4.png" />
-    <AndroidAsset Include="Assets\Content\Tiles\BlockA5.png" />
-    <AndroidAsset Include="Assets\Content\Tiles\BlockA6.png" />
-    <AndroidAsset Include="Assets\Content\Tiles\BlockB0.png" />
-    <AndroidAsset Include="Assets\Content\Tiles\BlockB1.png" />
-    <AndroidAsset Include="Assets\Content\Tiles\Exit.png" />
-    <AndroidAsset Include="Assets\Content\Tiles\Platform.png" />
-    <AndroidAsset Include="Assets\Content\Fonts\Hud.xnb" />
-    <AndroidAsset Include="Assets\Content\Sounds\ExitReached.wav" />
-    <AndroidAsset Include="Assets\Content\Sounds\GemCollected.wav" />
-    <AndroidAsset Include="Assets\Content\Sounds\MonsterKilled.wav" />
-    <AndroidAsset Include="Assets\Content\Sounds\Music.wav" />
-    <AndroidAsset Include="Assets\Content\Sounds\PlayerFall.wav" />
-    <AndroidAsset Include="Assets\Content\Sounds\PlayerJump.wav" />
-    <AndroidAsset Include="Assets\Content\Sounds\PlayerKilled.wav" />
-    <AndroidAsset Include="Assets\Content\Sounds\PowerUp.wav" />
+    <Folder Include="Properties\" />
+    <Folder Include="Assets\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\..\MonoGame\MonoGame.Framework\MonoGame.Framework.Android.csproj">

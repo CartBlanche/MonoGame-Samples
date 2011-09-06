@@ -25,9 +25,8 @@ namespace GameStateManagement
     public class InputState
     {
         #region Fields
-
-        public const int MaxInputs = 4;
-
+		public const int MaxInputs = 4;	
+		
         public readonly KeyboardState[] CurrentKeyboardStates;
         public readonly GamePadState[] CurrentGamePadStates;
 
@@ -72,6 +71,15 @@ namespace GameStateManagement
         /// </summary>
         public void Update()
         {
+#if WINDOWS_PHONE || IOS || ANDROID
+            TouchState = TouchPanel.GetState();
+
+            Gestures.Clear();
+            while (TouchPanel.IsGestureAvailable)
+            {
+                Gestures.Add(TouchPanel.ReadGesture());
+            }
+#else
             for (int i = 0; i < MaxInputs; i++)
             {
                 LastKeyboardStates[i] = CurrentKeyboardStates[i];
@@ -86,14 +94,6 @@ namespace GameStateManagement
                 {
                     GamePadWasConnected[i] = true;
                 }
-            }
-#if WINDOWS_PHONE || IOS || ANDROID
-            TouchState = TouchPanel.GetState();
-
-            Gestures.Clear();
-            while (TouchPanel.IsGestureAvailable)
-            {
-                Gestures.Add(TouchPanel.ReadGesture());
             }
 #endif
         }

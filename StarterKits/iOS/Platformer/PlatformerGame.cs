@@ -9,6 +9,11 @@
 
 using System;
 using System.IO;
+
+#if ANDROID
+using Android.App;
+#endif
+
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -55,7 +60,11 @@ namespace Platformer
         // or handle exceptions, both of which can add unnecessary time to level loading.
         private const int numberOfLevels = 3;
 
+#if ANDROID 
+		public PlatformerGame (Activity activity) : base (activity)
+#else
         public PlatformerGame()
+#endif
         {
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
