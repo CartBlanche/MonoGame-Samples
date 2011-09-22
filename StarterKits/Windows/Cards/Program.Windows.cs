@@ -2,20 +2,24 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Microsoft.Xna.Samples.Draw2D
+namespace Blackjack
 {
     static class Program
     {
-        private static Game1 game;
-
-        /// <summary>
-        /// The main entry point for the application.
-        /// </summary>
-        [STAThread]
-        static void Main()
+        static void Main(string[] args)
         {
-            game = new Game1();
-            game.Run();
+            try
+            {
+                using (BlackjackGame game = new BlackjackGame())
+                {
+                    game.Run();
+                }
+            }
+            catch(Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
+                Console.ReadLine();
+            }
         }
     }
 }
