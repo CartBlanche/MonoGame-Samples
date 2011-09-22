@@ -11,6 +11,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CardsFramework.Android", "A
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Blackjack.Android", "Android\Cards\Blackjack.Android.csproj", "{9B7D8FCF-5A3B-48D6-B9E7-4C3C0D0632F6}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Platformer", "Android\Platformer\Platformer.csproj", "{9FA77471-A020-4452-928B-7D72BF15C991}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Marblets", "Android\Marblets\Marblets.csproj", "{88DEE869-EC4A-484E-AEB5-7F844C2054AB}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -25,10 +29,18 @@ Global
 		{565129E0-4EE5-4F6F-B403-C3484C9740BE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{565129E0-4EE5-4F6F-B403-C3484C9740BE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{565129E0-4EE5-4F6F-B403-C3484C9740BE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{88DEE869-EC4A-484E-AEB5-7F844C2054AB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{88DEE869-EC4A-484E-AEB5-7F844C2054AB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{88DEE869-EC4A-484E-AEB5-7F844C2054AB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{88DEE869-EC4A-484E-AEB5-7F844C2054AB}.Release|Any CPU.Build.0 = Release|Any CPU
 		{9B7D8FCF-5A3B-48D6-B9E7-4C3C0D0632F6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{9B7D8FCF-5A3B-48D6-B9E7-4C3C0D0632F6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9B7D8FCF-5A3B-48D6-B9E7-4C3C0D0632F6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9B7D8FCF-5A3B-48D6-B9E7-4C3C0D0632F6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9FA77471-A020-4452-928B-7D72BF15C991}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9FA77471-A020-4452-928B-7D72BF15C991}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9FA77471-A020-4452-928B-7D72BF15C991}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9FA77471-A020-4452-928B-7D72BF15C991}.Release|Any CPU.Build.0 = Release|Any CPU
 		{BA9476CF-99BA-4D03-92F2-73D2C5E58883}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{BA9476CF-99BA-4D03-92F2-73D2C5E58883}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BA9476CF-99BA-4D03-92F2-73D2C5E58883}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -39,6 +51,6 @@ Global
 		{9B7D8FCF-5A3B-48D6-B9E7-4C3C0D0632F6} = {ED1C24CA-3D94-4BDF-9B56-1B5866E40BB2}
 	EndGlobalSection
 	GlobalSection(MonoDevelopProperties) = preSolution
-		StartupItem = ..\..\MonoGame\ThirdParty\Lidgren.Network\Lidgren.Network.Android.csproj
+		StartupItem = Android\Platformer\Platformer.csproj
 	EndGlobalSection
 EndGlobal
