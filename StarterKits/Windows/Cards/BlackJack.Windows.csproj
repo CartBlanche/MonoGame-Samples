@@ -33,10 +33,10 @@
     <DefineConstants>WINDOWS</DefineConstants>
   </PropertyGroup>
   <ItemGroup>
-    <Content Include="..\..\MacOS\Cards\CardsGame\CardsGame\Background.png">
+    <Content Include="..\..\MacOS\Cards\CardsGame\Background.png">
       <Link>Background.png</Link>
     </Content>
-    <Content Include="..\..\MacOS\Cards\CardsGame\CardsGame\GameThumbnail.png">
+    <Content Include="..\..\MacOS\Cards\CardsGame\GameThumbnail.png">
       <Link>GameThumbnail.png</Link>
     </Content>
     <Content Include="..\..\MacOS\Cards\BlackjackHiDefContent\Images\Cards\CardBack_Blue.png">
@@ -281,88 +281,88 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\..\MacOS\Cards\CardsGame\CardsGame\Blackjack\Game\BlackjackCardGame.cs">
+    <Compile Include="..\..\MacOS\Cards\CardsGame\Blackjack\Game\BlackjackCardGame.cs">
       <Link>Blackjack\Game\BlackjackCardGame.cs</Link>
     </Compile>
-    <Compile Include="..\..\MacOS\Cards\CardsGame\CardsGame\Blackjack\Misc\BetGameComponent.cs">
+    <Compile Include="..\..\MacOS\Cards\CardsGame\Blackjack\Misc\BetGameComponent.cs">
       <Link>Blackjack\Misc\BetGameComponent.cs</Link>
     </Compile>
-    <Compile Include="..\..\MacOS\Cards\CardsGame\CardsGame\Blackjack\Players\BlackjackAIPlayer.cs">
+    <Compile Include="..\..\MacOS\Cards\CardsGame\Blackjack\Players\BlackjackAIPlayer.cs">
       <Link>Blackjack\Players\BlackjackAIPlayer.cs</Link>
     </Compile>
-    <Compile Include="..\..\MacOS\Cards\CardsGame\CardsGame\Blackjack\Players\BlackjackPlayer.cs">
+    <Compile Include="..\..\MacOS\Cards\CardsGame\Blackjack\Players\BlackjackPlayer.cs">
       <Link>Blackjack\Players\BlackjackPlayer.cs</Link>
     </Compile>
-    <Compile Include="..\..\MacOS\Cards\CardsGame\CardsGame\Blackjack\Rules\BlackjackGameEventArgs.cs">
+    <Compile Include="..\..\MacOS\Cards\CardsGame\Blackjack\Rules\BlackjackGameEventArgs.cs">
       <Link>Blackjack\Rules\BlackjackGameEventArgs.cs</Link>
     </Compile>
-    <Compile Include="..\..\MacOS\Cards\CardsGame\CardsGame\Blackjack\Rules\BlackjackRule.cs">
+    <Compile Include="..\..\MacOS\Cards\CardsGame\Blackjack\Rules\BlackjackRule.cs">
       <Link>Blackjack\Rules\BlackjackRule.cs</Link>
     </Compile>
-    <Compile Include="..\..\MacOS\Cards\CardsGame\CardsGame\Blackjack\Rules\BustRule.cs">
+    <Compile Include="..\..\MacOS\Cards\CardsGame\Blackjack\Rules\BustRule.cs">
       <Link>Blackjack\Rules\BustRule.cs</Link>
     </Compile>
-    <Compile Include="..\..\MacOS\Cards\CardsGame\CardsGame\Blackjack\Rules\InsuranceRule.cs">
+    <Compile Include="..\..\MacOS\Cards\CardsGame\Blackjack\Rules\InsuranceRule.cs">
       <Link>Blackjack\Rules\InsuranceRule.cs</Link>
     </Compile>
-    <Compile Include="..\..\MacOS\Cards\CardsGame\CardsGame\Blackjack\UI\BlackJackAnimatedPlayerHandComponent.cs">
+    <Compile Include="..\..\MacOS\Cards\CardsGame\Blackjack\UI\BlackJackAnimatedPlayerHandComponent.cs">
       <Link>Blackjack\UI\BlackJackAnimatedPlayerHandComponent.cs</Link>
     </Compile>
-    <Compile Include="..\..\MacOS\Cards\CardsGame\CardsGame\Blackjack\UI\BlackJackTable.cs">
+    <Compile Include="..\..\MacOS\Cards\CardsGame\Blackjack\UI\BlackJackTable.cs">
       <Link>Blackjack\UI\BlackJackTable.cs</Link>
     </Compile>
-    <Compile Include="..\..\MacOS\Cards\CardsGame\CardsGame\Blackjack\UI\BlackjackAnimatedDealerHandComponent.cs">
+    <Compile Include="..\..\MacOS\Cards\CardsGame\Blackjack\UI\BlackjackAnimatedDealerHandComponent.cs">
       <Link>Blackjack\UI\BlackjackAnimatedDealerHandComponent.cs</Link>
     </Compile>
-    <Compile Include="..\..\MacOS\Cards\CardsGame\CardsGame\Blackjack\UI\Button.cs">
+    <Compile Include="..\..\MacOS\Cards\CardsGame\Blackjack\UI\Button.cs">
       <Link>Blackjack\UI\Button.cs</Link>
     </Compile>
-    <Compile Include="..\..\MacOS\Cards\CardsGame\CardsGame\Misc\AudioManager.cs">
+    <Compile Include="..\..\MacOS\Cards\CardsGame\Misc\AudioManager.cs">
       <Link>Misc\AudioManager.cs</Link>
     </Compile>
-    <Compile Include="..\..\MacOS\Cards\CardsGame\CardsGame\Misc\InputHelper.cs">
+    <Compile Include="..\..\MacOS\Cards\CardsGame\Misc\InputHelper.cs">
       <Link>Misc\InputHelper.cs</Link>
     </Compile>
-    <Compile Include="..\..\MacOS\Cards\CardsGame\CardsGame\Properties\AssemblyInfo.cs">
+    <Compile Include="..\..\MacOS\Cards\CardsGame\Properties\AssemblyInfo.cs">
       <Link>Properties\AssemblyInfo.cs</Link>
     </Compile>
-    <Compile Include="..\..\MacOS\Cards\CardsGame\CardsGame\ScreenManager\GameScreen.cs">
+    <Compile Include="..\..\MacOS\Cards\CardsGame\ScreenManager\GameScreen.cs">
       <Link>ScreenManager\GameScreen.cs</Link>
     </Compile>
-    <Compile Include="..\..\MacOS\Cards\CardsGame\CardsGame\ScreenManager\InputState.cs">
+    <Compile Include="..\..\MacOS\Cards\CardsGame\ScreenManager\InputState.cs">
       <Link>ScreenManager\InputState.cs</Link>
     </Compile>
-    <Compile Include="..\..\MacOS\Cards\CardsGame\CardsGame\ScreenManager\MenuEntry.cs">
+    <Compile Include="..\..\MacOS\Cards\CardsGame\ScreenManager\MenuEntry.cs">
       <Link>ScreenManager\MenuEntry.cs</Link>
     </Compile>
-    <Compile Include="..\..\MacOS\Cards\CardsGame\CardsGame\ScreenManager\MenuScreen.cs">
+    <Compile Include="..\..\MacOS\Cards\CardsGame\ScreenManager\MenuScreen.cs">
       <Link>ScreenManager\MenuScreen.cs</Link>
     </Compile>
-    <Compile Include="..\..\MacOS\Cards\CardsGame\CardsGame\ScreenManager\PlayerIndexEventArgs.cs">
+    <Compile Include="..\..\MacOS\Cards\CardsGame\ScreenManager\PlayerIndexEventArgs.cs">
       <Link>ScreenManager\PlayerIndexEventArgs.cs</Link>
     </Compile>
-    <Compile Include="..\..\MacOS\Cards\CardsGame\CardsGame\ScreenManager\ScreenManager.cs">
+    <Compile Include="..\..\MacOS\Cards\CardsGame\ScreenManager\ScreenManager.cs">
       <Link>ScreenManager\ScreenManager.cs</Link>
     </Compile>
-    <Compile Include="..\..\MacOS\Cards\CardsGame\CardsGame\BlackjackGame.cs">
+    <Compile Include="..\..\MacOS\Cards\CardsGame\BlackjackGame.cs">
       <Link>BlackjackGame.cs</Link>
     </Compile>
-    <Compile Include="..\..\MacOS\Cards\CardsGame\CardsGame\Screens\BackgroundScreen.cs">
+    <Compile Include="..\..\MacOS\Cards\CardsGame\Screens\BackgroundScreen.cs">
       <Link>Screens\BackgroundScreen.cs</Link>
     </Compile>
-    <Compile Include="..\..\MacOS\Cards\CardsGame\CardsGame\Screens\GameplayScreen.cs">
+    <Compile Include="..\..\MacOS\Cards\CardsGame\Screens\GameplayScreen.cs">
       <Link>Screens\GameplayScreen.cs</Link>
     </Compile>
-    <Compile Include="..\..\MacOS\Cards\CardsGame\CardsGame\Screens\InstructionScreen.cs">
+    <Compile Include="..\..\MacOS\Cards\CardsGame\Screens\InstructionScreen.cs">
       <Link>Screens\InstructionScreen.cs</Link>
     </Compile>
-    <Compile Include="..\..\MacOS\Cards\CardsGame\CardsGame\Screens\MainMenuScreen.cs">
+    <Compile Include="..\..\MacOS\Cards\CardsGame\Screens\MainMenuScreen.cs">
       <Link>Screens\MainMenuScreen.cs</Link>
     </Compile>
-    <Compile Include="..\..\MacOS\Cards\CardsGame\CardsGame\Screens\OptionsMenu.cs">
+    <Compile Include="..\..\MacOS\Cards\CardsGame\Screens\OptionsMenu.cs">
       <Link>Screens\OptionsMenu.cs</Link>
     </Compile>
-    <Compile Include="..\..\MacOS\Cards\CardsGame\CardsGame\Screens\PauseScreen.cs">
+    <Compile Include="..\..\MacOS\Cards\CardsGame\Screens\PauseScreen.cs">
       <Link>Screens\PauseScreen.cs</Link>
     </Compile>
     <Compile Include="Program.Windows.cs" />
@@ -416,13 +416,13 @@
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
+    <ProjectReference Include="..\..\..\..\MonoGame\MonoGame.Framework\MonoGame.Framework.Windows.csproj">
+      <Project>{7DE47032-A904-4C29-BD22-2D235E8D91BA}</Project>
+      <Name>MonoGame.Framework.Windows</Name>
+    </ProjectReference>
     <ProjectReference Include="CardsFramework.Windows.csproj">
       <Project>{6DE82385-D762-4275-9185-F42995282478}</Project>
       <Name>CardsFramework.Windows</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\MonoGame.Framework\MonoGame.Framework.Windows.csproj">
-      <Project>{7DE47032-A904-4C29-BD22-2D235E8D91BA}</Project>
-      <Name>MonoGame.Framework.Windows</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

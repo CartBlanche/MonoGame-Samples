@@ -1,0 +1,72 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Platformer", "Windows\Platformer\Platformer.csproj", "{595A3D98-2DFE-4C6A-ABBB-59E5E3A6776A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lidgren.Network.Windows", "..\..\MonoGame\ThirdParty\Lidgren.Network\Lidgren.Network.Windows.csproj", "{AE483C29-042E-4226-BA52-D247CE7676DA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonoGame.Framework.Windows", "..\..\MonoGame\MonoGame.Framework\MonoGame.Framework.Windows.csproj", "{7DE47032-A904-4C29-BD22-2D235E8D91BA}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Cards", "Cards", "{942BA8DE-64A2-46EC-AF91-E73F01239BFA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlackJack.Windows", "Windows\Cards\BlackJack.Windows.csproj", "{E31D6E96-3539-4EB7-9529-34A59EF03DDA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CardsFramework.Windows", "Windows\Cards\CardsFramework.Windows.csproj", "{6DE82385-D762-4275-9185-F42995282478}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+		Debug|x86 = Debug|x86
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{595A3D98-2DFE-4C6A-ABBB-59E5E3A6776A}.Debug|Any CPU.ActiveCfg = Debug|x86
+		{595A3D98-2DFE-4C6A-ABBB-59E5E3A6776A}.Debug|Any CPU.Build.0 = Debug|x86
+		{595A3D98-2DFE-4C6A-ABBB-59E5E3A6776A}.Debug|x86.ActiveCfg = Debug|x86
+		{595A3D98-2DFE-4C6A-ABBB-59E5E3A6776A}.Debug|x86.Build.0 = Debug|x86
+		{595A3D98-2DFE-4C6A-ABBB-59E5E3A6776A}.Release|Any CPU.ActiveCfg = Release|x86
+		{595A3D98-2DFE-4C6A-ABBB-59E5E3A6776A}.Release|Any CPU.Build.0 = Release|x86
+		{595A3D98-2DFE-4C6A-ABBB-59E5E3A6776A}.Release|x86.ActiveCfg = Release|x86
+		{595A3D98-2DFE-4C6A-ABBB-59E5E3A6776A}.Release|x86.Build.0 = Release|x86
+		{6DE82385-D762-4275-9185-F42995282478}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6DE82385-D762-4275-9185-F42995282478}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6DE82385-D762-4275-9185-F42995282478}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{6DE82385-D762-4275-9185-F42995282478}.Debug|x86.Build.0 = Debug|Any CPU
+		{6DE82385-D762-4275-9185-F42995282478}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6DE82385-D762-4275-9185-F42995282478}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6DE82385-D762-4275-9185-F42995282478}.Release|x86.ActiveCfg = Release|Any CPU
+		{6DE82385-D762-4275-9185-F42995282478}.Release|x86.Build.0 = Release|Any CPU
+		{7DE47032-A904-4C29-BD22-2D235E8D91BA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7DE47032-A904-4C29-BD22-2D235E8D91BA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7DE47032-A904-4C29-BD22-2D235E8D91BA}.Debug|x86.ActiveCfg = Debug|x86
+		{7DE47032-A904-4C29-BD22-2D235E8D91BA}.Debug|x86.Build.0 = Debug|x86
+		{7DE47032-A904-4C29-BD22-2D235E8D91BA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7DE47032-A904-4C29-BD22-2D235E8D91BA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7DE47032-A904-4C29-BD22-2D235E8D91BA}.Release|x86.ActiveCfg = Release|x86
+		{7DE47032-A904-4C29-BD22-2D235E8D91BA}.Release|x86.Build.0 = Release|x86
+		{AE483C29-042E-4226-BA52-D247CE7676DA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AE483C29-042E-4226-BA52-D247CE7676DA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AE483C29-042E-4226-BA52-D247CE7676DA}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{AE483C29-042E-4226-BA52-D247CE7676DA}.Debug|x86.Build.0 = Debug|Any CPU
+		{AE483C29-042E-4226-BA52-D247CE7676DA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AE483C29-042E-4226-BA52-D247CE7676DA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AE483C29-042E-4226-BA52-D247CE7676DA}.Release|x86.ActiveCfg = Release|Any CPU
+		{AE483C29-042E-4226-BA52-D247CE7676DA}.Release|x86.Build.0 = Release|Any CPU
+		{E31D6E96-3539-4EB7-9529-34A59EF03DDA}.Debug|Any CPU.ActiveCfg = Debug|x86
+		{E31D6E96-3539-4EB7-9529-34A59EF03DDA}.Debug|Any CPU.Build.0 = Debug|x86
+		{E31D6E96-3539-4EB7-9529-34A59EF03DDA}.Debug|x86.ActiveCfg = Debug|x86
+		{E31D6E96-3539-4EB7-9529-34A59EF03DDA}.Debug|x86.Build.0 = Debug|x86
+		{E31D6E96-3539-4EB7-9529-34A59EF03DDA}.Release|Any CPU.ActiveCfg = Release|x86
+		{E31D6E96-3539-4EB7-9529-34A59EF03DDA}.Release|Any CPU.Build.0 = Release|x86
+		{E31D6E96-3539-4EB7-9529-34A59EF03DDA}.Release|x86.ActiveCfg = Release|x86
+		{E31D6E96-3539-4EB7-9529-34A59EF03DDA}.Release|x86.Build.0 = Release|x86
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{E31D6E96-3539-4EB7-9529-34A59EF03DDA} = {942BA8DE-64A2-46EC-AF91-E73F01239BFA}
+		{6DE82385-D762-4275-9185-F42995282478} = {942BA8DE-64A2-46EC-AF91-E73F01239BFA}
+	EndGlobalSection
+	GlobalSection(MonoDevelopProperties) = preSolution
+		StartupItem = Windows\Platformer\Platformer.csproj
+	EndGlobalSection
+EndGlobal
