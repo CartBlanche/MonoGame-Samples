@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace PlatformerTwo
+namespace Platformer
 {
 	
 	

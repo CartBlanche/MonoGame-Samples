@@ -28,7 +28,7 @@ namespace Microsoft.Xna.Samples.Draw2D
 		FPSCounterComponent fps;
 		
 #if ANDROID 
-		public Game1 (Activity activity) : base (activity)
+		public Game1 (AndroidGameActivity activity) : base (activity)
 #else 
         public Game1 ()  
 #endif
@@ -110,7 +110,7 @@ namespace Microsoft.Xna.Samples.Draw2D
 		protected override void Draw (GameTime gameTime)
 		{
 			graphics.GraphicsDevice.Clear (Color.CornflowerBlue);
-
+            
 			// Draw without blend
 			spriteBatch.Begin (SpriteSortMode.Deferred, BlendState.Opaque);			
 			spriteBatch.Draw (texture, new Vector2 (250,20), Color.White);	
@@ -121,13 +121,13 @@ namespace Microsoft.Xna.Samples.Draw2D
 			spriteBatch.Draw (texture, new Vector2 (250,110), Color.White);
 			spriteBatch.Draw (texture, new Vector2 (260,120), Color.White);
 			spriteBatch.End ();
-
+            
 			spriteBatch.Begin ();
 
 			// Normal draw
 			// TODO spriteBatch.Draw (ball, new Vector2 (200,300), Color.White);	
 			// TODO spriteBatch.Draw (ball, new Vector2 (200,300), null, Color.Yellow, 0.0f, new Vector2 (5,5), 1.0f, SpriteEffects.None, 0);	
-
+            
 			// Normal draw
 			spriteBatch.Draw (texture, new Vector2 (10,390), Color.White);		
 			// Draw stretching
@@ -148,12 +148,13 @@ namespace Microsoft.Xna.Samples.Draw2D
 			spriteBatch.Draw (texture, new Rectangle (150,390,texture.Width,texture.Height), null, Color.White, 0.0f, Vector2.Zero, SpriteEffects.FlipVertically, 0);	
 			// Flip horizontaly and verticaly
 			spriteBatch.Draw (texture, new Rectangle (220,390,texture.Width,texture.Height), null, Color.White, 0.0f, Vector2.Zero, SpriteEffects.FlipHorizontally | SpriteEffects.FlipVertically, 0);	
-
+            
 			base.Draw (gameTime);
 
 			spriteBatch.End ();
 
 
+            
 			// Now let's try some scissoring
 			spriteBatch.Begin ();
 
@@ -166,7 +167,7 @@ namespace Microsoft.Xna.Samples.Draw2D
 			spriteBatch.End ();
 
             spriteBatch.GraphicsDevice.RasterizerState.ScissorTestEnable = false;
-
+            
 
 		}
 	}
