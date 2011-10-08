@@ -30,7 +30,8 @@
     <ConsolePause>false</ConsolePause>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="System" />
+    <Reference Include="System">
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\..\MacOS\Cards\CardsFramework\Cards\CardPacket.cs">
@@ -89,4 +90,10 @@
     </Compile>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\..\MonoGame\MonoGame.Framework\MonoGame.Framework.Windows.csproj">
+      <Project>{7DE47032-A904-4C29-BD22-2D235E8D91BA}</Project>
+      <Name>MonoGame.Framework.Windows</Name>
+    </ProjectReference>
+  </ItemGroup>
 </Project>

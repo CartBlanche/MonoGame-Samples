@@ -1,6 +1,11 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+
+#if ANDROID
+using Android.App;
+#endif
+
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Content;
@@ -154,8 +159,8 @@ namespace RenderTarget2DSample
 		{
 			
 			// A one time only flag to help test for memory leaks
-			if (oneTimeOnly) {
-				
+			if (oneTimeOnly) 
+			{				
 				oneTimeOnly = false;
 
 				// Set renderTarget as the surface to draw to instead of the back buffer

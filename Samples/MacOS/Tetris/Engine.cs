@@ -33,7 +33,7 @@ namespace Tetris
 			{
 			graphics = new GraphicsDeviceManager (this);
 			//Content.RootDirectory = "Content";
-			Content.RootDirectory = Path.Combine (NSBundle.MainBundle.ResourcePath, "Content");
+			Content.RootDirectory = "Content";
 			
 			// Create sprite rectangles for each figure in texture file
 			// O figure

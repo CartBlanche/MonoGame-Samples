@@ -12,6 +12,11 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Xml.Serialization;
+
+#if ANDROID
+using Android.App;
+#endif
+
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
@@ -56,8 +61,12 @@ namespace Marblets
 		private InputHelper inputHelper;
 		private KeyboardState keyState;
 
-
-		public MarbletsGame()
+		
+#if ANDROID 
+		public MarbletsGame (Activity activity) : base (activity)
+#else
+        public MarbletsGame()
+#endif
 		{
 			//Create the content pipeline manager.
 			base.Content.RootDirectory = "Content";
