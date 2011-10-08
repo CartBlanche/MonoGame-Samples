@@ -7,18 +7,18 @@ using Android.Views;
 using Android.Widget;
 using Android.OS;
 
-namespace MonoGame.Samples.RenderTarget2D.Android
+namespace RenderTarget2DSample
 {
-	[Activity (Label = "MonoGame.Samples.RenderTarget2D.Android", MainLauncher = true)]
+	[Activity (Label = "RenderTarget2D", MainLauncher = true)]
 	public class Activity1 : Activity
 	{
 		protected override void OnCreate (Bundle bundle)
 		{
 			base.OnCreate (bundle);
 
-			// Create our OpenGL view, and display it
-			GLView1 view = new GLView1 (this);
-			SetContentView (view);
+			var g = new Game1(this);
+            SetContentView(g.Window);
+            g.Run();
 		}
 	}
 }
