@@ -63,8 +63,8 @@ namespace RenderTarget2DSample
 #if ANDROID || IOS
             graphics.IsFullScreen = true;
 #else
-			graphics.PreferredBackBufferWidth = screenWidth;
-			graphics.PreferredBackBufferHeight = screenHeight;
+			graphics.PreferredBackBufferWidth = 800;
+			graphics.PreferredBackBufferHeight = 600;
 			graphics.IsFullScreen = false;
 #endif
 
