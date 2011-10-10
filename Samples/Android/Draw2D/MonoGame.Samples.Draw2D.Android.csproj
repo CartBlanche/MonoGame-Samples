@@ -64,9 +64,6 @@
     <AndroidResource Include="Resources\Drawable\Icon.png" />
   </ItemGroup>
   <ItemGroup>
-    <AndroidAsset Include="..\..\iOS\Draw2D\Default.png">
-      <Link>Default.png</Link>
-    </AndroidAsset>
     <AndroidAsset Include="..\..\iOS\Draw2D\Content\monogameicon.png">
       <Link>Assets\Content\monogameicon.png</Link>
     </AndroidAsset>

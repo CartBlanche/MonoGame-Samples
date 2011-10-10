@@ -9,8 +9,9 @@ using Android.OS;
 
 namespace RenderTarget2DSample
 {
-	[Activity (Label = "RenderTarget2D", MainLauncher = true)]
-	public class Activity1 : Activity
+    [Activity(Label = "RenderTarget2D", MainLauncher = true, Icon = "@drawable/icon"
+        , Theme = "@style/Theme.Splash")]
+	public class Activity1 : Microsoft.Xna.Framework.AndroidGameActivity
 	{
 		protected override void OnCreate (Bundle bundle)
 		{
