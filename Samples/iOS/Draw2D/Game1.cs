@@ -1,10 +1,6 @@
 using System;
 using System.Collections.Generic;
 
-#if ANDROID
-using Android.App;
-#endif
-
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
@@ -27,11 +23,7 @@ namespace Microsoft.Xna.Samples.Draw2D
 		Color alphaColor = Color.White;
 		FPSCounterComponent fps;
 		
-#if ANDROID 
-		public Game1 (AndroidGameActivity activity) : base (activity)
-#else 
         public Game1 ()  
-#endif
 		{
 			graphics = new GraphicsDeviceManager (this);
 			
@@ -52,6 +44,8 @@ namespace Microsoft.Xna.Samples.Draw2D
 		protected override void Initialize ()
 		{
 			// TODO: Add your initialization logic here
+			fps = new FPSCounterComponent(this, spriteBatch, font);
+			Components.Add(fps);
 
 			base.Initialize ();
 		}
@@ -69,9 +63,6 @@ namespace Microsoft.Xna.Samples.Draw2D
 			texture = Content.Load<Texture2D> ("monogameicon");
 			// TODO ball = Content.Load<Texture2D> ("purpleBall.xnb");
 			font = Content.Load<SpriteFont> ("spriteFont1");
-
-			fps = new FPSCounterComponent (this,spriteBatch,font);
-			Components.Add(fps);
 		}
 
 		/// <summary>

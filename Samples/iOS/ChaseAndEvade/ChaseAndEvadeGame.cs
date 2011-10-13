@@ -10,10 +10,6 @@
 #region Using Statements
 using System;
 
-#if ANDROID
-using Android.App;
-#endif
-
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
@@ -131,12 +127,7 @@ namespace ChaseAndEvade
 
 	#region Initialization
 
-#if ANDROID 
-        public ChaseAndEvadeGame(AndroidGameActivity activity)
-            : base(activity)
-#else 
         public ChaseAndEvadeGame ()  
-#endif
         {
 
 			graphics = new GraphicsDeviceManager (this);
