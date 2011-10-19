@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace MonoGame.Samples.RenderTarget2D.Android
+namespace Sound
 {
 	
 	
