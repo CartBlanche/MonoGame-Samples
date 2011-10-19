@@ -1,0 +1,44 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lidgren.Network.Linux", "..\..\MonoGame\ThirdParty\Lidgren.Network\Lidgren.Network.Linux.csproj", "{AE483C29-042E-4226-BA52-D247CE7676DA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonoGame.Framework.Linux", "..\..\MonoGame\MonoGame.Framework\MonoGame.Framework.Linux.csproj", "{35253CE1-C864-4CD3-8249-4D1319748E8F}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Cards", "Cards", "{3B17E9F4-A7AF-446B-A90E-3833A141D465}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CardsFramework.Linux", "Linux\Cards\CardsFramework\CardsFramework.Linux.csproj", "{1F33A200-EA8B-4497-8CA0-B072001D2814}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlackJack.Linux", "Linux\Cards\BlackJack\BlackJack.Linux.csproj", "{96B687A8-13DC-4937-B8E8-D8F3E3790D97}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x86 = Debug|x86
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{1F33A200-EA8B-4497-8CA0-B072001D2814}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{1F33A200-EA8B-4497-8CA0-B072001D2814}.Debug|x86.Build.0 = Debug|Any CPU
+		{1F33A200-EA8B-4497-8CA0-B072001D2814}.Release|x86.ActiveCfg = Release|Any CPU
+		{1F33A200-EA8B-4497-8CA0-B072001D2814}.Release|x86.Build.0 = Release|Any CPU
+		{35253CE1-C864-4CD3-8249-4D1319748E8F}.Debug|x86.ActiveCfg = Debug|x86
+		{35253CE1-C864-4CD3-8249-4D1319748E8F}.Debug|x86.Build.0 = Debug|x86
+		{35253CE1-C864-4CD3-8249-4D1319748E8F}.Release|x86.ActiveCfg = Release|x86
+		{35253CE1-C864-4CD3-8249-4D1319748E8F}.Release|x86.Build.0 = Release|x86
+		{96B687A8-13DC-4937-B8E8-D8F3E3790D97}.Debug|x86.ActiveCfg = Debug|x86
+		{96B687A8-13DC-4937-B8E8-D8F3E3790D97}.Debug|x86.Build.0 = Debug|x86
+		{96B687A8-13DC-4937-B8E8-D8F3E3790D97}.Release|x86.ActiveCfg = Release|x86
+		{96B687A8-13DC-4937-B8E8-D8F3E3790D97}.Release|x86.Build.0 = Release|x86
+		{AE483C29-042E-4226-BA52-D247CE7676DA}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{AE483C29-042E-4226-BA52-D247CE7676DA}.Debug|x86.Build.0 = Debug|Any CPU
+		{AE483C29-042E-4226-BA52-D247CE7676DA}.Release|x86.ActiveCfg = Release|Any CPU
+		{AE483C29-042E-4226-BA52-D247CE7676DA}.Release|x86.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{1F33A200-EA8B-4497-8CA0-B072001D2814} = {3B17E9F4-A7AF-446B-A90E-3833A141D465}
+		{96B687A8-13DC-4937-B8E8-D8F3E3790D97} = {3B17E9F4-A7AF-446B-A90E-3833A141D465}
+	EndGlobalSection
+	GlobalSection(MonoDevelopProperties) = preSolution
+		StartupItem = Linux\Cards\BlackJack\BlackJack.Linux.csproj
+	EndGlobalSection
+EndGlobal
