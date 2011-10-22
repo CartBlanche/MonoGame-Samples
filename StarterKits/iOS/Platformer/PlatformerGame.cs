@@ -205,6 +205,8 @@ namespace Platformer
 
             DrawHud();
 
+            GamePad.Draw(gameTime, spriteBatch);
+
             spriteBatch.End();
 
             base.Draw(gameTime);

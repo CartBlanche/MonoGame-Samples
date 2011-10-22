@@ -132,7 +132,8 @@ namespace ChaseAndEvade
 	#region Initialization
 
 #if ANDROID 
-		public ChaseAndEvadeGame (Activity activity) : base (activity)
+        public ChaseAndEvadeGame(AndroidGameActivity activity)
+            : base(activity)
 #else 
         public ChaseAndEvadeGame ()  
 #endif

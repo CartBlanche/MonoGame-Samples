@@ -29,32 +29,21 @@ namespace MonoGame.Samples.Draw2D.Android
 			// aapt resource value: 0x7f020000
 			public const int Icon = 2130837504;
 			
+			// aapt resource value: 0x7f020001
+			public const int Splash = 2130837505;
+			
 			private Drawable()
 			{
 			}
 		}
 		
-		public partial class Layout
+		public partial class Style
 		{
 			
 			// aapt resource value: 0x7f030000
-			public const int Main = 2130903040;
+			public const int Theme_Splash = 2130903040;
 			
-			private Layout()
-			{
-			}
-		}
-		
-		public partial class String
-		{
-			
-			// aapt resource value: 0x7f040001
-			public const int ApplicationName = 2130968577;
-			
-			// aapt resource value: 0x7f040000
-			public const int Hello = 2130968576;
-			
-			private String()
+			private Style()
 			{
 			}
 		}

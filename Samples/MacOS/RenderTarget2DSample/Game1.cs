@@ -1,6 +1,11 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+
+#if ANDROID
+using Android.App;
+#endif
+
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Content;
@@ -45,10 +50,23 @@ namespace RenderTarget2DSample
 		/// <summary>
 		/// The constructor for our Game1 class.
 		/// </summary>
-		public Game1 ()
+#if ANDROID
+        public Game1(AndroidGameActivity activity)
+            : base(activity)
+#else 
+        public Game1 ()  
+#endif
 		{
 			// Create the GraphicsDeviceManager for our game.
 			graphics = new GraphicsDeviceManager (this);
+
+#if ANDROID || IOS
+            graphics.IsFullScreen = true;
+#else
+			graphics.PreferredBackBufferWidth = 800;
+			graphics.PreferredBackBufferHeight = 600;
+			graphics.IsFullScreen = false;
+#endif
 
 			// Set the root directory of the game's ContentManager to the "Content" folder.
 			Content.RootDirectory = "Content";
@@ -72,8 +90,7 @@ namespace RenderTarget2DSample
 		/// all of your content.
 		/// </summary>
 		protected override void LoadContent ()
-		{
-
+		{           
 			// Create a new SpriteBatch, which can be used to draw textures.
 			spriteBatch = new SpriteBatch (GraphicsDevice);
 
@@ -82,7 +99,7 @@ namespace RenderTarget2DSample
 			// has no depth buffer or stencil buffer.
 			renderTarget = new RenderTarget2D (GraphicsDevice, GraphicsDevice.PresentationParameters.BackBufferWidth,
 				GraphicsDevice.PresentationParameters.BackBufferHeight, false, SurfaceFormat.Color, DepthFormat.None);
-
+            
 			// Load in the picture of Seamus.
 			mooTheMerciless = Content.Load<Texture2D> ("MooTheMerciless");
 
@@ -142,8 +159,8 @@ namespace RenderTarget2DSample
 		{
 			
 			// A one time only flag to help test for memory leaks
-			if (oneTimeOnly) {
-				
+			if (oneTimeOnly) 
+			{				
 				oneTimeOnly = false;
 
 				// Set renderTarget as the surface to draw to instead of the back buffer

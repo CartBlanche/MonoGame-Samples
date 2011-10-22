@@ -58,21 +58,12 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <AndroidResource Include="Resources\Layout\Main.axml" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\Values\Strings.xml" />
-  </ItemGroup>
-  <ItemGroup>
+    <Content Include="Properties\AndroidManifest.xml" />
+    <AndroidResource Include="Resources\Values\Styles.xml" />
+    <AndroidResource Include="Resources\Drawable\Splash.png" />
     <AndroidResource Include="Resources\Drawable\Icon.png" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Properties\AndroidManifest.xml" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidAsset Include="..\..\iOS\Draw2D\Default.png">
-      <Link>Default.png</Link>
-    </AndroidAsset>
     <AndroidAsset Include="..\..\iOS\Draw2D\Content\monogameicon.png">
       <Link>Assets\Content\monogameicon.png</Link>
     </AndroidAsset>
@@ -97,5 +88,7 @@
       <Name>MonoGame.Framework.Android</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Resources\Layout\" />
+  </ItemGroup>
 </Project>

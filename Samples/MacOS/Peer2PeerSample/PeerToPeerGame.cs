@@ -55,7 +55,8 @@ namespace PeerToPeer
 
 
 #if ANDROID 
-		public PeerToPeerGame (Activity activity) : base (activity)
+        public PeerToPeerGame(AndroidGameActivity activity)
+            : base(activity)
 #else 
         public PeerToPeerGame ()  
 #endif
