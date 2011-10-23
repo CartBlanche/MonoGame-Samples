@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Project DefaultTargets="Build" ToolsVersion="3.5" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
@@ -9,7 +9,7 @@
     <OutputType>Exe</OutputType>
     <RootNamespace>Peer2PeerSample</RootNamespace>
     <AssemblyName>Peer2PeerSample</AssemblyName>
-    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
     <DebugSymbols>true</DebugSymbols>
@@ -69,9 +69,13 @@
     <None Include="app.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\MonoGame.Framework\MonoGame.Framework.Linux.csproj">
+    <ProjectReference Include="..\..\..\..\MonoGame\MonoGame.Framework\MonoGame.Framework.Linux.csproj">
       <Project>{35253CE1-C864-4CD3-8249-4D1319748E8F}</Project>
       <Name>MonoGame.Framework.Linux</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\..\MonoGame\ThirdParty\Lidgren.Network\Lidgren.Network.Linux.csproj">
+      <Project>{AE483C29-042E-4226-BA52-D247CE7676DA}</Project>
+      <Name>Lidgren.Network.Linux</Name>
     </ProjectReference>
   </ItemGroup>
 </Project>
