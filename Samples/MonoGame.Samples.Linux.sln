@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lidgren.Network.Linux", "..
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonoGame.Samples.NetRumble.Linux", "Linux\NetRumble\MonoGame.Samples.NetRumble.Linux.csproj", "{52735207-2136-433B-A3E4-4C082728EED8}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonoGame.Samples.Tetris.Linux", "Linux\Tetris\MonoGame.Samples.Tetris.Linux.csproj", "{86A619E2-C8F0-452B-B762-C69D5BB07C98}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -65,6 +67,26 @@ Global
 		{52735207-2136-433B-A3E4-4C082728EED8}.Release|Mixed Platforms.Build.0 = Release|x86
 		{52735207-2136-433B-A3E4-4C082728EED8}.Release|x86.ActiveCfg = Release|x86
 		{52735207-2136-433B-A3E4-4C082728EED8}.Release|x86.Build.0 = Release|x86
+		{86A619E2-C8F0-452B-B762-C69D5BB07C98}.Debug|Any CPU.ActiveCfg = Debug|x86
+		{86A619E2-C8F0-452B-B762-C69D5BB07C98}.Debug|Any CPU.Build.0 = Debug|x86
+		{86A619E2-C8F0-452B-B762-C69D5BB07C98}.Debug|iPhone.ActiveCfg = Debug|x86
+		{86A619E2-C8F0-452B-B762-C69D5BB07C98}.Debug|iPhone.Build.0 = Debug|x86
+		{86A619E2-C8F0-452B-B762-C69D5BB07C98}.Debug|iPhoneSimulator.ActiveCfg = Debug|x86
+		{86A619E2-C8F0-452B-B762-C69D5BB07C98}.Debug|iPhoneSimulator.Build.0 = Debug|x86
+		{86A619E2-C8F0-452B-B762-C69D5BB07C98}.Debug|Mixed Platforms.ActiveCfg = Debug|x86
+		{86A619E2-C8F0-452B-B762-C69D5BB07C98}.Debug|Mixed Platforms.Build.0 = Debug|x86
+		{86A619E2-C8F0-452B-B762-C69D5BB07C98}.Debug|x86.ActiveCfg = Debug|x86
+		{86A619E2-C8F0-452B-B762-C69D5BB07C98}.Debug|x86.Build.0 = Debug|x86
+		{86A619E2-C8F0-452B-B762-C69D5BB07C98}.Release|Any CPU.ActiveCfg = Release|x86
+		{86A619E2-C8F0-452B-B762-C69D5BB07C98}.Release|Any CPU.Build.0 = Release|x86
+		{86A619E2-C8F0-452B-B762-C69D5BB07C98}.Release|iPhone.ActiveCfg = Release|x86
+		{86A619E2-C8F0-452B-B762-C69D5BB07C98}.Release|iPhone.Build.0 = Release|x86
+		{86A619E2-C8F0-452B-B762-C69D5BB07C98}.Release|iPhoneSimulator.ActiveCfg = Release|x86
+		{86A619E2-C8F0-452B-B762-C69D5BB07C98}.Release|iPhoneSimulator.Build.0 = Release|x86
+		{86A619E2-C8F0-452B-B762-C69D5BB07C98}.Release|Mixed Platforms.ActiveCfg = Release|x86
+		{86A619E2-C8F0-452B-B762-C69D5BB07C98}.Release|Mixed Platforms.Build.0 = Release|x86
+		{86A619E2-C8F0-452B-B762-C69D5BB07C98}.Release|x86.ActiveCfg = Release|x86
+		{86A619E2-C8F0-452B-B762-C69D5BB07C98}.Release|x86.Build.0 = Release|x86
 		{86A619E2-C8F0-452B-B764-C69D5BB07C98}.Debug|Any CPU.ActiveCfg = Debug|x86
 		{86A619E2-C8F0-452B-B764-C69D5BB07C98}.Debug|Any CPU.Build.0 = Debug|x86
 		{86A619E2-C8F0-452B-B764-C69D5BB07C98}.Debug|iPhone.ActiveCfg = Debug|x86
@@ -127,7 +149,7 @@ Global
 		{AE483C29-042E-4226-BA52-D247CE7676DA}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(MonoDevelopProperties) = preSolution
-		StartupItem = Linux\NetRumble\MonoGame.Samples.NetRumble.Linux.csproj
+		StartupItem = Linux\Tetris\MonoGame.Samples.Tetris.Linux.csproj
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
