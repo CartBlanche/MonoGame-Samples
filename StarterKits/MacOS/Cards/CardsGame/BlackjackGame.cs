@@ -45,11 +45,7 @@ namespace Blackjack
         /// <summary>
         /// Initializes a new instance of the game.
         /// </summary>
-#if ANDROID 
-		public BlackjackGame (Activity activity) : base (activity)
-#else 
         public BlackjackGame ()  
-#endif
         {
             graphics = new GraphicsDeviceManager(this);
 

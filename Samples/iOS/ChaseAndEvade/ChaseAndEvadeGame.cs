@@ -131,12 +131,7 @@ namespace ChaseAndEvade
 
 	#region Initialization
 
-#if ANDROID 
-        public ChaseAndEvadeGame(AndroidGameActivity activity)
-            : base(activity)
-#else 
         public ChaseAndEvadeGame ()  
-#endif
         {
 
 			graphics = new GraphicsDeviceManager (this);
