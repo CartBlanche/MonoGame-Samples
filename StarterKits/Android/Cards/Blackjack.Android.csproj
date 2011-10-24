@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -410,9 +410,7 @@
     </AndroidAsset>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Novell\Novell.MonoDroid.CSharp.targets" />
-  <ItemGroup>
-    <Folder Include="Assets\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <AndroidAsset Include="..\..\MacOS\Cards\BlackjackLoDefContent\Fonts\Bold.xnb">
       <Link>Assets\Content\Fonts\Bold.xnb</Link>
@@ -446,6 +444,10 @@
     </AndroidAsset>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\..\..\MonoGame\MonoGame.Framework\MonoGame.Framework.Android.csproj">
+      <Project>{BA9476CF-99BA-4D03-92F2-73D2C5E58883}</Project>
+      <Name>MonoGame.Framework.Android</Name>
+    </ProjectReference>
     <ProjectReference Include="CardsFramework.Android.csproj">
       <Project>{25465464-21B2-4C14-8E3C-3B9F8C131484}</Project>
       <Name>CardsFramework.Android</Name>

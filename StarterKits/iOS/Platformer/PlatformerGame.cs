@@ -60,11 +60,7 @@ namespace Platformer
         // or handle exceptions, both of which can add unnecessary time to level loading.
         private const int numberOfLevels = 3;
 
-#if ANDROID 
-		public PlatformerGame (Activity activity) : base (activity)
-#else
         public PlatformerGame()
-#endif
         {
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";

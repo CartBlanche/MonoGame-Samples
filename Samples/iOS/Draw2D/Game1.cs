@@ -27,11 +27,7 @@ namespace Microsoft.Xna.Samples.Draw2D
 		Color alphaColor = Color.White;
 		FPSCounterComponent fps;
 		
-#if ANDROID 
-		public Game1 (AndroidGameActivity activity) : base (activity)
-#else 
         public Game1 ()  
-#endif
 		{
 			graphics = new GraphicsDeviceManager (this);
 			

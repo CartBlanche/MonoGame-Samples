@@ -50,12 +50,7 @@ namespace RenderTarget2DSample
 		/// <summary>
 		/// The constructor for our Game1 class.
 		/// </summary>
-#if ANDROID
-        public Game1(AndroidGameActivity activity)
-            : base(activity)
-#else 
         public Game1 ()  
-#endif
 		{
 			// Create the GraphicsDeviceManager for our game.
 			graphics = new GraphicsDeviceManager (this);

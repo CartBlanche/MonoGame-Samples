@@ -54,12 +54,7 @@ namespace PeerToPeer
 	#region Initialization
 
 
-#if ANDROID 
-        public PeerToPeerGame(AndroidGameActivity activity)
-            : base(activity)
-#else 
         public PeerToPeerGame ()  
-#endif
 		{
 			graphics = new GraphicsDeviceManager (this);
 			
