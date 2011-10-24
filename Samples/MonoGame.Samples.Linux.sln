@@ -37,6 +37,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonoGame.Samples.RobotRampa
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ParticleSample", "Linux\ParticleSample\ParticleSample.csproj", "{EB1F36EC-5DB8-41AC-AB99-E9337239A9F9}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GooCursor", "Linux\GooCursor\GooCursor.csproj", "{EA7CF275-795B-4385-80AA-C41DA3B9B0F9}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -371,6 +373,26 @@ Global
 		{D0E05092-60B2-47FF-B924-D5CDED0C0DD1}.Release|Mixed Platforms.Build.0 = Release|x86
 		{D0E05092-60B2-47FF-B924-D5CDED0C0DD1}.Release|x86.ActiveCfg = Release|x86
 		{D0E05092-60B2-47FF-B924-D5CDED0C0DD1}.Release|x86.Build.0 = Release|x86
+		{EA7CF275-795B-4385-80AA-C41DA3B9B0F9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EA7CF275-795B-4385-80AA-C41DA3B9B0F9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EA7CF275-795B-4385-80AA-C41DA3B9B0F9}.Debug|iPhone.ActiveCfg = Debug|Any CPU
+		{EA7CF275-795B-4385-80AA-C41DA3B9B0F9}.Debug|iPhone.Build.0 = Debug|Any CPU
+		{EA7CF275-795B-4385-80AA-C41DA3B9B0F9}.Debug|iPhoneSimulator.ActiveCfg = Debug|Any CPU
+		{EA7CF275-795B-4385-80AA-C41DA3B9B0F9}.Debug|iPhoneSimulator.Build.0 = Debug|Any CPU
+		{EA7CF275-795B-4385-80AA-C41DA3B9B0F9}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{EA7CF275-795B-4385-80AA-C41DA3B9B0F9}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{EA7CF275-795B-4385-80AA-C41DA3B9B0F9}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{EA7CF275-795B-4385-80AA-C41DA3B9B0F9}.Debug|x86.Build.0 = Debug|Any CPU
+		{EA7CF275-795B-4385-80AA-C41DA3B9B0F9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EA7CF275-795B-4385-80AA-C41DA3B9B0F9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EA7CF275-795B-4385-80AA-C41DA3B9B0F9}.Release|iPhone.ActiveCfg = Release|Any CPU
+		{EA7CF275-795B-4385-80AA-C41DA3B9B0F9}.Release|iPhone.Build.0 = Release|Any CPU
+		{EA7CF275-795B-4385-80AA-C41DA3B9B0F9}.Release|iPhoneSimulator.ActiveCfg = Release|Any CPU
+		{EA7CF275-795B-4385-80AA-C41DA3B9B0F9}.Release|iPhoneSimulator.Build.0 = Release|Any CPU
+		{EA7CF275-795B-4385-80AA-C41DA3B9B0F9}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{EA7CF275-795B-4385-80AA-C41DA3B9B0F9}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{EA7CF275-795B-4385-80AA-C41DA3B9B0F9}.Release|x86.ActiveCfg = Release|Any CPU
+		{EA7CF275-795B-4385-80AA-C41DA3B9B0F9}.Release|x86.Build.0 = Release|Any CPU
 		{EB1F36EC-5DB8-41AC-AB99-E9337239A9F9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{EB1F36EC-5DB8-41AC-AB99-E9337239A9F9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EB1F36EC-5DB8-41AC-AB99-E9337239A9F9}.Debug|iPhone.ActiveCfg = Debug|Any CPU
@@ -400,7 +422,7 @@ Global
 		{86A219E2-C8F0-452B-B762-C69D5BB07C98} = {0407BF89-E721-419F-B663-8436D9E83495}
 	EndGlobalSection
 	GlobalSection(MonoDevelopProperties) = preSolution
-		StartupItem = Linux\Draw2D\MonoGame.Samples.Draw2D.Linux.csproj
+		StartupItem = Linux\GooCursor\GooCursor.csproj
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

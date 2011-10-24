@@ -244,12 +244,12 @@ namespace GooCursor
             position.X = mouseState.X;
             position.Y = mouseState.Y;
             #endif
-
+			Console.WriteLine(position);
             // modify position using delta, the CursorSpeed, and
             // the elapsed game time.
             position += deltaMovement * CursorSpeed *
                 (float)gameTime.ElapsedGameTime.TotalSeconds;
-
+			
 
             #if XBOX360
             // clamp the cursor position to the viewport, so that it can't move off the
