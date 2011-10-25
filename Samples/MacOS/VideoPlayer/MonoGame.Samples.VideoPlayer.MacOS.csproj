@@ -55,7 +55,7 @@
     <Content Include="Content\spriteFont1.xnb">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Content\Jackie Brown-Trailer.mov">
+    <Content Include="Content\sintel_trailer.mp4">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>

@@ -67,7 +67,7 @@ namespace Microsoft.Xna.Samples.Draw2D
 			// TODO: use this.Content to load your game content here
 			font = Content.Load<SpriteFont> ("spriteFont1");
 			
-			video = Content.Load<Video> ("Jackie Brown-Trailer");
+			video = Content.Load<Video> ("sintel_trailer");
 			videoPlayer = new VideoPlayer(this);
 			playVideo = true;
 		}
@@ -84,7 +84,8 @@ namespace Microsoft.Xna.Samples.Draw2D
 			{
 				if (videoPlayer.State == MediaState.Stopped) 
 				{
-					videoPlayer.Play(video);	
+					videoPlayer.Play(video);
+					playVideo = false;
 				}
 			}
 
@@ -101,7 +102,7 @@ namespace Microsoft.Xna.Samples.Draw2D
 			
 			// Won't be visible until we hide the movie
 			spriteBatch.Begin();
-			spriteBatch.DrawString(font, "Video Player Test", new Vector2 (50, 40), Color.Red);
+			spriteBatch.DrawString(font, "Video has ended, let the Game BEGIN!!", new Vector2 (50, 40), Color.Red);
 			spriteBatch.End();
 		}
 	}
