@@ -10,7 +10,7 @@
     <OutputType>Exe</OutputType>
     <RootNamespace>MonoGame.Samples.VideoPlayer</RootNamespace>
     <AssemblyName>MonoGame.Samples.VideoPlayer.MacOS</AssemblyName>
-    <StartupObject>Microsoft.Xna.Samples.Draw2D.Program</StartupObject>
+    <StartupObject>MonoGame.Samples.VideoPlayer.Program</StartupObject>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -21,6 +21,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <ConsolePause>false</ConsolePause>
+    <StartupObject>Microsoft.Xna.Samples.Draw2D.Program</StartupObject>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>none</DebugType>
@@ -29,6 +30,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <ConsolePause>false</ConsolePause>
+    <StartupObject>Microsoft.Xna.Samples.Draw2D.Program</StartupObject>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -55,7 +57,7 @@
     <Content Include="Content\spriteFont1.xnb">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Content\sintel_trailer.mp4">
+    <Content Include="Content\sintel_trailer.m4v">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>

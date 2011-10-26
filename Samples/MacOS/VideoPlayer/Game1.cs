@@ -12,7 +12,7 @@ using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
 using Microsoft.Xna.Framework.Storage;
 
-namespace Microsoft.Xna.Samples.Draw2D
+namespace MonoGame.Samples.VideoPlayer
 {
 	/// <summary>
 	/// This is the main type for your game
@@ -21,13 +21,11 @@ namespace Microsoft.Xna.Samples.Draw2D
 	{
 		GraphicsDeviceManager graphics;
 		SpriteBatch spriteBatch;		
-		Texture2D texture, ball;
+		
 		SpriteFont font;
-		float size, rotation;
-		float clippingSize = 0.0f;
-		Color alphaColor = Color.White;
+		
 		Video video;
-		VideoPlayer videoPlayer;
+		Microsoft.Xna.Framework.Media.VideoPlayer videoPlayer;
 		bool playVideo = false;
 		
         public Game1 ()  
@@ -39,7 +37,7 @@ namespace Microsoft.Xna.Samples.Draw2D
 			graphics.PreferMultiSampling = true;
 			graphics.IsFullScreen = true;	
 
-			graphics.SupportedOrientations = DisplayOrientation.Portrait | DisplayOrientation.LandscapeLeft | DisplayOrientation.LandscapeRight | DisplayOrientation.PortraitUpsideDown;
+			graphics.SupportedOrientations = DisplayOrientation.LandscapeLeft | DisplayOrientation.LandscapeRight;
 		}
 		
 		/// <summary>
@@ -68,7 +66,7 @@ namespace Microsoft.Xna.Samples.Draw2D
 			font = Content.Load<SpriteFont> ("spriteFont1");
 			
 			video = Content.Load<Video> ("sintel_trailer");
-			videoPlayer = new VideoPlayer(this);
+			videoPlayer = new Microsoft.Xna.Framework.Media.VideoPlayer(this);
 			playVideo = true;
 		}
 

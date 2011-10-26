@@ -1,7 +1,7 @@
 using MonoMac.AppKit;
 using MonoMac.Foundation;
 
-namespace Microsoft.Xna.Samples.Draw2D
+namespace MonoGame.Samples.VideoPlayer
 {
 	class Program
 	{
