@@ -313,6 +313,6 @@ Global
 		{F5FA28E2-53B2-482B-8723-71588DF50BB6}.Release|iPhoneSimulator.Build.0 = Release|iPhoneSimulator
 	EndGlobalSection
 	GlobalSection(MonoDevelopProperties) = preSolution
-		StartupItem = iOS\RenderTarget2D\MonoGame.Samples.RenderTarget2D.csproj
+		StartupItem = iOS\GameStateManagement\MonoGame.Samples.GameStateManagement.csproj
 	EndGlobalSection
 EndGlobal
