@@ -105,13 +105,15 @@
     <Content Include="Default.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Content\Arial.xnb" />
-    <Content Include="Content\explosion.png" />
-    <Content Include="Content\smoke.bmp" />
+    <Content Include="Content\explosion.xnb" />
+    <Content Include="Content\smoke.xnb" />
+    <Content Include="Content\font.xnb" />
   </ItemGroup>
   <ItemGroup>
     <None Include="GameThumbnail.png" />
     <None Include="Info.plist" />
+    <None Include="Content\explosion.png" />
+    <None Include="Content\smoke.bmp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\..\MonoGame\MonoGame.Framework\MonoGame.Framework.iOS.csproj">
