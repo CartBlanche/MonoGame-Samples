@@ -6,10 +6,13 @@
     <ProductVersion>9.0.21022</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{E4C7960D-E564-4CD5-85D6-2B7B0B3DA5BA}</ProjectGuid>
-    <ProjectTypeGuids>{6BC8ED88-2882-458C-8E55-DFD12B67127B};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <ProjectTypeGuids>{E613F3A2-FE9C-494F-B74E-F63BCB86FEA6};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <OutputType>Exe</OutputType>
     <RootNamespace>MonoGame.Samples.Aiming</RootNamespace>
     <TargetFrameworkVersion>v1.0</TargetFrameworkVersion>
+    <BundleDisplayName>Aiming</BundleDisplayName>
+    <BundleIcon>GameThumbnail.png</BundleIcon>
+    <BundleIdentifier>project.MonoGame.Aiming</BundleIdentifier>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|iPhoneSimulator' ">
     <DebugSymbols>true</DebugSymbols>
@@ -28,6 +31,7 @@
     <MtouchUseArmv7>false</MtouchUseArmv7>
     <MtouchUseThumb>false</MtouchUseThumb>
     <MtouchUseSGen>false</MtouchUseSGen>
+    <MtouchMinimumOS>3.1</MtouchMinimumOS>
     <MtouchArch>ARMv6</MtouchArch>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|iPhoneSimulator' ">
@@ -47,6 +51,7 @@
     <MtouchUseThumb>false</MtouchUseThumb>
     <MtouchUseSGen>false</MtouchUseSGen>
     <MtouchSdkVersion>3.0</MtouchSdkVersion>
+    <MtouchMinimumOS>3.0</MtouchMinimumOS>
     <MtouchArch>ARMv6</MtouchArch>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|iPhone' ">
@@ -67,6 +72,7 @@
     <MtouchUseThumb>false</MtouchUseThumb>
     <MtouchUseSGen>false</MtouchUseSGen>
     <MtouchSdkVersion>3.0</MtouchSdkVersion>
+    <MtouchMinimumOS>3.0</MtouchMinimumOS>
     <MtouchArch>ARMv6</MtouchArch>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|iPhone' ">
@@ -84,6 +90,7 @@
     <MtouchUseThumb>false</MtouchUseThumb>
     <MtouchUseSGen>false</MtouchUseSGen>
     <MtouchSdkVersion>3.0</MtouchSdkVersion>
+    <MtouchMinimumOS>3.0</MtouchMinimumOS>
     <MtouchArch>ARMv6</MtouchArch>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Distribution|iPhone' ">
@@ -101,6 +108,7 @@
     <MtouchUseThumb>false</MtouchUseThumb>
     <MtouchUseSGen>false</MtouchUseSGen>
     <MtouchSdkVersion>3.0</MtouchSdkVersion>
+    <MtouchMinimumOS>3.0</MtouchMinimumOS>
     <MtouchArch>ARMv6</MtouchArch>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Distribution|iPhoneSimulator' ">
@@ -109,6 +117,7 @@
     <OutputPath>bin\Distribution</OutputPath>
     <WarningLevel>4</WarningLevel>
     <MtouchUseSGen>false</MtouchUseSGen>
+    <MtouchMinimumOS>3.0</MtouchMinimumOS>
     <MtouchDebug>False</MtouchDebug>
     <AssemblyName>MonoGameSamplesAiming</AssemblyName>
     <MtouchUseLlvm>false</MtouchUseLlvm>

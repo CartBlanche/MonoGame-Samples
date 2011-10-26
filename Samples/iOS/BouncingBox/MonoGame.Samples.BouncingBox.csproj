@@ -69,7 +69,6 @@
     <OutputPath>bin\iPhone\Release</OutputPath>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <MtouchDebug>False</MtouchDebug>
     <MtouchI18n />
     <CodesignKey>iPhone Developer</CodesignKey>
     <MtouchSdkVersion>4.0</MtouchSdkVersion>
