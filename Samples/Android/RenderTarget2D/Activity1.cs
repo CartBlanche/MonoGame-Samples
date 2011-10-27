@@ -16,10 +16,10 @@ namespace RenderTarget2DSample
 		protected override void OnCreate (Bundle bundle)
 		{
 			base.OnCreate (bundle);
-			Game1.Activity = this;
+            Game1.Activity = this;
 			var g = new Game1();
-			SetContentView(g.Window);
-			g.Run();
+            SetContentView(g.Window);
+            g.Run();
 		}
 	}
 }

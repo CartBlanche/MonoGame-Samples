@@ -13,41 +13,55 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonoGame.Samples.Peer2Peer.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonoGame.Samples.RenderTarget2D.Android", "Android\RenderTarget2D\MonoGame.Samples.RenderTarget2D.Android.csproj", "{DEDD20B5-8F83-46FD-AD05-8F8FCC49FCD6}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sound", "Android\Sound\Sound.csproj", "{E2B6ED3C-A769-47AF-9605-A7410F194B1C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonoGame.Samples.VideoPlayer", "Android\VideoPlayer\MonoGame.Samples.VideoPlayer.csproj", "{27C3DD7C-5322-4C2D-8EE4-07610390CDAF}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{27C3DD7C-5322-4C2D-8EE4-07610390CDAF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{27C3DD7C-5322-4C2D-8EE4-07610390CDAF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{27C3DD7C-5322-4C2D-8EE4-07610390CDAF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{27C3DD7C-5322-4C2D-8EE4-07610390CDAF}.Release|Any CPU.Build.0 = Release|Any CPU
 		{565129E0-4EE5-4F6F-B403-C3484C9740BE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{565129E0-4EE5-4F6F-B403-C3484C9740BE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{565129E0-4EE5-4F6F-B403-C3484C9740BE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{565129E0-4EE5-4F6F-B403-C3484C9740BE}.Release|Any CPU.Build.0 = Release|Any CPU
-		{BA9476CF-99BA-4D03-92F2-73D2C5E58883}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{BA9476CF-99BA-4D03-92F2-73D2C5E58883}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{BA9476CF-99BA-4D03-92F2-73D2C5E58883}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{BA9476CF-99BA-4D03-92F2-73D2C5E58883}.Release|Any CPU.Build.0 = Release|Any CPU
-		{F05F90DC-DD37-4967-A96A-8D36C1C23E81}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{F05F90DC-DD37-4967-A96A-8D36C1C23E81}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{F05F90DC-DD37-4967-A96A-8D36C1C23E81}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{F05F90DC-DD37-4967-A96A-8D36C1C23E81}.Release|Any CPU.Build.0 = Release|Any CPU
-		{616BBFA6-52F2-40A1-AA76-1CF2BD6390D5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{616BBFA6-52F2-40A1-AA76-1CF2BD6390D5}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{616BBFA6-52F2-40A1-AA76-1CF2BD6390D5}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{616BBFA6-52F2-40A1-AA76-1CF2BD6390D5}.Release|Any CPU.Build.0 = Release|Any CPU
 		{56F6C06F-6F07-402E-89A5-39EDB037A516}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{56F6C06F-6F07-402E-89A5-39EDB037A516}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{56F6C06F-6F07-402E-89A5-39EDB037A516}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{56F6C06F-6F07-402E-89A5-39EDB037A516}.Release|Any CPU.Build.0 = Release|Any CPU
+		{616BBFA6-52F2-40A1-AA76-1CF2BD6390D5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{616BBFA6-52F2-40A1-AA76-1CF2BD6390D5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{616BBFA6-52F2-40A1-AA76-1CF2BD6390D5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{616BBFA6-52F2-40A1-AA76-1CF2BD6390D5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BA9476CF-99BA-4D03-92F2-73D2C5E58883}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BA9476CF-99BA-4D03-92F2-73D2C5E58883}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BA9476CF-99BA-4D03-92F2-73D2C5E58883}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BA9476CF-99BA-4D03-92F2-73D2C5E58883}.Release|Any CPU.Build.0 = Release|Any CPU
 		{DEDD20B5-8F83-46FD-AD05-8F8FCC49FCD6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{DEDD20B5-8F83-46FD-AD05-8F8FCC49FCD6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DEDD20B5-8F83-46FD-AD05-8F8FCC49FCD6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DEDD20B5-8F83-46FD-AD05-8F8FCC49FCD6}.Release|Any CPU.Build.0 = Release|Any CPU
-	EndGlobalSection
-	GlobalSection(SolutionProperties) = preSolution
-		HideSolutionNode = FALSE
+		{E2B6ED3C-A769-47AF-9605-A7410F194B1C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E2B6ED3C-A769-47AF-9605-A7410F194B1C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E2B6ED3C-A769-47AF-9605-A7410F194B1C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E2B6ED3C-A769-47AF-9605-A7410F194B1C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F05F90DC-DD37-4967-A96A-8D36C1C23E81}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F05F90DC-DD37-4967-A96A-8D36C1C23E81}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F05F90DC-DD37-4967-A96A-8D36C1C23E81}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F05F90DC-DD37-4967-A96A-8D36C1C23E81}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E2B6ED3C-A769-47AF-9605-A7410F194B1C}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{E2B6ED3C-A769-47AF-9605-A7410F194B1C}.Release|Any CPU.Deploy.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(MonoDevelopProperties) = preSolution
 		StartupItem = ..\..\MonoGame\ThirdParty\Lidgren.Network\Lidgren.Network.Android.csproj
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
 	EndGlobalSection
 EndGlobal

@@ -26,11 +26,7 @@ namespace Microsoft.Xna.Samples.Sound
 		SoundEffectInstance soundInst;
 		SpriteFont font;
 		
-#if ANDROID 
-		public Game1 (Activity activity) : base (activity)
-#else 
         public Game1 ()  
-#endif
 		{
 			graphics = new GraphicsDeviceManager (this);
 			
@@ -66,7 +62,7 @@ namespace Microsoft.Xna.Samples.Sound
 			// Create a new SpriteBatch, which can be used to draw textures.
 			spriteBatch = new SpriteBatch(GraphicsDevice);
 
-			sound = Content.Load<SoundEffect>("Explosion1");
+			sound = Content.Load<SoundEffect>("explosion1");
 			soundInst = sound.CreateInstance();
 			
 			font = Content.Load<SpriteFont>("spriteFont1");
@@ -80,7 +76,15 @@ namespace Microsoft.Xna.Samples.Sound
 		protected override void Update (GameTime gameTime)
 		{
 			KeyboardState ks = Keyboard.GetState();
-			
+            
+#if ANDROID
+            if (soundInst.State != SoundState.Playing)
+            {
+                soundInst.Volume = 1f;
+                soundInst.IsLooped = true;
+                soundInst.Play();
+            }
+#endif
 			
 			if (ks[Keys.Escape] == KeyState.Down)
 				base.Exit();
