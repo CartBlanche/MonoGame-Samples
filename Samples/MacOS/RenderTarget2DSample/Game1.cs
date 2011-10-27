@@ -1,11 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-
-#if ANDROID
-using Android.App;
-#endif
-
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Content;
