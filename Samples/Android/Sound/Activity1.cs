@@ -17,7 +17,7 @@ namespace Microsoft.Xna.Samples.Sound
         protected override void OnCreate(Bundle bundle)
         {
             base.OnCreate(bundle);
-			Game1.Activity = this;
+            Game1.Activity = this;
             var g = new Game1();
             SetContentView(g.Window);
             g.Run();

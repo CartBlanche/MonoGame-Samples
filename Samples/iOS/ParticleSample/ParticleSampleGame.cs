@@ -124,7 +124,7 @@ namespace ParticleSample
         protected override void LoadContent()
         {
             spriteBatch = new SpriteBatch(graphics.GraphicsDevice);
-            arialFont = Content.Load<SpriteFont>("Arial");
+            arialFont = Content.Load<SpriteFont>("font");
         }
 
         #endregion

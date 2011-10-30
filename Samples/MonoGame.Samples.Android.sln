@@ -15,12 +15,18 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonoGame.Samples.RenderTarg
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sound", "Android\Sound\Sound.csproj", "{E2B6ED3C-A769-47AF-9605-A7410F194B1C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonoGame.Samples.VideoPlayer", "Android\VideoPlayer\MonoGame.Samples.VideoPlayer.csproj", "{27C3DD7C-5322-4C2D-8EE4-07610390CDAF}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{27C3DD7C-5322-4C2D-8EE4-07610390CDAF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{27C3DD7C-5322-4C2D-8EE4-07610390CDAF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{27C3DD7C-5322-4C2D-8EE4-07610390CDAF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{27C3DD7C-5322-4C2D-8EE4-07610390CDAF}.Release|Any CPU.Build.0 = Release|Any CPU
 		{565129E0-4EE5-4F6F-B403-C3484C9740BE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{565129E0-4EE5-4F6F-B403-C3484C9740BE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{565129E0-4EE5-4F6F-B403-C3484C9740BE}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -53,7 +59,7 @@ Global
 		{E2B6ED3C-A769-47AF-9605-A7410F194B1C}.Release|Any CPU.Deploy.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(MonoDevelopProperties) = preSolution
-		StartupItem = Android\RenderTarget2D\MonoGame.Samples.RenderTarget2D.Android.csproj
+		StartupItem = ..\..\MonoGame\ThirdParty\Lidgren.Network\Lidgren.Network.Android.csproj
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

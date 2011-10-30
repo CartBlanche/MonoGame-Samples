@@ -15,7 +15,7 @@ namespace MonoGame.Samples.PeerToPeerGame.Droid
         protected override void OnCreate(Bundle bundle)
         {
             base.OnCreate(bundle);
-			PeerToPeer.PeerToPeerGame.Activity = this;
+            PeerToPeer.PeerToPeerGame.Activity = this;
             var g = new PeerToPeer.PeerToPeerGame();
             SetContentView(g.Window);
             g.Run();

@@ -1,6 +1,6 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 10.00
-# Visual Studio 2008
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lidgren.Network.iOS", "..\..\MonoGame\ThirdParty\Lidgren.Network\Lidgren.Network.iOS.csproj", "{734EAA48-F1CA-481A-B391-0285BC0E8B40}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonoGame.Framework.iOS", "..\..\MonoGame\MonoGame.Framework\MonoGame.Framework.iOS.csproj", "{DB8508BB-9849-4CC2-BC0F-8EB5DACB3C47}"
@@ -39,11 +39,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonoGame.Samples.TouchGestu
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonoGame.Samples.TransformedCollision", "iOS\TransformedCollision\MonoGame.Samples.TransformedCollision.csproj", "{96F32BCF-B579-438B-A5DC-667BB9A5849C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonoGame.Samples.Video", "iOS\Video\MonoGame.Samples.Video.csproj", "{21E42CAF-11B3-4A25-A771-189A61732F94}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonoGame.Samples.VirtualGamePad", "iOS\VirtualGamePad\MonoGame.Samples.VirtualGamePad.csproj", "{326DC8E8-649F-4F96-92BA-EE0EF51A32DB}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonoGame.Samples.Waypoint", "iOS\Waypoint\MonoGame.Samples.Waypoint.csproj", "{75E860EE-EBF1-4BB4-AE39-9729900AFD39}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonoGame.Samples.VideoPlayer", "iOS\VideoPlayer\MonoGame.Samples.VideoPlayer.csproj", "{D6A6EF59-928C-4DDB-AD8D-D85DD914BF82}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -91,18 +91,6 @@ Global
 		{1557EE13-80AB-4E4C-9C10-9CBFC8E727C3}.Release|iPhone.Build.0 = Release|iPhone
 		{1557EE13-80AB-4E4C-9C10-9CBFC8E727C3}.Release|iPhoneSimulator.ActiveCfg = Release|iPhoneSimulator
 		{1557EE13-80AB-4E4C-9C10-9CBFC8E727C3}.Release|iPhoneSimulator.Build.0 = Release|iPhoneSimulator
-		{21E42CAF-11B3-4A25-A771-189A61732F94}.Debug|iPhone.ActiveCfg = Debug|iPhone
-		{21E42CAF-11B3-4A25-A771-189A61732F94}.Debug|iPhone.Build.0 = Debug|iPhone
-		{21E42CAF-11B3-4A25-A771-189A61732F94}.Debug|iPhoneSimulator.ActiveCfg = Debug|iPhoneSimulator
-		{21E42CAF-11B3-4A25-A771-189A61732F94}.Debug|iPhoneSimulator.Build.0 = Debug|iPhoneSimulator
-		{21E42CAF-11B3-4A25-A771-189A61732F94}.Distribution|iPhone.ActiveCfg = Debug|iPhone
-		{21E42CAF-11B3-4A25-A771-189A61732F94}.Distribution|iPhone.Build.0 = Debug|iPhone
-		{21E42CAF-11B3-4A25-A771-189A61732F94}.Distribution|iPhoneSimulator.ActiveCfg = Debug|iPhoneSimulator
-		{21E42CAF-11B3-4A25-A771-189A61732F94}.Distribution|iPhoneSimulator.Build.0 = Debug|iPhoneSimulator
-		{21E42CAF-11B3-4A25-A771-189A61732F94}.Release|iPhone.ActiveCfg = Release|iPhone
-		{21E42CAF-11B3-4A25-A771-189A61732F94}.Release|iPhone.Build.0 = Release|iPhone
-		{21E42CAF-11B3-4A25-A771-189A61732F94}.Release|iPhoneSimulator.ActiveCfg = Release|iPhoneSimulator
-		{21E42CAF-11B3-4A25-A771-189A61732F94}.Release|iPhoneSimulator.Build.0 = Release|iPhoneSimulator
 		{326DC8E8-649F-4F96-92BA-EE0EF51A32DB}.Debug|iPhone.ActiveCfg = Debug|iPhone
 		{326DC8E8-649F-4F96-92BA-EE0EF51A32DB}.Debug|iPhone.Build.0 = Debug|iPhone
 		{326DC8E8-649F-4F96-92BA-EE0EF51A32DB}.Debug|iPhoneSimulator.ActiveCfg = Debug|iPhoneSimulator
@@ -255,6 +243,18 @@ Global
 		{CE342066-BCCD-4989-A401-0D36287276EF}.Release|iPhone.Build.0 = Release|iPhone
 		{CE342066-BCCD-4989-A401-0D36287276EF}.Release|iPhoneSimulator.ActiveCfg = Release|iPhoneSimulator
 		{CE342066-BCCD-4989-A401-0D36287276EF}.Release|iPhoneSimulator.Build.0 = Release|iPhoneSimulator
+		{D6A6EF59-928C-4DDB-AD8D-D85DD914BF82}.Debug|iPhone.ActiveCfg = Debug|iPhone
+		{D6A6EF59-928C-4DDB-AD8D-D85DD914BF82}.Debug|iPhone.Build.0 = Debug|iPhone
+		{D6A6EF59-928C-4DDB-AD8D-D85DD914BF82}.Debug|iPhoneSimulator.ActiveCfg = Debug|iPhoneSimulator
+		{D6A6EF59-928C-4DDB-AD8D-D85DD914BF82}.Debug|iPhoneSimulator.Build.0 = Debug|iPhoneSimulator
+		{D6A6EF59-928C-4DDB-AD8D-D85DD914BF82}.Distribution|iPhone.ActiveCfg = Debug|iPhone
+		{D6A6EF59-928C-4DDB-AD8D-D85DD914BF82}.Distribution|iPhone.Build.0 = Debug|iPhone
+		{D6A6EF59-928C-4DDB-AD8D-D85DD914BF82}.Distribution|iPhoneSimulator.ActiveCfg = Debug|iPhoneSimulator
+		{D6A6EF59-928C-4DDB-AD8D-D85DD914BF82}.Distribution|iPhoneSimulator.Build.0 = Debug|iPhoneSimulator
+		{D6A6EF59-928C-4DDB-AD8D-D85DD914BF82}.Release|iPhone.ActiveCfg = Release|iPhone
+		{D6A6EF59-928C-4DDB-AD8D-D85DD914BF82}.Release|iPhone.Build.0 = Release|iPhone
+		{D6A6EF59-928C-4DDB-AD8D-D85DD914BF82}.Release|iPhoneSimulator.ActiveCfg = Release|iPhoneSimulator
+		{D6A6EF59-928C-4DDB-AD8D-D85DD914BF82}.Release|iPhoneSimulator.Build.0 = Release|iPhoneSimulator
 		{DB8508BB-9849-4CC2-BC0F-8EB5DACB3C47}.Debug|iPhone.ActiveCfg = Debug|iPhone
 		{DB8508BB-9849-4CC2-BC0F-8EB5DACB3C47}.Debug|iPhone.Build.0 = Debug|iPhone
 		{DB8508BB-9849-4CC2-BC0F-8EB5DACB3C47}.Debug|iPhoneSimulator.ActiveCfg = Debug|iPhoneSimulator
@@ -313,6 +313,6 @@ Global
 		{F5FA28E2-53B2-482B-8723-71588DF50BB6}.Release|iPhoneSimulator.Build.0 = Release|iPhoneSimulator
 	EndGlobalSection
 	GlobalSection(MonoDevelopProperties) = preSolution
-		StartupItem = ..\..\MonoGame\ThirdParty\Lidgren.Network\Lidgren.Network.iOS.csproj
+		StartupItem = iOS\GameStateManagement\MonoGame.Samples.GameStateManagement.csproj
 	EndGlobalSection
 EndGlobal

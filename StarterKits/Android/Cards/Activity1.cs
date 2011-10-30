@@ -10,13 +10,13 @@ using Android.OS;
 namespace Blackjack
 {
 	[Activity (Label = "Blackjack.Android", MainLauncher = true)]
-	public class Activity1 : Activity
+	public class Activity1 : Microsoft.Xna.Framework.AndroidGameActivity
 	{
 		protected override void OnCreate(Bundle bundle)
         {
             base.OnCreate(bundle);
-
-            var g = new BlackjackGame(this);
+            BlackjackGame.Activity = this;
+            var g = new BlackjackGame();
             SetContentView(g.Window);
             g.Run();
         }

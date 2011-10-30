@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Project DefaultTargets="Build" ToolsVersion="3.5" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
@@ -9,7 +9,7 @@
     <OutputType>Exe</OutputType>
     <RootNamespace>Tetris</RootNamespace>
     <AssemblyName>Tetris</AssemblyName>
-    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
     <DebugSymbols>true</DebugSymbols>
@@ -40,12 +40,6 @@
     <Reference Include="System.Drawing" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\..\MacOS\Tetris\Content\tetris.png">
-      <Link>Content\tetris.png</Link>
-    </None>
-    <None Include="..\..\MacOS\Tetris\Content\score.png">
-      <Link>Content\score.png</Link>
-    </None>
     <None Include="..\..\MacOS\Tetris\Content\font.spritefont">
       <Link>Content\font.spritefont</Link>
     </None>
@@ -54,12 +48,6 @@
     </None>
     <None Include="..\..\MacOS\Tetris\Content\background.psd">
       <Link>Content\background.psd</Link>
-    </None>
-    <None Include="..\..\MacOS\Tetris\Content\background.png">
-      <Link>Content\background.png</Link>
-    </None>
-    <None Include="..\..\MacOS\Tetris\Content\Arial.xnb">
-      <Link>Content\Arial.xnb</Link>
     </None>
     <None Include="..\..\MacOS\Tetris\Info.plist">
       <Link>Info.plist</Link>
@@ -85,12 +73,30 @@
     <Compile Include="Engine.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\MonoGame.Framework\MonoGame.Framework.Linux.csproj">
+    <Folder Include="Content\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\..\MonoGame\MonoGame.Framework\MonoGame.Framework.Linux.csproj">
       <Project>{35253CE1-C864-4CD3-8249-4D1319748E8F}</Project>
       <Name>MonoGame.Framework.Linux</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Content\" />
+    <Content Include="..\..\MacOS\Tetris\Content\Arial.xnb">
+      <Link>Content\Arial.xnb</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\MacOS\Tetris\Content\background.png">
+      <Link>Content\background.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\MacOS\Tetris\Content\tetris.png">
+      <Link>Content\tetris.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\MacOS\Tetris\Content\score.png">
+      <Link>Content\score.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
 </Project>

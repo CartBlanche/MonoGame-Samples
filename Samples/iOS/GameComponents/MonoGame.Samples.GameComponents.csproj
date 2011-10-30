@@ -6,12 +6,9 @@
     <ProductVersion>9.0.21022</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{4F51EB5C-03A1-4488-8EEA-0E8F2411DB0C}</ProjectGuid>
-    <ProjectTypeGuids>{E613F3A2-FE9C-494F-B74E-F63BCB86FEA6};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <ProjectTypeGuids>{6BC8ED88-2882-458C-8E55-DFD12B67127B};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <OutputType>Exe</OutputType>
     <RootNamespace>MonoGame.Samples.GameComponents</RootNamespace>
-    <TargetFrameworkVersion>v1.0</TargetFrameworkVersion>
-    <BundleDisplayName>GameComponents</BundleDisplayName>
-    <BundleIcon>monogameicon.png</BundleIcon>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|iPhoneSimulator' ">
     <DebugSymbols>true</DebugSymbols>
@@ -24,7 +21,6 @@
     <MtouchLink>None</MtouchLink>
     <MtouchDebug>True</MtouchDebug>
     <MtouchI18n />
-    <MtouchMinimumOS>3.1</MtouchMinimumOS>
     <MtouchUseLlvm>false</MtouchUseLlvm>
     <MtouchUseArmv7>false</MtouchUseArmv7>
     <MtouchUseThumb>false</MtouchUseThumb>
@@ -40,7 +36,6 @@
     <WarningLevel>4</WarningLevel>
     <MtouchDebug>False</MtouchDebug>
     <MtouchI18n />
-    <MtouchMinimumOS>3.1</MtouchMinimumOS>
     <MtouchUseLlvm>false</MtouchUseLlvm>
     <MtouchUseArmv7>false</MtouchUseArmv7>
     <MtouchUseThumb>false</MtouchUseThumb>
@@ -59,7 +54,6 @@
     <MtouchDebug>True</MtouchDebug>
     <MtouchI18n />
     <MtouchSdkVersion>4.0</MtouchSdkVersion>
-    <MtouchMinimumOS>3.0</MtouchMinimumOS>
     <MtouchUseLlvm>false</MtouchUseLlvm>
     <MtouchUseArmv7>false</MtouchUseArmv7>
     <MtouchUseThumb>false</MtouchUseThumb>
@@ -77,7 +71,6 @@
     <MtouchI18n />
     <CodesignKey>iPhone Developer</CodesignKey>
     <MtouchSdkVersion>4.0</MtouchSdkVersion>
-    <MtouchMinimumOS>3.0</MtouchMinimumOS>
     <MtouchUseLlvm>false</MtouchUseLlvm>
     <MtouchUseArmv7>false</MtouchUseArmv7>
     <MtouchUseThumb>false</MtouchUseThumb>
@@ -90,7 +83,6 @@
     <Optimize>false</Optimize>
     <OutputPath>bin\Debug</OutputPath>
     <WarningLevel>4</WarningLevel>
-    <MtouchMinimumOS>3.0</MtouchMinimumOS>
     <MtouchDebug>False</MtouchDebug>
     <MtouchUseSGen>false</MtouchUseSGen>
     <MtouchUseLlvm>false</MtouchUseLlvm>
@@ -104,7 +96,6 @@
     <Optimize>false</Optimize>
     <OutputPath>bin\Release</OutputPath>
     <WarningLevel>4</WarningLevel>
-    <MtouchMinimumOS>3.0</MtouchMinimumOS>
     <MtouchDebug>False</MtouchDebug>
     <MtouchUseSGen>false</MtouchUseSGen>
     <MtouchUseLlvm>false</MtouchUseLlvm>
@@ -139,6 +130,7 @@
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
     <None Include="monogameicon.png" />
+    <None Include="Info.plist" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\MonoGame.Framework\MonoGame.Framework.iOS.csproj">

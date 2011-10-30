@@ -11,8 +11,8 @@ namespace MonoGame.Samples.ChaseAndEvade.Droid
         protected override void OnCreate(Bundle bundle)
         {
             base.OnCreate(bundle);
-			ChaseAndEvadeGame.Activity = this;			
-            ChaseAndEvadeGame g = new ChaseAndEvadeGame();			
+            ChaseAndEvadeGame.Activity = this;
+            ChaseAndEvadeGame g = new ChaseAndEvadeGame();
             SetContentView(g.Window);
             g.Run();
         }
