@@ -74,8 +74,10 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Properties\AndroidManifest.xml" />
-    <None Include="..\..\iOS\Draw2D\Content\spriteFont1.xnb">
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidAsset Include="..\..\iOS\Draw2D\Content\spriteFont1.xnb">
       <Link>Assets\Content\spriteFont1.xnb</Link>
-    </None>
+    </AndroidAsset>
   </ItemGroup>
 </Project>

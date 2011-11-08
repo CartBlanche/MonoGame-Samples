@@ -65,7 +65,7 @@ Global
 		{E2B6ED3C-A769-47AF-9605-A7410F194B1C}.Release|Any CPU.Deploy.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(MonoDevelopProperties) = preSolution
-		StartupItem = ..\..\MonoGame\ThirdParty\Lidgren.Network\Lidgren.Network.Android.csproj
+		StartupItem = Android\MonoGame.Samples.Input\MonoGame.Samples.Input.csproj
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
