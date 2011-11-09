@@ -34,7 +34,7 @@ namespace Microsoft.Xna.Samples.Draw2D
 			Content.RootDirectory = "Content";
 			
 			graphics.PreferMultiSampling = true;
-			graphics.IsFullScreen = true;	
+			graphics.IsFullScreen = true;
 
 			graphics.SupportedOrientations = DisplayOrientation.Portrait | DisplayOrientation.LandscapeLeft | DisplayOrientation.LandscapeRight | DisplayOrientation.PortraitUpsideDown;
 		}
