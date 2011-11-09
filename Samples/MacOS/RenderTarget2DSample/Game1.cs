@@ -90,11 +90,13 @@ namespace RenderTarget2DSample
 			renderTarget = new RenderTarget2D (GraphicsDevice, GraphicsDevice.PresentationParameters.BackBufferWidth,
 				GraphicsDevice.PresentationParameters.BackBufferHeight, false, SurfaceFormat.Color, DepthFormat.None);
             
+			// Load in our wood tile.
+			wood = Content.Load<Texture2D> ("lava");
+			
 			// Load in the picture of Seamus.
 			mooTheMerciless = Content.Load<Texture2D> ("MooTheMerciless");
 
-			// Load in our wood tile.
-			wood = Content.Load<Texture2D> ("wood");
+			
 		}
 
 		/// <summary>
@@ -149,13 +151,14 @@ namespace RenderTarget2DSample
 		{
 			
 			// A one time only flag to help test for memory leaks
+			
 			if (oneTimeOnly) 
 			{				
 				oneTimeOnly = false;
 
 				// Set renderTarget as the surface to draw to instead of the back buffer
 				GraphicsDevice.SetRenderTarget (renderTarget);
-
+			 
 				// Clear the renderTarget. By default it's all a bright purple color. I like to use Color.Transparent to
 				// enable easy alpha blending.
 				GraphicsDevice.Clear (Color.Transparent);
@@ -214,9 +217,11 @@ namespace RenderTarget2DSample
 
 				// End the spriteBatch draw.
 				spriteBatch.End ();
-
+				 								
 				// Switch back to drawing onto the back buffer
 				GraphicsDevice.SetRenderTarget (null);
+				
+				//GrabScreenshot(renderTarget);
 			}
 			// Now that we're back to drawing onto the back buffer, we want to clear it. If we had done so earlier
 			// then when we switched to drawing to the render target, the old back buffer would've just be filled with
@@ -254,5 +259,13 @@ namespace RenderTarget2DSample
 
 			base.Draw (gameTime);
 		}
+		
+		public static void GrabScreenshot(RenderTarget2D rendertarget)
+        {
+			Color[] data = new Color[(rendertarget.Width * rendertarget.Height) * 3];
+            //OpenTK.Graphics.ES11.GL.ReadPixels(0, 0, rendertarget.Width, rendertarget.Height, OpenTK.Graphics.ES11.All.Rgb, OpenTK.Graphics.ES11.All.UnsignedByte, ref data);            
+			rendertarget.GetData<Color>(data);
+        }
+
 	}
 }

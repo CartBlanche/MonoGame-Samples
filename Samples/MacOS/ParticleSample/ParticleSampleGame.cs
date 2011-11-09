@@ -218,7 +218,8 @@ namespace ParticleSample
 
             // draw some instructions on the screen
             string message = string.Format("Current effect: {0}!\n" + 
-                "Hit the A button or space bar, or tap the screen, to switch.\n\n" +
+                "Hit the A button or space bar, or tap the screen, to switch.\n" +
+				"Hit the F key to toggle full screen.\n\n" +
                 "Free particles:\n" +
                 "    ExplosionParticleSystem:      {1}\n" +
                 "    ExplosionSmokeParticleSystem: {2}\n" +
@@ -250,6 +251,10 @@ namespace ParticleSample
                 currentKeyboardState.IsKeyUp(Keys.Space) &&
                 lastKeyboardState.IsKeyDown(Keys.Space);
 
+            // check to see if someone has just released the 'F' key.
+            bool keyboardF =
+                currentKeyboardState.IsKeyUp(Keys.F) &&
+                lastKeyboardState.IsKeyDown(Keys.F);
 
             // check the gamepad to see if someone has just released the A button.
             bool gamepadA =
@@ -277,6 +282,13 @@ namespace ParticleSample
             {
                 currentState = (State)((int)(currentState + 1) % NumStates);
             }
+
+			if (keyboardF)
+			{
+				graphics.ToggleFullScreen();
+				//Window.Window.IsVisible = true;
+				//Window.Window.MakeKeyAndOrderFront(Window);
+			}
 
             lastKeyboardState = currentKeyboardState;
             lastGamepadState = currentGamePadState;

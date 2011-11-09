@@ -30,6 +30,8 @@ namespace GooCursor
             cursor.BorderColor = Color.White;
             cursor.FillColor = Color.Black;
             Components.Add(cursor);
+			//graphics.IsFullScreen = true;
+			//IsMouseVisible = false;
         }
 
         /// <summary>
@@ -64,6 +66,8 @@ namespace GooCursor
         {
             // TODO: Unload any non ContentManager content here
         }
+		KeyboardState lastState = Keyboard.GetState();
+		KeyboardState state = Keyboard.GetState();
 
         /// <summary>
         /// Allows the game to run logic such as updating the world,
@@ -75,7 +79,9 @@ namespace GooCursor
             // Allows the game to exit
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed)
                 this.Exit();
-            KeyboardState state = Keyboard.GetState();
+			lastState = state;
+			state = Keyboard.GetState();
+
 
             float elapsed = (float)gameTime.ElapsedGameTime.TotalSeconds;
 
@@ -118,6 +124,9 @@ namespace GooCursor
                 cursor.TrailNodeMass += 1.0f * elapsed;
             if (state.IsKeyDown(Keys.J))
                 cursor.TrailNodeMass -= 1.0f * elapsed;
+
+		if (state.IsKeyDown(Keys.F) && lastState.IsKeyUp(Keys.F))
+				graphics.ToggleFullScreen();
 
             base.Update(gameTime);
         }
