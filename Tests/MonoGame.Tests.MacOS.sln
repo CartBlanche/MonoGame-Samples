@@ -7,7 +7,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonoGame.Framework.MacOS", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lidgren.Network.MacOS", "..\..\MonoGame\ThirdParty\Lidgren.Network\Lidgren.Network.MacOS.csproj", "{AE483C29-042E-4226-BA52-D247CE7676DA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GamePadTest", "GamePadTest\GamePadTest.csproj", "{E251B0C1-ED74-4210-A0D5-9E4710FEA61F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GamePadTest", "MacOS\GamePadTest\GamePadTest.csproj", "{E251B0C1-ED74-4210-A0D5-9E4710FEA61F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -42,6 +42,6 @@ Global
 		{E251B0C1-ED74-4210-A0D5-9E4710FEA61F}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(MonoDevelopProperties) = preSolution
-		StartupItem = GamePadTest\GamePadTest.csproj
+		StartupItem = MacOS\MouseGetStateAndIsMouseVisibleTester\MouseGetStateAndIsMouseVisibleTester\MouseGetStateAndIsMouseVisibleTester.csproj
 	EndGlobalSection
 EndGlobal
