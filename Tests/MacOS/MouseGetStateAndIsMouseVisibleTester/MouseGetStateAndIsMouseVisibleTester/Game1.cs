@@ -8,10 +8,10 @@ using Microsoft.Xna.Framework.GamerServices;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
-using System.Windows.Forms;
 
-using MonoMac.AppKit;
-using MonoMac.Foundation;
+
+//using MonoMac.AppKit;
+//using MonoMac.Foundation;
 
 namespace MouseGetStateAndIsMouseVisibleTester
 {
@@ -37,7 +37,7 @@ namespace MouseGetStateAndIsMouseVisibleTester
 			Window.AllowUserResizing = true;
 
 			 // Subscribe to the game window's ClientSizeChanged event.
-			Window.ClientSizeChanged += new EventHandler( Window_ClientSizeChanged );
+			//Window.ClientSizeChanged += new EventHandler( Window_ClientSizeChanged );
         }
 
     void Window_ClientSizeChanged( object sender, EventArgs e )
@@ -105,7 +105,7 @@ namespace MouseGetStateAndIsMouseVisibleTester
         
         public String GetStyleMask()
         {
-        	return this.Window.Window.StyleMask.ToString();
+        	return "not here"; //this.Window.Window.StyleMask.ToString();
         }//GetStyleMask
 
 
@@ -138,7 +138,7 @@ namespace MouseGetStateAndIsMouseVisibleTester
         {
         	if(bFullScreen) return;
         	
-        		
+#if !LINUX        		
             int index;
             int upperBound;
             float fScreenWidth, fScreenHeight, fNewX, fNewY, fWindowWidth, fWindowHeight, fTitleBarHeight;
@@ -170,6 +170,7 @@ namespace MouseGetStateAndIsMouseVisibleTester
 			System.Drawing.SizeF sfSize = new System.Drawing.SizeF(pfSize);
 			System.Drawing.RectangleF rectTemp = new System.Drawing.RectangleF(pfLocation, sfSize);
 			this.Window.Window.SetFrame(rectTemp, true);
+#endif
         }//CenterWindow
     }
 }

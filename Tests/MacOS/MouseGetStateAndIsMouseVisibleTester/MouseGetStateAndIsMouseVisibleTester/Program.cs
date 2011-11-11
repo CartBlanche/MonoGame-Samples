@@ -1,42 +1,59 @@
-using MonoMac.AppKit;
-using MonoMac.Foundation;
-
+using System;
 
 namespace MouseGetStateAndIsMouseVisibleTester
 {
-	class Program
+	
+	static class Program
 	{
-		static void Main (string [] args)
+
+		private static Game1 game;	
+
+#if LINUX
+
+        /// <summary>
+        /// The main entry point for the application.
+        /// </summary>
+        [STAThread]
+        static void Main()
+        {
+            game = new Game1();
+            game.Run();
+        }
+#else
+
+		/// <summary>
+		/// The main entry point for the application.
+		/// </summary>
+		static void Main (string[] args)
 		{
-			NSApplication.Init ();
+			MonoMac.AppKit.NSApplication.Init ();
 			
-			using (var p = new NSAutoreleasePool ()) {
-				NSApplication.SharedApplication.Delegate = new AppDelegate();
-				NSApplication.Main(args);
+			using (var p = new MonoMac.Foundation.NSAutoreleasePool ()) {
+				MonoMac.AppKit.NSApplication.SharedApplication.Delegate = new AppDelegate();
+				MonoMac.AppKit.NSApplication.Main(args);
 			}
 		}
 	}
 	
-	
-	class AppDelegate : NSApplicationDelegate
+	class AppDelegate : MonoMac.AppKit.NSApplicationDelegate
 	{
-		Game1 game; 
 		
 		public override void FinishedLaunching (MonoMac.Foundation.NSObject notification)
-		{			
+		{
 			using (game = new Game1()) {
 				game.Run ();
 			}
 		}
 		
-		public override bool ApplicationShouldTerminateAfterLastWindowClosed (NSApplication sender)
+		public override bool ApplicationShouldTerminateAfterLastWindowClosed (MonoMac.AppKit.NSApplication sender)
 		{
 			return true;
 		}
 	}
-	
-	
-	
+
+
+#endif
+}
 
 }
 

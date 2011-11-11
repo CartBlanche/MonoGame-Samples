@@ -41,6 +41,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonoGame.Samples.AsteroidBe
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonoGame.Samples.FloodControl.Linux", "Linux\BookSourceCode\XNAGameDevelopmentbyExampleCode\FloodControl\MonoGame.Samples.FloodControl.Linux.csproj", "{86A219E2-C8F1-422B-C762-C69D5BB07C98}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StarWarrior", "Linux\StarWarrior\StarWarrior.csproj", "{2012F252-E53A-4900-A2C5-9550D008DF8B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -55,6 +57,26 @@ Global
 		Release|x86 = Release|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{2012F252-E53A-4900-A2C5-9550D008DF8B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2012F252-E53A-4900-A2C5-9550D008DF8B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2012F252-E53A-4900-A2C5-9550D008DF8B}.Debug|iPhone.ActiveCfg = Debug|Any CPU
+		{2012F252-E53A-4900-A2C5-9550D008DF8B}.Debug|iPhone.Build.0 = Debug|Any CPU
+		{2012F252-E53A-4900-A2C5-9550D008DF8B}.Debug|iPhoneSimulator.ActiveCfg = Debug|Any CPU
+		{2012F252-E53A-4900-A2C5-9550D008DF8B}.Debug|iPhoneSimulator.Build.0 = Debug|Any CPU
+		{2012F252-E53A-4900-A2C5-9550D008DF8B}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{2012F252-E53A-4900-A2C5-9550D008DF8B}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{2012F252-E53A-4900-A2C5-9550D008DF8B}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{2012F252-E53A-4900-A2C5-9550D008DF8B}.Debug|x86.Build.0 = Debug|Any CPU
+		{2012F252-E53A-4900-A2C5-9550D008DF8B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2012F252-E53A-4900-A2C5-9550D008DF8B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2012F252-E53A-4900-A2C5-9550D008DF8B}.Release|iPhone.ActiveCfg = Release|Any CPU
+		{2012F252-E53A-4900-A2C5-9550D008DF8B}.Release|iPhone.Build.0 = Release|Any CPU
+		{2012F252-E53A-4900-A2C5-9550D008DF8B}.Release|iPhoneSimulator.ActiveCfg = Release|Any CPU
+		{2012F252-E53A-4900-A2C5-9550D008DF8B}.Release|iPhoneSimulator.Build.0 = Release|Any CPU
+		{2012F252-E53A-4900-A2C5-9550D008DF8B}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{2012F252-E53A-4900-A2C5-9550D008DF8B}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{2012F252-E53A-4900-A2C5-9550D008DF8B}.Release|x86.ActiveCfg = Release|Any CPU
+		{2012F252-E53A-4900-A2C5-9550D008DF8B}.Release|x86.Build.0 = Release|Any CPU
 		{35253CE1-C864-4CD3-8249-4D1319748E8F}.Debug|Any CPU.ActiveCfg = Debug|x86
 		{35253CE1-C864-4CD3-8249-4D1319748E8F}.Debug|Any CPU.Build.0 = Debug|x86
 		{35253CE1-C864-4CD3-8249-4D1319748E8F}.Debug|iPhone.ActiveCfg = Debug|x86
@@ -444,7 +466,7 @@ Global
 		{86A219E2-C8F1-422B-C762-C69D5BB07C98} = {A28FF8DB-5350-4D08-A94D-93C3C67FCB63}
 	EndGlobalSection
 	GlobalSection(MonoDevelopProperties) = preSolution
-		StartupItem = Linux\RenderTarget2DSample\RenderTarget2DSample.csproj
+		StartupItem = Linux\StarWarrior\StarWarrior.csproj
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
