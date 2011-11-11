@@ -1,9 +1,12 @@
 using System;
 
-namespace MouseGetStateAndIsMouseVisibleTester
+namespace GamePadTest
 {
 	static class Program
 	{
+
+
+		private static Game1 game;
 
 		/// <summary>
 		/// The main entry point for the application.
@@ -18,12 +21,13 @@ namespace MouseGetStateAndIsMouseVisibleTester
 			}
 		}
 
+	
 		class AppDelegate : MonoMac.AppKit.NSApplicationDelegate
 		{
-
+		
 			public override void FinishedLaunching (MonoMac.Foundation.NSObject notification)
 			{
-				using (Game1 game = new Game1()) {
+				using (game = new Game1()) {
 					game.Run ();
 				}
 			}
@@ -35,4 +39,6 @@ namespace MouseGetStateAndIsMouseVisibleTester
 		}
 	}
 }
+
+
 
