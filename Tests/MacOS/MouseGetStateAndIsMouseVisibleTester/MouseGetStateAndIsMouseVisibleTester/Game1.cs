@@ -37,13 +37,13 @@ namespace MouseGetStateAndIsMouseVisibleTester
 			Window.AllowUserResizing = true;
 
 			 // Subscribe to the game window's ClientSizeChanged event.
-			Window.ClientSizeChanged += new EventHandler( Window_ClientSizeChanged );
+			Window.ClientSizeChanged += Window_ClientSizeChanged;
         }
 
     void Window_ClientSizeChanged( object sender, EventArgs e )
     {
 			// Make changes to handle the new window size.
-			//Console.WriteLine("Window size changed " + Window.ClientBounds);
+			Console.WriteLine("Window size changed " + Window.ClientBounds);
     }
 
         protected override void Initialize()
@@ -71,6 +71,7 @@ namespace MouseGetStateAndIsMouseVisibleTester
 
             aObjects.pos.X = 200;
             aObjects.pos.Y = 200;
+			//this.Window.Window.StyleMask = this.Window.Window.StyleMask | NSWindowStyle.Miniaturizable;
         }
 
 
