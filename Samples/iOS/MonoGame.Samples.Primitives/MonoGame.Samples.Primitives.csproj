@@ -1,28 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>9.0.21022</ProductVersion>
+    <Platform Condition=" '$(Platform)' == '' ">iPhoneSimulator</Platform>
+    <ProductVersion>10.0.0</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{F5FA28E2-53B2-482B-8723-71588DF50BB6}</ProjectGuid>
+    <ProjectGuid>{C212EEE3-E38E-4F0A-9B98-779694A886DB}</ProjectGuid>
     <ProjectTypeGuids>{6BC8ED88-2882-458C-8E55-DFD12B67127B};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <OutputType>Exe</OutputType>
-    <RootNamespace>MonoGame.Samples.BouncingBox</RootNamespace>
+    <RootNamespace>Primitives</RootNamespace>
+    <AssemblyName>MonoGameSamplesPrimitives</AssemblyName>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|iPhoneSimulator' ">
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>bin\iPhoneSimulator\Debug</OutputPath>
-    <DefineConstants>DEBUG</DefineConstants>
+    <DefineConstants>DEBUG;IPHONE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <ConsolePause>false</ConsolePause>
     <MtouchLink>None</MtouchLink>
     <MtouchDebug>true</MtouchDebug>
-    <MtouchI18n />
-    <MtouchUseArmv7>false</MtouchUseArmv7>
-    <AssemblyName>BouncingBox</AssemblyName>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|iPhoneSimulator' ">
     <DebugType>none</DebugType>
@@ -30,52 +29,29 @@
     <OutputPath>bin\iPhoneSimulator\Release</OutputPath>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <MtouchI18n />
-    <MtouchUseArmv7>false</MtouchUseArmv7>
-    <AssemblyName>BouncingBox</AssemblyName>
+    <ConsolePause>false</ConsolePause>
+    <MtouchLink>None</MtouchLink>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|iPhone' ">
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>bin\iPhone\Debug</OutputPath>
-    <DefineConstants>DEBUG</DefineConstants>
+    <DefineConstants>DEBUG;</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
+    <ConsolePause>false</ConsolePause>
     <MtouchDebug>true</MtouchDebug>
-    <MtouchI18n />
-    <MtouchSdkVersion>4.0</MtouchSdkVersion>
-    <MtouchUseArmv7>false</MtouchUseArmv7>
-    <AssemblyName>BouncingBox</AssemblyName>
+    <CodesignKey>iPhone Developer</CodesignKey>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|iPhone' ">
     <DebugType>none</DebugType>
-    <Optimize>true</Optimize>
+    <Optimize>false</Optimize>
     <OutputPath>bin\iPhone\Release</OutputPath>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <MtouchI18n />
+    <ConsolePause>false</ConsolePause>
     <CodesignKey>iPhone Developer</CodesignKey>
-    <MtouchSdkVersion>4.0</MtouchSdkVersion>
-    <MtouchUseArmv7>false</MtouchUseArmv7>
-    <AssemblyName>BouncingBox</AssemblyName>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugType>none</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug</OutputPath>
-    <WarningLevel>4</WarningLevel>
-    <AssemblyName>MonoGameSamplesBouncingBox</AssemblyName>
-    <MtouchUseArmv7>false</MtouchUseArmv7>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>none</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Release</OutputPath>
-    <WarningLevel>4</WarningLevel>
-    <AssemblyName>MonoGameSamplesBouncingBox</AssemblyName>
-    <MtouchUseArmv7>false</MtouchUseArmv7>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -84,24 +60,25 @@
     <Reference Include="monotouch" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="main.cs" />
-    <Compile Include="Game1.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Content\" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Content\monogameicon.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Default.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
+    <None Include="Info.plist" />
+    <None Include="..\..\MacOS\Primitives\Game.ico">
+      <Link>Game.ico</Link>
+    </None>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
-    <None Include="monogameicon.png" />
-    <None Include="Info.plist" />
+    <Compile Include="Program.cs" />
+    <Compile Include="..\..\MacOS\Primitives\PrimitiveBatch.cs">
+      <Link>PrimitiveBatch.cs</Link>
+    </Compile>
+    <Compile Include="..\..\MacOS\Primitives\PrimitivesSampleGame.cs">
+      <Link>PrimitivesSampleGame.cs</Link>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="..\..\MacOS\Primitives\GameThumbnail.png">
+      <Link>GameThumbnail.png</Link>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\..\MonoGame\MonoGame.Framework\MonoGame.Framework.iOS.csproj">
