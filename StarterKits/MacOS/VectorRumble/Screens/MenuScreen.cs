@@ -105,8 +105,6 @@ namespace VectorRumble
                 audioManager.PlayCue("menuMove");
             }
 			
-			OnSelectEntry(selectedEntry);
-			
             // Accept or cancel the menu?
             if (input.MenuSelect)
             {

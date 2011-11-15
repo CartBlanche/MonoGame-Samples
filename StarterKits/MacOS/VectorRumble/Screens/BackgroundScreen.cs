@@ -72,8 +72,13 @@ namespace VectorRumble
             int viewportHeight = ScreenManager.GraphicsDevice.Viewport.Height;
 
             // update the projection in the line-batch
+#if ORIGINAL
             lineBatch.SetProjection(Matrix.CreateOrthographicOffCenter(0.0f,
                 viewportWidth, viewportHeight, 0.0f, 0.0f, 1.0f));
+#else
+			lineBatch.SetProjection(Matrix.CreateOrthographic(
+                viewportWidth, viewportHeight, 0.0f, 1.0f));
+#endif
 
             // recreate the particle systems
             particleSystems.Clear();

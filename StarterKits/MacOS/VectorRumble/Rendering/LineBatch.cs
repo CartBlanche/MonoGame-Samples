@@ -78,7 +78,7 @@ namespace VectorRumble
             }
             this.graphicsDevice = graphicsDevice;
 			
-#if !IOS && !MONOMAC && !ANDROID
+
             // create and configure the effect
             this.effect = new BasicEffect(graphicsDevice, null);
             this.effect.VertexColorEnabled = true;
@@ -88,7 +88,6 @@ namespace VectorRumble
             this.effect.World = Matrix.Identity;
             this.effect.View = Matrix.CreateLookAt(Vector3.Zero, Vector3.Forward,
                 Vector3.Up);
-#endif
             
 			var vd = VertexPositionColor.VertexDeclaration.GetVertexElements();
             // create the vertex declaration
@@ -239,13 +238,11 @@ namespace VectorRumble
             graphicsDevice.BlendState = LineBlendState;
 
             // run the effect
-#if !IOS && !MONOMAC && !ANDROID
 			foreach (EffectPass pass in effect.CurrentTechnique.Passes)
 			{
 				pass.Apply();
 				graphicsDevice.DrawUserPrimitives<VertexPositionColor>(PrimitiveType.LineList, vertices, 0, lineCount);
 			}
-#endif
         }
         #endregion
 

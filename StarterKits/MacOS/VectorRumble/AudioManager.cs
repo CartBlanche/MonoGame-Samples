@@ -89,11 +89,13 @@ namespace VectorRumble
         /// <param name="cueName">The name of the music cue to play.</param>
         public void PlayMusic(string cueName)
         {
+#if AUDIO
             // if music is already playing, stop it
             StopMusic();
             // start the new music cue
             musicCue = GetCue(cueName);
             musicCue.Play();
+#endif
         }
 
         /// <summary>

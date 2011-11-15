@@ -41,9 +41,10 @@ namespace VectorRumble
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
 			
-#if IOS || ANDROID
-            graphics.PreferredBackBufferWidth = 640;
-            graphics.PreferredBackBufferHeight = 480;
+#if IOS || ANDROID // iPad or Tablets only
+            graphics.PreferredBackBufferWidth = 1024;
+            graphics.PreferredBackBufferHeight = 748;
+			//graphics.SupportedOrientations = DisplayOrientation.LandscapeLeft | DisplayOrientation.LandscapeRight;
 #else
 			graphics.PreferredBackBufferWidth = 1280;
             graphics.PreferredBackBufferHeight = 720;

@@ -16,7 +16,7 @@
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>bin\Debug</OutputPath>
-    <DefineConstants>DEBUG;MONOMAC</DefineConstants>
+    <DefineConstants>DEBUG;MONOMAC;SHADER_EFFECTS</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <ConsolePause>false</ConsolePause>
@@ -118,6 +118,9 @@
     <Content Include="Content\Textures\title.png" />
     <Content Include="Content\Fonts\retroMedium.xnb" />
     <Content Include="Content\Fonts\retroSmall.xnb" />
+    <Content Include="Content\Effects\BloomCombine.fsh" />
+    <Content Include="Content\Effects\BloomExtract.fsh" />
+    <Content Include="Content\Effects\GaussianBlur.fsh" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\..\MonoGame\MonoGame.Framework\MonoGame.Framework.MacOS.csproj">
