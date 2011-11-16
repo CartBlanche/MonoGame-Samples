@@ -184,6 +184,16 @@ namespace VectorRumble
         private GamePadState lastGamePadState;
 
         /// <summary>
+        /// The current state of the Keyboard that is controlling this ship.
+        /// </summary>
+        private KeyboardState currentKeyboardState;
+
+        /// <summary>
+        /// The previous state of the Keyboard that is controlling this ship.
+        /// </summary>
+        private KeyboardState lastKeyboardState;
+
+        /// <summary>
         /// Timer for how long the player has been holding the A button (to join).
         /// </summary>
         private float aButtonTimer = 0f;
@@ -612,12 +622,14 @@ namespace VectorRumble
         public virtual void ProcessInput(float elapsedTime, bool overlayPresent)
         {
             currentGamePadState = GamePad.GetState(playerIndex);
+            currentKeyboardState = Keyboard.GetState();
+
             if (overlayPresent == false)
             {
                 if (playing == false)
                 {
                     // trying to join - update the a-button timer
-                    if (currentGamePadState.Buttons.A == ButtonState.Pressed)
+                    if ((currentGamePadState.Buttons.A == ButtonState.Pressed) || (currentKeyboardState.IsKeyDown(Keys.A) && playerIndex == PlayerIndex.Two))                    
                     {
                         aButtonTimer += elapsedTime;
                     }
@@ -635,7 +647,7 @@ namespace VectorRumble
                 else
                 {
                     // check if we're trying to leave
-                    if (currentGamePadState.Buttons.B == ButtonState.Pressed)
+                    if ((currentGamePadState.Buttons.B == ButtonState.Pressed) || (currentKeyboardState.IsKeyDown(Keys.B) && playerIndex == PlayerIndex.Two))
                     {
                         bButtonTimer += elapsedTime;
                     }
@@ -681,6 +693,51 @@ namespace VectorRumble
                             }
 
                         }
+                        else if (currentKeyboardState != null && playerIndex == PlayerIndex.Two)
+                        {
+                            // Rotate Left            
+                            if (currentKeyboardState.IsKeyDown(Keys.Left))
+                            {
+                                Rotation -= elapsedTime * rotationRadiansPerSecond;
+                            }
+
+                            // Rotate Right
+                            if (currentKeyboardState.IsKeyDown(Keys.Right))
+                            {
+                                Rotation += elapsedTime * rotationRadiansPerSecond;
+                            }
+
+                            //create some velocity if the right trigger is down
+                            Vector2 shipVelocityAdd = Vector2.Zero;
+
+                            //now scale our direction by how hard/long the trigger/keyboard is down
+                            if (currentKeyboardState.IsKeyDown(Keys.Up))
+                            {
+                                //find out what direction we should be thrusting, using rotation
+                                shipVelocityAdd.X = (float)Math.Sin(Rotation);
+                                shipVelocityAdd.Y = (float)-Math.Cos(Rotation);
+
+                                shipVelocityAdd = shipVelocityAdd / elapsedTime * MathHelper.ToRadians(9.0f);
+                            }
+
+                            //finally, add this vector to our velocity.
+                            Velocity += shipVelocityAdd;
+
+                            // Lets drop some Mines
+                            if (currentKeyboardState.IsKeyDown(Keys.RightControl))
+                            {
+                                // fire ahead of us
+                                weapon.Fire(Vector2.Normalize(forward));
+                            }
+
+                            // Lets drop some Mines
+                            if (currentKeyboardState.IsKeyDown(Keys.Down))
+                            {
+                                // fire behind the ship
+                                mineWeapon.Fire(-forward);
+                            }
+                        }
+
                         // check for firing with the right stick
                         Vector2 rightStick = currentGamePadState.ThumbSticks.Right;
                         rightStick.Y *= -1f;
@@ -701,6 +758,7 @@ namespace VectorRumble
 
             // update the gamepad state
             lastGamePadState = currentGamePadState;
+            lastKeyboardState = currentKeyboardState;
             return;
         }
         #endregion

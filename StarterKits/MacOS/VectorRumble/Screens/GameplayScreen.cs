@@ -97,15 +97,9 @@ namespace VectorRumble
             starTexture = content.Load<Texture2D>("Textures/blank");
 
             // update the projection in the line-batch
-#if ORIGINAL
             lineBatch.SetProjection(Matrix.CreateOrthographicOffCenter(0.0f,
                 ScreenManager.GraphicsDevice.Viewport.Width, 
                 ScreenManager.GraphicsDevice.Viewport.Height, 0.0f, 0.0f, 1.0f));
-#else
-			lineBatch.SetProjection(Matrix.CreateOrthographic(
-                ScreenManager.GraphicsDevice.Viewport.Width, 
-                ScreenManager.GraphicsDevice.Viewport.Height, 0.0f, 1.0f));
-#endif
         }
 
 

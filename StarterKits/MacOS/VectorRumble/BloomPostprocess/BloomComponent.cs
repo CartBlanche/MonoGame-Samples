@@ -33,7 +33,7 @@ namespace VectorRumble
         Effect bloomCombineEffect;
         Effect gaussianBlurEffect;
 
-        ResolveTexture2D resolveTarget;
+        RenderTarget2D resolveTarget;
         RenderTarget2D renderTarget1;
         RenderTarget2D renderTarget2;
 
@@ -104,8 +104,7 @@ namespace VectorRumble
             SurfaceFormat format = pp.BackBufferFormat;
 
             // Create a texture for reading back the backbuffer contents.
-            resolveTarget = new ResolveTexture2D(GraphicsDevice, width, height, 1, 
-                format);
+            resolveTarget = new RenderTarget2D(GraphicsDevice, width, height, true, format, DepthFormat.None);
 
             // Create two rendertargets for the bloom processing. These are half the
             // size of the backbuffer, in order to minimize fillrate costs. Reducing
@@ -144,7 +143,7 @@ namespace VectorRumble
 #if SHADER_EFFECTS
             // Resolve the scene into a texture, so we can
             // use it as input data for the bloom processing.
-            GraphicsDevice.ResolveBackBuffer(resolveTarget);
+            // GraphicsDevice.ResolveBackBuffer(resolveTarget);
 
             // Pass 1: draw the scene into rendertarget 1, using a
             // shader that extracts only the brightest parts of the image.

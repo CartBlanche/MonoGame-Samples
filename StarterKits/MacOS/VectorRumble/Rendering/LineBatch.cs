@@ -80,7 +80,7 @@ namespace VectorRumble
 			
 
             // create and configure the effect
-            this.effect = new BasicEffect(graphicsDevice, null);
+            this.effect = new BasicEffect(graphicsDevice);
             this.effect.VertexColorEnabled = true;
             this.effect.TextureEnabled = false;
             this.effect.LightingEnabled = false;
@@ -219,6 +219,43 @@ namespace VectorRumble
             }
         }
 
+        /// <summary>
+        /// Draws the given polygon, in defined segments.
+        /// </summary>
+        /// <param name="aPolygon">The polygon to render.</param>
+        /// <param name="aColor">The color to use when drawing the polygon.</param>
+        /// <param name="aDashed">If true, the polygon will be "dashed".</param>
+        /// <param name="aStartSeg">Start of segment drawing.</param>
+        /// <param name="aEndSeg">End of segment drawing.</param>
+        public void DrawPolygonSegments(VectorPolygon aPolygon, Color aColor, bool aDashed, int aStartSeg, int aEndSeg)
+        {
+            if (aPolygon == null || aEndSeg > aPolygon.TransformedPoints.Length)
+            {
+                throw new ArgumentNullException("polygon");
+            }
+            int step = (aDashed == true) ? 2 : 1;
+            for (int i = aStartSeg; i < aEndSeg; i += step)
+            {
+                if (currentIndex >= vertices.Length - 2)
+                {
+                    End();
+                    Begin();
+                }
+                vertices[currentIndex].Position.X =
+                    aPolygon.TransformedPoints[i % aPolygon.TransformedPoints.Length].X;
+                vertices[currentIndex].Position.Y =
+                    aPolygon.TransformedPoints[i % aPolygon.TransformedPoints.Length].Y;
+                vertices[currentIndex++].Color = aColor;
+                vertices[currentIndex].Position.X =
+                    aPolygon.TransformedPoints[(i + 1) %
+                        aPolygon.TransformedPoints.Length].X;
+                vertices[currentIndex].Position.Y =
+                    aPolygon.TransformedPoints[(i + 1) %
+                        aPolygon.TransformedPoints.Length].Y;
+                vertices[currentIndex++].Color = aColor;
+                lineCount++;
+            }
+        }
 
         /// <summary>
         /// Ends the batch of lines, submitting them to the graphics device.
@@ -230,9 +267,6 @@ namespace VectorRumble
             {
                 return;
             }
-
-            // configure the graphics device and effect
-            graphicsDevice.VertexDeclaration = vertexDeclaration;
 
             // configure the graphics device to render our lines			
             graphicsDevice.BlendState = LineBlendState;

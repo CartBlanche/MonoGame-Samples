@@ -51,8 +51,9 @@ namespace VectorRumble
             string soundBankFile)
             : base(game)
         {
-            engine = new AudioEngine(settingsFile);
+            
 #if AUDIO
+            engine = new AudioEngine(settingsFile);
             waves = new WaveBank(engine, waveBankFile);
             sounds = new SoundBank(engine, soundBankFile);
 #endif

@@ -145,7 +145,7 @@ namespace VectorRumble
 
             // calculate the message position and size
             float textScale = 1.5f + 0.05f * 
-                (float)Math.Cos(gameTime.TotalRealTime.TotalSeconds * 8.0f);
+                (float)Math.Cos(gameTime.TotalGameTime.TotalSeconds * 8.0f);
             Vector2 textSize = ScreenManager.Font.MeasureString(message);
             Vector2 textPosition = new Vector2(
                 viewportSize.X / 2f - textSize.X / 2f * textScale,
