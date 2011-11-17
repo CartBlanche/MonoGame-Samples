@@ -70,6 +70,6 @@ Global
 		{F4D3F373-0259-43BD-9EC3-6DDAD2AE2C1B} = {4A2BA8B5-D400-43E7-A721-8114838CCFE1}
 	EndGlobalSection
 	GlobalSection(MonoDevelopProperties) = preSolution
-		StartupItem = ..\..\MonoGame\ThirdParty\Lidgren.Network\Lidgren.Network.MacOS.csproj
+		StartupItem = MacOS\VectorRumble\VectorRumble.csproj
 	EndGlobalSection
 EndGlobal

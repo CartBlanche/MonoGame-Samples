@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lidgren.Network.MacOS", "..
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GamePadTest", "MacOS\GamePadTest\GamePadTest.csproj", "{E251B0C1-ED74-4210-A0D5-9E4710FEA61F}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PrimitivesTest", "MacOS\PrimitivesTest\PrimitivesTest.csproj", "{9704681E-C6DB-4946-9F31-0EF9BE63090A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x86 = Debug|x86
@@ -28,6 +30,12 @@ Global
 		{7B2F1E86-1B56-4F78-9265-EA8852442171}.Distribution|Any CPU.Build.0 = Debug|x86
 		{7B2F1E86-1B56-4F78-9265-EA8852442171}.Release|x86.ActiveCfg = Release|x86
 		{7B2F1E86-1B56-4F78-9265-EA8852442171}.Release|x86.Build.0 = Release|x86
+		{9704681E-C6DB-4946-9F31-0EF9BE63090A}.Debug|x86.ActiveCfg = Debug|x86
+		{9704681E-C6DB-4946-9F31-0EF9BE63090A}.Debug|x86.Build.0 = Debug|x86
+		{9704681E-C6DB-4946-9F31-0EF9BE63090A}.Distribution|Any CPU.ActiveCfg = Debug|x86
+		{9704681E-C6DB-4946-9F31-0EF9BE63090A}.Distribution|Any CPU.Build.0 = Debug|x86
+		{9704681E-C6DB-4946-9F31-0EF9BE63090A}.Release|x86.ActiveCfg = Release|x86
+		{9704681E-C6DB-4946-9F31-0EF9BE63090A}.Release|x86.Build.0 = Release|x86
 		{AE483C29-042E-4226-BA52-D247CE7676DA}.Debug|x86.ActiveCfg = Debug|Any CPU
 		{AE483C29-042E-4226-BA52-D247CE7676DA}.Debug|x86.Build.0 = Debug|Any CPU
 		{AE483C29-042E-4226-BA52-D247CE7676DA}.Distribution|Any CPU.ActiveCfg = Debug|Any CPU
@@ -42,6 +50,6 @@ Global
 		{E251B0C1-ED74-4210-A0D5-9E4710FEA61F}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(MonoDevelopProperties) = preSolution
-		StartupItem = MacOS\MouseGetStateAndIsMouseVisibleTester\MouseGetStateAndIsMouseVisibleTester\MouseGetStateAndIsMouseVisibleTester.csproj
+		StartupItem = MacOS\PrimitivesTest\PrimitivesTest.csproj
 	EndGlobalSection
 EndGlobal
