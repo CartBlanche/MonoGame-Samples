@@ -1,6 +1,6 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 10.00
-# Visual Studio 2008
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Platformer", "iOS\Platformer\Platformer.csproj", "{9964D44C-AD60-497E-8ED3-1DE22F53CEED}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lidgren.Network.iOS", "..\..\MonoGame\ThirdParty\Lidgren.Network\Lidgren.Network.iOS.csproj", "{734EAA48-F1CA-481A-B391-0285BC0E8B40}"
@@ -17,6 +17,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlackJack.iOS", "iOS\Cards\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CardsFramework.iOS", "iOS\Cards\CardsFramework.iOS.csproj", "{91CF4A04-9FDC-471D-AED0-D8F057068230}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VectorRumble.iOS", "iOS\VectorRumble\VectorRumble.iOS.csproj", "{1112251F-412F-443D-AA19-BDB5FA6B3CBA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MemoryMadness", "iOS\MemoryMadness\MemoryMadness.csproj", "{296EBAC0-9658-474D-9A9E-5A8F52BA316F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|iPhoneSimulator = Debug|iPhoneSimulator
@@ -25,6 +29,14 @@ Global
 		Release|iPhone = Release|iPhone
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{1112251F-412F-443D-AA19-BDB5FA6B3CBA}.Debug|iPhone.ActiveCfg = Debug|iPhone
+		{1112251F-412F-443D-AA19-BDB5FA6B3CBA}.Debug|iPhone.Build.0 = Debug|iPhone
+		{1112251F-412F-443D-AA19-BDB5FA6B3CBA}.Debug|iPhoneSimulator.ActiveCfg = Debug|iPhoneSimulator
+		{1112251F-412F-443D-AA19-BDB5FA6B3CBA}.Debug|iPhoneSimulator.Build.0 = Debug|iPhoneSimulator
+		{1112251F-412F-443D-AA19-BDB5FA6B3CBA}.Release|iPhone.ActiveCfg = Release|iPhone
+		{1112251F-412F-443D-AA19-BDB5FA6B3CBA}.Release|iPhone.Build.0 = Release|iPhone
+		{1112251F-412F-443D-AA19-BDB5FA6B3CBA}.Release|iPhoneSimulator.ActiveCfg = Release|iPhoneSimulator
+		{1112251F-412F-443D-AA19-BDB5FA6B3CBA}.Release|iPhoneSimulator.Build.0 = Release|iPhoneSimulator
 		{1B9C099B-3958-4E11-A178-1E3B6ED34FC7}.Debug|iPhone.ActiveCfg = Debug|iPhone
 		{1B9C099B-3958-4E11-A178-1E3B6ED34FC7}.Debug|iPhone.Build.0 = Debug|iPhone
 		{1B9C099B-3958-4E11-A178-1E3B6ED34FC7}.Debug|iPhoneSimulator.ActiveCfg = Debug|iPhoneSimulator
@@ -33,6 +45,14 @@ Global
 		{1B9C099B-3958-4E11-A178-1E3B6ED34FC7}.Release|iPhone.Build.0 = Release|iPhone
 		{1B9C099B-3958-4E11-A178-1E3B6ED34FC7}.Release|iPhoneSimulator.ActiveCfg = Release|iPhoneSimulator
 		{1B9C099B-3958-4E11-A178-1E3B6ED34FC7}.Release|iPhoneSimulator.Build.0 = Release|iPhoneSimulator
+		{296EBAC0-9658-474D-9A9E-5A8F52BA316F}.Debug|iPhone.ActiveCfg = Debug|iPhone
+		{296EBAC0-9658-474D-9A9E-5A8F52BA316F}.Debug|iPhone.Build.0 = Debug|iPhone
+		{296EBAC0-9658-474D-9A9E-5A8F52BA316F}.Debug|iPhoneSimulator.ActiveCfg = Debug|iPhoneSimulator
+		{296EBAC0-9658-474D-9A9E-5A8F52BA316F}.Debug|iPhoneSimulator.Build.0 = Debug|iPhoneSimulator
+		{296EBAC0-9658-474D-9A9E-5A8F52BA316F}.Release|iPhone.ActiveCfg = Release|iPhone
+		{296EBAC0-9658-474D-9A9E-5A8F52BA316F}.Release|iPhone.Build.0 = Release|iPhone
+		{296EBAC0-9658-474D-9A9E-5A8F52BA316F}.Release|iPhoneSimulator.ActiveCfg = Release|iPhoneSimulator
+		{296EBAC0-9658-474D-9A9E-5A8F52BA316F}.Release|iPhoneSimulator.Build.0 = Release|iPhoneSimulator
 		{734EAA48-F1CA-481A-B391-0285BC0E8B40}.Debug|iPhone.ActiveCfg = Debug|Any CPU
 		{734EAA48-F1CA-481A-B391-0285BC0E8B40}.Debug|iPhone.Build.0 = Debug|Any CPU
 		{734EAA48-F1CA-481A-B391-0285BC0E8B40}.Debug|iPhoneSimulator.ActiveCfg = Debug|Any CPU
