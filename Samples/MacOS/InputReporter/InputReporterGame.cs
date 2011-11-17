@@ -190,7 +190,7 @@ namespace InputReporter
                 (float)Math.Floor(deadZoneInstructionsPosition.Y +
                 dataFont.LineSpacing * 1.7f));
 
-            backgroundTexture = Content.Load<Texture2D>("Textures\\Background");
+            backgroundTexture = Content.Load<Texture2D>("Textures\\background");
             connectedControllerTextures[0] =
                 Content.Load<Texture2D>("Textures\\connected_controller1");
             connectedControllerTextures[1] =
