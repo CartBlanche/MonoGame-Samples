@@ -43,6 +43,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonoGame.Samples.FloodContr
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StarWarrior", "Linux\StarWarrior\StarWarrior.csproj", "{2012F252-E53A-4900-A2C5-9550D008DF8B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InputReporter", "Linux\InputReporter\InputReporter.csproj", "{EC1FA46A-41D3-4F6E-8712-70133CCB3C6A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -457,6 +459,26 @@ Global
 		{EB1F36EC-5DB8-41AC-AB99-E9337239A9F9}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{EB1F36EC-5DB8-41AC-AB99-E9337239A9F9}.Release|x86.ActiveCfg = Release|Any CPU
 		{EB1F36EC-5DB8-41AC-AB99-E9337239A9F9}.Release|x86.Build.0 = Release|Any CPU
+		{EC1FA46A-41D3-4F6E-8712-70133CCB3C6A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EC1FA46A-41D3-4F6E-8712-70133CCB3C6A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EC1FA46A-41D3-4F6E-8712-70133CCB3C6A}.Debug|iPhone.ActiveCfg = Debug|Any CPU
+		{EC1FA46A-41D3-4F6E-8712-70133CCB3C6A}.Debug|iPhone.Build.0 = Debug|Any CPU
+		{EC1FA46A-41D3-4F6E-8712-70133CCB3C6A}.Debug|iPhoneSimulator.ActiveCfg = Debug|Any CPU
+		{EC1FA46A-41D3-4F6E-8712-70133CCB3C6A}.Debug|iPhoneSimulator.Build.0 = Debug|Any CPU
+		{EC1FA46A-41D3-4F6E-8712-70133CCB3C6A}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{EC1FA46A-41D3-4F6E-8712-70133CCB3C6A}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{EC1FA46A-41D3-4F6E-8712-70133CCB3C6A}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{EC1FA46A-41D3-4F6E-8712-70133CCB3C6A}.Debug|x86.Build.0 = Debug|Any CPU
+		{EC1FA46A-41D3-4F6E-8712-70133CCB3C6A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EC1FA46A-41D3-4F6E-8712-70133CCB3C6A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EC1FA46A-41D3-4F6E-8712-70133CCB3C6A}.Release|iPhone.ActiveCfg = Release|Any CPU
+		{EC1FA46A-41D3-4F6E-8712-70133CCB3C6A}.Release|iPhone.Build.0 = Release|Any CPU
+		{EC1FA46A-41D3-4F6E-8712-70133CCB3C6A}.Release|iPhoneSimulator.ActiveCfg = Release|Any CPU
+		{EC1FA46A-41D3-4F6E-8712-70133CCB3C6A}.Release|iPhoneSimulator.Build.0 = Release|Any CPU
+		{EC1FA46A-41D3-4F6E-8712-70133CCB3C6A}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{EC1FA46A-41D3-4F6E-8712-70133CCB3C6A}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{EC1FA46A-41D3-4F6E-8712-70133CCB3C6A}.Release|x86.ActiveCfg = Release|Any CPU
+		{EC1FA46A-41D3-4F6E-8712-70133CCB3C6A}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{9522776F-02BA-4BED-B8BB-6BAE580F4068} = {A28FF8DB-5350-4D08-A94D-93C3C67FCB63}
