@@ -10,7 +10,7 @@ float2 SampleOffsets[SAMPLE_COUNT];
 float SampleWeights[SAMPLE_COUNT];
 
 
-float4 PixelShader(float2 texCoord : TEXCOORD0) : COLOR0
+float4 PixelShaderFunction(float2 texCoord : TEXCOORD0) : COLOR0
 {
     float4 c = 0;
     
@@ -28,6 +28,6 @@ technique GaussianBlur
 {
     pass Pass1
     {
-        PixelShader = compile ps_2_0 PixelShader();
+        PixelShader = compile ps_2_0 PixelShaderFunction();
     }
 }
