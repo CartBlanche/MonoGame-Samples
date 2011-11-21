@@ -15,6 +15,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VectorRumble", "..\StarterK
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Primitives", "..\Samples\MacOS\Primitives\Primitives.csproj", "{2DDBFED4-9955-4F02-9937-B9AE82836329}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TexturedQuad", "..\Samples\MacOS\TexturedQuad\TexturedQuad.csproj", "{ECD1D53E-F50A-4299-9B0F-2F64D6063513}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x86 = Debug|x86
@@ -64,9 +66,15 @@ Global
 		{E251B0C1-ED74-4210-A0D5-9E4710FEA61F}.Distribution|Any CPU.Build.0 = Debug|x86
 		{E251B0C1-ED74-4210-A0D5-9E4710FEA61F}.Release|x86.ActiveCfg = Release|x86
 		{E251B0C1-ED74-4210-A0D5-9E4710FEA61F}.Release|x86.Build.0 = Release|x86
+		{ECD1D53E-F50A-4299-9B0F-2F64D6063513}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{ECD1D53E-F50A-4299-9B0F-2F64D6063513}.Debug|x86.Build.0 = Debug|Any CPU
+		{ECD1D53E-F50A-4299-9B0F-2F64D6063513}.Distribution|Any CPU.ActiveCfg = Debug|Any CPU
+		{ECD1D53E-F50A-4299-9B0F-2F64D6063513}.Distribution|Any CPU.Build.0 = Debug|Any CPU
+		{ECD1D53E-F50A-4299-9B0F-2F64D6063513}.Release|x86.ActiveCfg = Release|Any CPU
+		{ECD1D53E-F50A-4299-9B0F-2F64D6063513}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(MonoDevelopProperties) = preSolution
-		StartupItem = ..\StarterKits\MacOS\VectorRumble\VectorRumble.csproj
+		StartupItem = ..\Samples\MacOS\TexturedQuad\TexturedQuad.csproj
 		Policies = $0
 		$0.TextStylePolicy = $1
 		$1.FileWidth = 120
