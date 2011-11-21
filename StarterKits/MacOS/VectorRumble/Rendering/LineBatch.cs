@@ -88,7 +88,7 @@ namespace VectorRumble
             this.effect.World = Matrix.Identity;
             this.effect.View = Matrix.CreateLookAt(Vector3.Zero, Vector3.Forward,
                 Vector3.Up);
-            
+
 			var vd = VertexPositionColor.VertexDeclaration.GetVertexElements();
             // create the vertex declaration
             this.vertexDeclaration = new VertexDeclaration(vd);

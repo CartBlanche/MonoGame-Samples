@@ -82,10 +82,10 @@ namespace PrimitivesSample
 
             // projection uses CreateOrthographicOffCenter to create 2d projection
             // matrix with 0,0 in the upper left.
-            //basicEffect.Projection = Matrix.CreateOrthographicOffCenter
-            //    (0, graphicsDevice.Viewport.Width,
-            //    graphicsDevice.Viewport.Height, 0,
-            //    0, 1);
+            basicEffect.Projection = Matrix.CreateOrthographicOffCenter
+                (0, graphicsDevice.Viewport.Width,
+                graphicsDevice.Viewport.Height, 0,
+                0, 1);
             this.basicEffect.World = Matrix.Identity;
             this.basicEffect.View = Matrix.CreateLookAt(Vector3.Zero, Vector3.Forward,
                 Vector3.Up);
