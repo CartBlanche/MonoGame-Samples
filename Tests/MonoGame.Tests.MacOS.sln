@@ -17,6 +17,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Primitives", "..\Samples\Ma
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TexturedQuad", "..\Samples\MacOS\TexturedQuad\TexturedQuad.csproj", "{ECD1D53E-F50A-4299-9B0F-2F64D6063513}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StateObjectWindows", "..\Samples\MacOS\StateObjectWindows\StateObjectWindows.csproj", "{51147863-7B4E-4467-A5FA-986259EB686F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x86 = Debug|x86
@@ -36,6 +38,12 @@ Global
 		{36C538E6-C32A-4A8D-A39C-566173D7118E}.Distribution|Any CPU.Build.0 = Distribution|Any CPU
 		{36C538E6-C32A-4A8D-A39C-566173D7118E}.Release|x86.ActiveCfg = Release|Any CPU
 		{36C538E6-C32A-4A8D-A39C-566173D7118E}.Release|x86.Build.0 = Release|Any CPU
+		{51147863-7B4E-4467-A5FA-986259EB686F}.Debug|x86.ActiveCfg = Debug|x86
+		{51147863-7B4E-4467-A5FA-986259EB686F}.Debug|x86.Build.0 = Debug|x86
+		{51147863-7B4E-4467-A5FA-986259EB686F}.Distribution|Any CPU.ActiveCfg = Debug|x86
+		{51147863-7B4E-4467-A5FA-986259EB686F}.Distribution|Any CPU.Build.0 = Debug|x86
+		{51147863-7B4E-4467-A5FA-986259EB686F}.Release|x86.ActiveCfg = Release|x86
+		{51147863-7B4E-4467-A5FA-986259EB686F}.Release|x86.Build.0 = Release|x86
 		{7B2F1E86-1B56-4F78-9265-EA8852442171}.Debug|x86.ActiveCfg = Debug|x86
 		{7B2F1E86-1B56-4F78-9265-EA8852442171}.Debug|x86.Build.0 = Debug|x86
 		{7B2F1E86-1B56-4F78-9265-EA8852442171}.Distribution|Any CPU.ActiveCfg = Debug|x86
@@ -74,7 +82,7 @@ Global
 		{ECD1D53E-F50A-4299-9B0F-2F64D6063513}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(MonoDevelopProperties) = preSolution
-		StartupItem = ..\Samples\MacOS\TexturedQuad\TexturedQuad.csproj
+		StartupItem = ..\Samples\MacOS\StateObjectWindows\StateObjectWindows.csproj
 		Policies = $0
 		$0.TextStylePolicy = $1
 		$1.FileWidth = 120
