@@ -41,7 +41,7 @@ namespace Colored3DCube
 			basicEffect.World = worldMatrix;
 			basicEffect.View = viewMatrix;
 			basicEffect.Projection = projectionMatrix;
-			basicEffect.VertexColorEnabled = true;
+			//basicEffect.VertexColorEnabled = true;
 
 			CreateCubeVertexBuffer ();
 			CreateCubeIndexBuffer ();
@@ -85,8 +85,6 @@ namespace Colored3DCube
 			//graphics.GraphicsDevice.RasterizerState = rasterizerState1;
 
 			basicEffect.World = worldMatrix;
-			basicEffect.View = viewMatrix;
-			basicEffect.Projection = projectionMatrix;
 
 			foreach (EffectPass pass in basicEffect.CurrentTechnique.Passes) {
 				pass.Apply ();
