@@ -1,11 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MouseGetStateAndIsMouseVisibleTester", "..\Linux\MouseGetStateAndIsMouseVisibleTester\MouseGetStateAndIsMouseVisibleTester.csproj", "{6BC96721-9A69-4698-BF22-7BDB319FF381}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonoGame.Framework.Linux", "..\..\MonoGame\MonoGame.Framework\MonoGame.Framework.Linux.csproj", "{35253CE1-C864-4CD3-8249-4D1319748E8F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonoGame.Framework.Linux", "..\..\..\MonoGame\MonoGame.Framework\MonoGame.Framework.Linux.csproj", "{35253CE1-C864-4CD3-8249-4D1319748E8F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lidgren.Network.Linux", "..\..\MonoGame\ThirdParty\Lidgren.Network\Lidgren.Network.Linux.csproj", "{AE483C29-042E-4226-BA52-D247CE7676DA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lidgren.Network.Linux", "..\..\..\MonoGame\ThirdParty\Lidgren.Network\Lidgren.Network.Linux.csproj", "{AE483C29-042E-4226-BA52-D247CE7676DA}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MouseGetStateAndIsMouseVisibleTester", "Linux\MouseGetStateAndIsMouseVisibleTester\MouseGetStateAndIsMouseVisibleTester.csproj", "{6BC96721-9A69-4698-BF22-7BDB319FF381}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -27,6 +27,6 @@ Global
 		{AE483C29-042E-4226-BA52-D247CE7676DA}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(MonoDevelopProperties) = preSolution
-		StartupItem = ..\Linux\MouseGetStateAndIsMouseVisibleTester\MouseGetStateAndIsMouseVisibleTester.csproj
+		StartupItem = ..\..\MonoGame\MonoGame.Framework\MonoGame.Framework.Linux.csproj
 	EndGlobalSection
 EndGlobal

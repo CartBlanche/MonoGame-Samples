@@ -56,7 +56,7 @@ namespace HoneycombRush
             graphics.IsFullScreen = true;
 
             screenManager = new ScreenManager(this, Vector2.One);
-#elif WINDOWS || MAC
+#elif WINDOWS || MAC || LINUX
             graphics.PreferredBackBufferHeight = 480;
             graphics.PreferredBackBufferWidth = 800;            
 

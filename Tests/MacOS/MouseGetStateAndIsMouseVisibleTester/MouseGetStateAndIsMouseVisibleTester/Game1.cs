@@ -8,6 +8,8 @@ using Microsoft.Xna.Framework.GamerServices;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
+
+
 using System.Windows.Forms;
 
 namespace MouseGetStateAndIsMouseVisibleTester
@@ -34,8 +36,9 @@ namespace MouseGetStateAndIsMouseVisibleTester
 			Window.AllowUserResizing = true;
 
 			// Uncomment the line below to test full screen on startup.
-			//graphics.IsFullScreen = true;
-
+			graphics.IsFullScreen = true;
+			bFullScreen = true;
+			
 			 // Subscribe to the game window's ClientSizeChanged event.
 			Window.ClientSizeChanged += Window_ClientSizeChanged;
         }
@@ -103,11 +106,6 @@ namespace MouseGetStateAndIsMouseVisibleTester
             return graphics.PreferredBackBufferHeight;
         }//GetBackBufferWidth
         
-        public String GetStyleMask()
-        {
-        	return this.Window.Window.StyleMask.ToString();
-        }//GetStyleMask
-
 
         protected override void Update(GameTime gameTime)
         {
@@ -138,7 +136,7 @@ namespace MouseGetStateAndIsMouseVisibleTester
         {
         	if(bFullScreen) return;
         	
-        		
+#if MAC	
             int index;
             int upperBound;
             float fScreenWidth, fScreenHeight, fNewX, fNewY, fWindowWidth, fWindowHeight, fTitleBarHeight;
@@ -170,6 +168,7 @@ namespace MouseGetStateAndIsMouseVisibleTester
 			System.Drawing.SizeF sfSize = new System.Drawing.SizeF(pfSize);
 			System.Drawing.RectangleF rectTemp = new System.Drawing.RectangleF(pfLocation, sfSize);
 			this.Window.Window.SetFrame(rectTemp, true);
+#endif		
         }//CenterWindow
     }
 }
