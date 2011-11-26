@@ -629,7 +629,9 @@ namespace VectorRumble
                 if (playing == false)
                 {
                     // trying to join - update the a-button timer
-                    if ((currentGamePadState.Buttons.A == ButtonState.Pressed) || (currentKeyboardState.IsKeyDown(Keys.A) && playerIndex == PlayerIndex.Two))                    
+                    if ((currentGamePadState.Buttons.A == ButtonState.Pressed) 
+						|| (currentKeyboardState.IsKeyDown(Keys.Z) && playerIndex == PlayerIndex.One)
+						|| (currentKeyboardState.IsKeyDown(Keys.M) && playerIndex == PlayerIndex.Two))                    
                     {
                         aButtonTimer += elapsedTime;
                     }
@@ -647,7 +649,9 @@ namespace VectorRumble
                 else
                 {
                     // check if we're trying to leave
-                    if ((currentGamePadState.Buttons.B == ButtonState.Pressed) || (currentKeyboardState.IsKeyDown(Keys.B) && playerIndex == PlayerIndex.Two))
+                    if ((currentGamePadState.Buttons.B == ButtonState.Pressed) 
+						|| (currentKeyboardState.IsKeyDown(Keys.X) && playerIndex == PlayerIndex.One)
+						|| (currentKeyboardState.IsKeyDown(Keys.N) && playerIndex == PlayerIndex.Two))
                     {
                         bButtonTimer += elapsedTime;
                     }
@@ -693,49 +697,97 @@ namespace VectorRumble
                             }
 
                         }
-                        else if (currentKeyboardState != null && playerIndex == PlayerIndex.Two)
+                        else if (currentKeyboardState != null)
                         {
-                            // Rotate Left            
-                            if (currentKeyboardState.IsKeyDown(Keys.Left))
-                            {
-                                Rotation -= elapsedTime * rotationRadiansPerSecond;
-                            }
-
-                            // Rotate Right
-                            if (currentKeyboardState.IsKeyDown(Keys.Right))
-                            {
-                                Rotation += elapsedTime * rotationRadiansPerSecond;
-                            }
-
-                            //create some velocity if the right trigger is down
-                            Vector2 shipVelocityAdd = Vector2.Zero;
-
-                            //now scale our direction by how hard/long the trigger/keyboard is down
-                            if (currentKeyboardState.IsKeyDown(Keys.Up))
-                            {
-                                //find out what direction we should be thrusting, using rotation
-                                shipVelocityAdd.X = (float)Math.Sin(Rotation);
-                                shipVelocityAdd.Y = (float)-Math.Cos(Rotation);
-
-                                shipVelocityAdd = shipVelocityAdd / elapsedTime * MathHelper.ToRadians(9.0f);
-                            }
-
-                            //finally, add this vector to our velocity.
-                            Velocity += shipVelocityAdd;
-
-                            // Lets drop some Mines
-                            if (currentKeyboardState.IsKeyDown(Keys.RightControl))
-                            {
-                                // fire ahead of us
-                                weapon.Fire(Vector2.Normalize(forward));
-                            }
-
-                            // Lets drop some Mines
-                            if (currentKeyboardState.IsKeyDown(Keys.Down))
-                            {
-                                // fire behind the ship
-                                mineWeapon.Fire(-forward);
-                            }
+							if ( playerIndex == PlayerIndex.One )
+							{
+	                            // Rotate Left            
+	                            if (currentKeyboardState.IsKeyDown(Keys.A))
+	                            {
+	                                Rotation -= elapsedTime * rotationRadiansPerSecond;	
+	                            }
+	
+	                            // Rotate Right
+	                            if (currentKeyboardState.IsKeyDown(Keys.D))
+	                            {
+	                                Rotation += elapsedTime * rotationRadiansPerSecond;
+	                            }
+	
+	                            //create some velocity if the right trigger is down
+	                            Vector2 shipVelocityAdd = Vector2.Zero;
+	
+	                            //now scale our direction by how hard/long the trigger/keyboard is down
+	                            if (currentKeyboardState.IsKeyDown(Keys.W))
+	                            {
+	                                //find out what direction we should be thrusting, using rotation
+	                                shipVelocityAdd.X = (float)Math.Sin(Rotation);
+	                                shipVelocityAdd.Y = (float)-Math.Cos(Rotation);
+	
+	                                shipVelocityAdd = shipVelocityAdd / elapsedTime * MathHelper.ToRadians(9.0f);
+	                            }
+	
+	                            //finally, add this vector to our velocity.
+	                            Velocity += shipVelocityAdd;
+	
+	                            // Lets fire our weapon
+	                            if (currentKeyboardState.IsKeyDown(Keys.Tab))
+	                            {
+	                                // fire ahead of us
+	                                weapon.Fire(Vector2.Normalize(forward));
+	                            }
+	
+	                            // Lets drop some Mines
+	                            if (currentKeyboardState.IsKeyDown(Keys.S))
+	                            {
+	                                // fire behind the ship
+	                                mineWeapon.Fire(-forward);
+	                            }
+							}
+							
+							if ( playerIndex == PlayerIndex.Two )
+							{
+	                            // Rotate Left            
+	                            if (currentKeyboardState.IsKeyDown(Keys.Left))
+	                            {
+	                                Rotation -= elapsedTime * rotationRadiansPerSecond;
+	                            }
+	
+	                            // Rotate Right
+	                            if (currentKeyboardState.IsKeyDown(Keys.Right))
+	                            {
+	                                Rotation += elapsedTime * rotationRadiansPerSecond;
+	                            }
+	
+	                            //create some velocity if the right trigger is down
+	                            Vector2 shipVelocityAdd = Vector2.Zero;
+	
+	                            //now scale our direction by how hard/long the trigger/keyboard is down
+	                            if (currentKeyboardState.IsKeyDown(Keys.Up))
+	                            {
+	                                //find out what direction we should be thrusting, using rotation
+	                                shipVelocityAdd.X = (float)Math.Sin(Rotation);
+	                                shipVelocityAdd.Y = (float)-Math.Cos(Rotation);
+	
+	                                shipVelocityAdd = shipVelocityAdd / elapsedTime * MathHelper.ToRadians(9.0f);
+	                            }
+	
+	                            //finally, add this vector to our velocity.
+	                            Velocity += shipVelocityAdd;
+	
+	                            // Lets drop some Mines
+	                            if (currentKeyboardState.IsKeyDown(Keys.RightControl))
+	                            {
+	                                // fire ahead of us
+	                                weapon.Fire(Vector2.Normalize(forward));
+	                            }
+	
+	                            // Lets drop some Mines
+	                            if (currentKeyboardState.IsKeyDown(Keys.Down))
+	                            {
+	                                // fire behind the ship
+	                                mineWeapon.Fire(-forward);
+	                            }
+							}
                         }
 
                         // check for firing with the right stick

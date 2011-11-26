@@ -1,21 +1,21 @@
+// Pixel shader applies a one dimensional gaussian blur filter.
+// This is used twice by the bloom postprocess, first to
+// blur horizontally, and then again to blur vertically.
+
 uniform sampler2D TextureSampler;
 
-#define SAMPLE_COUNT 15
+uniform vec2 SampleOffsets[15];
 
-vec2 SampleOffsets[SAMPLE_COUNT];
-vec SampleWeights[SAMPLE_COUNT];
+uniform float SampleWeights[15];
 
 void main()
 {
-	// Look up the original image color.
-	vec4 color = vec4(0);
-   	vec2 texcoord = vec2(gl_TexCoord[0]);
-	
-	// Combine a number of weighted image filter taps.
-    for (int i = 0; i < SAMPLE_COUNT; i++)
-    {
-        color += gl_Color * (texture2D(TextureSampler, texcoord + SampleOffsets[i]) * SampleWeights[i]);
-    }
-	
-    gl_FragColor = color;
+     vec4 c = vec4(0);
+     
+     for(int i=0; i < 15; i++) 
+     {
+          c += texture2D(TextureSampler, gl_TexCoord[0].xy + SampleOffsets[i]) * SampleWeights[i];
+     }
+	 
+	 gl_FragColor = c;
 }

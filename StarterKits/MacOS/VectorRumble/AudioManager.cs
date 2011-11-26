@@ -68,7 +68,10 @@ namespace VectorRumble
         /// <returns>The cue corresponding to the name provided.</returns>
         public Cue GetCue(string cueName)
         {
+#if AUDIO
             return sounds.GetCue(cueName);
+#endif
+			return null; // TODO When sound is working DELETE this.
         }
 
         /// <summary>
