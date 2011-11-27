@@ -29,6 +29,9 @@ namespace VectorRumble
 			// aapt resource value: 0x7f020000
 			public const int Icon = 2130837504;
 			
+			// aapt resource value: 0x7f020001
+			public const int Splash = 2130837505;
+			
 			private Drawable()
 			{
 			}
@@ -52,6 +55,17 @@ namespace VectorRumble
 			public const int app_name = 2130968576;
 			
 			private String()
+			{
+			}
+		}
+		
+		public partial class Style
+		{
+			
+			// aapt resource value: 0x7f050000
+			public const int Theme_Splash = 2131034112;
+			
+			private Style()
 			{
 			}
 		}
