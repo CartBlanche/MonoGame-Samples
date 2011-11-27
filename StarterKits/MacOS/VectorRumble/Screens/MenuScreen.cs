@@ -112,7 +112,7 @@ namespace VectorRumble
 			                position.Y += ScreenManager.Font.LineSpacing;
 						}
 					}					
-                 }
+                 }				 
 			}
 #endif			
             // Move to the previous menu entry?
