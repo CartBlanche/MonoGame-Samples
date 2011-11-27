@@ -35,12 +35,14 @@ namespace VectorRumble
 
         static int scoreLimit = 10;
         static bool motionBlur = true;
+	static int blurIntensity = 5;
         static bool neonEffect = true;
 
         MenuEntry scoreLimitMenuEntry = new MenuEntry(String.Empty);
         MenuEntry asteroidDensityMenuEntry = new MenuEntry(String.Empty);
         MenuEntry wallStyleMenuEntry = new MenuEntry(String.Empty);
         MenuEntry motionBlurMenuEntry = new MenuEntry(String.Empty);
+        MenuEntry blurIntensityMenuEntry = new MenuEntry(String.Empty);
         MenuEntry neonEffectMenuEntry = new MenuEntry(String.Empty);
 
 
@@ -59,18 +61,21 @@ namespace VectorRumble
             currentWallStyle = (int)WorldRules.WallStyle;
             scoreLimit = WorldRules.ScoreLimit;
             motionBlur = WorldRules.MotionBlur;
+		blurIntensity = WorldRules.BlurIntensity;
             neonEffect = WorldRules.NeonEffect;
 
             scoreLimitMenuEntry.Selected += ScoreLimitMenuEntrySelected;
             asteroidDensityMenuEntry.Selected += AsteroidDensityMenuEntrySelected;
             wallStyleMenuEntry.Selected += WallStyleMenuEntrySelected;
             motionBlurMenuEntry.Selected += MotionBlurMenuEntrySelected;
+            blurIntensityMenuEntry.Selected += BlurIntensityMenuEntrySelected;
             neonEffectMenuEntry.Selected += NeonEffectMenuEntrySelected;
 
             MenuEntries.Add(scoreLimitMenuEntry);
             MenuEntries.Add(asteroidDensityMenuEntry);
             MenuEntries.Add(wallStyleMenuEntry);
             MenuEntries.Add(motionBlurMenuEntry);
+            MenuEntries.Add(blurIntensityMenuEntry);
             MenuEntries.Add(neonEffectMenuEntry);
         }
 
@@ -94,6 +99,8 @@ namespace VectorRumble
             wallStyleMenuEntry.Text = "Wall Style : " + wallStyle[currentWallStyle];
             motionBlurMenuEntry.Text = "Motion Blur : " + motionBlur.ToString();
             neonEffectMenuEntry.Text = "Neon Effect : " + neonEffect.ToString();
+            blurIntensityMenuEntry.Text = "Blur Intesity : " + blurIntensity.ToString();
+
         }
 
 
@@ -107,6 +114,15 @@ namespace VectorRumble
                 scoreLimit = 5;
         }
 
+        /// <summary>
+        /// Event handler for when the Score Limit menu entry is selected.
+        /// </summary>
+        void BlurIntensityMenuEntrySelected(object sender, EventArgs e)
+        {
+            blurIntensity += 1;
+            if (blurIntensity > 10)
+                blurIntensity = 1;
+        }
 
         /// <summary>
         /// Event handler for when the Asteroid Density menu entry is selected.
@@ -158,6 +174,7 @@ namespace VectorRumble
             WorldRules.ScoreLimit = scoreLimit;
             WorldRules.MotionBlur = motionBlur;
             WorldRules.NeonEffect = neonEffect;
+            WorldRules.BlurIntensity = blurIntensity;
 
             ExitScreen();
         }

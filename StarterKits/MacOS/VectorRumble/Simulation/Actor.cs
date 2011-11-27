@@ -165,15 +165,19 @@ namespace VectorRumble
                     {
                         // calculate the "blur" polygon's position
                         Vector2 blurPosition = this.position - backwards * (i * 4);
+                        //Vector2 blurPosition = this.position - backwards * (i * 20);
+
                         // calculate the transformation for the "blur" polygon
                         Matrix blurWorld = rotationMatrix *
                             Matrix.CreateTranslation(blurPosition.X, blurPosition.Y, 0);
                         // transform the polygon to the "blur" location
                         polygon.Transform(blurWorld);
                         // calculate the alpha of the "blur" location
-                        byte alpha = (byte)(160 / (i + 1));
+                        //byte alpha = (byte)(160 / (i + 1));
+                        byte alpha = (byte)( WorldRules.BlurIntensity * 100/ (i + 1));
                         if (alpha < 1)
                             break;
+
                         // draw the "blur" polygon
                         lineBatch.DrawPolygon(polygon,
                             new Color(color.R, color.G, color.B, alpha));

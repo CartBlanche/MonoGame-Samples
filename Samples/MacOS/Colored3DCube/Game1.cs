@@ -41,7 +41,7 @@ namespace Colored3DCube
 			basicEffect.World = worldMatrix;
 			basicEffect.View = viewMatrix;
 			basicEffect.Projection = projectionMatrix;
-			//basicEffect.VertexColorEnabled = true;
+			basicEffect.VertexColorEnabled = true;
 
 			CreateCubeVertexBuffer ();
 			CreateCubeIndexBuffer ();

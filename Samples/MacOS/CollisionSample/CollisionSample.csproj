@@ -5,11 +5,11 @@
     <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
     <ProductVersion>10.0.0</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{2E7EF8E4-5662-4E24-A23E-860CA89334C1}</ProjectGuid>
+    <ProjectGuid>{AFFFC991-4956-45EF-8746-C1AE3FC7A245}</ProjectGuid>
     <ProjectTypeGuids>{948B3504-5B70-4649-8FE4-BDE1FB46EC69};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <OutputType>Exe</OutputType>
-    <RootNamespace>UseCustomVertex</RootNamespace>
-    <AssemblyName>UseCustomVertex</AssemblyName>
+    <RootNamespace>CollisionSample</RootNamespace>
+    <AssemblyName>Collision</AssemblyName>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
     <DebugSymbols>true</DebugSymbols>
@@ -42,20 +42,12 @@
   <ItemGroup>
     <None Include="Info.plist" />
     <None Include="App.config" />
+    <None Include="Background.png" />
     <None Include="Game.ico" />
     <None Include="GameThumbnail.png" />
-    <None Include="Content\Glass.xnb" />
-    <None Include="Content\XNA_pow2.xnb" />
-    <None Include="Content\Glass.png" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath)\Mono\MonoMac\v0.0\Mono.MonoMac.targets" />
-  <ItemGroup>
-    <Compile Include="CustomVertex.cs" />
-    <Compile Include="Game1.cs" />
-    <Compile Include="Program.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-  </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\..\MonoGame\MonoGame.Framework\MonoGame.Framework.MacOS.csproj">
       <Project>{36C538E6-C32A-4A8D-A39C-566173D7118E}</Project>
@@ -63,10 +55,18 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BoundingOrientedBox.cs" />
+    <Compile Include="CollisionSample.cs" />
+    <Compile Include="DebugDraw.cs" />
+    <Compile Include="FrameRateCounter.cs" />
+    <Compile Include="GeomUtil.cs" />
+    <Compile Include="Program.cs" />
+    <Compile Include="TriangleTest.cs" />
+  </ItemGroup>
+  <ItemGroup>
     <Folder Include="Content\" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Content\XNA_pow2.jpg" />
-    <Content Include="Content\Glass2.png" />
+    <Content Include="Content\Font.xnb" />
   </ItemGroup>
 </Project>

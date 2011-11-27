@@ -728,7 +728,6 @@ namespace VectorRumble
                     break;
                 }
             }
-
             return spawnPoint;
         }
         #endregion
