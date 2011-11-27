@@ -10,6 +10,9 @@
 #region Using Statements
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
+#if ANDROID
+using Microsoft.Xna.Framework.Input.Touch;
+#endif
 #endregion
 
 namespace VectorRumble
@@ -32,6 +35,10 @@ namespace VectorRumble
 
         public readonly KeyboardState[] LastKeyboardStates;
         public readonly GamePadState[] LastGamePadStates;
+		
+#if ANDROID
+		public TouchCollection CurrentTouchState;
+#endif		
 
         #endregion
 
@@ -150,6 +157,9 @@ namespace VectorRumble
                 CurrentKeyboardStates[i] = Keyboard.GetState((PlayerIndex)i);
                 CurrentGamePadStates[i] = GamePad.GetState((PlayerIndex)i);
             }
+#if ANDROID			
+			CurrentTouchState = TouchPanel.GetState();
+#endif			
         }
 
 

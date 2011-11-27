@@ -55,6 +55,6 @@ Global
 		{9B7D8FCF-5A3B-48D6-B9E7-4C3C0D0632F6} = {ED1C24CA-3D94-4BDF-9B56-1B5866E40BB2}
 	EndGlobalSection
 	GlobalSection(MonoDevelopProperties) = preSolution
-		StartupItem = Android\Platformer\Platformer.csproj
+		StartupItem = Android\VectorRumble\VectorRumble.csproj
 	EndGlobalSection
 EndGlobal

@@ -280,5 +280,8 @@
     <AndroidAsset Include="..\..\MacOS\VectorRumble\Content\Textures\title.png">
       <Link>Assets\Content\Textures\title.png</Link>
     </AndroidAsset>
+    <AndroidAsset Include="..\..\MacOS\VectorRumble\Content\Textures\gamepad.png">
+      <Link>Assets\Content\Textures\gamepad.png</Link>
+    </AndroidAsset>
   </ItemGroup>
 </Project>
