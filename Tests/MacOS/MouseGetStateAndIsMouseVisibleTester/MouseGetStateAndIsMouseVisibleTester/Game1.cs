@@ -36,8 +36,8 @@ namespace MouseGetStateAndIsMouseVisibleTester
 			Window.AllowUserResizing = true;
 
 			// Uncomment the line below to test full screen on startup.
-			graphics.IsFullScreen = true;
-			bFullScreen = true;
+			//graphics.IsFullScreen = false;
+			//bFullScreen = true;
 			
 			 // Subscribe to the game window's ClientSizeChanged event.
 			Window.ClientSizeChanged += Window_ClientSizeChanged;
