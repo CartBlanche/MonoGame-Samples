@@ -73,9 +73,7 @@ namespace MonoTest
 				new Vector2(400,240),
 				SpriteEffects.None,
 				0);
-			//spriteBatch.Draw(BlankTexture, new Rectangle(100,100,400,240), Color.Red);//, 0, Vector2.Zero, new Vector2(400,240), SpriteEffects.None, 1);
-			//spriteBatch.Draw(BlankTexture, new Vector2(100,100), new Rectangle(0,0,400,200), Color.Green, 0, Vector2.Zero, 1 , SpriteEffects.None, 1);
-            spriteBatch.DrawString(FontCalibri14, "See the transparency near the corners?\nNot what I wanted...\nThis box should be solid green.", new Vector2(150,150), Color.Silver, 0, Vector2.Zero, 1, SpriteEffects.None, 1);
+            spriteBatch.DrawString(FontCalibri14, "There should be no\n transparency near the corners...\n\nThis box should be solid green.", new Vector2(150,150), Color.Silver, 0, Vector2.Zero, 1, SpriteEffects.None, 1);
 			spriteBatch.End();
 		}
 	}

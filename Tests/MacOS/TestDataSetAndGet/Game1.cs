@@ -112,7 +112,7 @@ namespace TestDataSetAndGet
             characterTextureData =
                 new Color[characterTexture.Width * characterTexture.Height];
 			characterTexture.GetData(characterTextureData);
-		personTexture.SetData(characterTextureData);
+		//personTexture.SetData(characterTextureData);
             // Create a sprite batch to draw those textures
             spriteBatch = new SpriteBatch(graphics.GraphicsDevice);
         }
@@ -224,7 +224,7 @@ namespace TestDataSetAndGet
             spriteBatch.Draw(personTexture, personPosition, Color.White);
 			Vector2 characterPosition = personPosition;
 			characterPosition.X += personTexture.Width;
-			//spriteBatch.Draw(characterTexture, characterPosition, Color.White);
+			spriteBatch.Draw(characterTexture, characterPosition, Color.White);
 			
             // Draw blocks
             foreach (Vector2 blockPosition in blockPositions)
