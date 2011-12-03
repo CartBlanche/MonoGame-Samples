@@ -58,9 +58,9 @@ namespace VectorRumble
 
             // create the audio manager
             audioManager = new AudioManager(this, 
-                "Content\\Audio\\VectorRumble.xgs", 
-                "Content\\Audio\\VectorRumble.xwb",
-                "Content\\Audio\\VectorRumble.xsb");
+                "Content/Audio/VectorRumble.xgs", 
+                "Content/Audio/VectorRumble.xwb",
+                "Content/Audio/VectorRumble.xsb");
             Services.AddService(typeof(AudioManager), audioManager);
         }
 

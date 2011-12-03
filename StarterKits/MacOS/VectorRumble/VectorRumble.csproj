@@ -16,7 +16,7 @@
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>bin\Debug</OutputPath>
-    <DefineConstants>DEBUG;MONOMAC</DefineConstants>
+    <DefineConstants>DEBUG;MONOMAC;AUDIO</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <ConsolePause>false</ConsolePause>
@@ -44,6 +44,22 @@
     <None Include="Content\Effects\GaussianBlur.fx" />
     <None Include="Content\Fonts\retroMedium.spritefont" />
     <None Include="Content\Fonts\retroSmall.spritefont" />
+    <None Include="Content\Audio\Waves\damage1.wav" />
+    <None Include="Content\Audio\Waves\engine_3.wav" />
+    <None Include="Content\Audio\Waves\explosion1.wav" />
+    <None Include="Content\Audio\Waves\explosion2.wav" />
+    <None Include="Content\Audio\Waves\explosion3.wav" />
+    <None Include="Content\Audio\Waves\hax2_fire.wav" />
+    <None Include="Content\Audio\Waves\hax2_fire2.wav" />
+    <None Include="Content\Audio\Waves\menu_back.wav" />
+    <None Include="Content\Audio\Waves\menu_scroll.wav" />
+    <None Include="Content\Audio\Waves\menu_select3.wav" />
+    <None Include="Content\Audio\Waves\phase_expire_alt.wav" />
+    <None Include="Content\Audio\Waves\RacingGame Game Music 1.wav" />
+    <None Include="Content\Audio\Waves\tx0_fire1.wav" />
+    <None Include="Content\Audio\Waves\tx0_fire2.wav" />
+    <None Include="Content\Audio\Waves\tx0_fire3.wav" />
+    <None Include="Content\Audio\Waves\weapon_pickup_alt_retro.wav" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath)\Mono\MonoMac\v0.0\Mono.MonoMac.targets" />
@@ -97,22 +113,6 @@
     <Compile Include="BloomPostprocess\BloomSettings.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Content\Audio\Waves\damage1.wav" />
-    <Content Include="Content\Audio\Waves\engine_3.wav" />
-    <Content Include="Content\Audio\Waves\explosion1.wav" />
-    <Content Include="Content\Audio\Waves\explosion2.wav" />
-    <Content Include="Content\Audio\Waves\explosion3.wav" />
-    <Content Include="Content\Audio\Waves\hax2_fire.wav" />
-    <Content Include="Content\Audio\Waves\hax2_fire2.wav" />
-    <Content Include="Content\Audio\Waves\menu_back.wav" />
-    <Content Include="Content\Audio\Waves\menu_scroll.wav" />
-    <Content Include="Content\Audio\Waves\menu_select3.wav" />
-    <Content Include="Content\Audio\Waves\phase_expire_alt.wav" />
-    <Content Include="Content\Audio\Waves\RacingGame Game Music 1.wav" />
-    <Content Include="Content\Audio\Waves\tx0_fire1.wav" />
-    <Content Include="Content\Audio\Waves\tx0_fire2.wav" />
-    <Content Include="Content\Audio\Waves\tx0_fire3.wav" />
-    <Content Include="Content\Audio\Waves\weapon_pickup_alt_retro.wav" />
     <Content Include="Content\Textures\blank.png" />
     <Content Include="Content\Textures\title.png" />
     <Content Include="Content\Fonts\retroMedium.xnb" />
@@ -128,6 +128,15 @@
     </Content>
     <Content Include="Info.plist" />
     <Content Include="VectorRumble.icns" />
+    <Content Include="Content\Audio\VectorRumble.xgs">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Audio\VectorRumble.xsb">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Audio\VectorRumble.xwb">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\..\MonoGame\MonoGame.Framework\MonoGame.Framework.MacOS.csproj">

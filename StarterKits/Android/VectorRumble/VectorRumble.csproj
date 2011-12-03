@@ -280,5 +280,26 @@
     <AndroidAsset Include="..\..\MacOS\VectorRumble\Content\Textures\title.png">
       <Link>Assets\Content\Textures\title.png</Link>
     </AndroidAsset>
+    <AndroidAsset Include="..\..\MacOS\VectorRumble\Content\Effects\BloomCombine.fsh">
+      <Link>Assets\Content\Effects\BloomCombine.fsh</Link>
+    </AndroidAsset>
+    <AndroidAsset Include="..\..\MacOS\VectorRumble\Content\Effects\BloomExtract.fsh">
+      <Link>Assets\Content\Effects\BloomExtract.fsh</Link>
+    </AndroidAsset>
+    <AndroidAsset Include="..\..\MacOS\VectorRumble\Content\Effects\GaussianBlur.fsh">
+      <Link>Assets\Content\Effects\GaussianBlur.fsh</Link>
+    </AndroidAsset>
+    <AndroidAsset Include="..\..\MacOS\VectorRumble\Content\Audio\VectorRumble.xgs">
+      <Link>Assets\Content\Audio\VectorRumble.xgs</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </AndroidAsset>
+    <AndroidAsset Include="..\..\MacOS\VectorRumble\Content\Audio\VectorRumble.xsb">
+      <Link>Assets\Content\Audio\VectorRumble.xsb</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </AndroidAsset>
+    <AndroidAsset Include="..\..\MacOS\VectorRumble\Content\Audio\VectorRumble.xwb">
+      <Link>Assets\Content\Audio\VectorRumble.xwb</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </AndroidAsset>
   </ItemGroup>
 </Project>
