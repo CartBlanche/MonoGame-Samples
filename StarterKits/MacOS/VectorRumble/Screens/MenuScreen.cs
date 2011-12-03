@@ -82,7 +82,39 @@ namespace VectorRumble
         /// or cancelling the menu.
         /// </summary>
         public override void HandleInput(InputState input)
-        {
+        {		
+#if ANDROID
+			var touch = input.CurrentTouchState;
+			if (touch.Count > 0)
+			{
+				Viewport viewport = ScreenManager.GraphicsDevice.Viewport;
+	            Vector2 viewportSize = new Vector2(viewport.Width, viewport.Height);
+	
+	            Vector2 position = new Vector2(0f, viewportSize.Y * 0.55f);
+				foreach(var t in touch)
+				{
+					// we have a touch event
+					if (t.State == Microsoft.Xna.Framework.Input.Touch.TouchLocationState.Pressed)
+					{
+						var pos = t.Position;
+						for (int i = 0; i < menuEntries.Count; i++)            			
+						{
+							// Draw text, centered on the middle of each line.
+			                Vector2 size = ScreenManager.Font.MeasureString(menuEntries[i].Text);	
+							position.X = viewportSize.X / 2f - size.X / 2f;
+							var rect = new Rectangle((int)position.X, (int)position.Y, (int)size.X, (int)size.Y);
+							if (rect.Contains(pos))
+							{
+								selectedEntry = i;
+								OnSelectEntry(selectedEntry);
+								break;
+							}
+			                position.Y += ScreenManager.Font.LineSpacing;
+						}
+					}					
+                 }				 
+			}
+#endif			
             // Move to the previous menu entry?
             if (input.MenuUp)
             {

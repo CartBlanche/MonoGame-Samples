@@ -42,10 +42,10 @@ namespace VectorRumble
             Content.RootDirectory = "Content";
 			
 #if WINDOWS_PHONE || IOS || ANDROID // WP7, iPad or Tablets only
-            graphics.PreferredBackBufferWidth = 1024;
-            graphics.PreferredBackBufferHeight = 748;
+            graphics.PreferredBackBufferWidth = 800;
+            graphics.PreferredBackBufferHeight = 480;
 			graphics.IsFullScreen = true;
-			//graphics.SupportedOrientations = DisplayOrientation.LandscapeLeft | DisplayOrientation.LandscapeRight;
+			graphics.SupportedOrientations = DisplayOrientation.LandscapeLeft;
 #else
 			graphics.PreferredBackBufferWidth = 1280;
             graphics.PreferredBackBufferHeight = 720;

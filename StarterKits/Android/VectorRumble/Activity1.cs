@@ -5,7 +5,9 @@ using Android.OS;
 
 namespace VectorRumble
 {
-	[Activity (Label = "VectorRumble", MainLauncher = true, Icon = "@drawable/icon")]
+	[Activity (Label = "VectorRumble", MainLauncher = true, 
+		Icon = "@drawable/icon", 
+		Theme = "@style/Theme.Splash")]
 	public class Activity1 : Microsoft.Xna.Framework.AndroidGameActivity
 	{
 		protected override void OnCreate(Bundle bundle)

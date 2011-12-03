@@ -211,6 +211,8 @@
     <AndroidResource Include="Resources\layout\Main.axml" />
     <AndroidResource Include="Resources\values\Strings.xml" />
     <AndroidResource Include="Resources\drawable\Icon.png" />
+    <AndroidResource Include="Resources\drawable\Splash.png" />
+    <AndroidResource Include="Resources\values\Styles.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Novell\Novell.MonoDroid.CSharp.targets" />
   <ItemGroup>
@@ -300,6 +302,9 @@
     <AndroidAsset Include="..\..\MacOS\VectorRumble\Content\Audio\VectorRumble.xwb">
       <Link>Assets\Content\Audio\VectorRumble.xwb</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </AndroidAsset>
+    <AndroidAsset Include="..\..\MacOS\VectorRumble\Content\Textures\gamepad.png">
+      <Link>Assets\Content\Textures\gamepad.png</Link>
     </AndroidAsset>
   </ItemGroup>
 </Project>

@@ -36,6 +36,7 @@ namespace VectorRumble
         SpriteBatch spriteBatch;
         SpriteFont spriteFont;
         Texture2D starTexture;
+		Texture2D gamePadTexture;
         World world;
         AudioManager audio;
         bool gameOver;
@@ -100,6 +101,23 @@ namespace VectorRumble
             lineBatch.SetProjection(Matrix.CreateOrthographicOffCenter(0.0f,
                 ScreenManager.GraphicsDevice.Viewport.Width, 
                 ScreenManager.GraphicsDevice.Viewport.Height, 0.0f, 0.0f, 1.0f));
+#if ANDROID || IOS
+			gamePadTexture = content.Load<Texture2D>("Textures/gamepad");
+			
+			ThumbStickDefinition thumbStickLeft = new ThumbStickDefinition();
+			thumbStickLeft.Position = new Vector2(10,400);
+			thumbStickLeft.Texture = gamePadTexture;
+			thumbStickLeft.TextureRect = new Rectangle(2,2,68,68);
+			
+			GamePad.LeftThumbStickDefinition = thumbStickLeft;
+			
+			ThumbStickDefinition thumbStickRight = new ThumbStickDefinition();
+			thumbStickRight.Position = new Vector2(240,400);
+			thumbStickRight.Texture = gamePadTexture;
+			thumbStickRight.TextureRect = new Rectangle(2,2,68,68);
+			
+			GamePad.RightThumbStickDefinition = thumbStickRight;
+#endif			
         }
 
 
@@ -239,6 +257,10 @@ namespace VectorRumble
             }
 
             DrawHud(elapsedTime);
+			
+#if ANDROID || IOS || WINDOWS_PHONE			
+			GamePad.Draw(gameTime, spriteBatch);
+#endif			
 
             // If the game is transitioning on or off, fade it out to black.
             if (TransitionPosition > 0)
