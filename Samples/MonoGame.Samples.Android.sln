@@ -19,12 +19,18 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonoGame.Samples.VideoPlaye
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonoGame.Samples.Input", "Android\MonoGame.Samples.Input\MonoGame.Samples.Input.csproj", "{CB2084E4-BEC8-4318-8011-93CC2E3C9E94}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonoGame.Samples.Primitives.Android", "Android\Primitives\MonoGame.Samples.Primitives.Android.csproj", "{167741E2-2D8E-474A-8D06-9ACB55F0BA83}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{167741E2-2D8E-474A-8D06-9ACB55F0BA83}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{167741E2-2D8E-474A-8D06-9ACB55F0BA83}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{167741E2-2D8E-474A-8D06-9ACB55F0BA83}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{167741E2-2D8E-474A-8D06-9ACB55F0BA83}.Release|Any CPU.Build.0 = Release|Any CPU
 		{27C3DD7C-5322-4C2D-8EE4-07610390CDAF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{27C3DD7C-5322-4C2D-8EE4-07610390CDAF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{27C3DD7C-5322-4C2D-8EE4-07610390CDAF}.Release|Any CPU.ActiveCfg = Release|Any CPU

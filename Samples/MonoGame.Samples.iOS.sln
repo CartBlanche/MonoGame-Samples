@@ -45,6 +45,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonoGame.Samples.Waypoint",
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonoGame.Samples.VideoPlayer", "iOS\VideoPlayer\MonoGame.Samples.VideoPlayer.csproj", "{D6A6EF59-928C-4DDB-AD8D-D85DD914BF82}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonoGame.Samples.Primitives", "iOS\MonoGame.Samples.Primitives\MonoGame.Samples.Primitives.csproj", "{C212EEE3-E38E-4F0A-9B98-779694A886DB}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|iPhoneSimulator = Debug|iPhoneSimulator
@@ -231,6 +233,18 @@ Global
 		{BF785698-D6BF-465C-9089-B48B49D0377A}.Release|iPhone.Build.0 = Release|iPhone
 		{BF785698-D6BF-465C-9089-B48B49D0377A}.Release|iPhoneSimulator.ActiveCfg = Release|iPhoneSimulator
 		{BF785698-D6BF-465C-9089-B48B49D0377A}.Release|iPhoneSimulator.Build.0 = Release|iPhoneSimulator
+		{C212EEE3-E38E-4F0A-9B98-779694A886DB}.Debug|iPhone.ActiveCfg = Debug|iPhone
+		{C212EEE3-E38E-4F0A-9B98-779694A886DB}.Debug|iPhone.Build.0 = Debug|iPhone
+		{C212EEE3-E38E-4F0A-9B98-779694A886DB}.Debug|iPhoneSimulator.ActiveCfg = Debug|iPhoneSimulator
+		{C212EEE3-E38E-4F0A-9B98-779694A886DB}.Debug|iPhoneSimulator.Build.0 = Debug|iPhoneSimulator
+		{C212EEE3-E38E-4F0A-9B98-779694A886DB}.Distribution|iPhone.ActiveCfg = Debug|iPhone
+		{C212EEE3-E38E-4F0A-9B98-779694A886DB}.Distribution|iPhone.Build.0 = Debug|iPhone
+		{C212EEE3-E38E-4F0A-9B98-779694A886DB}.Distribution|iPhoneSimulator.ActiveCfg = Debug|iPhoneSimulator
+		{C212EEE3-E38E-4F0A-9B98-779694A886DB}.Distribution|iPhoneSimulator.Build.0 = Debug|iPhoneSimulator
+		{C212EEE3-E38E-4F0A-9B98-779694A886DB}.Release|iPhone.ActiveCfg = Release|iPhone
+		{C212EEE3-E38E-4F0A-9B98-779694A886DB}.Release|iPhone.Build.0 = Release|iPhone
+		{C212EEE3-E38E-4F0A-9B98-779694A886DB}.Release|iPhoneSimulator.ActiveCfg = Release|iPhoneSimulator
+		{C212EEE3-E38E-4F0A-9B98-779694A886DB}.Release|iPhoneSimulator.Build.0 = Release|iPhoneSimulator
 		{CE342066-BCCD-4989-A401-0D36287276EF}.Debug|iPhone.ActiveCfg = Debug|iPhone
 		{CE342066-BCCD-4989-A401-0D36287276EF}.Debug|iPhone.Build.0 = Debug|iPhone
 		{CE342066-BCCD-4989-A401-0D36287276EF}.Debug|iPhoneSimulator.ActiveCfg = Debug|iPhoneSimulator
@@ -313,6 +327,6 @@ Global
 		{F5FA28E2-53B2-482B-8723-71588DF50BB6}.Release|iPhoneSimulator.Build.0 = Release|iPhoneSimulator
 	EndGlobalSection
 	GlobalSection(MonoDevelopProperties) = preSolution
-		StartupItem = iOS\GameStateManagement\MonoGame.Samples.GameStateManagement.csproj
+		StartupItem = iOS\MonoGame.Samples.Primitives\MonoGame.Samples.Primitives.csproj
 	EndGlobalSection
 EndGlobal

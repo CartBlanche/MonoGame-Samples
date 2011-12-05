@@ -1,0 +1,310 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">iPhoneSimulator</Platform>
+    <ProductVersion>10.0.0</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{1112251F-412F-443D-AA19-BDB5FA6B3CBA}</ProjectGuid>
+    <ProjectTypeGuids>{6BC8ED88-2882-458C-8E55-DFD12B67127B};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <OutputType>Exe</OutputType>
+    <RootNamespace>VectorRumble.iOS</RootNamespace>
+    <AssemblyName>VectorRumbleiOS</AssemblyName>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|iPhoneSimulator' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\iPhoneSimulator\Debug</OutputPath>
+    <DefineConstants>DEBUG;IOS;AUDIO</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <ConsolePause>false</ConsolePause>
+    <MtouchLink>None</MtouchLink>
+    <MtouchDebug>true</MtouchDebug>
+    <MtouchI18n />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|iPhoneSimulator' ">
+    <DebugType>none</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\iPhoneSimulator\Release</OutputPath>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <ConsolePause>false</ConsolePause>
+    <MtouchLink>None</MtouchLink>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|iPhone' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\iPhone\Debug</OutputPath>
+    <DefineConstants>DEBUG;IOS</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <ConsolePause>false</ConsolePause>
+    <MtouchDebug>true</MtouchDebug>
+    <CodesignKey>iPhone Developer</CodesignKey>
+    <IpaPackageName />
+    <MtouchI18n />
+    <MtouchLink>Full</MtouchLink>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|iPhone' ">
+    <DebugType>none</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\iPhone\Release</OutputPath>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <ConsolePause>false</ConsolePause>
+    <CodesignKey>iPhone Developer</CodesignKey>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Core" />
+    <Reference Include="monotouch" />
+    <Reference Include="OpenTK" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Info.plist" />
+    <None Include="..\..\MacOS\VectorRumble\Content\Effects\BloomCombine.fx">
+      <Link>Content\Effects\BloomCombine.fx</Link>
+    </None>
+    <None Include="..\..\MacOS\VectorRumble\Content\Effects\BloomExtract.fx">
+      <Link>Content\Effects\BloomExtract.fx</Link>
+    </None>
+    <None Include="..\..\MacOS\VectorRumble\Content\Effects\GaussianBlur.fx">
+      <Link>Content\Effects\GaussianBlur.fx</Link>
+    </None>
+    <None Include="..\..\MacOS\VectorRumble\Content\Fonts\retroMedium.spritefont">
+      <Link>Content\Fonts\retroMedium.spritefont</Link>
+    </None>
+    <None Include="..\..\MacOS\VectorRumble\Content\Fonts\retroSmall.spritefont">
+      <Link>Content\Fonts\retroSmall.spritefont</Link>
+    </None>
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <ItemGroup>
+    <Compile Include="Program.cs" />
+    <Compile Include="..\..\MacOS\VectorRumble\AudioManager.cs">
+      <Link>AudioManager.cs</Link>
+    </Compile>
+    <Compile Include="..\..\MacOS\VectorRumble\CollectCollection.cs">
+      <Link>CollectCollection.cs</Link>
+    </Compile>
+    <Compile Include="..\..\MacOS\VectorRumble\Game.cs">
+      <Link>Game.cs</Link>
+    </Compile>
+    <Compile Include="..\..\MacOS\VectorRumble\BloomPostprocess\BloomComponent.cs">
+      <Link>BloomPostprocess\BloomComponent.cs</Link>
+    </Compile>
+    <Compile Include="..\..\MacOS\VectorRumble\BloomPostprocess\BloomSettings.cs">
+      <Link>BloomPostprocess\BloomSettings.cs</Link>
+    </Compile>
+    <Compile Include="..\..\MacOS\VectorRumble\Gameplay\Asteroid.cs">
+      <Link>Gameplay\Asteroid.cs</Link>
+    </Compile>
+    <Compile Include="..\..\MacOS\VectorRumble\Gameplay\DoubleLaserPowerUp.cs">
+      <Link>Gameplay\DoubleLaserPowerUp.cs</Link>
+    </Compile>
+    <Compile Include="..\..\MacOS\VectorRumble\Gameplay\DoubleLaserWeapon.cs">
+      <Link>Gameplay\DoubleLaserWeapon.cs</Link>
+    </Compile>
+    <Compile Include="..\..\MacOS\VectorRumble\Gameplay\LaserProjectile.cs">
+      <Link>Gameplay\LaserProjectile.cs</Link>
+    </Compile>
+    <Compile Include="..\..\MacOS\VectorRumble\Gameplay\LaserWeapon.cs">
+      <Link>Gameplay\LaserWeapon.cs</Link>
+    </Compile>
+    <Compile Include="..\..\MacOS\VectorRumble\Gameplay\MineProjectile.cs">
+      <Link>Gameplay\MineProjectile.cs</Link>
+    </Compile>
+    <Compile Include="..\..\MacOS\VectorRumble\Gameplay\MineWeapon.cs">
+      <Link>Gameplay\MineWeapon.cs</Link>
+    </Compile>
+    <Compile Include="..\..\MacOS\VectorRumble\Gameplay\RocketPowerUp.cs">
+      <Link>Gameplay\RocketPowerUp.cs</Link>
+    </Compile>
+    <Compile Include="..\..\MacOS\VectorRumble\Gameplay\RocketProjectile.cs">
+      <Link>Gameplay\RocketProjectile.cs</Link>
+    </Compile>
+    <Compile Include="..\..\MacOS\VectorRumble\Gameplay\RocketWeapon.cs">
+      <Link>Gameplay\RocketWeapon.cs</Link>
+    </Compile>
+    <Compile Include="..\..\MacOS\VectorRumble\Gameplay\Ship.cs">
+      <Link>Gameplay\Ship.cs</Link>
+    </Compile>
+    <Compile Include="..\..\MacOS\VectorRumble\Gameplay\TripleLaserPowerUp.cs">
+      <Link>Gameplay\TripleLaserPowerUp.cs</Link>
+    </Compile>
+    <Compile Include="..\..\MacOS\VectorRumble\Gameplay\TripleLaserWeapon.cs">
+      <Link>Gameplay\TripleLaserWeapon.cs</Link>
+    </Compile>
+    <Compile Include="..\..\MacOS\VectorRumble\Properties\AssemblyInfo.cs">
+      <Link>Properties\AssemblyInfo.cs</Link>
+    </Compile>
+    <Compile Include="..\..\MacOS\VectorRumble\Rendering\LineBatch.cs">
+      <Link>Rendering\LineBatch.cs</Link>
+    </Compile>
+    <Compile Include="..\..\MacOS\VectorRumble\Rendering\Particle.cs">
+      <Link>Rendering\Particle.cs</Link>
+    </Compile>
+    <Compile Include="..\..\MacOS\VectorRumble\Rendering\ParticleSystem.cs">
+      <Link>Rendering\ParticleSystem.cs</Link>
+    </Compile>
+    <Compile Include="..\..\MacOS\VectorRumble\Rendering\Starfield.cs">
+      <Link>Rendering\Starfield.cs</Link>
+    </Compile>
+    <Compile Include="..\..\MacOS\VectorRumble\Rendering\VectorPolygon.cs">
+      <Link>Rendering\VectorPolygon.cs</Link>
+    </Compile>
+    <Compile Include="..\..\MacOS\VectorRumble\ScreenManager\GameScreen.cs">
+      <Link>ScreenManager\GameScreen.cs</Link>
+    </Compile>
+    <Compile Include="..\..\MacOS\VectorRumble\ScreenManager\InputState.cs">
+      <Link>ScreenManager\InputState.cs</Link>
+    </Compile>
+    <Compile Include="..\..\MacOS\VectorRumble\ScreenManager\ScreenManager.cs">
+      <Link>ScreenManager\ScreenManager.cs</Link>
+    </Compile>
+    <Compile Include="..\..\MacOS\VectorRumble\Screens\BackgroundScreen.cs">
+      <Link>Screens\BackgroundScreen.cs</Link>
+    </Compile>
+    <Compile Include="..\..\MacOS\VectorRumble\Screens\GameOverScreen.cs">
+      <Link>Screens\GameOverScreen.cs</Link>
+    </Compile>
+    <Compile Include="..\..\MacOS\VectorRumble\Screens\GameplayScreen.cs">
+      <Link>Screens\GameplayScreen.cs</Link>
+    </Compile>
+    <Compile Include="..\..\MacOS\VectorRumble\Screens\LoadingScreen.cs">
+      <Link>Screens\LoadingScreen.cs</Link>
+    </Compile>
+    <Compile Include="..\..\MacOS\VectorRumble\Screens\MainMenuScreen.cs">
+      <Link>Screens\MainMenuScreen.cs</Link>
+    </Compile>
+    <Compile Include="..\..\MacOS\VectorRumble\Screens\MenuEntry.cs">
+      <Link>Screens\MenuEntry.cs</Link>
+    </Compile>
+    <Compile Include="..\..\MacOS\VectorRumble\Screens\MenuScreen.cs">
+      <Link>Screens\MenuScreen.cs</Link>
+    </Compile>
+    <Compile Include="..\..\MacOS\VectorRumble\Screens\MessageBoxScreen.cs">
+      <Link>Screens\MessageBoxScreen.cs</Link>
+    </Compile>
+    <Compile Include="..\..\MacOS\VectorRumble\Screens\OptionsMenuScreen.cs">
+      <Link>Screens\OptionsMenuScreen.cs</Link>
+    </Compile>
+    <Compile Include="..\..\MacOS\VectorRumble\Screens\PauseMenuScreen.cs">
+      <Link>Screens\PauseMenuScreen.cs</Link>
+    </Compile>
+    <Compile Include="..\..\MacOS\VectorRumble\Simulation\Actor.cs">
+      <Link>Simulation\Actor.cs</Link>
+    </Compile>
+    <Compile Include="..\..\MacOS\VectorRumble\Simulation\Collision.cs">
+      <Link>Simulation\Collision.cs</Link>
+    </Compile>
+    <Compile Include="..\..\MacOS\VectorRumble\Simulation\CollisionResult.cs">
+      <Link>Simulation\CollisionResult.cs</Link>
+    </Compile>
+    <Compile Include="..\..\MacOS\VectorRumble\Simulation\PowerUp.cs">
+      <Link>Simulation\PowerUp.cs</Link>
+    </Compile>
+    <Compile Include="..\..\MacOS\VectorRumble\Simulation\Projectile.cs">
+      <Link>Simulation\Projectile.cs</Link>
+    </Compile>
+    <Compile Include="..\..\MacOS\VectorRumble\Simulation\Weapon.cs">
+      <Link>Simulation\Weapon.cs</Link>
+    </Compile>
+    <Compile Include="..\..\MacOS\VectorRumble\Simulation\World.cs">
+      <Link>Simulation\World.cs</Link>
+    </Compile>
+    <Compile Include="..\..\MacOS\VectorRumble\Simulation\WorldActor.cs">
+      <Link>Simulation\WorldActor.cs</Link>
+    </Compile>
+    <Compile Include="..\..\MacOS\VectorRumble\Simulation\WorldRules.cs">
+      <Link>Simulation\WorldRules.cs</Link>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="..\..\MacOS\VectorRumble\VectorRumble.png">
+      <Link>VectorRumble.png</Link>
+    </Content>
+    <Content Include="..\..\MacOS\VectorRumble\Content\Textures\blank.png">
+      <Link>Content\Textures\blank.png</Link>
+    </Content>
+    <Content Include="..\..\MacOS\VectorRumble\Content\Textures\title.png">
+      <Link>Content\Textures\title.png</Link>
+    </Content>
+    <Content Include="..\..\MacOS\VectorRumble\Content\Audio\Waves\damage1.wav">
+      <Link>Content\Audio\Waves\damage1.wav</Link>
+    </Content>
+    <Content Include="..\..\MacOS\VectorRumble\Content\Audio\Waves\engine_3.wav">
+      <Link>Content\Audio\Waves\engine_3.wav</Link>
+    </Content>
+    <Content Include="..\..\MacOS\VectorRumble\Content\Audio\Waves\explosion1.wav">
+      <Link>Content\Audio\Waves\explosion1.wav</Link>
+    </Content>
+    <Content Include="..\..\MacOS\VectorRumble\Content\Audio\Waves\explosion2.wav">
+      <Link>Content\Audio\Waves\explosion2.wav</Link>
+    </Content>
+    <Content Include="..\..\MacOS\VectorRumble\Content\Audio\Waves\explosion3.wav">
+      <Link>Content\Audio\Waves\explosion3.wav</Link>
+    </Content>
+    <Content Include="..\..\MacOS\VectorRumble\Content\Audio\Waves\hax2_fire.wav">
+      <Link>Content\Audio\Waves\hax2_fire.wav</Link>
+    </Content>
+    <Content Include="..\..\MacOS\VectorRumble\Content\Audio\Waves\hax2_fire2.wav">
+      <Link>Content\Audio\Waves\hax2_fire2.wav</Link>
+    </Content>
+    <Content Include="..\..\MacOS\VectorRumble\Content\Audio\Waves\menu_back.wav">
+      <Link>Content\Audio\Waves\menu_back.wav</Link>
+    </Content>
+    <Content Include="..\..\MacOS\VectorRumble\Content\Audio\Waves\menu_scroll.wav">
+      <Link>Content\Audio\Waves\menu_scroll.wav</Link>
+    </Content>
+    <Content Include="..\..\MacOS\VectorRumble\Content\Audio\Waves\menu_select3.wav">
+      <Link>Content\Audio\Waves\menu_select3.wav</Link>
+    </Content>
+    <Content Include="..\..\MacOS\VectorRumble\Content\Audio\Waves\phase_expire_alt.wav">
+      <Link>Content\Audio\Waves\phase_expire_alt.wav</Link>
+    </Content>
+    <Content Include="..\..\MacOS\VectorRumble\Content\Audio\Waves\RacingGame Game Music 1.wav">
+      <Link>Content\Audio\Waves\RacingGame Game Music 1.wav</Link>
+    </Content>
+    <Content Include="..\..\MacOS\VectorRumble\Content\Audio\Waves\tx0_fire1.wav">
+      <Link>Content\Audio\Waves\tx0_fire1.wav</Link>
+    </Content>
+    <Content Include="..\..\MacOS\VectorRumble\Content\Audio\Waves\tx0_fire2.wav">
+      <Link>Content\Audio\Waves\tx0_fire2.wav</Link>
+    </Content>
+    <Content Include="..\..\MacOS\VectorRumble\Content\Audio\Waves\tx0_fire3.wav">
+      <Link>Content\Audio\Waves\tx0_fire3.wav</Link>
+    </Content>
+    <Content Include="..\..\MacOS\VectorRumble\Content\Audio\Waves\weapon_pickup_alt_retro.wav">
+      <Link>Content\Audio\Waves\weapon_pickup_alt_retro.wav</Link>
+    </Content>
+    <Content Include="..\..\MacOS\VectorRumble\Content\Fonts\retroMedium.xnb">
+      <Link>Content\Fonts\retroMedium.xnb</Link>
+    </Content>
+    <Content Include="..\..\MacOS\VectorRumble\Content\Fonts\retroSmall.xnb">
+      <Link>Content\Fonts\retroSmall.xnb</Link>
+    </Content>
+    <Content Include="..\..\MacOS\VectorRumble\Content\Audio\VectorRumble.xgs">
+      <Link>Content\Audio\VectorRumble.xgs</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\MacOS\VectorRumble\Content\Audio\VectorRumble.xsb">
+      <Link>Content\Audio\VectorRumble.xsb</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\MacOS\VectorRumble\Content\Audio\VectorRumble.xwb">
+      <Link>Content\Audio\VectorRumble.xwb</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\..\MonoGame\MonoGame.Framework\MonoGame.Framework.iOS.csproj">
+      <Project>{DB8508BB-9849-4CC2-BC0F-8EB5DACB3C47}</Project>
+      <Name>MonoGame.Framework.iOS</Name>
+    </ProjectReference>
+  </ItemGroup>
+</Project>

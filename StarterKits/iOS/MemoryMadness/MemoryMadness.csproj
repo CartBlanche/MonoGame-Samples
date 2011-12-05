@@ -6,7 +6,7 @@
     <ProductVersion>9.0.21022</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{296EBAC0-9658-474D-9A9E-5A8F52BA316F}</ProjectGuid>
-    <ProjectTypeGuids>{E613F3A2-FE9C-494F-B74E-F63BCB86FEA6};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <ProjectTypeGuids>{6BC8ED88-2882-458C-8E55-DFD12B67127B};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <OutputType>Exe</OutputType>
     <RootNamespace>MemoryMadness</RootNamespace>
     <AssemblyName>MemoryMadness</AssemblyName>
@@ -23,7 +23,6 @@
     <ConsolePause>false</ConsolePause>
     <MtouchLink>None</MtouchLink>
     <MtouchDebug>True</MtouchDebug>
-    <MtouchMinimumOS>3.1</MtouchMinimumOS>
     <MtouchI18n />
     <MtouchUseLlvm>false</MtouchUseLlvm>
     <MtouchUseArmv7>false</MtouchUseArmv7>
@@ -40,7 +39,6 @@
     <MtouchDebug>False</MtouchDebug>
     <ConsolePause>false</ConsolePause>
     <MtouchLink>None</MtouchLink>
-    <MtouchMinimumOS>3.1</MtouchMinimumOS>
     <MtouchI18n />
     <MtouchUseLlvm>false</MtouchUseLlvm>
     <MtouchUseArmv7>false</MtouchUseArmv7>
@@ -59,7 +57,6 @@
     <ConsolePause>false</ConsolePause>
     <CodesignKey>iPhone Developer</CodesignKey>
     <MtouchDebug>True</MtouchDebug>
-    <MtouchMinimumOS>3.0</MtouchMinimumOS>
     <MtouchUseLlvm>false</MtouchUseLlvm>
     <MtouchUseArmv7>false</MtouchUseArmv7>
     <MtouchUseThumb>false</MtouchUseThumb>
@@ -75,7 +72,6 @@
     <MtouchDebug>False</MtouchDebug>
     <ConsolePause>false</ConsolePause>
     <CodesignKey>iPhone Developer</CodesignKey>
-    <MtouchMinimumOS>3.0</MtouchMinimumOS>
     <MtouchUseLlvm>false</MtouchUseLlvm>
     <MtouchUseArmv7>false</MtouchUseArmv7>
     <MtouchUseThumb>false</MtouchUseThumb>
@@ -87,7 +83,6 @@
     <Optimize>false</Optimize>
     <OutputPath>bin\Debug</OutputPath>
     <WarningLevel>4</WarningLevel>
-    <MtouchMinimumOS>3.0</MtouchMinimumOS>
     <MtouchDebug>False</MtouchDebug>
     <MtouchUseSGen>false</MtouchUseSGen>
     <MtouchUseLlvm>false</MtouchUseLlvm>
@@ -100,7 +95,6 @@
     <Optimize>false</Optimize>
     <OutputPath>bin\Release</OutputPath>
     <WarningLevel>4</WarningLevel>
-    <MtouchMinimumOS>3.0</MtouchMinimumOS>
     <MtouchDebug>False</MtouchDebug>
     <MtouchUseSGen>false</MtouchUseSGen>
     <MtouchUseLlvm>false</MtouchUseLlvm>
@@ -139,6 +133,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="monogameicon.png" />
+    <None Include="Info.plist" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Content\" />

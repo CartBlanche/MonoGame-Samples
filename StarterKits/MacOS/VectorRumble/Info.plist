@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CFBundleDevelopmentRegion</key>
+	<string>English</string>
+	<key>CFBundleGetInfoString</key>
+	<string>1.0, Copyright © 2010-2012 You Company.  All Rights Reserved.</string>
+	<key>CFBundleIconFile</key>
+	<string>VectorRumble.icns</string>
+	<key>CFBundleIdentifier</key>
+	<string>com.yourcompany.VectorRumble</string>
+	<key>CFBundleName</key>
+	<string>VectorRumble</string>
+	<key>CFBundlePackageType</key>
+	<string>APPL</string>
+	<key>CFBundleShortVersionString</key>
+	<string>Vector Rumble for Mac 1.0</string>
+	<key>CFBundleSignature</key>
+	<string>vectorrumble</string>
+	<key>CFBundleVersion</key>
+	<string>1.0</string>
+	<key>LSApplicationCategoryType</key>
+	<string>public.app-category.arcade-games</string>
+	<key>LSMinimumSystemVersion</key>
+	<string>10.6</string>
+	<key>NSHumanReadableCopyright</key>
+	<string>Copyright © 2010-2012 You Company.  All Rights Reserved.</string>
+	<key>NSPrincipalClass</key>
+	<string>NSApplication</string>
+</dict>
+</plist>

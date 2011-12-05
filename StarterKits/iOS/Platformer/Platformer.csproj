@@ -2,19 +2,16 @@
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
   <PropertyGroup>
     <ProjectGuid>{9964D44C-AD60-497E-8ED3-1DE22F53CEED}</ProjectGuid>
-    <ProjectTypeGuids>{E613F3A2-FE9C-494F-B74E-F63BCB86FEA6};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <ProjectTypeGuids>{6BC8ED88-2882-458C-8E55-DFD12B67127B};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Platformer</RootNamespace>
     <TargetFrameworkVersion>v1.0</TargetFrameworkVersion>
-    <BundleDisplayName>Platformer</BundleDisplayName>
-    <BundleIcon>GameThumbnail.png</BundleIcon>
     <ProductVersion>9.0.21022</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <StartupObject>Platformer.Program</StartupObject>
-    <SupportedDevices>IPhoneAndIPad</SupportedDevices>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|iPhoneSimulator' ">
     <DebugSymbols>true</DebugSymbols>
@@ -27,7 +24,6 @@
     <MtouchLink>None</MtouchLink>
     <MtouchDebug>True</MtouchDebug>
     <MtouchI18n />
-    <MtouchMinimumOS>3.1</MtouchMinimumOS>
     <MtouchUseLlvm>false</MtouchUseLlvm>
     <MtouchUseArmv7>false</MtouchUseArmv7>
     <MtouchUseThumb>false</MtouchUseThumb>
@@ -44,7 +40,6 @@
     <WarningLevel>4</WarningLevel>
     <MtouchDebug>False</MtouchDebug>
     <MtouchI18n />
-    <MtouchMinimumOS>3.1</MtouchMinimumOS>
     <MtouchUseLlvm>false</MtouchUseLlvm>
     <MtouchUseArmv7>false</MtouchUseArmv7>
     <MtouchUseThumb>false</MtouchUseThumb>
@@ -63,7 +58,6 @@
     <MtouchDebug>True</MtouchDebug>
     <MtouchI18n />
     <MtouchSdkVersion>4.0</MtouchSdkVersion>
-    <MtouchMinimumOS>3.0</MtouchMinimumOS>
     <MtouchUseLlvm>false</MtouchUseLlvm>
     <MtouchUseArmv7>false</MtouchUseArmv7>
     <MtouchUseThumb>false</MtouchUseThumb>
@@ -83,7 +77,6 @@
     <MtouchI18n />
     <CodesignKey>iPhone Developer</CodesignKey>
     <MtouchSdkVersion>4.0</MtouchSdkVersion>
-    <MtouchMinimumOS>3.0</MtouchMinimumOS>
     <MtouchUseLlvm>false</MtouchUseLlvm>
     <MtouchUseArmv7>false</MtouchUseArmv7>
     <MtouchUseThumb>false</MtouchUseThumb>
@@ -96,7 +89,6 @@
     <Optimize>false</Optimize>
     <OutputPath>bin\Debug</OutputPath>
     <WarningLevel>4</WarningLevel>
-    <MtouchMinimumOS>3.0</MtouchMinimumOS>
     <MtouchDebug>False</MtouchDebug>
     <MtouchUseSGen>false</MtouchUseSGen>
     <MtouchUseLlvm>false</MtouchUseLlvm>
@@ -110,7 +102,6 @@
     <Optimize>false</Optimize>
     <OutputPath>bin\Release</OutputPath>
     <WarningLevel>4</WarningLevel>
-    <MtouchMinimumOS>3.0</MtouchMinimumOS>
     <MtouchDebug>False</MtouchDebug>
     <MtouchUseSGen>false</MtouchUseSGen>
     <MtouchUseLlvm>false</MtouchUseLlvm>

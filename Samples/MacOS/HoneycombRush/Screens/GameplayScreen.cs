@@ -20,7 +20,10 @@ using HoneycombRush.GameDebugTools;
 using Microsoft.Xna.Framework.Input.Touch;
 using System.Xml.Linq;
 
+#if MAC
 using MonoMac.Foundation;
+#endif
+
 using System.IO;
 #endregion
 
@@ -134,9 +137,9 @@ namespace HoneycombRush
 
             //Loads configuration
 			
-			var config =   Path.Combine(NSBundle.MainBundle.ResourcePath,"Content/Configuration/Configuration.xml");
-            //ConfigurationManager.LoadConfiguration(XDocument.Load("Content/Configuration/Configuration.xml"));
-            ConfigurationManager.LoadConfiguration(XDocument.Load(config));
+			//var config =   Path.Combine(NSBundle.MainBundle.ResourcePath,"Content/Configuration/Configuration.xml");
+            ConfigurationManager.LoadConfiguration(XDocument.Load("Content/Configuration/Configuration.xml"));
+            //ConfigurationManager.LoadConfiguration(XDocument.Load(config));
 
 			ConfigurationManager.DifficultyMode = gameDifficultyMode;
 

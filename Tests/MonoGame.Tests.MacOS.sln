@@ -7,6 +7,28 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonoGame.Framework.MacOS", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lidgren.Network.MacOS", "..\..\MonoGame\ThirdParty\Lidgren.Network\Lidgren.Network.MacOS.csproj", "{AE483C29-042E-4226-BA52-D247CE7676DA}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GamePadTest", "MacOS\GamePadTest\GamePadTest.csproj", "{E251B0C1-ED74-4210-A0D5-9E4710FEA61F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PrimitivesTest", "MacOS\PrimitivesTest\PrimitivesTest.csproj", "{9704681E-C6DB-4946-9F31-0EF9BE63090A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VectorRumble", "..\StarterKits\MacOS\VectorRumble\VectorRumble.csproj", "{CB7B2B69-7640-4225-89F3-CE3BF428F2F3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Primitives", "..\Samples\MacOS\Primitives\Primitives.csproj", "{2DDBFED4-9955-4F02-9937-B9AE82836329}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TexturedQuad", "..\Samples\MacOS\TexturedQuad\TexturedQuad.csproj", "{ECD1D53E-F50A-4299-9B0F-2F64D6063513}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StateObjectWindows", "..\Samples\MacOS\StateObjectWindows\StateObjectWindows.csproj", "{51147863-7B4E-4467-A5FA-986259EB686F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UseCustomVertex", "..\Samples\MacOS\UseCustomVertex\UseCustomVertex.csproj", "{2E7EF8E4-5662-4E24-A23E-860CA89334C1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Colored3DCube", "..\Samples\MacOS\Colored3DCube\Colored3DCube.csproj", "{CF7A194A-CF38-4379-909F-1B5FFB8F79C4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CollisionSample", "..\Samples\MacOS\CollisionSample\CollisionSample.csproj", "{AFFFC991-4956-45EF-8746-C1AE3FC7A245}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TextureScaleColorTest", "MacOS\TextureScaleColorTest\TextureScaleColorTest.csproj", "{ABF4BDBE-C7DE-43E5-98BC-4547FE27A64A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestDataSetAndGet", "MacOS\TestDataSetAndGet\TestDataSetAndGet.csproj", "{98CB640D-B8C4-496F-9978-F2571268BD70}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x86 = Debug|x86
@@ -14,26 +36,103 @@ Global
 		Distribution|Any CPU = Distribution|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{2DDBFED4-9955-4F02-9937-B9AE82836329}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{2DDBFED4-9955-4F02-9937-B9AE82836329}.Debug|x86.Build.0 = Debug|Any CPU
+		{2DDBFED4-9955-4F02-9937-B9AE82836329}.Distribution|Any CPU.ActiveCfg = Debug|Any CPU
+		{2DDBFED4-9955-4F02-9937-B9AE82836329}.Distribution|Any CPU.Build.0 = Debug|Any CPU
+		{2DDBFED4-9955-4F02-9937-B9AE82836329}.Release|x86.ActiveCfg = Release|Any CPU
+		{2DDBFED4-9955-4F02-9937-B9AE82836329}.Release|x86.Build.0 = Release|Any CPU
+		{2E7EF8E4-5662-4E24-A23E-860CA89334C1}.Debug|x86.ActiveCfg = Debug|x86
+		{2E7EF8E4-5662-4E24-A23E-860CA89334C1}.Debug|x86.Build.0 = Debug|x86
+		{2E7EF8E4-5662-4E24-A23E-860CA89334C1}.Distribution|Any CPU.ActiveCfg = Debug|x86
+		{2E7EF8E4-5662-4E24-A23E-860CA89334C1}.Distribution|Any CPU.Build.0 = Debug|x86
+		{2E7EF8E4-5662-4E24-A23E-860CA89334C1}.Release|x86.ActiveCfg = Release|x86
+		{2E7EF8E4-5662-4E24-A23E-860CA89334C1}.Release|x86.Build.0 = Release|x86
 		{36C538E6-C32A-4A8D-A39C-566173D7118E}.Debug|x86.ActiveCfg = Debug|Any CPU
 		{36C538E6-C32A-4A8D-A39C-566173D7118E}.Debug|x86.Build.0 = Debug|Any CPU
 		{36C538E6-C32A-4A8D-A39C-566173D7118E}.Distribution|Any CPU.ActiveCfg = Distribution|Any CPU
 		{36C538E6-C32A-4A8D-A39C-566173D7118E}.Distribution|Any CPU.Build.0 = Distribution|Any CPU
 		{36C538E6-C32A-4A8D-A39C-566173D7118E}.Release|x86.ActiveCfg = Release|Any CPU
 		{36C538E6-C32A-4A8D-A39C-566173D7118E}.Release|x86.Build.0 = Release|Any CPU
+		{51147863-7B4E-4467-A5FA-986259EB686F}.Debug|x86.ActiveCfg = Debug|x86
+		{51147863-7B4E-4467-A5FA-986259EB686F}.Debug|x86.Build.0 = Debug|x86
+		{51147863-7B4E-4467-A5FA-986259EB686F}.Distribution|Any CPU.ActiveCfg = Debug|x86
+		{51147863-7B4E-4467-A5FA-986259EB686F}.Distribution|Any CPU.Build.0 = Debug|x86
+		{51147863-7B4E-4467-A5FA-986259EB686F}.Release|x86.ActiveCfg = Release|x86
+		{51147863-7B4E-4467-A5FA-986259EB686F}.Release|x86.Build.0 = Release|x86
 		{7B2F1E86-1B56-4F78-9265-EA8852442171}.Debug|x86.ActiveCfg = Debug|x86
 		{7B2F1E86-1B56-4F78-9265-EA8852442171}.Debug|x86.Build.0 = Debug|x86
 		{7B2F1E86-1B56-4F78-9265-EA8852442171}.Distribution|Any CPU.ActiveCfg = Debug|x86
 		{7B2F1E86-1B56-4F78-9265-EA8852442171}.Distribution|Any CPU.Build.0 = Debug|x86
 		{7B2F1E86-1B56-4F78-9265-EA8852442171}.Release|x86.ActiveCfg = Release|x86
 		{7B2F1E86-1B56-4F78-9265-EA8852442171}.Release|x86.Build.0 = Release|x86
+		{9704681E-C6DB-4946-9F31-0EF9BE63090A}.Debug|x86.ActiveCfg = Debug|x86
+		{9704681E-C6DB-4946-9F31-0EF9BE63090A}.Debug|x86.Build.0 = Debug|x86
+		{9704681E-C6DB-4946-9F31-0EF9BE63090A}.Distribution|Any CPU.ActiveCfg = Debug|x86
+		{9704681E-C6DB-4946-9F31-0EF9BE63090A}.Distribution|Any CPU.Build.0 = Debug|x86
+		{9704681E-C6DB-4946-9F31-0EF9BE63090A}.Release|x86.ActiveCfg = Release|x86
+		{9704681E-C6DB-4946-9F31-0EF9BE63090A}.Release|x86.Build.0 = Release|x86
+		{98CB640D-B8C4-496F-9978-F2571268BD70}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{98CB640D-B8C4-496F-9978-F2571268BD70}.Debug|x86.Build.0 = Debug|Any CPU
+		{98CB640D-B8C4-496F-9978-F2571268BD70}.Distribution|Any CPU.ActiveCfg = Debug|Any CPU
+		{98CB640D-B8C4-496F-9978-F2571268BD70}.Distribution|Any CPU.Build.0 = Debug|Any CPU
+		{98CB640D-B8C4-496F-9978-F2571268BD70}.Release|x86.ActiveCfg = Release|Any CPU
+		{98CB640D-B8C4-496F-9978-F2571268BD70}.Release|x86.Build.0 = Release|Any CPU
+		{ABF4BDBE-C7DE-43E5-98BC-4547FE27A64A}.Debug|x86.ActiveCfg = Debug|x86
+		{ABF4BDBE-C7DE-43E5-98BC-4547FE27A64A}.Debug|x86.Build.0 = Debug|x86
+		{ABF4BDBE-C7DE-43E5-98BC-4547FE27A64A}.Distribution|Any CPU.ActiveCfg = Debug|x86
+		{ABF4BDBE-C7DE-43E5-98BC-4547FE27A64A}.Distribution|Any CPU.Build.0 = Debug|x86
+		{ABF4BDBE-C7DE-43E5-98BC-4547FE27A64A}.Release|x86.ActiveCfg = Release|x86
+		{ABF4BDBE-C7DE-43E5-98BC-4547FE27A64A}.Release|x86.Build.0 = Release|x86
 		{AE483C29-042E-4226-BA52-D247CE7676DA}.Debug|x86.ActiveCfg = Debug|Any CPU
 		{AE483C29-042E-4226-BA52-D247CE7676DA}.Debug|x86.Build.0 = Debug|Any CPU
 		{AE483C29-042E-4226-BA52-D247CE7676DA}.Distribution|Any CPU.ActiveCfg = Debug|Any CPU
 		{AE483C29-042E-4226-BA52-D247CE7676DA}.Distribution|Any CPU.Build.0 = Debug|Any CPU
 		{AE483C29-042E-4226-BA52-D247CE7676DA}.Release|x86.ActiveCfg = Release|Any CPU
 		{AE483C29-042E-4226-BA52-D247CE7676DA}.Release|x86.Build.0 = Release|Any CPU
+		{AFFFC991-4956-45EF-8746-C1AE3FC7A245}.Debug|x86.ActiveCfg = Debug|x86
+		{AFFFC991-4956-45EF-8746-C1AE3FC7A245}.Debug|x86.Build.0 = Debug|x86
+		{AFFFC991-4956-45EF-8746-C1AE3FC7A245}.Distribution|Any CPU.ActiveCfg = Debug|x86
+		{AFFFC991-4956-45EF-8746-C1AE3FC7A245}.Distribution|Any CPU.Build.0 = Debug|x86
+		{AFFFC991-4956-45EF-8746-C1AE3FC7A245}.Release|x86.ActiveCfg = Release|x86
+		{AFFFC991-4956-45EF-8746-C1AE3FC7A245}.Release|x86.Build.0 = Release|x86
+		{CB7B2B69-7640-4225-89F3-CE3BF428F2F3}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{CB7B2B69-7640-4225-89F3-CE3BF428F2F3}.Debug|x86.Build.0 = Debug|Any CPU
+		{CB7B2B69-7640-4225-89F3-CE3BF428F2F3}.Distribution|Any CPU.ActiveCfg = Debug|Any CPU
+		{CB7B2B69-7640-4225-89F3-CE3BF428F2F3}.Distribution|Any CPU.Build.0 = Debug|Any CPU
+		{CB7B2B69-7640-4225-89F3-CE3BF428F2F3}.Release|x86.ActiveCfg = Release|Any CPU
+		{CB7B2B69-7640-4225-89F3-CE3BF428F2F3}.Release|x86.Build.0 = Release|Any CPU
+		{CF7A194A-CF38-4379-909F-1B5FFB8F79C4}.Debug|x86.ActiveCfg = Debug|x86
+		{CF7A194A-CF38-4379-909F-1B5FFB8F79C4}.Debug|x86.Build.0 = Debug|x86
+		{CF7A194A-CF38-4379-909F-1B5FFB8F79C4}.Distribution|Any CPU.ActiveCfg = Debug|x86
+		{CF7A194A-CF38-4379-909F-1B5FFB8F79C4}.Distribution|Any CPU.Build.0 = Debug|x86
+		{CF7A194A-CF38-4379-909F-1B5FFB8F79C4}.Release|x86.ActiveCfg = Release|x86
+		{CF7A194A-CF38-4379-909F-1B5FFB8F79C4}.Release|x86.Build.0 = Release|x86
+		{E251B0C1-ED74-4210-A0D5-9E4710FEA61F}.Debug|x86.ActiveCfg = Debug|x86
+		{E251B0C1-ED74-4210-A0D5-9E4710FEA61F}.Debug|x86.Build.0 = Debug|x86
+		{E251B0C1-ED74-4210-A0D5-9E4710FEA61F}.Distribution|Any CPU.ActiveCfg = Debug|x86
+		{E251B0C1-ED74-4210-A0D5-9E4710FEA61F}.Distribution|Any CPU.Build.0 = Debug|x86
+		{E251B0C1-ED74-4210-A0D5-9E4710FEA61F}.Release|x86.ActiveCfg = Release|x86
+		{E251B0C1-ED74-4210-A0D5-9E4710FEA61F}.Release|x86.Build.0 = Release|x86
+		{ECD1D53E-F50A-4299-9B0F-2F64D6063513}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{ECD1D53E-F50A-4299-9B0F-2F64D6063513}.Debug|x86.Build.0 = Debug|Any CPU
+		{ECD1D53E-F50A-4299-9B0F-2F64D6063513}.Distribution|Any CPU.ActiveCfg = Debug|Any CPU
+		{ECD1D53E-F50A-4299-9B0F-2F64D6063513}.Distribution|Any CPU.Build.0 = Debug|Any CPU
+		{ECD1D53E-F50A-4299-9B0F-2F64D6063513}.Release|x86.ActiveCfg = Release|Any CPU
+		{ECD1D53E-F50A-4299-9B0F-2F64D6063513}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(MonoDevelopProperties) = preSolution
-		StartupItem = MacOS\MouseGetStateAndIsMouseVisibleTester\MouseGetStateAndIsMouseVisibleTester\MouseGetStateAndIsMouseVisibleTester.csproj
+		StartupItem = MacOS\TextureScaleColorTest\TextureScaleColorTest.csproj
+		Policies = $0
+		$0.TextStylePolicy = $1
+		$1.FileWidth = 120
+		$1.RemoveTrailingWhitespace = True
+		$1.inheritsSet = Mono
+		$1.inheritsScope = text/plain
+		$1.scope = text/x-csharp
+		$0.CSharpFormattingPolicy = $2
+		$2.inheritsSet = Mono
+		$2.inheritsScope = text/x-csharp
+		$2.scope = text/x-csharp
 	EndGlobalSection
 EndGlobal

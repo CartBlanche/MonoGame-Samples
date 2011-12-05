@@ -15,6 +15,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Platformer", "Android\Platf
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Marblets", "Android\Marblets\Marblets.csproj", "{88DEE869-EC4A-484E-AEB5-7F844C2054AB}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VectorRumble", "Android\VectorRumble\VectorRumble.csproj", "{BF1FD50E-FB30-4E77-B8C0-77D933DA466C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -43,12 +45,16 @@ Global
 		{BA9476CF-99BA-4D03-92F2-73D2C5E58883}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BA9476CF-99BA-4D03-92F2-73D2C5E58883}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BA9476CF-99BA-4D03-92F2-73D2C5E58883}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BF1FD50E-FB30-4E77-B8C0-77D933DA466C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BF1FD50E-FB30-4E77-B8C0-77D933DA466C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BF1FD50E-FB30-4E77-B8C0-77D933DA466C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BF1FD50E-FB30-4E77-B8C0-77D933DA466C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{25465464-21B2-4C14-8E3C-3B9F8C131484} = {ED1C24CA-3D94-4BDF-9B56-1B5866E40BB2}
 		{9B7D8FCF-5A3B-48D6-B9E7-4C3C0D0632F6} = {ED1C24CA-3D94-4BDF-9B56-1B5866E40BB2}
 	EndGlobalSection
 	GlobalSection(MonoDevelopProperties) = preSolution
-		StartupItem = Android\Platformer\Platformer.csproj
+		StartupItem = Android\VectorRumble\VectorRumble.csproj
 	EndGlobalSection
 EndGlobal

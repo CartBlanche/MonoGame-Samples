@@ -80,14 +80,10 @@ namespace SpriteEffects
 		/// </summary>
 		protected override void LoadContent ()
 		{
-			//desaturateEffect = Content.Load<Effect> ("desaturate");
-			//disappearEffect = Content.Load<Effect> ("disappear");
-			//normalmapEffect = Content.Load<Effect> ("normalmap");
-			//refractionEffect = Content.Load<Effect> ("refraction");
-			desaturateEffect = new DesaturateEffect(GraphicsDevice);
-			disappearEffect = new DisappearEffect(GraphicsDevice);
-			normalmapEffect = new NormalmapEffect(GraphicsDevice);
-			refractionEffect = new RefractionEffect(GraphicsDevice);
+			desaturateEffect = Content.Load<Effect> ("desaturate");
+			disappearEffect = Content.Load<Effect> ("disappear");
+			normalmapEffect = Content.Load<Effect> ("normalmap");
+			refractionEffect = Content.Load<Effect> ("refraction");
 			catTexture = Content.Load<Texture2D> ("cat");
 			catNormalmapTexture = Content.Load<Texture2D> ("cat_normalmap");
 			glacierTexture = Content.Load<Texture2D> ("glacier");

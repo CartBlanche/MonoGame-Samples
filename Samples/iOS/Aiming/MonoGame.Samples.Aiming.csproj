@@ -9,7 +9,6 @@
     <ProjectTypeGuids>{6BC8ED88-2882-458C-8E55-DFD12B67127B};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <OutputType>Exe</OutputType>
     <RootNamespace>MonoGame.Samples.Aiming</RootNamespace>
-    <TargetFrameworkVersion>v1.0</TargetFrameworkVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|iPhoneSimulator' ">
     <DebugSymbols>true</DebugSymbols>
@@ -19,16 +18,12 @@
     <DefineConstants>DEBUG;IPHONE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <MtouchDebug>True</MtouchDebug>
+    <MtouchDebug>true</MtouchDebug>
     <CodesignKey>iPhone Developer</CodesignKey>
     <MtouchLink>None</MtouchLink>
     <MtouchI18n />
     <AssemblyName>Aiming</AssemblyName>
-    <MtouchUseLlvm>false</MtouchUseLlvm>
     <MtouchUseArmv7>false</MtouchUseArmv7>
-    <MtouchUseThumb>false</MtouchUseThumb>
-    <MtouchUseSGen>false</MtouchUseSGen>
-    <MtouchArch>ARMv6</MtouchArch>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|iPhoneSimulator' ">
     <DebugType>none</DebugType>
@@ -36,18 +31,13 @@
     <OutputPath>bin\iPhoneSimulator\Release</OutputPath>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <MtouchDebug>False</MtouchDebug>
     <CodesignKey>iPhone Developer</CodesignKey>
     <MtouchLink>None</MtouchLink>
     <DefineConstants>IPHONE</DefineConstants>
     <MtouchI18n />
     <AssemblyName>TiledSprites</AssemblyName>
-    <MtouchUseLlvm>false</MtouchUseLlvm>
     <MtouchUseArmv7>false</MtouchUseArmv7>
-    <MtouchUseThumb>false</MtouchUseThumb>
-    <MtouchUseSGen>false</MtouchUseSGen>
     <MtouchSdkVersion>3.0</MtouchSdkVersion>
-    <MtouchArch>ARMv6</MtouchArch>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|iPhone' ">
     <DebugSymbols>true</DebugSymbols>
@@ -57,17 +47,13 @@
     <DefineConstants>DEBUG;IPHONE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <MtouchDebug>True</MtouchDebug>
+    <MtouchDebug>true</MtouchDebug>
     <CodesignKey>iPhone Developer</CodesignKey>
     <MtouchLink>None</MtouchLink>
     <MtouchI18n />
     <AssemblyName>Waypoint</AssemblyName>
-    <MtouchUseLlvm>false</MtouchUseLlvm>
     <MtouchUseArmv7>false</MtouchUseArmv7>
-    <MtouchUseThumb>false</MtouchUseThumb>
-    <MtouchUseSGen>false</MtouchUseSGen>
     <MtouchSdkVersion>3.0</MtouchSdkVersion>
-    <MtouchArch>ARMv6</MtouchArch>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|iPhone' ">
     <DebugType>none</DebugType>
@@ -75,45 +61,30 @@
     <OutputPath>bin\iPhone\Release</OutputPath>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <MtouchDebug>False</MtouchDebug>
     <CodesignKey>iPhone Developer</CodesignKey>
     <DefineConstants>IPHONE</DefineConstants>
     <AssemblyName>Waypoint</AssemblyName>
-    <MtouchUseLlvm>false</MtouchUseLlvm>
     <MtouchUseArmv7>false</MtouchUseArmv7>
-    <MtouchUseThumb>false</MtouchUseThumb>
-    <MtouchUseSGen>false</MtouchUseSGen>
     <MtouchSdkVersion>3.0</MtouchSdkVersion>
-    <MtouchArch>ARMv6</MtouchArch>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Distribution|iPhone' ">
     <DebugType>none</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>bin</OutputPath>
     <WarningLevel>4</WarningLevel>
-    <MtouchDebug>False</MtouchDebug>
     <CodesignKey>iPhone Developer</CodesignKey>
     <AssemblyName>MonoGame.Samples.Waypoint</AssemblyName>
     <MtouchI18n />
     <DefineConstants>IPHONE</DefineConstants>
-    <MtouchUseLlvm>false</MtouchUseLlvm>
     <MtouchUseArmv7>false</MtouchUseArmv7>
-    <MtouchUseThumb>false</MtouchUseThumb>
-    <MtouchUseSGen>false</MtouchUseSGen>
     <MtouchSdkVersion>3.0</MtouchSdkVersion>
-    <MtouchArch>ARMv6</MtouchArch>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Distribution|iPhoneSimulator' ">
     <DebugType>none</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>bin\Distribution</OutputPath>
     <WarningLevel>4</WarningLevel>
-    <MtouchUseSGen>false</MtouchUseSGen>
-    <MtouchDebug>False</MtouchDebug>
     <AssemblyName>MonoGameSamplesAiming</AssemblyName>
-    <MtouchUseLlvm>false</MtouchUseLlvm>
-    <MtouchUseThumb>false</MtouchUseThumb>
-    <MtouchArch>ARMv6</MtouchArch>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -146,7 +117,7 @@
     <None Include="Info.plist" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\MonoGame.Framework\MonoGame.Framework.iOS.csproj">
+    <ProjectReference Include="..\..\..\..\MonoGame\MonoGame.Framework\MonoGame.Framework.iOS.csproj">
       <Project>{DB8508BB-9849-4CC2-BC0F-8EB5DACB3C47}</Project>
       <Name>MonoGame.Framework.iOS</Name>
     </ProjectReference>

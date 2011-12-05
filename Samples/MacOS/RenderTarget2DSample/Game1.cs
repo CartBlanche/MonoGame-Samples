@@ -91,7 +91,7 @@ namespace RenderTarget2DSample
 				GraphicsDevice.PresentationParameters.BackBufferHeight, false, SurfaceFormat.Color, DepthFormat.None);
             
 			// Load in our wood tile.
-			wood = Content.Load<Texture2D> ("lava");
+			wood = Content.Load<Texture2D> ("wood");
 			
 			// Load in the picture of Seamus.
 			mooTheMerciless = Content.Load<Texture2D> ("MooTheMerciless");
