@@ -76,8 +76,8 @@ namespace RolePlaying
             try
             {
                 audioEngine = new AudioEngine(settingsFile);
-                //waveBank = new WaveBank(audioEngine, waveBankFile);
-                //soundBank = new SoundBank(audioEngine, soundBankFile);
+                waveBank = new WaveBank(audioEngine, waveBankFile);
+                soundBank = new SoundBank(audioEngine, soundBankFile);
             }
             catch (NoAudioHardwareException)
             {

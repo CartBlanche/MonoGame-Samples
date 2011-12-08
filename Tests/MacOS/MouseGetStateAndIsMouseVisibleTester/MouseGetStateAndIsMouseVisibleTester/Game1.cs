@@ -41,7 +41,19 @@ namespace MouseGetStateAndIsMouseVisibleTester
 			
 			 // Subscribe to the game window's ClientSizeChanged event.
 			Window.ClientSizeChanged += Window_ClientSizeChanged;
+			Activated += HandleActivated;
+			Deactivated += HandleDeactivated;
         }
+
+        void HandleDeactivated (object sender, EventArgs e)
+        {
+               Console.WriteLine("DeActivated - IsActive? " + IsActive);
+        }
+
+        void HandleActivated (object sender, EventArgs e)
+        {
+			Console.WriteLine("Activated - IsActive? " + IsActive);
+	}
 
     void Window_ClientSizeChanged( object sender, EventArgs e )
     {

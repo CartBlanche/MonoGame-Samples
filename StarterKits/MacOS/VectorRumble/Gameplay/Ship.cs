@@ -735,7 +735,7 @@ namespace VectorRumble
 	                                // fire ahead of us
 	                                weapon.Fire(Vector2.Normalize(forward));
 	                            }
-	
+
 	                            // Lets drop some Mines
 	                            if (currentKeyboardState.IsKeyDown(Keys.S))
 	                            {
@@ -797,6 +797,11 @@ namespace VectorRumble
                         {
                             weapon.Fire(Vector2.Normalize(rightStick));
                         }
+	                            if (currentGamePadState.Buttons.RightShoulder == ButtonState.Pressed)
+	                            {
+	                                // fire ahead of us
+	                                weapon.Fire(Vector2.Normalize(forward));
+	                            }
                         // check for laying mines
                         if ((currentGamePadState.Buttons.B == ButtonState.Pressed) &&
                             (lastGamePadState.Buttons.B == ButtonState.Released))
