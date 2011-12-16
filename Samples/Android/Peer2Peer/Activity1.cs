@@ -5,8 +5,8 @@ using PeerToPeer;
 
 namespace MonoGame.Samples.PeerToPeerGame.Droid
 {
-    [Activity(Label = "Peer2Peer", MainLauncher = true,
-        ConfigurationChanges = ConfigChanges.Orientation | ConfigChanges.KeyboardHidden
+    [Activity(Label = "Peer2Peer", MainLauncher = true
+        ,ConfigurationChanges=ConfigChanges.Orientation|ConfigChanges.Keyboard|ConfigChanges.KeyboardHidden
         , Icon = "@drawable/icon"
         , Theme = "@style/Theme.Splash"
         , NoHistory = true)]

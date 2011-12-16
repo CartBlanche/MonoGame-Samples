@@ -36,7 +36,7 @@ namespace MonoGame.Samples.Input
 			graphics.IsFullScreen = true;	
 
 			graphics.SupportedOrientations = DisplayOrientation.LandscapeLeft | DisplayOrientation.LandscapeRight 
-				//| DisplayOrientation.Portrait
+				| DisplayOrientation.Portrait
 				;
 		}
 		

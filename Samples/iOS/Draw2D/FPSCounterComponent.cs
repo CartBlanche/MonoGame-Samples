@@ -42,8 +42,8 @@ namespace Microsoft.Xna.Samples.Draw2D
 
             string fps = string.Format("fps: {0} mem : {1}", frameRate, GC.GetTotalMemory(false));
 
-            //spriteBatch.DrawString(spriteFont, fps, new Vector2(1, 1), Color.Black);
-            //spriteBatch.DrawString(spriteFont, fps, new Vector2(0, 0), Color.White);
+            spriteBatch.DrawString(spriteFont, fps, new Vector2(1, 1), Color.Black);
+            spriteBatch.DrawString(spriteFont, fps, new Vector2(0, 0), Color.White);
         }
     }
 }
