@@ -76,10 +76,10 @@ namespace OrientationSample
             // Game supports all possible orientations and enablyes dynamically locking/unlocking the
             // orientation.
             // (Uncomment the following lines):
-            // graphics.SupportedOrientations = DisplayOrientation.Portrait |
-            //                                  DisplayOrientation.LandscapeLeft |
-            //                                  DisplayOrientation.LandscapeRight;
-            //enableOrientationLocking = true;
+             graphics.SupportedOrientations = DisplayOrientation.Portrait |
+                                              DisplayOrientation.LandscapeLeft |
+                                              DisplayOrientation.LandscapeRight;
+            enableOrientationLocking = true;
 
             // Switch to full screen mode
             graphics.IsFullScreen = true;

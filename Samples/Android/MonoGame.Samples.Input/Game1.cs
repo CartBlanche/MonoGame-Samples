@@ -21,6 +21,7 @@ namespace MonoGame.Samples.Input
 		SpriteBatch spriteBatch;		
 		
 		SpriteFont font;
+		Color clearColor = Color.CornflowerBlue;
 		
 		KeyboardState currentKeyboardState;
 		GamePadState currentGamePadState;
@@ -36,7 +37,7 @@ namespace MonoGame.Samples.Input
 			graphics.IsFullScreen = true;	
 
 			graphics.SupportedOrientations = DisplayOrientation.LandscapeLeft | DisplayOrientation.LandscapeRight 
-				//| DisplayOrientation.Portrait
+				| DisplayOrientation.Portrait
 				;
 		}
 		
@@ -49,7 +50,8 @@ namespace MonoGame.Samples.Input
 		protected override void Initialize ()
 		{
 			// TODO: Add your initialization logic here
-
+			TouchPanel.EnabledGestures = GestureType.Tap | GestureType.DoubleTap;
+			
 			base.Initialize ();
 		}
 		
@@ -77,7 +79,18 @@ namespace MonoGame.Samples.Input
 			currentKeyboardState = Keyboard.GetState ();
 			currentGamePadState = GamePad.GetState (PlayerIndex.One);
 			currentTouchState = TouchPanel.GetState();
-									
+			while (TouchPanel.IsGestureAvailable)
+			{
+				var gesture = TouchPanel.ReadGesture();
+				switch (gesture.GestureType) {
+					case GestureType.DoubleTap:
+					        clearColor = clearColor == Color.CornflowerBlue ? Color.Red : Color.CornflowerBlue;
+							break;
+					case GestureType.Tap:
+					        clearColor = clearColor == Color.CornflowerBlue ? Color.Black : Color.CornflowerBlue;
+							break;
+				}
+			}
 			base.Update (gameTime);
 		}
 				
@@ -87,7 +100,7 @@ namespace MonoGame.Samples.Input
 		/// <param name="gameTime">Provides a snapshot of timing values.</param>
 		protected override void Draw (GameTime gameTime)
 		{
-			graphics.GraphicsDevice.Clear (Color.CornflowerBlue);
+			graphics.GraphicsDevice.Clear (clearColor);
 			
 			// Won't be visible until we hide the movie
 			spriteBatch.Begin();	

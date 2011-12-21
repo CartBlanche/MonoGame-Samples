@@ -42,6 +42,7 @@
     <None Include="Background.png" />
     <None Include="Game.ico" />
     <None Include="GameThumbnail.png" />
+    <None Include="Content\Sounds\FillingHoneyPot_Loop.wav" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath)\Mono\MonoMac\v0.0\Mono.MonoMac.targets" />
@@ -111,7 +112,6 @@
     <Content Include="Content\Sounds\BeeBuzzing_Loop.xnb" />
     <Content Include="Content\Sounds\Defeat.xnb" />
     <Content Include="Content\Sounds\DepositingIntoVat_Loop.xnb" />
-    <Content Include="Content\Sounds\FillingHoneyPot_Loop.xnb" />
     <Content Include="Content\Sounds\HighScore.xnb" />
     <Content Include="Content\Sounds\HoneyPotBreak.xnb" />
     <Content Include="Content\Sounds\InGameSong_Loop.wma" />
@@ -154,5 +154,6 @@
     <Content Include="Content\Textures\Backgrounds\instructionsXbox.xnb" />
     <Content Include="Content\Textures\Backgrounds\pauseBackground.xnb" />
     <Content Include="Content\Textures\Backgrounds\titleScreen.xnb" />
+    <Content Include="Content\Sounds\FillingHoneyPot_Loop.xnb" />
   </ItemGroup>
 </Project>
