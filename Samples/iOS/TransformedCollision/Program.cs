@@ -12,9 +12,8 @@ namespace TransformedCollision
 		public override void FinishedLaunching (UIApplication app)
 		{
 			// Fun begins..
-			using (TransformedCollisionGame game = new TransformedCollisionGame()) {
-				game.Run ();
-			}
+			TransformedCollisionGame game = new TransformedCollisionGame();
+			game.Run ();
 		}
 
 		static void Main (string [] args)

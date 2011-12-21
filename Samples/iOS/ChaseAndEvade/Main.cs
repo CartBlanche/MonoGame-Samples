@@ -15,10 +15,8 @@ namespace ChaseAndEvade
         public override void FinishedLaunching(UIApplication app)
         {
             // Fun begins..
-            using (ChaseAndEvadeGame game = new ChaseAndEvadeGame())
-            {
-                game.Run();
-            }
+            ChaseAndEvadeGame game = new ChaseAndEvadeGame();
+            game.Run();
         }
 
         /// <summary>

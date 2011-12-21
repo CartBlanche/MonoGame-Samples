@@ -14,10 +14,8 @@ namespace Microsoft.Xna.Samples.MultiTouch
         public override void FinishedLaunching(UIApplication app)
         {
             // Fun begins..
-            using (Game1 game = new Game1())
-            {
-                game.Run();
-            }
+            Game1 game = new Game1();
+            game.Run();
         }
 
         /// <summary>

@@ -24,11 +24,11 @@ namespace ChaseAndEvade
 
 	class AppDelegate : NSApplicationDelegate
 	{
+        ChaseAndEvadeGame game;
 		public override void FinishedLaunching (MonoMac.Foundation.NSObject notification)
 		{
-			using (ChaseAndEvadeGame game = new ChaseAndEvadeGame ()) {
-				game.Run ();
-			}
+			game = new ChaseAndEvadeGame();
+		    game.Run();
 		}
 
 		public override bool ApplicationShouldTerminateAfterLastWindowClosed (NSApplication sender)

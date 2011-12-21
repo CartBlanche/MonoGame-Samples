@@ -24,9 +24,8 @@ namespace BackgroundThreadTester
 		
 		public override void FinishedLaunching (MonoMac.Foundation.NSObject notification)
 		{			
-			using (game = new Game1()) {
-				game.Run ();
-			}
+			game = new Game1();
+			game.Run();
 		}
 		
 		public override bool ApplicationShouldTerminateAfterLastWindowClosed (NSApplication sender)
