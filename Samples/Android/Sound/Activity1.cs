@@ -2,6 +2,7 @@
 
 using Android.App;
 using Android.Content;
+using Android.Content.PM;
 using Android.Runtime;
 using Android.Views;
 using Android.Widget;
@@ -11,7 +12,7 @@ using Microsoft.Xna.Framework;
 namespace Microsoft.Xna.Samples.Sound
 {
     [Activity(Label = "Sound", MainLauncher = true, Icon = "@drawable/icon"
-        , Theme = "@style/Theme.Splash")]
+        , Theme = "@style/Theme.Splash",ConfigurationChanges=ConfigChanges.Orientation|ConfigChanges.Keyboard|ConfigChanges.KeyboardHidden)]
     public class Activity1 : AndroidGameActivity
     {
         protected override void OnCreate(Bundle bundle)
