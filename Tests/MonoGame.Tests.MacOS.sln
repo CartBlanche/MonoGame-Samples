@@ -29,6 +29,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TextureScaleColorTest", "Ma
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestDataSetAndGet", "MacOS\TestDataSetAndGet\TestDataSetAndGet.csproj", "{98CB640D-B8C4-496F-9978-F2571268BD70}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SoundTest_MacOS", "MacOS\SoundTest\SoundTest\SoundTest_MacOS.csproj", "{FE2CB4FE-6466-4B3A-B2B8-38FFD2047DBE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SoundTest2_MacOs", "MacOS\SoundTest2\SoundTest2_MacOs\SoundTest2_MacOs.csproj", "{79A32C2C-0F38-4ADE-88D1-F8502C520570}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x86 = Debug|x86
@@ -60,6 +64,12 @@ Global
 		{51147863-7B4E-4467-A5FA-986259EB686F}.Distribution|Any CPU.Build.0 = Debug|x86
 		{51147863-7B4E-4467-A5FA-986259EB686F}.Release|x86.ActiveCfg = Release|x86
 		{51147863-7B4E-4467-A5FA-986259EB686F}.Release|x86.Build.0 = Release|x86
+		{79A32C2C-0F38-4ADE-88D1-F8502C520570}.Debug|x86.ActiveCfg = Debug|x86
+		{79A32C2C-0F38-4ADE-88D1-F8502C520570}.Debug|x86.Build.0 = Debug|x86
+		{79A32C2C-0F38-4ADE-88D1-F8502C520570}.Distribution|Any CPU.ActiveCfg = Debug|x86
+		{79A32C2C-0F38-4ADE-88D1-F8502C520570}.Distribution|Any CPU.Build.0 = Debug|x86
+		{79A32C2C-0F38-4ADE-88D1-F8502C520570}.Release|x86.ActiveCfg = Release|x86
+		{79A32C2C-0F38-4ADE-88D1-F8502C520570}.Release|x86.Build.0 = Release|x86
 		{7B2F1E86-1B56-4F78-9265-EA8852442171}.Debug|x86.ActiveCfg = Debug|x86
 		{7B2F1E86-1B56-4F78-9265-EA8852442171}.Debug|x86.Build.0 = Debug|x86
 		{7B2F1E86-1B56-4F78-9265-EA8852442171}.Distribution|Any CPU.ActiveCfg = Debug|x86
@@ -120,6 +130,12 @@ Global
 		{ECD1D53E-F50A-4299-9B0F-2F64D6063513}.Distribution|Any CPU.Build.0 = Debug|Any CPU
 		{ECD1D53E-F50A-4299-9B0F-2F64D6063513}.Release|x86.ActiveCfg = Release|Any CPU
 		{ECD1D53E-F50A-4299-9B0F-2F64D6063513}.Release|x86.Build.0 = Release|Any CPU
+		{FE2CB4FE-6466-4B3A-B2B8-38FFD2047DBE}.Debug|x86.ActiveCfg = Debug|x86
+		{FE2CB4FE-6466-4B3A-B2B8-38FFD2047DBE}.Debug|x86.Build.0 = Debug|x86
+		{FE2CB4FE-6466-4B3A-B2B8-38FFD2047DBE}.Distribution|Any CPU.ActiveCfg = Debug|x86
+		{FE2CB4FE-6466-4B3A-B2B8-38FFD2047DBE}.Distribution|Any CPU.Build.0 = Debug|x86
+		{FE2CB4FE-6466-4B3A-B2B8-38FFD2047DBE}.Release|x86.ActiveCfg = Release|x86
+		{FE2CB4FE-6466-4B3A-B2B8-38FFD2047DBE}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(MonoDevelopProperties) = preSolution
 		StartupItem = MacOS\TextureScaleColorTest\TextureScaleColorTest.csproj
