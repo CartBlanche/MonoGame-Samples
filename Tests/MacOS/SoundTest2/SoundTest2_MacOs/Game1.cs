@@ -103,7 +103,7 @@ namespace SoundTest
 			Explosions [0].Position.X += move;
 			pan = MathHelper.Clamp ((Explosions [0].Position.X / 512f) - 1, -1, 1);
 			eExplosion.Pan = pan;
-			Console.WriteLine (pan);
+			//Console.WriteLine (pan);
 
 			//Check for exit
 			KeyboardState state = new KeyboardState ();

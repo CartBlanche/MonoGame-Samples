@@ -62,7 +62,7 @@ namespace SoundTest
 			spriteBatch = new SpriteBatch(GraphicsDevice);
 
 			sExplosion = Content.Load<SoundEffect>("ExplosionSound");
-			sExplosion = Content.Load<SoundEffect>("laser1");
+			//sExplosion = Content.Load<SoundEffect>("laser1");
 			//sExplosion = Content.Load<SoundEffect>("FillingHoneyPot_Loop");
 			tExplosion = Content.Load<Texture2D>("Explosion");
 		}
