@@ -64,6 +64,7 @@ namespace TestDataSetAndGet
         public PerPixelCollisionGame()
         {
             graphics = new GraphicsDeviceManager(this);
+			graphics.SynchronizeWithVerticalRetrace = false;
             Content.RootDirectory = "Content";
         }
 
