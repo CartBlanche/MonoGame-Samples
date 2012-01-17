@@ -23,6 +23,11 @@ using Microsoft.Xna.Framework.Input.Touch;
 using MonoMac.AppKit;
 using MonoMac.Foundation;
 #endif
+
+#if IOS
+using MonoTouch.UIKit;
+using MonoTouch.Foundation;
+#endif
 #endregion
 
 namespace CatapultGame
@@ -119,10 +124,17 @@ namespace CatapultGame
 
 		void LoadAssetsWorkerThread ()
 		{
+
 			// Create an Autorelease Pool or we will leak objects.
 			using (var pool = new NSAutoreleasePool()) {
 				// Make sure we invoke this on the Main Thread or OpenGL will throw an error
+#if MACOS
 				MonoMac.AppKit.NSApplication.SharedApplication.BeginInvokeOnMainThread (delegate {
+#endif
+#if IOS
+				var invokeOnMainThredObj = new NSObject();
+				invokeOnMainThredObj.InvokeOnMainThread(delegate {
+#endif
 					gameplayScreen.LoadAssets ();
 				});
 			}
