@@ -5,7 +5,7 @@
     <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
     <ProductVersion>10.0.0</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{1F4BF77D-34DA-417D-96DE-24213A05729B}</ProjectGuid>
+    <ProjectGuid>{1F4BF87D-34DA-417D-96DE-24213A05739B}</ProjectGuid>
     <ProjectTypeGuids>{948B3504-5B70-4649-8FE4-BDE1FB46EC69};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <OutputType>Exe</OutputType>
     <RootNamespace>CatapultGame</RootNamespace>
@@ -47,7 +47,7 @@
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath)\Mono\MonoMac\v0.0\Mono.MonoMac.targets" />
   <ItemGroup>
-    <ProjectReference Include="..\..\..\..\..\..\..\Users\Jimmy\Public\Share\MonoMacSource\kjpgit\MonoGame\MonoGame.Framework\MonoGame.Framework.MacOS.csproj">
+    <ProjectReference Include="..\..\..\..\MonoGame\MonoGame.Framework\MonoGame.Framework.MacOS.csproj">
       <Project>{36C538E6-C32A-4A8D-A39C-566173D7118E}</Project>
       <Name>MonoGame.Framework.MacOS</Name>
     </ProjectReference>
