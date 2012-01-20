@@ -7,19 +7,16 @@ namespace Microsoft.Xna.Samples.Draw2D
 {
 	public class FPSCounterComponent : DrawableGameComponent
     {
-        SpriteBatch spriteBatch;
-        SpriteFont spriteFont;
-
         int frameRate = 0;
         int frameCounter = 0;
         TimeSpan elapsedTime = TimeSpan.Zero;
 
+        public SpriteBatch Batch { get; set; }
+        public SpriteFont Font { get; set; }
 
-        public FPSCounterComponent(Game game, SpriteBatch Batch, SpriteFont Font)
+        public FPSCounterComponent(Game game)
             : base(game)
         {
-			spriteFont = Font;
-			spriteBatch = Batch;
         }
 
 
@@ -42,8 +39,8 @@ namespace Microsoft.Xna.Samples.Draw2D
 
             string fps = string.Format("fps: {0} mem : {1}", frameRate, GC.GetTotalMemory(false));
 
-            spriteBatch.DrawString(spriteFont, fps, new Vector2(1, 1), Color.Black);
-            spriteBatch.DrawString(spriteFont, fps, new Vector2(0, 0), Color.White);
+            Batch.DrawString(Font, fps, new Vector2(1, 1), Color.Black);
+            Batch.DrawString(Font, fps, new Vector2(0, 0), Color.White);
         }
     }
 }

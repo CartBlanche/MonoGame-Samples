@@ -16,11 +16,12 @@ namespace Microsoft.Xna.Samples.Draw2D
 	{
 		GraphicsDeviceManager graphics;
 		SpriteBatch spriteBatch;		
-		Texture2D texture, ball;
+		Texture2D texture;
+        //Texture2D ball;
 		SpriteFont font;
 		float size, rotation;
 		float clippingSize = 0.0f;
-		Color alphaColor = Color.White;
+		float alpha = 1.0f;
 		FPSCounterComponent fps;
 		
         public Game1 ()  
@@ -44,7 +45,7 @@ namespace Microsoft.Xna.Samples.Draw2D
 		protected override void Initialize ()
 		{
 			// TODO: Add your initialization logic here
-			fps = new FPSCounterComponent(this, spriteBatch, font);
+			fps = new FPSCounterComponent(this);
 			Components.Add(fps);
 
 			base.Initialize ();
@@ -63,6 +64,9 @@ namespace Microsoft.Xna.Samples.Draw2D
 			texture = Content.Load<Texture2D> ("monogameicon");
 			// TODO ball = Content.Load<Texture2D> ("purpleBall.xnb");
 			font = Content.Load<SpriteFont> ("spriteFont1");
+
+            fps.Batch = spriteBatch;
+            fps.Font = font;
 		}
 
 		/// <summary>
@@ -89,7 +93,9 @@ namespace Microsoft.Xna.Samples.Draw2D
 				clippingSize = 0.0f;
 			}
 
-			alphaColor.A ++;
+			alpha += (float)gameTime.ElapsedGameTime.TotalSeconds * 0.25f;
+            if (alpha > 1.0f)
+                alpha -= 1.0f;
 
 			base.Update (gameTime);
 		}
@@ -132,7 +138,7 @@ namespace Microsoft.Xna.Samples.Draw2D
 			// Draw texture section and scale
 			spriteBatch.Draw (texture, new Rectangle (10,120,(int)size,(int)size), new Rectangle (20,20,40,40), Color.White);		
 			// Alpha blending
-			spriteBatch.Draw (texture, new Vector2 (140,0), alphaColor);	
+			spriteBatch.Draw (texture, new Vector2 (140,0), Color.White * alpha);	
 			// Flip horizontaly
 			spriteBatch.Draw (texture, new Rectangle (80,390,texture.Width,texture.Height), null, Color.White, 0.0f, Vector2.Zero, SpriteEffects.FlipHorizontally, 0);	
 			// Flip verticaly
