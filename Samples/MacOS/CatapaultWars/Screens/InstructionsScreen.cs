@@ -125,8 +125,12 @@ namespace CatapultGame
 		void LoadAssetsWorkerThread ()
 		{
 
+#if MACOS || IOS			
 			// Create an Autorelease Pool or we will leak objects.
 			using (var pool = new NSAutoreleasePool()) {
+#else				
+				
+#endif				
 				// Make sure we invoke this on the Main Thread or OpenGL will throw an error
 #if MACOS
 				MonoMac.AppKit.NSApplication.SharedApplication.BeginInvokeOnMainThread (delegate {
@@ -136,8 +140,11 @@ namespace CatapultGame
 				invokeOnMainThredObj.InvokeOnMainThread(delegate {
 #endif
 					gameplayScreen.LoadAssets ();
+#if MACOS || IOS						
 				});
-			}
+					
+			}				
+#endif				
 
 		}
 #endregion
