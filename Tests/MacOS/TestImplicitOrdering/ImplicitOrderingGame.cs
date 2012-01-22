@@ -17,13 +17,17 @@ namespace TestImplicitOrdering
             new GraphicsDeviceManager(this);
         }
 
-        private TestUpdateable[] _updateables;
-        private List<TestUpdateable> _updateablesInUpdateOrder = new List<TestUpdateable>();
-        private bool? _updateablesOrderedCorrectly;
+        private const int NumberOfBatches = 3;
+        private const int ItemsPerBatch = 3;
+        private int _batchNumber = 0;
 
-        private TestDrawable[] _drawables;
+        private List<TestUpdateable> _updateables = new List<TestUpdateable>();
+        private List<TestUpdateable> _updateablesInUpdateOrder = new List<TestUpdateable>();
+        private bool _updateablesOrderedCorrectly;
+
+        private List<TestDrawable> _drawables = new List<TestDrawable>();
         private List<TestDrawable> _drawablesInDrawOrder = new List<TestDrawable>();
-        private bool? _drawablesOrderedCorrectly;
+        private bool _drawablesOrderedCorrectly;
 
 
         protected override void LoadContent()
@@ -32,20 +36,6 @@ namespace TestImplicitOrdering
 
             _spriteBatch = new SpriteBatch(GraphicsDevice);
             _font = Content.Load<SpriteFont>("fntStandard");
-
-            _updateables = new TestUpdateable[5];
-            for (int i = 0; i < _updateables.Length; ++i)
-            {
-                _updateables[i] = new TestUpdateable(this);
-                Components.Add(_updateables[i]);
-            }
-
-            _drawables = new TestDrawable[9];
-            for (int i = 0; i < _drawables.Length; ++i)
-            {
-                _drawables[i] = new TestDrawable(this);
-                Components.Add(_drawables[i]);
-            }
         }
 
         protected override void UnloadContent()
@@ -56,25 +46,44 @@ namespace TestImplicitOrdering
 
         protected override void Update(GameTime gameTime)
         {
-            base.Update(gameTime);
+            if (_batchNumber < NumberOfBatches &&
+                gameTime.TotalGameTime >= TimeSpan.FromSeconds(_batchNumber))
+            {
+                for (int i = 0; i < ItemsPerBatch; ++i)
+                {
+                    var updateable = new TestUpdateable(this);
+                    _updateables.Add(updateable);
+                    Components.Add(updateable);
 
-            if (!_updateablesOrderedCorrectly.HasValue)
-                _updateablesOrderedCorrectly = ListsEqual(_updateables, _updateablesInUpdateOrder);
+                    var drawable = new TestDrawable(this);
+                    _drawables.Add(drawable);
+                    Components.Add(drawable);
+                }
+
+                _batchNumber++;
+            }
+
+
+            base.Update(gameTime);
+            _updateablesOrderedCorrectly = ListsEqual(_updateables, _updateablesInUpdateOrder);
+            _updateablesInUpdateOrder.Clear();
         }
 
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
-            base.Draw(gameTime);
 
-            if (!_drawablesOrderedCorrectly.HasValue)
-                _drawablesOrderedCorrectly = ListsEqual(_drawables, _drawablesInDrawOrder);
+            base.Draw(gameTime);
+            _drawablesOrderedCorrectly = ListsEqual(_drawables, _drawablesInDrawOrder);
+            _drawablesInDrawOrder.Clear();
 
             _spriteBatch.Begin();
-            if (_updateablesOrderedCorrectly.HasValue)
-                DrawStatusString("Updateables", 1, _updateablesOrderedCorrectly.Value);
-            if (_updateablesOrderedCorrectly.HasValue)
-                DrawStatusString("Drawables", 0, _drawablesOrderedCorrectly.Value);
+            DrawStatusString(
+                string.Format("{0} updateables", _updateables.Count),
+                1, _updateablesOrderedCorrectly);
+            DrawStatusString(
+                string.Format("{0} drawables", _drawables.Count),
+                0, _drawablesOrderedCorrectly);
             _spriteBatch.End();
         }
 
@@ -104,17 +113,12 @@ namespace TestImplicitOrdering
         {
             public TestUpdateable(Game game) : base(game) { }
 
-            private bool _firstUpdate = true;
             public override void Update(GameTime gameTime)
             {
                 base.Update(gameTime);
 
-                if (_firstUpdate)
-                {
-                    _firstUpdate = false;
-                    var game = (ImplicitOrderingGame)Game;
-                    game._updateablesInUpdateOrder.Add(this);
-                }
+                var game = (ImplicitOrderingGame)Game;
+                game._updateablesInUpdateOrder.Add(this);
             }
         }
 
@@ -150,16 +154,11 @@ namespace TestImplicitOrdering
                 _spriteBatch = null;
             }
 
-            private bool _firstDraw = true;
             public override void Draw(GameTime gameTime)
             {
                 var game = (ImplicitOrderingGame)Game;
 
-                if (_firstDraw)
-                {
-                    _firstDraw = false;
-                    game._drawablesInDrawOrder.Add(this);
-                }
+                game._drawablesInDrawOrder.Add(this);
 
                 float halfEx = game._font.MeasureString("x").X / 2;
                 var position = new Vector2(_number * halfEx, 0);
