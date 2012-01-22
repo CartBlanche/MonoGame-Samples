@@ -23,12 +23,11 @@ namespace SpriteEffects
 	
 	class AppDelegate : NSApplicationDelegate
 	{
-		
+		SpriteEffectsGame game;
 		public override void FinishedLaunching (MonoMac.Foundation.NSObject notification)
 		{
-			using (SpriteEffectsGame game = new SpriteEffectsGame ()) {
-				game.Run ();
-			}
+			game = new SpriteEffectsGame();
+			game.Run();
 		}
 		
 		public override bool ApplicationShouldTerminateAfterLastWindowClosed (NSApplication sender)

@@ -82,12 +82,11 @@ namespace NetworkPrediction
 	
 	class AppDelegate : NSApplicationDelegate
 	{
-		
+		NetworkPredictionGame game;
 		public override void FinishedLaunching (MonoMac.Foundation.NSObject notification)
 		{
-			using (NetworkPredictionGame game = new NetworkPredictionGame ()) {
-				game.Run ();
-			}
+			game = new NetworkPredictionGame();
+			game.Run();
 		}
 		
 		public override bool ApplicationShouldTerminateAfterLastWindowClosed (NSApplication sender)

@@ -15,10 +15,8 @@ namespace Aiming
         public override void FinishedLaunching(UIApplication app)
         {
             // Fun begins..
-            using (AimingGame game = new AimingGame())
-            {
-                game.Run();
-            }
+            AimingGame game = new AimingGame();
+            game.Run();
         }
 
         /// <summary>

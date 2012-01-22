@@ -23,12 +23,11 @@ namespace Particle3DSample
 
 	class AppDelegate : NSApplicationDelegate
 	{
-
+        Particle3DSampleGame game;
 		public override void FinishedLaunching (MonoMac.Foundation.NSObject notification)
 		{
-			using (Particle3DSampleGame game = new Particle3DSampleGame ()) {
-				game.Run ();
-			}
+			game = new Particle3DSampleGame();
+			game.Run();
 		}
 
 		public override bool ApplicationShouldTerminateAfterLastWindowClosed (NSApplication sender)

@@ -12,9 +12,8 @@ namespace PrimitivesSample
 		public override void FinishedLaunching (UIApplication app)
 		{
 			// Fun begins..
-			using (PrimitivesSampleGame game = new PrimitivesSampleGame()) {
-				game.Run ();
-			}
+			PrimitivesSampleGame game = new PrimitivesSampleGame();
+			game.Run ();
 		}
 
 		static void Main (string [] args)

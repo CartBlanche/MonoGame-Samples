@@ -82,12 +82,11 @@ namespace NetRumble
 	
 	class AppDelegate : NSApplicationDelegate
 	{
-		
+		NetRumbleGame game;
 		public override void FinishedLaunching (MonoMac.Foundation.NSObject notification)
 		{
-			using (NetRumbleGame game = new NetRumbleGame ()) {
-				game.Run ();
-			}
+			game = new NetRumbleGame();
+			game.Run();
 		}
 		
 		public override bool ApplicationShouldTerminateAfterLastWindowClosed (NSApplication sender)
