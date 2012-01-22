@@ -162,6 +162,7 @@ namespace CatapultGame
 					playerTwo.Initialize ();
 					playerTwo.Name = "Player 2";
 					IsNetworking = false;
+					NetworkSession.Dispose();
 					NetworkSession = null;
 				}
 			} else {
