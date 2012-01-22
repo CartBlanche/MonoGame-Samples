@@ -19,10 +19,8 @@ namespace Microsoft.Xna.Samples.GameStateManagement
         public override void FinishedLaunching(UIApplication app)
         {
             // Fun begins..
-            using (GameStateManagementGame game = new GameStateManagementGame())
-            {
-                game.Run();
-            }
+            GameStateManagementGame game = new GameStateManagementGame();
+            game.Run();
         }
 
         /// <summary>

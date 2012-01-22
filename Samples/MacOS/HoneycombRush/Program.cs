@@ -48,12 +48,11 @@ namespace HoneycombRush
 	
 	class AppDelegate : MonoMac.AppKit.NSApplicationDelegate
 	{
-		
+		HoneycombRush game;
 		public override void FinishedLaunching (MonoMac.Foundation.NSObject notification)
 		{
-			using (HoneycombRush game = new HoneycombRush()){
-				game.Run();
-			}
+			game = new HoneycombRush();
+			game.Run();
 		}
 		
 		public override bool ApplicationShouldTerminateAfterLastWindowClosed (MonoMac.AppKit.NSApplication sender)

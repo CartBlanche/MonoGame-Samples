@@ -16,7 +16,7 @@ namespace Microsoft.Xna.Samples.GameComponents
 		{
 			// Fun begins..
 			game = new Game1();
-			game.Run();			
+			game.Run();
 		}
 		
 		static void Main (string [] args)

@@ -209,7 +209,7 @@ namespace RockRainIphone
         {
             if (startScene.MenuSelected)
             {
-				Mouse.SetPosition(0,0);
+				//Mouse.SetPosition(0,0);
                 audio.MenuSelect.Play();
                 switch (startScene.SelectedMenuIndex)
                 {

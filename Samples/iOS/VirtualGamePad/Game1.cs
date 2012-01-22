@@ -42,7 +42,7 @@ namespace Microsoft.Xna.Samples.VirtualGamePad
             // TODO: Add your initialization logic here
 
 			// Set the initial mouse position
-			Mouse.SetPosition(160,240);
+			//Mouse.SetPosition(160,240);
 			
             base.Initialize();
         }

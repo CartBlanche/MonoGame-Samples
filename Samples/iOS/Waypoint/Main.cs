@@ -15,10 +15,8 @@ namespace Waypoint
         public override void FinishedLaunching(UIApplication app)
         {
             // Fun begins..
-            using (WaypointSample game = new WaypointSample())
-            {
-                game.Run();
-            }
+            WaypointSample game = new WaypointSample();
+            game.Run();
         }
 
         /// <summary>
