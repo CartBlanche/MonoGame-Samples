@@ -33,6 +33,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SoundTest_MacOS", "MacOS\So
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SoundTest2_MacOs", "MacOS\SoundTest2\SoundTest2_MacOs\SoundTest2_MacOs.csproj", "{79A32C2C-0F38-4ADE-88D1-F8502C520570}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestImplicitOrdering", "MacOS\TestImplicitOrdering\TestImplicitOrdering.csproj", "{573AC418-8A76-4C5B-A7FE-5AC0A4C32BA1}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x86 = Debug|x86
@@ -64,6 +66,12 @@ Global
 		{51147863-7B4E-4467-A5FA-986259EB686F}.Distribution|Any CPU.Build.0 = Debug|x86
 		{51147863-7B4E-4467-A5FA-986259EB686F}.Release|x86.ActiveCfg = Release|x86
 		{51147863-7B4E-4467-A5FA-986259EB686F}.Release|x86.Build.0 = Release|x86
+		{573AC418-8A76-4C5B-A7FE-5AC0A4C32BA1}.Debug|x86.ActiveCfg = Debug|x86
+		{573AC418-8A76-4C5B-A7FE-5AC0A4C32BA1}.Debug|x86.Build.0 = Debug|x86
+		{573AC418-8A76-4C5B-A7FE-5AC0A4C32BA1}.Distribution|Any CPU.ActiveCfg = Debug|x86
+		{573AC418-8A76-4C5B-A7FE-5AC0A4C32BA1}.Distribution|Any CPU.Build.0 = Debug|x86
+		{573AC418-8A76-4C5B-A7FE-5AC0A4C32BA1}.Release|x86.ActiveCfg = Release|x86
+		{573AC418-8A76-4C5B-A7FE-5AC0A4C32BA1}.Release|x86.Build.0 = Release|x86
 		{79A32C2C-0F38-4ADE-88D1-F8502C520570}.Debug|x86.ActiveCfg = Debug|x86
 		{79A32C2C-0F38-4ADE-88D1-F8502C520570}.Debug|x86.Build.0 = Debug|x86
 		{79A32C2C-0F38-4ADE-88D1-F8502C520570}.Distribution|Any CPU.ActiveCfg = Debug|x86
