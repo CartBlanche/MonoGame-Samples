@@ -12,9 +12,8 @@ namespace PerPixelCollision
 		public override void FinishedLaunching (UIApplication app)
 		{
 			// Fun begins..
-			using (PerPixelCollisionGame game = new PerPixelCollisionGame()) {
-				game.Run ();
-			}
+			PerPixelCollisionGame game = new PerPixelCollisionGame();
+			game.Run ();
 		}
 
 		static void Main (string [] args)

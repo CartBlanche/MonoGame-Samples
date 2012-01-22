@@ -12,9 +12,8 @@ namespace RectangleCollision
 		public override void FinishedLaunching (UIApplication app)
 		{
 			// Fun begins..
-			using (RectangleCollisionGame game = new RectangleCollisionGame()) {
-				game.Run ();
-			}
+			RectangleCollisionGame game = new RectangleCollisionGame();
+			game.Run();
 		}
 
 		static void Main (string [] args)

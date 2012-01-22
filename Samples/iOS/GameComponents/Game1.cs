@@ -83,7 +83,7 @@ namespace Microsoft.Xna.Samples.GameComponents
 			if ((Mouse.GetState().X != 0) || (Mouse.GetState().Y != 0))
 			{
 				AddSprite();
-				Mouse.SetPosition(0,0);
+				//Mouse.SetPosition(0,0);
 			}
             base.Update(gameTime);
         }

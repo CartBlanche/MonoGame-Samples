@@ -27,8 +27,8 @@ namespace MonoGame.Samples.VideoPlayer
 
 		public override void FinishedLaunching (MonoMac.Foundation.NSObject notification)
 		{
-			game = new Game1 ();
-			game.Run ();
+			game = new Game1();
+			game.Run();
 		}
 
 		public override bool ApplicationShouldTerminateAfterLastWindowClosed (NSApplication sender)

@@ -15,10 +15,8 @@ namespace ParticleSample
         public override void FinishedLaunching(UIApplication app)
         {
             // Fun begins..
-            using (ParticleSampleGame game = new ParticleSampleGame())
-            {
-                game.Run();
-            }
+            ParticleSampleGame game = new ParticleSampleGame();
+            game.Run();
         }
 
         /// <summary>

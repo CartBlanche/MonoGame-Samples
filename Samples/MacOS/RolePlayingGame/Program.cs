@@ -82,13 +82,11 @@ namespace RolePlaying
 	
 	class AppDelegate : NSApplicationDelegate
 	{
-		
+		RolePlayingGame game;
 		public override void FinishedLaunching (MonoMac.Foundation.NSObject notification)
 		{
-			using (RolePlayingGame game = new RolePlayingGame())
-			{
-				game.Run();
-			}
+			game = new RolePlayingGame();
+			game.Run();
 		}
 		
 		public override bool ApplicationShouldTerminateAfterLastWindowClosed (NSApplication sender)

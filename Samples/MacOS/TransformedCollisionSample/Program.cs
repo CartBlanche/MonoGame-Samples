@@ -35,12 +35,11 @@ namespace TransformedCollision
 	
 	class AppDelegate : NSApplicationDelegate
 	{
-		
+		TransformedCollisionGame game;
 		public override void FinishedLaunching (MonoMac.Foundation.NSObject notification)
 		{
-			using (TransformedCollisionGame game = new TransformedCollisionGame()) {
-				game.Run ();
-			}
+			game = new TransformedCollisionGame();
+			game.Run();
 		}
 		
 		public override bool ApplicationShouldTerminateAfterLastWindowClosed (NSApplication sender)

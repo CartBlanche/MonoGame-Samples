@@ -23,12 +23,11 @@ namespace Tetris
 	
 	class AppDelegate : NSApplicationDelegate
 	{
-		
+		Engine game;
 		public override void FinishedLaunching (MonoMac.Foundation.NSObject notification)
 		{
-			using (Engine game = new Engine ()) {
-				game.Run ();
-			}
+			game = new Engine();
+		    game.Run();
 		}
 		
 		public override bool ApplicationShouldTerminateAfterLastWindowClosed (NSApplication sender)
