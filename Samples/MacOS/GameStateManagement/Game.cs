@@ -122,12 +122,11 @@ namespace GameStateManagement
 	
 	class AppDelegate : NSApplicationDelegate
 	{
-		
+		GameStateManagementGame game;
 		public override void FinishedLaunching (MonoMac.Foundation.NSObject notification)
 		{
-			using (GameStateManagementGame game = new GameStateManagementGame ()) {
-				game.Run ();
-			}
+			game = new GameStateManagementGame();
+			game.Run();
 		}
 		
 		public override bool ApplicationShouldTerminateAfterLastWindowClosed (NSApplication sender)

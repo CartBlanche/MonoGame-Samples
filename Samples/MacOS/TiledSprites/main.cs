@@ -22,8 +22,8 @@ namespace TiledSprites
 		
 		public override void FinishedLaunching (MonoMac.Foundation.NSObject notification)
 		{
-			game = new TiledSpritesSample ();
-			game.Run ();
+			game = new TiledSpritesSample();
+			game.Run();
 		}
 		
 		public override bool ApplicationShouldTerminateAfterLastWindowClosed (NSApplication sender)
