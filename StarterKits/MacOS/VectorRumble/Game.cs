@@ -21,6 +21,9 @@ using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Storage;
+#if WINDOWS_PHONE || IOS || ANDROID // WP7, iPad or Tablets only
+using Microsoft.Xna.Framework.Input.Touch;
+#endif
 #endregion
 
 namespace VectorRumble
@@ -46,6 +49,7 @@ namespace VectorRumble
             graphics.PreferredBackBufferHeight = 480;
 			graphics.IsFullScreen = true;
 			graphics.SupportedOrientations = DisplayOrientation.LandscapeLeft;
+			TouchPanel.EnabledGestures = GestureType.Tap;
 #else
 			graphics.PreferredBackBufferWidth = 1280;
             graphics.PreferredBackBufferHeight = 720;

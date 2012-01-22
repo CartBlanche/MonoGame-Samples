@@ -11,6 +11,9 @@
 using System;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+#if ANDROID
+using Microsoft.Xna.Framework.Input.Touch;
+#endif
 #endregion
 
 namespace VectorRumble
@@ -96,6 +99,15 @@ namespace VectorRumble
 
                 ExitScreen();
             }
+			foreach (var g in input.Gestures)
+			{
+				if (g.GestureType == GestureType.Tap)
+				{
+					if (Accepted != null)
+                       Accepted(this, EventArgs.Empty);
+					ExitScreen();
+				}
+			}
         }
 
 

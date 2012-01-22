@@ -12,6 +12,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 #if ANDROID
 using Microsoft.Xna.Framework.Input.Touch;
+using System.Collections.Generic;
 #endif
 #endregion
 
@@ -38,6 +39,7 @@ namespace VectorRumble
 		
 #if ANDROID
 		public TouchCollection CurrentTouchState;
+		public List<GestureSample> Gestures = new List<GestureSample>();
 #endif		
 
         #endregion
@@ -55,6 +57,9 @@ namespace VectorRumble
 
             LastKeyboardStates = new KeyboardState[MaxInputs];
             LastGamePadStates = new GamePadState[MaxInputs];
+#if ANDROID
+			
+#endif			
         }
 
 
@@ -159,6 +164,11 @@ namespace VectorRumble
             }
 #if ANDROID			
 			CurrentTouchState = TouchPanel.GetState();
+			Gestures.Clear();
+			while(TouchPanel.IsGestureAvailable)
+			{
+				Gestures.Add(TouchPanel.ReadGesture());
+			}
 #endif			
         }
 

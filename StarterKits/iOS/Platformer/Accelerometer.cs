@@ -13,6 +13,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 #endregion
 
+#if !ANDROID
 namespace Platformer
 {
     /// <summary>
@@ -178,3 +179,4 @@ namespace Platformer
         }
     }
 }
+#endif

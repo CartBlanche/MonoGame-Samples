@@ -12,6 +12,9 @@ using System;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+#if ANDROID
+using Microsoft.Xna.Framework.Input.Touch;
+#endif
 #endregion
 
 namespace VectorRumble
@@ -113,7 +116,7 @@ namespace VectorRumble
 						}
 					}					
                  }				 
-			}
+			}					
 #endif			
             // Move to the previous menu entry?
             if (input.MenuUp)
