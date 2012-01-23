@@ -12,10 +12,11 @@ namespace ChaseAndEvade
     [Register("AppDelegate")]
     class Program : UIApplicationDelegate
     {
+        ChaseAndEvadeGame game;
         public override void FinishedLaunching(UIApplication app)
         {
             // Fun begins..
-            ChaseAndEvadeGame game = new ChaseAndEvadeGame();
+            game = new ChaseAndEvadeGame();
             game.Run();
         }
 

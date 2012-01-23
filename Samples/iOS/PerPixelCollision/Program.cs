@@ -8,11 +8,11 @@ namespace PerPixelCollision
 	[Register ("AppDelegate")]
 	class Program : UIApplicationDelegate 
 	{
-
+        PerPixelCollisionGame game;
 		public override void FinishedLaunching (UIApplication app)
 		{
 			// Fun begins..
-			PerPixelCollisionGame game = new PerPixelCollisionGame();
+			game = new PerPixelCollisionGame();
 			game.Run ();
 		}
 

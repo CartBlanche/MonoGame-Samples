@@ -12,10 +12,11 @@ namespace Aiming
     [Register("AppDelegate")]
     class Program : UIApplicationDelegate
     {
+        AimingGame game;
         public override void FinishedLaunching(UIApplication app)
         {
             // Fun begins..
-            AimingGame game = new AimingGame();
+            game = new AimingGame();
             game.Run();
         }
 

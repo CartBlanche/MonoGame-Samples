@@ -18,11 +18,11 @@ namespace VectorRumble
 	
 	class AppDelegate : NSApplicationDelegate
 	{
+        VectorRumbleGame game;
 		public override void FinishedLaunching (MonoMac.Foundation.NSObject notification)
 		{			
-			using (VectorRumbleGame game = new VectorRumbleGame()) {
-				game.Run ();
-			}
+			game = new VectorRumbleGame();
+			game.Run();
 		}
 		
 		public override bool ApplicationShouldTerminateAfterLastWindowClosed (NSApplication sender)

@@ -16,10 +16,11 @@ namespace Microsoft.Xna.Samples.GameStateManagement
     [Register("AppDelegate")]
     class Program : UIApplicationDelegate
     {
+        GameStateManagementGame game;
         public override void FinishedLaunching(UIApplication app)
         {
             // Fun begins..
-            GameStateManagementGame game = new GameStateManagementGame();
+            game = new GameStateManagementGame();
             game.Run();
         }
 
