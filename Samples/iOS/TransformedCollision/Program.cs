@@ -8,11 +8,11 @@ namespace TransformedCollision
 	[Register ("AppDelegate")]
 	class Program : UIApplicationDelegate 
 	{
-
+        TransformedCollisionGame game;
 		public override void FinishedLaunching (UIApplication app)
 		{
 			// Fun begins..
-			TransformedCollisionGame game = new TransformedCollisionGame();
+			game = new TransformedCollisionGame();
 			game.Run ();
 		}
 

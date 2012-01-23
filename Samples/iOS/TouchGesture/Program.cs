@@ -20,10 +20,11 @@ namespace TouchGestureSample
     [Register("AppDelegate")]
     class Program : UIApplicationDelegate
     {
+        Game1 game;
         public override void FinishedLaunching(UIApplication app)
         {
             // Fun begins..
-            Game1 game = new Game1();
+            game = new Game1();
             game.Run();
         }
 

@@ -12,10 +12,11 @@ namespace Waypoint
     [Register("AppDelegate")]
     class Program : UIApplicationDelegate
     {
+        WaypointSample game;
         public override void FinishedLaunching(UIApplication app)
         {
             // Fun begins..
-            WaypointSample game = new WaypointSample();
+            game = new WaypointSample();
             game.Run();
         }
 

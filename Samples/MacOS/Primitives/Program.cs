@@ -22,12 +22,12 @@ namespace PrimitivesSample
 	
 		class AppDelegate : MonoMac.AppKit.NSApplicationDelegate
 		{
-		
+
+            PrimitivesSampleGame game;
 			public override void FinishedLaunching (MonoMac.Foundation.NSObject notification)
 			{
-				using (PrimitivesSampleGame game = new PrimitivesSampleGame()) {
-					game.Run ();
-				}
+				game = new PrimitivesSampleGame();
+				game.Run();
 			}
 		
 			public override bool ApplicationShouldTerminateAfterLastWindowClosed (MonoMac.AppKit.NSApplication sender)

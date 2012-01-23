@@ -8,11 +8,11 @@ namespace RectangleCollision
 	[Register ("AppDelegate")]
 	class Program : UIApplicationDelegate 
 	{
-
+        RectangleCollisionGame game;
 		public override void FinishedLaunching (UIApplication app)
 		{
 			// Fun begins..
-			RectangleCollisionGame game = new RectangleCollisionGame();
+			game = new RectangleCollisionGame();
 			game.Run();
 		}
 

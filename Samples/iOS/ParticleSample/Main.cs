@@ -12,10 +12,11 @@ namespace ParticleSample
     [Register("AppDelegate")]
     class Program : UIApplicationDelegate
     {
+        ParticleSampleGame game;
         public override void FinishedLaunching(UIApplication app)
         {
             // Fun begins..
-            ParticleSampleGame game = new ParticleSampleGame();
+            game = new ParticleSampleGame();
             game.Run();
         }
 

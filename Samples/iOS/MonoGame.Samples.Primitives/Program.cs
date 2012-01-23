@@ -8,11 +8,11 @@ namespace PrimitivesSample
 	[Register ("AppDelegate")]
 	class Program : UIApplicationDelegate 
 	{
-
+        PrimitivesSampleGame game;
 		public override void FinishedLaunching (UIApplication app)
 		{
 			// Fun begins..
-			PrimitivesSampleGame game = new PrimitivesSampleGame();
+			game = new PrimitivesSampleGame();
 			game.Run ();
 		}
 

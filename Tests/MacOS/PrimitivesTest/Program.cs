@@ -24,12 +24,11 @@ namespace DrawUserPrimitivesWindows
 	
 		class AppDelegate : MonoMac.AppKit.NSApplicationDelegate
 		{
-		
+            Game1 game;
 			public override void FinishedLaunching (MonoMac.Foundation.NSObject notification)
 			{
-				using (game = new Game1()) {
-					game.Run ();
-				}
+				game = new Game1();
+				game.Run();
 			}
 		
 			public override bool ApplicationShouldTerminateAfterLastWindowClosed (MonoMac.AppKit.NSApplication sender)
