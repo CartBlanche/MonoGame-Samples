@@ -64,7 +64,8 @@ namespace Tetris
 
 			graphics.PreferredBackBufferHeight = 600;
 			graphics.PreferredBackBufferWidth = 800;
-
+			graphics.ApplyChanges();
+			
 			this.TargetElapsedTime = TimeSpan.FromSeconds (1.0f / 10.0f);
 
 			// Try to open file if it exists, otherwise create it

@@ -19,12 +19,11 @@ namespace InputReporter
 	
 	class AppDelegate : MonoMac.AppKit.NSApplicationDelegate
 	{
-		
+		InputReporterGame game;
 		public override void FinishedLaunching (MonoMac.Foundation.NSObject notification)
 		{
-			using (InputReporterGame game = new InputReporterGame()) {
-				game.Run ();
-			}
+			game = new InputReporterGame();
+			game.Run ();
 		}
 		
 		public override bool ApplicationShouldTerminateAfterLastWindowClosed (MonoMac.AppKit.NSApplication sender)

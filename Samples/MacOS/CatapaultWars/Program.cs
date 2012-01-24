@@ -48,12 +48,12 @@ namespace CatapultGame
 	
 	class AppDelegate : MonoMac.AppKit.NSApplicationDelegate
 	{
-		
+		CatapultGame game;
 		public override void FinishedLaunching (MonoMac.Foundation.NSObject notification)
 		{
-			using (CatapultGame game = new CatapultGame()) {
-				game.Run ();
-			}
+			CatapultGame game = new CatapultGame();
+			game.Run ();
+
 		}
 		
 		public override bool ApplicationShouldTerminateAfterLastWindowClosed (MonoMac.AppKit.NSApplication sender)

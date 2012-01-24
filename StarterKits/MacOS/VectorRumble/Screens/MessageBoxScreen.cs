@@ -99,6 +99,7 @@ namespace VectorRumble
 
                 ExitScreen();
             }
+#if ANDROID
 			foreach (var g in input.Gestures)
 			{
 				if (g.GestureType == GestureType.Tap)
@@ -108,6 +109,7 @@ namespace VectorRumble
 					ExitScreen();
 				}
 			}
+#endif			
         }
 
 
