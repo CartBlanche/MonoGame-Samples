@@ -11,6 +11,8 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Storage;
 
+using Microsoft.Xna.Framework.GamerServices;
+
 namespace Microsoft.Xna.Samples.Draw2D
 {
 	/// <summary>
@@ -35,8 +37,11 @@ namespace Microsoft.Xna.Samples.Draw2D
 			
 			graphics.PreferMultiSampling = true;
 			graphics.IsFullScreen = true;
+			
+			graphics.PreferredBackBufferHeight = 480;
+			graphics.PreferredBackBufferWidth = 320;
 
-			graphics.SupportedOrientations = DisplayOrientation.Portrait | DisplayOrientation.LandscapeLeft | DisplayOrientation.LandscapeRight | DisplayOrientation.PortraitUpsideDown;
+			graphics.SupportedOrientations = DisplayOrientation.Portrait | DisplayOrientation.LandscapeLeft | DisplayOrientation.LandscapeRight | DisplayOrientation.PortraitUpsideDown;			
 		}
 		
 		/// <summary>
@@ -78,7 +83,6 @@ namespace Microsoft.Xna.Samples.Draw2D
 		protected override void Update (GameTime gameTime)
 		{
 			// TODO: Add your update logic here
-
 			size += 0.5f;
 			if (size > 150) {
 				size = 0;
@@ -148,8 +152,6 @@ namespace Microsoft.Xna.Samples.Draw2D
 			base.Draw (gameTime);
 
 			spriteBatch.End ();
-
-
             
 			// Now let's try some scissoring
 			spriteBatch.Begin ();
