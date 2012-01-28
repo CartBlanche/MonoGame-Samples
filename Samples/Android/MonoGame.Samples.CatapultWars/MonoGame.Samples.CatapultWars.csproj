@@ -21,7 +21,7 @@
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>bin\Debug</OutputPath>
-    <DefineConstants>DEBUG;</DefineConstants>
+    <DefineConstants>DEBUG;ANDROID</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <ConsolePause>false</ConsolePause>
@@ -36,6 +36,7 @@
     <AndroidUseSharedRuntime>false</AndroidUseSharedRuntime>
     <ConsolePause>false</ConsolePause>
     <AndroidLinkMode>SdkOnly</AndroidLinkMode>
+    <DefineConstants>ANDROID</DefineConstants>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -166,30 +167,6 @@
       <Link>Assets\Content\Fonts\MenuFont.xnb</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </AndroidAsset>
-    <AndroidAsset Include="..\..\MacOS\CatapaultWars\Content\Sounds\BoulderHit.xnb">
-      <Link>Assets\Content\Sounds\BoulderHit.xnb</Link>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </AndroidAsset>
-    <AndroidAsset Include="..\..\MacOS\CatapaultWars\Content\Sounds\CatapultExplosion.xnb">
-      <Link>Assets\Content\Sounds\CatapultExplosion.xnb</Link>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </AndroidAsset>
-    <AndroidAsset Include="..\..\MacOS\CatapaultWars\Content\Sounds\CatapultFire.xnb">
-      <Link>Assets\Content\Sounds\CatapultFire.xnb</Link>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </AndroidAsset>
-    <AndroidAsset Include="..\..\MacOS\CatapaultWars\Content\Sounds\Lose.xnb">
-      <Link>Assets\Content\Sounds\Lose.xnb</Link>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </AndroidAsset>
-    <AndroidAsset Include="..\..\MacOS\CatapaultWars\Content\Sounds\RopeStretch.xnb">
-      <Link>Assets\Content\Sounds\RopeStretch.xnb</Link>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </AndroidAsset>
-    <AndroidAsset Include="..\..\MacOS\CatapaultWars\Content\Sounds\Win.xnb">
-      <Link>Assets\Content\Sounds\Win.xnb</Link>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </AndroidAsset>
     <AndroidAsset Include="..\..\MacOS\CatapaultWars\Content\Textures\Ammo\rock_ammo.xnb">
       <Link>Assets\Content\Textures\Ammo\rock_ammo.xnb</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -284,6 +261,32 @@
     </AndroidAsset>
     <AndroidAsset Include="..\..\MacOS\CatapaultWars\Content\Textures\Catapults\Red\redPullback\redCatapult_Pullback.xnb">
       <Link>Assets\Content\Textures\Catapults\Red\redPullback\redCatapult_Pullback.xnb</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </AndroidAsset>
+    <AndroidAsset Include="..\..\MacOS\CatapaultWars\Content\Sounds\BoulderHit.wav">
+      <Link>Assets\Content\Sounds\BoulderHit.wav</Link>
+    </AndroidAsset>
+    <AndroidAsset Include="..\..\MacOS\CatapaultWars\Content\Sounds\CatapultExplosion.wav">
+      <Link>Assets\Content\Sounds\CatapultExplosion.wav</Link>
+    </AndroidAsset>
+    <AndroidAsset Include="..\..\MacOS\CatapaultWars\Content\Sounds\CatapultFire.wav">
+      <Link>Assets\Content\Sounds\CatapultFire.wav</Link>
+    </AndroidAsset>
+    <AndroidAsset Include="..\..\MacOS\CatapaultWars\Content\Sounds\Lose.wav">
+      <Link>Assets\Content\Sounds\Lose.wav</Link>
+    </AndroidAsset>
+    <AndroidAsset Include="..\..\MacOS\CatapaultWars\Content\Sounds\RopeStretch.wav">
+      <Link>Assets\Content\Sounds\RopeStretch.wav</Link>
+    </AndroidAsset>
+    <AndroidAsset Include="..\..\MacOS\CatapaultWars\Content\Sounds\Win.wav">
+      <Link>Assets\Content\Sounds\Win.wav</Link>
+    </AndroidAsset>
+    <AndroidAsset Include="..\..\MacOS\CatapaultWars\Content\Textures\Catapults\Fire_Miss\fire_miss.xnb">
+      <Link>Assets\Content\Textures\Catapults\Fire_Miss\fire_miss.xnb</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </AndroidAsset>
+    <AndroidAsset Include="..\..\MacOS\CatapaultWars\Content\Textures\Catapults\Hit_Smoke\smoke.xnb">
+      <Link>Assets\Content\Textures\Catapults\Hit_Smoke\smoke.xnb</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </AndroidAsset>
   </ItemGroup>

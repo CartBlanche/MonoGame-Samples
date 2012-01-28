@@ -82,7 +82,9 @@ namespace CatapultGame
         public override void LoadContent()
         {
             base.LoadContent();
-
+#if ANDROID || IOS			
+			LoadAssets();
+#endif			
             // Start the game
             Start();
         }
@@ -100,6 +102,9 @@ namespace CatapultGame
             hudBackgroundTexture = Load<Texture2D>("Textures/HUD/hudBackground");
             windArrowTexture = Load<Texture2D>("Textures/HUD/windArrow");
             ammoTypeTexture = Load<Texture2D>("Textures/HUD/ammoType");
+			
+			
+			
             // Load font
             hudFont = Load<SpriteFont>("Fonts/HUDFont");
 
