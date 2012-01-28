@@ -16,13 +16,12 @@ namespace AlienGameSample
     [Register ("AppDelegate")]
 	class Program : UIApplicationDelegate 
 	{
+		private AlienGame game;
 		public override void FinishedLaunching (UIApplication app)
 		{
 			// Fun begins..
-			using (AlienGame game = new AlienGame())
-            {
-                game.Run();
-            }
+			game = new AlienGame();
+            game.Run();
 			
 			//MediaLibrary lib = new MediaLibrary();
 			//object result = lib.Playlists;
