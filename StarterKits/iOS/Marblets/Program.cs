@@ -22,13 +22,12 @@ namespace Marblets
 	[Register ("AppDelegate")]
 	class Program : UIApplicationDelegate 
 	{
+		private MarbletsGame game;
 		public override void FinishedLaunching (UIApplication app)
 		{
 			// Fun begins..
-			using (MarbletsGame game = new MarbletsGame())
-            {
-                game.Run();
-            }
+			game = new MarbletsGame();
+            game.Run();
 			
 			//MediaLibrary lib = new MediaLibrary();
 			//object result = lib.Playlists;

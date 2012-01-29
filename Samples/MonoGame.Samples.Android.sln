@@ -25,6 +25,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Orientation", "Android\Orie
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonoGame.Samples.CatapultWars", "Android\MonoGame.Samples.CatapultWars\MonoGame.Samples.CatapultWars.csproj", "{289A3AF8-E006-47EF-B34C-CA01020E1655}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonoGame.Samples.AdMob", "Android\MonoGame.Samples.AdMob\MonoGame.Samples.AdMob.csproj", "{DD08D5F1-DE83-41C1-B599-76DC604643EB}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -65,6 +67,10 @@ Global
 		{CB2084E4-BEC8-4318-8011-93CC2E3C9E94}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CB2084E4-BEC8-4318-8011-93CC2E3C9E94}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CB2084E4-BEC8-4318-8011-93CC2E3C9E94}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DD08D5F1-DE83-41C1-B599-76DC604643EB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DD08D5F1-DE83-41C1-B599-76DC604643EB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DD08D5F1-DE83-41C1-B599-76DC604643EB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DD08D5F1-DE83-41C1-B599-76DC604643EB}.Release|Any CPU.Build.0 = Release|Any CPU
 		{DEDD20B5-8F83-46FD-AD05-8F8FCC49FCD6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{DEDD20B5-8F83-46FD-AD05-8F8FCC49FCD6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DEDD20B5-8F83-46FD-AD05-8F8FCC49FCD6}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -81,7 +87,7 @@ Global
 		{E2B6ED3C-A769-47AF-9605-A7410F194B1C}.Release|Any CPU.Deploy.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(MonoDevelopProperties) = preSolution
-		StartupItem = Android\MonoGame.Samples.CatapultWars\MonoGame.Samples.CatapultWars.csproj
+		StartupItem = Android\MonoGame.Samples.AdMob\MonoGame.Samples.AdMob.csproj
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

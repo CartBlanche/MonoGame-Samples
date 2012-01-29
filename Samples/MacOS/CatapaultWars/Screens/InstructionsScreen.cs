@@ -67,7 +67,7 @@ namespace CatapultGame
 				// If additional thread finished loading and the screen is not exiting
 				if (thread.ThreadState == System.Threading.ThreadState.Stopped && !IsExiting) {
 					isLoading = false;
-
+					
 					// Exit the screen and show the gameplay screen 
 					// with pre-loaded assets
 					ExitScreen ();
@@ -111,11 +111,21 @@ namespace CatapultGame
 					// Create a new instance of the gameplay screen
 					gameplayScreen = new GameplayScreen ();
 					gameplayScreen.ScreenManager = ScreenManager;
-
+					
+#if ANDROID || IOS					
+					isLoading = false;
+					
+					// Exit the screen and show the gameplay screen 
+					// with pre-loaded assets
+					ExitScreen ();
+					ScreenManager.AddScreen (gameplayScreen, null);
+#else				
 					// Start loading the resources in additional thread
 					thread = new System.Threading.Thread (new System.Threading.ThreadStart (gameplayScreen.LoadAssets));
 					isLoading = true;
-					thread.Start ();
+					thread.Start ();	
+#endif										
+					
 				}
 			}
 

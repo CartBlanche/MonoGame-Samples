@@ -14,16 +14,13 @@ namespace Blackjack
     [Register ("AppDelegate")]
 	class Program : UIApplicationDelegate 
 	{
+		private BlackjackGame game;
+		
 		public override void FinishedLaunching (UIApplication app)
 		{
 			// Fun begins..
-			using (BlackjackGame game = new BlackjackGame())
-            {
-                game.Run();
-            }
-			
-			//MediaLibrary lib = new MediaLibrary();
-			//object result = lib.Playlists;
+			game = new BlackjackGame();
+            game.Run();
 		}
 
 		static void Main (string [] args)

@@ -20,13 +20,15 @@ namespace Platformer
 {
 	#if IPHONE
 	[Register ("AppDelegate")]
-	class  Program : MonoGameProgram
+	class  Program : UIApplicationDelegate
 	{
+		private PlatformerGame game;
+		
 		public override bool FinishedLaunching (UIApplication app, NSDictionary options)
 		{
 			// Fun begins..
-			MonoGameGame = new PlatformerGame(); 
-            MonoGameGame.Run();
+			game = new PlatformerGame(); 
+            game.Run();
 			
 			return true;
 		}

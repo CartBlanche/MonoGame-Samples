@@ -23,6 +23,7 @@
     <MtouchDebug>true</MtouchDebug>
     <MtouchProfiling>true</MtouchProfiling>
     <MtouchLink>None</MtouchLink>
+    <MtouchI18n />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|iPhoneSimulator' ">
     <DebugType>none</DebugType>
@@ -91,36 +92,6 @@
     </None>
     <None Include="..\..\MacOS\CatapaultWars\Content\Textures\Ammo\rock_ammo.xnb">
       <Link>Content\Textures\Ammo\rock_ammo.xnb</Link>
-    </None>
-    <None Include="..\..\MacOS\CatapaultWars\Content\Textures\Backgrounds\blank.xnb">
-      <Link>Content\Textures\Backgrounds\blank.xnb</Link>
-    </None>
-    <None Include="..\..\MacOS\CatapaultWars\Content\Textures\Backgrounds\cloud1.xnb">
-      <Link>Content\Textures\Backgrounds\cloud1.xnb</Link>
-    </None>
-    <None Include="..\..\MacOS\CatapaultWars\Content\Textures\Backgrounds\cloud2.xnb">
-      <Link>Content\Textures\Backgrounds\cloud2.xnb</Link>
-    </None>
-    <None Include="..\..\MacOS\CatapaultWars\Content\Textures\Backgrounds\defeat.xnb">
-      <Link>Content\Textures\Backgrounds\defeat.xnb</Link>
-    </None>
-    <None Include="..\..\MacOS\CatapaultWars\Content\Textures\Backgrounds\gameplay_screen.xnb">
-      <Link>Content\Textures\Backgrounds\gameplay_screen.xnb</Link>
-    </None>
-    <None Include="..\..\MacOS\CatapaultWars\Content\Textures\Backgrounds\instructions.xnb">
-      <Link>Content\Textures\Backgrounds\instructions.xnb</Link>
-    </None>
-    <None Include="..\..\MacOS\CatapaultWars\Content\Textures\Backgrounds\mountain.xnb">
-      <Link>Content\Textures\Backgrounds\mountain.xnb</Link>
-    </None>
-    <None Include="..\..\MacOS\CatapaultWars\Content\Textures\Backgrounds\sky.xnb">
-      <Link>Content\Textures\Backgrounds\sky.xnb</Link>
-    </None>
-    <None Include="..\..\MacOS\CatapaultWars\Content\Textures\Backgrounds\title_screen.xnb">
-      <Link>Content\Textures\Backgrounds\title_screen.xnb</Link>
-    </None>
-    <None Include="..\..\MacOS\CatapaultWars\Content\Textures\Backgrounds\victory.xnb">
-      <Link>Content\Textures\Backgrounds\victory.xnb</Link>
     </None>
     <None Include="..\..\MacOS\CatapaultWars\Content\Textures\Catapults\AnimationsDef.xml">
       <Link>Content\Textures\Catapults\AnimationsDef.xml</Link>
@@ -235,6 +206,36 @@
   <ItemGroup>
     <Content Include="..\..\MacOS\CatapaultWars\Background.png">
       <Link>Background.png</Link>
+    </Content>
+    <Content Include="..\..\MacOS\CatapaultWars\Content\Textures\Backgrounds\blank.xnb">
+      <Link>Content\Textures\Backgrounds\blank.xnb</Link>
+    </Content>
+    <Content Include="..\..\MacOS\CatapaultWars\Content\Textures\Backgrounds\cloud1.xnb">
+      <Link>Content\Textures\Backgrounds\cloud1.xnb</Link>
+    </Content>
+    <Content Include="..\..\MacOS\CatapaultWars\Content\Textures\Backgrounds\cloud2.xnb">
+      <Link>Content\Textures\Backgrounds\cloud2.xnb</Link>
+    </Content>
+    <Content Include="..\..\MacOS\CatapaultWars\Content\Textures\Backgrounds\defeat.xnb">
+      <Link>Content\Textures\Backgrounds\defeat.xnb</Link>
+    </Content>
+    <Content Include="..\..\MacOS\CatapaultWars\Content\Textures\Backgrounds\gameplay_screen.xnb">
+      <Link>Content\Textures\Backgrounds\gameplay_screen.xnb</Link>
+    </Content>
+    <Content Include="..\..\MacOS\CatapaultWars\Content\Textures\Backgrounds\instructions.xnb">
+      <Link>Content\Textures\Backgrounds\instructions.xnb</Link>
+    </Content>
+    <Content Include="..\..\MacOS\CatapaultWars\Content\Textures\Backgrounds\mountain.xnb">
+      <Link>Content\Textures\Backgrounds\mountain.xnb</Link>
+    </Content>
+    <Content Include="..\..\MacOS\CatapaultWars\Content\Textures\Backgrounds\sky.xnb">
+      <Link>Content\Textures\Backgrounds\sky.xnb</Link>
+    </Content>
+    <Content Include="..\..\MacOS\CatapaultWars\Content\Textures\Backgrounds\title_screen.xnb">
+      <Link>Content\Textures\Backgrounds\title_screen.xnb</Link>
+    </Content>
+    <Content Include="..\..\MacOS\CatapaultWars\Content\Textures\Backgrounds\victory.xnb">
+      <Link>Content\Textures\Backgrounds\victory.xnb</Link>
     </Content>
   </ItemGroup>
   <ItemGroup>
