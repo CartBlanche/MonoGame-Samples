@@ -18,11 +18,11 @@ namespace Platformer
 	
 	class AppDelegate : NSApplicationDelegate
 	{
+		PlatformerGame game;
 		public override void FinishedLaunching (MonoMac.Foundation.NSObject notification)
 		{			
-			using (PlatformerGame game = new PlatformerGame()) {
-				game.Run ();
-			}
+			game = new PlatformerGame();
+			game.Run ();
 		}
 		
 		public override bool ApplicationShouldTerminateAfterLastWindowClosed (NSApplication sender)
