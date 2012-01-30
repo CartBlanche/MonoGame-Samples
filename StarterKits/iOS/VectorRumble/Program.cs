@@ -23,16 +23,13 @@ namespace VectorRumble
 	[Register ("AppDelegate")]
 	class Program : UIApplicationDelegate 
 	{
+		private VectorRumbleGame game;
+		
 		public override void FinishedLaunching (UIApplication app)
 		{
 			// Fun begins..
-			using (VectorRumbleGame game = new VectorRumbleGame())
-            {
-                game.Run();
-            }
-			
-			//MediaLibrary lib = new MediaLibrary();
-			//object result = lib.Playlists;
+			game= new VectorRumbleGame();
+            game.Run();
 		}
 
 		static void Main (string [] args)

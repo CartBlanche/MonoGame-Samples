@@ -46,12 +46,12 @@ namespace CollisionSample
 	
 	class AppDelegate : MonoMac.AppKit.NSApplicationDelegate
 	{
-		
+		CollisionSample game;
 		public override void FinishedLaunching (MonoMac.Foundation.NSObject notification)
 		{
-			using (CollisionSample game = new CollisionSample()) {
-				game.Run ();
-			}
+			game = new CollisionSample();
+			game.Run ();
+
 		}
 		
 		public override bool ApplicationShouldTerminateAfterLastWindowClosed (MonoMac.AppKit.NSApplication sender)

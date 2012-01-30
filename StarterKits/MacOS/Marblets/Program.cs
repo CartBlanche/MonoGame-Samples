@@ -23,12 +23,11 @@ namespace Marblets
 	
 	class AppDelegate : NSApplicationDelegate
 	{
-		
+		MarbletsGame game;
 		public override void FinishedLaunching (MonoMac.Foundation.NSObject notification)
 		{
-			using (MarbletsGame game = new MarbletsGame ()) {
-				game.Run ();
-			}
+			game = new MarbletsGame ();
+			game.Run ();
 		}
 		
 		public override bool ApplicationShouldTerminateAfterLastWindowClosed (NSApplication sender)

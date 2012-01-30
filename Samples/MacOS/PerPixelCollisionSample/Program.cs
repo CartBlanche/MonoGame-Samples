@@ -36,12 +36,12 @@ namespace PerPixelCollision
 	
 	class AppDelegate : NSApplicationDelegate
 	{
-		
+		PerPixelCollisionGame game;
 		public override void FinishedLaunching (MonoMac.Foundation.NSObject notification)
 		{
-			using (PerPixelCollisionGame game = new PerPixelCollisionGame()) {
-				game.Run ();
-			}
+			game = new PerPixelCollisionGame();
+			game.Run ();
+
 		}
 		
 		public override bool ApplicationShouldTerminateAfterLastWindowClosed (NSApplication sender)

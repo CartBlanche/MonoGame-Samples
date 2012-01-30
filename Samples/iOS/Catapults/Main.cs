@@ -4,10 +4,20 @@ using System.Linq;
 using MonoTouch.Foundation;
 using MonoTouch.UIKit;
 
-namespace Catapults
+namespace CatapultGame
 {
-	public class Application
+	[Register ("AppDelegate")]
+	class Program : UIApplicationDelegate 
 	{
+		private CatapultGame game;
+
+		public override void FinishedLaunching (UIApplication app)
+		{
+			// Fun begins..
+			game = new CatapultGame();
+			game.Run();
+		}
+		
 		// This is the main entry point of the application.
 		static void Main (string[] args)
 		{
