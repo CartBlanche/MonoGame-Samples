@@ -81,6 +81,12 @@ namespace CatapultGame
 		public override void HandleInput (InputState input)
 		{
 			if (isLoading == true) {
+#if ANDROID || IOS
+				// Exit the screen and show the gameplay screen 
+					// with pre-loaded assets
+				ExitScreen ();
+				ScreenManager.AddScreen (gameplayScreen, null);
+#endif				
 				base.HandleInput (input);
 				return;
 			}
@@ -112,13 +118,8 @@ namespace CatapultGame
 					gameplayScreen = new GameplayScreen ();
 					gameplayScreen.ScreenManager = ScreenManager;
 					
-#if ANDROID || IOS					
-					isLoading = false;
-					
-					// Exit the screen and show the gameplay screen 
-					// with pre-loaded assets
-					ExitScreen ();
-					ScreenManager.AddScreen (gameplayScreen, null);
+#if ANDROID || IOS	
+					isLoading = true;									
 #else				
 					// Start loading the resources in additional thread
 					thread = new System.Threading.Thread (new System.Threading.ThreadStart (gameplayScreen.LoadAssets));

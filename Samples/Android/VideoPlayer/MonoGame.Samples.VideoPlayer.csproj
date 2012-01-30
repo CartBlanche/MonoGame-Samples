@@ -68,8 +68,8 @@
     <AndroidAsset Include="..\..\MacOS\VideoPlayer\Content\spriteFont1.xnb">
       <Link>Assets\Content\spriteFont1.xnb</Link>
     </AndroidAsset>
-    <AndroidAsset Include="..\..\MacOS\VideoPlayer\Content\sintel_trailer.3gp">
-      <Link>Assets\Content\sintel_trailer.3gp</Link>
+    <AndroidAsset Include="Assets\Content\sintel_trailer.mp4">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </AndroidAsset>
   </ItemGroup>
   <ItemGroup>
