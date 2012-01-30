@@ -65,7 +65,11 @@ namespace CatapultGame {
         /// </summary>
         internal static string Back {
             get {
+#if ANDROID				
+				return  Android.App.Application.Context.Resources.GetString(CatapultWarsNet.Resource.String.Back);
+#else				
                 return ResourceManager.GetString("Back", resourceCulture);
+#endif				
             }
         }
         
@@ -74,7 +78,12 @@ namespace CatapultGame {
         /// </summary>
         internal static string ConfirmEndSession {
             get {
+#if ANDROID				
+				return  Android.App.Application.Context.Resources.GetString(CatapultWarsNet.Resource.String.ConfirmEndSession);
+#else				
+				
                 return ResourceManager.GetString("ConfirmEndSession", resourceCulture);
+#endif				
             }
         }
         
@@ -83,7 +92,11 @@ namespace CatapultGame {
         /// </summary>
         internal static string ConfirmExitSample {
             get {
+#if ANDROID				
+				return  Android.App.Application.Context.Resources.GetString(CatapultWarsNet.Resource.String.ConfirmExitSample);
+#else								
                 return ResourceManager.GetString("ConfirmExitSample", resourceCulture);
+#endif				
             }
         }
         
@@ -93,7 +106,11 @@ namespace CatapultGame {
         /// </summary>
         internal static string ConfirmForceStartGame {
             get {
+#if ANDROID				
+				return  Android.App.Application.Context.Resources.GetString(CatapultWarsNet.Resource.String.ConfirmForceStartGame);
+#else								
                 return ResourceManager.GetString("ConfirmForceStartGame", resourceCulture);
+#endif				
             }
         }
         
@@ -102,7 +119,11 @@ namespace CatapultGame {
         /// </summary>
         internal static string ConfirmLeaveSession {
             get {
+#if ANDROID				
+				return  Android.App.Application.Context.Resources.GetString(CatapultWarsNet.Resource.String.ConfirmLeaveSession);
+#else								
                 return ResourceManager.GetString("ConfirmLeaveSession", resourceCulture);
+#endif				
             }
         }
         
@@ -112,7 +133,11 @@ namespace CatapultGame {
         /// </summary>
         internal static string ConfirmMarketplace {
             get {
+#if ANDROID				
+				return  Android.App.Application.Context.Resources.GetString(CatapultWarsNet.Resource.String.ConfirmMarketplace);
+#else								
                 return ResourceManager.GetString("ConfirmMarketplace", resourceCulture);
+#endif				
             }
         }
         
@@ -121,7 +146,11 @@ namespace CatapultGame {
         /// </summary>
         internal static string ConfirmQuitGame {
             get {
+#if ANDROID				
+				return  Android.App.Application.Context.Resources.GetString(CatapultWarsNet.Resource.String.ConfirmQuitGame);
+#else								
                 return ResourceManager.GetString("ConfirmQuitGame", resourceCulture);
+#endif				
             }
         }
         
@@ -130,7 +159,11 @@ namespace CatapultGame {
         /// </summary>
         internal static string CreateSession {
             get {
+#if ANDROID				
+				return  Android.App.Application.Context.Resources.GetString(CatapultWarsNet.Resource.String.CreateSession);
+#else								
                 return ResourceManager.GetString("CreateSession", resourceCulture);
+#endif				
             }
         }
         
@@ -139,7 +172,11 @@ namespace CatapultGame {
         /// </summary>
         internal static string EndSession {
             get {
+#if ANDROID				
+				return  Android.App.Application.Context.Resources.GetString(CatapultWarsNet.Resource.String.EndSession);
+#else								
                 return ResourceManager.GetString("EndSession", resourceCulture);
+#endif				
             }
         }
         
@@ -148,7 +185,11 @@ namespace CatapultGame {
         /// </summary>
         internal static string ErrorDisconnected {
             get {
+#if ANDROID				
+				return  Android.App.Application.Context.Resources.GetString(CatapultWarsNet.Resource.String.ErrorDisconnected);
+#else								
                 return ResourceManager.GetString("ErrorDisconnected", resourceCulture);
+#endif				
             }
         }
         
@@ -158,7 +199,11 @@ namespace CatapultGame {
         /// </summary>
         internal static string ErrorGamerPrivilege {
             get {
+#if ANDROID				
+				return  Android.App.Application.Context.Resources.GetString(CatapultWarsNet.Resource.String.ErrorGamerPrivilege);
+#else				
                 return ResourceManager.GetString("ErrorGamerPrivilege", resourceCulture);
+#endif				
             }
         }
         
@@ -167,7 +212,11 @@ namespace CatapultGame {
         /// </summary>
         internal static string ErrorHostEndedSession {
             get {
+#if ANDROID				
+				return  Android.App.Application.Context.Resources.GetString(CatapultWarsNet.Resource.String.ErrorHostEndedSession);
+#else								
                 return ResourceManager.GetString("ErrorHostEndedSession", resourceCulture);
+#endif				
             }
         }
         
@@ -177,7 +226,11 @@ namespace CatapultGame {
         /// </summary>
         internal static string ErrorNetwork {
             get {
+#if ANDROID				
+				return  Android.App.Application.Context.Resources.GetString(CatapultWarsNet.Resource.String.ErrorNetwork);
+#else								
                 return ResourceManager.GetString("ErrorNetwork", resourceCulture);
+#endif				
             }
         }
         
@@ -187,7 +240,11 @@ namespace CatapultGame {
         /// </summary>
         internal static string ErrorNetworkNotAvailable {
             get {
+#if ANDROID				
+				return  Android.App.Application.Context.Resources.GetString(CatapultWarsNet.Resource.String.ErrorNetworkNotAvailable);
+#else								
                 return ResourceManager.GetString("ErrorNetworkNotAvailable", resourceCulture);
+#endif				
             }
         }
         
@@ -196,7 +253,11 @@ namespace CatapultGame {
         /// </summary>
         internal static string ErrorRemovedByHost {
             get {
+#if ANDROID				
+				return  Android.App.Application.Context.Resources.GetString(CatapultWarsNet.Resource.String.ErrorRemovedByHost);
+#else								
                 return ResourceManager.GetString("ErrorRemovedByHost", resourceCulture);
+#endif				
             }
         }
         
@@ -205,7 +266,11 @@ namespace CatapultGame {
         /// </summary>
         internal static string ErrorSessionFull {
             get {
+#if ANDROID				
+				return  Android.App.Application.Context.Resources.GetString(CatapultWarsNet.Resource.String.ErrorSessionFull);
+#else								
                 return ResourceManager.GetString("ErrorSessionFull", resourceCulture);
+#endif				
             }
         }
         
@@ -216,7 +281,11 @@ namespace CatapultGame {
         /// </summary>
         internal static string ErrorSessionNotFound {
             get {
+#if ANDROID				
+				return  Android.App.Application.Context.Resources.GetString(CatapultWarsNet.Resource.String.ErrorSessionNotFound);
+#else								
                 return ResourceManager.GetString("ErrorSessionNotFound", resourceCulture);
+#endif				
             }
         }
         
@@ -226,7 +295,11 @@ namespace CatapultGame {
         /// </summary>
         internal static string ErrorSessionNotJoinable {
             get {
+#if ANDROID				
+				return  Android.App.Application.Context.Resources.GetString(CatapultWarsNet.Resource.String.ErrorSessionNotJoinable);
+#else								
                 return ResourceManager.GetString("ErrorSessionNotJoinable", resourceCulture);
+#endif				
             }
         }
         
@@ -235,7 +308,11 @@ namespace CatapultGame {
         /// </summary>
         internal static string ErrorTrialMode {
             get {
+#if ANDROID				
+				return  Android.App.Application.Context.Resources.GetString(CatapultWarsNet.Resource.String.ErrorTrialMode);
+#else								
                 return ResourceManager.GetString("ErrorTrialMode", resourceCulture);
+#endif				
             }
         }
         
@@ -244,7 +321,11 @@ namespace CatapultGame {
         /// </summary>
         internal static string ErrorUnknown {
             get {
+#if ANDROID				
+				return  Android.App.Application.Context.Resources.GetString(CatapultWarsNet.Resource.String.ErrorUnknown);
+#else								
                 return ResourceManager.GetString("ErrorUnknown", resourceCulture);
+#endif				
             }
         }
         
@@ -253,7 +334,11 @@ namespace CatapultGame {
         /// </summary>
         internal static string Exit {
             get {
+#if ANDROID				
+				return  Android.App.Application.Context.Resources.GetString(CatapultWarsNet.Resource.String.Exit);
+#else								
                 return ResourceManager.GetString("Exit", resourceCulture);
+#endif				
             }
         }
         
@@ -262,7 +347,11 @@ namespace CatapultGame {
         /// </summary>
         internal static string FindSessions {
             get {
+#if ANDROID				
+				return  Android.App.Application.Context.Resources.GetString(CatapultWarsNet.Resource.String.FindSessions);
+#else								
                 return ResourceManager.GetString("FindSessions", resourceCulture);
+#endif				
             }
         }
         
@@ -271,7 +360,11 @@ namespace CatapultGame {
         /// </summary>
         internal static string HostSuffix {
             get {
+#if ANDROID				
+				return  Android.App.Application.Context.Resources.GetString(CatapultWarsNet.Resource.String.HostSuffix);
+#else								
                 return ResourceManager.GetString("HostSuffix", resourceCulture);
+#endif				
             }
         }
         
@@ -280,7 +373,11 @@ namespace CatapultGame {
         /// </summary>
         internal static string JoinSession {
             get {
+#if ANDROID				
+				return  Android.App.Application.Context.Resources.GetString(CatapultWarsNet.Resource.String.JoinSession);
+#else								
                 return ResourceManager.GetString("JoinSession", resourceCulture);
+#endif				
             }
         }
         
@@ -289,7 +386,11 @@ namespace CatapultGame {
         /// </summary>
         internal static string LeaveSession {
             get {
+#if ANDROID				
+				return  Android.App.Application.Context.Resources.GetString(CatapultWarsNet.Resource.String.LeaveSession);
+#else								
                 return ResourceManager.GetString("LeaveSession", resourceCulture);
+#endif				
             }
         }
         
@@ -298,7 +399,11 @@ namespace CatapultGame {
         /// </summary>
         internal static string Loading {
             get {
+#if ANDROID				
+				return  Android.App.Application.Context.Resources.GetString(CatapultWarsNet.Resource.String.Loading);
+#else								
                 return ResourceManager.GetString("Loading", resourceCulture);
+#endif				
             }
         }
         
@@ -307,7 +412,11 @@ namespace CatapultGame {
         /// </summary>
         internal static string Lobby {
             get {
+#if ANDROID				
+				return  Android.App.Application.Context.Resources.GetString(CatapultWarsNet.Resource.String.Lobby);
+#else								
                 return ResourceManager.GetString("Lobby", resourceCulture);
+#endif				
             }
         }
         
@@ -316,7 +425,11 @@ namespace CatapultGame {
         /// </summary>
         internal static string MainMenu {
             get {
+#if ANDROID				
+				return  Android.App.Application.Context.Resources.GetString(CatapultWarsNet.Resource.String.MainMenu);
+#else								
                 return ResourceManager.GetString("MainMenu", resourceCulture);
+#endif				
             }
         }
         
@@ -327,7 +440,11 @@ namespace CatapultGame {
         /// </summary>
         internal static string MessageBoxUsage {
             get {
+#if ANDROID				
+				return  Android.App.Application.Context.Resources.GetString(CatapultWarsNet.Resource.String.MessageBoxUsage);
+#else								
                 return ResourceManager.GetString("MessageBoxUsage", resourceCulture);
+#endif				
             }
         }
         
@@ -336,7 +453,11 @@ namespace CatapultGame {
         /// </summary>
         internal static string MessageGamerJoined {
             get {
+#if ANDROID				
+				return  Android.App.Application.Context.Resources.GetString(CatapultWarsNet.Resource.String.MessageGamerJoined);
+#else								
                 return ResourceManager.GetString("MessageGamerJoined", resourceCulture);
+#endif				
             }
         }
         
@@ -345,7 +466,11 @@ namespace CatapultGame {
         /// </summary>
         internal static string MessageGamerLeft {
             get {
+#if ANDROID				
+				return  Android.App.Application.Context.Resources.GetString(CatapultWarsNet.Resource.String.MessageGamerLeft);
+#else								
                 return ResourceManager.GetString("MessageGamerLeft", resourceCulture);
+#endif
             }
         }
         
@@ -354,7 +479,11 @@ namespace CatapultGame {
         /// </summary>
         internal static string NetworkBusy {
             get {
+#if ANDROID				
+				return  Android.App.Application.Context.Resources.GetString(CatapultWarsNet.Resource.String.NetworkBusy);
+#else								
                 return ResourceManager.GetString("NetworkBusy", resourceCulture);
+#endif
             }
         }
         
@@ -363,7 +492,11 @@ namespace CatapultGame {
         /// </summary>
         internal static string NoSessionsFound {
             get {
+#if ANDROID				
+				return  Android.App.Application.Context.Resources.GetString(CatapultWarsNet.Resource.String.NoSessionsFound);
+#else								
                 return ResourceManager.GetString("NoSessionsFound", resourceCulture);
+#endif
             }
         }
         
@@ -372,7 +505,11 @@ namespace CatapultGame {
         /// </summary>
         internal static string Paused {
             get {
+#if ANDROID				
+				return  Android.App.Application.Context.Resources.GetString(CatapultWarsNet.Resource.String.Paused);
+#else								
                 return ResourceManager.GetString("Paused", resourceCulture);
+#endif
             }
         }
         
@@ -381,7 +518,11 @@ namespace CatapultGame {
         /// </summary>
         internal static string PlayerMatch {
             get {
+#if ANDROID				
+				return  Android.App.Application.Context.Resources.GetString(CatapultWarsNet.Resource.String.PlayerMatch);
+#else								
                 return ResourceManager.GetString("PlayerMatch", resourceCulture);
+#endif
             }
         }
         
@@ -390,7 +531,11 @@ namespace CatapultGame {
         /// </summary>
         internal static string QuitGame {
             get {
+#if ANDROID				
+				return  Android.App.Application.Context.Resources.GetString(CatapultWarsNet.Resource.String.QuitGame);
+#else								
                 return ResourceManager.GetString("QuitGame", resourceCulture);
+#endif
             }
         }
         
@@ -399,7 +544,11 @@ namespace CatapultGame {
         /// </summary>
         internal static string ResumeGame {
             get {
+#if ANDROID				
+				return  Android.App.Application.Context.Resources.GetString(CatapultWarsNet.Resource.String.ResumeGame);
+#else								
                 return ResourceManager.GetString("ResumeGame", resourceCulture);
+#endif
             }
         }
         
@@ -408,7 +557,11 @@ namespace CatapultGame {
         /// </summary>
         internal static string ReturnToLobby {
             get {
+#if ANDROID				
+				return  Android.App.Application.Context.Resources.GetString(CatapultWarsNet.Resource.String.ReturnToLobby);
+#else								
                 return ResourceManager.GetString("ReturnToLobby", resourceCulture);
+#endif
             }
         }
         
@@ -417,7 +570,11 @@ namespace CatapultGame {
         /// </summary>
         internal static string SinglePlayer {
             get {
+#if ANDROID				
+				return  Android.App.Application.Context.Resources.GetString(CatapultWarsNet.Resource.String.SinglePlayer);
+#else								
                 return ResourceManager.GetString("SinglePlayer", resourceCulture);
+#endif
             }
         }
         
@@ -426,7 +583,11 @@ namespace CatapultGame {
         /// </summary>
         internal static string SystemLink {
             get {
+#if ANDROID				
+				return  Android.App.Application.Context.Resources.GetString(CatapultWarsNet.Resource.String.SystemLink);
+#else								
                 return ResourceManager.GetString("SystemLink", resourceCulture);
+#endif
             }
         }
     }

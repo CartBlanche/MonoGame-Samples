@@ -174,9 +174,17 @@ namespace CatapultGame
             AnimationRunning = false;
             currentState = CatapultState.Idle;
             stallUpdateCycles = 0;
-
-            // Load multiple animations form XML definition
-            XDocument doc = XDocument.Load("Content/Textures/Catapults/AnimationsDef.xml");
+			
+			// Load multiple animations form XML definition
+			XDocument doc = null;
+#if ANDROID
+			using(var stream = Game.Activity.Assets.Open(@"Content/Textures/Catapults/AnimationsDef.xml"))
+			{
+				doc = XDocument.Load(stream);
+			}
+#else			
+            doc = XDocument.Load("Content/Textures/Catapults/AnimationsDef.xml");            
+#endif				            
             XName name = XName.Get("Definition");
             var definitions = doc.Document.Descendants(name);
 

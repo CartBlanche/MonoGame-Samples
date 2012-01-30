@@ -114,6 +114,19 @@ namespace GameStateManagement
 
                 ExitScreen();
             }
+			if (input.Gestures.Count > 0)
+			{
+				foreach(var g in input.Gestures)
+				{
+					if (g.GestureType == Microsoft.Xna.Framework.Input.Touch.GestureType.Tap)
+					{
+						if (Accepted != null)
+                           Accepted(this, new PlayerIndexEventArgs(playerIndex));
+
+                        ExitScreen();
+					}
+				}
+			}
         }
 
 

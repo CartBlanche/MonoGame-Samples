@@ -83,6 +83,12 @@ namespace CatapultGame
 		public override void HandleInput (InputState input)
 		{
 			if (isLoading == true) {
+#if ANDROID || IOS
+				// Exit the screen and show the gameplay screen 
+					// with pre-loaded assets
+				ExitScreen ();
+				ScreenManager.AddScreen (gameplayScreen, null);
+#endif						
 				base.HandleInput (input);
 				return;
 			}
@@ -112,11 +118,15 @@ namespace CatapultGame
 					// Create a new instance of the gameplay screen
 					gameplayScreen = new GameplayScreen ();
 					gameplayScreen.ScreenManager = ScreenManager;
-
+					
+#if ANDROID || IOS	
+					isLoading = true;									
+#else						
 					// Start loading the resources in additional thread
 					thread = new System.Threading.Thread (new System.Threading.ThreadStart (gameplayScreen.LoadAssets));
 					isLoading = true;
 					thread.Start ();
+#endif					
 				}
 			}
 
@@ -126,8 +136,13 @@ namespace CatapultGame
 		void LoadAssetsWorkerThread ()
 		{
 
+
+#if MACOS || IOS			
 			// Create an Autorelease Pool or we will leak objects.
 			using (var pool = new NSAutoreleasePool()) {
+#else				
+				
+#endif
 				// Make sure we invoke this on the Main Thread or OpenGL will throw an error
 #if MACOS
 				MonoMac.AppKit.NSApplication.SharedApplication.BeginInvokeOnMainThread (delegate {
@@ -137,8 +152,11 @@ namespace CatapultGame
 				invokeOnMainThredObj.InvokeOnMainThread(delegate {
 #endif
 					gameplayScreen.LoadAssets ();
+#if MACOS || IOS						
 				});
-			}
+					
+			}				
+#endif	
 
 		}
 #endregion

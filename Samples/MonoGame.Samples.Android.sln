@@ -27,6 +27,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonoGame.Samples.CatapultWa
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonoGame.Samples.AdMob", "Android\MonoGame.Samples.AdMob\MonoGame.Samples.AdMob.csproj", "{DD08D5F1-DE83-41C1-B599-76DC604643EB}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CatapultNetWars", "Android\CatapultWarsNet\CatapultNetWars.csproj", "{C2B4D7C6-C3C5-4C02-8830-D33C0E59DCDD}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -41,6 +43,7 @@ Global
 		{167741E2-2D8E-474A-8D06-9ACB55F0BA83}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{167741E2-2D8E-474A-8D06-9ACB55F0BA83}.Release|Any CPU.Build.0 = Release|Any CPU
 		{27C3DD7C-5322-4C2D-8EE4-07610390CDAF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{27C3DD7C-5322-4C2D-8EE4-07610390CDAF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{27C3DD7C-5322-4C2D-8EE4-07610390CDAF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{27C3DD7C-5322-4C2D-8EE4-07610390CDAF}.Release|Any CPU.Build.0 = Release|Any CPU
 		{289A3AF8-E006-47EF-B34C-CA01020E1655}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -63,6 +66,10 @@ Global
 		{BA9476CF-99BA-4D03-92F2-73D2C5E58883}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BA9476CF-99BA-4D03-92F2-73D2C5E58883}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BA9476CF-99BA-4D03-92F2-73D2C5E58883}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C2B4D7C6-C3C5-4C02-8830-D33C0E59DCDD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C2B4D7C6-C3C5-4C02-8830-D33C0E59DCDD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C2B4D7C6-C3C5-4C02-8830-D33C0E59DCDD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C2B4D7C6-C3C5-4C02-8830-D33C0E59DCDD}.Release|Any CPU.Build.0 = Release|Any CPU
 		{CB2084E4-BEC8-4318-8011-93CC2E3C9E94}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{CB2084E4-BEC8-4318-8011-93CC2E3C9E94}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CB2084E4-BEC8-4318-8011-93CC2E3C9E94}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -87,7 +94,7 @@ Global
 		{E2B6ED3C-A769-47AF-9605-A7410F194B1C}.Release|Any CPU.Deploy.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(MonoDevelopProperties) = preSolution
-		StartupItem = Android\MonoGame.Samples.AdMob\MonoGame.Samples.AdMob.csproj
+		StartupItem = Android\CatapultWarsNet\CatapultNetWars.csproj
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
