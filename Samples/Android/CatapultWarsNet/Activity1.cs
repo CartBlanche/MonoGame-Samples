@@ -11,8 +11,11 @@ using Android.Content.PM;
 
 namespace CatapultWarsNet
 {
+	
 	[Activity (Label = "CatapultWarsNet"
 	           , MainLauncher = true
+	           ,Icon = "@drawable/icon"
+	           , Theme = "@style/Theme.Splash"
 	           ,ConfigurationChanges=ConfigChanges.Orientation|ConfigChanges.Keyboard|ConfigChanges.KeyboardHidden)]
 	public class Activity1 : AndroidGameActivity
 	{

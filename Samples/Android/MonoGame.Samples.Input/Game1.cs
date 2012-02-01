@@ -76,6 +76,11 @@ namespace MonoGame.Samples.Input
 		/// <param name="gameTime">Provides a snapshot of timing values.</param>
 		protected override void Update (GameTime gameTime)
 		{			
+			if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed)
+			{
+				Exit();
+			}
+			
 			currentKeyboardState = Keyboard.GetState ();
 			currentGamePadState = GamePad.GetState (PlayerIndex.One);
 			currentTouchState = TouchPanel.GetState();

@@ -162,6 +162,9 @@
   <ItemGroup>
     <AndroidResource Include="Resources\drawable\Icon.png" />
     <AndroidResource Include="Resources\values\Strings.xml" />
+    <AndroidResource Include="Resources\drawable\Splash.png" />
+    <AndroidResource Include="Resources\values\Styles.xml" />
+    <AndroidResource Include="Resources\drawable-port\Splash.png" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Novell\Novell.MonoDroid.CSharp.targets" />
   <ItemGroup>
@@ -202,6 +205,7 @@
     <Folder Include="Assets\Content\Textures\Catapults\Red\redFire\" />
     <Folder Include="Assets\Content\Textures\Catapults\Red\redIdle\" />
     <Folder Include="Assets\Content\Textures\Catapults\Red\redPullback\" />
+    <Folder Include="Resources\drawable-port\" />
   </ItemGroup>
   <ItemGroup>
     <AndroidAsset Include="..\..\MacOS\CatapultNetWars\Content\Fonts\HUDFont.xnb">
