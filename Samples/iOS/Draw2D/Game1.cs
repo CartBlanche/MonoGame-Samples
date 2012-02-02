@@ -82,6 +82,10 @@ namespace Microsoft.Xna.Samples.Draw2D
 		/// <param name="gameTime">Provides a snapshot of timing values.</param>
 		protected override void Update (GameTime gameTime)
 		{
+			if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed)
+			{
+				Exit();
+			}
 			// TODO: Add your update logic here
 			size += 0.5f;
 			if (size > 150) {

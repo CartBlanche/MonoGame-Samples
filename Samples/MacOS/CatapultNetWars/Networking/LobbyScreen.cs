@@ -15,6 +15,7 @@ using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Net;
 using GameStateManagement;
+using Microsoft.Xna.Framework.Input.Touch;
 #endregion
 
 namespace CatapultGame
@@ -45,6 +46,7 @@ namespace CatapultGame
 		/// </summary>
 		public LobbyScreen (NetworkSession networkSession)
 			{
+			EnabledGestures = GestureType.Tap;
 			this.networkSession = networkSession;
 
 			TransitionOnTime = TimeSpan.FromSeconds (0.5);
@@ -114,6 +116,17 @@ namespace CatapultGame
 					HandleMenuSelect (gamer);
 				} else if (input.IsMenuCancel (playerIndex, out unwantedOutput)) {
 					HandleMenuCancel (gamer);
+				}
+			}
+			
+			if (input.Gestures.Count > 0)
+			{
+				foreach(var g in input.Gestures)
+				{
+					if (g.GestureType == Microsoft.Xna.Framework.Input.Touch.GestureType.Tap)
+					{
+						HandleMenuSelect(networkSession.LocalGamers[0]);
+					}
 				}
 			}
 		}

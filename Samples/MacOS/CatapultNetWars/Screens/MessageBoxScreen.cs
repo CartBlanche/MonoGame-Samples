@@ -13,6 +13,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using CatapultGame;
+using Microsoft.Xna.Framework.Input.Touch;
 #endregion
 
 namespace GameStateManagement
@@ -55,6 +56,8 @@ namespace GameStateManagement
         /// </summary>
         public MessageBoxScreen(string message, bool includeUsageText)
         {
+			EnabledGestures = GestureType.Tap;
+			
             if (includeUsageText)
                 this.message = message + Resources.MessageBoxUsage;
             else
