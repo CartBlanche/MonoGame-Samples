@@ -66,7 +66,7 @@ namespace MonoGame.Samples.VideoPlayer
 			font = Content.Load<SpriteFont> ("spriteFont1");
 			
 			video = Content.Load<Video> ("sintel_trailer");
-			videoPlayer = new Microsoft.Xna.Framework.Media.VideoPlayer(this);
+			videoPlayer = new Microsoft.Xna.Framework.Media.VideoPlayer();
 			playVideo = true;
 		}
 
