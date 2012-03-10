@@ -69,8 +69,8 @@ namespace OrientationSample
             // orientations only, but resolution set to half. This makes the hardware scalar work and 
             // automatically scales the presentation to the device's physical resolution
             // (Uncomment the following two lines):
-            // graphics.PreferredBackBufferWidth = 400;
-            // graphics.PreferredBackBufferHeight = 240;
+            //graphics.PreferredBackBufferWidth = 400;
+            //graphics.PreferredBackBufferHeight = 240;
 
             // Scenario #4: 
             // Game supports all possible orientations and enablyes dynamically locking/unlocking the
@@ -79,7 +79,7 @@ namespace OrientationSample
              graphics.SupportedOrientations = DisplayOrientation.Portrait |
                                               DisplayOrientation.LandscapeLeft |
                                               DisplayOrientation.LandscapeRight;
-            enableOrientationLocking = true;
+            //enableOrientationLocking = true;
 
             // Switch to full screen mode
             graphics.IsFullScreen = true;

@@ -75,9 +75,12 @@ namespace CatapultGame
 			NetworkSession.InviteAccepted += (sender, e) => NetworkSessionComponent.InviteAccepted (screenManager, e);
 
 			IsMouseVisible = true;
-#if !WINDOWS && !XBOX && !MACOS
+#if !WINDOWS && !XBOX && !MACOS && !LINUX
 			//Switch to full screen for best game experience
 			graphics.IsFullScreen = true;
+#else
+            graphics.PreferredBackBufferHeight = 480;
+            graphics.PreferredBackBufferWidth = 800;
 #endif
 			AudioManager.Initialize (this);
 		}

@@ -67,7 +67,8 @@ namespace NetRumble
 		/// </summary>
 		static void Main (string[] args)
 		{
-			using (NetRumbleGame game = new NetRumbleGame ()) {
+            //MonoGameNetworkConfiguration.Broadcast = System.Net.IPAddress.Parse("192.168.83.254");
+            using (NetRumbleGame game = new NetRumbleGame ()) {
 				game.Run ();
 			}
 		}

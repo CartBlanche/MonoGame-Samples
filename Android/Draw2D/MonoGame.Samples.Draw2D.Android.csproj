@@ -72,6 +72,9 @@
     <AndroidAsset Include="..\..\iOS\Draw2D\Content\spriteFont1.xnb">
       <Link>Assets\Content\spriteFont1.xnb</Link>
     </AndroidAsset>
+    <AndroidAsset Include="..\..\iOS\Draw2D\Content\monogameicon48x48.png">
+      <Link>Assets\Content\monogameicon48x48.png</Link>
+    </AndroidAsset>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Novell\Novell.MonoDroid.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

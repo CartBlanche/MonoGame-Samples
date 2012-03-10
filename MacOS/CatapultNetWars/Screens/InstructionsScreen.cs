@@ -82,9 +82,10 @@ namespace CatapultGame
 #region Handle input
 		public override void HandleInput (InputState input)
 		{
-			if (isLoading == true) {
-#if ANDROID || IOS
-				// Exit the screen and show the gameplay screen 
+			if (isLoading == true)
+            {
+#if ANDROID || IOS || LINUX || WINDOWS
+                // Exit the screen and show the gameplay screen 
 					// with pre-loaded assets
 				ExitScreen ();
 				ScreenManager.AddScreen (gameplayScreen, null);
@@ -101,16 +102,20 @@ namespace CatapultGame
 				gameplayScreen = new GameplayScreen ();
 				gameplayScreen.ScreenManager = ScreenManager;
 
-				// Start loading the resources in additional thread
+                // Start loading the resources in additional thread
+#if !LINUX && !WINDOWS
 #if MACOS
 				// create a new thread using BackgroundWorkerThread as method to execute
 				thread = new Thread (LoadAssetsWorkerThread as ThreadStart);
-#else
-				thread = new System.Threading.Thread (new System.Threading.ThreadStart (gameplayScreen.LoadAssets));
+#else     
+				thread = new System.Threading.Thread (new System.Threading.ThreadStart (gameplayScreen.LoadAssets));    
 #endif
 				isLoading = true;
 				// start it
 				thread.Start ();
+#else
+                isLoading = true;
+#endif
 			}
 
 			foreach (var gesture in input.Gestures) {
@@ -118,9 +123,9 @@ namespace CatapultGame
 					// Create a new instance of the gameplay screen
 					gameplayScreen = new GameplayScreen ();
 					gameplayScreen.ScreenManager = ScreenManager;
-					
-#if ANDROID || IOS	
-					isLoading = true;									
+
+#if ANDROID || IOS	|| LINUX || WINDOWS
+                    isLoading = true;									
 #else						
 					// Start loading the resources in additional thread
 					thread = new System.Threading.Thread (new System.Threading.ThreadStart (gameplayScreen.LoadAssets));

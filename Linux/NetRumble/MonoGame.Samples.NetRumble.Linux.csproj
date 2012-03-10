@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -16,7 +16,7 @@
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>bin\Debug</OutputPath>
-    <DefineConstants>DEBUG LINUX</DefineConstants>
+    <DefineConstants>LINUX</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <PlatformTarget>x86</PlatformTarget>
@@ -30,14 +30,13 @@
     <WarningLevel>4</WarningLevel>
     <PlatformTarget>x86</PlatformTarget>
     <ConsolePause>false</ConsolePause>
+    <DefineConstants>LINUX</DefineConstants>
   </PropertyGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
     <Reference Include="System" />
-    <Reference Include="System.Xml" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.XML" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\MacOS\NetRumble\Info.plist">
@@ -375,42 +374,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Effects\" />
-    <Folder Include="BloomPostprocess\" />
-    <Folder Include="Content\Audio\wav\" />
-    <Folder Include="Content\BloomPostprocess\Effects\" />
-    <Folder Include="Content\Effects\" />
-    <Folder Include="Content\Fonts\" />
-    <Folder Include="Content\Particles\" />
-    <Folder Include="Content\Textures\Particles\" />
-    <Folder Include="Gameplay\Weapons\" />
-    <Folder Include="Gameplay\Projectiles\" />
-    <Folder Include="Gameplay\PowerUps\" />
-    <Folder Include="Rendering\Particles\" />
-    <Folder Include="ScreenManager\" />
-    <Folder Include="Screens\" />
-    <Folder Include="Content\Particles\" />
-    <Folder Include="Content\Particles\" />
-    <Folder Include="Content\Particles\" />
-    <Folder Include="Content\Particles\" />
-    <Folder Include="Content\Particles\" />
-    <Folder Include="Content\Particles\" />
-    <Folder Include="Content\Particles\" />
-    <Folder Include="Content\Particles\" />
-    <Folder Include="Content\Textures\Particles\" />
-    <Folder Include="Content\Textures\Particles\" />
-    <Folder Include="Content\Textures\Particles\" />
-    <Folder Include="Content\Textures\Particles\" />
-    <Folder Include="Content\Textures\Particles\" />
-    <Folder Include="Content\Textures\Particles\" />
-    <Folder Include="Content\BloomPostprocess\" />
-    <Folder Include="Content\BloomPostprocess\" />
-    <Folder Include="Content\BloomPostprocess\" />
-    <Folder Include="Content\BloomPostprocess\" />
-    <Folder Include="Content\BloomPostprocess\" />
-    <Folder Include="Content\BloomPostprocess\" />
-    <Folder Include="Content\BloomPostprocess\" />
-    <Folder Include="Content\BloomPostprocess\" />
-    <Folder Include="Content\BloomPostprocess\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="..\..\MacOS\NetRumble\Content\Audio\wav\asteroid_touch.xnb">

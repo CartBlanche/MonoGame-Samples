@@ -152,6 +152,10 @@ namespace Microsoft.Xna.Samples.Draw2D
 			spriteBatch.Draw (texture, new Rectangle (150,390,texture.Width,texture.Height), null, Color.White, 0.0f, Vector2.Zero, SpriteEffects.FlipVertically, 0);	
 			// Flip horizontaly and verticaly
 			spriteBatch.Draw (texture, new Rectangle (220,390,texture.Width,texture.Height), null, Color.White, 0.0f, Vector2.Zero, SpriteEffects.FlipHorizontally | SpriteEffects.FlipVertically, 0);	
+			
+			// Scale
+			spriteBatch.Draw (texture, new Vector2 (290,390), null, Color.White, 0.0f, Vector2.Zero, new Vector2(0.5f, 1.6f), SpriteEffects.None,0.0f);
+			
             
 			base.Draw (gameTime);
 

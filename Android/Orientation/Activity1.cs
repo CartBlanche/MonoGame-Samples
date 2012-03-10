@@ -14,7 +14,9 @@ namespace Orientation
 	[Activity (Label = "Orientation", MainLauncher = true
 	           ,Icon = "@drawable/icon"
 	           , Theme = "@style/Theme.Splash"
-	           ,ConfigurationChanges=ConfigChanges.Orientation|ConfigChanges.Keyboard|ConfigChanges.KeyboardHidden)]
+	           ,ConfigurationChanges=ConfigChanges.Orientation|ConfigChanges.Keyboard|ConfigChanges.KeyboardHidden
+	           ,ScreenOrientation=ScreenOrientation.Landscape
+	           )]
 	public class Activity1 : AndroidGameActivity
 	{
 		protected override void OnCreate (Bundle bundle)

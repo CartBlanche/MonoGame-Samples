@@ -16,6 +16,7 @@ namespace CatapultWarsNet
 	           , MainLauncher = true
 	           ,Icon = "@drawable/icon"
 	           , Theme = "@style/Theme.Splash"
+	           ,ScreenOrientation=ScreenOrientation.Landscape
 	           ,ConfigurationChanges=ConfigChanges.Orientation|ConfigChanges.Keyboard|ConfigChanges.KeyboardHidden)]
 	public class Activity1 : AndroidGameActivity
 	{
