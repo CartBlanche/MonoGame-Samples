@@ -53,6 +53,10 @@
       <Link>Default.png</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="..\..\MacOS\BookSourceCode\XNAGameDevelopmentbyExampleCode\AsteroidBeltAssault\Content\Sounds\Explosion1.xnb">
+      <Link>Content\Explosion1.xnb</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />
