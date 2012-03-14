@@ -62,7 +62,7 @@ namespace Microsoft.Xna.Samples.Sound
 			// Create a new SpriteBatch, which can be used to draw textures.
 			spriteBatch = new SpriteBatch(GraphicsDevice);
 
-			sound = Content.Load<SoundEffect>("explosion1");
+			sound = Content.Load<SoundEffect>("Explosion1");
 			soundInst = sound.CreateInstance();
 			
 			font = Content.Load<SpriteFont>("spriteFont1");
