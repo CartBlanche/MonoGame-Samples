@@ -16,7 +16,7 @@
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>bin\Debug</OutputPath>
-    <DefineConstants>DEBUG; MAC</DefineConstants>
+    <DefineConstants>DEBUG; MONOMAC</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <PlatformTarget>x86</PlatformTarget>
@@ -40,7 +40,8 @@
     <Reference Include="MonoMac" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Info.plist"></None>
+    <None Include="Info.plist">
+    </None>
     <None Include="App.config" />
     <None Include="Game.ico" />
     <None Include="GameThumbnail.png" />
@@ -66,7 +67,6 @@
     <Folder Include="Content\" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Content\XNA_pow2.jpg" />
     <Content Include="Content\Glass2.png" />
   </ItemGroup>
 </Project>

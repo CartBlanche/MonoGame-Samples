@@ -33,7 +33,7 @@
     <WarningLevel>4</WarningLevel>
     <CodesignKey>iPhone Developer</CodesignKey>
     <MtouchLink>None</MtouchLink>
-    <DefineConstants>IPHONE</DefineConstants>
+    <DefineConstants>IPHONE;</DefineConstants>
     <MtouchI18n />
     <MtouchUseArmv7>false</MtouchUseArmv7>
     <MtouchSdkVersion>3.0</MtouchSdkVersion>
@@ -43,7 +43,7 @@
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>bin\iPhone\Debug</OutputPath>
-    <DefineConstants>DEBUG;IPHONE</DefineConstants>
+    <DefineConstants>DEBUG;IPHONE;</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <MtouchDebug>true</MtouchDebug>
@@ -60,7 +60,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <CodesignKey>iPhone Developer</CodesignKey>
-    <DefineConstants>IPHONE</DefineConstants>
+    <DefineConstants>IPHONE;</DefineConstants>
     <MtouchUseArmv7>false</MtouchUseArmv7>
     <MtouchSdkVersion>3.0</MtouchSdkVersion>
   </PropertyGroup>
@@ -71,7 +71,7 @@
     <WarningLevel>4</WarningLevel>
     <CodesignKey>iPhone Developer</CodesignKey>
     <MtouchI18n />
-    <DefineConstants>IPHONE</DefineConstants>
+    <DefineConstants>IPHONE;</DefineConstants>
     <MtouchUseArmv7>false</MtouchUseArmv7>
     <MtouchSdkVersion>3.0</MtouchSdkVersion>
   </PropertyGroup>
@@ -89,13 +89,13 @@
     <Reference Include="OpenTK" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Main.cs" />
     <Compile Include="ExplosionParticleSystem.cs" />
     <Compile Include="ExplosionSmokeParticleSystem.cs" />
     <Compile Include="Particle.cs" />
     <Compile Include="ParticleSampleGame.cs" />
     <Compile Include="ParticleSystem.cs" />
     <Compile Include="SmokePlumeParticleSystem.cs" />
+    <Compile Include="Program.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Content\" />
@@ -111,7 +111,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="GameThumbnail.png" />
-    <None Include="Info.iOS.plist"><Link>Info.plist</Link></None>
+    <None Include="Info.iOS.plist">
+      <Link>Info.plist</Link>
+    </None>
     <None Include="Content\explosion.png" />
     <None Include="Content\smoke.bmp" />
   </ItemGroup>

@@ -10,13 +10,20 @@
 #region Using Statements
 using System;
 
+#if MONOMAC
 using MonoMac.Foundation;
 using MonoMac.AppKit;
 using MonoMac.ObjCRuntime;
+#elif IPHONE
+using MonoTouch.Foundation;
+using MonoTouch.UIKit;
+#endif
+
 #endregion
 
 namespace RectangleCollision
 {
+#if MONOMAC
 	static class Program
 	{
 		/// <summary>
@@ -47,5 +54,23 @@ namespace RectangleCollision
 		{
 			return true;
 		}
-	}		
+	}	
+#elif IPHONE
+	[Register ("AppDelegate")]
+	class Program : UIApplicationDelegate 
+	{
+        RectangleCollisionGame game;
+		public override void FinishedLaunching (UIApplication app)
+		{
+			// Fun begins..
+			game = new RectangleCollisionGame();
+			game.Run();
+		}
+
+		static void Main (string [] args)
+		{
+			UIApplication.Main (args,null,"AppDelegate");
+		}
+	}
+#endif
 }

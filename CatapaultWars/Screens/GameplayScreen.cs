@@ -82,7 +82,7 @@ namespace CatapultGame
         public override void LoadContent()
         {
             base.LoadContent();
-#if ANDROID || IOS			
+#if ANDROID || IPHONE			
 			LoadAssets();
 #endif			
             // Start the game

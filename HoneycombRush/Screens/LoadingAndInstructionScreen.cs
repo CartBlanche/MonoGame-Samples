@@ -189,7 +189,7 @@ namespace HoneycombRush
         private void LoadResources()
         {
 
-#if MAC		
+#if MONOMAC		
 		// Start loading the resources on main thread
 		// If not then all sorts of errors happen for 
 		// AutoReleasPools and OpenGL does not handle 

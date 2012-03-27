@@ -16,7 +16,7 @@
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>bin\iPhoneSimulator\Debug</OutputPath>
-    <DefineConstants>DEBUG; IOS</DefineConstants>
+    <DefineConstants>DEBUG; IPHONE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <ConsolePause>false</ConsolePause>
@@ -65,7 +65,9 @@
     <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Info.iOS.plist"><Link>Info.plist</Link></None>
+    <None Include="Info.iOS.plist">
+      <Link>Info.plist</Link>
+    </None>
     <None Include="Content\Fonts\HUDFont.xnb">
       <Link>Content\Fonts\HUDFont.xnb</Link>
     </None>
@@ -140,7 +142,6 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Main.cs" />
     <Compile Include="CatapultGame.cs">
       <Link>CatapultGame.cs</Link>
     </Compile>
@@ -201,6 +202,7 @@
     <Compile Include="Utility\AudioManager.cs">
       <Link>Utility\AudioManager.cs</Link>
     </Compile>
+    <Compile Include="Program.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

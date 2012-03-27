@@ -75,7 +75,7 @@ namespace CatapultGame
 			NetworkSession.InviteAccepted += (sender, e) => NetworkSessionComponent.InviteAccepted (screenManager, e);
 
 			IsMouseVisible = true;
-#if !WINDOWS && !XBOX && !MACOS && !LINUX
+#if !WINDOWS && !XBOX && !MONOMAC && !LINUX
 			//Switch to full screen for best game experience
 			graphics.IsFullScreen = true;
 #else

@@ -29,7 +29,7 @@ namespace HoneycombRush
             }
         }
     }
-#elif MAC
+#elif MONOMAC
 	static class Program
 	{
 		/// <summary>

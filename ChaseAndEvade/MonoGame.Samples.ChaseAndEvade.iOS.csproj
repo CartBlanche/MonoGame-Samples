@@ -88,8 +88,8 @@
     <Reference Include="OpenTK" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Main.cs" />
     <Compile Include="ChaseAndEvadeGame.cs" />
+    <Compile Include="Program.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Content\" />
@@ -114,7 +114,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="GameThumbnail.png" />
-    <None Include="Info.iOS.plist"><Link>Info.plist</Link></None>
+    <None Include="Info.iOS.plist">
+      <Link>Info.plist</Link>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\MonoGame.Framework\MonoGame.Framework.iOS.csproj">

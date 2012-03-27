@@ -15,9 +15,14 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Net;
 
+#if MONOMAC
 using MonoMac.Foundation;
 using MonoMac.AppKit;
 using MonoMac.ObjCRuntime;
+#elif IPHONE
+using MonoTouch.Foundation;
+using MonoTouch.UIKit;
+#endif
 
 #endregion
 
@@ -26,6 +31,7 @@ namespace PeerToPeer
 {
 	
 	#region Entry Point
+#if MONOMAC
 	static class Program
 	{
 		/// <summary>
@@ -56,7 +62,37 @@ namespace PeerToPeer
 		{
 			return true;
 		}
-	}	
+	}
+#elif IPHONE
+	[Register ("AppDelegate")]
+	class Program : UIApplicationDelegate 
+	{
+		private PeerToPeerGame game;
+
+		public override void FinishedLaunching (UIApplication app)
+		{
+			// Fun begins..
+			game = new PeerToPeerGame();
+			game.Run();
+		}
+
+		static void Main (string [] args)
+		{
+			UIApplication.Main (args,null,"AppDelegate");
+		}
+	}
+#else
+	class Program
+	{
+		public static void Main(string[] args)
+		{
+			using ( PeerToPeer.PeerToPeerGame game = new  PeerToPeer.PeerToPeerGame())
+			{
+				game.Run();
+			}
+		}
+	}
+#endif
 	
 	#endregion
 }

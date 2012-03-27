@@ -10,13 +10,19 @@
 #region Using Statements
 using System;
 
+#if MONOMAC
 using MonoMac.Foundation;
 using MonoMac.AppKit;
 using MonoMac.ObjCRuntime;
+#elif IPHONE
+using MonoTouch.Foundation;
+using MonoTouch.UIKit;
+#endif
 #endregion
 
 namespace TransformedCollision
 {
+#if MONOMAC
 	static class Program
 	{
 		/// <summary>
@@ -47,4 +53,22 @@ namespace TransformedCollision
 			return true;
 		}
 	}	
+#elif IPHONE
+	[Register ("AppDelegate")]
+	class Program : UIApplicationDelegate 
+	{
+        TransformedCollisionGame game;
+		public override void FinishedLaunching (UIApplication app)
+		{
+			// Fun begins..
+			game = new TransformedCollisionGame();
+			game.Run ();
+		}
+
+		static void Main (string [] args)
+		{
+			UIApplication.Main (args,null,"AppDelegate");
+		}
+	}
+#endif
 }

@@ -17,7 +17,7 @@ namespace Colored3DCube
         }
     }
 #endif
-#if MAC
+#if MONOMAC
 
 	static class Program
 	{	

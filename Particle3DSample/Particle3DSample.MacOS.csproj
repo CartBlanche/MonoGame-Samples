@@ -38,7 +38,10 @@
     <Reference Include="MonoMac" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Info.plist"></None>
+    <None Include="Info.plist">
+    </None>
+    <None Include="Content\Particle3DSampleContent.contentproj" />
+    <None Include="Content\ParticleEffect.fx" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath)\Mono\MonoMac\v0.0\Mono.MonoMac.targets" />
@@ -59,15 +62,12 @@
     <Compile Include="ParticleSystem.cs" />
     <Compile Include="ParticleVertex.cs" />
     <Compile Include="Projectile.cs" />
-    <Compile Include="ParticleEffect.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\font.xnb" />
     <Content Include="Content\ExplosionSettings.xml" />
     <Content Include="Content\ExplosionSmokeSettings.xml" />
     <Content Include="Content\FireSettings.xml" />
-    <Content Include="Content\Particle3DSampleContent.contentproj" />
-    <Content Include="Content\ParticleEffect.fx" />
     <Content Include="Content\ProjectileTrailSettings.xml" />
     <Content Include="Content\SmokePlumeSettings.xml" />
     <Content Include="Content\checker.bmp" />
@@ -89,8 +89,6 @@
     <Content Include="Content\ProjectileTrailSettings.xnb" />
     <Content Include="Content\smoke.xnb" />
     <Content Include="Content\SmokePlumeSettings.xnb" />
-    <Content Include="Content\ParticlePixelShader.fsh" />
-    <Content Include="Content\ParticlePixelShader.vsh" />
     <Content Include="Content\explosion.xnb" />
   </ItemGroup>
 </Project>

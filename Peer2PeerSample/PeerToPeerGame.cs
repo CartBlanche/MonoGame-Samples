@@ -58,7 +58,7 @@ namespace PeerToPeer
 		{
 			graphics = new GraphicsDeviceManager (this);
 			
-#if ANDROID || IOS
+#if ANDROID || IPHONE
             graphics.IsFullScreen = true;
 #else
 			graphics.PreferredBackBufferWidth = screenWidth;
@@ -81,7 +81,7 @@ namespace PeerToPeer
 
 			font = Content.Load<SpriteFont> ("Font");
 
-#if ANDROID || IOS
+#if ANDROID || IPHONE
 			gamePadTexture = Content.Load<Texture2D>("gamepad.png");
 			
 			ThumbStickDefinition thumbStickLeft = new ThumbStickDefinition();
@@ -425,7 +425,7 @@ namespace PeerToPeer
                 }
 			}
 			
-#if ANDROID || IOS
+#if ANDROID || IPHONE
 			GamePad.Draw(gameTime, spriteBatch);
 #endif
 			

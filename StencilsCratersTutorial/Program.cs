@@ -17,7 +17,7 @@ namespace StencilCratersTutorial
         }
     }
 #endif
-#if MAC
+#if MONOMAC
 	static class Program
 	{
 		/// <summary>

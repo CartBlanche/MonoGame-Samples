@@ -49,7 +49,7 @@ namespace CatapultGame
             screenManager = new ScreenManager(this);
             Components.Add(screenManager);
 			IsMouseVisible = true;
-#if !WINDOWS && !XBOX && !MACOS
+#if !WINDOWS && !XBOX && !MONOMAC
             //Switch to full screen for best game experience
             graphics.IsFullScreen = true;
 #endif

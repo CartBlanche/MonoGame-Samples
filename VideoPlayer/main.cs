@@ -1,8 +1,14 @@
+#if MONOMAC
 using MonoMac.AppKit;
 using MonoMac.Foundation;
+#elif IPHONE
+using MonoTouch.Foundation;
+using MonoTouch.UIKit;
+#endif
 
 namespace MonoGame.Samples.VideoPlayer
 {
+#if MONOMAC
 	class Program
 	{
 		static void Main (string[] args)
@@ -36,4 +42,25 @@ namespace MonoGame.Samples.VideoPlayer
 			return true;
 		}
 	}	
+#elif IPHONE
+	[Register("AppDelegate")]
+	class Program : UIApplicationDelegate
+	{
+		private Game1 game;
+
+		public override void FinishedLaunching (UIApplication app)
+		{
+			game = new Game1 ();
+			game.Run ();
+		}
+
+		/// <summary>
+		/// The main entry point for the application.
+		/// </summary>
+		static void Main (string[] args)
+		{
+			UIApplication.Main (args, null, "AppDelegate");
+		}
+	}
+#endif
 }

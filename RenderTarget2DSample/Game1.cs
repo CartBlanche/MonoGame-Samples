@@ -55,7 +55,7 @@ namespace RenderTarget2DSample
 			// Create the GraphicsDeviceManager for our game.
 			graphics = new GraphicsDeviceManager (this);
 
-#if ANDROID || IOS
+#if ANDROID || IPHONE
             graphics.IsFullScreen = true;
 #else
 			graphics.PreferredBackBufferWidth = 800;

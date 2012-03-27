@@ -216,9 +216,8 @@ namespace Particle3DSample
 		/// </summary>
 		void LoadParticleEffect ()
 		{
-			//Effect effect = content.Load<Effect> ("ParticleEffect");
-			Effect effect = new ParticleEffect(GraphicsDevice);
-			
+			Effect effect = content.Load<Effect> ("ParticleEffect");
+
 			// If we have several particle systems, the content manager will return
 			// a single shared effect instance to them all. But we want to preconfigure
 			// the effect with parameters that are specific to this particular

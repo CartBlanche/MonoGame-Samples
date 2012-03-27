@@ -9,7 +9,7 @@ using Microsoft.Xna.Framework.Media;
 #endif
 #endregion
 
-namespace Microsoft.Xna.Samples.GameStateManagement
+namespace GameStateManagement
 {
     #region Entry Point
 #if IPHONE
