@@ -43,34 +43,34 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\..\MacOS\NetworkPrediction\NetworkPredictionGame.cs">
+    <Compile Include="NetworkPredictionGame.cs">
       <Link>NetworkPredictionGame.cs</Link>
     </Compile>
-    <Compile Include="..\..\MacOS\NetworkPrediction\RollingAverage.cs">
+    <Compile Include="RollingAverage.cs">
       <Link>RollingAverage.cs</Link>
     </Compile>
-    <Compile Include="..\..\MacOS\NetworkPrediction\Tank.cs">
+    <Compile Include="Tank.cs">
       <Link>Tank.cs</Link>
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\MonoGame.Framework\MonoGame.Framework.Windows.csproj">
+    <ProjectReference Include="..\..\MonoGame.Framework\MonoGame.Framework.Windows.csproj">
       <Project>{7DE47032-A904-4C29-BD22-2D235E8D91BA}</Project>
       <Name>MonoGame.Framework.Windows</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="..\..\MacOS\NetworkPrediction\Content\Font.xnb">
+    <Content Include="Content\Font.xnb">
       <Link>Content\Font.xnb</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="..\..\MacOS\NetworkPrediction\Content\Tank.xnb">
+    <Content Include="Content\Tank.xnb">
       <Link>Content\Tank.xnb</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="..\..\MacOS\NetworkPrediction\Content\Turret.xnb">
+    <Content Include="Content\Turret.xnb">
       <Link>Content\Turret.xnb</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

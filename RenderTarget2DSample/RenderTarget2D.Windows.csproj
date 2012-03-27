@@ -48,7 +48,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\..\MacOS\RenderTarget2DSample\Game1.cs">
+    <Compile Include="Game1.cs">
       <Link>Game1.cs</Link>
     </Compile>
     <Compile Include="Program.cs" />
@@ -59,18 +59,18 @@
       <Link>SDL.dll</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="..\..\MacOS\RenderTarget2DSample\Content\MooTheMerciless.xnb">
+    <Content Include="Content\MooTheMerciless.xnb">
       <Link>Content\MooTheMerciless.xnb</Link>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="..\..\MacOS\RenderTarget2DSample\Content\wood.xnb">
+    <Content Include="Content\wood.xnb">
       <Link>Content\wood.xnb</Link>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.Targets" />
   <ItemGroup>
-    <ProjectReference Include="..\..\..\MonoGame.Framework\MonoGame.Framework.Windows.csproj">
+    <ProjectReference Include="..\..\MonoGame.Framework\MonoGame.Framework.Windows.csproj">
       <Project>{7DE47032-A904-4C29-BD22-2D235E8D91BA}</Project>
       <Name>MonoGame.Framework.Windows</Name>
     </ProjectReference>

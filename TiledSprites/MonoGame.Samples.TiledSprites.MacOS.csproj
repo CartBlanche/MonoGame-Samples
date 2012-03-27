@@ -41,8 +41,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Info.plist" />
-    <None Include="..\..\iOS\TiledSprites\Default.png">
+    <None Include="Info.plist"></None>
+    <None Include="Default.png">
       <Link>Default.png</Link>
     </None>
     <None Include="TiledSprites.icns" />
@@ -51,30 +51,30 @@
   <Import Project="$(MSBuildExtensionsPath)\Mono\MonoMac\v0.0\Mono.MonoMac.targets" />
   <ItemGroup>
     <Compile Include="main.cs" />
-    <Compile Include="..\..\iOS\TiledSprites\AnimatedSprite.cs">
+    <Compile Include="AnimatedSprite.cs">
       <Link>AnimatedSprite.cs</Link>
     </Compile>
-    <Compile Include="..\..\iOS\TiledSprites\Camera2D.cs">
+    <Compile Include="Camera2D.cs">
       <Link>Camera2D.cs</Link>
     </Compile>
-    <Compile Include="..\..\iOS\TiledSprites\SpriteSheet.cs">
+    <Compile Include="SpriteSheet.cs">
       <Link>SpriteSheet.cs</Link>
     </Compile>
-    <Compile Include="..\..\iOS\TiledSprites\TiledSprites.cs">
+    <Compile Include="TiledSprites.cs">
       <Link>TiledSprites.cs</Link>
     </Compile>
-    <Compile Include="..\..\iOS\TiledSprites\TileGrid.cs">
+    <Compile Include="TileGrid.cs">
       <Link>TileGrid.cs</Link>
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="..\..\iOS\TiledSprites\Content\ball.png">
+    <Content Include="Content\ball.png">
       <Link>Content\ball.png</Link>
     </Content>
-    <Content Include="..\..\iOS\TiledSprites\Content\clouds.png">
+    <Content Include="Content\clouds.png">
       <Link>Content\clouds.png</Link>
     </Content>
-    <Content Include="..\..\iOS\TiledSprites\Content\ground.png">
+    <Content Include="Content\ground.png">
       <Link>Content\ground.png</Link>
     </Content>
     <Content Include="GameThumbnail.png" />

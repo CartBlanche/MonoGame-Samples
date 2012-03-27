@@ -43,32 +43,32 @@
     <None Include="Info.plist" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\..\iOS\ChaseAndEvade\ChaseAndEvadeGame.cs">
+    <Compile Include="ChaseAndEvadeGame.cs">
       <Link>ChaseAndEvadeGame.cs</Link>
     </Compile>
     <Compile Include="Program.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="..\..\iOS\ChaseAndEvade\Content\Arial.xnb">
+    <Content Include="Content\Arial.xnb">
       <Link>Content\Arial.xnb</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="..\..\iOS\ChaseAndEvade\Content\cat.png">
+    <Content Include="Content\cat.png">
       <Link>Content\cat.png</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="..\..\iOS\ChaseAndEvade\Content\mouse.png">
+    <Content Include="Content\mouse.png">
       <Link>Content\mouse.png</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="..\..\iOS\ChaseAndEvade\Content\tank.png">
+    <Content Include="Content\tank.png">
       <Link>Content\tank.png</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="GameThumbnail.png" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\MonoGame.Framework\MonoGame.Framework.Linux.csproj">
+    <ProjectReference Include="..\..\MonoGame.Framework\MonoGame.Framework.Linux.csproj">
       <Project>{35253CE1-C864-4CD3-8249-4D1319748E8F}</Project>
       <Name>MonoGame.Framework.Linux</Name>
     </ProjectReference>

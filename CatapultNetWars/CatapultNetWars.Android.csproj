@@ -51,106 +51,106 @@
     <Compile Include="Activity1.cs" />
     <Compile Include="Resources\Resource.designer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="..\..\MacOS\CatapultNetWars\CatapultGame.cs">
+    <Compile Include="CatapultGame.cs">
       <Link>CatapultGame.cs</Link>
     </Compile>
-    <Compile Include="..\..\MacOS\CatapultNetWars\Utility\Animation.cs">
+    <Compile Include="Utility\Animation.cs">
       <Link>Utility\Animation.cs</Link>
     </Compile>
-    <Compile Include="..\..\MacOS\CatapultNetWars\Utility\AudioManager.cs">
+    <Compile Include="Utility\AudioManager.cs">
       <Link>Utility\AudioManager.cs</Link>
     </Compile>
-    <Compile Include="..\..\MacOS\CatapultNetWars\Screens\BackgroundScreen.cs">
+    <Compile Include="Screens\BackgroundScreen.cs">
       <Link>Screens\BackgroundScreen.cs</Link>
     </Compile>
-    <Compile Include="..\..\MacOS\CatapultNetWars\Screens\GameplayScreen.cs">
+    <Compile Include="Screens\GameplayScreen.cs">
       <Link>Screens\GameplayScreen.cs</Link>
     </Compile>
-    <Compile Include="..\..\MacOS\CatapultNetWars\Screens\InstructionsScreen.cs">
+    <Compile Include="Screens\InstructionsScreen.cs">
       <Link>Screens\InstructionsScreen.cs</Link>
     </Compile>
-    <Compile Include="..\..\MacOS\CatapultNetWars\Screens\LoadingScreen.cs">
+    <Compile Include="Screens\LoadingScreen.cs">
       <Link>Screens\LoadingScreen.cs</Link>
     </Compile>
-    <Compile Include="..\..\MacOS\CatapultNetWars\Screens\MainMenuScreen.cs">
+    <Compile Include="Screens\MainMenuScreen.cs">
       <Link>Screens\MainMenuScreen.cs</Link>
     </Compile>
-    <Compile Include="..\..\MacOS\CatapultNetWars\Screens\MessageBoxScreen.cs">
+    <Compile Include="Screens\MessageBoxScreen.cs">
       <Link>Screens\MessageBoxScreen.cs</Link>
     </Compile>
-    <Compile Include="..\..\MacOS\CatapultNetWars\Screens\PauseScreen.cs">
+    <Compile Include="Screens\PauseScreen.cs">
       <Link>Screens\PauseScreen.cs</Link>
     </Compile>
-    <Compile Include="..\..\MacOS\CatapultNetWars\ScreenManager\GameScreen.cs">
+    <Compile Include="ScreenManager\GameScreen.cs">
       <Link>ScreenManager\GameScreen.cs</Link>
     </Compile>
-    <Compile Include="..\..\MacOS\CatapultNetWars\ScreenManager\InputState.cs">
+    <Compile Include="ScreenManager\InputState.cs">
       <Link>ScreenManager\InputState.cs</Link>
     </Compile>
-    <Compile Include="..\..\MacOS\CatapultNetWars\ScreenManager\MenuEntry.cs">
+    <Compile Include="ScreenManager\MenuEntry.cs">
       <Link>ScreenManager\MenuEntry.cs</Link>
     </Compile>
-    <Compile Include="..\..\MacOS\CatapultNetWars\ScreenManager\MenuScreen.cs">
+    <Compile Include="ScreenManager\MenuScreen.cs">
       <Link>ScreenManager\MenuScreen.cs</Link>
     </Compile>
-    <Compile Include="..\..\MacOS\CatapultNetWars\ScreenManager\MouseGestureType.cs">
+    <Compile Include="ScreenManager\MouseGestureType.cs">
       <Link>ScreenManager\MouseGestureType.cs</Link>
     </Compile>
-    <Compile Include="..\..\MacOS\CatapultNetWars\ScreenManager\PlayerIndexEventArgs.cs">
+    <Compile Include="ScreenManager\PlayerIndexEventArgs.cs">
       <Link>ScreenManager\PlayerIndexEventArgs.cs</Link>
     </Compile>
-    <Compile Include="..\..\MacOS\CatapultNetWars\ScreenManager\ScreenManager.cs">
+    <Compile Include="ScreenManager\ScreenManager.cs">
       <Link>ScreenManager\ScreenManager.cs</Link>
     </Compile>
-    <Compile Include="..\..\MacOS\CatapultNetWars\Players\AI.cs">
+    <Compile Include="Players\AI.cs">
       <Link>Players\AI.cs</Link>
     </Compile>
-    <Compile Include="..\..\MacOS\CatapultNetWars\Players\Human.cs">
+    <Compile Include="Players\Human.cs">
       <Link>Players\Human.cs</Link>
     </Compile>
-    <Compile Include="..\..\MacOS\CatapultNetWars\Players\Player.cs">
+    <Compile Include="Players\Player.cs">
       <Link>Players\Player.cs</Link>
     </Compile>
-    <Compile Include="..\..\MacOS\CatapultNetWars\Networking\AvailableSessionMenuEntry.cs">
+    <Compile Include="Networking\AvailableSessionMenuEntry.cs">
       <Link>Networking\AvailableSessionMenuEntry.cs</Link>
     </Compile>
-    <Compile Include="..\..\MacOS\CatapultNetWars\Networking\CreateOrFindSessionScreen.cs">
+    <Compile Include="Networking\CreateOrFindSessionScreen.cs">
       <Link>Networking\CreateOrFindSessionScreen.cs</Link>
     </Compile>
-    <Compile Include="..\..\MacOS\CatapultNetWars\Networking\JoinSessionScreen.cs">
+    <Compile Include="Networking\JoinSessionScreen.cs">
       <Link>Networking\JoinSessionScreen.cs</Link>
     </Compile>
-    <Compile Include="..\..\MacOS\CatapultNetWars\Networking\LobbyScreen.cs">
+    <Compile Include="Networking\LobbyScreen.cs">
       <Link>Networking\LobbyScreen.cs</Link>
     </Compile>
-    <Compile Include="..\..\MacOS\CatapultNetWars\Networking\NetworkBusyScreen.cs">
+    <Compile Include="Networking\NetworkBusyScreen.cs">
       <Link>Networking\NetworkBusyScreen.cs</Link>
     </Compile>
-    <Compile Include="..\..\MacOS\CatapultNetWars\Networking\NetworkErrorScreen.cs">
+    <Compile Include="Networking\NetworkErrorScreen.cs">
       <Link>Networking\NetworkErrorScreen.cs</Link>
     </Compile>
-    <Compile Include="..\..\MacOS\CatapultNetWars\Networking\NetworkSessionComponent.cs">
+    <Compile Include="Networking\NetworkSessionComponent.cs">
       <Link>Networking\NetworkSessionComponent.cs</Link>
     </Compile>
-    <Compile Include="..\..\MacOS\CatapultNetWars\Networking\OperationCompletedEventArgs.cs">
+    <Compile Include="Networking\OperationCompletedEventArgs.cs">
       <Link>Networking\OperationCompletedEventArgs.cs</Link>
     </Compile>
-    <Compile Include="..\..\MacOS\CatapultNetWars\Networking\ProfileSignInScreen.cs">
+    <Compile Include="Networking\ProfileSignInScreen.cs">
       <Link>Networking\ProfileSignInScreen.cs</Link>
     </Compile>
-    <Compile Include="..\..\MacOS\CatapultNetWars\Catapult\Catapult.cs">
+    <Compile Include="Catapult\Catapult.cs">
       <Link>Catapult\Catapult.cs</Link>
     </Compile>
-    <Compile Include="..\..\MacOS\CatapultNetWars\Catapult\Projectile.cs">
+    <Compile Include="Catapult\Projectile.cs">
       <Link>Catapult\Projectile.cs</Link>
     </Compile>
-    <Compile Include="..\..\MacOS\CatapultNetWars\IMessageDisplay.cs">
+    <Compile Include="IMessageDisplay.cs">
       <Link>IMessageDisplay.cs</Link>
     </Compile>
-    <Compile Include="..\..\MacOS\CatapultNetWars\MessageDisplayComponent.cs">
+    <Compile Include="MessageDisplayComponent.cs">
       <Link>MessageDisplayComponent.cs</Link>
     </Compile>
-    <Compile Include="..\..\MacOS\CatapultNetWars\Resources.Designer.cs">
+    <Compile Include="Resources.Designer.cs">
       <Link>Resources.Designer.cs</Link>
     </Compile>
   </ItemGroup>
@@ -172,7 +172,7 @@
       <Project>{565129E0-4EE5-4F6F-B403-C3484C9740BE}</Project>
       <Name>Lidgren.Network.Android</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\MonoGame.Framework\MonoGame.Framework.Android.csproj">
+    <ProjectReference Include="..\..\MonoGame.Framework\MonoGame.Framework.Android.csproj">
       <Project>{BA9476CF-99BA-4D03-92F2-73D2C5E58883}</Project>
       <Name>MonoGame.Framework.Android</Name>
     </ProjectReference>
@@ -208,129 +208,129 @@
     <Folder Include="Resources\drawable-port\" />
   </ItemGroup>
   <ItemGroup>
-    <AndroidAsset Include="..\..\MacOS\CatapultNetWars\Content\Fonts\HUDFont.xnb">
+    <AndroidAsset Include="Content\Fonts\HUDFont.xnb">
       <Link>Assets\Content\Fonts\HUDFont.xnb</Link>
     </AndroidAsset>
-    <AndroidAsset Include="..\..\MacOS\CatapultNetWars\Content\Fonts\MenuFont.xnb">
+    <AndroidAsset Include="Content\Fonts\MenuFont.xnb">
       <Link>Assets\Content\Fonts\MenuFont.xnb</Link>
     </AndroidAsset>
-    <AndroidAsset Include="..\..\MacOS\CatapaultWars\Content\Sounds\BoulderHit.wav">
+    <AndroidAsset Include="Content\Sounds\BoulderHit.wav">
       <Link>Assets\Content\Sounds\BoulderHit.wav</Link>
     </AndroidAsset>
-    <AndroidAsset Include="..\..\MacOS\CatapaultWars\Content\Sounds\CatapultExplosion.wav">
+    <AndroidAsset Include="Content\Sounds\CatapultExplosion.wav">
       <Link>Assets\Content\Sounds\CatapultExplosion.wav</Link>
     </AndroidAsset>
-    <AndroidAsset Include="..\..\MacOS\CatapaultWars\Content\Sounds\CatapultFire.wav">
+    <AndroidAsset Include="Content\Sounds\CatapultFire.wav">
       <Link>Assets\Content\Sounds\CatapultFire.wav</Link>
     </AndroidAsset>
-    <AndroidAsset Include="..\..\MacOS\CatapaultWars\Content\Sounds\Lose.wav">
+    <AndroidAsset Include="Content\Sounds\Lose.wav">
       <Link>Assets\Content\Sounds\Lose.wav</Link>
     </AndroidAsset>
-    <AndroidAsset Include="..\..\MacOS\CatapaultWars\Content\Sounds\RopeStretch.wav">
+    <AndroidAsset Include="Content\Sounds\RopeStretch.wav">
       <Link>Assets\Content\Sounds\RopeStretch.wav</Link>
     </AndroidAsset>
-    <AndroidAsset Include="..\..\MacOS\CatapaultWars\Content\Sounds\Win.wav">
+    <AndroidAsset Include="Content\Sounds\Win.wav">
       <Link>Assets\Content\Sounds\Win.wav</Link>
     </AndroidAsset>
-    <AndroidAsset Include="..\..\MacOS\CatapultNetWars\Content\Textures\Ammo\rock_ammo.xnb">
+    <AndroidAsset Include="Content\Textures\Ammo\rock_ammo.xnb">
       <Link>Assets\Content\Textures\Ammo\rock_ammo.xnb</Link>
     </AndroidAsset>
-    <AndroidAsset Include="..\..\MacOS\CatapultNetWars\Content\Textures\Backgrounds\blank.xnb">
+    <AndroidAsset Include="Content\Textures\Backgrounds\blank.xnb">
       <Link>Assets\Content\Textures\Backgrounds\blank.xnb</Link>
     </AndroidAsset>
-    <AndroidAsset Include="..\..\MacOS\CatapultNetWars\Content\Textures\Backgrounds\cloud1.xnb">
+    <AndroidAsset Include="Content\Textures\Backgrounds\cloud1.xnb">
       <Link>Assets\Content\Textures\Backgrounds\cloud1.xnb</Link>
     </AndroidAsset>
-    <AndroidAsset Include="..\..\MacOS\CatapultNetWars\Content\Textures\Backgrounds\cloud2.xnb">
+    <AndroidAsset Include="Content\Textures\Backgrounds\cloud2.xnb">
       <Link>Assets\Content\Textures\Backgrounds\cloud2.xnb</Link>
     </AndroidAsset>
-    <AndroidAsset Include="..\..\MacOS\CatapultNetWars\Content\Textures\Backgrounds\defeat.xnb">
+    <AndroidAsset Include="Content\Textures\Backgrounds\defeat.xnb">
       <Link>Assets\Content\Textures\Backgrounds\defeat.xnb</Link>
     </AndroidAsset>
-    <AndroidAsset Include="..\..\MacOS\CatapultNetWars\Content\Textures\Backgrounds\gameplay_screen.xnb">
+    <AndroidAsset Include="Content\Textures\Backgrounds\gameplay_screen.xnb">
       <Link>Assets\Content\Textures\Backgrounds\gameplay_screen.xnb</Link>
     </AndroidAsset>
-    <AndroidAsset Include="..\..\MacOS\CatapultNetWars\Content\Textures\Backgrounds\instructions.xnb">
+    <AndroidAsset Include="Content\Textures\Backgrounds\instructions.xnb">
       <Link>Assets\Content\Textures\Backgrounds\instructions.xnb</Link>
     </AndroidAsset>
-    <AndroidAsset Include="..\..\MacOS\CatapultNetWars\Content\Textures\Backgrounds\mountain.xnb">
+    <AndroidAsset Include="Content\Textures\Backgrounds\mountain.xnb">
       <Link>Assets\Content\Textures\Backgrounds\mountain.xnb</Link>
     </AndroidAsset>
-    <AndroidAsset Include="..\..\MacOS\CatapultNetWars\Content\Textures\Backgrounds\sky.xnb">
+    <AndroidAsset Include="Content\Textures\Backgrounds\sky.xnb">
       <Link>Assets\Content\Textures\Backgrounds\sky.xnb</Link>
     </AndroidAsset>
-    <AndroidAsset Include="..\..\MacOS\CatapultNetWars\Content\Textures\Backgrounds\title_screen.xnb">
+    <AndroidAsset Include="Content\Textures\Backgrounds\title_screen.xnb">
       <Link>Assets\Content\Textures\Backgrounds\title_screen.xnb</Link>
     </AndroidAsset>
-    <AndroidAsset Include="..\..\MacOS\CatapultNetWars\Content\Textures\Backgrounds\victory.xnb">
+    <AndroidAsset Include="Content\Textures\Backgrounds\victory.xnb">
       <Link>Assets\Content\Textures\Backgrounds\victory.xnb</Link>
     </AndroidAsset>
-    <AndroidAsset Include="..\..\MacOS\CatapultNetWars\Content\Textures\HUD\ammoType.xnb">
+    <AndroidAsset Include="Content\Textures\HUD\ammoType.xnb">
       <Link>Assets\Content\Textures\HUD\ammoType.xnb</Link>
     </AndroidAsset>
-    <AndroidAsset Include="..\..\MacOS\CatapultNetWars\Content\Textures\HUD\Arrow.xnb">
+    <AndroidAsset Include="Content\Textures\HUD\Arrow.xnb">
       <Link>Assets\Content\Textures\HUD\Arrow.xnb</Link>
     </AndroidAsset>
-    <AndroidAsset Include="..\..\MacOS\CatapultNetWars\Content\Textures\HUD\hudBackground.xnb">
+    <AndroidAsset Include="Content\Textures\HUD\hudBackground.xnb">
       <Link>Assets\Content\Textures\HUD\hudBackground.xnb</Link>
     </AndroidAsset>
-    <AndroidAsset Include="..\..\MacOS\CatapultNetWars\Content\Textures\HUD\windArrow.xnb">
+    <AndroidAsset Include="Content\Textures\HUD\windArrow.xnb">
       <Link>Assets\Content\Textures\HUD\windArrow.xnb</Link>
     </AndroidAsset>
-    <AndroidAsset Include="..\..\MacOS\CatapultNetWars\Content\Textures\Catapults\AnimationsDef.xml">
+    <AndroidAsset Include="Content\Textures\Catapults\AnimationsDef.xml">
       <Link>Assets\Content\Textures\Catapults\AnimationsDef.xml</Link>
     </AndroidAsset>
-    <AndroidAsset Include="..\..\MacOS\CatapultNetWars\Content\Textures\Catapults\Fire_Miss\fire_miss.xnb">
+    <AndroidAsset Include="Content\Textures\Catapults\Fire_Miss\fire_miss.xnb">
       <Link>Assets\Content\Textures\Catapults\Fire_Miss\fire_miss.xnb</Link>
     </AndroidAsset>
-    <AndroidAsset Include="..\..\MacOS\CatapultNetWars\Content\Textures\Catapults\Hit_Smoke\smoke.xnb">
+    <AndroidAsset Include="Content\Textures\Catapults\Hit_Smoke\smoke.xnb">
       <Link>Assets\Content\Textures\Catapults\Hit_Smoke\smoke.xnb</Link>
     </AndroidAsset>
-    <AndroidAsset Include="..\..\MacOS\CatapultNetWars\Content\Textures\Catapults\Blue\blueDestroyed\blueCatapult_destroyed.xnb">
+    <AndroidAsset Include="Content\Textures\Catapults\Blue\blueDestroyed\blueCatapult_destroyed.xnb">
       <Link>Assets\Content\Textures\Catapults\Blue\blueDestroyed\blueCatapult_destroyed.xnb</Link>
     </AndroidAsset>
-    <AndroidAsset Include="..\..\MacOS\CatapultNetWars\Content\Textures\Catapults\Blue\blueFire\blueCatapult_fire.xnb">
+    <AndroidAsset Include="Content\Textures\Catapults\Blue\blueFire\blueCatapult_fire.xnb">
       <Link>Assets\Content\Textures\Catapults\Blue\blueFire\blueCatapult_fire.xnb</Link>
     </AndroidAsset>
-    <AndroidAsset Include="..\..\MacOS\CatapultNetWars\Content\Textures\Catapults\Blue\blueIdle\blueIdle.xnb">
+    <AndroidAsset Include="Content\Textures\Catapults\Blue\blueIdle\blueIdle.xnb">
       <Link>Assets\Content\Textures\Catapults\Blue\blueIdle\blueIdle.xnb</Link>
     </AndroidAsset>
-    <AndroidAsset Include="..\..\MacOS\CatapultNetWars\Content\Textures\Catapults\Blue\bluePullback\blueCatapult_Pullback.xnb">
+    <AndroidAsset Include="Content\Textures\Catapults\Blue\bluePullback\blueCatapult_Pullback.xnb">
       <Link>Assets\Content\Textures\Catapults\Blue\bluePullback\blueCatapult_Pullback.xnb</Link>
     </AndroidAsset>
-    <AndroidAsset Include="..\..\MacOS\CatapultNetWars\Content\Textures\Catapults\Red\redDestroyed\redCatapult_destroyed.xnb">
+    <AndroidAsset Include="Content\Textures\Catapults\Red\redDestroyed\redCatapult_destroyed.xnb">
       <Link>Assets\Content\Textures\Catapults\Red\redDestroyed\redCatapult_destroyed.xnb</Link>
     </AndroidAsset>
-    <AndroidAsset Include="..\..\MacOS\CatapultNetWars\Content\Textures\Catapults\Red\redFire\redCatapult_fire.xnb">
+    <AndroidAsset Include="Content\Textures\Catapults\Red\redFire\redCatapult_fire.xnb">
       <Link>Assets\Content\Textures\Catapults\Red\redFire\redCatapult_fire.xnb</Link>
     </AndroidAsset>
-    <AndroidAsset Include="..\..\MacOS\CatapultNetWars\Content\Textures\Catapults\Red\redIdle\redIdle.xnb">
+    <AndroidAsset Include="Content\Textures\Catapults\Red\redIdle\redIdle.xnb">
       <Link>Assets\Content\Textures\Catapults\Red\redIdle\redIdle.xnb</Link>
     </AndroidAsset>
-    <AndroidAsset Include="..\..\MacOS\CatapultNetWars\Content\Textures\Catapults\Red\redPullback\redCatapult_Pullback.xnb">
+    <AndroidAsset Include="Content\Textures\Catapults\Red\redPullback\redCatapult_Pullback.xnb">
       <Link>Assets\Content\Textures\Catapults\Red\redPullback\redCatapult_Pullback.xnb</Link>
     </AndroidAsset>
-    <AndroidAsset Include="..\..\MacOS\CatapultNetWars\Content\cat.xnb">
+    <AndroidAsset Include="Content\cat.xnb">
       <Link>Assets\Content\cat.xnb</Link>
     </AndroidAsset>
-    <AndroidAsset Include="..\..\MacOS\CatapultNetWars\Content\chat_able.xnb">
+    <AndroidAsset Include="Content\chat_able.xnb">
       <Link>Assets\Content\chat_able.xnb</Link>
     </AndroidAsset>
-    <AndroidAsset Include="..\..\MacOS\CatapultNetWars\Content\chat_mute.xnb">
+    <AndroidAsset Include="Content\chat_mute.xnb">
       <Link>Assets\Content\chat_mute.xnb</Link>
     </AndroidAsset>
-    <AndroidAsset Include="..\..\MacOS\CatapultNetWars\Content\chat_ready.xnb">
+    <AndroidAsset Include="Content\chat_ready.xnb">
       <Link>Assets\Content\chat_ready.xnb</Link>
     </AndroidAsset>
-    <AndroidAsset Include="..\..\MacOS\CatapultNetWars\Content\chat_talking.xnb">
+    <AndroidAsset Include="Content\chat_talking.xnb">
       <Link>Assets\Content\chat_talking.xnb</Link>
     </AndroidAsset>
-    <AndroidAsset Include="..\..\MacOS\CatapultNetWars\Content\gradient.xnb">
+    <AndroidAsset Include="Content\gradient.xnb">
       <Link>Assets\Content\gradient.xnb</Link>
     </AndroidAsset>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="..\..\MacOS\CatapultNetWars\Resources.resx">
+    <EmbeddedResource Include="Resources.resx">
       <Link>Resources.resx</Link>
     </EmbeddedResource>
   </ItemGroup>

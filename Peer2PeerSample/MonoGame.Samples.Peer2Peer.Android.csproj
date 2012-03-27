@@ -51,15 +51,15 @@
   <ItemGroup>
     <Compile Include="Activity1.cs" />
     <Compile Include="Resources\Resource.Designer.cs" />
-    <Compile Include="..\..\MacOS\Peer2PeerSample\PeerToPeerGame.cs">
+    <Compile Include="PeerToPeerGame.cs">
       <Link>PeerToPeerGame.cs</Link>
     </Compile>
-    <Compile Include="..\..\MacOS\Peer2PeerSample\Tank.cs">
+    <Compile Include="Tank.cs">
       <Link>Tank.cs</Link>
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\MonoGame.Framework\MonoGame.Framework.Android.csproj">
+    <ProjectReference Include="..\..\MonoGame.Framework\MonoGame.Framework.Android.csproj">
       <Project>{BA9476CF-99BA-4D03-92F2-73D2C5E58883}</Project>
       <Name>MonoGame.Framework.Android</Name>
     </ProjectReference>
@@ -73,16 +73,16 @@
   </Target>
   -->
   <ItemGroup>
-    <AndroidAsset Include="..\..\MacOS\Peer2PeerSample\Content\Font.xnb">
+    <AndroidAsset Include="Content\Font.xnb">
       <Link>Assets\Content\Font.xnb</Link>
     </AndroidAsset>
-    <AndroidAsset Include="..\..\iOS\Peer2Peer\Content\gamepad.png">
+    <AndroidAsset Include="Content\gamepad.png">
       <Link>Assets\Content\gamepad.png</Link>
     </AndroidAsset>
-    <AndroidAsset Include="..\..\MacOS\Peer2PeerSample\Content\Tank.xnb">
+    <AndroidAsset Include="Content\Tank.xnb">
       <Link>Assets\Content\Tank.xnb</Link>
     </AndroidAsset>
-    <AndroidAsset Include="..\..\MacOS\Peer2PeerSample\Content\Turret.xnb">
+    <AndroidAsset Include="Content\Turret.xnb">
       <Link>Assets\Content\Turret.xnb</Link>
     </AndroidAsset>
   </ItemGroup>

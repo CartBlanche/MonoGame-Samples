@@ -64,7 +64,7 @@ namespace CatapultGame
 
 		public override void Initialize ()
 		{
-			arrow = curGame.Content.Load<Texture2D> ("Textures/HUD/arrow");
+			arrow = curGame.Content.Load<Texture2D> ("Textures/HUD/Arrow");
 
 			Catapult.Initialize ();
 

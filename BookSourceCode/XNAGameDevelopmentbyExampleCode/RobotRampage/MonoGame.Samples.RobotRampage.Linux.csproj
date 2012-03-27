@@ -40,16 +40,16 @@
     <Reference Include="System.Drawing" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\..\..\..\MacOS\BookSourceCode\XNAGameDevelopmentbyExampleCode\RobotRampage\README.md">
+    <None Include="README.md">
       <Link>README.md</Link>
     </None>
-    <None Include="..\..\..\..\MacOS\BookSourceCode\XNAGameDevelopmentbyExampleCode\RobotRampage\Info.plist">
+    <None Include="Info.plist">
       <Link>Info.plist</Link>
     </None>
-    <None Include="..\..\..\..\MacOS\BookSourceCode\XNAGameDevelopmentbyExampleCode\RobotRampage\GameThumbnail.png">
+    <None Include="GameThumbnail.png">
       <Link>GameThumbnail.png</Link>
     </None>
-    <None Include="..\..\..\..\MacOS\BookSourceCode\XNAGameDevelopmentbyExampleCode\RobotRampage\Game.ico">
+    <None Include="Game.ico">
       <Link>Game.ico</Link>
     </None>
   </ItemGroup>
@@ -62,49 +62,49 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Program.cs" />
-    <Compile Include="..\..\..\..\MacOS\BookSourceCode\XNAGameDevelopmentbyExampleCode\RobotRampage\WeaponManager.cs">
+    <Compile Include="WeaponManager.cs">
       <Link>WeaponManager.cs</Link>
     </Compile>
-    <Compile Include="..\..\..\..\MacOS\BookSourceCode\XNAGameDevelopmentbyExampleCode\RobotRampage\TileMap.cs">
+    <Compile Include="TileMap.cs">
       <Link>TileMap.cs</Link>
     </Compile>
-    <Compile Include="..\..\..\..\MacOS\BookSourceCode\XNAGameDevelopmentbyExampleCode\RobotRampage\Sprite.cs">
+    <Compile Include="Sprite.cs">
       <Link>Sprite.cs</Link>
     </Compile>
-    <Compile Include="..\..\..\..\MacOS\BookSourceCode\XNAGameDevelopmentbyExampleCode\RobotRampage\Player.cs">
+    <Compile Include="Player.cs">
       <Link>Player.cs</Link>
     </Compile>
-    <Compile Include="..\..\..\..\MacOS\BookSourceCode\XNAGameDevelopmentbyExampleCode\RobotRampage\PathNode.cs">
+    <Compile Include="PathNode.cs">
       <Link>PathNode.cs</Link>
     </Compile>
-    <Compile Include="..\..\..\..\MacOS\BookSourceCode\XNAGameDevelopmentbyExampleCode\RobotRampage\PathFinder.cs">
+    <Compile Include="PathFinder.cs">
       <Link>PathFinder.cs</Link>
     </Compile>
-    <Compile Include="..\..\..\..\MacOS\BookSourceCode\XNAGameDevelopmentbyExampleCode\RobotRampage\Particle.cs">
+    <Compile Include="Particle.cs">
       <Link>Particle.cs</Link>
     </Compile>
-    <Compile Include="..\..\..\..\MacOS\BookSourceCode\XNAGameDevelopmentbyExampleCode\RobotRampage\GoalManager.cs">
+    <Compile Include="GoalManager.cs">
       <Link>GoalManager.cs</Link>
     </Compile>
-    <Compile Include="..\..\..\..\MacOS\BookSourceCode\XNAGameDevelopmentbyExampleCode\RobotRampage\GameManager.cs">
+    <Compile Include="GameManager.cs">
       <Link>GameManager.cs</Link>
     </Compile>
-    <Compile Include="..\..\..\..\MacOS\BookSourceCode\XNAGameDevelopmentbyExampleCode\RobotRampage\Game1.cs">
+    <Compile Include="Game1.cs">
       <Link>Game1.cs</Link>
     </Compile>
-    <Compile Include="..\..\..\..\MacOS\BookSourceCode\XNAGameDevelopmentbyExampleCode\RobotRampage\EnemyManager.cs">
+    <Compile Include="EnemyManager.cs">
       <Link>EnemyManager.cs</Link>
     </Compile>
-    <Compile Include="..\..\..\..\MacOS\BookSourceCode\XNAGameDevelopmentbyExampleCode\RobotRampage\Enemy.cs">
+    <Compile Include="Enemy.cs">
       <Link>Enemy.cs</Link>
     </Compile>
-    <Compile Include="..\..\..\..\MacOS\BookSourceCode\XNAGameDevelopmentbyExampleCode\RobotRampage\EffectsManager.cs">
+    <Compile Include="EffectsManager.cs">
       <Link>EffectsManager.cs</Link>
     </Compile>
-    <Compile Include="..\..\..\..\MacOS\BookSourceCode\XNAGameDevelopmentbyExampleCode\RobotRampage\ComputerTerminal.cs">
+    <Compile Include="ComputerTerminal.cs">
       <Link>ComputerTerminal.cs</Link>
     </Compile>
-    <Compile Include="..\..\..\..\MacOS\BookSourceCode\XNAGameDevelopmentbyExampleCode\RobotRampage\Camera.cs">
+    <Compile Include="Camera.cs">
       <Link>Camera.cs</Link>
     </Compile>
   </ItemGroup>
@@ -115,15 +115,15 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="..\..\..\..\MacOS\BookSourceCode\XNAGameDevelopmentbyExampleCode\RobotRampage\Content\Fonts\Pericles14.xnb">
+    <Content Include="Content\Fonts\Pericles14.xnb">
       <Link>Content\Fonts\Pericles14.xnb</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="..\..\..\..\MacOS\BookSourceCode\XNAGameDevelopmentbyExampleCode\RobotRampage\Content\Textures\TitleScreen.xnb">
+    <Content Include="Content\Textures\TitleScreen.xnb">
       <Link>Content\Textures\TitleScreen.xnb</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="..\..\..\..\MacOS\BookSourceCode\XNAGameDevelopmentbyExampleCode\RobotRampage\Content\Textures\SpriteSheet.xnb">
+    <Content Include="Content\Textures\SpriteSheet.xnb">
       <Link>Content\Textures\SpriteSheet.xnb</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

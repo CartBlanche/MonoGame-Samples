@@ -45,25 +45,25 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Program.cs" />
-    <Compile Include="..\..\..\..\MacOS\BookSourceCode\XNAGameDevelopmentbyExampleCode\FloodControl\FadingPiece.cs">
+    <Compile Include="FadingPiece.cs">
       <Link>FadingPiece.cs</Link>
     </Compile>
-    <Compile Include="..\..\..\..\MacOS\BookSourceCode\XNAGameDevelopmentbyExampleCode\FloodControl\FallingPiece.cs">
+    <Compile Include="FallingPiece.cs">
       <Link>FallingPiece.cs</Link>
     </Compile>
-    <Compile Include="..\..\..\..\MacOS\BookSourceCode\XNAGameDevelopmentbyExampleCode\FloodControl\Game1.cs">
+    <Compile Include="Game1.cs">
       <Link>Game1.cs</Link>
     </Compile>
-    <Compile Include="..\..\..\..\MacOS\BookSourceCode\XNAGameDevelopmentbyExampleCode\FloodControl\GameBoard.cs">
+    <Compile Include="GameBoard.cs">
       <Link>GameBoard.cs</Link>
     </Compile>
-    <Compile Include="..\..\..\..\MacOS\BookSourceCode\XNAGameDevelopmentbyExampleCode\FloodControl\GamePiece.cs">
+    <Compile Include="GamePiece.cs">
       <Link>GamePiece.cs</Link>
     </Compile>
-    <Compile Include="..\..\..\..\MacOS\BookSourceCode\XNAGameDevelopmentbyExampleCode\FloodControl\RotatingPiece.cs">
+    <Compile Include="RotatingPiece.cs">
       <Link>RotatingPiece.cs</Link>
     </Compile>
-    <Compile Include="..\..\..\..\MacOS\BookSourceCode\XNAGameDevelopmentbyExampleCode\FloodControl\ScoreZooms.cs">
+    <Compile Include="ScoreZooms.cs">
       <Link>ScoreZooms.cs</Link>
     </Compile>
   </ItemGroup>
@@ -74,31 +74,31 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="..\..\..\..\MacOS\BookSourceCode\XNAGameDevelopmentbyExampleCode\FloodControl\Content\Fonts\Pericles36.xnb">
+    <Content Include="Content\Fonts\Pericles36.xnb">
       <Link>Content\Fonts\Pericles36.xnb</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="..\..\..\..\MacOS\BookSourceCode\XNAGameDevelopmentbyExampleCode\FloodControl\Content\Textures\Background.xnb">
+    <Content Include="Content\Textures\Background.xnb">
       <Link>Content\Textures\Background.xnb</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="..\..\..\..\MacOS\BookSourceCode\XNAGameDevelopmentbyExampleCode\FloodControl\Content\Textures\Tile_Sheet.xnb">
+    <Content Include="Content\Textures\Tile_Sheet.xnb">
       <Link>Content\Textures\Tile_Sheet.xnb</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="..\..\..\..\MacOS\BookSourceCode\XNAGameDevelopmentbyExampleCode\FloodControl\Content\Textures\TitleScreen.xnb">
+    <Content Include="Content\Textures\TitleScreen.xnb">
       <Link>Content\Textures\TitleScreen.xnb</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\..\..\..\MacOS\BookSourceCode\XNAGameDevelopmentbyExampleCode\FloodControl\Game.ico">
+    <None Include="Game.ico">
       <Link>Game.ico</Link>
     </None>
-    <None Include="..\..\..\..\MacOS\BookSourceCode\XNAGameDevelopmentbyExampleCode\FloodControl\GameThumbnail.png">
+    <None Include="GameThumbnail.png">
       <Link>GameThumbnail.png</Link>
     </None>
-    <None Include="..\..\..\..\MacOS\BookSourceCode\XNAGameDevelopmentbyExampleCode\FloodControl\README.md">
+    <None Include="README.md">
       <Link>README.md</Link>
     </None>
   </ItemGroup>

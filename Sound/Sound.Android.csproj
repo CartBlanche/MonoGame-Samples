@@ -62,7 +62,7 @@
     <AndroidResource Include="Resources\Values\Styles.xml" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\MonoGame.Framework\MonoGame.Framework.Android.csproj">
+    <ProjectReference Include="..\..\MonoGame.Framework\MonoGame.Framework.Android.csproj">
       <Project>{BA9476CF-99BA-4D03-92F2-73D2C5E58883}</Project>
       <Name>MonoGame.Framework.Android</Name>
     </ProjectReference>
@@ -72,7 +72,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <AndroidAsset Include="..\..\iOS\SpriteFont\Content\SpriteFont1.xnb">
+    <AndroidAsset Include="Content\SpriteFont1.xnb">
       <Link>Assets\Content\SpriteFont1.xnb</Link>
     </AndroidAsset>
   </ItemGroup>

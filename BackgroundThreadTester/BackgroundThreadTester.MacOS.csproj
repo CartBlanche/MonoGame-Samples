@@ -41,7 +41,7 @@
     <Reference Include="System.Windows.Forms" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Info.plist" />
+    <None Include="Info.plist"></None>
     <None Include="Content\beehive.png" />
     <None Include="README.md" />
   </ItemGroup>

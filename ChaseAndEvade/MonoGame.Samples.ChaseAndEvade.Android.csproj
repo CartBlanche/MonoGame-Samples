@@ -49,27 +49,27 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Activity1.cs" />
-    <Compile Include="..\..\iOS\ChaseAndEvade\ChaseAndEvadeGame.cs">
+    <Compile Include="ChaseAndEvadeGame.cs">
       <Link>ChaseAndEvadeGame.cs</Link>
     </Compile>
     <Compile Include="Resources\Resource.Designer.cs" />
   </ItemGroup>
   <ItemGroup>
-    <AndroidAsset Include="..\..\iOS\ChaseAndEvade\Content\Arial.xnb">
+    <AndroidAsset Include="Content\Arial.xnb">
       <Link>Assets\Content\Arial.xnb</Link>
     </AndroidAsset>
-    <AndroidAsset Include="..\..\iOS\ChaseAndEvade\Content\cat.png">
+    <AndroidAsset Include="Content\cat.png">
       <Link>Assets\Content\Cat.png</Link>
     </AndroidAsset>
-    <AndroidAsset Include="..\..\iOS\ChaseAndEvade\Content\mouse.png">
+    <AndroidAsset Include="Content\mouse.png">
       <Link>Assets\Content\Mouse.png</Link>
     </AndroidAsset>
-    <AndroidAsset Include="..\..\iOS\ChaseAndEvade\Content\tank.png">
+    <AndroidAsset Include="Content\tank.png">
       <Link>Assets\Content\Tank.png</Link>
     </AndroidAsset>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\MonoGame.Framework\MonoGame.Framework.Android.csproj">
+    <ProjectReference Include="..\..\MonoGame.Framework\MonoGame.Framework.Android.csproj">
       <Project>{BA9476CF-99BA-4D03-92F2-73D2C5E58883}</Project>
       <Name>MonoGame.Framework.Android</Name>
     </ProjectReference>

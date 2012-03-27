@@ -38,11 +38,11 @@
     <Reference Include="MonoMac" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Info.plist" />
+    <None Include="Info.plist">
+    </None>
     <None Include="Game.ico" />
     <None Include="GameThumbnail.png" />
     <None Include="Content\.DS_Store" />
-    <None Include="Content\One Step Beyond.wma" />
     <None Include="Content\Thumbs.db" />
     <None Include="Content\Audio\wav\asteroid_touch.wav" />
     <None Include="Content\Audio\wav\explosion_large.wav" />
@@ -153,10 +153,6 @@
     <Compile Include="BloomPostprocess\BloomComponent.cs" />
     <Compile Include="BloomPostprocess\BloomSettings.cs" />
     <Compile Include="Program.cs" />
-    <Compile Include="Effects\CloudsEffect.cs" />
-    <Compile Include="Effects\BloomCombineEffect.cs" />
-    <Compile Include="Effects\BloomExtractEffect.cs" />
-    <Compile Include="Effects\GaussianBlurEffect.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\Fonts\MenuFont.xnb" />
@@ -225,9 +221,7 @@
     <Content Include="Content\BloomPostprocess\Effects\BloomCombine.fsh" />
     <Content Include="Content\BloomPostprocess\Effects\BloomExtract.fsh" />
     <Content Include="Content\BloomPostprocess\Effects\GaussianBlur.fsh" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Effects\" />
+    <Content Include="Content\One Step Beyond.wma" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\MonoGame.Framework\MonoGame.Framework.MacOS.csproj">

@@ -65,7 +65,7 @@
       <Project>{565129E0-4EE5-4F6F-B403-C3484C9740BE}</Project>
       <Name>Lidgren.Network.Android</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\MonoGame.Framework\MonoGame.Framework.Android.csproj">
+    <ProjectReference Include="..\..\MonoGame.Framework\MonoGame.Framework.Android.csproj">
       <Project>{BA9476CF-99BA-4D03-92F2-73D2C5E58883}</Project>
       <Name>MonoGame.Framework.Android</Name>
     </ProjectReference>
@@ -77,7 +77,7 @@
     <None Include="Properties\AndroidManifest.xml" />
   </ItemGroup>
   <ItemGroup>
-    <AndroidAsset Include="..\..\iOS\Draw2D\Content\spriteFont1.xnb">
+    <AndroidAsset Include="Content\spriteFont1.xnb">
       <Link>Assets\Content\spriteFont1.xnb</Link>
     </AndroidAsset>
   </ItemGroup>

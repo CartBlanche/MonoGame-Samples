@@ -48,7 +48,7 @@
     <Compile Include="Activity1.cs" />
     <Compile Include="Resources\Resource.designer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="..\..\MacOS\VideoPlayer\Game1.cs">
+    <Compile Include="Game1.cs">
       <Link>Game1.cs</Link>
     </Compile>
   </ItemGroup>
@@ -65,7 +65,7 @@
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Novell\Novell.MonoDroid.CSharp.targets" />
   <ItemGroup>
-    <AndroidAsset Include="..\..\MacOS\VideoPlayer\Content\spriteFont1.xnb">
+    <AndroidAsset Include="Content\spriteFont1.xnb">
       <Link>Assets\Content\spriteFont1.xnb</Link>
     </AndroidAsset>
     <AndroidAsset Include="Assets\Content\sintel_trailer.mp4">
@@ -73,7 +73,7 @@
     </AndroidAsset>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\MonoGame.Framework\MonoGame.Framework.Android.csproj">
+    <ProjectReference Include="..\..\MonoGame.Framework\MonoGame.Framework.Android.csproj">
       <Project>{BA9476CF-99BA-4D03-92F2-73D2C5E58883}</Project>
       <Name>MonoGame.Framework.Android</Name>
     </ProjectReference>

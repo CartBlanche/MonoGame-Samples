@@ -36,7 +36,11 @@ namespace Microsoft.Xna.Samples.Draw2D
 			Content.RootDirectory = "Content";
 			
 			graphics.PreferMultiSampling = true;
+#if ANDROID || IPHONE
 			graphics.IsFullScreen = true;
+#else
+			graphics.IsFullScreen = false;
+#endif
 			
 			graphics.PreferredBackBufferHeight = 480;
 			graphics.PreferredBackBufferWidth = 320;

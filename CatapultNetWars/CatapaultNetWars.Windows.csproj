@@ -44,103 +44,103 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="..\..\MacOS\CatapultNetWars\CatapultGame.cs">
+    <Compile Include="CatapultGame.cs">
       <Link>CatapultGame.cs</Link>
     </Compile>
-    <Compile Include="..\..\MacOS\CatapultNetWars\Utility\Animation.cs">
+    <Compile Include="Utility\Animation.cs">
       <Link>Utility\Animation.cs</Link>
     </Compile>
-    <Compile Include="..\..\MacOS\CatapultNetWars\Utility\AudioManager.cs">
+    <Compile Include="Utility\AudioManager.cs">
       <Link>Utility\AudioManager.cs</Link>
     </Compile>
-    <Compile Include="..\..\MacOS\CatapultNetWars\Screens\BackgroundScreen.cs">
+    <Compile Include="Screens\BackgroundScreen.cs">
       <Link>Screens\BackgroundScreen.cs</Link>
     </Compile>
-    <Compile Include="..\..\MacOS\CatapultNetWars\Screens\GameplayScreen.cs">
+    <Compile Include="Screens\GameplayScreen.cs">
       <Link>Screens\GameplayScreen.cs</Link>
     </Compile>
-    <Compile Include="..\..\MacOS\CatapultNetWars\Screens\InstructionsScreen.cs">
+    <Compile Include="Screens\InstructionsScreen.cs">
       <Link>Screens\InstructionsScreen.cs</Link>
     </Compile>
-    <Compile Include="..\..\MacOS\CatapultNetWars\Screens\LoadingScreen.cs">
+    <Compile Include="Screens\LoadingScreen.cs">
       <Link>Screens\LoadingScreen.cs</Link>
     </Compile>
-    <Compile Include="..\..\MacOS\CatapultNetWars\Screens\MainMenuScreen.cs">
+    <Compile Include="Screens\MainMenuScreen.cs">
       <Link>Screens\MainMenuScreen.cs</Link>
     </Compile>
-    <Compile Include="..\..\MacOS\CatapultNetWars\Screens\MessageBoxScreen.cs">
+    <Compile Include="Screens\MessageBoxScreen.cs">
       <Link>Screens\MessageBoxScreen.cs</Link>
     </Compile>
-    <Compile Include="..\..\MacOS\CatapultNetWars\Screens\PauseScreen.cs">
+    <Compile Include="Screens\PauseScreen.cs">
       <Link>Screens\PauseScreen.cs</Link>
     </Compile>
-    <Compile Include="..\..\MacOS\CatapultNetWars\ScreenManager\GameScreen.cs">
+    <Compile Include="ScreenManager\GameScreen.cs">
       <Link>ScreenManager\GameScreen.cs</Link>
     </Compile>
-    <Compile Include="..\..\MacOS\CatapultNetWars\ScreenManager\InputState.cs">
+    <Compile Include="ScreenManager\InputState.cs">
       <Link>ScreenManager\InputState.cs</Link>
     </Compile>
-    <Compile Include="..\..\MacOS\CatapultNetWars\ScreenManager\MenuEntry.cs">
+    <Compile Include="ScreenManager\MenuEntry.cs">
       <Link>ScreenManager\MenuEntry.cs</Link>
     </Compile>
-    <Compile Include="..\..\MacOS\CatapultNetWars\ScreenManager\MenuScreen.cs">
+    <Compile Include="ScreenManager\MenuScreen.cs">
       <Link>ScreenManager\MenuScreen.cs</Link>
     </Compile>
-    <Compile Include="..\..\MacOS\CatapultNetWars\ScreenManager\MouseGestureType.cs">
+    <Compile Include="ScreenManager\MouseGestureType.cs">
       <Link>ScreenManager\MouseGestureType.cs</Link>
     </Compile>
-    <Compile Include="..\..\MacOS\CatapultNetWars\ScreenManager\PlayerIndexEventArgs.cs">
+    <Compile Include="ScreenManager\PlayerIndexEventArgs.cs">
       <Link>ScreenManager\PlayerIndexEventArgs.cs</Link>
     </Compile>
-    <Compile Include="..\..\MacOS\CatapultNetWars\ScreenManager\ScreenManager.cs">
+    <Compile Include="ScreenManager\ScreenManager.cs">
       <Link>ScreenManager\ScreenManager.cs</Link>
     </Compile>
-    <Compile Include="..\..\MacOS\CatapultNetWars\Players\AI.cs">
+    <Compile Include="Players\AI.cs">
       <Link>Players\AI.cs</Link>
     </Compile>
-    <Compile Include="..\..\MacOS\CatapultNetWars\Players\Human.cs">
+    <Compile Include="Players\Human.cs">
       <Link>Players\Human.cs</Link>
     </Compile>
-    <Compile Include="..\..\MacOS\CatapultNetWars\Players\Player.cs">
+    <Compile Include="Players\Player.cs">
       <Link>Players\Player.cs</Link>
     </Compile>
-    <Compile Include="..\..\MacOS\CatapultNetWars\Networking\AvailableSessionMenuEntry.cs">
+    <Compile Include="Networking\AvailableSessionMenuEntry.cs">
       <Link>Networking\AvailableSessionMenuEntry.cs</Link>
     </Compile>
-    <Compile Include="..\..\MacOS\CatapultNetWars\Networking\CreateOrFindSessionScreen.cs">
+    <Compile Include="Networking\CreateOrFindSessionScreen.cs">
       <Link>Networking\CreateOrFindSessionScreen.cs</Link>
     </Compile>
-    <Compile Include="..\..\MacOS\CatapultNetWars\Networking\JoinSessionScreen.cs">
+    <Compile Include="Networking\JoinSessionScreen.cs">
       <Link>Networking\JoinSessionScreen.cs</Link>
     </Compile>
-    <Compile Include="..\..\MacOS\CatapultNetWars\Networking\LobbyScreen.cs">
+    <Compile Include="Networking\LobbyScreen.cs">
       <Link>Networking\LobbyScreen.cs</Link>
     </Compile>
-    <Compile Include="..\..\MacOS\CatapultNetWars\Networking\NetworkBusyScreen.cs">
+    <Compile Include="Networking\NetworkBusyScreen.cs">
       <Link>Networking\NetworkBusyScreen.cs</Link>
     </Compile>
-    <Compile Include="..\..\MacOS\CatapultNetWars\Networking\NetworkErrorScreen.cs">
+    <Compile Include="Networking\NetworkErrorScreen.cs">
       <Link>Networking\NetworkErrorScreen.cs</Link>
     </Compile>
-    <Compile Include="..\..\MacOS\CatapultNetWars\Networking\NetworkSessionComponent.cs">
+    <Compile Include="Networking\NetworkSessionComponent.cs">
       <Link>Networking\NetworkSessionComponent.cs</Link>
     </Compile>
-    <Compile Include="..\..\MacOS\CatapultNetWars\Networking\OperationCompletedEventArgs.cs">
+    <Compile Include="Networking\OperationCompletedEventArgs.cs">
       <Link>Networking\OperationCompletedEventArgs.cs</Link>
     </Compile>
-    <Compile Include="..\..\MacOS\CatapultNetWars\Networking\ProfileSignInScreen.cs">
+    <Compile Include="Networking\ProfileSignInScreen.cs">
       <Link>Networking\ProfileSignInScreen.cs</Link>
     </Compile>
-    <Compile Include="..\..\MacOS\CatapultNetWars\Catapult\Catapult.cs">
+    <Compile Include="Catapult\Catapult.cs">
       <Link>Catapult\Catapult.cs</Link>
     </Compile>
-    <Compile Include="..\..\MacOS\CatapultNetWars\Catapult\Projectile.cs">
+    <Compile Include="Catapult\Projectile.cs">
       <Link>Catapult\Projectile.cs</Link>
     </Compile>
-    <Compile Include="..\..\MacOS\CatapultNetWars\IMessageDisplay.cs">
+    <Compile Include="IMessageDisplay.cs">
       <Link>IMessageDisplay.cs</Link>
     </Compile>
-    <Compile Include="..\..\MacOS\CatapultNetWars\MessageDisplayComponent.cs">
+    <Compile Include="MessageDisplayComponent.cs">
       <Link>MessageDisplayComponent.cs</Link>
     </Compile>
     <Compile Include="Program.cs" />
@@ -161,129 +161,129 @@
     </ProjectReference>
   </ItemGroup>
  <ItemGroup>
-    <Content Include="..\..\MacOS\CatapultNetWars\Content\Fonts\HUDFont.xnb">
+    <Content Include="Content\Fonts\HUDFont.xnb">
       <Link>Content\Fonts\HUDFont.xnb</Link><CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="..\..\MacOS\CatapultNetWars\Content\Fonts\MenuFont.xnb">
+    <Content Include="Content\Fonts\MenuFont.xnb">
       <Link>Content\Fonts\MenuFont.xnb</Link><CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="..\..\MacOS\CatapaultWars\Content\Sounds\BoulderHit.wav">
+    <Content Include="Content\Sounds\BoulderHit.wav">
       <Link>Content\Sounds\BoulderHit.wav</Link><CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="..\..\MacOS\CatapaultWars\Content\Sounds\CatapultExplosion.wav">
+    <Content Include="Content\Sounds\CatapultExplosion.wav">
       <Link>Content\Sounds\CatapultExplosion.wav</Link><CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="..\..\MacOS\CatapaultWars\Content\Sounds\CatapultFire.wav">
+    <Content Include="Content\Sounds\CatapultFire.wav">
       <Link>Content\Sounds\CatapultFire.wav</Link><CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="..\..\MacOS\CatapaultWars\Content\Sounds\Lose.wav">
+    <Content Include="Content\Sounds\Lose.wav">
       <Link>Content\Sounds\Lose.wav</Link><CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="..\..\MacOS\CatapaultWars\Content\Sounds\RopeStretch.wav">
+    <Content Include="Content\Sounds\RopeStretch.wav">
       <Link>Content\Sounds\RopeStretch.wav</Link><CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="..\..\MacOS\CatapaultWars\Content\Sounds\Win.wav">
+    <Content Include="Content\Sounds\Win.wav">
       <Link>Content\Sounds\Win.wav</Link><CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="..\..\MacOS\CatapultNetWars\Content\Textures\Ammo\rock_ammo.xnb">
+    <Content Include="Content\Textures\Ammo\rock_ammo.xnb">
       <Link>Content\Textures\Ammo\rock_ammo.xnb</Link><CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="..\..\MacOS\CatapultNetWars\Content\Textures\Backgrounds\blank.xnb">
+    <Content Include="Content\Textures\Backgrounds\blank.xnb">
       <Link>Content\Textures\Backgrounds\blank.xnb</Link><CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="..\..\MacOS\CatapultNetWars\Content\Textures\Backgrounds\cloud1.xnb">
+    <Content Include="Content\Textures\Backgrounds\cloud1.xnb">
       <Link>Content\Textures\Backgrounds\cloud1.xnb</Link><CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="..\..\MacOS\CatapultNetWars\Content\Textures\Backgrounds\cloud2.xnb">
+    <Content Include="Content\Textures\Backgrounds\cloud2.xnb">
       <Link>Content\Textures\Backgrounds\cloud2.xnb</Link><CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="..\..\MacOS\CatapultNetWars\Content\Textures\Backgrounds\defeat.xnb">
+    <Content Include="Content\Textures\Backgrounds\defeat.xnb">
       <Link>Content\Textures\Backgrounds\defeat.xnb</Link><CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="..\..\MacOS\CatapultNetWars\Content\Textures\Backgrounds\gameplay_screen.xnb">
+    <Content Include="Content\Textures\Backgrounds\gameplay_screen.xnb">
       <Link>Content\Textures\Backgrounds\gameplay_screen.xnb</Link><CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="..\..\MacOS\CatapultNetWars\Content\Textures\Backgrounds\instructions.xnb">
+    <Content Include="Content\Textures\Backgrounds\instructions.xnb">
       <Link>Content\Textures\Backgrounds\instructions.xnb</Link><CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="..\..\MacOS\CatapultNetWars\Content\Textures\Backgrounds\mountain.xnb">
+    <Content Include="Content\Textures\Backgrounds\mountain.xnb">
       <Link>Content\Textures\Backgrounds\mountain.xnb</Link><CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="..\..\MacOS\CatapultNetWars\Content\Textures\Backgrounds\sky.xnb">
+    <Content Include="Content\Textures\Backgrounds\sky.xnb">
       <Link>Content\Textures\Backgrounds\sky.xnb</Link><CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="..\..\MacOS\CatapultNetWars\Content\Textures\Backgrounds\title_screen.xnb">
+    <Content Include="Content\Textures\Backgrounds\title_screen.xnb">
       <Link>Content\Textures\Backgrounds\title_screen.xnb</Link><CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="..\..\MacOS\CatapultNetWars\Content\Textures\Backgrounds\victory.xnb">
+    <Content Include="Content\Textures\Backgrounds\victory.xnb">
       <Link>Content\Textures\Backgrounds\victory.xnb</Link><CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="..\..\MacOS\CatapultNetWars\Content\Textures\HUD\ammoType.xnb">
+    <Content Include="Content\Textures\HUD\ammoType.xnb">
       <Link>Content\Textures\HUD\ammoType.xnb</Link><CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="..\..\MacOS\CatapultNetWars\Content\Textures\HUD\Arrow.xnb">
+    <Content Include="Content\Textures\HUD\Arrow.xnb">
       <Link>Content\Textures\HUD\Arrow.xnb</Link><CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="..\..\MacOS\CatapultNetWars\Content\Textures\HUD\hudBackground.xnb">
+    <Content Include="Content\Textures\HUD\hudBackground.xnb">
       <Link>Content\Textures\HUD\hudBackground.xnb</Link><CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="..\..\MacOS\CatapultNetWars\Content\Textures\HUD\windArrow.xnb">
+    <Content Include="Content\Textures\HUD\windArrow.xnb">
       <Link>Content\Textures\HUD\windArrow.xnb</Link><CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="..\..\MacOS\CatapultNetWars\Content\Textures\Catapults\AnimationsDef.xml">
+    <Content Include="Content\Textures\Catapults\AnimationsDef.xml">
       <Link>Content\Textures\Catapults\AnimationsDef.xml</Link><CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="..\..\MacOS\CatapultNetWars\Content\Textures\Catapults\Fire_Miss\fire_miss.xnb">
+    <Content Include="Content\Textures\Catapults\Fire_Miss\fire_miss.xnb">
       <Link>Content\Textures\Catapults\Fire_Miss\fire_miss.xnb</Link><CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="..\..\MacOS\CatapultNetWars\Content\Textures\Catapults\Hit_Smoke\smoke.xnb">
+    <Content Include="Content\Textures\Catapults\Hit_Smoke\smoke.xnb">
       <Link>Content\Textures\Catapults\Hit_Smoke\smoke.xnb</Link><CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="..\..\MacOS\CatapultNetWars\Content\Textures\Catapults\Blue\blueDestroyed\blueCatapult_destroyed.xnb">
+    <Content Include="Content\Textures\Catapults\Blue\blueDestroyed\blueCatapult_destroyed.xnb">
       <Link>Content\Textures\Catapults\Blue\blueDestroyed\blueCatapult_destroyed.xnb</Link><CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="..\..\MacOS\CatapultNetWars\Content\Textures\Catapults\Blue\blueFire\blueCatapult_fire.xnb">
+    <Content Include="Content\Textures\Catapults\Blue\blueFire\blueCatapult_fire.xnb">
       <Link>Content\Textures\Catapults\Blue\blueFire\blueCatapult_fire.xnb</Link><CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="..\..\MacOS\CatapultNetWars\Content\Textures\Catapults\Blue\blueIdle\blueIdle.xnb">
+    <Content Include="Content\Textures\Catapults\Blue\blueIdle\blueIdle.xnb">
       <Link>Content\Textures\Catapults\Blue\blueIdle\blueIdle.xnb</Link><CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="..\..\MacOS\CatapultNetWars\Content\Textures\Catapults\Blue\bluePullback\blueCatapult_Pullback.xnb">
+    <Content Include="Content\Textures\Catapults\Blue\bluePullback\blueCatapult_Pullback.xnb">
       <Link>Content\Textures\Catapults\Blue\bluePullback\blueCatapult_Pullback.xnb</Link><CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="..\..\MacOS\CatapultNetWars\Content\Textures\Catapults\Red\redDestroyed\redCatapult_destroyed.xnb">
+    <Content Include="Content\Textures\Catapults\Red\redDestroyed\redCatapult_destroyed.xnb">
       <Link>Content\Textures\Catapults\Red\redDestroyed\redCatapult_destroyed.xnb</Link><CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="..\..\MacOS\CatapultNetWars\Content\Textures\Catapults\Red\redFire\redCatapult_fire.xnb">
+    <Content Include="Content\Textures\Catapults\Red\redFire\redCatapult_fire.xnb">
       <Link>Content\Textures\Catapults\Red\redFire\redCatapult_fire.xnb</Link><CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="..\..\MacOS\CatapultNetWars\Content\Textures\Catapults\Red\redIdle\redIdle.xnb">
+    <Content Include="Content\Textures\Catapults\Red\redIdle\redIdle.xnb">
       <Link>Content\Textures\Catapults\Red\redIdle\redIdle.xnb</Link><CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="..\..\MacOS\CatapultNetWars\Content\Textures\Catapults\Red\redPullback\redCatapult_Pullback.xnb">
+    <Content Include="Content\Textures\Catapults\Red\redPullback\redCatapult_Pullback.xnb">
       <Link>Content\Textures\Catapults\Red\redPullback\redCatapult_Pullback.xnb</Link><CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="..\..\MacOS\CatapultNetWars\Content\cat.xnb">
+    <Content Include="Content\cat.xnb">
       <Link>Content\cat.xnb</Link><CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="..\..\MacOS\CatapultNetWars\Content\chat_able.xnb">
+    <Content Include="Content\chat_able.xnb">
       <Link>Content\chat_able.xnb</Link><CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="..\..\MacOS\CatapultNetWars\Content\chat_mute.xnb">
+    <Content Include="Content\chat_mute.xnb">
       <Link>Content\chat_mute.xnb</Link><CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="..\..\MacOS\CatapultNetWars\Content\chat_ready.xnb">
+    <Content Include="Content\chat_ready.xnb">
       <Link>Content\chat_ready.xnb</Link><CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="..\..\MacOS\CatapultNetWars\Content\chat_talking.xnb">
+    <Content Include="Content\chat_talking.xnb">
       <Link>Content\chat_talking.xnb</Link><CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="..\..\MacOS\CatapultNetWars\Content\gradient.xnb">
+    <Content Include="Content\gradient.xnb">
       <Link>Content\gradient.xnb</Link><CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="..\..\MacOS\\CatapultNetWars\Content\Textures\Catapults\AnimationsDef.xml">
+    <Content Include="Content\Textures\Catapults\AnimationsDef.xml">
       <Link>Content\Textures\Catapults\AnimationsDef.xml</Link><CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>

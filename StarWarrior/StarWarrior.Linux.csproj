@@ -31,109 +31,109 @@
   </PropertyGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
-    <Compile Include="..\..\MacOS\StarWarrior\EntityFactory.cs">
+    <Compile Include="EntityFactory.cs">
       <Link>EntityFactory.cs</Link>
     </Compile>
-    <Compile Include="..\..\MacOS\StarWarrior\Game1.cs">
+    <Compile Include="Game1.cs">
       <Link>Game1.cs</Link>
     </Compile>
-    <Compile Include="..\..\MacOS\StarWarrior\Pool.cs">
+    <Compile Include="Pool.cs">
       <Link>Pool.cs</Link>
     </Compile>
-    <Compile Include="..\..\MacOS\StarWarrior\Components\Enemy.cs">
+    <Compile Include="Components\Enemy.cs">
       <Link>Components\Enemy.cs</Link>
     </Compile>
-    <Compile Include="..\..\MacOS\StarWarrior\Components\Expires.cs">
+    <Compile Include="Components\Expires.cs">
       <Link>Components\Expires.cs</Link>
     </Compile>
-    <Compile Include="..\..\MacOS\StarWarrior\Components\Health.cs">
+    <Compile Include="Components\Health.cs">
       <Link>Components\Health.cs</Link>
     </Compile>
-    <Compile Include="..\..\MacOS\StarWarrior\Components\SpatialForm.cs">
+    <Compile Include="Components\SpatialForm.cs">
       <Link>Components\SpatialForm.cs</Link>
     </Compile>
-    <Compile Include="..\..\MacOS\StarWarrior\Components\Transform.cs">
+    <Compile Include="Components\Transform.cs">
       <Link>Components\Transform.cs</Link>
     </Compile>
-    <Compile Include="..\..\MacOS\StarWarrior\Components\Velocity.cs">
+    <Compile Include="Components\Velocity.cs">
       <Link>Components\Velocity.cs</Link>
     </Compile>
-    <Compile Include="..\..\MacOS\StarWarrior\Components\Weapon.cs">
+    <Compile Include="Components\Weapon.cs">
       <Link>Components\Weapon.cs</Link>
     </Compile>
-    <Compile Include="..\..\MacOS\StarWarrior\Primitives\Lines.cs">
+    <Compile Include="Primitives\Lines.cs">
       <Link>Primitives\Lines.cs</Link>
     </Compile>
-    <Compile Include="..\..\MacOS\StarWarrior\Primitives\PrimitiveBatch.cs">
+    <Compile Include="Primitives\PrimitiveBatch.cs">
       <Link>Primitives\PrimitiveBatch.cs</Link>
     </Compile>
-    <Compile Include="..\..\MacOS\StarWarrior\Primitives\Triangles.cs">
+    <Compile Include="Primitives\Triangles.cs">
       <Link>Primitives\Triangles.cs</Link>
     </Compile>
-    <Compile Include="..\..\MacOS\StarWarrior\Primitives\TrianglesStrip.cs">
+    <Compile Include="Primitives\TrianglesStrip.cs">
       <Link>Primitives\TrianglesStrip.cs</Link>
     </Compile>
-    <Compile Include="..\..\MacOS\StarWarrior\Spatials\EnemyShip.cs">
+    <Compile Include="Spatials\EnemyShip.cs">
       <Link>Spatials\EnemyShip.cs</Link>
     </Compile>
-    <Compile Include="..\..\MacOS\StarWarrior\Spatials\Explosion.cs">
+    <Compile Include="Spatials\Explosion.cs">
       <Link>Spatials\Explosion.cs</Link>
     </Compile>
-    <Compile Include="..\..\MacOS\StarWarrior\Spatials\Missile.cs">
+    <Compile Include="Spatials\Missile.cs">
       <Link>Spatials\Missile.cs</Link>
     </Compile>
-    <Compile Include="..\..\MacOS\StarWarrior\Spatials\PlayerShip.cs">
+    <Compile Include="Spatials\PlayerShip.cs">
       <Link>Spatials\PlayerShip.cs</Link>
     </Compile>
-    <Compile Include="..\..\MacOS\StarWarrior\Spatials\ShipExplosion.cs">
+    <Compile Include="Spatials\ShipExplosion.cs">
       <Link>Spatials\ShipExplosion.cs</Link>
     </Compile>
-    <Compile Include="..\..\MacOS\StarWarrior\Systems\CollisionSystem.cs">
+    <Compile Include="Systems\CollisionSystem.cs">
       <Link>Systems\CollisionSystem.cs</Link>
     </Compile>
-    <Compile Include="..\..\MacOS\StarWarrior\Systems\EnemyShipMovementSystem.cs">
+    <Compile Include="Systems\EnemyShipMovementSystem.cs">
       <Link>Systems\EnemyShipMovementSystem.cs</Link>
     </Compile>
-    <Compile Include="..\..\MacOS\StarWarrior\Systems\EnemyShooterSystem.cs">
+    <Compile Include="Systems\EnemyShooterSystem.cs">
       <Link>Systems\EnemyShooterSystem.cs</Link>
     </Compile>
-    <Compile Include="..\..\MacOS\StarWarrior\Systems\EnemySpawnSystem.cs">
+    <Compile Include="Systems\EnemySpawnSystem.cs">
       <Link>Systems\EnemySpawnSystem.cs</Link>
     </Compile>
-    <Compile Include="..\..\MacOS\StarWarrior\Systems\ExpirationSystem.cs">
+    <Compile Include="Systems\ExpirationSystem.cs">
       <Link>Systems\ExpirationSystem.cs</Link>
     </Compile>
-    <Compile Include="..\..\MacOS\StarWarrior\Systems\HealthBarRenderSystem.cs">
+    <Compile Include="Systems\HealthBarRenderSystem.cs">
       <Link>Systems\HealthBarRenderSystem.cs</Link>
     </Compile>
-    <Compile Include="..\..\MacOS\StarWarrior\Systems\HudRenderSystem.cs">
+    <Compile Include="Systems\HudRenderSystem.cs">
       <Link>Systems\HudRenderSystem.cs</Link>
     </Compile>
-    <Compile Include="..\..\MacOS\StarWarrior\Systems\MovementSystem.cs">
+    <Compile Include="Systems\MovementSystem.cs">
       <Link>Systems\MovementSystem.cs</Link>
     </Compile>
-    <Compile Include="..\..\MacOS\StarWarrior\Systems\PlayerShipControlSystem.cs">
+    <Compile Include="Systems\PlayerShipControlSystem.cs">
       <Link>Systems\PlayerShipControlSystem.cs</Link>
     </Compile>
-    <Compile Include="..\..\MacOS\StarWarrior\Systems\RenderSystem.cs">
+    <Compile Include="Systems\RenderSystem.cs">
       <Link>Systems\RenderSystem.cs</Link>
     </Compile>
     <Compile Include="Program.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\..\MacOS\StarWarrior\Game.ico">
+    <None Include="Game.ico">
       <Link>Game.ico</Link>
     </None>
-    <None Include="..\..\MacOS\StarWarrior\GameThumbnail.png">
+    <None Include="GameThumbnail.png">
       <Link>GameThumbnail.png</Link>
     </None>
-    <None Include="..\..\MacOS\StarWarrior\PhoneGameThumb.png">
+    <None Include="PhoneGameThumb.png">
       <Link>PhoneGameThumb.png</Link>
     </None>
-    <None Include="..\..\MacOS\StarWarrior\Readme.md">
+    <None Include="Readme.md">
       <Link>Readme.md</Link>
     </None>
-    <None Include="..\..\MacOS\StarWarrior\Content\myFont.spritefont">
+    <None Include="Content\myFont.spritefont">
       <Link>Content\myFont.spritefont</Link>
     </None>
   </ItemGroup>
@@ -141,33 +141,33 @@
     <Reference Include="System" />
     <Reference Include="artemis, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\MacOS\StarWarrior\Artemis\PC\artemis.dll</HintPath>
+      <HintPath>Artemis\PC\artemis.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\MonoGame.Framework\MonoGame.Framework.Linux.csproj">
+    <ProjectReference Include="..\..\MonoGame.Framework\MonoGame.Framework.Linux.csproj">
       <Project>{35253CE1-C864-4CD3-8249-4D1319748E8F}</Project>
       <Name>MonoGame.Framework.Linux</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="..\..\MacOS\StarWarrior\Content\Arial.xnb">
+    <Content Include="Content\Arial.xnb">
       <Link>Content\Arial.xnb</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="..\..\MacOS\StarWarrior\Content\bullet.png">
+    <Content Include="Content\bullet.png">
       <Link>Content\bullet.png</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="..\..\MacOS\StarWarrior\Content\enemy.png">
+    <Content Include="Content\enemy.png">
       <Link>Content\enemy.png</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="..\..\MacOS\StarWarrior\Content\explosion.png">
+    <Content Include="Content\explosion.png">
       <Link>Content\explosion.png</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="..\..\MacOS\StarWarrior\Content\player.png">
+    <Content Include="Content\player.png">
       <Link>Content\player.png</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

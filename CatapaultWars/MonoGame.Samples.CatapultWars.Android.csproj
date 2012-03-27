@@ -50,64 +50,64 @@
     <Compile Include="Activity1.cs" />
     <Compile Include="Resources\Resource.designer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="..\..\MacOS\CatapaultWars\CatapultGame.cs">
+    <Compile Include="CatapultGame.cs">
       <Link>CatapultGame.cs</Link>
     </Compile>
-    <Compile Include="..\..\MacOS\CatapaultWars\Catapult\Catapult.cs">
+    <Compile Include="Catapult\Catapult.cs">
       <Link>Catapult\Catapult.cs</Link>
     </Compile>
-    <Compile Include="..\..\MacOS\CatapaultWars\Catapult\Projectile.cs">
+    <Compile Include="Catapult\Projectile.cs">
       <Link>Catapult\Projectile.cs</Link>
     </Compile>
-    <Compile Include="..\..\MacOS\CatapaultWars\Players\AI.cs">
+    <Compile Include="Players\AI.cs">
       <Link>Players\AI.cs</Link>
     </Compile>
-    <Compile Include="..\..\MacOS\CatapaultWars\Players\Human.cs">
+    <Compile Include="Players\Human.cs">
       <Link>Players\Human.cs</Link>
     </Compile>
-    <Compile Include="..\..\MacOS\CatapaultWars\Players\Player.cs">
+    <Compile Include="Players\Player.cs">
       <Link>Players\Player.cs</Link>
     </Compile>
-    <Compile Include="..\..\MacOS\CatapaultWars\ScreenManager\GameScreen.cs">
+    <Compile Include="ScreenManager\GameScreen.cs">
       <Link>ScreenManager\GameScreen.cs</Link>
     </Compile>
-    <Compile Include="..\..\MacOS\CatapaultWars\ScreenManager\InputState.cs">
+    <Compile Include="ScreenManager\InputState.cs">
       <Link>ScreenManager\InputState.cs</Link>
     </Compile>
-    <Compile Include="..\..\MacOS\CatapaultWars\ScreenManager\MenuEntry.cs">
+    <Compile Include="ScreenManager\MenuEntry.cs">
       <Link>ScreenManager\MenuEntry.cs</Link>
     </Compile>
-    <Compile Include="..\..\MacOS\CatapaultWars\ScreenManager\MenuScreen.cs">
+    <Compile Include="ScreenManager\MenuScreen.cs">
       <Link>ScreenManager\MenuScreen.cs</Link>
     </Compile>
-    <Compile Include="..\..\MacOS\CatapaultWars\ScreenManager\MouseGestureType.cs">
+    <Compile Include="ScreenManager\MouseGestureType.cs">
       <Link>ScreenManager\MouseGestureType.cs</Link>
     </Compile>
-    <Compile Include="..\..\MacOS\CatapaultWars\ScreenManager\PlayerIndexEventArgs.cs">
+    <Compile Include="ScreenManager\PlayerIndexEventArgs.cs">
       <Link>ScreenManager\PlayerIndexEventArgs.cs</Link>
     </Compile>
-    <Compile Include="..\..\MacOS\CatapaultWars\ScreenManager\ScreenManager.cs">
+    <Compile Include="ScreenManager\ScreenManager.cs">
       <Link>ScreenManager\ScreenManager.cs</Link>
     </Compile>
-    <Compile Include="..\..\MacOS\CatapaultWars\Screens\BackgroundScreen.cs">
+    <Compile Include="Screens\BackgroundScreen.cs">
       <Link>Screens\BackgroundScreen.cs</Link>
     </Compile>
-    <Compile Include="..\..\MacOS\CatapaultWars\Screens\GameplayScreen.cs">
+    <Compile Include="Screens\GameplayScreen.cs">
       <Link>Screens\GameplayScreen.cs</Link>
     </Compile>
-    <Compile Include="..\..\MacOS\CatapaultWars\Screens\InstructionsScreen.cs">
+    <Compile Include="Screens\InstructionsScreen.cs">
       <Link>Screens\InstructionsScreen.cs</Link>
     </Compile>
-    <Compile Include="..\..\MacOS\CatapaultWars\Screens\MainMenuScreen.cs">
+    <Compile Include="Screens\MainMenuScreen.cs">
       <Link>Screens\MainMenuScreen.cs</Link>
     </Compile>
-    <Compile Include="..\..\MacOS\CatapaultWars\Screens\PauseScreen.cs">
+    <Compile Include="Screens\PauseScreen.cs">
       <Link>Screens\PauseScreen.cs</Link>
     </Compile>
-    <Compile Include="..\..\MacOS\CatapaultWars\Utility\Animation.cs">
+    <Compile Include="Utility\Animation.cs">
       <Link>Utility\Animation.cs</Link>
     </Compile>
-    <Compile Include="..\..\MacOS\CatapaultWars\Utility\AudioManager.cs">
+    <Compile Include="Utility\AudioManager.cs">
       <Link>Utility\AudioManager.cs</Link>
     </Compile>
   </ItemGroup>
@@ -126,7 +126,7 @@
       <Project>{565129E0-4EE5-4F6F-B403-C3484C9740BE}</Project>
       <Name>Lidgren.Network.Android</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\MonoGame.Framework\MonoGame.Framework.Android.csproj">
+    <ProjectReference Include="..\..\MonoGame.Framework\MonoGame.Framework.Android.csproj">
       <Project>{BA9476CF-99BA-4D03-92F2-73D2C5E58883}</Project>
       <Name>MonoGame.Framework.Android</Name>
     </ProjectReference>
@@ -159,133 +159,133 @@
     <Folder Include="Assets\Content\Textures\Catapults\Red\redPullback\" />
   </ItemGroup>
   <ItemGroup>
-    <AndroidAsset Include="..\..\MacOS\CatapaultWars\Content\Fonts\HUDFont.xnb">
+    <AndroidAsset Include="Content\Fonts\HUDFont.xnb">
       <Link>Assets\Content\Fonts\HUDFont.xnb</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </AndroidAsset>
-    <AndroidAsset Include="..\..\MacOS\CatapaultWars\Content\Fonts\MenuFont.xnb">
+    <AndroidAsset Include="Content\Fonts\MenuFont.xnb">
       <Link>Assets\Content\Fonts\MenuFont.xnb</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </AndroidAsset>
-    <AndroidAsset Include="..\..\MacOS\CatapaultWars\Content\Textures\Ammo\rock_ammo.xnb">
+    <AndroidAsset Include="Content\Textures\Ammo\rock_ammo.xnb">
       <Link>Assets\Content\Textures\Ammo\rock_ammo.xnb</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </AndroidAsset>
-    <AndroidAsset Include="..\..\MacOS\CatapaultWars\Content\Textures\Backgrounds\blank.xnb">
+    <AndroidAsset Include="Content\Textures\Backgrounds\blank.xnb">
       <Link>Assets\Content\Textures\Backgrounds\blank.xnb</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </AndroidAsset>
-    <AndroidAsset Include="..\..\MacOS\CatapaultWars\Content\Textures\Backgrounds\cloud1.xnb">
+    <AndroidAsset Include="Content\Textures\Backgrounds\cloud1.xnb">
       <Link>Assets\Content\Textures\Backgrounds\cloud1.xnb</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </AndroidAsset>
-    <AndroidAsset Include="..\..\MacOS\CatapaultWars\Content\Textures\Backgrounds\cloud2.xnb">
+    <AndroidAsset Include="Content\Textures\Backgrounds\cloud2.xnb">
       <Link>Assets\Content\Textures\Backgrounds\cloud2.xnb</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </AndroidAsset>
-    <AndroidAsset Include="..\..\MacOS\CatapaultWars\Content\Textures\Backgrounds\defeat.xnb">
+    <AndroidAsset Include="Content\Textures\Backgrounds\defeat.xnb">
       <Link>Assets\Content\Textures\Backgrounds\defeat.xnb</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </AndroidAsset>
-    <AndroidAsset Include="..\..\MacOS\CatapaultWars\Content\Textures\Backgrounds\gameplay_screen.xnb">
+    <AndroidAsset Include="Content\Textures\Backgrounds\gameplay_screen.xnb">
       <Link>Assets\Content\Textures\Backgrounds\gameplay_screen.xnb</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </AndroidAsset>
-    <AndroidAsset Include="..\..\MacOS\CatapaultWars\Content\Textures\Backgrounds\instructions.xnb">
+    <AndroidAsset Include="Content\Textures\Backgrounds\instructions.xnb">
       <Link>Assets\Content\Textures\Backgrounds\instructions.xnb</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </AndroidAsset>
-    <AndroidAsset Include="..\..\MacOS\CatapaultWars\Content\Textures\Backgrounds\mountain.xnb">
+    <AndroidAsset Include="Content\Textures\Backgrounds\mountain.xnb">
       <Link>Assets\Content\Textures\Backgrounds\mountain.xnb</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </AndroidAsset>
-    <AndroidAsset Include="..\..\MacOS\CatapaultWars\Content\Textures\Backgrounds\sky.xnb">
+    <AndroidAsset Include="Content\Textures\Backgrounds\sky.xnb">
       <Link>Assets\Content\Textures\Backgrounds\sky.xnb</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </AndroidAsset>
-    <AndroidAsset Include="..\..\MacOS\CatapaultWars\Content\Textures\Backgrounds\title_screen.xnb">
+    <AndroidAsset Include="Content\Textures\Backgrounds\title_screen.xnb">
       <Link>Assets\Content\Textures\Backgrounds\title_screen.xnb</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </AndroidAsset>
-    <AndroidAsset Include="..\..\MacOS\CatapaultWars\Content\Textures\Backgrounds\victory.xnb">
+    <AndroidAsset Include="Content\Textures\Backgrounds\victory.xnb">
       <Link>Assets\Content\Textures\Backgrounds\victory.xnb</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </AndroidAsset>
-    <AndroidAsset Include="..\..\MacOS\CatapaultWars\Content\Textures\HUD\ammoType.xnb">
+    <AndroidAsset Include="Content\Textures\HUD\ammoType.xnb">
       <Link>Assets\Content\Textures\HUD\ammoType.xnb</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </AndroidAsset>
-    <AndroidAsset Include="..\..\MacOS\CatapaultWars\Content\Textures\HUD\Arrow.xnb">
+    <AndroidAsset Include="Content\Textures\HUD\Arrow.xnb">
       <Link>Assets\Content\Textures\HUD\Arrow.xnb</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </AndroidAsset>
-    <AndroidAsset Include="..\..\MacOS\CatapaultWars\Content\Textures\HUD\hudBackground.xnb">
+    <AndroidAsset Include="Content\Textures\HUD\hudBackground.xnb">
       <Link>Assets\Content\Textures\HUD\hudBackground.xnb</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </AndroidAsset>
-    <AndroidAsset Include="..\..\MacOS\CatapaultWars\Content\Textures\HUD\windArrow.xnb">
+    <AndroidAsset Include="Content\Textures\HUD\windArrow.xnb">
       <Link>Assets\Content\Textures\HUD\windArrow.xnb</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </AndroidAsset>
-    <AndroidAsset Include="..\..\MacOS\CatapaultWars\Content\Textures\Catapults\AnimationsDef.xml">
+    <AndroidAsset Include="Content\Textures\Catapults\AnimationsDef.xml">
       <Link>Assets\Content\Textures\Catapults\AnimationsDef.xml</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </AndroidAsset>
-    <AndroidAsset Include="..\..\MacOS\CatapaultWars\Content\Textures\Catapults\Blue\blueDestroyed\blueCatapult_destroyed.xnb">
+    <AndroidAsset Include="Content\Textures\Catapults\Blue\blueDestroyed\blueCatapult_destroyed.xnb">
       <Link>Assets\Content\Textures\Catapults\Blue\blueDestroyed\blueCatapult_destroyed.xnb</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </AndroidAsset>
-    <AndroidAsset Include="..\..\MacOS\CatapaultWars\Content\Textures\Catapults\Blue\blueFire\blueCatapult_fire.xnb">
+    <AndroidAsset Include="Content\Textures\Catapults\Blue\blueFire\blueCatapult_fire.xnb">
       <Link>Assets\Content\Textures\Catapults\Blue\blueFire\blueCatapult_fire.xnb</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </AndroidAsset>
-    <AndroidAsset Include="..\..\MacOS\CatapaultWars\Content\Textures\Catapults\Blue\blueIdle\blueIdle.xnb">
+    <AndroidAsset Include="Content\Textures\Catapults\Blue\blueIdle\blueIdle.xnb">
       <Link>Assets\Content\Textures\Catapults\Blue\blueIdle\blueIdle.xnb</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </AndroidAsset>
-    <AndroidAsset Include="..\..\MacOS\CatapaultWars\Content\Textures\Catapults\Blue\bluePullback\blueCatapult_Pullback.xnb">
+    <AndroidAsset Include="Content\Textures\Catapults\Blue\bluePullback\blueCatapult_Pullback.xnb">
       <Link>Assets\Content\Textures\Catapults\Blue\bluePullback\blueCatapult_Pullback.xnb</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </AndroidAsset>
-    <AndroidAsset Include="..\..\MacOS\CatapaultWars\Content\Textures\Catapults\Red\redDestroyed\redCatapult_destroyed.xnb">
+    <AndroidAsset Include="Content\Textures\Catapults\Red\redDestroyed\redCatapult_destroyed.xnb">
       <Link>Assets\Content\Textures\Catapults\Red\redDestroyed\redCatapult_destroyed.xnb</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </AndroidAsset>
-    <AndroidAsset Include="..\..\MacOS\CatapaultWars\Content\Textures\Catapults\Red\redFire\redCatapult_fire.xnb">
+    <AndroidAsset Include="Content\Textures\Catapults\Red\redFire\redCatapult_fire.xnb">
       <Link>Assets\Content\Textures\Catapults\Red\redFire\redCatapult_fire.xnb</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </AndroidAsset>
-    <AndroidAsset Include="..\..\MacOS\CatapaultWars\Content\Textures\Catapults\Red\redIdle\redIdle.xnb">
+    <AndroidAsset Include="Content\Textures\Catapults\Red\redIdle\redIdle.xnb">
       <Link>Assets\Content\Textures\Catapults\Red\redIdle\redIdle.xnb</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </AndroidAsset>
-    <AndroidAsset Include="..\..\MacOS\CatapaultWars\Content\Textures\Catapults\Red\redPullback\redCatapult_Pullback.xnb">
+    <AndroidAsset Include="Content\Textures\Catapults\Red\redPullback\redCatapult_Pullback.xnb">
       <Link>Assets\Content\Textures\Catapults\Red\redPullback\redCatapult_Pullback.xnb</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </AndroidAsset>
-    <AndroidAsset Include="..\..\MacOS\CatapaultWars\Content\Sounds\BoulderHit.wav">
+    <AndroidAsset Include="Content\Sounds\BoulderHit.wav">
       <Link>Assets\Content\Sounds\BoulderHit.wav</Link>
     </AndroidAsset>
-    <AndroidAsset Include="..\..\MacOS\CatapaultWars\Content\Sounds\CatapultExplosion.wav">
+    <AndroidAsset Include="Content\Sounds\CatapultExplosion.wav">
       <Link>Assets\Content\Sounds\CatapultExplosion.wav</Link>
     </AndroidAsset>
-    <AndroidAsset Include="..\..\MacOS\CatapaultWars\Content\Sounds\CatapultFire.wav">
+    <AndroidAsset Include="Content\Sounds\CatapultFire.wav">
       <Link>Assets\Content\Sounds\CatapultFire.wav</Link>
     </AndroidAsset>
-    <AndroidAsset Include="..\..\MacOS\CatapaultWars\Content\Sounds\Lose.wav">
+    <AndroidAsset Include="Content\Sounds\Lose.wav">
       <Link>Assets\Content\Sounds\Lose.wav</Link>
     </AndroidAsset>
-    <AndroidAsset Include="..\..\MacOS\CatapaultWars\Content\Sounds\RopeStretch.wav">
+    <AndroidAsset Include="Content\Sounds\RopeStretch.wav">
       <Link>Assets\Content\Sounds\RopeStretch.wav</Link>
     </AndroidAsset>
-    <AndroidAsset Include="..\..\MacOS\CatapaultWars\Content\Sounds\Win.wav">
+    <AndroidAsset Include="Content\Sounds\Win.wav">
       <Link>Assets\Content\Sounds\Win.wav</Link>
     </AndroidAsset>
-    <AndroidAsset Include="..\..\MacOS\CatapaultWars\Content\Textures\Catapults\Fire_Miss\fire_miss.xnb">
+    <AndroidAsset Include="Content\Textures\Catapults\Fire_Miss\fire_miss.xnb">
       <Link>Assets\Content\Textures\Catapults\Fire_Miss\fire_miss.xnb</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </AndroidAsset>
-    <AndroidAsset Include="..\..\MacOS\CatapaultWars\Content\Textures\Catapults\Hit_Smoke\smoke.xnb">
+    <AndroidAsset Include="Content\Textures\Catapults\Hit_Smoke\smoke.xnb">
       <Link>Assets\Content\Textures\Catapults\Hit_Smoke\smoke.xnb</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </AndroidAsset>

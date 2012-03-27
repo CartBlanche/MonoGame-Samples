@@ -63,20 +63,20 @@
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
-    <ProjectReference Include="..\..\..\MonoGame.Framework\MonoGame.Framework.iOS.csproj">
+    <ProjectReference Include="..\..\MonoGame.Framework\MonoGame.Framework.iOS.csproj">
       <Project>{DB8508BB-9849-4CC2-BC0F-8EB5DACB3C47}</Project>
       <Name>MonoGame.Framework.iOS</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Info.plist" />
+    <None Include="Info.iOS.plist"><Link>Info.plist</Link></None>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Program.cs" />
-    <Compile Include="..\..\MacOS\Peer2PeerSample\PeerToPeerGame.cs">
+    <Compile Include="PeerToPeerGame.cs">
       <Link>PeerToPeerGame.cs</Link>
     </Compile>
-    <Compile Include="..\..\MacOS\Peer2PeerSample\Tank.cs">
+    <Compile Include="Tank.cs">
       <Link>Tank.cs</Link>
     </Compile>
   </ItemGroup>
@@ -84,13 +84,13 @@
     <Content Include="Content\gamepad.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="..\..\MacOS\Peer2PeerSample\Content\Tank.xnb">
+    <Content Include="Content\Tank.xnb">
       <Link>Content\Tank.xnb</Link>
     </Content>
-    <Content Include="..\..\MacOS\Peer2PeerSample\Content\Font.xnb">
+    <Content Include="Content\Font.xnb">
       <Link>Content\Font.xnb</Link>
     </Content>
-    <Content Include="..\..\MacOS\Peer2PeerSample\Content\Turret.xnb">
+    <Content Include="Content\Turret.xnb">
       <Link>Content\Turret.xnb</Link>
     </Content>
   </ItemGroup>

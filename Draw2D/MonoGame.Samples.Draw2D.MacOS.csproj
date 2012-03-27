@@ -71,8 +71,8 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Info.MacOS.plist">
-      <Link>Info.plist</Link>
+    <None Include="Info.plist">
+      
     </None>
   </ItemGroup>
 </Project>

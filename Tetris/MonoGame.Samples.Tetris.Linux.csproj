@@ -40,34 +40,34 @@
     <Reference Include="System.Drawing" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\..\MacOS\Tetris\Content\font.spritefont">
+    <None Include="Content\font.spritefont">
       <Link>Content\font.spritefont</Link>
     </None>
-    <None Include="..\..\MacOS\Tetris\Content\Content.contentproj">
+    <None Include="Content\Content.contentproj">
       <Link>Content\Content.contentproj</Link>
     </None>
-    <None Include="..\..\MacOS\Tetris\Content\background.psd">
+    <None Include="Content\background.psd">
       <Link>Content\background.psd</Link>
     </None>
-    <None Include="..\..\MacOS\Tetris\Info.plist">
+    <None Include="Info.plist">
       <Link>Info.plist</Link>
     </None>
-    <None Include="..\..\MacOS\Tetris\GameThumbnail.png">
+    <None Include="GameThumbnail.png">
       <Link>GameThumbnail.png</Link>
     </None>
-    <None Include="..\..\MacOS\Tetris\Game.ico">
+    <None Include="Game.ico">
       <Link>Game.ico</Link>
     </None>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Program.cs" />
-    <Compile Include="..\..\MacOS\Tetris\Score.cs">
+    <Compile Include="Score.cs">
       <Link>Score.cs</Link>
     </Compile>
-    <Compile Include="..\..\MacOS\Tetris\Record.cs">
+    <Compile Include="Record.cs">
       <Link>Record.cs</Link>
     </Compile>
-    <Compile Include="..\..\MacOS\Tetris\Board.cs">
+    <Compile Include="Board.cs">
       <Link>Board.cs</Link>
     </Compile>
     <Compile Include="Engine.cs" />
@@ -76,25 +76,25 @@
     <Folder Include="Content\" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\MonoGame.Framework\MonoGame.Framework.Linux.csproj">
+    <ProjectReference Include="..\..\MonoGame.Framework\MonoGame.Framework.Linux.csproj">
       <Project>{35253CE1-C864-4CD3-8249-4D1319748E8F}</Project>
       <Name>MonoGame.Framework.Linux</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="..\..\MacOS\Tetris\Content\Arial.xnb">
+    <Content Include="Content\Arial.xnb">
       <Link>Content\Arial.xnb</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="..\..\MacOS\Tetris\Content\background.png">
+    <Content Include="Content\background.png">
       <Link>Content\background.png</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="..\..\MacOS\Tetris\Content\tetris.png">
+    <Content Include="Content\tetris.png">
       <Link>Content\tetris.png</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="..\..\MacOS\Tetris\Content\score.png">
+    <Content Include="Content\score.png">
       <Link>Content\score.png</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

@@ -62,33 +62,33 @@
     <Reference Include="monotouch" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Info.plist" />
-    <None Include="..\..\MacOS\RenderTarget2DSample\Background.png">
+    <None Include="Info.iOS.plist"><Link>Info.plist</Link></None>
+    <None Include="Background.png">
       <Link>Background.png</Link>
     </None>
-    <None Include="..\..\MacOS\RenderTarget2DSample\GameThumbnail.png">
+    <None Include="GameThumbnail.png">
       <Link>GameThumbnail.png</Link>
     </None>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Main.cs" />
-    <Compile Include="..\..\MacOS\RenderTarget2DSample\Game1.cs">
+    <Compile Include="Game1.cs">
       <Link>Game1.cs</Link>
     </Compile>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
-    <ProjectReference Include="..\..\..\MonoGame.Framework\MonoGame.Framework.iOS.csproj">
+    <ProjectReference Include="..\..\MonoGame.Framework\MonoGame.Framework.iOS.csproj">
       <Project>{DB8508BB-9849-4CC2-BC0F-8EB5DACB3C47}</Project>
       <Name>MonoGame.Framework.iOS</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="..\..\MacOS\RenderTarget2DSample\Content\MooTheMerciless.xnb">
+    <Content Include="Content\MooTheMerciless.xnb">
       <Link>Content\MooTheMerciless.xnb</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="..\..\MacOS\RenderTarget2DSample\Content\wood.xnb">
+    <Content Include="Content\wood.xnb">
       <Link>Content\wood.xnb</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

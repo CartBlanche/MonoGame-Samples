@@ -38,7 +38,7 @@
     <Reference Include="MonoMac" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Info.plist" />
+    <None Include="Info.plist"></None>
     <None Include="Content\Font.spritefont" />
     <None Include="Content\Tank.tga" />
     <None Include="Content\Turret.tga" />

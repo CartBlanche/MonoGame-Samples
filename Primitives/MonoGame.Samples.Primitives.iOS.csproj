@@ -60,28 +60,28 @@
     <Reference Include="monotouch" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Info.plist" />
-    <None Include="..\..\MacOS\Primitives\Game.ico">
+    <None Include="Info.iOS.plist"><Link>Info.plist</Link></None>
+    <None Include="Game.ico">
       <Link>Game.ico</Link>
     </None>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
     <Compile Include="Program.cs" />
-    <Compile Include="..\..\MacOS\Primitives\PrimitiveBatch.cs">
+    <Compile Include="PrimitiveBatch.cs">
       <Link>PrimitiveBatch.cs</Link>
     </Compile>
-    <Compile Include="..\..\MacOS\Primitives\PrimitivesSampleGame.cs">
+    <Compile Include="PrimitivesSampleGame.cs">
       <Link>PrimitivesSampleGame.cs</Link>
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="..\..\MacOS\Primitives\GameThumbnail.png">
+    <Content Include="GameThumbnail.png">
       <Link>GameThumbnail.png</Link>
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\MonoGame.Framework\MonoGame.Framework.iOS.csproj">
+    <ProjectReference Include="..\..\MonoGame.Framework\MonoGame.Framework.iOS.csproj">
       <Project>{DB8508BB-9849-4CC2-BC0F-8EB5DACB3C47}</Project>
       <Name>MonoGame.Framework.iOS</Name>
     </ProjectReference>

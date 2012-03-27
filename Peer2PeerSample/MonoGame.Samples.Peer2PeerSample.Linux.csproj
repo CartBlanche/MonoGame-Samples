@@ -40,36 +40,36 @@
     <Reference Include="System.Drawing" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\..\MacOS\Peer2PeerSample\PeerToPeerGame.cs">
+    <Compile Include="PeerToPeerGame.cs">
       <Link>PeerToPeerGame.cs</Link>
     </Compile>
-    <Compile Include="..\..\MacOS\Peer2PeerSample\Tank.cs">
+    <Compile Include="Tank.cs">
       <Link>Tank.cs</Link>
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="..\..\MacOS\Peer2PeerSample\Content\Font.spritefont">
+    <Content Include="Content\Font.spritefont">
       <Link>Content\Font.spritefont</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="..\..\MacOS\Peer2PeerSample\Content\Font.xnb">
+    <Content Include="Content\Font.xnb">
       <Link>Content\Font.xnb</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="..\..\MacOS\Peer2PeerSample\Content\Tank.xnb">
+    <Content Include="Content\Tank.xnb">
       <Link>Content\Tank.xnb</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="..\..\MacOS\Peer2PeerSample\Content\Turret.xnb">
+    <Content Include="Content\Turret.xnb">
       <Link>Content\Turret.xnb</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <None Include="app.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\MonoGame.Framework\MonoGame.Framework.Linux.csproj">
+    <ProjectReference Include="..\..\MonoGame.Framework\MonoGame.Framework.Linux.csproj">
       <Project>{35253CE1-C864-4CD3-8249-4D1319748E8F}</Project>
       <Name>MonoGame.Framework.Linux</Name>
     </ProjectReference>

@@ -45,13 +45,13 @@
     <Reference Include="System.Drawing" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\..\..\..\MacOS\BookSourceCode\XNAGameDevelopmentbyExampleCode\AsteroidBeltAssault\Game.ico">
+    <None Include="Game.ico">
       <Link>Game.ico</Link>
     </None>
-    <None Include="..\..\..\..\MacOS\BookSourceCode\XNAGameDevelopmentbyExampleCode\AsteroidBeltAssault\GameThumbnail.png">
+    <None Include="GameThumbnail.png">
       <Link>GameThumbnail.png</Link>
     </None>
-    <None Include="..\..\..\..\MacOS\BookSourceCode\XNAGameDevelopmentbyExampleCode\AsteroidBeltAssault\README.md">
+    <None Include="README.md">
       <Link>README.md</Link>
     </None>
   </ItemGroup>
@@ -60,40 +60,40 @@
     <Folder Include="Content\Fonts\" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\..\..\..\MacOS\BookSourceCode\XNAGameDevelopmentbyExampleCode\AsteroidBeltAssault\AsteroidManager.cs">
+    <Compile Include="AsteroidManager.cs">
       <Link>AsteroidManager.cs</Link>
     </Compile>
-    <Compile Include="..\..\..\..\MacOS\BookSourceCode\XNAGameDevelopmentbyExampleCode\AsteroidBeltAssault\CollisionManager.cs">
+    <Compile Include="CollisionManager.cs">
       <Link>CollisionManager.cs</Link>
     </Compile>
-    <Compile Include="..\..\..\..\MacOS\BookSourceCode\XNAGameDevelopmentbyExampleCode\AsteroidBeltAssault\Enemy.cs">
+    <Compile Include="Enemy.cs">
       <Link>Enemy.cs</Link>
     </Compile>
-    <Compile Include="..\..\..\..\MacOS\BookSourceCode\XNAGameDevelopmentbyExampleCode\AsteroidBeltAssault\EnemyManager.cs">
+    <Compile Include="EnemyManager.cs">
       <Link>EnemyManager.cs</Link>
     </Compile>
-    <Compile Include="..\..\..\..\MacOS\BookSourceCode\XNAGameDevelopmentbyExampleCode\AsteroidBeltAssault\ExplosionManager.cs">
+    <Compile Include="ExplosionManager.cs">
       <Link>ExplosionManager.cs</Link>
     </Compile>
-    <Compile Include="..\..\..\..\MacOS\BookSourceCode\XNAGameDevelopmentbyExampleCode\AsteroidBeltAssault\Game1.cs">
+    <Compile Include="Game1.cs">
       <Link>Game1.cs</Link>
     </Compile>
-    <Compile Include="..\..\..\..\MacOS\BookSourceCode\XNAGameDevelopmentbyExampleCode\AsteroidBeltAssault\Particle.cs">
+    <Compile Include="Particle.cs">
       <Link>Particle.cs</Link>
     </Compile>
-    <Compile Include="..\..\..\..\MacOS\BookSourceCode\XNAGameDevelopmentbyExampleCode\AsteroidBeltAssault\PlayerManager.cs">
+    <Compile Include="PlayerManager.cs">
       <Link>PlayerManager.cs</Link>
     </Compile>
-    <Compile Include="..\..\..\..\MacOS\BookSourceCode\XNAGameDevelopmentbyExampleCode\AsteroidBeltAssault\ShotManager.cs">
+    <Compile Include="ShotManager.cs">
       <Link>ShotManager.cs</Link>
     </Compile>
-    <Compile Include="..\..\..\..\MacOS\BookSourceCode\XNAGameDevelopmentbyExampleCode\AsteroidBeltAssault\SoundManager.cs">
+    <Compile Include="SoundManager.cs">
       <Link>SoundManager.cs</Link>
     </Compile>
-    <Compile Include="..\..\..\..\MacOS\BookSourceCode\XNAGameDevelopmentbyExampleCode\AsteroidBeltAssault\Sprite.cs">
+    <Compile Include="Sprite.cs">
       <Link>Sprite.cs</Link>
     </Compile>
-    <Compile Include="..\..\..\..\MacOS\BookSourceCode\XNAGameDevelopmentbyExampleCode\AsteroidBeltAssault\StarField.cs">
+    <Compile Include="StarField.cs">
       <Link>StarField.cs</Link>
     </Compile>
     <Compile Include="Program.cs" />
@@ -105,41 +105,41 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="..\..\..\..\MacOS\BookSourceCode\XNAGameDevelopmentbyExampleCode\AsteroidBeltAssault\Content\Fonts\Pericles14.xnb">
+    <Content Include="Content\Fonts\Pericles14.xnb">
       <Link>Content\Fonts\Pericles14.xnb</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="..\..\..\..\MacOS\BookSourceCode\XNAGameDevelopmentbyExampleCode\AsteroidBeltAssault\Content\Sounds\Explosion1.xnb">
+    <Content Include="Content\Sounds\Explosion1.xnb">
       <Link>Content\Sounds\Explosion1.xnb</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="..\..\..\..\MacOS\BookSourceCode\XNAGameDevelopmentbyExampleCode\AsteroidBeltAssault\Content\Sounds\Explosion2.xnb">
+    <Content Include="Content\Sounds\Explosion2.xnb">
       <Link>Content\Sounds\Explosion2.xnb</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="..\..\..\..\MacOS\BookSourceCode\XNAGameDevelopmentbyExampleCode\AsteroidBeltAssault\Content\Sounds\Explosion3.xnb">
+    <Content Include="Content\Sounds\Explosion3.xnb">
       <Link>Content\Sounds\Explosion3.xnb</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="..\..\..\..\MacOS\BookSourceCode\XNAGameDevelopmentbyExampleCode\AsteroidBeltAssault\Content\Sounds\Explosion4.xnb">
+    <Content Include="Content\Sounds\Explosion4.xnb">
       <Link>Content\Sounds\Explosion4.xnb</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="..\..\..\..\MacOS\BookSourceCode\XNAGameDevelopmentbyExampleCode\AsteroidBeltAssault\Content\Sounds\Shot1.xnb">
+    <Content Include="Content\Sounds\Shot1.xnb">
       <Link>Content\Sounds\Shot1.xnb</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="..\..\..\..\MacOS\BookSourceCode\XNAGameDevelopmentbyExampleCode\AsteroidBeltAssault\Content\Sounds\Shot2.xnb">
+    <Content Include="Content\Sounds\Shot2.xnb">
       <Link>Content\Sounds\Shot2.xnb</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="..\..\..\..\MacOS\BookSourceCode\XNAGameDevelopmentbyExampleCode\AsteroidBeltAssault\Content\Textures\SpriteSheet.xnb">
+    <Content Include="Content\Textures\SpriteSheet.xnb">
       <Link>Content\Textures\SpriteSheet.xnb</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="..\..\..\..\MacOS\BookSourceCode\XNAGameDevelopmentbyExampleCode\AsteroidBeltAssault\Content\Textures\TitleScreen.xnb">
+    <Resource Include="Content\Textures\TitleScreen.xnb">
       <Link>Content\Textures\TitleScreen.xnb</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>

@@ -34,43 +34,43 @@
     <Reference Include="System" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\MonoGame.Framework\MonoGame.Framework.Linux.csproj">
+    <ProjectReference Include="..\..\MonoGame.Framework\MonoGame.Framework.Linux.csproj">
       <Project>{35253CE1-C864-4CD3-8249-4D1319748E8F}</Project>
       <Name>MonoGame.Framework.Linux</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\..\MacOS\GooCursor\Cursor.cs">
+    <Compile Include="Cursor.cs">
       <Link>Cursor.cs</Link>
     </Compile>
-    <Compile Include="..\..\MacOS\GooCursor\Game1.cs">
+    <Compile Include="Game1.cs">
       <Link>Game1.cs</Link>
     </Compile>
     <Compile Include="Program.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\..\MacOS\GooCursor\Game.ico">
+    <None Include="Game.ico">
       <Link>Game.ico</Link>
     </None>
-    <None Include="..\..\MacOS\GooCursor\GameThumbnail.png">
+    <None Include="GameThumbnail.png">
       <Link>GameThumbnail.png</Link>
     </None>
-    <None Include="..\..\MacOS\GooCursor\Readme.md">
+    <None Include="Readme.md">
       <Link>Readme.md</Link>
     </None>
-    <None Include="..\..\MacOS\GooCursor\Content\SimpleFont.spritefont">
+    <None Include="Content\SimpleFont.spritefont">
       <Link>Content\SimpleFont.spritefont</Link>
     </None>
-    <None Include="..\..\MacOS\GooCursor\Content\cursor.bmp">
+    <None Include="Content\cursor.bmp">
       <Link>Content\cursor.bmp</Link>
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="..\..\MacOS\GooCursor\Content\SimpleFont.xnb">
+    <Content Include="Content\SimpleFont.xnb">
       <Link>Content\SimpleFont.xnb</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="..\..\MacOS\GooCursor\Content\cursor.xnb">
+    <Content Include="Content\cursor.xnb">
       <Link>Content\cursor.xnb</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

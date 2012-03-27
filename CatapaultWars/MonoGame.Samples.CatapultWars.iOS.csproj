@@ -65,181 +65,181 @@
     <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Info.plist" />
-    <None Include="..\..\MacOS\CatapaultWars\Content\Fonts\HUDFont.xnb">
+    <None Include="Info.iOS.plist"><Link>Info.plist</Link></None>
+    <None Include="Content\Fonts\HUDFont.xnb">
       <Link>Content\Fonts\HUDFont.xnb</Link>
     </None>
-    <None Include="..\..\MacOS\CatapaultWars\Content\Fonts\MenuFont.xnb">
+    <None Include="Content\Fonts\MenuFont.xnb">
       <Link>Content\Fonts\MenuFont.xnb</Link>
     </None>
-    <None Include="..\..\MacOS\CatapaultWars\Content\Sounds\BoulderHit.xnb">
+    <None Include="Content\Sounds\BoulderHit.xnb">
       <Link>Content\Sounds\BoulderHit.xnb</Link>
     </None>
-    <None Include="..\..\MacOS\CatapaultWars\Content\Sounds\CatapultExplosion.xnb">
+    <None Include="Content\Sounds\CatapultExplosion.xnb">
       <Link>Content\Sounds\CatapultExplosion.xnb</Link>
     </None>
-    <None Include="..\..\MacOS\CatapaultWars\Content\Sounds\CatapultFire.xnb">
+    <None Include="Content\Sounds\CatapultFire.xnb">
       <Link>Content\Sounds\CatapultFire.xnb</Link>
     </None>
-    <None Include="..\..\MacOS\CatapaultWars\Content\Sounds\Lose.xnb">
+    <None Include="Content\Sounds\Lose.xnb">
       <Link>Content\Sounds\Lose.xnb</Link>
     </None>
-    <None Include="..\..\MacOS\CatapaultWars\Content\Sounds\RopeStretch.xnb">
+    <None Include="Content\Sounds\RopeStretch.xnb">
       <Link>Content\Sounds\RopeStretch.xnb</Link>
     </None>
-    <None Include="..\..\MacOS\CatapaultWars\Content\Sounds\Win.xnb">
+    <None Include="Content\Sounds\Win.xnb">
       <Link>Content\Sounds\Win.xnb</Link>
     </None>
-    <None Include="..\..\MacOS\CatapaultWars\Content\Textures\Ammo\rock_ammo.xnb">
+    <None Include="Content\Textures\Ammo\rock_ammo.xnb">
       <Link>Content\Textures\Ammo\rock_ammo.xnb</Link>
     </None>
-    <None Include="..\..\MacOS\CatapaultWars\Content\Textures\Catapults\AnimationsDef.xml">
+    <None Include="Content\Textures\Catapults\AnimationsDef.xml">
       <Link>Content\Textures\Catapults\AnimationsDef.xml</Link>
     </None>
-    <None Include="..\..\MacOS\CatapaultWars\Content\Textures\Catapults\Blue\blueDestroyed\blueCatapult_destroyed.xnb">
+    <None Include="Content\Textures\Catapults\Blue\blueDestroyed\blueCatapult_destroyed.xnb">
       <Link>Content\Textures\Catapults\Blue\blueDestroyed\blueCatapult_destroyed.xnb</Link>
     </None>
-    <None Include="..\..\MacOS\CatapaultWars\Content\Textures\Catapults\Blue\blueFire\blueCatapult_fire.xnb">
+    <None Include="Content\Textures\Catapults\Blue\blueFire\blueCatapult_fire.xnb">
       <Link>Content\Textures\Catapults\Blue\blueFire\blueCatapult_fire.xnb</Link>
     </None>
-    <None Include="..\..\MacOS\CatapaultWars\Content\Textures\Catapults\Blue\blueIdle\blueIdle.xnb">
+    <None Include="Content\Textures\Catapults\Blue\blueIdle\blueIdle.xnb">
       <Link>Content\Textures\Catapults\Blue\blueIdle\blueIdle.xnb</Link>
     </None>
-    <None Include="..\..\MacOS\CatapaultWars\Content\Textures\Catapults\Blue\bluePullback\blueCatapult_Pullback.xnb">
+    <None Include="Content\Textures\Catapults\Blue\bluePullback\blueCatapult_Pullback.xnb">
       <Link>Content\Textures\Catapults\Blue\bluePullback\blueCatapult_Pullback.xnb</Link>
     </None>
-    <None Include="..\..\MacOS\CatapaultWars\Content\Textures\Catapults\Fire_Miss\fire_miss.xnb">
+    <None Include="Content\Textures\Catapults\Fire_Miss\fire_miss.xnb">
       <Link>Content\Textures\Catapults\Fire_Miss\fire_miss.xnb</Link>
     </None>
-    <None Include="..\..\MacOS\CatapaultWars\Content\Textures\Catapults\Hit_Smoke\smoke.xnb">
+    <None Include="Content\Textures\Catapults\Hit_Smoke\smoke.xnb">
       <Link>Content\Textures\Catapults\Hit_Smoke\smoke.xnb</Link>
     </None>
-    <None Include="..\..\MacOS\CatapaultWars\Content\Textures\Catapults\Red\redDestroyed\redCatapult_destroyed.xnb">
+    <None Include="Content\Textures\Catapults\Red\redDestroyed\redCatapult_destroyed.xnb">
       <Link>Content\Textures\Catapults\Red\redDestroyed\redCatapult_destroyed.xnb</Link>
     </None>
-    <None Include="..\..\MacOS\CatapaultWars\Content\Textures\Catapults\Red\redFire\redCatapult_fire.xnb">
+    <None Include="Content\Textures\Catapults\Red\redFire\redCatapult_fire.xnb">
       <Link>Content\Textures\Catapults\Red\redFire\redCatapult_fire.xnb</Link>
     </None>
-    <None Include="..\..\MacOS\CatapaultWars\Content\Textures\Catapults\Red\redIdle\redIdle.xnb">
+    <None Include="Content\Textures\Catapults\Red\redIdle\redIdle.xnb">
       <Link>Content\Textures\Catapults\Red\redIdle\redIdle.xnb</Link>
     </None>
-    <None Include="..\..\MacOS\CatapaultWars\Content\Textures\Catapults\Red\redPullback\redCatapult_Pullback.xnb">
+    <None Include="Content\Textures\Catapults\Red\redPullback\redCatapult_Pullback.xnb">
       <Link>Content\Textures\Catapults\Red\redPullback\redCatapult_Pullback.xnb</Link>
     </None>
-    <None Include="..\..\MacOS\CatapaultWars\Content\Textures\HUD\Arrow.xnb">
+    <None Include="Content\Textures\HUD\Arrow.xnb">
       <Link>Content\Textures\HUD\Arrow.xnb</Link>
     </None>
-    <None Include="..\..\MacOS\CatapaultWars\Content\Textures\HUD\ammoType.xnb">
+    <None Include="Content\Textures\HUD\ammoType.xnb">
       <Link>Content\Textures\HUD\ammoType.xnb</Link>
     </None>
-    <None Include="..\..\MacOS\CatapaultWars\Content\Textures\HUD\hudBackground.xnb">
+    <None Include="Content\Textures\HUD\hudBackground.xnb">
       <Link>Content\Textures\HUD\hudBackground.xnb</Link>
     </None>
-    <None Include="..\..\MacOS\CatapaultWars\Content\Textures\HUD\windArrow.xnb">
+    <None Include="Content\Textures\HUD\windArrow.xnb">
       <Link>Content\Textures\HUD\windArrow.xnb</Link>
     </None>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Main.cs" />
-    <Compile Include="..\..\MacOS\CatapaultWars\CatapultGame.cs">
+    <Compile Include="CatapultGame.cs">
       <Link>CatapultGame.cs</Link>
     </Compile>
-    <Compile Include="..\..\MacOS\CatapaultWars\Catapult\Catapult.cs">
+    <Compile Include="Catapult\Catapult.cs">
       <Link>Catapult\Catapult.cs</Link>
     </Compile>
-    <Compile Include="..\..\MacOS\CatapaultWars\Catapult\Projectile.cs">
+    <Compile Include="Catapult\Projectile.cs">
       <Link>Catapult\Projectile.cs</Link>
     </Compile>
-    <Compile Include="..\..\MacOS\CatapaultWars\Players\AI.cs">
+    <Compile Include="Players\AI.cs">
       <Link>Players\AI.cs</Link>
     </Compile>
-    <Compile Include="..\..\MacOS\CatapaultWars\Players\Human.cs">
+    <Compile Include="Players\Human.cs">
       <Link>Players\Human.cs</Link>
     </Compile>
-    <Compile Include="..\..\MacOS\CatapaultWars\Players\Player.cs">
+    <Compile Include="Players\Player.cs">
       <Link>Players\Player.cs</Link>
     </Compile>
-    <Compile Include="..\..\MacOS\CatapaultWars\ScreenManager\GameScreen.cs">
+    <Compile Include="ScreenManager\GameScreen.cs">
       <Link>ScreenManager\GameScreen.cs</Link>
     </Compile>
-    <Compile Include="..\..\MacOS\CatapaultWars\ScreenManager\InputState.cs">
+    <Compile Include="ScreenManager\InputState.cs">
       <Link>ScreenManager\InputState.cs</Link>
     </Compile>
-    <Compile Include="..\..\MacOS\CatapaultWars\ScreenManager\MenuEntry.cs">
+    <Compile Include="ScreenManager\MenuEntry.cs">
       <Link>ScreenManager\MenuEntry.cs</Link>
     </Compile>
-    <Compile Include="..\..\MacOS\CatapaultWars\ScreenManager\MenuScreen.cs">
+    <Compile Include="ScreenManager\MenuScreen.cs">
       <Link>ScreenManager\MenuScreen.cs</Link>
     </Compile>
-    <Compile Include="..\..\MacOS\CatapaultWars\ScreenManager\MouseGestureType.cs">
+    <Compile Include="ScreenManager\MouseGestureType.cs">
       <Link>ScreenManager\MouseGestureType.cs</Link>
     </Compile>
-    <Compile Include="..\..\MacOS\CatapaultWars\ScreenManager\PlayerIndexEventArgs.cs">
+    <Compile Include="ScreenManager\PlayerIndexEventArgs.cs">
       <Link>ScreenManager\PlayerIndexEventArgs.cs</Link>
     </Compile>
-    <Compile Include="..\..\MacOS\CatapaultWars\ScreenManager\ScreenManager.cs">
+    <Compile Include="ScreenManager\ScreenManager.cs">
       <Link>ScreenManager\ScreenManager.cs</Link>
     </Compile>
-    <Compile Include="..\..\MacOS\CatapaultWars\Screens\BackgroundScreen.cs">
+    <Compile Include="Screens\BackgroundScreen.cs">
       <Link>Screens\BackgroundScreen.cs</Link>
     </Compile>
-    <Compile Include="..\..\MacOS\CatapaultWars\Screens\GameplayScreen.cs">
+    <Compile Include="Screens\GameplayScreen.cs">
       <Link>Screens\GameplayScreen.cs</Link>
     </Compile>
-    <Compile Include="..\..\MacOS\CatapaultWars\Screens\InstructionsScreen.cs">
+    <Compile Include="Screens\InstructionsScreen.cs">
       <Link>Screens\InstructionsScreen.cs</Link>
     </Compile>
-    <Compile Include="..\..\MacOS\CatapaultWars\Screens\MainMenuScreen.cs">
+    <Compile Include="Screens\MainMenuScreen.cs">
       <Link>Screens\MainMenuScreen.cs</Link>
     </Compile>
-    <Compile Include="..\..\MacOS\CatapaultWars\Screens\PauseScreen.cs">
+    <Compile Include="Screens\PauseScreen.cs">
       <Link>Screens\PauseScreen.cs</Link>
     </Compile>
-    <Compile Include="..\..\MacOS\CatapaultWars\Utility\Animation.cs">
+    <Compile Include="Utility\Animation.cs">
       <Link>Utility\Animation.cs</Link>
     </Compile>
-    <Compile Include="..\..\MacOS\CatapaultWars\Utility\AudioManager.cs">
+    <Compile Include="Utility\AudioManager.cs">
       <Link>Utility\AudioManager.cs</Link>
     </Compile>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
-    <Content Include="..\..\MacOS\CatapaultWars\Background.png">
+    <Content Include="Background.png">
       <Link>Background.png</Link>
     </Content>
-    <Content Include="..\..\MacOS\CatapaultWars\Content\Textures\Backgrounds\blank.xnb">
+    <Content Include="Content\Textures\Backgrounds\blank.xnb">
       <Link>Content\Textures\Backgrounds\blank.xnb</Link>
     </Content>
-    <Content Include="..\..\MacOS\CatapaultWars\Content\Textures\Backgrounds\cloud1.xnb">
+    <Content Include="Content\Textures\Backgrounds\cloud1.xnb">
       <Link>Content\Textures\Backgrounds\cloud1.xnb</Link>
     </Content>
-    <Content Include="..\..\MacOS\CatapaultWars\Content\Textures\Backgrounds\cloud2.xnb">
+    <Content Include="Content\Textures\Backgrounds\cloud2.xnb">
       <Link>Content\Textures\Backgrounds\cloud2.xnb</Link>
     </Content>
-    <Content Include="..\..\MacOS\CatapaultWars\Content\Textures\Backgrounds\defeat.xnb">
+    <Content Include="Content\Textures\Backgrounds\defeat.xnb">
       <Link>Content\Textures\Backgrounds\defeat.xnb</Link>
     </Content>
-    <Content Include="..\..\MacOS\CatapaultWars\Content\Textures\Backgrounds\gameplay_screen.xnb">
+    <Content Include="Content\Textures\Backgrounds\gameplay_screen.xnb">
       <Link>Content\Textures\Backgrounds\gameplay_screen.xnb</Link>
     </Content>
-    <Content Include="..\..\MacOS\CatapaultWars\Content\Textures\Backgrounds\instructions.xnb">
+    <Content Include="Content\Textures\Backgrounds\instructions.xnb">
       <Link>Content\Textures\Backgrounds\instructions.xnb</Link>
     </Content>
-    <Content Include="..\..\MacOS\CatapaultWars\Content\Textures\Backgrounds\mountain.xnb">
+    <Content Include="Content\Textures\Backgrounds\mountain.xnb">
       <Link>Content\Textures\Backgrounds\mountain.xnb</Link>
     </Content>
-    <Content Include="..\..\MacOS\CatapaultWars\Content\Textures\Backgrounds\sky.xnb">
+    <Content Include="Content\Textures\Backgrounds\sky.xnb">
       <Link>Content\Textures\Backgrounds\sky.xnb</Link>
     </Content>
-    <Content Include="..\..\MacOS\CatapaultWars\Content\Textures\Backgrounds\title_screen.xnb">
+    <Content Include="Content\Textures\Backgrounds\title_screen.xnb">
       <Link>Content\Textures\Backgrounds\title_screen.xnb</Link>
     </Content>
-    <Content Include="..\..\MacOS\CatapaultWars\Content\Textures\Backgrounds\victory.xnb">
+    <Content Include="Content\Textures\Backgrounds\victory.xnb">
       <Link>Content\Textures\Backgrounds\victory.xnb</Link>
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\MonoGame.Framework\MonoGame.Framework.iOS.csproj">
+    <ProjectReference Include="..\..\MonoGame.Framework\MonoGame.Framework.iOS.csproj">
       <Project>{DB8508BB-9849-4CC2-BC0F-8EB5DACB3C47}</Project>
       <Name>MonoGame.Framework.iOS</Name>
     </ProjectReference>

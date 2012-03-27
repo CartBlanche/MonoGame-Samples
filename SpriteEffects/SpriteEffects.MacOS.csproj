@@ -58,21 +58,17 @@
   <ItemGroup>
     <Compile Include="SpriteEffects.cs" />
     <Compile Include="Program.cs" />
-    <Compile Include="DesaturateEffect.cs" />
-    <Compile Include="DisappearEffect.cs" />
-    <Compile Include="RefractionEffect.cs" />
-    <Compile Include="NormalmapEffect.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\cat_alpha.jpg" />
     <Content Include="Content\cat_depth.jpg" />
     <Content Include="Content\cat_normalmap.xnb" />
-    <Content Include="Content\desaturate.fsh" />
-    <Content Include="Content\disappear.fsh" />
     <Content Include="Content\cat.xnb" />
     <Content Include="Content\glacier.xnb" />
     <Content Include="Content\waterfall.xnb" />
-    <Content Include="Content\refraction.fsh" />
-    <Content Include="Content\normalmap.fsh" />
+    <Content Include="Content\desaturate.xnb" />
+    <Content Include="Content\disappear.xnb" />
+    <Content Include="Content\normalmap.xnb" />
+    <Content Include="Content\refraction.xnb" />
   </ItemGroup>
 </Project>

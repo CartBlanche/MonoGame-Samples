@@ -32,28 +32,28 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="..\..\iOS\Draw2D\FPSCounterComponent.cs">
+    <Compile Include="FPSCounterComponent.cs">
       <Link>FPSCounterComponent.cs</Link>
     </Compile>
     <Compile Include="Program.cs" />
-    <Compile Include="..\..\iOS\Draw2D\Game1.cs">
+    <Compile Include="Game1.cs">
       <Link>Game1.cs</Link>
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="..\..\iOS\Draw2D\Content\monogameicon.png">
+    <Content Include="Content\monogameicon.png">
       <Link>Content\monogameicon.png</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="..\..\iOS\Draw2D\Content\purpleBall.xnb">
+    <Content Include="Content\purpleBall.xnb">
       <Link>Content\purpleBall.xnb</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="..\..\iOS\Draw2D\Content\spriteFont1.xnb">
+    <Content Include="Content\spriteFont1.xnb">
       <Link>Content\spriteFont1.xnb</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="..\..\iOS\Draw2D\Default.png">
+    <Content Include="Default.png">
       <Link>Default.png</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -63,7 +63,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="..\..\iOS\Draw2D\Default.png">
+    <Content Include="Default.png">
       <Link>Default.png</Link>
     </Content>
   </ItemGroup>

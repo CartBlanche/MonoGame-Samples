@@ -53,137 +53,137 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Program.cs" />
-    <Compile Include="..\..\..\..\MacOS\BookSourceCode\XNAGameDevelopmentbyExampleCode\GemstoneHunter\AnimationStrip.cs">
+    <Compile Include="AnimationStrip.cs">
       <Link>AnimationStrip.cs</Link>
     </Compile>
-    <Compile Include="..\..\..\..\MacOS\BookSourceCode\XNAGameDevelopmentbyExampleCode\GemstoneHunter\Enemy.cs">
+    <Compile Include="Enemy.cs">
       <Link>Enemy.cs</Link>
     </Compile>
-    <Compile Include="..\..\..\..\MacOS\BookSourceCode\XNAGameDevelopmentbyExampleCode\GemstoneHunter\Game1.cs">
+    <Compile Include="Game1.cs">
       <Link>Game1.cs</Link>
     </Compile>
-    <Compile Include="..\..\..\..\MacOS\BookSourceCode\XNAGameDevelopmentbyExampleCode\GemstoneHunter\GameObject.cs">
+    <Compile Include="GameObject.cs">
       <Link>GameObject.cs</Link>
     </Compile>
-    <Compile Include="..\..\..\..\MacOS\BookSourceCode\XNAGameDevelopmentbyExampleCode\GemstoneHunter\Gemstone.cs">
+    <Compile Include="Gemstone.cs">
       <Link>Gemstone.cs</Link>
     </Compile>
-    <Compile Include="..\..\..\..\MacOS\BookSourceCode\XNAGameDevelopmentbyExampleCode\GemstoneHunter\LevelManager.cs">
+    <Compile Include="LevelManager.cs">
       <Link>LevelManager.cs</Link>
     </Compile>
-    <Compile Include="..\..\..\..\MacOS\BookSourceCode\XNAGameDevelopmentbyExampleCode\GemstoneHunter\Player.cs">
+    <Compile Include="Player.cs">
       <Link>Player.cs</Link>
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\..\..\..\MacOS\BookSourceCode\XNAGameDevelopmentbyExampleCode\GemstoneHunter\Game.ico">
+    <None Include="Game.ico">
       <Link>Game.ico</Link>
     </None>
-    <None Include="..\..\..\..\MacOS\BookSourceCode\XNAGameDevelopmentbyExampleCode\GemstoneHunter\GameThumbnail.png">
+    <None Include="GameThumbnail.png">
       <Link>GameThumbnail.png</Link>
     </None>
-    <None Include="..\..\..\..\MacOS\BookSourceCode\XNAGameDevelopmentbyExampleCode\GemstoneHunter\README.md">
+    <None Include="README.md">
       <Link>README.md</Link>
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="..\..\..\..\MacOS\BookSourceCode\XNAGameDevelopmentbyExampleCode\GemstoneHunter\Content\Fonts\Pericles10Bold.xnb">
+    <Content Include="Content\Fonts\Pericles10Bold.xnb">
       <Link>Content\Fonts\Pericles10Bold.xnb</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="..\..\..\..\MacOS\BookSourceCode\XNAGameDevelopmentbyExampleCode\GemstoneHunter\Content\Fonts\Pericles8.xnb">
+    <Content Include="Content\Fonts\Pericles8.xnb">
       <Link>Content\Fonts\Pericles8.xnb</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="..\..\..\..\MacOS\BookSourceCode\XNAGameDevelopmentbyExampleCode\GemstoneHunter\Content\Maps\MAP000.MAP">
+    <Content Include="Content\Maps\MAP000.MAP">
       <Link>Content\Maps\MAP000.MAP</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="..\..\..\..\MacOS\BookSourceCode\XNAGameDevelopmentbyExampleCode\GemstoneHunter\Content\Maps\MAP001.MAP">
+    <Content Include="Content\Maps\MAP001.MAP">
       <Link>Content\Maps\MAP001.MAP</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="..\..\..\..\MacOS\BookSourceCode\XNAGameDevelopmentbyExampleCode\GemstoneHunter\Content\Textures\Gem.xnb">
+    <Content Include="Content\Textures\Gem.xnb">
       <Link>Content\Textures\Gem.xnb</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="..\..\..\..\MacOS\BookSourceCode\XNAGameDevelopmentbyExampleCode\GemstoneHunter\Content\Textures\PlatformTiles.xnb">
+    <Content Include="Content\Textures\PlatformTiles.xnb">
       <Link>Content\Textures\PlatformTiles.xnb</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="..\..\..\..\MacOS\BookSourceCode\XNAGameDevelopmentbyExampleCode\GemstoneHunter\Content\Textures\TitleScreen.xnb">
+    <Content Include="Content\Textures\TitleScreen.xnb">
       <Link>Content\Textures\TitleScreen.xnb</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="..\..\..\..\MacOS\BookSourceCode\XNAGameDevelopmentbyExampleCode\GemstoneHunter\Content\Textures\Sprites\Gem.xnb">
+    <Content Include="Content\Textures\Sprites\Gem.xnb">
       <Link>Content\Textures\Sprites\Gem.xnb</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="..\..\..\..\MacOS\BookSourceCode\XNAGameDevelopmentbyExampleCode\GemstoneHunter\Content\Textures\Sprites\Player\Celebrate.xnb">
+    <Content Include="Content\Textures\Sprites\Player\Celebrate.xnb">
       <Link>Content\Textures\Sprites\Player\Celebrate.xnb</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="..\..\..\..\MacOS\BookSourceCode\XNAGameDevelopmentbyExampleCode\GemstoneHunter\Content\Textures\Sprites\Player\Die.xnb">
+    <Content Include="Content\Textures\Sprites\Player\Die.xnb">
       <Link>Content\Textures\Sprites\Player\Die.xnb</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="..\..\..\..\MacOS\BookSourceCode\XNAGameDevelopmentbyExampleCode\GemstoneHunter\Content\Textures\Sprites\Player\Idle.xnb">
+    <Content Include="Content\Textures\Sprites\Player\Idle.xnb">
       <Link>Content\Textures\Sprites\Player\Idle.xnb</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="..\..\..\..\MacOS\BookSourceCode\XNAGameDevelopmentbyExampleCode\GemstoneHunter\Content\Textures\Sprites\Player\Jump.xnb">
+    <Content Include="Content\Textures\Sprites\Player\Jump.xnb">
       <Link>Content\Textures\Sprites\Player\Jump.xnb</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="..\..\..\..\MacOS\BookSourceCode\XNAGameDevelopmentbyExampleCode\GemstoneHunter\Content\Textures\Sprites\Player\Run.xnb">
+    <Content Include="Content\Textures\Sprites\Player\Run.xnb">
       <Link>Content\Textures\Sprites\Player\Run.xnb</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="..\..\..\..\MacOS\BookSourceCode\XNAGameDevelopmentbyExampleCode\GemstoneHunter\Content\Textures\Sprites\MonsterA\Die.xnb">
+    <Content Include="Content\Textures\Sprites\MonsterA\Die.xnb">
       <Link>Content\Textures\Sprites\MonsterA\Die.xnb</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="..\..\..\..\MacOS\BookSourceCode\XNAGameDevelopmentbyExampleCode\GemstoneHunter\Content\Textures\Sprites\MonsterA\Idle.xnb">
+    <Content Include="Content\Textures\Sprites\MonsterA\Idle.xnb">
       <Link>Content\Textures\Sprites\MonsterA\Idle.xnb</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="..\..\..\..\MacOS\BookSourceCode\XNAGameDevelopmentbyExampleCode\GemstoneHunter\Content\Textures\Sprites\MonsterA\Run.xnb">
+    <Content Include="Content\Textures\Sprites\MonsterA\Run.xnb">
       <Link>Content\Textures\Sprites\MonsterA\Run.xnb</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="..\..\..\..\MacOS\BookSourceCode\XNAGameDevelopmentbyExampleCode\GemstoneHunter\Content\Textures\Sprites\MonsterB\Die.xnb">
+    <Content Include="Content\Textures\Sprites\MonsterB\Die.xnb">
       <Link>Content\Textures\Sprites\MonsterB\Die.xnb</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="..\..\..\..\MacOS\BookSourceCode\XNAGameDevelopmentbyExampleCode\GemstoneHunter\Content\Textures\Sprites\MonsterB\Idle.xnb">
+    <Content Include="Content\Textures\Sprites\MonsterB\Idle.xnb">
       <Link>Content\Textures\Sprites\MonsterB\Idle.xnb</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="..\..\..\..\MacOS\BookSourceCode\XNAGameDevelopmentbyExampleCode\GemstoneHunter\Content\Textures\Sprites\MonsterB\Run.xnb">
+    <Content Include="Content\Textures\Sprites\MonsterB\Run.xnb">
       <Link>Content\Textures\Sprites\MonsterB\Run.xnb</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="..\..\..\..\MacOS\BookSourceCode\XNAGameDevelopmentbyExampleCode\GemstoneHunter\Content\Textures\Sprites\MonsterC\Die.xnb">
+    <Content Include="Content\Textures\Sprites\MonsterC\Die.xnb">
       <Link>Content\Textures\Sprites\MonsterC\Die.xnb</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="..\..\..\..\MacOS\BookSourceCode\XNAGameDevelopmentbyExampleCode\GemstoneHunter\Content\Textures\Sprites\MonsterC\Idle.xnb">
+    <Content Include="Content\Textures\Sprites\MonsterC\Idle.xnb">
       <Link>Content\Textures\Sprites\MonsterC\Idle.xnb</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="..\..\..\..\MacOS\BookSourceCode\XNAGameDevelopmentbyExampleCode\GemstoneHunter\Content\Textures\Sprites\MonsterC\Run.xnb">
+    <Content Include="Content\Textures\Sprites\MonsterC\Run.xnb">
       <Link>Content\Textures\Sprites\MonsterC\Run.xnb</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="..\..\..\..\MacOS\BookSourceCode\XNAGameDevelopmentbyExampleCode\GemstoneHunter\Content\Textures\Sprites\MonsterD\Die.xnb">
+    <Content Include="Content\Textures\Sprites\MonsterD\Die.xnb">
       <Link>Content\Textures\Sprites\MonsterD\Die.xnb</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="..\..\..\..\MacOS\BookSourceCode\XNAGameDevelopmentbyExampleCode\GemstoneHunter\Content\Textures\Sprites\MonsterD\Idle.xnb">
+    <Content Include="Content\Textures\Sprites\MonsterD\Idle.xnb">
       <Link>Content\Textures\Sprites\MonsterD\Idle.xnb</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="..\..\..\..\MacOS\BookSourceCode\XNAGameDevelopmentbyExampleCode\GemstoneHunter\Content\Textures\Sprites\MonsterD\Run.xnb">
+    <Content Include="Content\Textures\Sprites\MonsterD\Run.xnb">
       <Link>Content\Textures\Sprites\MonsterD\Run.xnb</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
