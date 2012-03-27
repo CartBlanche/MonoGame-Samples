@@ -53,17 +53,19 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Net;
 
+#if MONOMAC
 using MonoMac.Foundation;
 using MonoMac.AppKit;
 using MonoMac.ObjCRuntime;
+#endif
 
 #endregion
 
 
 namespace NetRumble
 {
-	
 	#region Entry Point
+#if MONOMAC
 	static class Program
 	{
 		/// <summary>
@@ -94,6 +96,22 @@ namespace NetRumble
 			return true;
 		}
 	}	
+#else
+	static class Program
+	{
+		/// <summary>
+		/// The main entry point for the application.
+		/// </summary>
+		static void Main(string[] args)
+		{
+			//MonoGameNetworkConfiguration.Broadcast = System.Net.IPAddress.Parse("192.168.83.254");
+			using (NetRumbleGame game = new NetRumbleGame())
+			{
+				game.Run();
+			}
+		}
+	}
+#endif
 	
 	#endregion
 }

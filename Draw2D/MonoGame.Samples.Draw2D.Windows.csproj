@@ -38,27 +38,23 @@
     <Compile Include="Game1.cs">
       <Link>Game1.cs</Link>
     </Compile>
-    <Compile Include="Program.cs" />
+    <Compile Include="main.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="..\..\..\ThirdParty\GamepadConfig\SDL.dll">
+    <Content Include="..\..\ThirdParty\GamepadConfig\SDL.dll">
       <Link>SDL.dll</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\monogameicon.png">
-      <Link>Content\monogameicon.png</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\purpleBall.xnb">
-      <Link>Content\purpleBall.xnb</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\spriteFont1.xnb">
-      <Link>Content\spriteFont1.xnb</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Default.png">
-      <Link>Default.png</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
@@ -68,7 +64,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Default.png">
-      <Link>Default.png</Link>
     </Content>
   </ItemGroup>
   <ItemGroup>
@@ -76,10 +71,13 @@
       <Project>{7DE47032-A904-4C29-BD22-2D235E8D91BA}</Project>
       <Name>MonoGame.Framework.Windows</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\ThirdParty\Lidgren.Network\Lidgren.Network.Windows.csproj">
+    <ProjectReference Include="..\..\ThirdParty\Lidgren.Network\Lidgren.Network.Windows.csproj">
       <Project>{AE483C29-042E-4226-BA52-D247CE7676DA}</Project>
       <Name>Lidgren.Network.Windows</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Content\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

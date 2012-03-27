@@ -53,406 +53,298 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AudioManager.cs">
-      <Link>AudioManager.cs</Link>
     </Compile>
     <Compile Include="BatchRemovalCollection.cs">
-      <Link>BatchRemovalCollection.cs</Link>
     </Compile>
     <Compile Include="BloomPostprocess\BloomComponent.cs">
-      <Link>BloomPostprocess\BloomComponent.cs</Link>
     </Compile>
     <Compile Include="BloomPostprocess\BloomSettings.cs">
-      <Link>BloomPostprocess\BloomSettings.cs</Link>
     </Compile>
     <Compile Include="CollisionMath.cs">
-      <Link>CollisionMath.cs</Link>
     </Compile>
     <Compile Include="Gameplay\Asteroid.cs">
-      <Link>Gameplay\Asteroid.cs</Link>
     </Compile>
     <Compile Include="Gameplay\CollisionManager.cs">
-      <Link>Gameplay\CollisionManager.cs</Link>
     </Compile>
     <Compile Include="Gameplay\GameplayObject.cs">
-      <Link>Gameplay\GameplayObject.cs</Link>
     </Compile>
     <Compile Include="Gameplay\PlayerData.cs">
-      <Link>Gameplay\PlayerData.cs</Link>
     </Compile>
     <Compile Include="Gameplay\PowerUps\DoubleLaserPowerUp.cs">
-      <Link>Gameplay\PowerUps\DoubleLaserPowerUp.cs</Link>
     </Compile>
     <Compile Include="Gameplay\PowerUps\PowerUp.cs">
-      <Link>Gameplay\PowerUps\PowerUp.cs</Link>
     </Compile>
     <Compile Include="Gameplay\PowerUps\RocketPowerUp.cs">
-      <Link>Gameplay\PowerUps\RocketPowerUp.cs</Link>
     </Compile>
     <Compile Include="Gameplay\PowerUps\TripleLaserPowerUp.cs">
-      <Link>Gameplay\PowerUps\TripleLaserPowerUp.cs</Link>
     </Compile>
     <Compile Include="Gameplay\Projectiles\LaserProjectile.cs">
-      <Link>Gameplay\Projectiles\LaserProjectile.cs</Link>
     </Compile>
     <Compile Include="Gameplay\Projectiles\MineProjectile.cs">
-      <Link>Gameplay\Projectiles\MineProjectile.cs</Link>
     </Compile>
     <Compile Include="Gameplay\Projectiles\Projectile.cs">
-      <Link>Gameplay\Projectiles\Projectile.cs</Link>
     </Compile>
     <Compile Include="Gameplay\Projectiles\RocketProjectile.cs">
-      <Link>Gameplay\Projectiles\RocketProjectile.cs</Link>
     </Compile>
     <Compile Include="Gameplay\Ship.cs">
-      <Link>Gameplay\Ship.cs</Link>
     </Compile>
     <Compile Include="Gameplay\ShipInput.cs">
-      <Link>Gameplay\ShipInput.cs</Link>
     </Compile>
     <Compile Include="Gameplay\Weapons\DoubleLaserWeapon.cs">
-      <Link>Gameplay\Weapons\DoubleLaserWeapon.cs</Link>
     </Compile>
     <Compile Include="Gameplay\Weapons\LaserWeapon.cs">
-      <Link>Gameplay\Weapons\LaserWeapon.cs</Link>
     </Compile>
     <Compile Include="Gameplay\Weapons\MineWeapon.cs">
-      <Link>Gameplay\Weapons\MineWeapon.cs</Link>
     </Compile>
     <Compile Include="Gameplay\Weapons\RocketWeapon.cs">
-      <Link>Gameplay\Weapons\RocketWeapon.cs</Link>
     </Compile>
     <Compile Include="Gameplay\Weapons\TripleLaserWeapon.cs">
-      <Link>Gameplay\Weapons\TripleLaserWeapon.cs</Link>
     </Compile>
     <Compile Include="Gameplay\Weapons\Weapon.cs">
-      <Link>Gameplay\Weapons\Weapon.cs</Link>
     </Compile>
     <Compile Include="Gameplay\World.cs">
-      <Link>Gameplay\World.cs</Link>
     </Compile>
     <Compile Include="NetRumbleGame.cs">
-      <Link>NetRumbleGame.cs</Link>
     </Compile>
     <Compile Include="OperationCompletedEventArgs.cs">
-      <Link>OperationCompletedEventArgs.cs</Link>
     </Compile>
     <Compile Include="RandomMath.cs">
-      <Link>RandomMath.cs</Link>
     </Compile>
     <Compile Include="Rendering\Particles\Particle.cs">
-      <Link>Rendering\Particles\Particle.cs</Link>
     </Compile>
     <Compile Include="Rendering\Particles\ParticleCache.cs">
-      <Link>Rendering\Particles\ParticleCache.cs</Link>
     </Compile>
     <Compile Include="Rendering\Particles\ParticleEffect.cs">
-      <Link>Rendering\Particles\ParticleEffect.cs</Link>
     </Compile>
     <Compile Include="Rendering\Particles\ParticleEffectManager.cs">
-      <Link>Rendering\Particles\ParticleEffectManager.cs</Link>
     </Compile>
     <Compile Include="Rendering\Particles\ParticleEffectType.cs">
-      <Link>Rendering\Particles\ParticleEffectType.cs</Link>
     </Compile>
     <Compile Include="Rendering\Particles\ParticleSystem.cs">
-      <Link>Rendering\Particles\ParticleSystem.cs</Link>
     </Compile>
     <Compile Include="Rendering\Starfield.cs">
-      <Link>Rendering\Starfield.cs</Link>
     </Compile>
     <Compile Include="ScreenManager\GameScreen.cs">
-      <Link>ScreenManager\GameScreen.cs</Link>
     </Compile>
     <Compile Include="ScreenManager\InputState.cs">
-      <Link>ScreenManager\InputState.cs</Link>
     </Compile>
     <Compile Include="ScreenManager\LoadingScreen.cs">
-      <Link>ScreenManager\LoadingScreen.cs</Link>
     </Compile>
     <Compile Include="ScreenManager\MenuScreen.cs">
-      <Link>ScreenManager\MenuScreen.cs</Link>
     </Compile>
     <Compile Include="ScreenManager\MessageBoxScreen.cs">
-      <Link>ScreenManager\MessageBoxScreen.cs</Link>
     </Compile>
     <Compile Include="ScreenManager\ScreenManager.cs">
-      <Link>ScreenManager\ScreenManager.cs</Link>
     </Compile>
     <Compile Include="Screens\BackgroundScreen.cs">
-      <Link>Screens\BackgroundScreen.cs</Link>
     </Compile>
     <Compile Include="Screens\GameplayScreen.cs">
-      <Link>Screens\GameplayScreen.cs</Link>
     </Compile>
     <Compile Include="Screens\LobbyScreen.cs">
-      <Link>Screens\LobbyScreen.cs</Link>
     </Compile>
     <Compile Include="Screens\MainMenuScreen.cs">
-      <Link>Screens\MainMenuScreen.cs</Link>
     </Compile>
     <Compile Include="Screens\NetworkBusyScreen.cs">
-      <Link>Screens\NetworkBusyScreen.cs</Link>
     </Compile>
     <Compile Include="Screens\SearchResultsScreen.cs">
-      <Link>Screens\SearchResultsScreen.cs</Link>
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="..\..\..\ThirdParty\GamepadConfig\SDL.dll">
-      <Link>SDL.dll</Link>
+    <Content Include="..\..\ThirdParty\GamepadConfig\SDL.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\Audio\wav\asteroid_touch.xnb">
-      <Link>Content\Audio\wav\asteroid_touch.xnb</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\Audio\wav\explosion_large.xnb">
-      <Link>Content\Audio\wav\explosion_large.xnb</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\Audio\wav\explosion_medium.xnb">
-      <Link>Content\Audio\wav\explosion_medium.xnb</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\Audio\wav\explosion_shockwave.xnb">
-      <Link>Content\Audio\wav\explosion_shockwave.xnb</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\Audio\wav\fire_laser1.xnb">
-      <Link>Content\Audio\wav\fire_laser1.xnb</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\Audio\wav\fire_laser2.xnb">
-      <Link>Content\Audio\wav\fire_laser2.xnb</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\Audio\wav\fire_laser3.xnb">
-      <Link>Content\Audio\wav\fire_laser3.xnb</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\Audio\wav\fire_rocket1.xnb">
-      <Link>Content\Audio\wav\fire_rocket1.xnb</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\Audio\wav\fire_rocket2.xnb">
-      <Link>Content\Audio\wav\fire_rocket2.xnb</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\Audio\wav\menu_scroll.xnb">
-      <Link>Content\Audio\wav\menu_scroll.xnb</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\Audio\wav\menu_select.xnb">
-      <Link>Content\Audio\wav\menu_select.xnb</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\Audio\wav\player_spawn.xnb">
-      <Link>Content\Audio\wav\player_spawn.xnb</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\Audio\wav\powerup_spawn.xnb">
-      <Link>Content\Audio\wav\powerup_spawn.xnb</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\Audio\wav\powerup_touch.xnb">
-      <Link>Content\Audio\wav\powerup_touch.xnb</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\Audio\wav\rocket.xnb">
-      <Link>Content\Audio\wav\rocket.xnb</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\BloomPostprocess\Effects\BloomCombine.fsh">
-      <Link>Content\BloomPostprocess\Effects\BloomCombine.fsh</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\BloomPostprocess\Effects\BloomExtract.fsh">
-      <Link>Content\BloomPostprocess\Effects\BloomExtract.fsh</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\BloomPostprocess\Effects\GaussianBlur.fsh">
-      <Link>Content\BloomPostprocess\Effects\GaussianBlur.fsh</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\Effects\Clouds.fsh">
-      <Link>Content\Effects\Clouds.fsh</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\Fonts\MenuFont.xnb">
-      <Link>Content\Fonts\MenuFont.xnb</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\Fonts\MessageBox.xnb">
-      <Link>Content\Fonts\MessageBox.xnb</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\Fonts\NetRumbleFont.xnb">
-      <Link>Content\Fonts\NetRumbleFont.xnb</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\One Step Beyond.wma">
-      <Link>Content\One Step Beyond.wma</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\Particles\laserExplosion.xml">
-      <Link>Content\Particles\laserExplosion.xml</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\Particles\mineExplosion.xml">
-      <Link>Content\Particles\mineExplosion.xml</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\Particles\rocketExplosion.xml">
-      <Link>Content\Particles\rocketExplosion.xml</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\Particles\rocketTrail.xml">
-      <Link>Content\Particles\rocketTrail.xml</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\Particles\shipExplosion.xml">
-      <Link>Content\Particles\shipExplosion.xml</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\Particles\shipSpawn.xml">
-      <Link>Content\Particles\shipSpawn.xml</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\Textures\asteroid0.xnb">
-      <Link>Content\Textures\asteroid0.xnb</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\Textures\asteroid1.xnb">
-      <Link>Content\Textures\asteroid1.xnb</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\Textures\asteroid2.xnb">
-      <Link>Content\Textures\asteroid2.xnb</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\Textures\barrierEnd.xnb">
-      <Link>Content\Textures\barrierEnd.xnb</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\Textures\barrierPurple.xnb">
-      <Link>Content\Textures\barrierPurple.xnb</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\Textures\barrierRed.xnb">
-      <Link>Content\Textures\barrierRed.xnb</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\Textures\blank.xnb">
-      <Link>Content\Textures\blank.xnb</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\Textures\chatAble.xnb">
-      <Link>Content\Textures\chatAble.xnb</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\Textures\chatMute.xnb">
-      <Link>Content\Textures\chatMute.xnb</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\Textures\chatTalking.xnb">
-      <Link>Content\Textures\chatTalking.xnb</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\Textures\clouds.xnb">
-      <Link>Content\Textures\clouds.xnb</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\Textures\explosion.xnb">
-      <Link>Content\Textures\explosion.xnb</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\Textures\laser.xnb">
-      <Link>Content\Textures\laser.xnb</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\Textures\mine.xnb">
-      <Link>Content\Textures\mine.xnb</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\Textures\powerupDoubleLaser.xnb">
-      <Link>Content\Textures\powerupDoubleLaser.xnb</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\Textures\powerupRocket.xnb">
-      <Link>Content\Textures\powerupRocket.xnb</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\Textures\powerupTripleLaser.xnb">
-      <Link>Content\Textures\powerupTripleLaser.xnb</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\Textures\ready.xnb">
-      <Link>Content\Textures\ready.xnb</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\Textures\rocket.xnb">
-      <Link>Content\Textures\rocket.xnb</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\Textures\ship0.xnb">
-      <Link>Content\Textures\ship0.xnb</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\Textures\ship0Overlay.xnb">
-      <Link>Content\Textures\ship0Overlay.xnb</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\Textures\ship1.xnb">
-      <Link>Content\Textures\ship1.xnb</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\Textures\ship1Overlay.xnb">
-      <Link>Content\Textures\ship1Overlay.xnb</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\Textures\ship2.xnb">
-      <Link>Content\Textures\ship2.xnb</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\Textures\ship2Overlay.xnb">
-      <Link>Content\Textures\ship2Overlay.xnb</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\Textures\ship3.xnb">
-      <Link>Content\Textures\ship3.xnb</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\Textures\ship3Overlay.xnb">
-      <Link>Content\Textures\ship3Overlay.xnb</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\Textures\shipShields.xnb">
-      <Link>Content\Textures\shipShields.xnb</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\Textures\title.xnb">
-      <Link>Content\Textures\title.xnb</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\Textures\Particles\defaultParticle.xnb">
-      <Link>Content\Textures\Particles\defaultParticle.xnb</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\Textures\Particles\particle.xnb">
-      <Link>Content\Textures\Particles\particle.xnb</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\Textures\Particles\smoke.xnb">
-      <Link>Content\Textures\Particles\smoke.xnb</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\Textures\Particles\spark.xnb">
-      <Link>Content\Textures\Particles\spark.xnb</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <None Include="app.config" />
+    <Content Include="Content\Effects\Clouds.xnb">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Effects\" />
@@ -462,7 +354,7 @@
       <Project>{7DE47032-A904-4C29-BD22-2D235E8D91BA}</Project>
       <Name>MonoGame.Framework.Windows</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\ThirdParty\Lidgren.Network\Lidgren.Network.Windows.csproj">
+    <ProjectReference Include="..\..\ThirdParty\Lidgren.Network\Lidgren.Network.Windows.csproj">
       <Project>{AE483C29-042E-4226-BA52-D247CE7676DA}</Project>
       <Name>Lidgren.Network.Windows</Name>
     </ProjectReference>
