@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>10.0.0</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{C9382003-668B-48E6-86BC-7ECDE3ECFDBE}</ProjectGuid>
+    <ProjectTypeGuids>{948B3504-5B70-4649-8FE4-BDE1FB46EC69};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <OutputType>Exe</OutputType>
+    <RootNamespace>StartWarrior</RootNamespace>
+    <AssemblyName>StartWarrior</AssemblyName>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug</OutputPath>
+    <DefineConstants>DEBUG;</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <ConsolePause>false</ConsolePause>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>none</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Release</OutputPath>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <ConsolePause>false</ConsolePause>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="MonoMac" />
+    <Reference Include="artemis">
+      <HintPath>Artemis\PC\artemis.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Info.plist"></None>
+    <None Include="Game.ico" />
+    <None Include="GameThumbnail.png" />
+    <None Include="PhoneGameThumb.png" />
+    <None Include="Content\myFont.spritefont" />
+    <None Include="Readme.md" />
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(MSBuildExtensionsPath)\Mono\MonoMac\v0.0\Mono.MonoMac.targets" />
+  <ItemGroup>
+    <ProjectReference Include="..\..\MonoGame.Framework\MonoGame.Framework.MacOS.csproj">
+      <Project>{36C538E6-C32A-4A8D-A39C-566173D7118E}</Project>
+      <Name>MonoGame.Framework.MacOS</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Program.cs" />
+    <Compile Include="Game1.cs" />
+    <Compile Include="Components\Enemy.cs" />
+    <Compile Include="Components\Expires.cs" />
+    <Compile Include="Components\Health.cs" />
+    <Compile Include="Components\SpatialForm.cs" />
+    <Compile Include="Components\Transform.cs" />
+    <Compile Include="Components\Velocity.cs" />
+    <Compile Include="Components\Weapon.cs" />
+    <Compile Include="Systems\CollisionSystem.cs" />
+    <Compile Include="Systems\EnemyShipMovementSystem.cs" />
+    <Compile Include="Systems\EnemyShooterSystem.cs" />
+    <Compile Include="Systems\EnemySpawnSystem.cs" />
+    <Compile Include="Systems\ExpirationSystem.cs" />
+    <Compile Include="Systems\HealthBarRenderSystem.cs" />
+    <Compile Include="Systems\HudRenderSystem.cs" />
+    <Compile Include="Systems\MovementSystem.cs" />
+    <Compile Include="Systems\PlayerShipControlSystem.cs" />
+    <Compile Include="Systems\RenderSystem.cs" />
+    <Compile Include="Spatials\EnemyShip.cs" />
+    <Compile Include="Spatials\Explosion.cs" />
+    <Compile Include="Spatials\Missile.cs" />
+    <Compile Include="Spatials\PlayerShip.cs" />
+    <Compile Include="Spatials\ShipExplosion.cs" />
+    <Compile Include="Primitives\Lines.cs" />
+    <Compile Include="Primitives\PrimitiveBatch.cs" />
+    <Compile Include="Primitives\Triangles.cs" />
+    <Compile Include="Primitives\TrianglesStrip.cs" />
+    <Compile Include="EntityFactory.cs" />
+    <Compile Include="Pool.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Content\Arial.xnb" />
+    <Content Include="Content\bullet.png" />
+    <Content Include="Content\enemy.png" />
+    <Content Include="Content\explosion.png" />
+    <Content Include="Content\player.png" />
+  </ItemGroup>
+</Project>

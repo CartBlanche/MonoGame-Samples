@@ -5,53 +5,53 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lidgren.Network.iOS", "..\T
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonoGame.Framework.iOS", "..\MonoGame.Framework\MonoGame.Framework.iOS.csproj", "{DB8508BB-9849-4CC2-BC0F-8EB5DACB3C47}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonoGame.Samples.Aiming", "iOS\Aiming\MonoGame.Samples.Aiming.csproj", "{E4C7960D-E564-4CD5-85D6-2B7B0B3DA5BA}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonoGame.Samples.Aiming", "Aiming\MonoGame.Samples.Aiming.iOS.csproj", "{E4C7960D-E564-4CD5-85D6-2B7B0B3DA5BA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonoGame.Samples.BatteryStatus", "iOS\BatteryStatus\MonoGame.Samples.BatteryStatus.csproj", "{B1E27EDB-2AC5-4A8A-8FD2-29CEEBDF3344}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonoGame.Samples.BatteryStatus", "BatteryStatus\MonoGame.Samples.BatteryStatus.iOS.csproj", "{B1E27EDB-2AC5-4A8A-8FD2-29CEEBDF3344}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonoGame.Samples.BouncingBox", "iOS\BouncingBox\MonoGame.Samples.BouncingBox.csproj", "{F5FA28E2-53B2-482B-8723-71588DF50BB6}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonoGame.Samples.BouncingBox", "BouncingBox\MonoGame.Samples.BouncingBox.iOS.csproj", "{F5FA28E2-53B2-482B-8723-71588DF50BB6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonoGame.Samples.ChaseAndEvade", "iOS\ChaseAndEvade\MonoGame.Samples.ChaseAndEvade.csproj", "{1557EE13-80AB-4E4C-9C10-9CBFC8E727C3}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonoGame.Samples.ChaseAndEvade", "ChaseAndEvade\MonoGame.Samples.ChaseAndEvade.iOS.csproj", "{1557EE13-80AB-4E4C-9C10-9CBFC8E727C3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonoGame.Samples.Draw2D", "iOS\Draw2D\MonoGame.Samples.Draw2D.csproj", "{DEC435F4-9E84-490B-9890-72E5F514B8D0}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonoGame.Samples.Draw2D", "Draw2D\MonoGame.Samples.Draw2D.iOS.csproj", "{DEC435F4-9E84-490B-9890-72E5F514B8D0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonoGame.Samples.GameComponents", "iOS\GameComponents\MonoGame.Samples.GameComponents.csproj", "{4F51EB5C-03A1-4488-8EEA-0E8F2411DB0C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonoGame.Samples.GameComponents", "GameComponents\MonoGame.Samples.GameComponents.iOS.csproj", "{4F51EB5C-03A1-4488-8EEA-0E8F2411DB0C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonoGame.Samples.GameStateManagement", "iOS\GameStateManagement\MonoGame.Samples.GameStateManagement.csproj", "{B1A596F8-B26C-4826-99D1-94C9327AB586}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonoGame.Samples.GameStateManagement", "GameStateManagement\MonoGame.Samples.GameStateManagement.iOS.csproj", "{B1A596F8-B26C-4826-99D1-94C9327AB586}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonoGame.Samples.MultiTouch", "iOS\MultiTouch\MonoGame.Samples.MultiTouch.csproj", "{DF8DF5E3-2FF4-46DD-9EE0-AE3C9923C6BA}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonoGame.Samples.MultiTouch", "MultiTouch\MonoGame.Samples.MultiTouch.iOS.csproj", "{DF8DF5E3-2FF4-46DD-9EE0-AE3C9923C6BA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonoGame.Samples.ParticleSample", "iOS\ParticleSample\MonoGame.Samples.ParticleSample.csproj", "{4D0C3C5D-B4A5-4C6F-8756-4A05C50ECC3A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonoGame.Samples.ParticleSample", "ParticleSample\MonoGame.Samples.ParticleSample.iOS.csproj", "{4D0C3C5D-B4A5-4C6F-8756-4A05C50ECC3A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonoGame.Samples.Peer2Peer", "iOS\Peer2Peer\MonoGame.Samples.Peer2Peer.csproj", "{1217FD6D-AFF5-4A21-AA0C-0AE7F14B848F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonoGame.Samples.Peer2Peer", "Peer2PeerSample\MonoGame.Samples.Peer2Peer.iOS.csproj", "{1217FD6D-AFF5-4A21-AA0C-0AE7F14B848F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonoGame.Samples.PerPixelCollision", "iOS\PerPixelCollision\MonoGame.Samples.PerPixelCollision.csproj", "{CE342066-BCCD-4989-A401-0D36287276EF}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonoGame.Samples.PerPixelCollision", "PerPixelCollisionSample\MonoGame.Samples.PerPixelCollision.iOS.csproj", "{CE342066-BCCD-4989-A401-0D36287276EF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonoGame.Samples.RectangleCollision", "iOS\RectangleCollision\MonoGame.Samples.RectangleCollision.csproj", "{BF785698-D6BF-465C-9089-B48B49D0377A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonoGame.Samples.RectangleCollision", "RectangleCollisionSample\MonoGame.Samples.RectangleCollision.iOS.csproj", "{BF785698-D6BF-465C-9089-B48B49D0377A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonoGame.Samples.RenderTarget2D", "iOS\RenderTarget2D\MonoGame.Samples.RenderTarget2D.csproj", "{0A404652-27C9-40AA-B037-5665BC725621}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonoGame.Samples.RenderTarget2D", "RenderTarget2DSample\MonoGame.Samples.RenderTarget2D.iOS.csproj", "{0A404652-27C9-40AA-B037-5665BC725621}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonoGame.Samples.RockRain", "iOS\RockRain\MonoGame.Samples.RockRain.csproj", "{6AD0E621-8D0C-42B1-A42C-B36F8537B234}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonoGame.Samples.RockRain", "RockRain\MonoGame.Samples.RockRain.iOS.csproj", "{6AD0E621-8D0C-42B1-A42C-B36F8537B234}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonoGame.Samples.SpriteFont", "iOS\SpriteFont\MonoGame.Samples.SpriteFont.csproj", "{327EE711-BA4F-40DA-AD4A-F69DD0B2FCFB}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonoGame.Samples.SpriteFont", "SpriteFont\MonoGame.Samples.SpriteFont.iOS.csproj", "{327EE711-BA4F-40DA-AD4A-F69DD0B2FCFB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonoGame.Samples.TouchGesture", "iOS\TouchGesture\MonoGame.Samples.TouchGesture.csproj", "{58763B1D-A43F-4D2B-9279-DBA505C18B32}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonoGame.Samples.TouchGesture", "TouchGesture\MonoGame.Samples.TouchGesture.iOS.csproj", "{58763B1D-A43F-4D2B-9279-DBA505C18B32}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonoGame.Samples.TransformedCollision", "iOS\TransformedCollision\MonoGame.Samples.TransformedCollision.csproj", "{96F32BCF-B579-438B-A5DC-667BB9A5849C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonoGame.Samples.TransformedCollision", "TransformedCollisionSample\MonoGame.Samples.TransformedCollision.iOS.csproj", "{96F32BCF-B579-438B-A5DC-667BB9A5849C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonoGame.Samples.VirtualGamePad", "iOS\VirtualGamePad\MonoGame.Samples.VirtualGamePad.csproj", "{326DC8E8-649F-4F96-92BA-EE0EF51A32DB}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonoGame.Samples.VirtualGamePad", "VirtualGamePad\MonoGame.Samples.VirtualGamePad.iOS.csproj", "{326DC8E8-649F-4F96-92BA-EE0EF51A32DB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonoGame.Samples.Waypoint", "iOS\Waypoint\MonoGame.Samples.Waypoint.csproj", "{75E860EE-EBF1-4BB4-AE39-9729900AFD39}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonoGame.Samples.Waypoint", "Waypoint\MonoGame.Samples.Waypoint.iOS.csproj", "{75E860EE-EBF1-4BB4-AE39-9729900AFD39}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonoGame.Samples.VideoPlayer", "iOS\VideoPlayer\MonoGame.Samples.VideoPlayer.csproj", "{D6A6EF59-928C-4DDB-AD8D-D85DD914BF82}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonoGame.Samples.VideoPlayer", "VideoPlayer\MonoGame.Samples.VideoPlayer.iOS.csproj", "{D6A6EF59-928C-4DDB-AD8D-D85DD914BF82}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonoGame.Samples.CatapultWars", "iOS\Catapults\MonoGame.Samples.CatapultWars.csproj", "{0FC9E0AB-3FC0-4593-970A-16FA6646CD6C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonoGame.Samples.CatapultWars", "CatapaultWars\MonoGame.Samples.CatapultWars.iOS.csproj", "{0FC9E0AB-3FC0-4593-970A-16FA6646CD6C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonoGame.Samples.Orientation", "iOS\Orientation\MonoGame.Samples.Orientation.csproj", "{DCE047E9-894F-4C5C-B972-835B62CDEB48}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonoGame.Samples.Orientation", "Orientation\MonoGame.Samples.Orientation.iOS.csproj", "{DCE047E9-894F-4C5C-B972-835B62CDEB48}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonoGame.Samples.Input", "iOS\Input\MonoGame.Samples.Input.csproj", "{5FFC1EED-2AD5-4C3C-9824-84D9991A1F30}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonoGame.Samples.Input", "Input\MonoGame.Samples.Input.iOS.csproj", "{5FFC1EED-2AD5-4C3C-9824-84D9991A1F30}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonoGame.Samples.CatapultNetWars", "iOS\Catapults\CatapultNetWars\MonoGame.Samples.CatapultNetWars.csproj", "{65DE6FC7-CB94-4E4F-8FBE-E3EA9A34967C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonoGame.Samples.CatapultNetWars", "CatapultNetWars\MonoGame.Samples.CatapultNetWars.iOS.csproj", "{65DE6FC7-CB94-4E4F-8FBE-E3EA9A34967C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -369,6 +369,6 @@ Global
 		{F5FA28E2-53B2-482B-8723-71588DF50BB6}.Release|iPhoneSimulator.Build.0 = Release|iPhoneSimulator
 	EndGlobalSection
 	GlobalSection(MonoDevelopProperties) = preSolution
-		StartupItem = iOS\Draw2D\MonoGame.Samples.Draw2D.csproj
+		StartupItem = Draw2D\MonoGame.Samples.Draw2D.iOS.csproj
 	EndGlobalSection
 EndGlobal

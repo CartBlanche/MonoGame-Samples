@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>10.0.0</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{557C7051-DFEB-4F19-A706-102574443BCB}</ProjectGuid>
+    <ProjectTypeGuids>{948B3504-5B70-4649-8FE4-BDE1FB46EC69};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <OutputType>Exe</OutputType>
+    <RootNamespace>XNAPacMan</RootNamespace>
+    <AssemblyName>XNAPacMan</AssemblyName>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug</OutputPath>
+    <DefineConstants>DEBUG;</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <ConsolePause>false</ConsolePause>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>none</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Release</OutputPath>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <ConsolePause>false</ConsolePause>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="MonoMac" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Info.plist"></None>
+    <None Include="Game.ico" />
+    <None Include="GameThumbnail.png" />
+    <None Include="Content\bonus\Apple.png" />
+    <None Include="Content\bonus\Banana.png" />
+    <None Include="Content\bonus\Bell.png" />
+    <None Include="Content\bonus\Cherry.png" />
+    <None Include="Content\bonus\Key.png" />
+    <None Include="Content\bonus\Orange.png" />
+    <None Include="Content\bonus\Pear.png" />
+    <None Include="Content\bonus\Pretzel.png" />
+    <None Include="Content\bonus\Strawberry.png" />
+    <None Include="Content\sprites\Board.png" />
+    <None Include="Content\sprites\BoardFlash.png" />
+    <None Include="Content\sprites\Crump.png" />
+    <None Include="Content\sprites\DyingSheetNew.png" />
+    <None Include="Content\sprites\ExtraLife.png" />
+    <None Include="Content\sprites\GhostBase.png" />
+    <None Include="Content\sprites\GhostBase2.png" />
+    <None Include="Content\sprites\GhostChased.png" />
+    <None Include="Content\sprites\GhostEyes.png" />
+    <None Include="Content\sprites\GhostEyesCenter.png" />
+    <None Include="Content\sprites\PacManEating1.png" />
+    <None Include="Content\sprites\PacManEating2.png" />
+    <None Include="Content\sprites\PacManEating3.png" />
+    <None Include="Content\sprites\PacManEating4.png" />
+    <None Include="Content\sprites\PacManEating5.png" />
+    <None Include="Content\sprites\PacManEating6.png" />
+    <None Include="Content\sprites\PacManEating7.png" />
+    <None Include="Content\sprites\PacManEating8.png" />
+    <None Include="Content\sprites\PacManEating9.png" />
+    <None Include="Content\sprites\PowerPill.png" />
+    <None Include="Content\sprites\Selection.png" />
+    <None Include="Content\sprites\Title.png" />
+    <None Include="README.txt" />
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(MSBuildExtensionsPath)\Mono\MonoMac\v0.0\Mono.MonoMac.targets" />
+  <ItemGroup>
+    <ProjectReference Include="..\..\MonoGame.Framework\MonoGame.Framework.MacOS.csproj">
+      <Project>{36C538E6-C32A-4A8D-A39C-566173D7118E}</Project>
+      <Name>MonoGame.Framework.MacOS</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Constants.cs" />
+    <Compile Include="GameLoop.cs" />
+    <Compile Include="Ghost.cs" />
+    <Compile Include="GhostSoundsManager.cs" />
+    <Compile Include="Grid.cs" />
+    <Compile Include="HighScores.cs" />
+    <Compile Include="Menu.cs" />
+    <Compile Include="Player.cs" />
+    <Compile Include="Program.cs" />
+    <Compile Include="XNAPacMan.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Content\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Content\Audio\XNAPacManAudio.xap" />
+    <Content Include="Content\Audio\XNAPacManAudio.xml" />
+    <Content Include="Content\Audio\bg1.wav" />
+    <Content Include="Content\Audio\bg2.wav" />
+    <Content Include="Content\Audio\bg3.wav" />
+    <Content Include="Content\Audio\bgghost.wav" />
+    <Content Include="Content\Audio\bgghosteyes.wav" />
+    <Content Include="Content\Audio\eatfruit.wav" />
+    <Content Include="Content\Audio\eatghost.wav" />
+    <Content Include="Content\Audio\eatpill1.wav" />
+    <Content Include="Content\Audio\eatpill2.wav" />
+    <Content Include="Content\Audio\extralife.wav" />
+    <Content Include="Content\Audio\killed.wav" />
+    <Content Include="Content\Audio\newgame.wav" />
+    <Content Include="Content\Audio\newlevel.wav" />
+    <Content Include="Content\Audio\Sound Bank.xsb" />
+    <Content Include="Content\Audio\Wave Bank.xwb" />
+    <Content Include="Content\Audio\YEPAudio.xgs" />
+    <Content Include="Content\bonus\Apple.xnb" />
+    <Content Include="Content\bonus\Banana.xnb" />
+    <Content Include="Content\bonus\Bell.xnb" />
+    <Content Include="Content\bonus\Cherry.xnb" />
+    <Content Include="Content\bonus\Key.xnb" />
+    <Content Include="Content\bonus\Orange.xnb" />
+    <Content Include="Content\bonus\Pear.xnb" />
+    <Content Include="Content\bonus\Pretzel.xnb" />
+    <Content Include="Content\bonus\Strawberry.xnb" />
+    <Content Include="Content\sprites\Board.xnb" />
+    <Content Include="Content\sprites\BoardFlash.xnb" />
+    <Content Include="Content\sprites\Crump.xnb" />
+    <Content Include="Content\sprites\DyingSheetNew.xnb" />
+    <Content Include="Content\sprites\ExtraLife.xnb" />
+    <Content Include="Content\sprites\GhostBase.xnb" />
+    <Content Include="Content\sprites\GhostBase2.xnb" />
+    <Content Include="Content\sprites\GhostChased.xnb" />
+    <Content Include="Content\sprites\GhostEyes.xnb" />
+    <Content Include="Content\sprites\GhostEyesCenter.xnb" />
+    <Content Include="Content\sprites\PacManEating1.xnb" />
+    <Content Include="Content\sprites\PacManEating2.xnb" />
+    <Content Include="Content\sprites\PacManEating3.xnb" />
+    <Content Include="Content\sprites\PacManEating4.xnb" />
+    <Content Include="Content\sprites\PacManEating5.xnb" />
+    <Content Include="Content\sprites\PacManEating6.xnb" />
+    <Content Include="Content\sprites\PacManEating7.xnb" />
+    <Content Include="Content\sprites\PacManEating8.xnb" />
+    <Content Include="Content\sprites\PacManEating9.xnb" />
+    <Content Include="Content\sprites\PowerPill.xnb" />
+    <Content Include="Content\sprites\Selection.xnb" />
+    <Content Include="Content\sprites\Title.xnb" />
+    <Content Include="Content\Grid.txt" />
+    <Content Include="Content\MenuItem.xnb" />
+    <Content Include="Content\Score.xnb" />
+    <Content Include="Content\ScoreEvent.xnb" />
+  </ItemGroup>
+</Project>
