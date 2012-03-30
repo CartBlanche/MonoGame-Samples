@@ -1,8 +1,15 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+
+#if MONOMAC
 using MonoMac.AppKit;
 using MonoMac.Foundation;
+#endif
 
 namespace TiledSprites
 {
+#if MONOMAC
 	class Program
 	{
 		static void Main (string [] args)
@@ -31,4 +38,20 @@ namespace TiledSprites
 			return true;
 		}
 	}	
+#else
+    static class Program
+    {
+        private static TiledSpritesSample game;
+
+        /// <summary>
+        /// The main entry point for the application.
+        /// </summary>
+        [STAThread]
+        static void Main()
+        {
+            game = new TiledSpritesSample();
+            game.Run();
+        }
+    }
+#endif
 }

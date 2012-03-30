@@ -73,7 +73,7 @@ namespace NetRumble
             // initialize the graphics device manager
             graphics = new GraphicsDeviceManager(this);
 
-#if !LINUX
+#if LINUX || MONOMAC || LINUX
             graphics.PreferredBackBufferWidth = 1280;
             graphics.PreferredBackBufferHeight = 720;
 #else

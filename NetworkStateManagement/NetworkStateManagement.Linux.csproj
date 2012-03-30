@@ -10,7 +10,6 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>NetworkStateManagement</RootNamespace>
     <AssemblyName>NetworkStateManagement</AssemblyName>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
@@ -183,7 +182,7 @@
       <Project>{35253CE1-C864-4CD3-8249-4D1319748E8F}</Project>
       <Name>MonoGame.Framework.Linux</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\ThirdParty\Lidgren.Network\Lidgren.Network.Linux.csproj">
+    <ProjectReference Include="..\..\ThirdParty\Lidgren.Network\Lidgren.Network.Linux.csproj">
       <Project>{AE483C29-042E-4226-BA52-D247CE7676DA}</Project>
       <Name>Lidgren.Network.Linux</Name>
     </ProjectReference>

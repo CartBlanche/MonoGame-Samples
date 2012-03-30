@@ -1,8 +1,15 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+
+#if MONOMAC
 using MonoMac.AppKit;
 using MonoMac.Foundation;
+#endif
 
 namespace SpriteEffects
 {
+#if MONOMAC
 	static class Program
 	{
 		/// <summary>
@@ -35,5 +42,21 @@ namespace SpriteEffects
 			return true;
 		}
 	}		
+#else
+    static class Program
+    {
+        private static SpriteEffectsGame game;
+
+        /// <summary>
+        /// The main entry point for the application.
+        /// </summary>
+        [STAThread]
+        static void Main()
+        {
+            game = new SpriteEffectsGame();
+            game.Run();
+        }
+    }
+#endif
 }
 

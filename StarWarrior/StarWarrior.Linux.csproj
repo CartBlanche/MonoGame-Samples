@@ -9,7 +9,6 @@
     <OutputType>Exe</OutputType>
     <RootNamespace>StarWarrior</RootNamespace>
     <AssemblyName>StarWarrior</AssemblyName>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -139,8 +138,7 @@
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />
-    <Reference Include="artemis, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
-      <SpecificVersion>False</SpecificVersion>
+    <Reference Include="artemis">
       <HintPath>Artemis\PC\artemis.dll</HintPath>
     </Reference>
   </ItemGroup>

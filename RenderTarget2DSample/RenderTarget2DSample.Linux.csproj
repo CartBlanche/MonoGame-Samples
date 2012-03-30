@@ -10,7 +10,6 @@
     <RootNamespace>RenderTarget2DSample</RootNamespace>
     <AssemblyName>RenderTarget2DSample</AssemblyName>
     <StartupObject>RenderTarget2DSample.Program</StartupObject>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>

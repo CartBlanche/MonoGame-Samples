@@ -149,7 +149,11 @@ namespace ChaseAndEvade
 			graphics.PreferredBackBufferWidth = 320;
 			graphics.PreferredBackBufferHeight = 480;
 #endif
+#if WINDOWS || MONOMAC || LINUX
+			graphics.IsFullScreen = false;
+#else
 			graphics.IsFullScreen = true;
+#endif
 		}
 
 		/// <summary>

@@ -1,11 +1,16 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
 
+#if MONOMAC
 using MonoMac.AppKit;
 using MonoMac.Foundation;
+#endif
 
 namespace NetworkStateManagement
 {
 	#region Entry Point
+#if MONOMAC
 	static class Program
 	{
 		/// <summary>
@@ -39,7 +44,22 @@ namespace NetworkStateManagement
 			return true;
 		}
 	}	
-	
+#else
+    static class Program
+    {
+        private static NetworkStateManagementGame game;
+
+        /// <summary>
+        /// The main entry point for the application.
+        /// </summary>
+        [STAThread]
+        static void Main()
+        {
+            game = new NetworkStateManagementGame();
+            game.Run();
+        }
+    }
+#endif
 	#endregion
 }
 

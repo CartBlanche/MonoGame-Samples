@@ -1,8 +1,16 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+
+
+#if MONOMAC
 using MonoMac.AppKit;
 using MonoMac.Foundation;
+#endif
 
 namespace Tetris
 {
+#if MONOMAC
 	static class Program
 	{
 		/// <summary>
@@ -35,5 +43,21 @@ namespace Tetris
 			return true;
 		}
 	}		
+#else
+    static class Program
+    {
+        private static Engine game;
+
+        /// <summary>
+        /// The main entry point for the application.
+        /// </summary>
+        [STAThread]
+        static void Main()
+        {
+            game = new Engine();
+            game.Run();
+        }
+    }
+#endif
 }
 
