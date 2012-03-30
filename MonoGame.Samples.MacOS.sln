@@ -1,89 +1,89 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonoGame.Samples.Draw2D.MacOS", "MacOS\Draw2D\MonoGame.Samples.Draw2D.MacOS.csproj", "{A82EAD58-40D7-49BE-8F24-09FEA34F9E55}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonoGame.Framework.MacOS", "..\MonoGame.Framework\MonoGame.Framework.MacOS.csproj", "{36C538E6-C32A-4A8D-A39C-566173D7118E}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lidgren.Network.MacOS", "..\ThirdParty\Lidgren.Network\Lidgren.Network.MacOS.csproj", "{AE483C29-042E-4226-BA52-D247CE7676DA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonoGame.Samples.BouncingBox.MacOS", "MacOS\BouncingBox\MonoGame.Samples.BouncingBox.MacOS.csproj", "{4480BF44-7CE2-4A22-9372-DAFA3B05390E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonoGame.Samples.BouncingBox.MacOS", "BouncingBox\MonoGame.Samples.BouncingBox.MacOS.csproj", "{4480BF44-7CE2-4A22-9372-DAFA3B05390E}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "BookSourceCode", "BookSourceCode", "{80262DC5-B246-4DF4-88CD-D1742CCF81BA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AsteroidBeltAssault", "MacOS\BookSourceCode\XNAGameDevelopmentbyExampleCode\AsteroidBeltAssault\AsteroidBeltAssault.csproj", "{1585306B-CF46-479D-B234-1E10EDF4D741}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AsteroidBeltAssault.MacOS", "BookSourceCode\XNAGameDevelopmentbyExampleCode\AsteroidBeltAssault\AsteroidBeltAssault.MacOS.csproj", "{1585306B-CF46-479D-B234-1E10EDF4D741}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FloodControl", "MacOS\BookSourceCode\XNAGameDevelopmentbyExampleCode\FloodControl\FloodControl.csproj", "{F3115910-E6D1-450D-97FB-A8168A5D622E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FloodControl.MacOS", "BookSourceCode\XNAGameDevelopmentbyExampleCode\FloodControl\FloodControl.MacOS.csproj", "{F3115910-E6D1-450D-97FB-A8168A5D622E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GemstoneHunter", "MacOS\BookSourceCode\XNAGameDevelopmentbyExampleCode\GemstoneHunter\GemstoneHunter.csproj", "{81313197-A8DF-4465-B503-2DD8248B80A9}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GemstoneHunter.MacOS", "BookSourceCode\XNAGameDevelopmentbyExampleCode\GemstoneHunter\GemstoneHunter.MacOS.csproj", "{81313197-A8DF-4465-B503-2DD8248B80A9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RobotRampage", "MacOS\BookSourceCode\XNAGameDevelopmentbyExampleCode\RobotRampage\RobotRampage.csproj", "{9522776F-02BA-4BED-B8BB-6BAE580F4068}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RobotRampage.MacOS", "BookSourceCode\XNAGameDevelopmentbyExampleCode\RobotRampage\RobotRampage.MacOS.csproj", "{9522776F-02BA-4BED-B8BB-6BAE580F4068}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tile Engine", "MacOS\BookSourceCode\XNAGameDevelopmentbyExampleCode\GemstoneHunter\TileEngine\Tile Engine.csproj", "{521972FD-1A9B-4CFD-A435-EB2224985131}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tile Engine.MacOS", "BookSourceCode\XNAGameDevelopmentbyExampleCode\GemstoneHunter\TileEngine\Tile Engine.MacOS.csproj", "{521972FD-1A9B-4CFD-A435-EB2224985131}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonoGame.Samples.ChaseAndEvade.MacOS", "MacOS\ChaseAndEvade\MonoGame.Samples.ChaseAndEvade.MacOS.csproj", "{D03F3BAF-E4D0-4B6B-A567-9A0E2F882335}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonoGame.Samples.ChaseAndEvade.MacOS", "ChaseAndEvade\MonoGame.Samples.ChaseAndEvade.MacOS.csproj", "{D03F3BAF-E4D0-4B6B-A567-9A0E2F882335}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GameStateManagement", "MacOS\GameStateManagement\GameStateManagement.csproj", "{4AD6BC7A-DB9A-4A6F-9EE2-DAD9B0BBA2A8}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GameStateManagement.MacOS", "GameStateManagement\GameStateManagement.MacOS.csproj", "{4AD6BC7A-DB9A-4A6F-9EE2-DAD9B0BBA2A8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GooCursor", "MacOS\GooCursor\GooCursor.csproj", "{18E6467D-47C4-47CA-8CD1-508AD311C054}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GooCursor.MacOS", "GooCursor\GooCursor.MacOS.csproj", "{18E6467D-47C4-47CA-8CD1-508AD311C054}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HoneycombRush", "MacOS\HoneycombRush\HoneycombRush.csproj", "{2C0696B3-0D1E-4039-B4AB-9A210B3CF290}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HoneycombRush.MacOS", "HoneycombRush\HoneycombRush.MacOS.csproj", "{2C0696B3-0D1E-4039-B4AB-9A210B3CF290}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetRumble", "MacOS\NetRumble\NetRumble.csproj", "{52735207-2136-433B-A3E4-4C082728EED8}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetRumble.MacOS", "NetRumble\NetRumble.MacOS.csproj", "{52735207-2136-433B-A3E4-4C082728EED8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetworkPrediction", "MacOS\NetworkPrediction\NetworkPrediction.csproj", "{05E3B2AB-1E38-4E19-864D-BECFA95139D6}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetworkPrediction.MacOS", "NetworkPrediction\NetworkPrediction.MacOS.csproj", "{05E3B2AB-1E38-4E19-864D-BECFA95139D6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetworkStateManagement", "MacOS\NetworkStateManagement\NetworkStateManagement.csproj", "{71871CF8-8563-4FA3-ABF2-EC1CBBF817E4}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetworkStateManagement.MacOS", "NetworkStateManagement\NetworkStateManagement.MacOS.csproj", "{71871CF8-8563-4FA3-ABF2-EC1CBBF817E4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Particle3DSample", "MacOS\Particle3DSample\Particle3DSample.csproj", "{1230A19A-FA76-4D12-85E5-68A452315299}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Particle3DSample.MacOS", "Particle3DSample\Particle3DSample.MacOS.csproj", "{1230A19A-FA76-4D12-85E5-68A452315299}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Peer2PeerSample", "MacOS\Peer2PeerSample\Peer2PeerSample.csproj", "{27C1B777-4E37-4E2B-9CE4-5FDEE8CD9C40}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Peer2PeerSample.MacOS", "Peer2PeerSample\Peer2PeerSample.MacOS.csproj", "{27C1B777-4E37-4E2B-9CE4-5FDEE8CD9C40}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PerPixelCollisionSample", "MacOS\PerPixelCollisionSample\PerPixelCollisionSample.csproj", "{56C67234-2829-4AB0-8FEE-C8D01617CDCE}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PerPixelCollisionSample.MacOS", "PerPixelCollisionSample\PerPixelCollisionSample.MacOS.csproj", "{56C67234-2829-4AB0-8FEE-C8D01617CDCE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RectangleCollisionSample", "MacOS\RectangleCollisionSample\RectangleCollisionSample.csproj", "{466FBEF8-3AB2-4CED-92B6-6250CFD310DB}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RectangleCollisionSample.MacOS", "RectangleCollisionSample\RectangleCollisionSample.MacOS.csproj", "{466FBEF8-3AB2-4CED-92B6-6250CFD310DB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpriteEffects", "MacOS\SpriteEffects\SpriteEffects.csproj", "{3B9ABB34-4D0F-4CFD-A02D-30D5569A060B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpriteEffects", "SpriteEffects\SpriteEffects.MacOS.csproj", "{3B9ABB34-4D0F-4CFD-A02D-30D5569A060B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonoGame.Samples.Tetris.MacOS", "MacOS\Tetris\MonoGame.Samples.Tetris.MacOS.csproj", "{FE144248-B1ED-4A7C-980C-7A2E603CE604}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonoGame.Samples.Tetris.MacOS", "Tetris\MonoGame.Samples.Tetris.MacOS.csproj", "{FE144248-B1ED-4A7C-980C-7A2E603CE604}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonoGame.Samples.TiledSprites.MacOS", "MacOS\TiledSprites\MonoGame.Samples.TiledSprites.MacOS.csproj", "{7D24D7EA-822C-4991-8BC9-1C2EF9C5F59A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonoGame.Samples.TiledSprites.MacOS", "TiledSprites\MonoGame.Samples.TiledSprites.MacOS.csproj", "{7D24D7EA-822C-4991-8BC9-1C2EF9C5F59A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TransformedCollisionSample", "MacOS\TransformedCollisionSample\TransformedCollisionSample.csproj", "{73162561-6D3B-4A7F-AC4B-E7040B0824BE}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ParticleSettingsMac", "MacOS\ParticleSettingsMac\ParticleSettingsMac.csproj", "{3388FF68-6F15-4F36-B226-7823E5309E92}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TransformedCollisionSample.MacOS", "TransformedCollisionSample\TransformedCollisionSample.MacOS.csproj", "{73162561-6D3B-4A7F-AC4B-E7040B0824BE}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "RolePlayingGame", "RolePlayingGame", "{D8364542-40DC-4D3C-9893-5DF46B9CEF77}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RolePlayingGame", "MacOS\RolePlayingGame\RolePlayingGame.csproj", "{75200892-E593-49EE-82D5-F59DB45883AD}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RolePlayingGame.MacOS", "RolePlayingGame\RolePlayingGame.MacOS.csproj", "{75200892-E593-49EE-82D5-F59DB45883AD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RolePlayingGameData", "MacOS\RolePlayingGame\RolePlayingGameData\RolePlayingGameData.csproj", "{098BBC2D-63A6-4C22-8A30-E6C4F4FC0AC4}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RolePlayingGameData", "RolePlayingGame\RolePlayingGameData\RolePlayingGameData.csproj", "{098BBC2D-63A6-4C22-8A30-E6C4F4FC0AC4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RenderTarget2DSample", "MacOS\RenderTarget2DSample\RenderTarget2DSample.csproj", "{973C423F-0CC0-4230-9E67-D944ED70ED19}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RenderTarget2DSample.MacOS", "RenderTarget2DSample\RenderTarget2DSample.MacOS.csproj", "{973C423F-0CC0-4230-9E67-D944ED70ED19}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ParticleSample", "MacOS\ParticleSample\ParticleSample.csproj", "{5CA0180F-C404-431A-87B5-03A26E5BFA23}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ParticleSample.MacOS", "ParticleSample\ParticleSample.MacOS.csproj", "{5CA0180F-C404-431A-87B5-03A26E5BFA23}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonoGame.Samples.VideoPlayer.MacOS", "MacOS\VideoPlayer\MonoGame.Samples.VideoPlayer.MacOS.csproj", "{71192C89-7FB6-49A4-A19D-FC89E3D18248}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonoGame.Samples.VideoPlayer.MacOS", "VideoPlayer\MonoGame.Samples.VideoPlayer.MacOS.csproj", "{71192C89-7FB6-49A4-A19D-FC89E3D18248}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StarWarrior", "MacOS\StarWarrior\StarWarrior.csproj", "{C9382003-668B-48E6-86BC-7ECDE3ECFDBE}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StarWarrior.MacOS", "StarWarrior\StarWarrior.MacOS.csproj", "{C9382003-668B-48E6-86BC-7ECDE3ECFDBE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Primitives", "MacOS\Primitives\Primitives.csproj", "{2DDBFED4-9955-4F02-9937-B9AE82836329}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Primitives.MacOS", "Primitives\Primitives.MacOS.csproj", "{2DDBFED4-9955-4F02-9937-B9AE82836329}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BackgroundThreadTester", "MacOS\BackgroundThreadTester\BackgroundThreadTester.csproj", "{8592FA21-37B6-41C8-BC7F-17EB4930B96A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BackgroundThreadTester.MacOS", "BackgroundThreadTester\BackgroundThreadTester.MacOS.csproj", "{8592FA21-37B6-41C8-BC7F-17EB4930B96A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InputReporter", "MacOS\InputReporter\InputReporter.csproj", "{A0669F3D-AB7C-43BB-9423-506E24629EF0}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InputReporter.MacOS", "InputReporter\InputReporter.MacOS.csproj", "{A0669F3D-AB7C-43BB-9423-506E24629EF0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TexturedQuad", "MacOS\TexturedQuad\TexturedQuad.csproj", "{ECD1D53E-F50A-4299-9B0F-2F64D6063513}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TexturedQuad.MacOS", "TexturedQuad\TexturedQuad.MacOS.csproj", "{ECD1D53E-F50A-4299-9B0F-2F64D6063513}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Colored3DCube", "MacOS\Colored3DCube\Colored3DCube.csproj", "{CF7A194A-CF38-4379-909F-1B5FFB8F79C4}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Colored3DCube.MacOS", "Colored3DCube\Colored3DCube.MacOS.csproj", "{CF7A194A-CF38-4379-909F-1B5FFB8F79C4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UseCustomVertex", "MacOS\UseCustomVertex\UseCustomVertex.csproj", "{2E7EF8E4-5662-4E24-A23E-860CA89334C1}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UseCustomVertex.MacOS", "UseCustomVertex\UseCustomVertex.MacOS.csproj", "{2E7EF8E4-5662-4E24-A23E-860CA89334C1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CatapaultGame", "MacOS\CatapaultWars\CatapaultGame.csproj", "{1F4BF77D-34DA-417D-96DE-24213A05729B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CatapaultGame.MacOS", "CatapaultWars\CatapaultGame.MacOS.csproj", "{1F4BF77D-34DA-417D-96DE-24213A05729B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CatapultNetWars", "MacOS\CatapultNetWars\CatapultNetWars.csproj", "{1F4BF87D-34DA-417D-96DE-24213A05739B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CatapultNetWars.MacOS", "CatapultNetWars\CatapultNetWars.MacOS.csproj", "{1F4BF87D-34DA-417D-96DE-24213A05739B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XNAPacMan", "MacOS\XNAPacMan\XNAPacMan.csproj", "{557C7051-DFEB-4F19-A706-102574443BCB}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XNAPacMan.MacOS", "XNAPacMan\XNAPacMan.MacOS.csproj", "{557C7051-DFEB-4F19-A706-102574443BCB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonoGame.Samples.Draw2D.MacOS", "Draw2D\MonoGame.Samples.Draw2D.MacOS.csproj", "{A82EAD58-40D7-49BE-8F24-09FEA34F9E55}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ParticleSettings", "Particle3DSample\ParticleSettings\ParticleSettings.csproj", "{3388FF68-6F15-4F36-B226-7823E5309E92}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -242,12 +242,20 @@ Global
 		{2E7EF8E4-5662-4E24-A23E-860CA89334C1}.Release|x86.Build.0 = Release|x86
 		{3388FF68-6F15-4F36-B226-7823E5309E92}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{3388FF68-6F15-4F36-B226-7823E5309E92}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3388FF68-6F15-4F36-B226-7823E5309E92}.Debug|iPhone.ActiveCfg = Debug|Any CPU
+		{3388FF68-6F15-4F36-B226-7823E5309E92}.Debug|iPhone.Build.0 = Debug|Any CPU
+		{3388FF68-6F15-4F36-B226-7823E5309E92}.Debug|iPhoneSimulator.ActiveCfg = Debug|Any CPU
+		{3388FF68-6F15-4F36-B226-7823E5309E92}.Debug|iPhoneSimulator.Build.0 = Debug|Any CPU
 		{3388FF68-6F15-4F36-B226-7823E5309E92}.Debug|x86.ActiveCfg = Debug|Any CPU
 		{3388FF68-6F15-4F36-B226-7823E5309E92}.Debug|x86.Build.0 = Debug|Any CPU
 		{3388FF68-6F15-4F36-B226-7823E5309E92}.Distribution|Any CPU.ActiveCfg = Debug|Any CPU
 		{3388FF68-6F15-4F36-B226-7823E5309E92}.Distribution|Any CPU.Build.0 = Debug|Any CPU
 		{3388FF68-6F15-4F36-B226-7823E5309E92}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3388FF68-6F15-4F36-B226-7823E5309E92}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3388FF68-6F15-4F36-B226-7823E5309E92}.Release|iPhone.ActiveCfg = Release|Any CPU
+		{3388FF68-6F15-4F36-B226-7823E5309E92}.Release|iPhone.Build.0 = Release|Any CPU
+		{3388FF68-6F15-4F36-B226-7823E5309E92}.Release|iPhoneSimulator.ActiveCfg = Release|Any CPU
+		{3388FF68-6F15-4F36-B226-7823E5309E92}.Release|iPhoneSimulator.Build.0 = Release|Any CPU
 		{3388FF68-6F15-4F36-B226-7823E5309E92}.Release|x86.ActiveCfg = Release|Any CPU
 		{3388FF68-6F15-4F36-B226-7823E5309E92}.Release|x86.Build.0 = Release|Any CPU
 		{36C538E6-C32A-4A8D-A39C-566173D7118E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -480,12 +488,20 @@ Global
 		{A0669F3D-AB7C-43BB-9423-506E24629EF0}.Release|x86.Build.0 = Release|Any CPU
 		{A82EAD58-40D7-49BE-8F24-09FEA34F9E55}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{A82EAD58-40D7-49BE-8F24-09FEA34F9E55}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A82EAD58-40D7-49BE-8F24-09FEA34F9E55}.Debug|iPhone.ActiveCfg = Debug|Any CPU
+		{A82EAD58-40D7-49BE-8F24-09FEA34F9E55}.Debug|iPhone.Build.0 = Debug|Any CPU
+		{A82EAD58-40D7-49BE-8F24-09FEA34F9E55}.Debug|iPhoneSimulator.ActiveCfg = Debug|Any CPU
+		{A82EAD58-40D7-49BE-8F24-09FEA34F9E55}.Debug|iPhoneSimulator.Build.0 = Debug|Any CPU
 		{A82EAD58-40D7-49BE-8F24-09FEA34F9E55}.Debug|x86.ActiveCfg = Debug|Any CPU
 		{A82EAD58-40D7-49BE-8F24-09FEA34F9E55}.Debug|x86.Build.0 = Debug|Any CPU
 		{A82EAD58-40D7-49BE-8F24-09FEA34F9E55}.Distribution|Any CPU.ActiveCfg = Debug|Any CPU
 		{A82EAD58-40D7-49BE-8F24-09FEA34F9E55}.Distribution|Any CPU.Build.0 = Debug|Any CPU
 		{A82EAD58-40D7-49BE-8F24-09FEA34F9E55}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A82EAD58-40D7-49BE-8F24-09FEA34F9E55}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A82EAD58-40D7-49BE-8F24-09FEA34F9E55}.Release|iPhone.ActiveCfg = Release|Any CPU
+		{A82EAD58-40D7-49BE-8F24-09FEA34F9E55}.Release|iPhone.Build.0 = Release|Any CPU
+		{A82EAD58-40D7-49BE-8F24-09FEA34F9E55}.Release|iPhoneSimulator.ActiveCfg = Release|Any CPU
+		{A82EAD58-40D7-49BE-8F24-09FEA34F9E55}.Release|iPhoneSimulator.Build.0 = Release|Any CPU
 		{A82EAD58-40D7-49BE-8F24-09FEA34F9E55}.Release|x86.ActiveCfg = Release|Any CPU
 		{A82EAD58-40D7-49BE-8F24-09FEA34F9E55}.Release|x86.Build.0 = Release|Any CPU
 		{AE483C29-042E-4226-BA52-D247CE7676DA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -589,10 +605,11 @@ Global
 		{098BBC2D-63A6-4C22-8A30-E6C4F4FC0AC4} = {D8364542-40DC-4D3C-9893-5DF46B9CEF77}
 	EndGlobalSection
 	GlobalSection(MonoDevelopProperties) = preSolution
-		StartupItem = MacOS\ParticleSample\ParticleSample.csproj
+		StartupItem = ..\MonoGame.Framework\MonoGame.Framework.MacOS.csproj
 		Policies = $0
 		$0.TextStylePolicy = $1
 		$1.FileWidth = 120
+		$1.TabWidth = 4
 		$1.RemoveTrailingWhitespace = True
 		$1.EolMarker = Windows
 		$1.inheritsSet = Mono

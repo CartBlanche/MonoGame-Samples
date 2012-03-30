@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>10.0.0</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{A0669F3D-AB7C-43BB-9423-506E24629EF0}</ProjectGuid>
+    <ProjectTypeGuids>{948B3504-5B70-4649-8FE4-BDE1FB46EC69};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <OutputType>Exe</OutputType>
+    <RootNamespace>InputReporter</RootNamespace>
+    <AssemblyName>InputReporter</AssemblyName>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug</OutputPath>
+    <DefineConstants>DEBUG;</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <ConsolePause>false</ConsolePause>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>none</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Release</OutputPath>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <ConsolePause>false</ConsolePause>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="MonoMac" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Info.plist"></None>
+    <None Include="Game.ico" />
+    <None Include="InputReporter.png" />
+    <None Include="Content\Fonts\DataActiveFont.spritefont" />
+    <None Include="Content\Fonts\DataFont.spritefont" />
+    <None Include="Content\Fonts\InstructionsActiveFont.spritefont" />
+    <None Include="Content\Fonts\InstructionsFont.spritefont" />
+    <None Include="Content\Fonts\TitleFont.spritefont" />
+    <None Include="Content\Fonts\TypeFont.spritefont" />
+    <None Include="Content\Textures\background.jpg" />
+    <None Include="Content\Textures\connected_controller1.png" />
+    <None Include="Content\Textures\connected_controller2.png" />
+    <None Include="Content\Textures\connected_controller3.png" />
+    <None Include="Content\Textures\connected_controller4.png" />
+    <None Include="Content\Textures\select_controller1.png" />
+    <None Include="Content\Textures\select_controller2.png" />
+    <None Include="Content\Textures\select_controller3.png" />
+    <None Include="Content\Textures\select_controller4.png" />
+    <None Include="InputReporterResources.resources" />
+    <None Include="Settings.xml" />
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(MSBuildExtensionsPath)\Mono\MonoMac\v0.0\Mono.MonoMac.targets" />
+  <ItemGroup>
+    <ProjectReference Include="..\..\MonoGame.Framework\MonoGame.Framework.MacOS.csproj">
+      <Project>{36C538E6-C32A-4A8D-A39C-566173D7118E}</Project>
+      <Name>MonoGame.Framework.MacOS</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="ChargeSwitch.cs" />
+    <Compile Include="ChargeSwitchDeadZone.cs" />
+    <Compile Include="ChargeSwitchExit.cs" />
+    <Compile Include="InputReporterGame.cs" />
+    <Compile Include="InputReporterResources.Designer.cs" />
+    <Compile Include="Program.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Content\Fonts\DataActiveFont.xnb" />
+    <Content Include="Content\Fonts\DataFont.xnb" />
+    <Content Include="Content\Fonts\InstructionsActiveFont.xnb" />
+    <Content Include="Content\Fonts\InstructionsFont.xnb" />
+    <Content Include="Content\Fonts\TitleFont.xnb" />
+    <Content Include="Content\Fonts\TypeFont.xnb" />
+    <Content Include="Content\Textures\background.xnb" />
+    <Content Include="Content\Textures\connected_controller1.xnb" />
+    <Content Include="Content\Textures\connected_controller2.xnb" />
+    <Content Include="Content\Textures\connected_controller3.xnb" />
+    <Content Include="Content\Textures\connected_controller4.xnb" />
+    <Content Include="Content\Textures\select_controller1.xnb" />
+    <Content Include="Content\Textures\select_controller2.xnb" />
+    <Content Include="Content\Textures\select_controller3.xnb" />
+    <Content Include="Content\Textures\select_controller4.xnb" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="InputReporterResources.resx" />
+  </ItemGroup>
+</Project>

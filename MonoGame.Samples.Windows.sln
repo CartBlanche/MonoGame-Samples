@@ -5,13 +5,13 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lidgren.Network.Windows", "
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonoGame.Framework.Windows", "..\MonoGame.Framework\MonoGame.Framework.Windows.csproj", "{7DE47032-A904-4C29-BD22-2D235E8D91BA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonoGame.Samples.Draw2D.Windows", "Windows\Draw2D\MonoGame.Samples.Draw2D.Windows.csproj", "{8CFEF1FE-9E32-43EB-A730-EB3AACDC77B1}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonoGame.Samples.Draw2D.Windows", "Draw2D\MonoGame.Samples.Draw2D.Windows.csproj", "{8CFEF1FE-9E32-43EB-A730-EB3AACDC77B1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetRumble", "Windows\NetRumble\NetRumble.csproj", "{36CDED1D-BE90-4C12-BC0A-F923AB92B98D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetRumble", "NetRumble\NetRumble.Windows.csproj", "{36CDED1D-BE90-4C12-BC0A-F923AB92B98D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RenderTarget2D", "Windows\RenderTarget2D\RenderTarget2D.csproj", "{B3DD03E0-4DEC-45A0-A481-2CF90A51C516}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RenderTarget2D", "RenderTarget2DSample\RenderTarget2D.Windows.csproj", "{B3DD03E0-4DEC-45A0-A481-2CF90A51C516}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CatapaultNetWars", "Windows\CatapaultNetWars\CatapaultNetWars.csproj", "{0BCF8950-A28D-4688-BA92-85BD49637ED0}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CatapaultNetWars", "CatapultNetWars\CatapaultNetWars.Windows.csproj", "{0BCF8950-A28D-4688-BA92-85BD49637ED0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
