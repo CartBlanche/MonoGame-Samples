@@ -1,0 +1,44 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonoGame.Framework.PSSuite", "..\MonoGame.Framework\MonoGame.Framework.PSSuite.csproj", "{EA26E76F-FDFE-4A8C-B5A3-C3B5761E28F9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lidgren.Network.PSSuite", "..\ThirdParty\Lidgren.Network\Lidgren.Network.PSSuite.csproj", "{167676EE-E2D5-440A-BB2B-EFBD02BC8493}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonoGame.Samples.Draw2D.PSSuite", "Draw2D\MonoGame.Samples.Draw2D.PSSuite.csproj", "{D46978DF-F83C-45A1-80CA-A9B578607B77}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonoGame.Samples.Aiming.PSSuite", "Aiming\MonoGame.Samples.Aiming.PSSuite.csproj", "{4465C957-DB01-4FE4-8ADE-A7A7CA2CD773}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonoGame.Samples.ChaseAndEvade.PSSuite", "ChaseAndEvade\MonoGame.Samples.ChaseAndEvade.PSSuite.csproj", "{CA033BAB-B214-4BF9-A903-85038AE666AA}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{167676EE-E2D5-440A-BB2B-EFBD02BC8493}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{167676EE-E2D5-440A-BB2B-EFBD02BC8493}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{167676EE-E2D5-440A-BB2B-EFBD02BC8493}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{167676EE-E2D5-440A-BB2B-EFBD02BC8493}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4465C957-DB01-4FE4-8ADE-A7A7CA2CD773}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4465C957-DB01-4FE4-8ADE-A7A7CA2CD773}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4465C957-DB01-4FE4-8ADE-A7A7CA2CD773}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4465C957-DB01-4FE4-8ADE-A7A7CA2CD773}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CA033BAB-B214-4BF9-A903-85038AE666AA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CA033BAB-B214-4BF9-A903-85038AE666AA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CA033BAB-B214-4BF9-A903-85038AE666AA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CA033BAB-B214-4BF9-A903-85038AE666AA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D46978DF-F83C-45A1-80CA-A9B578607B77}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D46978DF-F83C-45A1-80CA-A9B578607B77}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D46978DF-F83C-45A1-80CA-A9B578607B77}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D46978DF-F83C-45A1-80CA-A9B578607B77}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EA26E76F-FDFE-4A8C-B5A3-C3B5761E28F9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EA26E76F-FDFE-4A8C-B5A3-C3B5761E28F9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EA26E76F-FDFE-4A8C-B5A3-C3B5761E28F9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EA26E76F-FDFE-4A8C-B5A3-C3B5761E28F9}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(MonoDevelopProperties) = preSolution
+		StartupItem = Draw2D\MonoGame.Samples.Draw2D.PSSuite.csproj
+	EndGlobalSection
+EndGlobal

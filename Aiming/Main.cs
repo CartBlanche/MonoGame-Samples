@@ -2,8 +2,11 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+
+#if IPHONE
 using MonoTouch.Foundation;
 using MonoTouch.UIKit;
+#endif
 
 namespace Aiming
 {
