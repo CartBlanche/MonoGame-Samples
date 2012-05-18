@@ -1,12 +1,14 @@
 using System;
 
+#if MONOMAC
 using MonoMac.Foundation;
 using MonoMac.AppKit;
 using MonoMac.ObjCRuntime;
+#endif
 
 namespace Gemstone_Hunter
 {
-#if WINDOWS || XBOX
+#if WINDOWS || XBOX || LINUX
     static class Program
     {
         /// <summary>
@@ -20,7 +22,7 @@ namespace Gemstone_Hunter
             }
         }
     }
-#else
+#elif MONOMAC
 	static class Program
 	{
 		/// <summary>
@@ -50,7 +52,9 @@ namespace Gemstone_Hunter
 		{
 			return true;
 		}
-	}			
+	}
+#else
+#error Unknown platform
 #endif
 }
 
