@@ -43,7 +43,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonoGame.Samples.FloodContr
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StarWarrior.Linux", "StarWarrior\StarWarrior.Linux.csproj", "{2012F252-E53A-4900-A2C5-9550D008DF8B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CatapaultNetWars.Linux", "CatapultNetWars\CatapaultNetWars.Linux.csproj", "{0BCF8950-A28D-4688-BA92-85BD49637ED0}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CatapultNetWars.Linux", "CatapultNetWars\CatapultNetWars.Linux.csproj", "{0BCF8950-A28D-4688-BA92-85BD49637ED0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

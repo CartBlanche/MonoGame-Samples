@@ -8,8 +8,8 @@
     <ProjectGuid>{0BCF8950-A28D-4688-BA92-85BD49637ED0}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>CatapaultNetWars</RootNamespace>
-    <AssemblyName>CatapaultNetWars</AssemblyName>
+    <RootNamespace>CatapultNetWars</RootNamespace>
+    <AssemblyName>CatapultNetWars</AssemblyName>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
