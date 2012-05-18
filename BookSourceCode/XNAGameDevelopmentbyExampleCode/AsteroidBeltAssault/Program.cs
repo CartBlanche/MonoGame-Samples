@@ -1,12 +1,14 @@
 using System;
 
+#if MONOMAC
 using MonoMac.Foundation;
 using MonoMac.AppKit;
 using MonoMac.ObjCRuntime;
+#endif
 
 namespace Asteroid_Belt_Assault
 {
-#if WINDOWS || XBOX
+#if WINDOWS || XBOX || LINUX
     static class Program
     {
         /// <summary>
@@ -20,7 +22,7 @@ namespace Asteroid_Belt_Assault
             }
         }
     }
-#else
+#elif MONOMAC
 	static class Program
 	{
 		/// <summary>
@@ -51,6 +53,8 @@ namespace Asteroid_Belt_Assault
 			return true;
 		}
 	}		
+#else
+#error Unknown platform
 #endif
 }
 

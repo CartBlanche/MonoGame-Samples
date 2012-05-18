@@ -45,6 +45,10 @@
       <Project>{35253CE1-C864-4CD3-8249-4D1319748E8F}</Project>
       <Name>MonoGame.Framework.Linux</Name>
     </ProjectReference>
+    <ProjectReference Include="TileEngine\Tile Engine.Linux.csproj">
+      <Project>{521972FD-1A9B-4CFD-A435-EB2224985131}</Project>
+      <Name>Tile Engine.Linux</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Program.cs" />
