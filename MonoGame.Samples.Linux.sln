@@ -43,6 +43,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonoGame.Samples.FloodContr
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StarWarrior.Linux", "StarWarrior\StarWarrior.Linux.csproj", "{2012F252-E53A-4900-A2C5-9550D008DF8B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CatapaultNetWars.Linux", "CatapultNetWars\CatapaultNetWars.Linux.csproj", "{0BCF8950-A28D-4688-BA92-85BD49637ED0}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -57,6 +59,26 @@ Global
 		Release|x86 = Release|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{0BCF8950-A28D-4688-BA92-85BD49637ED0}.Debug|Any CPU.ActiveCfg = Debug|x86
+		{0BCF8950-A28D-4688-BA92-85BD49637ED0}.Debug|Any CPU.Build.0 = Debug|x86
+		{0BCF8950-A28D-4688-BA92-85BD49637ED0}.Debug|iPhone.ActiveCfg = Debug|x86
+		{0BCF8950-A28D-4688-BA92-85BD49637ED0}.Debug|iPhone.Build.0 = Debug|x86
+		{0BCF8950-A28D-4688-BA92-85BD49637ED0}.Debug|iPhoneSimulator.ActiveCfg = Debug|x86
+		{0BCF8950-A28D-4688-BA92-85BD49637ED0}.Debug|iPhoneSimulator.Build.0 = Debug|x86
+		{0BCF8950-A28D-4688-BA92-85BD49637ED0}.Debug|Mixed Platforms.ActiveCfg = Debug|x86
+		{0BCF8950-A28D-4688-BA92-85BD49637ED0}.Debug|Mixed Platforms.Build.0 = Debug|x86
+		{0BCF8950-A28D-4688-BA92-85BD49637ED0}.Debug|x86.ActiveCfg = Debug|x86
+		{0BCF8950-A28D-4688-BA92-85BD49637ED0}.Debug|x86.Build.0 = Debug|x86
+		{0BCF8950-A28D-4688-BA92-85BD49637ED0}.Release|Any CPU.ActiveCfg = Release|x86
+		{0BCF8950-A28D-4688-BA92-85BD49637ED0}.Release|Any CPU.Build.0 = Release|x86
+		{0BCF8950-A28D-4688-BA92-85BD49637ED0}.Release|iPhone.ActiveCfg = Release|x86
+		{0BCF8950-A28D-4688-BA92-85BD49637ED0}.Release|iPhone.Build.0 = Release|x86
+		{0BCF8950-A28D-4688-BA92-85BD49637ED0}.Release|iPhoneSimulator.ActiveCfg = Release|x86
+		{0BCF8950-A28D-4688-BA92-85BD49637ED0}.Release|iPhoneSimulator.Build.0 = Release|x86
+		{0BCF8950-A28D-4688-BA92-85BD49637ED0}.Release|Mixed Platforms.ActiveCfg = Release|x86
+		{0BCF8950-A28D-4688-BA92-85BD49637ED0}.Release|Mixed Platforms.Build.0 = Release|x86
+		{0BCF8950-A28D-4688-BA92-85BD49637ED0}.Release|x86.ActiveCfg = Release|x86
+		{0BCF8950-A28D-4688-BA92-85BD49637ED0}.Release|x86.Build.0 = Release|x86
 		{2012F252-E53A-4900-A2C5-9550D008DF8B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{2012F252-E53A-4900-A2C5-9550D008DF8B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2012F252-E53A-4900-A2C5-9550D008DF8B}.Debug|iPhone.ActiveCfg = Debug|Any CPU

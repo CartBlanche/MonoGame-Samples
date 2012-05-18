@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -10,8 +10,6 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>CatapaultNetWars</RootNamespace>
     <AssemblyName>CatapaultNetWars</AssemblyName>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
-    <TargetFrameworkProfile>Client</TargetFrameworkProfile>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
@@ -152,129 +150,146 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\Fonts\HUDFont.xnb">
-      <Link>Content\Fonts\HUDFont.xnb</Link><CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <Link>Content\Fonts\HUDFont.xnb</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\Fonts\MenuFont.xnb">
-      <Link>Content\Fonts\MenuFont.xnb</Link><CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Content\Sounds\BoulderHit.wav">
-      <Link>Content\Sounds\BoulderHit.wav</Link><CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Content\Sounds\CatapultExplosion.wav">
-      <Link>Content\Sounds\CatapultExplosion.wav</Link><CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Content\Sounds\CatapultFire.wav">
-      <Link>Content\Sounds\CatapultFire.wav</Link><CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Content\Sounds\Lose.wav">
-      <Link>Content\Sounds\Lose.wav</Link><CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Content\Sounds\RopeStretch.wav">
-      <Link>Content\Sounds\RopeStretch.wav</Link><CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Content\Sounds\Win.wav">
-      <Link>Content\Sounds\Win.wav</Link><CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <Link>Content\Fonts\MenuFont.xnb</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\Textures\Ammo\rock_ammo.xnb">
-      <Link>Content\Textures\Ammo\rock_ammo.xnb</Link><CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <Link>Content\Textures\Ammo\rock_ammo.xnb</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\Textures\Backgrounds\blank.xnb">
-      <Link>Content\Textures\Backgrounds\blank.xnb</Link><CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <Link>Content\Textures\Backgrounds\blank.xnb</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\Textures\Backgrounds\cloud1.xnb">
-      <Link>Content\Textures\Backgrounds\cloud1.xnb</Link><CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <Link>Content\Textures\Backgrounds\cloud1.xnb</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\Textures\Backgrounds\cloud2.xnb">
-      <Link>Content\Textures\Backgrounds\cloud2.xnb</Link><CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <Link>Content\Textures\Backgrounds\cloud2.xnb</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\Textures\Backgrounds\defeat.xnb">
-      <Link>Content\Textures\Backgrounds\defeat.xnb</Link><CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <Link>Content\Textures\Backgrounds\defeat.xnb</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\Textures\Backgrounds\gameplay_screen.xnb">
-      <Link>Content\Textures\Backgrounds\gameplay_screen.xnb</Link><CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <Link>Content\Textures\Backgrounds\gameplay_screen.xnb</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\Textures\Backgrounds\instructions.xnb">
-      <Link>Content\Textures\Backgrounds\instructions.xnb</Link><CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <Link>Content\Textures\Backgrounds\instructions.xnb</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\Textures\Backgrounds\mountain.xnb">
-      <Link>Content\Textures\Backgrounds\mountain.xnb</Link><CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <Link>Content\Textures\Backgrounds\mountain.xnb</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\Textures\Backgrounds\sky.xnb">
-      <Link>Content\Textures\Backgrounds\sky.xnb</Link><CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <Link>Content\Textures\Backgrounds\sky.xnb</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\Textures\Backgrounds\title_screen.xnb">
-      <Link>Content\Textures\Backgrounds\title_screen.xnb</Link><CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <Link>Content\Textures\Backgrounds\title_screen.xnb</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\Textures\Backgrounds\victory.xnb">
-      <Link>Content\Textures\Backgrounds\victory.xnb</Link><CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <Link>Content\Textures\Backgrounds\victory.xnb</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\Textures\HUD\ammoType.xnb">
-      <Link>Content\Textures\HUD\ammoType.xnb</Link><CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <Link>Content\Textures\HUD\ammoType.xnb</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\Textures\HUD\Arrow.xnb">
-      <Link>Content\Textures\HUD\Arrow.xnb</Link><CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <Link>Content\Textures\HUD\Arrow.xnb</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\Textures\HUD\hudBackground.xnb">
-      <Link>Content\Textures\HUD\hudBackground.xnb</Link><CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <Link>Content\Textures\HUD\hudBackground.xnb</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\Textures\HUD\windArrow.xnb">
-      <Link>Content\Textures\HUD\windArrow.xnb</Link><CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <Link>Content\Textures\HUD\windArrow.xnb</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\Textures\Catapults\AnimationsDef.xml">
-      <Link>Content\Textures\Catapults\AnimationsDef.xml</Link><CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <Link>Content\Textures\Catapults\AnimationsDef.xml</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\Textures\Catapults\Fire_Miss\fire_miss.xnb">
-      <Link>Content\Textures\Catapults\Fire_Miss\fire_miss.xnb</Link><CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <Link>Content\Textures\Catapults\Fire_Miss\fire_miss.xnb</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\Textures\Catapults\Hit_Smoke\smoke.xnb">
-      <Link>Content\Textures\Catapults\Hit_Smoke\smoke.xnb</Link><CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <Link>Content\Textures\Catapults\Hit_Smoke\smoke.xnb</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\Textures\Catapults\Blue\blueDestroyed\blueCatapult_destroyed.xnb">
-      <Link>Content\Textures\Catapults\Blue\blueDestroyed\blueCatapult_destroyed.xnb</Link><CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <Link>Content\Textures\Catapults\Blue\blueDestroyed\blueCatapult_destroyed.xnb</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\Textures\Catapults\Blue\blueFire\blueCatapult_fire.xnb">
-      <Link>Content\Textures\Catapults\Blue\blueFire\blueCatapult_fire.xnb</Link><CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <Link>Content\Textures\Catapults\Blue\blueFire\blueCatapult_fire.xnb</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\Textures\Catapults\Blue\blueIdle\blueIdle.xnb">
-      <Link>Content\Textures\Catapults\Blue\blueIdle\blueIdle.xnb</Link><CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <Link>Content\Textures\Catapults\Blue\blueIdle\blueIdle.xnb</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\Textures\Catapults\Blue\bluePullback\blueCatapult_Pullback.xnb">
-      <Link>Content\Textures\Catapults\Blue\bluePullback\blueCatapult_Pullback.xnb</Link><CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <Link>Content\Textures\Catapults\Blue\bluePullback\blueCatapult_Pullback.xnb</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\Textures\Catapults\Red\redDestroyed\redCatapult_destroyed.xnb">
-      <Link>Content\Textures\Catapults\Red\redDestroyed\redCatapult_destroyed.xnb</Link><CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <Link>Content\Textures\Catapults\Red\redDestroyed\redCatapult_destroyed.xnb</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\Textures\Catapults\Red\redFire\redCatapult_fire.xnb">
-      <Link>Content\Textures\Catapults\Red\redFire\redCatapult_fire.xnb</Link><CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <Link>Content\Textures\Catapults\Red\redFire\redCatapult_fire.xnb</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\Textures\Catapults\Red\redIdle\redIdle.xnb">
-      <Link>Content\Textures\Catapults\Red\redIdle\redIdle.xnb</Link><CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <Link>Content\Textures\Catapults\Red\redIdle\redIdle.xnb</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\Textures\Catapults\Red\redPullback\redCatapult_Pullback.xnb">
-      <Link>Content\Textures\Catapults\Red\redPullback\redCatapult_Pullback.xnb</Link><CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <Link>Content\Textures\Catapults\Red\redPullback\redCatapult_Pullback.xnb</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\cat.xnb">
-      <Link>Content\cat.xnb</Link><CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <Link>Content\cat.xnb</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\chat_able.xnb">
-      <Link>Content\chat_able.xnb</Link><CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <Link>Content\chat_able.xnb</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\chat_mute.xnb">
-      <Link>Content\chat_mute.xnb</Link><CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <Link>Content\chat_mute.xnb</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\chat_ready.xnb">
-      <Link>Content\chat_ready.xnb</Link><CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <Link>Content\chat_ready.xnb</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\chat_talking.xnb">
-      <Link>Content\chat_talking.xnb</Link><CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <Link>Content\chat_talking.xnb</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\gradient.xnb">
-      <Link>Content\gradient.xnb</Link><CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <Link>Content\gradient.xnb</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\Textures\Catapults\AnimationsDef.xml">
-      <Link>Content\Textures\Catapults\AnimationsDef.xml</Link><CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <Link>Content\Textures\Catapults\AnimationsDef.xml</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
   <ItemGroup>
@@ -288,7 +303,7 @@
       <Project>{35253CE1-C864-4CD3-8249-4D1319748E8F}</Project>
       <Name>MonoGame.Framework.Linux</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\ThirdParty\Lidgren.Network\Lidgren.Network.Linux.csproj">
+    <ProjectReference Include="..\..\ThirdParty\Lidgren.Network\Lidgren.Network.Linux.csproj">
       <Project>{AE483C29-042E-4226-BA52-D247CE7676DA}</Project>
       <Name>Lidgren.Network.Linux</Name>
     </ProjectReference>
@@ -301,4 +316,24 @@
   <Target Name="AfterBuild">
   </Target>
   -->
+  <ItemGroup>
+    <None Include="Content\Sounds\BoulderHit.xnb">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\Sounds\CatapultExplosion.xnb">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\Sounds\CatapultFire.xnb">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\Sounds\Lose.xnb">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\Sounds\RopeStretch.xnb">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\Sounds\Win.xnb">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
 </Project>
