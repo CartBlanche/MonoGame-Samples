@@ -46,7 +46,6 @@
       <Link>Tank.cs</Link>
     </Compile>
     <Compile Include="Program.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\Font.spritefont">
@@ -65,7 +64,6 @@
       <Link>Content\Turret.xnb</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <None Include="app.config" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\MonoGame.Framework\MonoGame.Framework.Linux.csproj">
