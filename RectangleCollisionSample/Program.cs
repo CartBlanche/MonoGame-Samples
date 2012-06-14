@@ -45,9 +45,8 @@ namespace RectangleCollision
 		
 		public override void FinishedLaunching (MonoMac.Foundation.NSObject notification)
 		{
-			using (RectangleCollisionGame game = new RectangleCollisionGame ()) {
-				game.Run ();
-			}
+			RectangleCollisionGame game = new RectangleCollisionGame ();
+			game.Run ();
 		}
 		
 		public override bool ApplicationShouldTerminateAfterLastWindowClosed (NSApplication sender)
