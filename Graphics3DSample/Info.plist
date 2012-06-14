@@ -5,7 +5,7 @@
 	<key>CFBundleIdentifier</key>
 	<string>com.yourcompany.Graphics3DSample</string>
 	<key>CFBundleName</key>
-	<string>MonoGame.Samples.Draw2D.MacOS</string>
+	<string>Graphics3DSample</string>
 	<key>CFBundleVersion</key>
 	<string>1</string>
 	<key>LSMinimumSystemVersion</key>
