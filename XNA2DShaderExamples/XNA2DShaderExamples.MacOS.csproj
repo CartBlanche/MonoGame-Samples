@@ -39,6 +39,7 @@
     <EnableCodeSigning>false</EnableCodeSigning>
     <CreatePackage>false</CreatePackage>
     <CodeSigningKey>Mac Developer</CodeSigningKey>
+    <DefineConstants>MONOMAC</DefineConstants>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'AppStore|AnyCPU' ">
     <DebugType>none</DebugType>

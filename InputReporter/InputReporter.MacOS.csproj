@@ -20,6 +20,10 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <ConsolePause>false</ConsolePause>
+    <EnableCodeSigning>false</EnableCodeSigning>
+    <CreatePackage>false</CreatePackage>
+    <EnablePackageSigning>false</EnablePackageSigning>
+    <IncludeMonoRuntime>false</IncludeMonoRuntime>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>none</DebugType>
@@ -28,6 +32,10 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <ConsolePause>false</ConsolePause>
+    <EnableCodeSigning>false</EnableCodeSigning>
+    <CreatePackage>false</CreatePackage>
+    <EnablePackageSigning>false</EnablePackageSigning>
+    <IncludeMonoRuntime>false</IncludeMonoRuntime>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -38,7 +46,8 @@
     <Reference Include="MonoMac" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Info.plist"></None>
+    <None Include="Info.plist">
+    </None>
     <None Include="Game.ico" />
     <None Include="InputReporter.png" />
     <None Include="Content\Fonts\DataActiveFont.spritefont" />
