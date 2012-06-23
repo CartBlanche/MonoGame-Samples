@@ -8,7 +8,8 @@ using MonoTouch.Foundation;
 using MonoTouch.UIKit;
 using Microsoft.Xna;
 using Microsoft.Xna.Framework.Media;
-#else
+#elif MONOMAC
+
 #endif
 #endregion
 
@@ -65,6 +66,36 @@ namespace GameStateManagement
             UIApplication.Main(args, null, "AppDelegate");
         }
     }    
+#elif MONOMAC
+	static class Program
+	{	
+		/// <summary>
+		/// The main entry point for the application.
+		/// </summary>
+		static void Main (string[] args)
+		{
+			MonoMac.AppKit.NSApplication.Init ();
+			
+			using (var p = new MonoMac.Foundation.NSAutoreleasePool ()) {
+				MonoMac.AppKit.NSApplication.SharedApplication.Delegate = new AppDelegate();
+				MonoMac.AppKit.NSApplication.Main(args);
+			}
+		}
+	}
+	
+	class AppDelegate : MonoMac.AppKit.NSApplicationDelegate
+	{
+		public override void FinishedLaunching (MonoMac.Foundation.NSObject notification)
+		{
+			var game = new GameStateManagementGame();
+			game.Run();
+		}
+		
+		public override bool ApplicationShouldTerminateAfterLastWindowClosed (MonoMac.AppKit.NSApplication sender)
+		{
+			return true;
+		}
+	}
 #else
     /// <summary>
     /// The main entry point for the application.

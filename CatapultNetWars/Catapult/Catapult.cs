@@ -446,7 +446,7 @@ namespace CatapultGame
             var aimAnimation = animations["Aim"];
             int frameToDisplay =
                 Convert.ToInt32(aimAnimation.FrameCount * ShotStrength);
-            aimAnimation.FrameIndex = frameToDisplay;
+            aimAnimation.FrameIndex = Math.Min(aimAnimation.FrameCount, frameToDisplay);
         }
 
         /// <summary>

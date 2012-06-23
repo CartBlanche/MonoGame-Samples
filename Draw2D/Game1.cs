@@ -36,7 +36,7 @@ namespace Microsoft.Xna.Samples.Draw2D
 			Content.RootDirectory = "Content";
 			
 			graphics.PreferMultiSampling = true;
-#if ANDROID || IPHONE
+#if ANDROID || IPHONE || PSS
 			graphics.IsFullScreen = true;
 #else
 			graphics.IsFullScreen = false;

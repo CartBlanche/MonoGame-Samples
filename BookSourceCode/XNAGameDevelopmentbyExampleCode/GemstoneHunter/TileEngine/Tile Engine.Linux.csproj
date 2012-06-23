@@ -35,16 +35,16 @@
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
-    <Compile Include="..\Camera.cs">
+    <Compile Include="Camera.cs">
       <Link>Camera.cs</Link>
     </Compile>
-    <Compile Include="..\MapSquare.cs">
+    <Compile Include="MapSquare.cs">
       <Link>MapSquare.cs</Link>
     </Compile>
-    <Compile Include="..\MyClass.cs">
+    <Compile Include="MyClass.cs">
       <Link>MyClass.cs</Link>
     </Compile>
-    <Compile Include="..\TileMap.cs">
+    <Compile Include="TileMap.cs">
       <Link>TileMap.cs</Link>
     </Compile>
   </ItemGroup>
