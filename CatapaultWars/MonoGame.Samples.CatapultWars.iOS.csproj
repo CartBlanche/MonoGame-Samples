@@ -24,6 +24,7 @@
     <MtouchProfiling>true</MtouchProfiling>
     <MtouchLink>None</MtouchLink>
     <MtouchI18n />
+    <MtouchArch>ARMv7</MtouchArch>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|iPhoneSimulator' ">
     <DebugType>none</DebugType>
@@ -67,78 +68,6 @@
   <ItemGroup>
     <None Include="Info.iOS.plist">
       <Link>Info.plist</Link>
-    </None>
-    <None Include="Content\Fonts\HUDFont.xnb">
-      <Link>Content\Fonts\HUDFont.xnb</Link>
-    </None>
-    <None Include="Content\Fonts\MenuFont.xnb">
-      <Link>Content\Fonts\MenuFont.xnb</Link>
-    </None>
-    <None Include="Content\Sounds\BoulderHit.xnb">
-      <Link>Content\Sounds\BoulderHit.xnb</Link>
-    </None>
-    <None Include="Content\Sounds\CatapultExplosion.xnb">
-      <Link>Content\Sounds\CatapultExplosion.xnb</Link>
-    </None>
-    <None Include="Content\Sounds\CatapultFire.xnb">
-      <Link>Content\Sounds\CatapultFire.xnb</Link>
-    </None>
-    <None Include="Content\Sounds\Lose.xnb">
-      <Link>Content\Sounds\Lose.xnb</Link>
-    </None>
-    <None Include="Content\Sounds\RopeStretch.xnb">
-      <Link>Content\Sounds\RopeStretch.xnb</Link>
-    </None>
-    <None Include="Content\Sounds\Win.xnb">
-      <Link>Content\Sounds\Win.xnb</Link>
-    </None>
-    <None Include="Content\Textures\Ammo\rock_ammo.xnb">
-      <Link>Content\Textures\Ammo\rock_ammo.xnb</Link>
-    </None>
-    <None Include="Content\Textures\Catapults\AnimationsDef.xml">
-      <Link>Content\Textures\Catapults\AnimationsDef.xml</Link>
-    </None>
-    <None Include="Content\Textures\Catapults\Blue\blueDestroyed\blueCatapult_destroyed.xnb">
-      <Link>Content\Textures\Catapults\Blue\blueDestroyed\blueCatapult_destroyed.xnb</Link>
-    </None>
-    <None Include="Content\Textures\Catapults\Blue\blueFire\blueCatapult_fire.xnb">
-      <Link>Content\Textures\Catapults\Blue\blueFire\blueCatapult_fire.xnb</Link>
-    </None>
-    <None Include="Content\Textures\Catapults\Blue\blueIdle\blueIdle.xnb">
-      <Link>Content\Textures\Catapults\Blue\blueIdle\blueIdle.xnb</Link>
-    </None>
-    <None Include="Content\Textures\Catapults\Blue\bluePullback\blueCatapult_Pullback.xnb">
-      <Link>Content\Textures\Catapults\Blue\bluePullback\blueCatapult_Pullback.xnb</Link>
-    </None>
-    <None Include="Content\Textures\Catapults\Fire_Miss\fire_miss.xnb">
-      <Link>Content\Textures\Catapults\Fire_Miss\fire_miss.xnb</Link>
-    </None>
-    <None Include="Content\Textures\Catapults\Hit_Smoke\smoke.xnb">
-      <Link>Content\Textures\Catapults\Hit_Smoke\smoke.xnb</Link>
-    </None>
-    <None Include="Content\Textures\Catapults\Red\redDestroyed\redCatapult_destroyed.xnb">
-      <Link>Content\Textures\Catapults\Red\redDestroyed\redCatapult_destroyed.xnb</Link>
-    </None>
-    <None Include="Content\Textures\Catapults\Red\redFire\redCatapult_fire.xnb">
-      <Link>Content\Textures\Catapults\Red\redFire\redCatapult_fire.xnb</Link>
-    </None>
-    <None Include="Content\Textures\Catapults\Red\redIdle\redIdle.xnb">
-      <Link>Content\Textures\Catapults\Red\redIdle\redIdle.xnb</Link>
-    </None>
-    <None Include="Content\Textures\Catapults\Red\redPullback\redCatapult_Pullback.xnb">
-      <Link>Content\Textures\Catapults\Red\redPullback\redCatapult_Pullback.xnb</Link>
-    </None>
-    <None Include="Content\Textures\HUD\Arrow.xnb">
-      <Link>Content\Textures\HUD\Arrow.xnb</Link>
-    </None>
-    <None Include="Content\Textures\HUD\ammoType.xnb">
-      <Link>Content\Textures\HUD\ammoType.xnb</Link>
-    </None>
-    <None Include="Content\Textures\HUD\hudBackground.xnb">
-      <Link>Content\Textures\HUD\hudBackground.xnb</Link>
-    </None>
-    <None Include="Content\Textures\HUD\windArrow.xnb">
-      <Link>Content\Textures\HUD\windArrow.xnb</Link>
     </None>
   </ItemGroup>
   <ItemGroup>
@@ -238,6 +167,78 @@
     </Content>
     <Content Include="Content\Textures\Backgrounds\victory.xnb">
       <Link>Content\Textures\Backgrounds\victory.xnb</Link>
+    </Content>
+    <Content Include="Content\Textures\HUD\ammoType.xnb">
+      <Link>Content\Textures\HUD\ammoType.xnb</Link>
+    </Content>
+    <Content Include="Content\Textures\HUD\Arrow.xnb">
+      <Link>Content\Textures\HUD\Arrow.xnb</Link>
+    </Content>
+    <Content Include="Content\Textures\HUD\hudBackground.xnb">
+      <Link>Content\Textures\HUD\hudBackground.xnb</Link>
+    </Content>
+    <Content Include="Content\Textures\HUD\windArrow.xnb">
+      <Link>Content\Textures\HUD\windArrow.xnb</Link>
+    </Content>
+    <Content Include="Content\Textures\Catapults\AnimationsDef.xml">
+      <Link>Content\Textures\Catapults\AnimationsDef.xml</Link>
+    </Content>
+    <Content Include="Content\Sounds\BoulderHit.xnb">
+      <Link>Content\Sounds\BoulderHit.xnb</Link>
+    </Content>
+    <Content Include="Content\Sounds\CatapultExplosion.xnb">
+      <Link>Content\Sounds\CatapultExplosion.xnb</Link>
+    </Content>
+    <Content Include="Content\Sounds\CatapultFire.xnb">
+      <Link>Content\Sounds\CatapultFire.xnb</Link>
+    </Content>
+    <Content Include="Content\Sounds\Lose.xnb">
+      <Link>Content\Sounds\Lose.xnb</Link>
+    </Content>
+    <Content Include="Content\Sounds\RopeStretch.xnb">
+      <Link>Content\Sounds\RopeStretch.xnb</Link>
+    </Content>
+    <Content Include="Content\Sounds\Win.xnb">
+      <Link>Content\Sounds\Win.xnb</Link>
+    </Content>
+    <Content Include="Content\Fonts\MenuFont.xnb">
+      <Link>Content\Fonts\MenuFont.xnb</Link>
+    </Content>
+    <Content Include="Content\Fonts\HUDFont.xnb">
+      <Link>Content\Fonts\HUDFont.xnb</Link>
+    </Content>
+    <Content Include="Content\Textures\Catapults\Blue\blueDestroyed\blueCatapult_destroyed.xnb">
+      <Link>Content\Textures\Catapults\Blue\blueDestroyed\blueCatapult_destroyed.xnb</Link>
+    </Content>
+    <Content Include="Content\Textures\Catapults\Blue\blueFire\blueCatapult_fire.xnb">
+      <Link>Content\Textures\Catapults\Blue\blueFire\blueCatapult_fire.xnb</Link>
+    </Content>
+    <Content Include="Content\Textures\Catapults\Blue\blueIdle\blueIdle.xnb">
+      <Link>Content\Textures\Catapults\Blue\blueIdle\blueIdle.xnb</Link>
+    </Content>
+    <Content Include="Content\Textures\Catapults\Blue\bluePullback\blueCatapult_Pullback.xnb">
+      <Link>Content\Textures\Catapults\Blue\bluePullback\blueCatapult_Pullback.xnb</Link>
+    </Content>
+    <Content Include="Content\Textures\Catapults\Fire_Miss\fire_miss.xnb">
+      <Link>Content\Textures\Catapults\Fire_Miss\fire_miss.xnb</Link>
+    </Content>
+    <Content Include="Content\Textures\Catapults\Hit_Smoke\smoke.xnb">
+      <Link>Content\Textures\Catapults\Hit_Smoke\smoke.xnb</Link>
+    </Content>
+    <Content Include="Content\Textures\Catapults\Red\redDestroyed\redCatapult_destroyed.xnb">
+      <Link>Content\Textures\Catapults\Red\redDestroyed\redCatapult_destroyed.xnb</Link>
+    </Content>
+    <Content Include="Content\Textures\Catapults\Red\redFire\redCatapult_fire.xnb">
+      <Link>Content\Textures\Catapults\Red\redFire\redCatapult_fire.xnb</Link>
+    </Content>
+    <Content Include="Content\Textures\Catapults\Red\redIdle\redIdle.xnb">
+      <Link>Content\Textures\Catapults\Red\redIdle\redIdle.xnb</Link>
+    </Content>
+    <Content Include="Content\Textures\Catapults\Red\redPullback\redCatapult_Pullback.xnb">
+      <Link>Content\Textures\Catapults\Red\redPullback\redCatapult_Pullback.xnb</Link>
+    </Content>
+    <Content Include="Content\Textures\Ammo\rock_ammo.xnb">
+      <Link>Content\Textures\Ammo\rock_ammo.xnb</Link>
     </Content>
   </ItemGroup>
   <ItemGroup>

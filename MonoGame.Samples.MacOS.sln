@@ -110,6 +110,7 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Audio3D.MacOS", "Audio3D\Audio3D.MacOS.csproj", "{D5C989FD-6AE3-417F-BCB9-7AE30F195A31}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShadowMapping.MacOS", "ShadowMapping\ShadowMapping.MacOS.csproj", "{36473816-E068-4D38-84F3-F5564BA77FF8}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CollisionSample", "CollisionSample\CollisionSample.csproj", "{AFFFC991-4956-45EF-8746-C1AE3FC7A245}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -691,6 +692,26 @@ Global
 		{AE483C29-042E-4226-BA52-D247CE7676DA}.Distribution|Any CPU.Build.0 = Debug|Any CPU
 		{AE483C29-042E-4226-BA52-D247CE7676DA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AE483C29-042E-4226-BA52-D247CE7676DA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AFFFC991-4956-45EF-8746-C1AE3FC7A245}.AppStore|Any CPU.ActiveCfg = Debug|x86
+		{AFFFC991-4956-45EF-8746-C1AE3FC7A245}.AppStore|Any CPU.Build.0 = Debug|x86
+		{AFFFC991-4956-45EF-8746-C1AE3FC7A245}.Debug|Any CPU.ActiveCfg = Debug|x86
+		{AFFFC991-4956-45EF-8746-C1AE3FC7A245}.Debug|Any CPU.Build.0 = Debug|x86
+		{AFFFC991-4956-45EF-8746-C1AE3FC7A245}.Debug|iPhone.ActiveCfg = Debug|x86
+		{AFFFC991-4956-45EF-8746-C1AE3FC7A245}.Debug|iPhone.Build.0 = Debug|x86
+		{AFFFC991-4956-45EF-8746-C1AE3FC7A245}.Debug|iPhoneSimulator.ActiveCfg = Debug|x86
+		{AFFFC991-4956-45EF-8746-C1AE3FC7A245}.Debug|iPhoneSimulator.Build.0 = Debug|x86
+		{AFFFC991-4956-45EF-8746-C1AE3FC7A245}.Debug|x86.ActiveCfg = Debug|x86
+		{AFFFC991-4956-45EF-8746-C1AE3FC7A245}.Debug|x86.Build.0 = Debug|x86
+		{AFFFC991-4956-45EF-8746-C1AE3FC7A245}.Distribution|Any CPU.ActiveCfg = Debug|x86
+		{AFFFC991-4956-45EF-8746-C1AE3FC7A245}.Distribution|Any CPU.Build.0 = Debug|x86
+		{AFFFC991-4956-45EF-8746-C1AE3FC7A245}.Release|Any CPU.ActiveCfg = Release|x86
+		{AFFFC991-4956-45EF-8746-C1AE3FC7A245}.Release|Any CPU.Build.0 = Release|x86
+		{AFFFC991-4956-45EF-8746-C1AE3FC7A245}.Release|iPhone.ActiveCfg = Release|x86
+		{AFFFC991-4956-45EF-8746-C1AE3FC7A245}.Release|iPhone.Build.0 = Release|x86
+		{AFFFC991-4956-45EF-8746-C1AE3FC7A245}.Release|iPhoneSimulator.ActiveCfg = Release|x86
+		{AFFFC991-4956-45EF-8746-C1AE3FC7A245}.Release|iPhoneSimulator.Build.0 = Release|x86
+		{AFFFC991-4956-45EF-8746-C1AE3FC7A245}.Release|x86.ActiveCfg = Release|x86
+		{AFFFC991-4956-45EF-8746-C1AE3FC7A245}.Release|x86.Build.0 = Release|x86
 		{C3D02EFA-1C48-415C-8811-56D20434FD68}.AppStore|Any CPU.ActiveCfg = AppStore|Any CPU
 		{C3D02EFA-1C48-415C-8811-56D20434FD68}.AppStore|Any CPU.Build.0 = AppStore|Any CPU
 		{C3D02EFA-1C48-415C-8811-56D20434FD68}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
