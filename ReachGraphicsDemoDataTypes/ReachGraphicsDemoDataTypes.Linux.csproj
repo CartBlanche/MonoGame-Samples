@@ -5,24 +5,24 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>10.0.0</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{521972FD-1A9B-4CFD-A435-EB2224985131}</ProjectGuid>
+    <ProjectGuid>{8D359A6F-B0BB-4799-8311-406D5F57025A}</ProjectGuid>
     <OutputType>Library</OutputType>
-    <RootNamespace>Tile_Engine</RootNamespace>
-    <AssemblyName>Tile Engine</AssemblyName>
+    <RootNamespace>DataTypes</RootNamespace>
+    <AssemblyName>DataTypes</AssemblyName>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>True</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>False</Optimize>
     <OutputPath>bin\Debug</OutputPath>
-    <DefineConstants>DEBUG</DefineConstants>
+    <DefineConstants>DEBUG;</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <ConsolePause>False</ConsolePause>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>none</DebugType>
-    <Optimize>False</Optimize>
+    <Optimize>True</Optimize>
     <OutputPath>bin\Release</OutputPath>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -30,28 +30,23 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
-    <Reference Include="System.Xml" />
     <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
-    <Compile Include="Camera.cs">
-      <Link>Camera.cs</Link>
-    </Compile>
-    <Compile Include="MapSquare.cs">
-      <Link>MapSquare.cs</Link>
-    </Compile>
-    <Compile Include="MyClass.cs">
-      <Link>MyClass.cs</Link>
-    </Compile>
-    <Compile Include="TileMap.cs">
-      <Link>TileMap.cs</Link>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\..\..\..\MonoGame.Framework\MonoGame.Framework.Linux.csproj">
+    <ProjectReference Include="..\..\MonoGame.Framework\MonoGame.Framework.Linux.csproj">
       <Project>{35253CE1-C864-4CD3-8249-4D1319748E8F}</Project>
       <Name>MonoGame.Framework.Linux</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AnimationClip.cs" />
+    <Compile Include="AnimationPlayer.cs" />
+    <Compile Include="Keyframe.cs" />
+    <Compile Include="SkinningData.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Properties\" />
   </ItemGroup>
 </Project>

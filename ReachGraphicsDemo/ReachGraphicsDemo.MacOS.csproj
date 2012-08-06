@@ -123,9 +123,9 @@
       <Project>{36C538E6-C32A-4A8D-A39C-566173D7118E}</Project>
       <Name>MonoGame.Framework.MacOS</Name>
     </ProjectReference>
-    <ProjectReference Include="ataTypes\ReachGraphicsDemoDataTypes.csproj">
+    <ProjectReference Include="..\ReachGraphicsDemoDataTypes\ReachGraphicsDemoDataTypes.MacOS.csproj">
       <Project>{24A0BCFD-3B8C-4AC3-AE75-E50D2F7B8C79}</Project>
-      <Name>ReachGraphicsDemoDataTypes</Name>
+      <Name>ReachGraphicsDemoDataTypes.MacOS</Name>
     </ProjectReference>
   </ItemGroup>
 </Project>
