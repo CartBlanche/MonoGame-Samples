@@ -87,7 +87,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ParticleSettings", "Particl
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Graphics3DSample.MacOS", "Graphics3DSample\Graphics3DSample.MacOS.csproj", "{C3D02EFA-1C48-415C-8811-56D20434FD68}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReachGraphicsDemoDataTypes", "ReachGraphicsDemoDataTypes\ReachGraphicsDemoDataTypes.csproj", "{24A0BCFD-3B8C-4AC3-AE75-E50D2F7B8C79}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReachGraphicsDemoDataTypes.MacOS", "ReachGraphicsDemoDataTypes\ReachGraphicsDemoDataTypes.MacOS.csproj", "{24A0BCFD-3B8C-4AC3-AE75-E50D2F7B8C79}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReachGraphicsDemo.MacOS", "ReachGraphicsDemo\ReachGraphicsDemo.MacOS.csproj", "{EF8F598D-9F68-44B1-9DD1-BEF79E088CF9}"
 EndProject
