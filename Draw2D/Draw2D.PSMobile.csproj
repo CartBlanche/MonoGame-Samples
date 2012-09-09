@@ -5,18 +5,18 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>10.0.0</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{4465C957-DB01-4FE4-8ADE-A7A7CA2CD773}</ProjectGuid>
+    <ProjectGuid>{D46978DF-F83C-45A1-80CA-A9B578607B77}</ProjectGuid>
     <ProjectTypeGuids>{69878862-DA7D-4DC6-B0A1-50D8FAB4242F};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <OutputType>Exe</OutputType>
-    <RootNamespace>MonoGame.Samples.Aiming.PSSuite</RootNamespace>
-    <AssemblyName>MonoGame.Samples.Aiming.PSSuite</AssemblyName>
+    <RootNamespace>MonoGame.Samples.Draw2D.PSSuite</RootNamespace>
+    <AssemblyName>MonoGame.Samples.Draw2D.PSSuite</AssemblyName>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>bin\Debug</OutputPath>
-    <DefineConstants>DEBUG;</DefineConstants>
+    <DefineConstants>DEBUG;PSS</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <ConsolePause>false</ConsolePause>
@@ -33,29 +33,36 @@
     <Reference Include="System" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Core" />
-    <Reference Include="Sce.Pss.Core" />
+    <Reference Include="Sce.PlayStation.Core" />
   </ItemGroup>
-  <Import Project="$(MSBuildExtensionsPath)\Sce\Sce.Pss.CSharp.targets" />
+  <Import Project="$(MSBuildExtensionsPath)\Sce\Sce.Psm.CSharp.targets" />
   <ItemGroup>
-    <Compile Include="AimingGame.cs" />
-    <Compile Include="Main.cs" />
+    <Compile Include="FPSCounterComponent.cs" />
+    <Compile Include="Game1.cs" />
+    <Compile Include="main.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Content\" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Content\cat.png">
+    <Content Include="Content\monogameicon.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Content\spotlight.png">
+    <Content Include="Content\monogameicon48x48.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\purpleBall.xnb">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\spriteFont1.xnb">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="app.cfg" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\MonoGame.Framework\MonoGame.Framework.PSSuite.csproj">
+    <ProjectReference Include="..\..\MonoGame.Framework\MonoGame.Framework.PSMobile.csproj">
       <Project>{EA26E76F-FDFE-4A8C-B5A3-C3B5761E28F9}</Project>
-      <Name>MonoGame.Framework.PSSuite</Name>
+      <Name>MonoGame.Framework.PSMobile</Name>
     </ProjectReference>
   </ItemGroup>
 </Project>

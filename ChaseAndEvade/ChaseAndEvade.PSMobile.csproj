@@ -5,18 +5,18 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>10.0.0</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{D46978DF-F83C-45A1-80CA-A9B578607B77}</ProjectGuid>
+    <ProjectGuid>{CA033BAB-B214-4BF9-A903-85038AE666AA}</ProjectGuid>
     <ProjectTypeGuids>{69878862-DA7D-4DC6-B0A1-50D8FAB4242F};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <OutputType>Exe</OutputType>
-    <RootNamespace>MonoGame.Samples.Draw2D.PSSuite</RootNamespace>
-    <AssemblyName>MonoGame.Samples.Draw2D.PSSuite</AssemblyName>
+    <RootNamespace>MonoGame.Samples.ChaseAndEvade.PSSuite</RootNamespace>
+    <AssemblyName>MonoGame.Samples.ChaseAndEvade.PSSuite</AssemblyName>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>bin\Debug</OutputPath>
-    <DefineConstants>DEBUG;PSS</DefineConstants>
+    <DefineConstants>DEBUG;</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <ConsolePause>false</ConsolePause>
@@ -33,36 +33,34 @@
     <Reference Include="System" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Core" />
-    <Reference Include="Sce.Pss.Core" />
+    <Reference Include="Sce.PlayStation.Core" />
   </ItemGroup>
-  <Import Project="$(MSBuildExtensionsPath)\Sce\Sce.Pss.CSharp.targets" />
-  <ItemGroup>
-    <ProjectReference Include="..\..\MonoGame.Framework\MonoGame.Framework.PSSuite.csproj">
-      <Project>{EA26E76F-FDFE-4A8C-B5A3-C3B5761E28F9}</Project>
-      <Name>MonoGame.Framework.PSSuite</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="FPSCounterComponent.cs" />
-    <Compile Include="Game1.cs" />
-    <Compile Include="main.cs" />
-  </ItemGroup>
+  <Import Project="$(MSBuildExtensionsPath)\Sce\Sce.Psm.CSharp.targets" />
   <ItemGroup>
     <Folder Include="Content\" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Content\monogameicon.png">
+    <Content Include="Content\cat.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Content\monogameicon48x48.png">
+    <Content Include="Content\mouse.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Content\purpleBall.xnb">
+    <Content Include="Content\tank.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Content\spriteFont1.xnb">
+    <Content Include="Content\Arial.xnb">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="app.cfg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="ChaseAndEvadeGame.cs" />
+    <Compile Include="Program.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\MonoGame.Framework\MonoGame.Framework.PSMobile.csproj">
+      <Project>{EA26E76F-FDFE-4A8C-B5A3-C3B5761E28F9}</Project>
+      <Name>MonoGame.Framework.PSMobile</Name>
+    </ProjectReference>
   </ItemGroup>
 </Project>
