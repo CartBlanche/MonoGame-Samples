@@ -124,7 +124,7 @@
     <Reference Include="OpenTK" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Main.cs" />
+    <Compile Include="Main-iOS.cs" />
     <Compile Include="AnimatedSprite.cs" />
     <Compile Include="Camera2D.cs" />
     <Compile Include="SpriteSheet.cs" />
