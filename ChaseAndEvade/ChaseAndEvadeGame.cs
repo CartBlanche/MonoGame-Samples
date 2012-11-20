@@ -619,7 +619,7 @@ namespace ChaseAndEvade
 			MouseState currentMouseState = Mouse.GetState ();
 #endif
 			
-#if IPHONE
+#if IPHONE || PSM
 			GamePadState currentGamePadState = GamePad.GetState (PlayerIndex.One);
 
 			// Check for exit.
@@ -642,7 +642,7 @@ namespace ChaseAndEvade
 			//Move toward the touch point. We slow down the cat when it gets within a distance of MaxCatSpeed to the touch point.
 			float smoothStop = 1;			
 			
-#if IPHONE			
+#if IPHONE || PSM		
 			// check to see if the user wants to move the cat. we'll create a vector
 			// called catMovement, which will store the sum of all the user's inputs.
 			catMovement = currentGamePadState.ThumbSticks.Left;
@@ -670,7 +670,7 @@ namespace ChaseAndEvade
 			
 			TouchCollection currentTouchCollection = TouchPanel.GetState();
 			
-			if (currentTouchCollection != null )
+			// TODO if (currentTouchCollection != null )
             {
 				if (currentTouchCollection.Count > 0)
 	            {

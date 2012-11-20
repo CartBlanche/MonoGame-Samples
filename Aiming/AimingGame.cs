@@ -320,7 +320,7 @@ namespace Aiming
             //Move toward the touch point. We slow down the cat when it gets within a distance of CatSpeed to the touch point.
             float smoothStop = 1;
 			
-			if (currentTouchState != null )
+			//if (currentTouchState != null )
             {
 				if (currentTouchState.Count > 0)
 	            {
