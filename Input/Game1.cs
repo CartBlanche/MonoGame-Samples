@@ -132,7 +132,7 @@ namespace MonoGame.Samples.Input
 			spriteBatch.DrawString(font, wandh, new Vector2(GraphicsDevice.Viewport.Width-wh.X, GraphicsDevice.Viewport.Height-wh.Y), Color.Red);
 			
 								
-			if (currentTouchState != null && currentTouchState.Count > 0) 
+			if (currentTouchState.Count > 0) 
 			{
 				for (int i = 0 ; i < currentTouchState.Count; i++)
 				{
