@@ -13,7 +13,7 @@
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <TargetFrameworkProfile>Client</TargetFrameworkProfile>
     <XnaFrameworkVersion>v4.0</XnaFrameworkVersion>
-    <OutputPath>bin\$(Configuration)</OutputPath>
+    <OutputPath>..\..\CompiledContent\$(Configuration)</OutputPath>
     <XnaPlatform>Windows</XnaPlatform>
     <XnaProfile>HiDef</XnaProfile>
     <XnaCrossPlatformGroupID>f00e9f84-7dac-4012-ba3a-34d1388dddb5</XnaCrossPlatformGroupID>
