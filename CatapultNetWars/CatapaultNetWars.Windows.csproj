@@ -232,11 +232,6 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Content\Textures\Catapults\AnimationsDef.xml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-  </ItemGroup>
-  <ItemGroup>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>

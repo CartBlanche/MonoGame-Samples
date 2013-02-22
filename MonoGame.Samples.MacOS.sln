@@ -5,7 +5,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonoGame.Framework.MacOS", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lidgren.Network.MacOS", "..\ThirdParty\Lidgren.Network\Lidgren.Network.MacOS.csproj", "{AE483C29-042E-4226-BA52-D247CE7676DA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonoGame.Samples.BouncingBox.MacOS", "BouncingBox\MonoGame.Samples.BouncingBox.MacOS.csproj", "{4480BF44-7CE2-4A22-9372-DAFA3B05390E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BouncingBox.MacOS", "BouncingBox\BouncingBox.MacOS.csproj", "{4480BF44-7CE2-4A22-9372-DAFA3B05390E}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "BookSourceCode", "BookSourceCode", "{80262DC5-B246-4DF4-88CD-D1742CCF81BA}"
 EndProject
@@ -19,7 +19,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RobotRampage.MacOS", "BookS
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tile Engine.MacOS", "BookSourceCode\XNAGameDevelopmentbyExampleCode\GemstoneHunter\TileEngine\Tile Engine.MacOS.csproj", "{521972FD-1A9B-4CFD-A435-EB2224985131}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonoGame.Samples.ChaseAndEvade.MacOS", "ChaseAndEvade\MonoGame.Samples.ChaseAndEvade.MacOS.csproj", "{D03F3BAF-E4D0-4B6B-A567-9A0E2F882335}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChaseAndEvade.MacOS", "ChaseAndEvade\ChaseAndEvade.MacOS.csproj", "{D03F3BAF-E4D0-4B6B-A567-9A0E2F882335}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GameStateManagement.MacOS", "GameStateManagement\GameStateManagement.MacOS.csproj", "{4AD6BC7A-DB9A-4A6F-9EE2-DAD9B0BBA2A8}"
 EndProject
@@ -43,9 +43,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RectangleCollisionSample.Ma
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpriteEffects.MacOS", "SpriteEffects\SpriteEffects.MacOS.csproj", "{3B9ABB34-4D0F-4CFD-A02D-30D5569A060B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonoGame.Samples.Tetris.MacOS", "Tetris\MonoGame.Samples.Tetris.MacOS.csproj", "{FE144248-B1ED-4A7C-980C-7A2E603CE604}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tetris.MacOS", "Tetris\Tetris.MacOS.csproj", "{FE144248-B1ED-4A7C-980C-7A2E603CE604}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonoGame.Samples.TiledSprites.MacOS", "TiledSprites\MonoGame.Samples.TiledSprites.MacOS.csproj", "{7D24D7EA-822C-4991-8BC9-1C2EF9C5F59A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TiledSprites.MacOS", "TiledSprites\TiledSprites.MacOS.csproj", "{7D24D7EA-822C-4991-8BC9-1C2EF9C5F59A}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TransformedCollisionSample.MacOS", "TransformedCollisionSample\TransformedCollisionSample.MacOS.csproj", "{73162561-6D3B-4A7F-AC4B-E7040B0824BE}"
 EndProject
@@ -59,7 +59,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RenderTarget2DSample.MacOS"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ParticleSample.MacOS", "ParticleSample\ParticleSample.MacOS.csproj", "{5CA0180F-C404-431A-87B5-03A26E5BFA23}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonoGame.Samples.VideoPlayer.MacOS", "VideoPlayer\MonoGame.Samples.VideoPlayer.MacOS.csproj", "{71192C89-7FB6-49A4-A19D-FC89E3D18248}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VideoPlayer.MacOS", "VideoPlayer\VideoPlayer.MacOS.csproj", "{71192C89-7FB6-49A4-A19D-FC89E3D18248}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StarWarrior.MacOS", "StarWarrior\StarWarrior.MacOS.csproj", "{C9382003-668B-48E6-86BC-7ECDE3ECFDBE}"
 EndProject
@@ -81,7 +81,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CatapultNetWars.MacOS", "Ca
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XNAPacMan.MacOS", "XNAPacMan\XNAPacMan.MacOS.csproj", "{557C7051-DFEB-4F19-A706-102574443BCB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonoGame.Samples.Draw2D.MacOS", "Draw2D\MonoGame.Samples.Draw2D.MacOS.csproj", "{A82EAD58-40D7-49BE-8F24-09FEA34F9E55}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Draw2D.MacOS", "Draw2D\Draw2D.MacOS.csproj", "{A82EAD58-40D7-49BE-8F24-09FEA34F9E55}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ParticleSettings", "Particle3DSample\ParticleSettings\ParticleSettings.csproj", "{3388FF68-6F15-4F36-B226-7823E5309E92}"
 EndProject
@@ -692,26 +692,6 @@ Global
 		{AE483C29-042E-4226-BA52-D247CE7676DA}.Distribution|Any CPU.Build.0 = Debug|Any CPU
 		{AE483C29-042E-4226-BA52-D247CE7676DA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AE483C29-042E-4226-BA52-D247CE7676DA}.Release|Any CPU.Build.0 = Release|Any CPU
-		{AFFFC991-4956-45EF-8746-C1AE3FC7A245}.AppStore|Any CPU.ActiveCfg = Debug|x86
-		{AFFFC991-4956-45EF-8746-C1AE3FC7A245}.AppStore|Any CPU.Build.0 = Debug|x86
-		{AFFFC991-4956-45EF-8746-C1AE3FC7A245}.Debug|Any CPU.ActiveCfg = Debug|x86
-		{AFFFC991-4956-45EF-8746-C1AE3FC7A245}.Debug|Any CPU.Build.0 = Debug|x86
-		{AFFFC991-4956-45EF-8746-C1AE3FC7A245}.Debug|iPhone.ActiveCfg = Debug|x86
-		{AFFFC991-4956-45EF-8746-C1AE3FC7A245}.Debug|iPhone.Build.0 = Debug|x86
-		{AFFFC991-4956-45EF-8746-C1AE3FC7A245}.Debug|iPhoneSimulator.ActiveCfg = Debug|x86
-		{AFFFC991-4956-45EF-8746-C1AE3FC7A245}.Debug|iPhoneSimulator.Build.0 = Debug|x86
-		{AFFFC991-4956-45EF-8746-C1AE3FC7A245}.Debug|x86.ActiveCfg = Debug|x86
-		{AFFFC991-4956-45EF-8746-C1AE3FC7A245}.Debug|x86.Build.0 = Debug|x86
-		{AFFFC991-4956-45EF-8746-C1AE3FC7A245}.Distribution|Any CPU.ActiveCfg = Debug|x86
-		{AFFFC991-4956-45EF-8746-C1AE3FC7A245}.Distribution|Any CPU.Build.0 = Debug|x86
-		{AFFFC991-4956-45EF-8746-C1AE3FC7A245}.Release|Any CPU.ActiveCfg = Release|x86
-		{AFFFC991-4956-45EF-8746-C1AE3FC7A245}.Release|Any CPU.Build.0 = Release|x86
-		{AFFFC991-4956-45EF-8746-C1AE3FC7A245}.Release|iPhone.ActiveCfg = Release|x86
-		{AFFFC991-4956-45EF-8746-C1AE3FC7A245}.Release|iPhone.Build.0 = Release|x86
-		{AFFFC991-4956-45EF-8746-C1AE3FC7A245}.Release|iPhoneSimulator.ActiveCfg = Release|x86
-		{AFFFC991-4956-45EF-8746-C1AE3FC7A245}.Release|iPhoneSimulator.Build.0 = Release|x86
-		{AFFFC991-4956-45EF-8746-C1AE3FC7A245}.Release|x86.ActiveCfg = Release|x86
-		{AFFFC991-4956-45EF-8746-C1AE3FC7A245}.Release|x86.Build.0 = Release|x86
 		{C3D02EFA-1C48-415C-8811-56D20434FD68}.AppStore|Any CPU.ActiveCfg = AppStore|Any CPU
 		{C3D02EFA-1C48-415C-8811-56D20434FD68}.AppStore|Any CPU.Build.0 = AppStore|Any CPU
 		{C3D02EFA-1C48-415C-8811-56D20434FD68}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -916,6 +896,26 @@ Global
 		{FE144248-B1ED-4A7C-980C-7A2E603CE604}.Release|Any CPU.Build.0 = Release|Any CPU
 		{FE144248-B1ED-4A7C-980C-7A2E603CE604}.Release|x86.ActiveCfg = Release|Any CPU
 		{FE144248-B1ED-4A7C-980C-7A2E603CE604}.Release|x86.Build.0 = Release|Any CPU
+		{AFFFC991-4956-45EF-8746-C1AE3FC7A245}.AppStore|Any CPU.ActiveCfg = Debug|x86
+		{AFFFC991-4956-45EF-8746-C1AE3FC7A245}.AppStore|Any CPU.Build.0 = Debug|x86
+		{AFFFC991-4956-45EF-8746-C1AE3FC7A245}.Debug|Any CPU.ActiveCfg = Debug|x86
+		{AFFFC991-4956-45EF-8746-C1AE3FC7A245}.Debug|Any CPU.Build.0 = Debug|x86
+		{AFFFC991-4956-45EF-8746-C1AE3FC7A245}.Debug|iPhone.ActiveCfg = Debug|x86
+		{AFFFC991-4956-45EF-8746-C1AE3FC7A245}.Debug|iPhone.Build.0 = Debug|x86
+		{AFFFC991-4956-45EF-8746-C1AE3FC7A245}.Debug|iPhoneSimulator.ActiveCfg = Debug|x86
+		{AFFFC991-4956-45EF-8746-C1AE3FC7A245}.Debug|iPhoneSimulator.Build.0 = Debug|x86
+		{AFFFC991-4956-45EF-8746-C1AE3FC7A245}.Debug|x86.ActiveCfg = Debug|x86
+		{AFFFC991-4956-45EF-8746-C1AE3FC7A245}.Debug|x86.Build.0 = Debug|x86
+		{AFFFC991-4956-45EF-8746-C1AE3FC7A245}.Distribution|Any CPU.ActiveCfg = Debug|x86
+		{AFFFC991-4956-45EF-8746-C1AE3FC7A245}.Distribution|Any CPU.Build.0 = Debug|x86
+		{AFFFC991-4956-45EF-8746-C1AE3FC7A245}.Release|Any CPU.ActiveCfg = Release|x86
+		{AFFFC991-4956-45EF-8746-C1AE3FC7A245}.Release|Any CPU.Build.0 = Release|x86
+		{AFFFC991-4956-45EF-8746-C1AE3FC7A245}.Release|iPhone.ActiveCfg = Release|x86
+		{AFFFC991-4956-45EF-8746-C1AE3FC7A245}.Release|iPhone.Build.0 = Release|x86
+		{AFFFC991-4956-45EF-8746-C1AE3FC7A245}.Release|iPhoneSimulator.ActiveCfg = Release|x86
+		{AFFFC991-4956-45EF-8746-C1AE3FC7A245}.Release|iPhoneSimulator.Build.0 = Release|x86
+		{AFFFC991-4956-45EF-8746-C1AE3FC7A245}.Release|x86.ActiveCfg = Release|x86
+		{AFFFC991-4956-45EF-8746-C1AE3FC7A245}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{1585306B-CF46-479D-B234-1E10EDF4D741} = {80262DC5-B246-4DF4-88CD-D1742CCF81BA}

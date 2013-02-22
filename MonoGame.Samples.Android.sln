@@ -7,25 +7,25 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonoGame.Framework.Android"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CatapultNetWars.Android", "CatapultNetWars\CatapultNetWars.Android.csproj", "{C2B4D7C6-C3C5-4C02-8830-D33C0E59DCDD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonoGame.Samples.AdMob.Android", "AdMob\MonoGame.Samples.AdMob.Android.csproj", "{DD08D5F1-DE83-41C1-B599-76DC604643EB}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AdMob.Android", "AdMob\AdMob.Android.csproj", "{DD08D5F1-DE83-41C1-B599-76DC604643EB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonoGame.Samples.CatapultWars.Android", "CatapaultWars\MonoGame.Samples.CatapultWars.Android.csproj", "{289A3AF8-E006-47EF-B34C-CA01020E1655}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CatapultWars.Android", "CatapaultWars\CatapultWars.Android.csproj", "{289A3AF8-E006-47EF-B34C-CA01020E1655}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonoGame.Samples.ChaseAndEvade.Android", "ChaseAndEvade\MonoGame.Samples.ChaseAndEvade.Android.csproj", "{F05F90DC-DD37-4967-A96A-8D36C1C23E81}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChaseAndEvade.Android", "ChaseAndEvade\ChaseAndEvade.Android.csproj", "{F05F90DC-DD37-4967-A96A-8D36C1C23E81}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonoGame.Samples.Draw2D.Android", "Draw2D\MonoGame.Samples.Draw2D.Android.csproj", "{616BBFA6-52F2-40A1-AA76-1CF2BD6390D5}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Draw2D.Android", "Draw2D\Draw2D.Android.csproj", "{616BBFA6-52F2-40A1-AA76-1CF2BD6390D5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonoGame.Samples.Input.Android", "Input\MonoGame.Samples.Input.Android.csproj", "{CB2084E4-BEC8-4318-8011-93CC2E3C9E94}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Input.Android", "Input\Input.Android.csproj", "{CB2084E4-BEC8-4318-8011-93CC2E3C9E94}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonoGame.Samples.Peer2Peer.Android", "Peer2PeerSample\MonoGame.Samples.Peer2Peer.Android.csproj", "{56F6C06F-6F07-402E-89A5-39EDB037A516}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Peer2Peer.Android", "Peer2PeerSample\Peer2Peer.Android.csproj", "{56F6C06F-6F07-402E-89A5-39EDB037A516}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Orientation.Android", "Orientation\Orientation.Android.csproj", "{0A5F2E21-0B29-4627-8F06-28BA442B21F7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonoGame.Samples.RenderTarget2D.Android", "RenderTarget2DSample\MonoGame.Samples.RenderTarget2D.Android.csproj", "{DEDD20B5-8F83-46FD-AD05-8F8FCC49FCD6}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RenderTarget2D.Android", "RenderTarget2DSample\RenderTarget2D.Android.csproj", "{DEDD20B5-8F83-46FD-AD05-8F8FCC49FCD6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonoGame.Samples.VideoPlayer.Android", "VideoPlayer\MonoGame.Samples.VideoPlayer.Android.csproj", "{27C3DD7C-5322-4C2D-8EE4-07610390CDAF}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VideoPlayer.Android", "VideoPlayer\VideoPlayer.Android.csproj", "{27C3DD7C-5322-4C2D-8EE4-07610390CDAF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonoGame.Samples.Primitives.Android", "Primitives\MonoGame.Samples.Primitives.Android.csproj", "{167741E2-2D8E-474A-8D06-9ACB55F0BA83}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Primitives.Android", "Primitives\Primitives.Android.csproj", "{167741E2-2D8E-474A-8D06-9ACB55F0BA83}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

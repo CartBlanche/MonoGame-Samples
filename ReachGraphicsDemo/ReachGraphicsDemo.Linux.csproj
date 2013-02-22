@@ -30,10 +30,6 @@
   </PropertyGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
-    <ProjectReference Include="..\..\MonoGame.Framework\MonoGame.Framework.Linux.csproj">
-      <Project>{35253CE1-C864-4CD3-8249-4D1319748E8F}</Project>
-      <Name>MonoGame.Framework.Linux</Name>
-    </ProjectReference>
     <ProjectReference Include="..\ReachGraphicsDemoDataTypes\ReachGraphicsDemoDataTypes.Linux.csproj">
       <Project>{8D359A6F-B0BB-4799-8311-406D5F57025A}</Project>
       <Name>ReachGraphicsDemoDataTypes.Linux</Name>

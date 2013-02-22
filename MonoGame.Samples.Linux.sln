@@ -1,27 +1,27 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonoGame.Samples.ChaseAndEvade.Linux", "ChaseAndEvade\MonoGame.Samples.ChaseAndEvade.Linux.csproj", "{86A619E2-C8F0-452B-B764-C69D5BB07C98}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChaseAndEvade.Linux", "ChaseAndEvade\ChaseAndEvade.Linux.csproj", "{86A619E2-C8F0-452B-B764-C69D5BB07C98}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonoGame.Samples.Draw2D.Linux", "Draw2D\MonoGame.Samples.Draw2D.Linux.csproj", "{8CFEF1FE-9E32-43EB-A730-EB3AACDC77B1}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Draw2D.Linux", "Draw2D\Draw2D.Linux.csproj", "{8CFEF1FE-9E32-43EB-A730-EB3AACDC77B1}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonoGame.Framework.Linux", "..\MonoGame.Framework\MonoGame.Framework.Linux.csproj", "{35253CE1-C864-4CD3-8249-4D1319748E8F}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lidgren.Network.Linux", "..\ThirdParty\Lidgren.Network\Lidgren.Network.Linux.csproj", "{AE483C29-042E-4226-BA52-D247CE7676DA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonoGame.Samples.NetRumble.Linux", "NetRumble\MonoGame.Samples.NetRumble.Linux.csproj", "{52735207-2136-433B-A3E4-4C082728EED8}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetRumble.Linux", "NetRumble\NetRumble.Linux.csproj", "{52735207-2136-433B-A3E4-4C082728EED8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonoGame.Samples.Tetris.Linux", "Tetris\MonoGame.Samples.Tetris.Linux.csproj", "{86A619E2-C8F0-452B-B762-C69D5BB07C98}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tetris.Linux", "Tetris\Tetris.Linux.csproj", "{86A619E2-C8F0-452B-B762-C69D5BB07C98}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetworkStateManagement.Linux", "NetworkStateManagement\NetworkStateManagement.Linux.csproj", "{D0E05092-60B2-47FF-B924-D5CDED0C0DD1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonoGame.Samples.Peer2PeerSample.Linux", "Peer2PeerSample\MonoGame.Samples.Peer2PeerSample.Linux.csproj", "{86A619E2-C8D0-452B-B762-C69D5BB07C98}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Peer2PeerSample.Linux", "Peer2PeerSample\Peer2PeerSample.Linux.csproj", "{86A619E2-C8D0-452B-B762-C69D5BB07C98}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonoGame.Samples.Sound.Linux", "Sound\MonoGame.Samples.Sound.Linux.csproj", "{8CFEF2EE-5E32-43EB-A730-EB3AACDC77B1}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sound.Linux", "Sound\Sound.Linux.csproj", "{8CFEF2EE-5E32-43EB-A730-EB3AACDC77B1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonoGame.Samples.SpriteEffects.Linux", "SpriteEffects\MonoGame.Samples.SpriteEffects.Linux.csproj", "{86A919E2-D7F0-452B-B762-C69D5BB07C98}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpriteEffects.Linux", "SpriteEffects\SpriteEffects.Linux.csproj", "{86A919E2-D7F0-452B-B762-C69D5BB07C98}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonoGame.Samples.TiledSprites.Linux", "TiledSprites\MonoGame.Samples.TiledSprites.Linux.csproj", "{86A619E2-C8F0-452B-A762-C69D5BB07C98}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TiledSprites.Linux", "TiledSprites\TiledSprites.Linux.csproj", "{86A619E2-C8F0-452B-A762-C69D5BB07C98}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ParticleSample.Linux", "ParticleSample\ParticleSample.Linux.csproj", "{EB1F36EC-5DB8-41AC-AB99-E9337239A9F9}"
 EndProject
@@ -31,15 +31,15 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RenderTarget2DSample.Linux"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "BookSourceCode", "BookSourceCode", "{A28FF8DB-5350-4D08-A94D-93C3C67FCB63}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonoGame.Samples.RobotRampage.Linux", "BookSourceCode\XNAGameDevelopmentbyExampleCode\RobotRampage\MonoGame.Samples.RobotRampage.Linux.csproj", "{9522776F-02BA-4BED-B8BB-6BAE580F4068}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RobotRampage.Linux", "BookSourceCode\XNAGameDevelopmentbyExampleCode\RobotRampage\RobotRampage.Linux.csproj", "{9522776F-02BA-4BED-B8BB-6BAE580F4068}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tile Engine.Linux", "BookSourceCode\XNAGameDevelopmentbyExampleCode\GemstoneHunter\TileEngine\Tile Engine.Linux.csproj", "{521972FD-1A9B-4CFD-A435-EB2224985131}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GemstoneHunter.Linux", "BookSourceCode\XNAGameDevelopmentbyExampleCode\GemstoneHunter\GemstoneHunter.Linux.csproj", "{86A219E2-C8F0-452B-B762-C69D5BB07C98}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonoGame.Samples.AsteroidBeltAssault.Linux", "BookSourceCode\XNAGameDevelopmentbyExampleCode\AsteroidBeltAssault\MonoGame.Samples.AsteroidBeltAssault.Linux.csproj", "{86A219E2-C8F0-452B-B762-C69D5BB07C99}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AsteroidBeltAssault.Linux", "BookSourceCode\XNAGameDevelopmentbyExampleCode\AsteroidBeltAssault\AsteroidBeltAssault.Linux.csproj", "{86A219E2-C8F0-452B-B762-C69D5BB07C99}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonoGame.Samples.FloodControl.Linux", "BookSourceCode\XNAGameDevelopmentbyExampleCode\FloodControl\MonoGame.Samples.FloodControl.Linux.csproj", "{86A219E2-C8F1-422B-C762-C69D5BB07C98}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FloodControl.Linux", "BookSourceCode\XNAGameDevelopmentbyExampleCode\FloodControl\FloodControl.Linux.csproj", "{86A219E2-C8F1-422B-C762-C69D5BB07C98}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StarWarrior.Linux", "StarWarrior\StarWarrior.Linux.csproj", "{2012F252-E53A-4900-A2C5-9550D008DF8B}"
 EndProject
@@ -532,7 +532,7 @@ Global
 		{86A219E2-C8F1-422B-C762-C69D5BB07C98} = {A28FF8DB-5350-4D08-A94D-93C3C67FCB63}
 	EndGlobalSection
 	GlobalSection(MonoDevelopProperties) = preSolution
-		StartupItem = ChaseAndEvade\MonoGame.Samples.ChaseAndEvade.Linux.csproj
+		StartupItem = ChaseAndEvade\ChaseAndEvade.Linux.csproj
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
