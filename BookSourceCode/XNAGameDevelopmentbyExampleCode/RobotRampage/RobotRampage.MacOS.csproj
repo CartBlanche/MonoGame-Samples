@@ -10,6 +10,7 @@
     <OutputType>Exe</OutputType>
     <RootNamespace>RobotRampage</RootNamespace>
     <AssemblyName>RobotRampage</AssemblyName>
+    <SuppressXamMacUpsell>True</SuppressXamMacUpsell>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>True</DebugSymbols>

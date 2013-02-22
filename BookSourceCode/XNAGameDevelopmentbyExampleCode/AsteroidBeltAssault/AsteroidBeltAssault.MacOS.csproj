@@ -10,6 +10,7 @@
     <OutputType>Exe</OutputType>
     <RootNamespace>AsteroidBeltAssault</RootNamespace>
     <AssemblyName>AsteroidBeltAssault</AssemblyName>
+    <SuppressXamMacUpsell>True</SuppressXamMacUpsell>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>True</DebugSymbols>

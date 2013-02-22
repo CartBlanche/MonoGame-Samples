@@ -10,6 +10,7 @@
     <OutputType>Exe</OutputType>
     <RootNamespace>FloodControl</RootNamespace>
     <AssemblyName>FloodControl</AssemblyName>
+    <SuppressXamMacUpsell>True</SuppressXamMacUpsell>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>True</DebugSymbols>

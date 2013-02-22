@@ -10,6 +10,7 @@
     <OutputType>Exe</OutputType>
     <RootNamespace>GooCursor</RootNamespace>
     <AssemblyName>GooCursor</AssemblyName>
+    <SuppressXamMacUpsell>True</SuppressXamMacUpsell>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
     <DebugSymbols>True</DebugSymbols>

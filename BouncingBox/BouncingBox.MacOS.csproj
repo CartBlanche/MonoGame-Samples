@@ -10,6 +10,7 @@
     <OutputType>Exe</OutputType>
     <RootNamespace>Microsoft.Xna.Samples.BouncingBox.MacOS</RootNamespace>
     <AssemblyName>Microsoft.Xna.Samples.BouncingBox.MacOS</AssemblyName>
+    <SuppressXamMacUpsell>True</SuppressXamMacUpsell>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>True</DebugSymbols>
