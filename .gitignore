@@ -53,3 +53,5 @@ monodroid*.msi
 /CompiledContent/OSX/IgnoreMe.dll
 /CompiledContent/Windows8/IgnoreMe.dll
 /CompiledContent/Windows/IgnoreMe.dll
+*.cachefile
+*.dll

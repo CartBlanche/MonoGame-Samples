@@ -48,8 +48,10 @@ technique BloomCombine
     {
 #if SM4
         PixelShader = compile ps_4_0_level_9_1 PixelShaderF();
-#else
+#elif SM3
         PixelShader = compile ps_3_0 PixelShaderF();
+#else
+        PixelShader = compile ps_2_0 PixelShaderF();
 #endif
     }
 }

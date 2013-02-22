@@ -256,7 +256,7 @@ namespace Particle3DSample
 			// Load the particle texture, and set it onto the effect.
 			Texture2D texture = content.Load<Texture2D> (settings.TextureName);
 
-			parameters ["Texture"].SetValue (texture);
+			parameters ["TextureSampler"].SetValue (texture);
 		}
 
 
