@@ -22,7 +22,7 @@ namespace Microsoft.Xna.Samples.Draw2D
 	{
 		GraphicsDeviceManager graphics;
 		SpriteBatch spriteBatch;		
-		Texture2D texture, ball;
+		Texture2D texture;
 		SpriteFont font;
 		float size, rotation;
 		float clippingSize = 0.0f;
@@ -71,9 +71,8 @@ namespace Microsoft.Xna.Samples.Draw2D
 			spriteBatch = new SpriteBatch (GraphicsDevice);
 
 			// TODO: use this.Content to load your game content here
-			texture = Content.Load<Texture2D> ("monogameicon");
-			// TODO ball = Content.Load<Texture2D> ("purpleBall.xnb");
-			font = Content.Load<SpriteFont> ("spriteFont1");
+			texture = Content.Load<Texture2D> ("logo");
+			font = Content.Load<SpriteFont> ("Font");
 
 			fps = new FPSCounterComponent (this,spriteBatch,font);
 			Components.Add(fps);

@@ -39,12 +39,12 @@ namespace RenderTarget2DSample
 		/// <summary>
 		/// This is a texture we'll be using to load a picture of Seamus the dog.
 		/// </summary>
-		Texture2D mooTheMerciless;
+		Texture2D logo;
 
 		/// <summary>
 		/// This is a texture we'll be using to load a picture of a tileable wood surface.
 		/// </summary>
-		Texture2D wood;
+		Texture2D checker;
 		bool oneTimeOnly = true;
 
 		/// <summary>
@@ -96,10 +96,10 @@ namespace RenderTarget2DSample
 				GraphicsDevice.PresentationParameters.BackBufferHeight, false, SurfaceFormat.Color, DepthFormat.None);
             
 			// Load in our wood tile.
-			wood = Content.Load<Texture2D> ("wood");
+			checker = Content.Load<Texture2D> ("checker");
 			
 			// Load in the picture of Seamus.
-			mooTheMerciless = Content.Load<Texture2D> ("MooTheMerciless");
+			logo = Content.Load<Texture2D> ("logo");
 
 			
 		}
@@ -182,13 +182,13 @@ namespace RenderTarget2DSample
 						// return 1 and the spriteBatch.Draw call gets skipped. If it's even, it'll return 0 so
 						// spriteBatch.Draw will get called and it'll draw a tile there.
 						if (xBlank % 2 == 0) {
-							spriteBatch.Draw (wood, woodPosition, Color.White);
+							spriteBatch.Draw (checker, woodPosition, Color.White);
 						}
 						// Increment xBlank by one so that every other tile will get drawn.
 						xBlank++;
 						// Increase the X coordinate of where we'll draw the wood tile in order to progressively draw
 						// each column of tiles.
-						woodPosition.X += wood.Width;
+						woodPosition.X += checker.Width;
 
 						// We draw so long as woodPosition.X is less than our renderTarget's width
 					} while (woodPosition.X < renderTarget.Width);
@@ -210,14 +210,14 @@ namespace RenderTarget2DSample
 
 					// Increase the Y coord of where we'll draw the wood tile in order to progressively draw each
 					// row of tiles.
-					woodPosition.Y += wood.Height;
+					woodPosition.Y += checker.Height;
 
 					// We draw so long as woodPosition.Y is less than our renderTarget's width
 				} while (woodPosition.Y < renderTarget.Height);
 
 				// Now that we've drawn the wood tiles, we draw Moo the Merciless. We draw him centered in the rendertarget.
-				spriteBatch.Draw (mooTheMerciless, 
-				new Vector2 ((renderTarget.Width / 2f) - (mooTheMerciless.Width / 2f), (renderTarget.Height / 2f) - (mooTheMerciless.Height / 2f)), 
+				spriteBatch.Draw (logo, 
+				new Vector2 ((renderTarget.Width / 2f) - (logo.Width / 2f), (renderTarget.Height / 2f) - (logo.Height / 2f)), 
 				Color.White);
 
 				// End the spriteBatch draw.
