@@ -66,7 +66,7 @@ namespace Microsoft.Xna.Samples.BouncingBox
 			spriteBatch = new SpriteBatch (GraphicsDevice);
 
 			// TODO: use this.Content to load your game content here
-			texture = Content.Load<Texture2D> ("monogameicon");
+			texture = Content.Load<Texture2D> ("logo");
 		}
 		/// <summary>
 		/// Allows the game to run logic such as updating the world,
@@ -76,6 +76,7 @@ namespace Microsoft.Xna.Samples.BouncingBox
 		protected override void Update (GameTime gameTime)
 		{
 			// TODO: Add your update logic here
+			if (Keyboard.GetState().IsKeyDown(Keys.Escape)) Exit();
 
 			if (texture != null) {
 				//  Keep inside the screen

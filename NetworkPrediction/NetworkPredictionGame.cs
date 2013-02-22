@@ -146,7 +146,7 @@ namespace NetworkPrediction
         {
             if (IsActive)
             {
-                if (Gamer.SignedInGamers.Count == 0)
+				if (Gamer.SignedInGamers.Count == 0 && !Guide.IsVisible)
                 {
                     // If there are no profiles signed in, we cannot proceed.
                     // Show the Guide so the user can sign in.

@@ -34,9 +34,8 @@ namespace NetworkStateManagement
 		
 		public override void FinishedLaunching (MonoMac.Foundation.NSObject notification)
 		{
-			using (NetworkStateManagementGame game = new NetworkStateManagementGame ()) {
-				game.Run ();
-			}
+			NetworkStateManagementGame game = new NetworkStateManagementGame ();
+			game.Run ();
 		}
 		
 		public override bool ApplicationShouldTerminateAfterLastWindowClosed (NSApplication sender)

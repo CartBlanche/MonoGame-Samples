@@ -164,7 +164,7 @@ namespace NetRumble
 		// Comment or uncomment from here
 		// ***************************	
             // create and add the bloom effect
-#if BLOOM
+#if !BLOOM
             bloomComponent = new BloomComponent(ScreenManager.Game);
             bloomComponent.Settings = BloomSettings.PresetSettings[0];
             ScreenManager.Game.Components.Add(bloomComponent);

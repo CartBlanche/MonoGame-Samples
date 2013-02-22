@@ -157,4 +157,14 @@
     <Content Include="Content\Textures\Backgrounds\titleScreen.xnb" />
     <Content Include="Content\Sounds\FillingHoneyPot_Loop.xnb" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\MonoGame.Framework\MonoGame.Framework.MacOS.csproj">
+      <Project>{36C538E6-C32A-4A8D-A39C-566173D7118E}</Project>
+      <Name>MonoGame.Framework.MacOS</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\ThirdParty\Lidgren.Network\Lidgren.Network.MacOS.csproj">
+      <Project>{AE483C29-042E-4226-BA52-D247CE7676DA}</Project>
+      <Name>Lidgren.Network.MacOS</Name>
+    </ProjectReference>
+  </ItemGroup>
 </Project>

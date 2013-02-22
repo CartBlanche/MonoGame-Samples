@@ -2152,7 +2152,9 @@
     <Content Include="Content\Textures\Spells\Potion3h.xnb" />
     <Content Include="Content\Textures\Spells\Scroll.xnb" />
     <Content Include="Content\Textures\Spells\SmallIcon.xnb" />
-    <Content Include="Content\Audio\RPGAudio.xgs" />
+    <Content Include="Content\Audio\RPGAudio.xgs">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Content\Audio\RpgAudio.xap" />
     <Content Include="Content\Audio\Sound Bank.xsb" />
     <Content Include="Content\Audio\Wave Bank.xwb" />
@@ -2162,6 +2164,14 @@
     <ProjectReference Include="RolePlayingGameData\RolePlayingGameData.csproj">
       <Project>{098BBC2D-63A6-4C22-8A30-E6C4F4FC0AC4}</Project>
       <Name>RolePlayingGameData</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\MonoGame.Framework\MonoGame.Framework.MacOS.csproj">
+      <Project>{36C538E6-C32A-4A8D-A39C-566173D7118E}</Project>
+      <Name>MonoGame.Framework.MacOS</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\ThirdParty\Lidgren.Network\Lidgren.Network.MacOS.csproj">
+      <Project>{AE483C29-042E-4226-BA52-D247CE7676DA}</Project>
+      <Name>Lidgren.Network.MacOS</Name>
     </ProjectReference>
   </ItemGroup>
 </Project>

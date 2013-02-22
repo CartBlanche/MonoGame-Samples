@@ -72,6 +72,14 @@
       <Project>{D6E4E5BC-8998-4718-8E84-80901E6739CC}</Project>
       <Name>FarseerPhysicsEngine</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\MonoGame.Framework\MonoGame.Framework.MacOS.csproj">
+      <Project>{36C538E6-C32A-4A8D-A39C-566173D7118E}</Project>
+      <Name>MonoGame.Framework.MacOS</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\ThirdParty\Lidgren.Network\Lidgren.Network.MacOS.csproj">
+      <Project>{AE483C29-042E-4226-BA52-D247CE7676DA}</Project>
+      <Name>Lidgren.Network.MacOS</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Main.cs" />
