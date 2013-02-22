@@ -53,6 +53,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Input.iOS", "Input\Input.iO
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CatapultNetWars.iOS", "CatapultNetWars\CatapultNetWars.iOS.csproj", "{65DE6FC7-CB94-4E4F-8FBE-E3EA9A34967C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XNAPacMan.iOS", "XNAPacMan\XNAPacMan.iOS.csproj", "{75E860EE-EBF1-4BB4-AE39-9729900AFD39}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|iPhoneSimulator = Debug|iPhoneSimulator
@@ -216,16 +218,28 @@ Global
 		{734EAA48-F1CA-481A-B391-0285BC0E8B40}.Release|iPhoneSimulator.ActiveCfg = Release|Any CPU
 		{734EAA48-F1CA-481A-B391-0285BC0E8B40}.Release|iPhoneSimulator.Build.0 = Release|Any CPU
 		{75E860EE-EBF1-4BB4-AE39-9729900AFD39}.Debug|iPhone.ActiveCfg = Debug|iPhone
+		{75E860EE-EBF1-4BB4-AE39-9729900AFD39}.Debug|iPhone.ActiveCfg = Debug|iPhone
+		{75E860EE-EBF1-4BB4-AE39-9729900AFD39}.Debug|iPhone.Build.0 = Debug|iPhone
 		{75E860EE-EBF1-4BB4-AE39-9729900AFD39}.Debug|iPhone.Build.0 = Debug|iPhone
 		{75E860EE-EBF1-4BB4-AE39-9729900AFD39}.Debug|iPhoneSimulator.ActiveCfg = Debug|iPhoneSimulator
+		{75E860EE-EBF1-4BB4-AE39-9729900AFD39}.Debug|iPhoneSimulator.ActiveCfg = Debug|iPhoneSimulator
+		{75E860EE-EBF1-4BB4-AE39-9729900AFD39}.Debug|iPhoneSimulator.Build.0 = Debug|iPhoneSimulator
 		{75E860EE-EBF1-4BB4-AE39-9729900AFD39}.Debug|iPhoneSimulator.Build.0 = Debug|iPhoneSimulator
 		{75E860EE-EBF1-4BB4-AE39-9729900AFD39}.Distribution|iPhone.ActiveCfg = Distribution|iPhone
+		{75E860EE-EBF1-4BB4-AE39-9729900AFD39}.Distribution|iPhone.ActiveCfg = Distribution|iPhone
+		{75E860EE-EBF1-4BB4-AE39-9729900AFD39}.Distribution|iPhone.Build.0 = Distribution|iPhone
 		{75E860EE-EBF1-4BB4-AE39-9729900AFD39}.Distribution|iPhone.Build.0 = Distribution|iPhone
 		{75E860EE-EBF1-4BB4-AE39-9729900AFD39}.Distribution|iPhoneSimulator.ActiveCfg = Distribution|iPhoneSimulator
+		{75E860EE-EBF1-4BB4-AE39-9729900AFD39}.Distribution|iPhoneSimulator.ActiveCfg = Distribution|iPhoneSimulator
+		{75E860EE-EBF1-4BB4-AE39-9729900AFD39}.Distribution|iPhoneSimulator.Build.0 = Distribution|iPhoneSimulator
 		{75E860EE-EBF1-4BB4-AE39-9729900AFD39}.Distribution|iPhoneSimulator.Build.0 = Distribution|iPhoneSimulator
 		{75E860EE-EBF1-4BB4-AE39-9729900AFD39}.Release|iPhone.ActiveCfg = Release|iPhone
+		{75E860EE-EBF1-4BB4-AE39-9729900AFD39}.Release|iPhone.ActiveCfg = Release|iPhone
+		{75E860EE-EBF1-4BB4-AE39-9729900AFD39}.Release|iPhone.Build.0 = Release|iPhone
 		{75E860EE-EBF1-4BB4-AE39-9729900AFD39}.Release|iPhone.Build.0 = Release|iPhone
 		{75E860EE-EBF1-4BB4-AE39-9729900AFD39}.Release|iPhoneSimulator.ActiveCfg = Release|iPhoneSimulator
+		{75E860EE-EBF1-4BB4-AE39-9729900AFD39}.Release|iPhoneSimulator.ActiveCfg = Release|iPhoneSimulator
+		{75E860EE-EBF1-4BB4-AE39-9729900AFD39}.Release|iPhoneSimulator.Build.0 = Release|iPhoneSimulator
 		{75E860EE-EBF1-4BB4-AE39-9729900AFD39}.Release|iPhoneSimulator.Build.0 = Release|iPhoneSimulator
 		{96F32BCF-B579-438B-A5DC-667BB9A5849C}.Debug|iPhone.ActiveCfg = Debug|iPhone
 		{96F32BCF-B579-438B-A5DC-667BB9A5849C}.Debug|iPhone.Build.0 = Debug|iPhone
