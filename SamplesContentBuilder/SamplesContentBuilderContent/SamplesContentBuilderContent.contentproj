@@ -124,12 +124,12 @@
     <Compile Include="Music\InGameSong_Loop.wma">
       <Name>InGameSong_Loop</Name>
       <Importer>WmaImporter</Importer>
-      <Processor>SongProcessor</Processor>
+      <Processor>MGSongProcessor</Processor>
     </Compile>
     <Compile Include="Music\MenuMusic_Loop.wma">
       <Name>MenuMusic_Loop</Name>
       <Importer>WmaImporter</Importer>
-      <Processor>SongProcessor</Processor>
+      <Processor>MGSongProcessor</Processor>
     </Compile>
   </ItemGroup>
   <ItemGroup>
