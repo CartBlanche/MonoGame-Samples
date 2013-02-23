@@ -16,7 +16,7 @@
     <DebugType>full</DebugType>
     <Optimize>False</Optimize>
     <OutputPath>bin\Debug</OutputPath>
-    <DefineConstants>DEBUG</DefineConstants>
+    <DefineConstants>DEBUG;MONOMAC</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <ConsolePause>False</ConsolePause>
@@ -38,6 +38,7 @@
     <EnablePackageSigning>False</EnablePackageSigning>
     <IncludeMonoRuntime>False</IncludeMonoRuntime>
     <UseSGen>False</UseSGen>
+    <DefineConstants>MONOMAC</DefineConstants>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -78,7 +79,9 @@
     <Compile Include="Projectile.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Content\font.xnb" />
+    <Content Include="Content\font.xnb">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Content\ExplosionSettings.xml" />
     <Content Include="Content\ExplosionSmokeSettings.xml" />
     <Content Include="Content\FireSettings.xml" />
@@ -92,17 +95,42 @@
     <Content Include="Content\smoke.png" />
     <Content Include="Game.ico" />
     <Content Include="Particle3DSample.png" />
-    <Content Include="Content\Arial.xnb" />
-    <Content Include="Content\ExplosionSettings.xnb" />
-    <Content Include="Content\ParticleEffect.xnb" />
-    <Content Include="Content\checker_0.xnb" />
-    <Content Include="Content\ExplosionSmokeSettings.xnb" />
-    <Content Include="Content\fire.xnb" />
-    <Content Include="Content\FireSettings.xnb" />
-    <Content Include="Content\grid.xnb" />
-    <Content Include="Content\ProjectileTrailSettings.xnb" />
-    <Content Include="Content\smoke.xnb" />
-    <Content Include="Content\SmokePlumeSettings.xnb" />
-    <Content Include="Content\explosion.xnb" />
+    <Content Include="Content\Arial.xnb">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\ExplosionSettings.xnb">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\checker_0.xnb">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\ExplosionSmokeSettings.xnb">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\fire.xnb">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\FireSettings.xnb">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\grid.xnb">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\ProjectileTrailSettings.xnb">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\smoke.xnb">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\SmokePlumeSettings.xnb">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\explosion.xnb">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\CompiledContent\OSX\Content\Effects\ParticleEffect.xnb">
+      <Link>Content\ParticleEffect.xnb</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
 </Project>

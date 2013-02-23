@@ -53,9 +53,8 @@ namespace PeerToPeer
 		
 		public override void FinishedLaunching (MonoMac.Foundation.NSObject notification)
 		{
-			using (PeerToPeerGame game = new PeerToPeerGame ()) {
-				game.Run ();
-			}
+			PeerToPeerGame game = new PeerToPeerGame ();
+			game.Run ();
 		}
 		
 		public override bool ApplicationShouldTerminateAfterLastWindowClosed (NSApplication sender)
