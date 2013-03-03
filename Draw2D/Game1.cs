@@ -45,7 +45,7 @@ namespace Microsoft.Xna.Samples.Draw2D
 			graphics.PreferredBackBufferHeight = 480;
 			graphics.PreferredBackBufferWidth = 320;
 
-			graphics.SupportedOrientations = DisplayOrientation.Portrait | DisplayOrientation.LandscapeLeft | DisplayOrientation.LandscapeRight | DisplayOrientation.PortraitUpsideDown;			
+			graphics.SupportedOrientations = DisplayOrientation.Portrait | DisplayOrientation.LandscapeLeft | DisplayOrientation.LandscapeRight | DisplayOrientation.Portrait;			
 		}
 		
 		/// <summary>

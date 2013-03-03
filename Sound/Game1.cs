@@ -37,7 +37,7 @@ namespace Microsoft.Xna.Samples.Sound
 
 			Window.AllowUserResizing = false;
 
-			graphics.SupportedOrientations = DisplayOrientation.Portrait | DisplayOrientation.LandscapeLeft | DisplayOrientation.LandscapeRight | DisplayOrientation.PortraitUpsideDown;
+			graphics.SupportedOrientations = DisplayOrientation.Portrait | DisplayOrientation.LandscapeLeft | DisplayOrientation.LandscapeRight | DisplayOrientation.Portrait;
 		}
 		
 		/// <summary>
