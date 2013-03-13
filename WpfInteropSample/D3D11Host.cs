@@ -26,7 +26,7 @@ namespace WpfInteropSample
         // Image source:
         private RenderTarget2D _renderTarget;
         private D3D11Image _d3D11Image;
-        private bool _sizeChanged;
+        private bool _resetBackBuffer;
 
         // Render timing:
         private readonly Stopwatch _timer;
@@ -205,17 +205,14 @@ namespace WpfInteropSample
             if (!_timer.IsRunning)
                 return;
 
-            // Resize back buffer if necessary.
-            if (_sizeChanged)
-            {
+            // Recreate back buffer if necessary.
+            if (_resetBackBuffer)
                 CreateBackBuffer();
-                _sizeChanged = false;
-            }
 
             // CompositionTarget.Rendering event may be raised multiple times per frame
             // (e.g. during window resizing).
             var renderingEventArgs = (RenderingEventArgs)eventArgs;
-            if (_lastRenderingTime != renderingEventArgs.RenderingTime || _sizeChanged)
+            if (_lastRenderingTime != renderingEventArgs.RenderingTime || _resetBackBuffer)
             {
                 _lastRenderingTime = renderingEventArgs.RenderingTime;
 
@@ -226,6 +223,8 @@ namespace WpfInteropSample
 
             _d3D11Image.Invalidate(); // Always invalidate D3DImage to reduce flickering
                                       // during window resizing.
+
+            _resetBackBuffer = false;
         }
 
 
@@ -236,7 +235,7 @@ namespace WpfInteropSample
         /// <param name="sizeInfo">Details of the old and new size involved in the change.</param>
         protected override void OnRenderSizeChanged(SizeChangedInfo sizeInfo)
         {
-            _sizeChanged = true;
+            _resetBackBuffer = true;
             base.OnRenderSizeChanged(sizeInfo);
         }
 
@@ -244,9 +243,14 @@ namespace WpfInteropSample
         private void OnIsFrontBufferAvailableChanged(object sender, DependencyPropertyChangedEventArgs eventArgs)
         {
             if (_d3D11Image.IsFrontBufferAvailable)
+            {
                 StartRendering();
+                _resetBackBuffer = true;
+            }
             else
+            {
                 StopRendering();
+            }
         }
 
 
