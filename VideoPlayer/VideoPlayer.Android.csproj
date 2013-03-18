@@ -54,7 +54,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\AboutResources.txt" />
-    <None Include="Assets\AboutAssets.txt" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\layout\Main.axml" />
@@ -68,8 +67,21 @@
     <AndroidAsset Include="Content\spriteFont1.xnb">
       <Link>Assets\Content\spriteFont1.xnb</Link>
     </AndroidAsset>
-    <AndroidAsset Include="Assets\Content\sintel_trailer.mp4">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    <AndroidAsset Include="Content\sintel_trailer.mp4">
+      <Link>Assets\Content\sintel_trailer.mp4</Link>
     </AndroidAsset>
+    <AndroidAsset Include="Content\sintel_trailer.m4v">
+      <Link>Assets\Content\sintel_trailer.m4v</Link>
+    </AndroidAsset>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\ThirdParty\Lidgren.Network\Lidgren.Network.Android.csproj">
+      <Project>{565129E0-4EE5-4F6F-B403-C3484C9740BE}</Project>
+      <Name>Lidgren.Network.Android</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\MonoGame.Framework\MonoGame.Framework.Android.csproj">
+      <Project>{BA9476CF-99BA-4D03-92F2-73D2C5E58883}</Project>
+      <Name>MonoGame.Framework.Android</Name>
+    </ProjectReference>
   </ItemGroup>
 </Project>
