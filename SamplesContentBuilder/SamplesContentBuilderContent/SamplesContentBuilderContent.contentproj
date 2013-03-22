@@ -121,18 +121,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Music\InGameSong_Loop.wma">
-      <Name>InGameSong_Loop</Name>
-      <Importer>WmaImporter</Importer>
-      <Processor>MGSongProcessor</Processor>
-    </Compile>
-    <Compile Include="Music\MenuMusic_Loop.wma">
-      <Name>MenuMusic_Loop</Name>
-      <Importer>WmaImporter</Importer>
-      <Processor>MGSongProcessor</Processor>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
     <Compile Include="Textures\animation_60x60.png">
       <Name>animation_60x60</Name>
       <Importer>TextureImporter</Importer>
@@ -828,13 +816,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Music\One Step Beyond.wma">
-      <Name>One Step Beyond</Name>
-      <Importer>WmaImporter</Importer>
-      <Processor>MGSongProcessor</Processor>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
     <Compile Include="Textures\background.png">
       <Name>background</Name>
       <Importer>TextureImporter</Importer>
@@ -988,6 +969,21 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Music\InGameSong_Loop.mp3">
+      <Name>InGameSong_Loop</Name>
+      <Importer>Mp3Importer</Importer>
+      <Processor>MGSongProcessor</Processor>
+    </Compile>
+    <Compile Include="Music\MenuMusic_Loop.mp3">
+      <Name>MenuMusic_Loop</Name>
+      <Importer>Mp3Importer</Importer>
+      <Processor>MGSongProcessor</Processor>
+    </Compile>
+    <Compile Include="Music\One Step Beyond.mp3">
+      <Name>One Step Beyond</Name>
+      <Importer>Mp3Importer</Importer>
+      <Processor>MGSongProcessor</Processor>
+    </Compile>
     <Content Include="Textures\Catapults\AnimationsDef.xml">
       <Name>AnimationsDef</Name>
       <Importer>XmlImporter</Importer>
