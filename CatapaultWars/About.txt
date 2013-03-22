@@ -1,0 +1,5 @@
+Catapult Wars 
+
+http://msdn.microsoft.com/en-us/WindowsPhoneTrainingCourse_2DGameDevelopmentWithXNALab
+
+This is a Windows Phone 7 Game Development Lab from Microsoft, Inc.
