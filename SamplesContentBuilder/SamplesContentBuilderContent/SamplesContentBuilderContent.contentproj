@@ -988,11 +988,12 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Textures\Catapults\AnimationsDef.xml">
+    <Content Include="Textures\Catapults\AnimationsDef.xml">
       <Name>AnimationsDef</Name>
       <Importer>XmlImporter</Importer>
       <Processor>PassThroughProcessor</Processor>
-    </Compile>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="bonus\Apple.png">
