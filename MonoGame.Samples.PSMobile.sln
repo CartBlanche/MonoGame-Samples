@@ -39,6 +39,6 @@ Global
 		{EA26E76F-FDFE-4A8C-B5A3-C3B5761E28F9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(MonoDevelopProperties) = preSolution
-		StartupItem = ..\MonoGame.Framework\MonoGame.Framework.PSMobile.csproj
+		StartupItem = Aiming\Aiming.PSMobile.csproj
 	EndGlobalSection
 EndGlobal

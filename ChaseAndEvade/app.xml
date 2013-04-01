@@ -25,5 +25,7 @@
   </runtime_config>
   <feature_list>
     <feature value="GamePad" />
+	<feature value="Touch" />
+	<feature value="Motion" />
   </feature_list>
 </application>
