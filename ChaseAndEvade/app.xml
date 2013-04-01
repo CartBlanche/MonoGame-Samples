@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<application project_name="ChaseAndEvade" version="1.00" runtime_version="1.11" sdk_version="1.11.00" default_locale="en-US">
+  <runtime_config>
+    <memory managed_heap_size="32768" resource_heap_size="65536" />
+    <display max_screen_size="1920x1200" />
+    <camera max_capture_resolution="2048x1536" />
+  </runtime_config>
+  <feature_list>
+  </feature_list>
+</application>
