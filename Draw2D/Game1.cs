@@ -71,7 +71,7 @@ namespace Microsoft.Xna.Samples.Draw2D
 			spriteBatch = new SpriteBatch (GraphicsDevice);
 
 			// TODO: use this.Content to load your game content here
-			texture = Content.Load<Texture2D> ("logo");
+			texture = Content.Load<Texture2D> ("monogameicon48x48");
 			font = Content.Load<SpriteFont> ("Font");
 
 			fps = new FPSCounterComponent (this,spriteBatch,font);
