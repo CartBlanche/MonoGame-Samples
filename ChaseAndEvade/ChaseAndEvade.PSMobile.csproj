@@ -63,4 +63,7 @@
       <Name>MonoGame.Framework.PSMobile</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup>
+    <PsmMetadata Include="app.xml" />
+  </ItemGroup>
 </Project>
