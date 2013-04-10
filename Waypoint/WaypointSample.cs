@@ -36,7 +36,7 @@ namespace Waypoint
         /// <summary>
         /// Screen width in pixels
         /// </summary>
-        const int screenWidth = 320;
+        const int screenWidth = 640;
         /// <summary>
         /// Screen height in pixels
         /// </summary>
@@ -68,8 +68,10 @@ namespace Waypoint
         // Input data
         KeyboardState previousKeyboardState;
         GamePadState previousGamePadState;
+		MouseState previousMouseState;
         KeyboardState currentKeyboardState;
         GamePadState currentGamePadState;
+		MouseState currentMouseState;
 		TouchCollection currentTouchCollection;
 
         // The waypoint-following tank
@@ -189,8 +191,10 @@ namespace Waypoint
         {
             previousGamePadState = currentGamePadState;
             previousKeyboardState = currentKeyboardState;
+			previousMouseState = currentMouseState;
             currentGamePadState = GamePad.GetState(PlayerIndex.One);
             currentKeyboardState = Keyboard.GetState();
+			currentMouseState = Mouse.GetState();
 			
 			currentTouchCollection = TouchPanel.GetState();
 			
@@ -212,6 +216,21 @@ namespace Waypoint
 			        case TouchLocationState.Released:
 			            break;
 			    }	
+			}
+
+			if ( currentMouseState.LeftButton == ButtonState.Released && previousMouseState.LeftButton == ButtonState.Pressed)
+			{
+				cursorLocation.X = currentMouseState.X;
+				cursorLocation.Y = currentMouseState.Y;
+				touchCount = 1;
+			}
+
+			if (currentMouseState.MiddleButton == ButtonState.Released && previousMouseState.MiddleButton == ButtonState.Pressed) {
+				touchCount = 2;
+			}
+
+			if (currentMouseState.RightButton == ButtonState.Released && previousMouseState.RightButton == ButtonState.Pressed) {
+				touchCount = 3;
 			}
 
             // Allows the game to exit
