@@ -418,7 +418,7 @@ namespace Flocking
             DrawBar(barSeparationDistance, flockParams.SeparationDistance / 100f, 
                     "Separation  Distance:", gameTime, selectionNum == 1);
 
-#if WINDOWS_PHONE || IOS
+#if WINDOWS_PHONE || IOS || PSM
             DrawButton(buttonResetDistance, "Reset Distance");
             DrawButton(buttonResetFlock, "Reset Flock");
             DrawButton(buttonToggleCat, "Add/Remove Cat");

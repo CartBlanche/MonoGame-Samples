@@ -44,11 +44,11 @@
     <Folder Include="Content\" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Content\cat.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    <Content Include="..\CompiledContent\Android\Content\Textures\cat.xnb">
+      <Link>Content\cat.xnb</Link>
     </Content>
-    <Content Include="Content\spotlight.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    <Content Include="..\CompiledContent\Android\Content\Textures\spotlight.xnb">
+      <Link>Content\spotlight.xnb</Link>
     </Content>
   </ItemGroup>
   <ItemGroup>

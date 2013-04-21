@@ -40,17 +40,17 @@
     <Folder Include="Content\" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Content\cat.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    <Content Include="..\CompiledContent\Android\Content\Textures\cat.xnb">
+      <Link>Content\cat.xnb</Link>
     </Content>
-    <Content Include="Content\mouse.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    <Content Include="..\CompiledContent\Android\Content\Textures\mouse.xnb">
+      <Link>Content\mouse.xnb</Link>
     </Content>
-    <Content Include="Content\tank.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    <Content Include="..\CompiledContent\Android\Content\Textures\tank.xnb">
+      <Link>Content\tank.xnb</Link>
     </Content>
-    <Content Include="Content\Arial.xnb">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    <Content Include="..\CompiledContent\Android\Content\Fonts\Arial.xnb">
+      <Link>Content\Arial.xnb</Link>
     </Content>
   </ItemGroup>
   <ItemGroup>
