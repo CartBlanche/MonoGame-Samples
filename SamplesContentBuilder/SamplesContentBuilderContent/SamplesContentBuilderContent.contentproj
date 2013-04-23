@@ -121,18 +121,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Music\InGameSong_Loop.wma">
-      <Name>InGameSong_Loop</Name>
-      <Importer>WmaImporter</Importer>
-      <Processor>MGSongProcessor</Processor>
-    </Compile>
-    <Compile Include="Music\MenuMusic_Loop.wma">
-      <Name>MenuMusic_Loop</Name>
-      <Importer>WmaImporter</Importer>
-      <Processor>MGSongProcessor</Processor>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
     <Compile Include="Textures\animation_60x60.png">
       <Name>animation_60x60</Name>
       <Importer>TextureImporter</Importer>
@@ -748,64 +736,64 @@
     <Compile Include="Textures\connected_controller1.png">
       <Name>connected_controller1</Name>
       <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
+      <Processor>MGTextureProcessor</Processor>
     </Compile>
     <Compile Include="Textures\connected_controller2.png">
       <Name>connected_controller2</Name>
       <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
+      <Processor>MGTextureProcessor</Processor>
     </Compile>
     <Compile Include="Textures\connected_controller3.png">
       <Name>connected_controller3</Name>
       <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
+      <Processor>MGTextureProcessor</Processor>
     </Compile>
     <Compile Include="Textures\connected_controller4.png">
       <Name>connected_controller4</Name>
       <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
+      <Processor>MGTextureProcessor</Processor>
     </Compile>
     <Compile Include="Textures\select_controller1.png">
       <Name>select_controller1</Name>
       <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
+      <Processor>MGTextureProcessor</Processor>
     </Compile>
     <Compile Include="Textures\select_controller2.png">
       <Name>select_controller2</Name>
       <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
+      <Processor>MGTextureProcessor</Processor>
     </Compile>
     <Compile Include="Textures\select_controller3.png">
       <Name>select_controller3</Name>
       <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
+      <Processor>MGTextureProcessor</Processor>
     </Compile>
     <Compile Include="Textures\select_controller4.png">
       <Name>select_controller4</Name>
       <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
+      <Processor>MGTextureProcessor</Processor>
     </Compile>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Textures\flare1.png">
       <Name>flare1</Name>
       <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
+      <Processor>MGTextureProcessor</Processor>
     </Compile>
     <Compile Include="Textures\flare2.png">
       <Name>flare2</Name>
       <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
+      <Processor>MGTextureProcessor</Processor>
     </Compile>
     <Compile Include="Textures\flare3.png">
       <Name>flare3</Name>
       <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
+      <Processor>MGTextureProcessor</Processor>
     </Compile>
     <Compile Include="Textures\glow.png">
       <Name>glow</Name>
       <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
+      <Processor>MGTextureProcessor</Processor>
     </Compile>
   </ItemGroup>
   <ItemGroup>
@@ -819,56 +807,49 @@
     <Compile Include="Textures\circle.png">
       <Name>circle</Name>
       <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
+      <Processor>MGTextureProcessor</Processor>
     </Compile>
     <Compile Include="Textures\sqbrush.png">
       <Name>sqbrush</Name>
       <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="Music\One Step Beyond.wma">
-      <Name>One Step Beyond</Name>
-      <Importer>WmaImporter</Importer>
-      <Processor>MGSongProcessor</Processor>
+      <Processor>MGTextureProcessor</Processor>
     </Compile>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Textures\background.png">
       <Name>background</Name>
       <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
+      <Processor>MGTextureProcessor</Processor>
     </Compile>
     <Compile Include="Textures\blank.png">
       <Name>blank</Name>
       <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
+      <Processor>MGTextureProcessor</Processor>
     </Compile>
     <Compile Include="Textures\chat_able.png">
       <Name>chat_able</Name>
       <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
+      <Processor>MGTextureProcessor</Processor>
     </Compile>
     <Compile Include="Textures\chat_mute.png">
       <Name>chat_mute</Name>
       <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
+      <Processor>MGTextureProcessor</Processor>
     </Compile>
     <Compile Include="Textures\chat_ready.png">
       <Name>chat_ready</Name>
       <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
+      <Processor>MGTextureProcessor</Processor>
     </Compile>
     <Compile Include="Textures\chat_talking.png">
       <Name>chat_talking</Name>
       <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
+      <Processor>MGTextureProcessor</Processor>
     </Compile>
     <Compile Include="Textures\gradient.png">
       <Name>gradient</Name>
       <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
+      <Processor>MGTextureProcessor</Processor>
     </Compile>
   </ItemGroup>
   <ItemGroup>
@@ -882,24 +863,24 @@
     <Compile Include="Textures\directions.png">
       <Name>directions</Name>
       <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
+      <Processor>MGTextureProcessor</Processor>
     </Compile>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Textures\checker.bmp">
       <Name>checker</Name>
       <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
+      <Processor>MGTextureProcessor</Processor>
     </Compile>
     <Compile Include="Textures\explosion.png">
       <Name>explosion</Name>
       <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
+      <Processor>MGTextureProcessor</Processor>
     </Compile>
     <Compile Include="Textures\fire.png">
       <Name>fire</Name>
       <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
+      <Processor>MGTextureProcessor</Processor>
     </Compile>
   </ItemGroup>
   <ItemGroup>
@@ -914,6 +895,259 @@
       <Name>ParticleEffect</Name>
       <Importer>EffectImporter</Importer>
       <Processor>MGEffectProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Wavs\bg1.wav">
+      <Name>bg1</Name>
+      <Importer>WavImporter</Importer>
+      <Processor>MGSoundEffectProcessor</Processor>
+    </Compile>
+    <Compile Include="Wavs\bg2.wav">
+      <Name>bg2</Name>
+      <Importer>WavImporter</Importer>
+      <Processor>MGSoundEffectProcessor</Processor>
+    </Compile>
+    <Compile Include="Wavs\bg3.wav">
+      <Name>bg3</Name>
+      <Importer>WavImporter</Importer>
+      <Processor>MGSoundEffectProcessor</Processor>
+    </Compile>
+    <Compile Include="Wavs\bgghost.wav">
+      <Name>bgghost</Name>
+      <Importer>WavImporter</Importer>
+      <Processor>MGSoundEffectProcessor</Processor>
+    </Compile>
+    <Compile Include="Wavs\bgghosteyes.wav">
+      <Name>bgghosteyes</Name>
+      <Importer>WavImporter</Importer>
+      <Processor>MGSoundEffectProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Wavs\eatfruit.wav">
+      <Name>eatfruit</Name>
+      <Importer>WavImporter</Importer>
+      <Processor>MGSoundEffectProcessor</Processor>
+    </Compile>
+    <Compile Include="Wavs\eatghost.wav">
+      <Name>eatghost</Name>
+      <Importer>WavImporter</Importer>
+      <Processor>MGSoundEffectProcessor</Processor>
+    </Compile>
+    <Compile Include="Wavs\eatpill1.wav">
+      <Name>eatpill1</Name>
+      <Importer>WavImporter</Importer>
+      <Processor>MGSoundEffectProcessor</Processor>
+    </Compile>
+    <Compile Include="Wavs\eatpill2.wav">
+      <Name>eatpill2</Name>
+      <Importer>WavImporter</Importer>
+      <Processor>MGSoundEffectProcessor</Processor>
+    </Compile>
+    <Compile Include="Wavs\extralife.wav">
+      <Name>extralife</Name>
+      <Importer>WavImporter</Importer>
+      <Processor>MGSoundEffectProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Wavs\killed.wav">
+      <Name>killed</Name>
+      <Importer>WavImporter</Importer>
+      <Processor>MGSoundEffectProcessor</Processor>
+    </Compile>
+    <Compile Include="Wavs\newgame.wav">
+      <Name>newgame</Name>
+      <Importer>WavImporter</Importer>
+      <Processor>MGSoundEffectProcessor</Processor>
+    </Compile>
+    <Compile Include="Wavs\newlevel.wav">
+      <Name>newlevel</Name>
+      <Importer>WavImporter</Importer>
+      <Processor>MGSoundEffectProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Music\InGameSong_Loop.mp3">
+      <Name>InGameSong_Loop</Name>
+      <Importer>Mp3Importer</Importer>
+      <Processor>MGSongProcessor</Processor>
+    </Compile>
+    <Compile Include="Music\MenuMusic_Loop.mp3">
+      <Name>MenuMusic_Loop</Name>
+      <Importer>Mp3Importer</Importer>
+      <Processor>MGSongProcessor</Processor>
+    </Compile>
+    <Compile Include="Music\One Step Beyond.mp3">
+      <Name>One Step Beyond</Name>
+      <Importer>Mp3Importer</Importer>
+      <Processor>MGSongProcessor</Processor>
+    </Compile>
+    <Content Include="Textures\Catapults\AnimationsDef.xml">
+      <Name>AnimationsDef</Name>
+      <Importer>XmlImporter</Importer>
+      <Processor>PassThroughProcessor</Processor>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="bonus\Apple.png">
+      <Name>Apple</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>MGTextureProcessor</Processor>
+    </Compile>
+    <Compile Include="bonus\Banana.png">
+      <Name>Banana</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>MGTextureProcessor</Processor>
+    </Compile>
+    <Compile Include="bonus\Bell.png">
+      <Name>Bell</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>MGTextureProcessor</Processor>
+    </Compile>
+    <Compile Include="bonus\Cherry.png">
+      <Name>Cherry</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>MGTextureProcessor</Processor>
+    </Compile>
+    <Compile Include="bonus\Key.png">
+      <Name>Key</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>MGTextureProcessor</Processor>
+    </Compile>
+    <Compile Include="bonus\Orange.png">
+      <Name>Orange</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>MGTextureProcessor</Processor>
+    </Compile>
+    <Compile Include="bonus\Pear.png">
+      <Name>Pear</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>MGTextureProcessor</Processor>
+    </Compile>
+    <Compile Include="bonus\Pretzel.png">
+      <Name>Pretzel</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>MGTextureProcessor</Processor>
+    </Compile>
+    <Compile Include="bonus\Strawberry.png">
+      <Name>Strawberry</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>MGTextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="sprites\Board.png">
+      <Name>Board</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>MGTextureProcessor</Processor>
+    </Compile>
+    <Compile Include="sprites\BoardFlash.png">
+      <Name>BoardFlash</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>MGTextureProcessor</Processor>
+    </Compile>
+    <Compile Include="sprites\Crump.png">
+      <Name>Crump</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>MGTextureProcessor</Processor>
+    </Compile>
+    <Compile Include="sprites\DyingSheetNew.png">
+      <Name>DyingSheetNew</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>MGTextureProcessor</Processor>
+    </Compile>
+    <Compile Include="sprites\ExtraLife.png">
+      <Name>ExtraLife</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>MGTextureProcessor</Processor>
+    </Compile>
+    <Compile Include="sprites\GhostBase.png">
+      <Name>GhostBase</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>MGTextureProcessor</Processor>
+    </Compile>
+    <Compile Include="sprites\GhostBase2.png">
+      <Name>GhostBase2</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>MGTextureProcessor</Processor>
+    </Compile>
+    <Compile Include="sprites\GhostChased.png">
+      <Name>GhostChased</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>MGTextureProcessor</Processor>
+    </Compile>
+    <Compile Include="sprites\GhostEyes.png">
+      <Name>GhostEyes</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>MGTextureProcessor</Processor>
+    </Compile>
+    <Compile Include="sprites\GhostEyesCenter.png">
+      <Name>GhostEyesCenter</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>MGTextureProcessor</Processor>
+    </Compile>
+    <Compile Include="sprites\PacManEating1.png">
+      <Name>PacManEating1</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>MGTextureProcessor</Processor>
+    </Compile>
+    <Compile Include="sprites\PacManEating2.png">
+      <Name>PacManEating2</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>MGTextureProcessor</Processor>
+    </Compile>
+    <Compile Include="sprites\PacManEating3.png">
+      <Name>PacManEating3</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>MGTextureProcessor</Processor>
+    </Compile>
+    <Compile Include="sprites\PacManEating4.png">
+      <Name>PacManEating4</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>MGTextureProcessor</Processor>
+    </Compile>
+    <Compile Include="sprites\PacManEating5.png">
+      <Name>PacManEating5</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>MGTextureProcessor</Processor>
+    </Compile>
+    <Compile Include="sprites\PacManEating6.png">
+      <Name>PacManEating6</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>MGTextureProcessor</Processor>
+    </Compile>
+    <Compile Include="sprites\PacManEating7.png">
+      <Name>PacManEating7</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>MGTextureProcessor</Processor>
+    </Compile>
+    <Compile Include="sprites\PacManEating8.png">
+      <Name>PacManEating8</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>MGTextureProcessor</Processor>
+    </Compile>
+    <Compile Include="sprites\PacManEating9.png">
+      <Name>PacManEating9</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>MGTextureProcessor</Processor>
+    </Compile>
+    <Compile Include="sprites\PowerPill.png">
+      <Name>PowerPill</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>MGTextureProcessor</Processor>
+    </Compile>
+    <Compile Include="sprites\Selection.png">
+      <Name>Selection</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>MGTextureProcessor</Processor>
+    </Compile>
+    <Compile Include="sprites\Title.png">
+      <Name>Title</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>MGTextureProcessor</Processor>
     </Compile>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\XNA Game Studio\$(XnaFrameworkVersion)\Microsoft.Xna.GameStudio.ContentPipeline.targets" />

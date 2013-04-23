@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<application project_name="Draw2D" version="1.00" runtime_version="1.11" sdk_version="1.11.00" default_locale="en-US">
+  <name />
+  <short_name />
+  <parental_control lock_level="2" />
+  <rating_list highest_age_limit="3" has_online_features="false">
+    <online_features chat="false" personal_info="false" user_location="false" exchange_content="false" />
+    <rating type="ESRB" value="3" age="3" code="" />
+    <rating type="PEGIEX" value="3" age="3" code="" />
+  </rating_list>
+  <images />
+  <genre_list />
+  <developer>
+    <name value="" />
+  </developer>
+  <website href="" />
+  <copyright author="" />
+  <purchase>
+    <product_list />
+  </purchase>
+  <runtime_config>
+    <memory managed_heap_size="32768" resource_heap_size="65536" />
+    <display max_screen_size="1920x1200" />
+    <camera max_capture_resolution="2048x1536" />
+  </runtime_config>
+  <feature_list>
+    <feature value="GamePad" />
+	<feature value="Touch" />
+	<feature value="Motion" />
+  </feature_list>
+</application>

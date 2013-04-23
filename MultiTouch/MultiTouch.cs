@@ -31,6 +31,7 @@ namespace Microsoft.Xna.Samples.MultiTouch
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
+            acellerometer.Start();
 
             base.Initialize();
         }
@@ -48,6 +49,7 @@ namespace Microsoft.Xna.Samples.MultiTouch
         Dictionary<int, Color> LineColors = new Dictionary<int, Color>();
 
         int ShakeTime = 0;
+        Accelerometer acellerometer = new Accelerometer();
         float LastAccelX = 0f;
 
         protected override void LoadContent()
@@ -81,7 +83,7 @@ namespace Microsoft.Xna.Samples.MultiTouch
             ShakeTime += gameTime.TotalGameTime.Milliseconds;
             if (ShakeTime >= 500)
             {
-                Vector3 acceleration = Accelerometer.GetState().Acceleration;
+                Vector3 acceleration = acellerometer.CurrentValue.Acceleration;
                 if (Math.Abs(acceleration.X - LastAccelX) > 0.4)
                 {
                     Cls = true;
