@@ -166,9 +166,9 @@ namespace HoneycombRush
         }
 
 		/// <summary>
-		/// Helper for checking if a key was newly pressed during this update. The
+		/// Helper for checking if a mouse button was newly pressed during this update. The
 		/// controllingPlayer parameter specifies which player to read input for.
-		/// If this is null, it will accept input from any player. When a keypress
+		/// If this is null, it will accept input from any player. When a click
 		/// is detected, the output playerIndex reports which player pressed it.
 		/// </summary>
 		public bool IsNewMouseClick(MouseButton mouseButton , PlayerIndex? controllingPlayer,
@@ -209,9 +209,9 @@ namespace HoneycombRush
 		}
 
 		/// <summary>
-		/// Helper for checking if a key was newly pressed during this update. The
+		/// Helper for checking if a mouse button is currently pressed during the update. The
 		/// controllingPlayer parameter specifies which player to read input for.
-		/// If this is null, it will accept input from any player. When a keypress
+		/// If this is null, it will accept input from any player. When a pressed button
 		/// is detected, the output playerIndex reports which player pressed it.
 		/// </summary>
 		public bool IsMouseDown(MouseButton mouseButton , PlayerIndex? controllingPlayer,
