@@ -94,7 +94,8 @@ namespace HoneycombRush
                     ScreenManager.AddScreen(new MainMenuScreen(), PlayerIndex.One);
                 }
                 else if (input.IsNewKeyPress(Keys.Enter, ControllingPlayer, out player) ||
-                    input.IsNewKeyPress(Keys.Space, ControllingPlayer, out player))
+				         input.IsNewKeyPress(Keys.Space, ControllingPlayer, out player) ||
+				         input.IsNewMouseClick(InputState.MouseButton.Left, ControllingPlayer, out player))
                 {
                     LoadResources();
                 }
