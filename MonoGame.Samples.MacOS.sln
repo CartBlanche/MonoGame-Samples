@@ -927,7 +927,7 @@ Global
 		{098BBC2D-63A6-4C22-8A30-E6C4F4FC0AC4} = {D8364542-40DC-4D3C-9893-5DF46B9CEF77}
 	EndGlobalSection
 	GlobalSection(MonoDevelopProperties) = preSolution
-		StartupItem = HoneycombRush\HoneycombRush.MacOS.csproj
+		StartupItem = ..\MonoGame.Framework\MonoGame.Framework.MacOS.csproj
 		Policies = $0
 		$0.TextStylePolicy = $1
 		$1.FileWidth = 120
