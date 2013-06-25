@@ -156,7 +156,8 @@ namespace HoneycombRush
             PlayerIndex player;
             // Handle keyboard input
             if (input.IsNewKeyPress(Keys.Enter, ControllingPlayer, out player) ||
-                input.IsNewKeyPress(Keys.Space, ControllingPlayer, out player))
+			    input.IsNewKeyPress(Keys.Space, ControllingPlayer, out player) ||
+			    input.IsNewMouseClick(InputState.MouseButton.Left, ControllingPlayer, out player))
             {
                 Exit();
             }
