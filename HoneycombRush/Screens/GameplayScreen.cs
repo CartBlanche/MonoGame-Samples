@@ -308,8 +308,10 @@ namespace HoneycombRush
             {
                 showDebugInfo = !showDebugInfo;
             }
-            if (input.IsKeyDown(Keys.Space, ControllingPlayer, out player) && !beeKeeper.IsCollectingHoney &&
-                !beeKeeper.IsStung)
+			if ( (input.IsKeyDown(Keys.Space, ControllingPlayer, out player) ||
+			      input.IsNewMouseClick(InputState.MouseButton.Right, ControllingPlayer, out player))
+			    && !beeKeeper.IsCollectingHoney 
+			    && !beeKeeper.IsStung)
             {
                 isSmokebuttonClicked = true;
             }
@@ -836,8 +838,13 @@ namespace HoneycombRush
                 {
                     vecY++;
                 }
-
-                leftThumbstick = new Vector2(vecX, vecY);
+				if (input.IsMouseDown( InputState.MouseButton.Left, ControllingPlayer, out playerIndex ) )
+				{
+					vecX = input.CurrentMouseStates[(int)playerIndex].X - beeKeeper.Bounds.X ;
+					vecY = input.CurrentMouseStates[(int)playerIndex].Y - beeKeeper.Bounds.Y;
+				}
+				leftThumbstick = new Vector2 (vecX, vecY);
+				leftThumbstick.Normalize();
             }
 
             Vector2 movementVector = leftThumbstick * 12f * ScreenManager.SpriteBatch.ScaleVector;
