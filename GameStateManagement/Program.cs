@@ -63,7 +63,7 @@ namespace GameStateManagement
         /// </summary>
         static void Main(string[] args)
         {
-            UIApplication.Main(args, null, "AppDelegate");
+            UIApplication.Main(args, "UIApplication", "AppDelegate");
         }
     }    
 #elif MONOMAC
