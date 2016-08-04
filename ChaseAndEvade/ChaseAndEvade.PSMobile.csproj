@@ -58,12 +58,12 @@
     <Compile Include="Program.cs" />
   </ItemGroup>
   <ItemGroup>
+    <PsmMetadata Include="app.xml" />
+  </ItemGroup>
+  <ItemGroup>
     <ProjectReference Include="..\..\MonoGame.Framework\MonoGame.Framework.PSMobile.csproj">
       <Project>{EA26E76F-FDFE-4A8C-B5A3-C3B5761E28F9}</Project>
       <Name>MonoGame.Framework.PSMobile</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <PsmMetadata Include="app.xml" />
   </ItemGroup>
 </Project>
