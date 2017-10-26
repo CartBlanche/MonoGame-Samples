@@ -55,7 +55,7 @@ namespace NetRumble
             get { return velocity; }
             set 
             {
-                if ((value.X == Single.NaN) || (value.Y == Single.NaN))
+                if (Single.IsNaN(value.X) || Single.IsNaN(value.Y))
                 {
                     throw new ArgumentException("Velocity was NaN");
                 }
