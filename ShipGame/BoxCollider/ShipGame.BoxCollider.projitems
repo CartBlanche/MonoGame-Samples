@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
+    <HasSharedItems>true</HasSharedItems>
+    <SharedGUID>{1785F4D2-D0A6-471F-96A3-84A50F92E57C}</SharedGUID>
+  </PropertyGroup>
+  <PropertyGroup Label="Configuration">
+    <Import_RootNamespace>ShipGame.BoxCollider</Import_RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)CollisionBox.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)CollisionCamera.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)CollisionCameraObserver.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)CollisionCameraPerson.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)CollisionFace.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)CollisionMesh.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)CollisionTree.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)CollisionTreeElem.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)CollisionTreeNode.cs" />
+  </ItemGroup>
+</Project>
