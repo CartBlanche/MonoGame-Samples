@@ -2,8 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-using MonoMac.AppKit;
-using MonoMac.Foundation;
+using AppKit;
+using Foundation;
 
 namespace FarseerPhysics.SamplesFramework
 {
@@ -29,7 +29,7 @@ namespace FarseerPhysics.SamplesFramework
 	{
 		FarseerPhysicsGame game;
 
-		public override void FinishedLaunching (MonoMac.Foundation.NSObject notification)
+		public override void DidFinishLaunching (NSNotification notification)
 		{
 			game = new FarseerPhysicsGame ();
 			game.Run ();

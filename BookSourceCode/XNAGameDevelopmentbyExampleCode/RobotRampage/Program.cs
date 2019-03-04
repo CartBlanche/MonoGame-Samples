@@ -1,9 +1,9 @@
 using System;
 
-#if MONOMAC
-using MonoMac.Foundation;
-using MonoMac.AppKit;
-using MonoMac.ObjCRuntime;
+#if __MACOS__
+using Foundation;
+using AppKit;
+using ObjCRuntime;
 #endif
 
 namespace Robot_Rampage
@@ -22,7 +22,7 @@ namespace Robot_Rampage
             }
         }
     }
-#elif MONOMAC
+#elif __MACOS__
 	static class Program
 	{
 		/// <summary>
@@ -42,7 +42,7 @@ namespace Robot_Rampage
 	class AppDelegate : NSApplicationDelegate
 	{
 		
-		public override void FinishedLaunching (MonoMac.Foundation.NSObject notification)
+		public override void DidFinishLaunching (NSNotification notification)
 		{
 			Game1 game = new Game1 ();
 			game.Run ();

@@ -19,9 +19,9 @@ using Microsoft.Xna.Framework;
 using GameStateManagement;
 using Microsoft.Xna.Framework.Input.Touch;
 
-#if MONOMAC
-using MonoMac.AppKit;
-using MonoMac.Foundation;
+#if __MACOS__
+using AppKit;
+using Foundation;
 #endif
 
 #if IPHONE
@@ -104,7 +104,7 @@ namespace CatapultGame
 
                 // Start loading the resources in additional thread
 #if !LINUX && !WINDOWS
-#if MONOMAC
+#if __MACOS__
 				// create a new thread using BackgroundWorkerThread as method to execute
 				thread = new Thread (LoadAssetsWorkerThread as ThreadStart);
 #else     
@@ -142,22 +142,22 @@ namespace CatapultGame
 		{
 
 
-#if MONOMAC || IPHONE			
+#if __MACOS__ || IPHONE			
 			// Create an Autorelease Pool or we will leak objects.
 			using (var pool = new NSAutoreleasePool()) {
 #else				
 				
 #endif
 				// Make sure we invoke this on the Main Thread or OpenGL will throw an error
-#if MONOMAC
-				MonoMac.AppKit.NSApplication.SharedApplication.BeginInvokeOnMainThread (delegate {
+#if __MACOS__
+				AppKit.NSApplication.SharedApplication.BeginInvokeOnMainThread (delegate {
 #endif
 #if IPHONE
 				var invokeOnMainThredObj = new NSObject();
 				invokeOnMainThredObj.InvokeOnMainThread(delegate {
 #endif
 					gameplayScreen.LoadAssets ();
-#if MONOMAC || IPHONE						
+#if __MACOS__ || IPHONE						
 				});
 					
 			}				

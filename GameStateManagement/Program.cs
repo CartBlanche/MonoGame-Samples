@@ -1,14 +1,14 @@
 #region Using Statements
 using System;
-#if MONOMAC
-using MonoMac.AppKit;
-using MonoMac.Foundation;
+#if __MACOS__
+using AppKit;
+using Foundation;
 #elif IPHONE
 using MonoTouch.Foundation;
 using MonoTouch.UIKit;
 using Microsoft.Xna;
 using Microsoft.Xna.Framework.Media;
-#elif MONOMAC
+#elif __MACOS__
 
 #endif
 #endregion
@@ -16,7 +16,7 @@ using Microsoft.Xna.Framework.Media;
 namespace GameStateManagement
 {
     #region Entry Point
-#if MONOMAC
+#if __MACOS__
 	class Program
 	{
 		static void Main (string[] args)
@@ -35,7 +35,7 @@ namespace GameStateManagement
 	{
 		private GameStateManagementGame game;
 
-		public override void FinishedLaunching (MonoMac.Foundation.NSObject notification)
+		public override void DidFinishLaunching (NSNotification notification)
 		{
 			game = new GameStateManagementGame ();
 			game.Run();
@@ -66,7 +66,7 @@ namespace GameStateManagement
             UIApplication.Main(args, null, "AppDelegate");
         }
     }    
-#elif MONOMAC
+#elif __MACOS__
 	static class Program
 	{	
 		/// <summary>
@@ -74,24 +74,24 @@ namespace GameStateManagement
 		/// </summary>
 		static void Main (string[] args)
 		{
-			MonoMac.AppKit.NSApplication.Init ();
+			AppKit.NSApplication.Init ();
 			
-			using (var p = new MonoMac.Foundation.NSAutoreleasePool ()) {
-				MonoMac.AppKit.NSApplication.SharedApplication.Delegate = new AppDelegate();
-				MonoMac.AppKit.NSApplication.Main(args);
+			using (var p = new Foundation.NSAutoreleasePool ()) {
+				AppKit.NSApplication.SharedApplication.Delegate = new AppDelegate();
+				AppKit.NSApplication.Main(args);
 			}
 		}
 	}
 	
-	class AppDelegate : MonoMac.AppKit.NSApplicationDelegate
+	class AppDelegate : AppKit.NSApplicationDelegate
 	{
-		public override void FinishedLaunching (MonoMac.Foundation.NSObject notification)
+		public override void DidFinishLaunching (NSNotification notification)
 		{
 			var game = new GameStateManagementGame();
 			game.Run();
 		}
 		
-		public override bool ApplicationShouldTerminateAfterLastWindowClosed (MonoMac.AppKit.NSApplication sender)
+		public override bool ApplicationShouldTerminateAfterLastWindowClosed (AppKit.NSApplication sender)
 		{
 			return true;
 		}

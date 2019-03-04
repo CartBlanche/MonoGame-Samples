@@ -238,7 +238,7 @@ namespace NetRumble
 
             if (gameplayObject == null)
             {
-                throw new ArgumentNullException("gameplayObject");
+                throw new ArgumentNullException(nameof (gameplayObject));
             }
             // make sure we care about where this gameplayObject goes
             if (!gameplayObject.Active)
@@ -296,7 +296,7 @@ namespace NetRumble
 
             if (gameplayObject == null)
             {
-                throw new ArgumentNullException("gameplayObject");
+                throw new ArgumentNullException(nameof (gameplayObject));
             }
             if (!gameplayObject.Active)
             {

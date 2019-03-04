@@ -257,7 +257,7 @@ namespace RolePlayingGameData
             // check the parameter
             if (String.IsNullOrEmpty(name))
             {
-                throw new ArgumentNullException("name");
+                throw new ArgumentNullException(nameof (name));
             }
 
             PlayAnimation(this[name]);
@@ -276,7 +276,7 @@ namespace RolePlayingGameData
             // check the parameter
             if (String.IsNullOrEmpty(name))
             {
-                throw new ArgumentNullException("name");
+                throw new ArgumentNullException(nameof (name));
             }
 
             PlayAnimation(name + direction.ToString());
@@ -408,7 +408,7 @@ namespace RolePlayingGameData
             // check the parameters
             if (spriteBatch == null)
             {
-                throw new ArgumentNullException("spriteBatch");
+                throw new ArgumentNullException(nameof (spriteBatch));
             }
 
             if (texture != null)

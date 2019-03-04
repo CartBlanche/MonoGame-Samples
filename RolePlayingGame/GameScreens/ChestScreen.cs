@@ -220,7 +220,7 @@ namespace RolePlaying
             // check the parameter
             if ((chestEntry == null) || (chestEntry.Content == null))
             {
-                throw new ArgumentNullException("chestEntry.Content");
+                throw new ArgumentNullException(nameof (chestEntry));
             }
             this.chestEntry = chestEntry;
 
@@ -584,7 +584,7 @@ namespace RolePlaying
             // check the parameter
             if (entry == null)
             {
-                throw new ArgumentNullException("entry");
+                throw new ArgumentNullException(nameof (entry));
             }
             Gear gear = entry.Content as Gear;
             if (gear == null)

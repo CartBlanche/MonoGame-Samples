@@ -342,7 +342,7 @@ namespace RolePlayingGameData
                 Character character = existingInstance;
                 if (character == null)
                 {
-                    throw new ArgumentNullException("existingInstance");
+                    throw new ArgumentNullException(nameof (character));
                 }
 
                 input.ReadRawObject<WorldObject>(character as WorldObject);

@@ -1,18 +1,18 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-#if MONOMAC
-using MonoMac.AppKit;
-using MonoMac.Foundation;
+#if __MACOS__
+using AppKit;
+using Foundation;
 #elif IPHONE
-using MonoTouch.Foundation;
-using MonoTouch.UIKit;
+using Foundation;
+using UIKit;
 #endif
 
 namespace ChaseAndEvade
 {
-#if MONOMAC
-	class Program
+#if __MACOS__
+		class Program
 	{
 		static void Main (string[] args)
 		{
@@ -34,7 +34,7 @@ namespace ChaseAndEvade
 	class AppDelegate : NSApplicationDelegate
 	{
 		ChaseAndEvadeGame game;
-		public override void FinishedLaunching (MonoMac.Foundation.NSObject notification)
+		public override void DidFinishLaunching (NSNotification notification)
 		{
 			game = new ChaseAndEvadeGame();
 			game.Run();

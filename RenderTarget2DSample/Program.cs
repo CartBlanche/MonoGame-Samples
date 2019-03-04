@@ -1,6 +1,6 @@
-#if MONOMAC
-using MonoMac.AppKit;
-using MonoMac.Foundation;
+#if __MACOS__
+using AppKit;
+using Foundation;
 #elif IPHONE
 using MonoTouch.Foundation;
 using MonoTouch.UIKit;
@@ -9,7 +9,7 @@ using MonoTouch.UIKit;
 namespace RenderTarget2DSample
 {
 	#region Entry Point
-#if MONOMAC
+#if __MACOS__
 	static class Program
 	{
 		/// <summary>
@@ -31,7 +31,7 @@ namespace RenderTarget2DSample
 	class AppDelegate : NSApplicationDelegate
 	{
 		Game1 game;
-		public override void FinishedLaunching (MonoMac.Foundation.NSObject notification)
+		public override void DidFinishLaunching (NSNotification notification)
 		{
 			game = new Game1 ();
 			game.Run ();

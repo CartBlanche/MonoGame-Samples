@@ -2,15 +2,15 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-#if MONOMAC
-using MonoMac.AppKit;
-using MonoMac.Foundation;
+#if __MACOS__
+using AppKit;
+using Foundation;
 #endif
 
 namespace NetworkStateManagement
 {
 	#region Entry Point
-#if MONOMAC
+#if __MACOS__
 	static class Program
 	{
 		/// <summary>
@@ -32,7 +32,7 @@ namespace NetworkStateManagement
 	class AppDelegate : NSApplicationDelegate
 	{
 		
-		public override void FinishedLaunching (MonoMac.Foundation.NSObject notification)
+		public override void DidFinishLaunching (NSNotification notification)
 		{
 			NetworkStateManagementGame game = new NetworkStateManagementGame ();
 			game.Run ();

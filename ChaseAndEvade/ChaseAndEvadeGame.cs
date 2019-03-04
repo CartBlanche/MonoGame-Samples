@@ -19,7 +19,6 @@ using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Input.Touch;
-using Microsoft.Xna.Framework.Storage;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Media;
 
@@ -144,12 +143,12 @@ namespace ChaseAndEvade
 			graphics.PreferredBackBufferHeight = 800;
 	
 			TargetElapsedTime = TimeSpan.FromTicks(333333);
-#elif !MONOMAC
+#elif !__MACOS__
 			
 			graphics.PreferredBackBufferWidth = 320;
 			graphics.PreferredBackBufferHeight = 480;
 #endif
-#if WINDOWS || MONOMAC || LINUX
+#if WINDOWS || __MACOS__ || LINUX
 			graphics.IsFullScreen = false;
 #else
 			graphics.IsFullScreen = true;

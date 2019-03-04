@@ -1,6 +1,6 @@
-#if MONOMAC
-using MonoMac.AppKit;
-using MonoMac.Foundation;
+#if __MACOS__
+using AppKit;
+using Foundation;
 #elif IPHONE
 using MonoTouch.Foundation;
 using MonoTouch.UIKit;
@@ -8,7 +8,7 @@ using MonoTouch.UIKit;
 
 namespace MonoGame.Samples.VideoPlayer
 {
-#if MONOMAC
+#if __MACOS__
 	class Program
 	{
 		static void Main (string[] args)
@@ -31,7 +31,7 @@ namespace MonoGame.Samples.VideoPlayer
 	{
 		private Game1 game;
 
-		public override void FinishedLaunching (MonoMac.Foundation.NSObject notification)
+		public override void DidFinishLaunching (NSNotification notification)
 		{
 			game = new Game1();
 			game.Run();

@@ -4,15 +4,13 @@ using System.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Content;
-using Microsoft.Xna.Framework.GamerServices;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
-using System.Windows.Forms;
 using System.Threading;
 
-using MonoMac.AppKit;
-using MonoMac.Foundation;
+using AppKit;
+using Foundation;
 
 namespace BackgroundThreadTester
 {
@@ -67,7 +65,7 @@ namespace BackgroundThreadTester
 		{
 			System.Console.WriteLine ("before invoke");
 			// create a new thread using BackgroundWorkerThread as method to execute
-			var thread = new Thread (BackgroundWorkerThread as ThreadStart);
+			var thread = new Thread (BackgroundWorkerThread);
 			// start it
 			thread.Start ();
 
@@ -86,7 +84,7 @@ namespace BackgroundThreadTester
 					Console.WriteLine ("Before add");
 
 					// Make sure we invoke this on the Main Thread or OpenGL will throw an error
-					MonoMac.AppKit.NSApplication.SharedApplication.BeginInvokeOnMainThread (delegate {
+					AppKit.NSApplication.SharedApplication.BeginInvokeOnMainThread (delegate {
 						Components.Add (new TestTexture (this));
 					});
 					Console.WriteLine ("After add");
@@ -112,7 +110,7 @@ namespace BackgroundThreadTester
         
 		public String GetStyleMask ()
 		{
-			return this.Window.Window.StyleMask.ToString ();
+			return this.Window.ToString (); // TODO
 		}//GetStyleMask
 
 
@@ -183,13 +181,13 @@ namespace BackgroundThreadTester
 			fNewX = (fScreenWidth - fWindowWidth) / 2;
 			fNewY = (fScreenHeight - fWindowHeight) / 2;
             
-			fTitleBarHeight = this.Window.Window.Frame.Height - fWindowHeight;
+			fTitleBarHeight = this.Window.Frame.Height - fWindowHeight;
             
 			System.Drawing.PointF pfLocation = new System.Drawing.PointF (fNewX, fNewY);
 			System.Drawing.PointF pfSize = new System.Drawing.PointF (fWindowWidth, fWindowHeight + fTitleBarHeight);
 			System.Drawing.SizeF sfSize = new System.Drawing.SizeF (pfSize);
 			System.Drawing.RectangleF rectTemp = new System.Drawing.RectangleF (pfLocation, sfSize);
-			this.Window.Window.SetFrame (rectTemp, true);
+			this.Window.SetFrame (rectTemp, true);
 		}//CenterWindow
 	}
 }

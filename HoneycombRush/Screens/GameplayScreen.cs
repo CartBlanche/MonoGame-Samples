@@ -20,8 +20,8 @@ using HoneycombRush.GameDebugTools;
 using Microsoft.Xna.Framework.Input.Touch;
 using System.Xml.Linq;
 
-#if MONOMAC
-using MonoMac.Foundation;
+#if __MACOS__
+using Foundation;
 #endif
 
 using System.IO;

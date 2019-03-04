@@ -1,9 +1,9 @@
 using System;
 
-#if MONOMAC
-using MonoMac.Foundation;
-using MonoMac.AppKit;
-using MonoMac.ObjCRuntime;
+#if __MACOS__
+using Foundation;
+using AppKit;
+using ObjCRuntime;
 #endif
 
 namespace Asteroid_Belt_Assault
@@ -22,7 +22,7 @@ namespace Asteroid_Belt_Assault
             }
         }
     }
-#elif MONOMAC
+#elif __MACOS__
 	static class Program
 	{
 		/// <summary>
@@ -42,7 +42,7 @@ namespace Asteroid_Belt_Assault
 	class AppDelegate : NSApplicationDelegate
 	{
 		Game1 game;
-		public override void FinishedLaunching (MonoMac.Foundation.NSObject notification)
+		public override void DidFinishLaunching (NSNotification notification)
 		{
 			game = new Game1();
 			game.Run();

@@ -26,7 +26,7 @@ namespace UseCustomVertexWindows
         }
     }
 #endif
-#if MONOMAC
+#if __MACOS__
 
 	static class Program
 	{	
@@ -35,25 +35,25 @@ namespace UseCustomVertexWindows
 		/// </summary>
 		static void Main (string[] args)
 		{
-			MonoMac.AppKit.NSApplication.Init ();
+			AppKit.NSApplication.Init ();
 			
-			using (var p = new MonoMac.Foundation.NSAutoreleasePool ()) {
-				MonoMac.AppKit.NSApplication.SharedApplication.Delegate = new AppDelegate();
-				MonoMac.AppKit.NSApplication.Main(args);
+			using (var p = new Foundation.NSAutoreleasePool ()) {
+				AppKit.NSApplication.SharedApplication.Delegate = new AppDelegate();
+				AppKit.NSApplication.Main(args);
 			}
 		}
 	}
 	
-	class AppDelegate : MonoMac.AppKit.NSApplicationDelegate
+	class AppDelegate : AppKit.NSApplicationDelegate
 	{
 		Game1 game;
-		public override void FinishedLaunching (MonoMac.Foundation.NSObject notification)
+		public override void DidFinishLaunching (NSNotification notification)
 		{
 			game = new Game1();
 			game.Run();
 		}
 		
-		public override bool ApplicationShouldTerminateAfterLastWindowClosed (MonoMac.AppKit.NSApplication sender)
+		public override bool ApplicationShouldTerminateAfterLastWindowClosed (AppKit.NSApplication sender)
 		{
 			return true;
 		}

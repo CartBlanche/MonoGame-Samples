@@ -70,7 +70,7 @@ namespace BloomPostprocess
             : base(game)
         {
             if (game == null)
-                throw new ArgumentNullException("game");
+                throw new ArgumentNullException(nameof (game));
         }
 
 

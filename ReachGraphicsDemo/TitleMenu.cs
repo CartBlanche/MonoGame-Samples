@@ -145,7 +145,7 @@ namespace XnaGraphicsDemo
         /// </summary>
         public override void Draw(GameTime gameTime)
         {
-            DrawTitle("xna demo", Color.CornflowerBlue, Color.Lerp(Color.Blue, Color.CornflowerBlue, 0.85f));
+            DrawTitle("mg demo", Color.CornflowerBlue, Color.Lerp(Color.Blue, Color.CornflowerBlue, 0.85f));
 
             // Draw the background "xna" labels.
             SpriteBatch.Begin();
@@ -157,7 +157,7 @@ namespace XnaGraphicsDemo
                 alpha *= alpha;
                 alpha /= 8;
 
-                SpriteBatch.DrawString(BigFont, "xna", blob.Position, Color.Blue * alpha, MathHelper.PiOver2, Vector2.Zero, blob.Size, 0, 0);
+                SpriteBatch.DrawString(BigFont, "monogame", blob.Position, Color.Blue * alpha, MathHelper.PiOver2, Vector2.Zero, blob.Size, 0, 0);
             }
 
             SpriteBatch.End();
