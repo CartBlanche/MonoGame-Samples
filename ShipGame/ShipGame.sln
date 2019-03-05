@@ -1,0 +1,39 @@
+
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "ShipGame.Shared", "ShipGame.Shared\ShipGame.Shared.shproj", "{D379F121-958B-42E7-A1BE-05A5365ABB9C}"
+EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "ShipGame.BoxCollider", "BoxCollider\ShipGame.BoxCollider.shproj", "{1785F4D2-D0A6-471F-96A3-84A50F92E57C}"
+EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "ShipGame.NormalMapModelProcessor", "NormalMappingModelProcessor\ShipGame.NormalMapModelProcessor.shproj", "{8BB7A452-F5C5-4D91-AE41-5A863B91CB11}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShipGame.MacOS", "Platforms\ShipGame.MacOS\ShipGame.MacOS.csproj", "{A18D6928-26F0-4421-A29E-66E835E8587C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShipGame.DesktopGL", "Platforms\ShipGame.DesktopGL\ShipGame.DesktopGL.csproj", "{63A1D505-1512-4469-93D3-87FCAF4618EF}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+		Debug|x86 = Debug|x86
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{A18D6928-26F0-4421-A29E-66E835E8587C}.Debug|Any CPU.ActiveCfg = Debug|x86
+		{A18D6928-26F0-4421-A29E-66E835E8587C}.Debug|Any CPU.Build.0 = Debug|x86
+		{A18D6928-26F0-4421-A29E-66E835E8587C}.Release|Any CPU.ActiveCfg = Release|x86
+		{A18D6928-26F0-4421-A29E-66E835E8587C}.Release|Any CPU.Build.0 = Release|x86
+		{A18D6928-26F0-4421-A29E-66E835E8587C}.Debug|x86.ActiveCfg = Debug|x86
+		{A18D6928-26F0-4421-A29E-66E835E8587C}.Debug|x86.Build.0 = Debug|x86
+		{A18D6928-26F0-4421-A29E-66E835E8587C}.Release|x86.ActiveCfg = Release|x86
+		{A18D6928-26F0-4421-A29E-66E835E8587C}.Release|x86.Build.0 = Release|x86
+		{63A1D505-1512-4469-93D3-87FCAF4618EF}.Debug|Any CPU.ActiveCfg = Debug|x86
+		{63A1D505-1512-4469-93D3-87FCAF4618EF}.Debug|Any CPU.Build.0 = Debug|x86
+		{63A1D505-1512-4469-93D3-87FCAF4618EF}.Release|Any CPU.ActiveCfg = Release|x86
+		{63A1D505-1512-4469-93D3-87FCAF4618EF}.Release|Any CPU.Build.0 = Release|x86
+		{63A1D505-1512-4469-93D3-87FCAF4618EF}.Debug|x86.ActiveCfg = Debug|x86
+		{63A1D505-1512-4469-93D3-87FCAF4618EF}.Debug|x86.Build.0 = Debug|x86
+		{63A1D505-1512-4469-93D3-87FCAF4618EF}.Release|x86.ActiveCfg = Release|x86
+		{63A1D505-1512-4469-93D3-87FCAF4618EF}.Release|x86.Build.0 = Release|x86
+	EndGlobalSection
+EndGlobal

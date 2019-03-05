@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
+    <HasSharedItems>true</HasSharedItems>
+    <SharedGUID>{D379F121-958B-42E7-A1BE-05A5365ABB9C}</SharedGUID>
+  </PropertyGroup>
+  <PropertyGroup Label="Configuration">
+    <Import_RootNamespace>ShipGame.Shared</Import_RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)ChaseCamera.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)EntityList.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)FontManager.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)GameManager.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)GameOptions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)InputManager.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)PlayerMovement.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)PlayerShip.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ShipGame.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Graphics\AnimSprite.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Graphics\AnimSpriteManager.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Graphics\BlurManager.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Graphics\LightList.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Graphics\ParticleManager.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Graphics\ParticleSystem.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Graphics\Powerup.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Graphics\PowerupManager.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Graphics\Projectile.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Graphics\ProjectileManager.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Screens\Screen.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Screens\ScreenEnd.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Screens\ScreenGame.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Screens\ScreenHelp.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Screens\ScreenIntro.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Screens\ScreenLevel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Screens\ScreenManager.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Screens\ScreenPlayer.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="$(MSBuildThisFileDirectory)Documentation\Ship_Game_Starter_Kit.htm" />
+  </ItemGroup>
+</Project>
