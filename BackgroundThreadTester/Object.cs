@@ -4,12 +4,9 @@ using System.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Content;
-using Microsoft.Xna.Framework.GamerServices;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
-using Microsoft.Xna.Framework.Net;
-using Microsoft.Xna.Framework.Storage;
 
 
 namespace BackgroundThreadTester
@@ -66,7 +63,7 @@ namespace BackgroundThreadTester
             // Get the current spritebatch
             SpriteBatch sBatch = (SpriteBatch)Game.Services.GetService(typeof(SpriteBatch));
 
-            sBatch.Draw(texture, v2Temp, recCurrentFrame, new Color(255, 255, 255, (byte)nAlpha), fRotation, vecRotationCenter, 1f, SpriteEffects.None, 0);
+			sBatch.Draw (texture, v2Temp, recCurrentFrame, new Color ((byte)255, (byte)255, (byte)255, (byte)nAlpha), fRotation, vecRotationCenter, 1f, SpriteEffects.None, 0);
 
             base.Draw(gameTime);
         }

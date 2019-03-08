@@ -2,8 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-using MonoMac.AppKit;
-using MonoMac.Foundation;
+using AppKit;
+using Foundation;
 
 namespace Graphics3DSample
 {
@@ -29,7 +29,7 @@ namespace Graphics3DSample
 	{
 		Graphics3DSampleGame game;
 
-		public override void FinishedLaunching (MonoMac.Foundation.NSObject notification)
+		public override void DidFinishLaunching (NSNotification notification)
 		{
 			game = new Graphics3DSampleGame ();
 			game.Run ();

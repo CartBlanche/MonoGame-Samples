@@ -49,7 +49,7 @@ namespace SkinnedModel
         public AnimationPlayer(SkinningData skinningData)
         {
             if (skinningData == null)
-                throw new ArgumentNullException("skinningData");
+                throw new ArgumentNullException(nameof (skinningData));
 
             skinningDataValue = skinningData;
 
@@ -65,7 +65,7 @@ namespace SkinnedModel
         public void StartClip(AnimationClip clip)
         {
             if (clip == null)
-                throw new ArgumentNullException("clip");
+                throw new ArgumentNullException(nameof (clip));
 
             currentClipValue = clip;
             currentTimeValue = TimeSpan.Zero;

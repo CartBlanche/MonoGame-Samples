@@ -110,7 +110,7 @@ namespace TiledSprites
 		int frameHeight,int padding,int rows,int columns,
 		Point startFrame,int frames)		{
 			if (spriteSheet == null) {
-				throw new ArgumentNullException ("spriteSheet");
+				throw new ArgumentNullException (nameof(spriteSheet));
 			}
 			int spriteAreaHeight = (frameHeight + padding) * rows - padding;
 			int spriteAreaWidth = (frameWidth + padding) * columns - padding;

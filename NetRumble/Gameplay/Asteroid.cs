@@ -233,7 +233,7 @@ namespace NetRumble
             // safety-check the parameters
             if (contentManager == null)
             {
-                throw new ArgumentNullException("contentManager");
+                throw new ArgumentNullException(nameof (contentManager));
             }
 
             // load each asteroid's texture

@@ -7,9 +7,9 @@
 //-----------------------------------------------------------------------------
 #endregion
 
-#if MONOMAC
-using MonoMac.AppKit;
-using MonoMac.Foundation;
+#if __MACOS__
+using AppKit;
+using Foundation;
 #endif
 
 
@@ -17,7 +17,7 @@ using System;
 
 namespace XnaGraphicsDemo
 {
-#if MONOMAC
+#if __MACOS__
 	class Program
 	{
 		static void Main (string[] args)
@@ -40,7 +40,7 @@ namespace XnaGraphicsDemo
 	{
 		private DemoGame game;
 
-		public override void FinishedLaunching (MonoMac.Foundation.NSObject notification)
+		public override void DidFinishLaunching (NSNotification notification)
 		{
 			game = new DemoGame();
 			game.Run();

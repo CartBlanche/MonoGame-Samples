@@ -15,10 +15,10 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Net;
 
-#if MONOMAC
-using MonoMac.Foundation;
-using MonoMac.AppKit;
-using MonoMac.ObjCRuntime;
+#if __MACOS__
+using Foundation;
+using AppKit;
+using ObjCRuntime;
 #elif IPHONE
 using MonoTouch.Foundation;
 using MonoTouch.UIKit;
@@ -31,7 +31,7 @@ namespace PeerToPeer
 {
 	
 	#region Entry Point
-#if MONOMAC
+#if __MACOS__
 	static class Program
 	{
 		/// <summary>
@@ -51,7 +51,7 @@ namespace PeerToPeer
 	class AppDelegate : NSApplicationDelegate
 	{
 		
-		public override void FinishedLaunching (MonoMac.Foundation.NSObject notification)
+		public override void DidFinishLaunching (NSNotification notification)
 		{
 			PeerToPeerGame game = new PeerToPeerGame ();
 			game.Run ();

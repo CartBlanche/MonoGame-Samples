@@ -53,9 +53,9 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Net;
 
-using MonoMac.Foundation;
-using MonoMac.AppKit;
-using MonoMac.ObjCRuntime;
+using Foundation;
+using AppKit;
+using ObjCRuntime;
 
 #endregion
 
@@ -83,7 +83,7 @@ namespace NetworkPrediction
 	class AppDelegate : NSApplicationDelegate
 	{
 		NetworkPredictionGame game;
-		public override void FinishedLaunching (MonoMac.Foundation.NSObject notification)
+		public override void DidFinishLaunching (NSNotification notification)
 		{
 			game = new NetworkPredictionGame();
 			game.Run();

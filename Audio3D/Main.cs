@@ -2,8 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-using MonoMac.AppKit;
-using MonoMac.Foundation;
+using AppKit;
+using Foundation;
 
 namespace Audio3D
 {
@@ -29,7 +29,7 @@ namespace Audio3D
 	{
 		Audio3DGame game;
 
-		public override void FinishedLaunching (MonoMac.Foundation.NSObject notification)
+		public override void DidFinishLaunching (NSNotification notification)
 		{
 			game = new Audio3DGame ();
 			game.Run ();
