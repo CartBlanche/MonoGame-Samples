@@ -48,14 +48,11 @@ purpose and non-infringement.
 #region Using Statements
 using System;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.GamerServices;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using Microsoft.Xna.Framework.Net;
 
-using MonoMac.Foundation;
-using MonoMac.AppKit;
-using MonoMac.ObjCRuntime;
+using Foundation;
+using AppKit;
 
 #endregion
 
@@ -83,7 +80,7 @@ namespace RolePlaying
 	class AppDelegate : NSApplicationDelegate
 	{
 		RolePlayingGame game;
-		public override void FinishedLaunching (MonoMac.Foundation.NSObject notification)
+		public override void DidFinishLaunching (NSNotification notification)
 		{
 			game = new RolePlayingGame();
 			game.Run();

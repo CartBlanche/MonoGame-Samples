@@ -1,5 +1,5 @@
-using MonoMac.AppKit;
-using MonoMac.Foundation;
+using AppKit;
+using Foundation;
 
 
 namespace BackgroundThreadTester
@@ -22,7 +22,7 @@ namespace BackgroundThreadTester
 	{
 		Game1 game; 
 		
-		public override void FinishedLaunching (MonoMac.Foundation.NSObject notification)
+		public override void DidFinishLaunching (NSNotification notification)
 		{			
 			game = new Game1();
 			game.Run();

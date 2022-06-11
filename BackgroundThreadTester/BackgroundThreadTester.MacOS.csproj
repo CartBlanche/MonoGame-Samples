@@ -6,10 +6,13 @@
     <ProductVersion>10.0.0</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{8592FA21-37B6-41C8-BC7F-17EB4930B96A}</ProjectGuid>
-    <ProjectTypeGuids>{948B3504-5B70-4649-8FE4-BDE1FB46EC69};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <ProjectTypeGuids>{A3F8F2AB-B479-4A4A-A458-A89E7DC349F1};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <OutputType>Exe</OutputType>
     <RootNamespace>BackgroundThreadTester</RootNamespace>
     <AssemblyName>BackgroundThreadTester</AssemblyName>
+    <SuppressXamMacUpsell>True</SuppressXamMacUpsell>
+    <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
+    <TargetFrameworkIdentifier>Xamarin.Mac</TargetFrameworkIdentifier>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
     <DebugSymbols>True</DebugSymbols>
@@ -46,18 +49,21 @@
     <Reference Include="System.Xml" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Drawing" />
-    <Reference Include="MonoMac" />
+    <Reference Include="Xamarin.Mac" />
     <Reference Include="System.Windows.Forms" />
+    <Reference Include="MonoGame.Framework">
+      <HintPath>..\packages\MonoGame.Framework.MacOS.3.7.1.189\lib\XamarinMac\MonoGame.Framework.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <None Include="Info.plist">
     </None>
     <None Include="Content\beehive.png" />
     <None Include="README.md" />
+    <None Include="packages.config" />
   </ItemGroup>
-  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
-  <Import Project="$(MSBuildExtensionsPath)\Mono\MonoMac\v0.0\Mono.MonoMac.targets" />
+  <Import Project="$(MSBuildExtensionsPath)\Xamarin\Mac\Xamarin.Mac.CSharp.targets" />
+  <Import Project="$(MSBuildExtensionsPath)\MonoGame\v3.0\MonoGame.Content.Builder.targets" />
   <ItemGroup>
     <Folder Include="Content\" />
   </ItemGroup>
@@ -78,14 +84,5 @@
   <ItemGroup>
     <InterfaceDefinition Include="MainMenu.xib" />
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\ThirdParty\Lidgren.Network\Lidgren.Network.MacOS.csproj">
-      <Project>{AE483C29-042E-4226-BA52-D247CE7676DA}</Project>
-      <Name>Lidgren.Network.MacOS</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\MonoGame.Framework\MonoGame.Framework.MacOS.csproj">
-      <Project>{36C538E6-C32A-4A8D-A39C-566173D7118E}</Project>
-      <Name>MonoGame.Framework.MacOS</Name>
-    </ProjectReference>
-  </ItemGroup>
+  <Import Project="..\packages\MonoGame.Framework.MacOS.3.7.1.189\build\MonoGame.Framework.MacOS.targets" Condition="Exists('..\packages\MonoGame.Framework.MacOS.3.7.1.189\build\MonoGame.Framework.MacOS.targets')" />
 </Project>

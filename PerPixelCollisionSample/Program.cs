@@ -10,10 +10,10 @@
 #region Using Statements
 using System;
 
-#if MONOMAC
-using MonoMac.Foundation;
-using MonoMac.AppKit;
-using MonoMac.ObjCRuntime;
+#if __MACOS__
+using Foundation;
+using AppKit;
+using ObjCRuntime;
 #elif IPHONE
 using MonoTouch.Foundation;
 using MonoTouch.UIKit;
@@ -22,7 +22,7 @@ using MonoTouch.UIKit;
 
 namespace PerPixelCollision
 {
-#if MONOMAC
+#if __MACOS__
 	static class Program
 	{
 		/// <summary>
@@ -42,7 +42,7 @@ namespace PerPixelCollision
 	class AppDelegate : NSApplicationDelegate
 	{
 		PerPixelCollisionGame game;
-		public override void FinishedLaunching (MonoMac.Foundation.NSObject notification)
+		public override void DidFinishLaunching (NSNotification notification)
 		{
 			game = new PerPixelCollisionGame();
 			game.Run ();

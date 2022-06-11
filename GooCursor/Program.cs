@@ -5,17 +5,17 @@ using System.Collections.Generic;
 using System.Linq;
 
 
-#if MONOMAC
-using MonoMac.Foundation;
-using MonoMac.AppKit;
-using MonoMac.ObjCRuntime;
+#if __MACOS__
+using Foundation;
+using AppKit;
+using ObjCRuntime;
 #endif
 
 #endregion
 
 namespace GooCursor
 {
-#if MONOMAC
+#if __MACOS__
 	static class Program
 	{
 		/// <summary>
@@ -35,7 +35,7 @@ namespace GooCursor
 	class AppDelegate : NSApplicationDelegate
 	{
 		Game1 game;
-		public override void FinishedLaunching (MonoMac.Foundation.NSObject notification)
+		public override void DidFinishLaunching (NSNotification notification)
 		{
 			game = new Game1();
 			game.Run();

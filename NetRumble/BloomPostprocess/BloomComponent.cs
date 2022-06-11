@@ -77,7 +77,7 @@ namespace NetRumble
             : base(game)
         {
             if (game == null)
-                throw new ArgumentNullException("game");
+                throw new ArgumentNullException(nameof (game));
 
             content = new ContentManager(game.Services, "Content/BloomPostprocess");
         }

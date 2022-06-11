@@ -267,7 +267,7 @@ namespace CatapultGame
             CatapultState postUpdateStateChange = 0;
 
             if (gameTime == null)
-                throw new ArgumentNullException("gameTime");
+                throw new ArgumentNullException(nameof (gameTime));
 
             // The catapult is inactive, so there is nothing to update
             if (!IsActive)
@@ -463,7 +463,7 @@ namespace CatapultGame
         public override void Draw(GameTime gameTime)
         {
             if (gameTime == null)
-                throw new ArgumentNullException("gameTime");
+                throw new ArgumentNullException(nameof (gameTime));
 
             // Using the last update state makes sure we do not draw
             // before updating animations properly

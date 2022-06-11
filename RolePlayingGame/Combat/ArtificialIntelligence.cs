@@ -59,7 +59,7 @@ namespace RolePlaying
             // check the parameter
             if (monster == null)
             {
-                throw new ArgumentNullException("monster");
+                throw new ArgumentNullException(nameof (monster));
             }
 
             // assign the parameter

@@ -2,14 +2,14 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-#if MONOMAC
-using MonoMac.AppKit;
-using MonoMac.Foundation;
+#if __MACOS__
+using AppKit;
+using Foundation;
 #endif
 
 namespace SpriteEffects
 {
-#if MONOMAC
+#if __MACOS__
 	static class Program
 	{
 		/// <summary>
@@ -31,7 +31,7 @@ namespace SpriteEffects
 	class AppDelegate : NSApplicationDelegate
 	{
 		SpriteEffectsGame game;
-		public override void FinishedLaunching (MonoMac.Foundation.NSObject notification)
+		public override void DidFinishLaunching (NSNotification notification)
 		{
 			game = new SpriteEffectsGame();
 			game.Run();
