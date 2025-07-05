@@ -10,7 +10,6 @@ using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
-using Microsoft.Xna.Framework.Storage;
 
 namespace MonoGame.Samples.AdMob
 {
@@ -19,11 +18,14 @@ namespace MonoGame.Samples.AdMob
 	/// </summary>
 	public class Game1 : Microsoft.Xna.Framework.Game
 	{
+		public static Game1 Instance { get; private set; }
+		
 		GraphicsDeviceManager graphics;
 		SpriteBatch spriteBatch;		
 		
 		public Game1 ()  
 		{
+			Instance = this;
 			graphics = new GraphicsDeviceManager (this);
 			
 			Content.RootDirectory = "Content";

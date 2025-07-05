@@ -1,90 +1,39 @@
-<?xml version="1.0" encoding="utf-8"?>
-<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project Sdk="Microsoft.NET.Sdk">
+
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>10.0.0</ProductVersion>
-    <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{DD08D5F1-DE83-41C1-B599-76DC604643EB}</ProjectGuid>
-    <ProjectTypeGuids>{EFBA0AD7-5A72-4C68-AF49-83D382785DCF};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
-    <OutputType>Library</OutputType>
+    <TargetFramework>net8.0-android</TargetFramework>
+    <OutputType>Exe</OutputType>
     <RootNamespace>MonoGame.Samples.AdMob</RootNamespace>
-    <MonoAndroidResourcePrefix>Resources</MonoAndroidResourcePrefix>
-    <MonoAndroidAssetsPrefix>Assets</MonoAndroidAssetsPrefix>
-    <AndroidResgenClass>Resource</AndroidResgenClass>
-    <AndroidApplication>True</AndroidApplication>
-    <AndroidResgenFile>Resources\Resource.designer.cs</AndroidResgenFile>
     <AssemblyName>MonoGame.Samples.AdMob</AssemblyName>
+    <AndroidApplication>true</AndroidApplication>
     <AndroidManifest>Properties\AndroidManifest.xml</AndroidManifest>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <UseMaui>false</UseMaui>
+    <ImplicitUsings>disable</ImplicitUsings>
+    <Nullable>disable</Nullable>
+    <GenerateAssemblyInfo>true</GenerateAssemblyInfo>
+    <AssemblyTitle>MonoGame AdMob Sample</AssemblyTitle>
+    <AssemblyCompany>MonoGame</AssemblyCompany>
+    <AssemblyProduct>MonoGame AdMob Sample</AssemblyProduct>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>True</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>False</Optimize>
-    <OutputPath>bin\Debug</OutputPath>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <DefineConstants>DEBUG;ANDROID</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <ConsolePause>False</ConsolePause>
     <AndroidLinkMode>None</AndroidLinkMode>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>none</DebugType>
-    <Optimize>False</Optimize>
-    <OutputPath>bin\Release</OutputPath>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <AndroidUseSharedRuntime>False</AndroidUseSharedRuntime>
-    <ConsolePause>False</ConsolePause>
-    <AndroidLinkMode>SdkOnly</AndroidLinkMode>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
     <DefineConstants>ANDROID</DefineConstants>
+    <AndroidLinkMode>SdkOnly</AndroidLinkMode>
+    <AndroidUseSharedRuntime>false</AndroidUseSharedRuntime>
+    <DebugType>none</DebugType>
   </PropertyGroup>
+
   <ItemGroup>
-    <Reference Include="System" />
-    <Reference Include="System.Xml" />
-    <Reference Include="System.Core" />
-    <Reference Include="Mono.Android" />
-    <Reference Include="OpenTK" />
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="Activity1.cs" />
-    <Compile Include="Resources\Resource.designer.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Game1.cs" />
-    <Compile Include="AdMobHelper.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\AboutResources.txt" />
-    <None Include="Assets\AboutAssets.txt" />
-    <None Include="Properties\AndroidManifest.xml" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\values\Styles.xml" />
-    <AndroidResource Include="Resources\drawable\Icon.png" />
-    <AndroidResource Include="Resources\drawable\Splash.png" />
-  </ItemGroup>
-  <Import Project="$(MSBuildExtensionsPath)\Novell\Novell.MonoDroid.CSharp.targets" />
-  <ItemGroup>
-    <Folder Include="Assets\Content\" />
-    <Folder Include="Resources\values\" />
-    <Folder Include="Resources\drawable\" />
-    <Folder Include="Resources\layout\" />
-  </ItemGroup>
-  <ItemGroup>
+    <PackageReference Include="MonoGame.Framework.Android" Version="3.8.4" />
     <AndroidJavaSource Include="AdMobHelper.java" />
-  </ItemGroup>
-  <ItemGroup>
     <AndroidJavaLibrary Include="GoogleAdMobAdsSdk-4.3.1.jar" />
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\ThirdParty\Lidgren.Network\Lidgren.Network.Android.csproj">
-      <Project>{565129E0-4EE5-4F6F-B403-C3484C9740BE}</Project>
-      <Name>Lidgren.Network.Android</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\MonoGame.Framework\MonoGame.Framework.Android.csproj">
-      <Project>{BA9476CF-99BA-4D03-92F2-73D2C5E58883}</Project>
-      <Name>MonoGame.Framework.Android</Name>
-    </ProjectReference>
-  </ItemGroup>
+
 </Project>
