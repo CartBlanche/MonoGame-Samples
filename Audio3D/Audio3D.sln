@@ -1,0 +1,44 @@
+
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31912.275
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Audio3D.Core", "Core\Audio3D.Core.csproj", "{A1A1A1A1-0000-0000-0000-000000000001}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Audio3D.Windows", "Platforms\Windows\Audio3D.Windows.csproj", "{A1A1A1A1-0000-0000-0000-000000000002}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Audio3D.DesktopGL", "Platforms\DesktopGL\Audio3D.DesktopGL.csproj", "{A1A1A1A1-0000-0000-0000-000000000003}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Audio3D.Android", "Platforms\Android\Audio3D.Android.csproj", "{A1A1A1A1-0000-0000-0000-000000000004}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Audio3D.iOS", "Platforms\iOS\Audio3D.iOS.csproj", "{A1A1A1A1-0000-0000-0000-000000000005}"
+EndProject
+Global
+    GlobalSection(SolutionConfigurationPlatforms) = preSolution
+        Debug|Any CPU = Debug|Any CPU
+        Release|Any CPU = Release|Any CPU
+    EndGlobalSection
+    GlobalSection(ProjectConfigurationPlatforms) = postSolution
+        {A1A1A1A1-0000-0000-0000-000000000001}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+        {A1A1A1A1-0000-0000-0000-000000000001}.Debug|Any CPU.Build.0 = Debug|Any CPU
+        {A1A1A1A1-0000-0000-0000-000000000001}.Release|Any CPU.ActiveCfg = Release|Any CPU
+        {A1A1A1A1-0000-0000-0000-000000000001}.Release|Any CPU.Build.0 = Release|Any CPU
+        {A1A1A1A1-0000-0000-0000-000000000002}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+        {A1A1A1A1-0000-0000-0000-000000000002}.Debug|Any CPU.Build.0 = Debug|Any CPU
+        {A1A1A1A1-0000-0000-0000-000000000002}.Release|Any CPU.ActiveCfg = Release|Any CPU
+        {A1A1A1A1-0000-0000-0000-000000000002}.Release|Any CPU.Build.0 = Release|Any CPU
+        {A1A1A1A1-0000-0000-0000-000000000003}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+        {A1A1A1A1-0000-0000-0000-000000000003}.Debug|Any CPU.Build.0 = Debug|Any CPU
+        {A1A1A1A1-0000-0000-0000-000000000003}.Release|Any CPU.ActiveCfg = Release|Any CPU
+        {A1A1A1A1-0000-0000-0000-000000000003}.Release|Any CPU.Build.0 = Release|Any CPU
+        {A1A1A1A1-0000-0000-0000-000000000004}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+        {A1A1A1A1-0000-0000-0000-000000000004}.Debug|Any CPU.Build.0 = Debug|Any CPU
+        {A1A1A1A1-0000-0000-0000-000000000004}.Release|Any CPU.ActiveCfg = Release|Any CPU
+        {A1A1A1A1-0000-0000-0000-000000000004}.Release|Any CPU.Build.0 = Release|Any CPU
+        {A1A1A1A1-0000-0000-0000-000000000005}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+        {A1A1A1A1-0000-0000-0000-000000000005}.Debug|Any CPU.Build.0 = Debug|Any CPU
+        {A1A1A1A1-0000-0000-0000-000000000005}.Release|Any CPU.ActiveCfg = Release|Any CPU
+        {A1A1A1A1-0000-0000-0000-000000000005}.Release|Any CPU.Build.0 = Release|Any CPU
+    EndGlobalSection
+EndGlobal
+

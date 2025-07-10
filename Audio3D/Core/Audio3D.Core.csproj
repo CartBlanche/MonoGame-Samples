@@ -1,0 +1,14 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <RootNamespace>Audio3D.Core</RootNamespace>
+    <AssemblyTitle>Audio3D Core</AssemblyTitle>
+    <Description>Shared game logic for Audio3D MonoGame sample.</Description>
+    <Authors>CartBlanche</Authors>
+    <Company>CartBlanche</Company>
+    <GenerateAssemblyInfo>true</GenerateAssemblyInfo>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="MonoGame.Framework.DesktopGL" Version="3.8.*" />
+  </ItemGroup>
+</Project>
