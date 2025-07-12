@@ -16,7 +16,7 @@ namespace MonoGame.Samples.AdMob
 	/// <summary>
 	/// This is the main type for your game
 	/// </summary>
-	public class Game1 : Microsoft.Xna.Framework.Game
+	public class Game1 : Game
 	{
 		public static Game1 Instance { get; private set; }
 		
