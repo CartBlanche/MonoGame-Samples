@@ -32,8 +32,7 @@
 
   <ItemGroup>
     <PackageReference Include="MonoGame.Framework.Android" Version="3.8.*" />
-    <AndroidJavaSource Include="AdMobHelper.java" />
-    <AndroidJavaLibrary Include="GoogleAdMobAdsSdk-4.3.1.jar" />
+    <PackageReference Include="Xamarin.GooglePlayServices.Ads" Version="120.0.0" />
   </ItemGroup>
 
 </Project>

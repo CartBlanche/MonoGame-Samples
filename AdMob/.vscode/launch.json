@@ -2,16 +2,17 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "MonoGame Android Build & Run",
+            "name": "MonoGame Android Build, Deploy & Run",
             "type": "coreclr",
             "request": "launch",
             "program": "dotnet",
             "args": [
-                "build", "AdMob.Android.csproj"
+                "publish", "AdMob.Android.csproj", "-c", "Debug", "-f", "net8.0-android"
             ],
             "cwd": "${workspaceFolder}",
             "console": "integratedTerminal",
-            "stopAtEntry": false
+            "stopAtEntry": false,
+            "postDebugTask": "Install and Run APK"
         }
     ]
 }
