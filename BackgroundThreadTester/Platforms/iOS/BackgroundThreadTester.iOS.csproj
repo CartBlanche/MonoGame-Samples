@@ -1,0 +1,16 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net8.0-ios</TargetFramework>
+    <RootNamespace>BackgroundThreadTester.iOS</RootNamespace>
+    <AssemblyName>BackgroundThreadTester.iOS</AssemblyName>
+    <Nullable>enable</Nullable>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Core\BackgroundThreadTester.Core.csproj" />
+    <PackageReference Include="MonoGame.Framework.iOS" Version="3.8.*" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="..\..\Core\Content\**" CopyToOutputDirectory="PreserveNewest" />
+  </ItemGroup>
+</Project>
