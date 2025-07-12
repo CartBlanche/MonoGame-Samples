@@ -1,0 +1,24 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net8.0-android</TargetFramework>
+    <OutputType>Exe</OutputType>
+    <RootNamespace>BatteryStatus.Android</RootNamespace>
+    <Nullable>enable</Nullable>
+    <AssemblyTitle>BatteryStatus.Android</AssemblyTitle>
+    <Description>Android platform for BatteryStatus MonoGame sample.</Description>
+    <GenerateAssemblyInfo>true</GenerateAssemblyInfo>
+    <SupportedOSPlatformVersion>28</SupportedOSPlatformVersion>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="..\..\Core\Game1.cs" Link="Game1.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="MonoGame.Framework.Android" Version="3.8.*" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="..\..\Core\Content\SpriteFont1.xnb">
+      <Link>Content\SpriteFont1.xnb</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+</Project>

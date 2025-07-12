@@ -1,0 +1,23 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <OutputType>Exe</OutputType>
+    <RootNamespace>BatteryStatus.DesktopGL</RootNamespace>
+    <Nullable>enable</Nullable>
+    <AssemblyTitle>BatteryStatus.DesktopGL</AssemblyTitle>
+    <Description>DesktopGL platform for BatteryStatus MonoGame sample.</Description>
+    <GenerateAssemblyInfo>true</GenerateAssemblyInfo>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="..\..\Core\Game1.cs" Link="Game1.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="MonoGame.Framework.DesktopGL" Version="3.8.*" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="..\..\Core\Content\SpriteFont1.xnb">
+      <Link>Content\SpriteFont1.xnb</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+</Project>
