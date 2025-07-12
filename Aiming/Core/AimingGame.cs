@@ -36,8 +36,8 @@ namespace Aiming
         {
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
-            graphics.PreferredBackBufferWidth = 640;
-            graphics.PreferredBackBufferHeight = 720;
+            graphics.PreferredBackBufferWidth = 480;
+            graphics.PreferredBackBufferHeight = 640;
 #if MOBILE
             graphics.IsFullScreen = true;
 #endif
