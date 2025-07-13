@@ -1,0 +1,50 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Run DesktopGL",
+            "type": "coreclr",
+            "request": "launch",
+            "preLaunchTask": "build-desktopgl",
+            "program": "${workspaceFolder}/bin/Debug/net8.0/FloodControl.dll",
+            "args": [],
+            "cwd": "${workspaceFolder}/Platforms/Desktop",
+            "console": "internalConsole",
+            "stopAtEntry": false,
+            "justMyCode": true
+        },
+        {
+            "name": "Run Windows",
+            "type": "coreclr",
+            "request": "launch",
+            "preLaunchTask": "build-windows",
+            "program": "${workspaceFolder}/bin/Debug/net8.0-windows/FloodControl.dll",
+            "args": [],
+            "cwd": "${workspaceFolder}/Platforms/Windows",
+            "console": "internalConsole",
+            "stopAtEntry": false,
+            "justMyCode": true,
+            "requireExactSource": false
+        },
+        {
+            "name": "Debug Android",
+            "type": "mono",
+            "request": "attach",
+            "address": "localhost",
+            "port": 10000,
+			"preLaunchTask": "build-deploy-android"
+        },
+        {
+            "name": "Run iOS (simulator)",
+            "type": "coreclr",
+            "request": "launch",
+            "preLaunchTask": "build-ios",
+            "program": "${workspaceFolder}/bin/Debug/net8.0-ios/iossimulator-x64/FloodControl.dll",
+            "args": [],
+            "cwd": "${workspaceFolder}/Platforms/iOS",
+            "console": "internalConsole",
+            "stopAtEntry": false,
+            "justMyCode": true
+        }
+    ]
+}
