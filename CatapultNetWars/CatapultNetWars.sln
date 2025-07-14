@@ -1,37 +1,59 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 11.00
-# Visual Studio 2010
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CatapultNetWars", "CatapultNetWars.csproj", "{1F4BF77D-34DA-417D-96DE-24213A05729B}"
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CatapultNetWars.Core", "Core\CatapultNetWars.Core.csproj", "{2D6B149A-DED5-BD6D-92E9-06F37A7E8D03}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonoGame.Framework.MacOS", "..\..\..\..\..\..\..\Users\Jimmy\Public\Share\MonoMacSource\kjpgit\MonoGame\MonoGame.Framework\MonoGame.Framework.MacOS.csproj", "{36C538E6-C32A-4A8D-A39C-566173D7118E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonoGame.Xna.Framework.Net", "..\MonoGame.Xna.Framework.Net\MonoGame.Xna.Framework.Net.csproj", "{86E1E7AD-DD62-384D-A073-092A5F875CF0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lidgren.Network.MacOS", "..\..\..\..\..\..\..\Users\Jimmy\Public\Share\MonoMacSource\kjpgit\MonoGame\ThirdParty\Lidgren.Network\Lidgren.Network.MacOS.csproj", "{AE483C29-042E-4226-BA52-D247CE7676DA}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CatapultNetWars.Android", "Platforms\Android\CatapultNetWars.Android.csproj", "{7DF9E0D3-84A7-8FD3-949C-4AB7CE0DE1B2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CatapultNetWars.DesktopGL", "Platforms\Desktop\CatapultNetWars.DesktopGL.csproj", "{AC584BCF-4638-73F6-7635-82F08B9F3C66}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CatapultNetWars.iOS", "Platforms\iOS\CatapultNetWars.iOS.csproj", "{B86B684A-F505-89DA-4694-9C61E1C87EE8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CatapultNetWars.Windows", "Platforms\Windows\CatapultNetWars.Windows.csproj", "{B2676159-C59D-CA93-EBBC-F1984D0F95A5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
-		Debug|x86 = Debug|x86
-		Release|x86 = Release|x86
-		Distribution|Any CPU = Distribution|Any CPU
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{1F4BF77D-34DA-417D-96DE-24213A05729B}.Debug|x86.ActiveCfg = Debug|x86
-		{1F4BF77D-34DA-417D-96DE-24213A05729B}.Debug|x86.Build.0 = Debug|x86
-		{1F4BF77D-34DA-417D-96DE-24213A05729B}.Release|x86.ActiveCfg = Release|x86
-		{1F4BF77D-34DA-417D-96DE-24213A05729B}.Release|x86.Build.0 = Release|x86
-		{36C538E6-C32A-4A8D-A39C-566173D7118E}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{36C538E6-C32A-4A8D-A39C-566173D7118E}.Debug|x86.Build.0 = Debug|Any CPU
-		{36C538E6-C32A-4A8D-A39C-566173D7118E}.Distribution|Any CPU.ActiveCfg = Distribution|Any CPU
-		{36C538E6-C32A-4A8D-A39C-566173D7118E}.Distribution|Any CPU.Build.0 = Distribution|Any CPU
-		{36C538E6-C32A-4A8D-A39C-566173D7118E}.Release|x86.ActiveCfg = Release|Any CPU
-		{36C538E6-C32A-4A8D-A39C-566173D7118E}.Release|x86.Build.0 = Release|Any CPU
-		{AE483C29-042E-4226-BA52-D247CE7676DA}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{AE483C29-042E-4226-BA52-D247CE7676DA}.Debug|x86.Build.0 = Debug|Any CPU
-		{AE483C29-042E-4226-BA52-D247CE7676DA}.Distribution|Any CPU.ActiveCfg = Debug|Any CPU
-		{AE483C29-042E-4226-BA52-D247CE7676DA}.Distribution|Any CPU.Build.0 = Debug|Any CPU
-		{AE483C29-042E-4226-BA52-D247CE7676DA}.Release|x86.ActiveCfg = Release|Any CPU
-		{AE483C29-042E-4226-BA52-D247CE7676DA}.Release|x86.Build.0 = Release|Any CPU
+		{2D6B149A-DED5-BD6D-92E9-06F37A7E8D03}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2D6B149A-DED5-BD6D-92E9-06F37A7E8D03}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2D6B149A-DED5-BD6D-92E9-06F37A7E8D03}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2D6B149A-DED5-BD6D-92E9-06F37A7E8D03}.Release|Any CPU.Build.0 = Release|Any CPU
+		{86E1E7AD-DD62-384D-A073-092A5F875CF0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{86E1E7AD-DD62-384D-A073-092A5F875CF0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{86E1E7AD-DD62-384D-A073-092A5F875CF0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{86E1E7AD-DD62-384D-A073-092A5F875CF0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7DF9E0D3-84A7-8FD3-949C-4AB7CE0DE1B2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7DF9E0D3-84A7-8FD3-949C-4AB7CE0DE1B2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7DF9E0D3-84A7-8FD3-949C-4AB7CE0DE1B2}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{7DF9E0D3-84A7-8FD3-949C-4AB7CE0DE1B2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7DF9E0D3-84A7-8FD3-949C-4AB7CE0DE1B2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7DF9E0D3-84A7-8FD3-949C-4AB7CE0DE1B2}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{AC584BCF-4638-73F6-7635-82F08B9F3C66}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AC584BCF-4638-73F6-7635-82F08B9F3C66}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AC584BCF-4638-73F6-7635-82F08B9F3C66}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AC584BCF-4638-73F6-7635-82F08B9F3C66}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B86B684A-F505-89DA-4694-9C61E1C87EE8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B86B684A-F505-89DA-4694-9C61E1C87EE8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B86B684A-F505-89DA-4694-9C61E1C87EE8}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{B86B684A-F505-89DA-4694-9C61E1C87EE8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B86B684A-F505-89DA-4694-9C61E1C87EE8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B86B684A-F505-89DA-4694-9C61E1C87EE8}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{B2676159-C59D-CA93-EBBC-F1984D0F95A5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B2676159-C59D-CA93-EBBC-F1984D0F95A5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B2676159-C59D-CA93-EBBC-F1984D0F95A5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B2676159-C59D-CA93-EBBC-F1984D0F95A5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
-	GlobalSection(MonoDevelopProperties) = preSolution
-		StartupItem = CatapultNetWars.csproj
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {A1B2C3D4-E5F6-7890-ABCD-EF1234567890}
 	EndGlobalSection
 EndGlobal
