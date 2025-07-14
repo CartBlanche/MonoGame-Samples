@@ -8,7 +8,7 @@
     <AndroidApplication>true</AndroidApplication>
     <AndroidUseAapt2>true</AndroidUseAapt2>
     <AndroidManifest>AndroidManifest.xml</AndroidManifest>
-    <SupportedOSPlatformVersion>21</SupportedOSPlatformVersion>
+    <SupportedOSPlatformVersion>28</SupportedOSPlatformVersion>
     <ApplicationId>com.companyname.asteroidbeltassault</ApplicationId>
     <ApplicationDisplayVersion>1.0</ApplicationDisplayVersion>
     <ApplicationVersion>1</ApplicationVersion>
