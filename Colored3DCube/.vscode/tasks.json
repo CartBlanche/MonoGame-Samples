@@ -1,0 +1,33 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "build-desktopgl",
+      "type": "shell",
+      "command": "dotnet build Platforms/DesktopGL/Colored3DCube.DesktopGL.csproj",
+      "group": "build",
+      "problemMatcher": "$msCompile"
+    },
+    {
+      "label": "run-desktopgl",
+      "type": "shell",
+      "command": "dotnet run --project Platforms/DesktopGL/Colored3DCube.DesktopGL.csproj",
+      "group": "test",
+      "dependsOn": "build-desktopgl"
+    },
+    {
+      "label": "build-windows",
+      "type": "shell",
+      "command": "dotnet build Platforms/Windows/Colored3DCube.Windows.csproj",
+      "group": "build",
+      "problemMatcher": "$msCompile"
+    },
+    {
+      "label": "run-windows",
+      "type": "shell",
+      "command": "dotnet run --project Platforms/Windows/Colored3DCube.Windows.csproj",
+      "group": "test",
+      "dependsOn": "build-windows"
+    }
+  ]
+}

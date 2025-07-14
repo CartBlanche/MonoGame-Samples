@@ -1,0 +1,15 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <AssemblyName>Colored3DCube.Windows</AssemblyName>
+    <RootNamespace>Colored3DCube.Windows</RootNamespace>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <UseWindowsForms>true</UseWindowsForms>
+    <ApplicationIcon>..\..\Core\Game.ico</ApplicationIcon>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Core\Colored3DCube.Core.csproj" />
+    <PackageReference Include="MonoGame.Framework.WindowsDX" Version="3.8.*" />
+  </ItemGroup>
+</Project>
