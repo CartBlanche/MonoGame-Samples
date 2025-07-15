@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" 
+          android:versionCode="1" 
+          android:versionName="1.0" 
+          package="com.monogame.flocking">
+    
+    <uses-sdk android:minSdkVersion="21" android:targetSdkVersion="33" />
+    
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    
+    <application android:label="Flocking" 
+                 android:icon="@drawable/icon"
+                 android:theme="@android:style/Theme.NoTitleBar.Fullscreen">
+        
+        <activity android:name="Microsoft.Xna.Framework.AndroidGameActivity"
+                  android:label="Flocking"
+                  android:exported="true"
+                  android:launchMode="singleInstance"
+                  android:screenOrientation="landscape"
+                  android:configChanges="orientation|keyboardHidden|keyboard">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        
+    </application>
+    
+</manifest>
