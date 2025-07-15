@@ -1,0 +1,58 @@
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.5.2.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FarseerSamples.DesktopGL", "Platforms\Desktop\FarseerSamples.DesktopGL.csproj", "{B3E8A5F2-9C8D-4A7E-8B3F-1D5A2C7E9F4B}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FarseerSamples.Windows", "Platforms\Windows\FarseerSamples.Windows.csproj", "{4262402F-475C-415F-A556-932D05D0306C}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FarseerSamples.Android", "Platforms\Android\FarseerSamples.Android.csproj", "{8BE1F120-802F-444F-9EFA-DF5CEB062A68}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FarseerSamples.iOS", "Platforms\iOS\FarseerSamples.iOS.csproj", "{319ECD61-70F5-404B-A901-25E3D4355341}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FarseerSamples.Core", "Core\FarseerSamples.Core.csproj", "{A1B2C3D4-E5F6-7890-1234-56789ABCDEF0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FarseerPhysicsEngine", "..\FarseerPhysicsEngine\FarseerPhysicsEngine.csproj", "{6CA90C10-799F-4479-5676-1B9D547F7282}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{B3E8A5F2-9C8D-4A7E-8B3F-1D5A2C7E9F4B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B3E8A5F2-9C8D-4A7E-8B3F-1D5A2C7E9F4B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B3E8A5F2-9C8D-4A7E-8B3F-1D5A2C7E9F4B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B3E8A5F2-9C8D-4A7E-8B3F-1D5A2C7E9F4B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4262402F-475C-415F-A556-932D05D0306C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4262402F-475C-415F-A556-932D05D0306C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4262402F-475C-415F-A556-932D05D0306C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4262402F-475C-415F-A556-932D05D0306C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8BE1F120-802F-444F-9EFA-DF5CEB062A68}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8BE1F120-802F-444F-9EFA-DF5CEB062A68}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8BE1F120-802F-444F-9EFA-DF5CEB062A68}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{8BE1F120-802F-444F-9EFA-DF5CEB062A68}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8BE1F120-802F-444F-9EFA-DF5CEB062A68}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8BE1F120-802F-444F-9EFA-DF5CEB062A68}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{319ECD61-70F5-404B-A901-25E3D4355341}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{319ECD61-70F5-404B-A901-25E3D4355341}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{319ECD61-70F5-404B-A901-25E3D4355341}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{319ECD61-70F5-404B-A901-25E3D4355341}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{319ECD61-70F5-404B-A901-25E3D4355341}.Release|Any CPU.Build.0 = Release|Any CPU
+		{319ECD61-70F5-404B-A901-25E3D4355341}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{A1B2C3D4-E5F6-7890-1234-56789ABCDEF0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A1B2C3D4-E5F6-7890-1234-56789ABCDEF0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A1B2C3D4-E5F6-7890-1234-56789ABCDEF0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A1B2C3D4-E5F6-7890-1234-56789ABCDEF0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6CA90C10-799F-4479-5676-1B9D547F7282}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6CA90C10-799F-4479-5676-1B9D547F7282}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6CA90C10-799F-4479-5676-1B9D547F7282}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6CA90C10-799F-4479-5676-1B9D547F7282}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {A7E8D73A-F00C-435D-B264-344BA91C8F35}
+	EndGlobalSection
+EndGlobal
