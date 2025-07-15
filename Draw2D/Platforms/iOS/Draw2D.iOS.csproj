@@ -1,0 +1,22 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net8.0-ios</TargetFramework>
+    <RootNamespace>Draw2D.iOS</RootNamespace>
+    <AssemblyName>Draw2D.iOS</AssemblyName>
+    <GenerateAssemblyInfo>true</GenerateAssemblyInfo>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Core\Draw2D.Core.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="MonoGame.Framework.iOS" Version="3.8.*" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="..\..\..\CompiledContent\iOS\Content\Textures\logo.xnb" Link="Content\logo.xnb">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\..\CompiledContent\iOS\Content\Fonts\Arial.xnb" Link="Content\Font.xnb">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+</Project>

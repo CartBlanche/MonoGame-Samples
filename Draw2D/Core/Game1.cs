@@ -1,24 +1,17 @@
 using System;
 using System.Collections.Generic;
 
-#if ANDROID
-using Android.App;
-#endif
-
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using Microsoft.Xna.Framework.Storage;
 
-using Microsoft.Xna.Framework.GamerServices;
-
-namespace Microsoft.Xna.Samples.Draw2D
+namespace Draw2D
 {
 	/// <summary>
 	/// This is the main type for your game
 	/// </summary>
-	public class Game1 : Microsoft.Xna.Framework.Game
+	public class Game1 : Game
 	{
 		GraphicsDeviceManager graphics;
 		SpriteBatch spriteBatch;		
@@ -29,21 +22,19 @@ namespace Microsoft.Xna.Samples.Draw2D
 		Color alphaColor = Color.White;
 		FPSCounterComponent fps;
 		
-        public Game1 ()  
+		public Game1 ()  
 		{
 			graphics = new GraphicsDeviceManager (this);
 			
 			Content.RootDirectory = "Content";
 			
 			graphics.PreferMultiSampling = true;
-#if ANDROID || IPHONE || PSS
+#if ___MOBILE___
 			graphics.IsFullScreen = true;
-#else
-			graphics.IsFullScreen = false;
 #endif
 			
 			graphics.PreferredBackBufferHeight = 480;
-			graphics.PreferredBackBufferWidth = 320;
+			graphics.PreferredBackBufferWidth = 620;
 
 			graphics.SupportedOrientations = DisplayOrientation.Portrait | DisplayOrientation.LandscapeLeft | DisplayOrientation.LandscapeRight | DisplayOrientation.PortraitDown;			
 		}
@@ -85,12 +76,20 @@ namespace Microsoft.Xna.Samples.Draw2D
 		/// <param name="gameTime">Provides a snapshot of timing values.</param>
 		protected override void Update (GameTime gameTime)
 		{
-			if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed)
+			KeyboardState currentKeyboardState = Keyboard.GetState();
+			GamePadState currentGamePadState = GamePad.GetState (PlayerIndex.One);
+
+			// Check for exit.
+			if (currentKeyboardState.IsKeyDown(Keys.Escape) ||
+				currentGamePadState.Buttons.Back == ButtonState.Pressed)
 			{
+#if !___IOS___
 				Exit();
+#endif
 			}
+            
 			// TODO: Add your update logic here
-			size += 0.5f;
+            size += 0.5f;
 			if (size > 150) {
 				size = 0;
 			}
@@ -117,7 +116,7 @@ namespace Microsoft.Xna.Samples.Draw2D
 		protected override void Draw (GameTime gameTime)
 		{
 			graphics.GraphicsDevice.Clear (Color.CornflowerBlue);
-            
+			
 			// Draw without blend
 			spriteBatch.Begin (SpriteSortMode.Deferred, BlendState.Opaque);			
 			spriteBatch.Draw (texture, new Vector2 (250,20), Color.White);	
@@ -128,13 +127,13 @@ namespace Microsoft.Xna.Samples.Draw2D
 			spriteBatch.Draw (texture, new Vector2 (250,110), Color.White);
 			spriteBatch.Draw (texture, new Vector2 (260,120), Color.White);
 			spriteBatch.End ();
-            
+			
 			spriteBatch.Begin ();
 
 			// Normal draw
 			// TODO spriteBatch.Draw (ball, new Vector2 (200,300), Color.White);	
 			// TODO spriteBatch.Draw (ball, new Vector2 (200,300), null, Color.Yellow, 0.0f, new Vector2 (5,5), 1.0f, SpriteEffects.None, 0);	
-            
+			
 			// Normal draw
 			spriteBatch.Draw (texture, new Vector2 (10,390), Color.White);		
 			// Draw stretching
@@ -159,11 +158,11 @@ namespace Microsoft.Xna.Samples.Draw2D
 			// Scale
 			spriteBatch.Draw (texture, new Vector2 (290,390), null, Color.White, 0.0f, Vector2.Zero, new Vector2(0.5f, 1.6f), SpriteEffects.None,0.0f);
 			
-            
+			
 			base.Draw (gameTime);
 
 			spriteBatch.End ();
-            
+			
 			// Now let's try some scissoring
 			//Disabled as this scissoring code is /wrong/
 			/*spriteBatch.Begin ();
@@ -177,7 +176,7 @@ namespace Microsoft.Xna.Samples.Draw2D
 			spriteBatch.End ();
 
 			spriteBatch.GraphicsDevice.RasterizerState.ScissorTestEnable = false;*/
-            
+			
 
 		}
 	}

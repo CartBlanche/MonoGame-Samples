@@ -3,7 +3,7 @@ using System;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
 
-namespace Microsoft.Xna.Samples.Draw2D
+namespace Draw2D
 {
 	public class FPSCounterComponent : DrawableGameComponent
     {
