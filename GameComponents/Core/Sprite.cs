@@ -4,7 +4,7 @@ using System.Text;
 using Microsoft.Xna.Framework.Graphics;   //   for Texture2D
 using Microsoft.Xna.Framework;  //  for Vector2
 
-namespace Microsoft.Xna.Samples.GameComponents
+namespace GameComponents
 {
     class Sprite : DrawableGameComponent
     {
