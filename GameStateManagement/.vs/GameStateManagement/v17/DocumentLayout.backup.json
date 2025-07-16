@@ -1,0 +1,393 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\Users\\savag\\source\\repos\\CartBlanche\\MonoGame\\MonoGame-Samples\\GameStateManagement\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{DC9D9B21-AD23-48E5-A248-4EBE90FEABF8}|GameStateManagement.WindowsDX\\GameStateManagement.WindowsDX.csproj|c:\\users\\savag\\source\\repos\\cartblanche\\monogame\\monogame-samples\\gamestatemanagement\\gamestatemanagement.windowsdx\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{DC9D9B21-AD23-48E5-A248-4EBE90FEABF8}|GameStateManagement.WindowsDX\\GameStateManagement.WindowsDX.csproj|solutionrelative:gamestatemanagement.windowsdx\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{DC9D9B21-AD23-48E5-A248-4EBE90FEABF8}|GameStateManagement.WindowsDX\\GameStateManagement.WindowsDX.csproj|c:\\users\\savag\\source\\repos\\cartblanche\\monogame\\monogame-samples\\gamestatemanagement\\gamestatemanagement.windowsdx\\gamestatemanagement.windowsdx.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|",
+      "RelativeMoniker": "D:0:0:{DC9D9B21-AD23-48E5-A248-4EBE90FEABF8}|GameStateManagement.WindowsDX\\GameStateManagement.WindowsDX.csproj|solutionrelative:gamestatemanagement.windowsdx\\gamestatemanagement.windowsdx.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{DC9D9B21-AD23-48E5-A248-4EBE90FEABF8}|GameStateManagement.WindowsDX\\GameStateManagement.WindowsDX.csproj|c:\\users\\savag\\source\\repos\\cartblanche\\monogame\\monogame-samples\\gamestatemanagement\\gamestatemanagement.windowsdx\\app.manifest||{FA3CD31E-987B-443A-9B81-186104E8DAC1}",
+      "RelativeMoniker": "D:0:0:{DC9D9B21-AD23-48E5-A248-4EBE90FEABF8}|GameStateManagement.WindowsDX\\GameStateManagement.WindowsDX.csproj|solutionrelative:gamestatemanagement.windowsdx\\app.manifest||{FA3CD31E-987B-443A-9B81-186104E8DAC1}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{E44EFCD8-9817-400F-986E-3D6D1662C893}|GameStateManagement.DesktopGL\\GameStateManagement.DesktopGL.csproj|c:\\users\\savag\\source\\repos\\cartblanche\\monogame\\monogame-samples\\gamestatemanagement\\gamestatemanagement.desktopgl\\gamestatemanagement.desktopgl.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|",
+      "RelativeMoniker": "D:0:0:{E44EFCD8-9817-400F-986E-3D6D1662C893}|GameStateManagement.DesktopGL\\GameStateManagement.DesktopGL.csproj|solutionrelative:gamestatemanagement.desktopgl\\gamestatemanagement.desktopgl.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{3AFC4E10-5EE4-473A-A7E2-8BF5415FD71F}|GameStateManagement.Core\\GameStateManagement.Core.csproj|c:\\users\\savag\\source\\repos\\cartblanche\\monogame\\monogame-samples\\gamestatemanagement\\gamestatemanagement.core\\screenmanager\\inputstate.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{3AFC4E10-5EE4-473A-A7E2-8BF5415FD71F}|GameStateManagement.Core\\GameStateManagement.Core.csproj|solutionrelative:gamestatemanagement.core\\screenmanager\\inputstate.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{3AFC4E10-5EE4-473A-A7E2-8BF5415FD71F}|GameStateManagement.Core\\GameStateManagement.Core.csproj|c:\\users\\savag\\source\\repos\\cartblanche\\monogame\\monogame-samples\\gamestatemanagement\\gamestatemanagement.core\\content\\fonts\\gamefont.spritefont||{FA3CD31E-987B-443A-9B81-186104E8DAC1}",
+      "RelativeMoniker": "D:0:0:{3AFC4E10-5EE4-473A-A7E2-8BF5415FD71F}|GameStateManagement.Core\\GameStateManagement.Core.csproj|solutionrelative:gamestatemanagement.core\\content\\fonts\\gamefont.spritefont||{FA3CD31E-987B-443A-9B81-186104E8DAC1}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{3AFC4E10-5EE4-473A-A7E2-8BF5415FD71F}|GameStateManagement.Core\\GameStateManagement.Core.csproj|c:\\users\\savag\\source\\repos\\cartblanche\\monogame\\monogame-samples\\gamestatemanagement\\gamestatemanagement.core\\screens\\gameplayscreen.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{3AFC4E10-5EE4-473A-A7E2-8BF5415FD71F}|GameStateManagement.Core\\GameStateManagement.Core.csproj|solutionrelative:gamestatemanagement.core\\screens\\gameplayscreen.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{3AFC4E10-5EE4-473A-A7E2-8BF5415FD71F}|GameStateManagement.Core\\GameStateManagement.Core.csproj|c:\\users\\savag\\source\\repos\\cartblanche\\monogame\\monogame-samples\\gamestatemanagement\\gamestatemanagement.core\\screenmanager\\screenmanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{3AFC4E10-5EE4-473A-A7E2-8BF5415FD71F}|GameStateManagement.Core\\GameStateManagement.Core.csproj|solutionrelative:gamestatemanagement.core\\screenmanager\\screenmanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{3AFC4E10-5EE4-473A-A7E2-8BF5415FD71F}|GameStateManagement.Core\\GameStateManagement.Core.csproj|c:\\users\\savag\\source\\repos\\cartblanche\\monogame\\monogame-samples\\gamestatemanagement\\gamestatemanagement.core\\screens\\messageboxscreen.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{3AFC4E10-5EE4-473A-A7E2-8BF5415FD71F}|GameStateManagement.Core\\GameStateManagement.Core.csproj|solutionrelative:gamestatemanagement.core\\screens\\messageboxscreen.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{3AFC4E10-5EE4-473A-A7E2-8BF5415FD71F}|GameStateManagement.Core\\GameStateManagement.Core.csproj|c:\\users\\savag\\source\\repos\\cartblanche\\monogame\\monogame-samples\\gamestatemanagement\\gamestatemanagement.core\\screens\\backgroundscreen.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{3AFC4E10-5EE4-473A-A7E2-8BF5415FD71F}|GameStateManagement.Core\\GameStateManagement.Core.csproj|solutionrelative:gamestatemanagement.core\\screens\\backgroundscreen.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{E44EFCD8-9817-400F-986E-3D6D1662C893}|GameStateManagement.DesktopGL\\GameStateManagement.DesktopGL.csproj|c:\\users\\savag\\source\\repos\\cartblanche\\monogame\\monogame-samples\\gamestatemanagement\\gamestatemanagement.core\\content\\gamestatemanagement.mgcb||{8B382828-6202-11D1-8870-0000F87579D2}",
+      "RelativeMoniker": "D:0:0:{E44EFCD8-9817-400F-986E-3D6D1662C893}|GameStateManagement.DesktopGL\\GameStateManagement.DesktopGL.csproj|solutionrelative:gamestatemanagement.core\\content\\gamestatemanagement.mgcb||{8B382828-6202-11D1-8870-0000F87579D2}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A4F8DC31-360E-4AFA-A474-6D01EEBC0D19}|GameStateManagement.Android\\GameStateManagement.Android.csproj|c:\\users\\savag\\source\\repos\\cartblanche\\monogame\\monogame-samples\\gamestatemanagement\\gamestatemanagement.android\\resources\\values\\strings.xml||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|",
+      "RelativeMoniker": "D:0:0:{A4F8DC31-360E-4AFA-A474-6D01EEBC0D19}|GameStateManagement.Android\\GameStateManagement.Android.csproj|solutionrelative:gamestatemanagement.android\\resources\\values\\strings.xml||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A4F8DC31-360E-4AFA-A474-6D01EEBC0D19}|GameStateManagement.Android\\GameStateManagement.Android.csproj|c:\\users\\savag\\source\\repos\\cartblanche\\monogame\\monogame-samples\\gamestatemanagement\\gamestatemanagement.android\\mainactivity.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A4F8DC31-360E-4AFA-A474-6D01EEBC0D19}|GameStateManagement.Android\\GameStateManagement.Android.csproj|solutionrelative:gamestatemanagement.android\\mainactivity.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A4F8DC31-360E-4AFA-A474-6D01EEBC0D19}|GameStateManagement.Android\\GameStateManagement.Android.csproj|c:\\users\\savag\\source\\repos\\cartblanche\\monogame\\monogame-samples\\gamestatemanagement\\gamestatemanagement.android\\androidmanifest.xml||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|",
+      "RelativeMoniker": "D:0:0:{A4F8DC31-360E-4AFA-A474-6D01EEBC0D19}|GameStateManagement.Android\\GameStateManagement.Android.csproj|solutionrelative:gamestatemanagement.android\\androidmanifest.xml||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{3AFC4E10-5EE4-473A-A7E2-8BF5415FD71F}|GameStateManagement.Core\\GameStateManagement.Core.csproj|c:\\users\\savag\\source\\repos\\cartblanche\\monogame\\monogame-samples\\gamestatemanagement\\gamestatemanagement.core\\screens\\playerindexeventargs.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{3AFC4E10-5EE4-473A-A7E2-8BF5415FD71F}|GameStateManagement.Core\\GameStateManagement.Core.csproj|solutionrelative:gamestatemanagement.core\\screens\\playerindexeventargs.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{3AFC4E10-5EE4-473A-A7E2-8BF5415FD71F}|GameStateManagement.Core\\GameStateManagement.Core.csproj|c:\\users\\savag\\source\\repos\\cartblanche\\monogame\\monogame-samples\\gamestatemanagement\\gamestatemanagement.core\\screens\\pausemenuscreen.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{3AFC4E10-5EE4-473A-A7E2-8BF5415FD71F}|GameStateManagement.Core\\GameStateManagement.Core.csproj|solutionrelative:gamestatemanagement.core\\screens\\pausemenuscreen.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{3AFC4E10-5EE4-473A-A7E2-8BF5415FD71F}|GameStateManagement.Core\\GameStateManagement.Core.csproj|c:\\users\\savag\\source\\repos\\cartblanche\\monogame\\monogame-samples\\gamestatemanagement\\gamestatemanagement.core\\screens\\optionsmenuscreen.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{3AFC4E10-5EE4-473A-A7E2-8BF5415FD71F}|GameStateManagement.Core\\GameStateManagement.Core.csproj|solutionrelative:gamestatemanagement.core\\screens\\optionsmenuscreen.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{3AFC4E10-5EE4-473A-A7E2-8BF5415FD71F}|GameStateManagement.Core\\GameStateManagement.Core.csproj|c:\\users\\savag\\source\\repos\\cartblanche\\monogame\\monogame-samples\\gamestatemanagement\\gamestatemanagement.core\\screens\\menuscreen.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{3AFC4E10-5EE4-473A-A7E2-8BF5415FD71F}|GameStateManagement.Core\\GameStateManagement.Core.csproj|solutionrelative:gamestatemanagement.core\\screens\\menuscreen.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{3AFC4E10-5EE4-473A-A7E2-8BF5415FD71F}|GameStateManagement.Core\\GameStateManagement.Core.csproj|c:\\users\\savag\\source\\repos\\cartblanche\\monogame\\monogame-samples\\gamestatemanagement\\gamestatemanagement.core\\screens\\menuentry.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{3AFC4E10-5EE4-473A-A7E2-8BF5415FD71F}|GameStateManagement.Core\\GameStateManagement.Core.csproj|solutionrelative:gamestatemanagement.core\\screens\\menuentry.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{3AFC4E10-5EE4-473A-A7E2-8BF5415FD71F}|GameStateManagement.Core\\GameStateManagement.Core.csproj|c:\\users\\savag\\source\\repos\\cartblanche\\monogame\\monogame-samples\\gamestatemanagement\\gamestatemanagement.core\\screens\\mainmenuscreen.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{3AFC4E10-5EE4-473A-A7E2-8BF5415FD71F}|GameStateManagement.Core\\GameStateManagement.Core.csproj|solutionrelative:gamestatemanagement.core\\screens\\mainmenuscreen.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{3AFC4E10-5EE4-473A-A7E2-8BF5415FD71F}|GameStateManagement.Core\\GameStateManagement.Core.csproj|c:\\users\\savag\\source\\repos\\cartblanche\\monogame\\monogame-samples\\gamestatemanagement\\gamestatemanagement.core\\screens\\loadingscreen.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{3AFC4E10-5EE4-473A-A7E2-8BF5415FD71F}|GameStateManagement.Core\\GameStateManagement.Core.csproj|solutionrelative:gamestatemanagement.core\\screens\\loadingscreen.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{3AFC4E10-5EE4-473A-A7E2-8BF5415FD71F}|GameStateManagement.Core\\GameStateManagement.Core.csproj|c:\\users\\savag\\source\\repos\\cartblanche\\monogame\\monogame-samples\\gamestatemanagement\\gamestatemanagement.core\\screenmanager\\gamescreen.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{3AFC4E10-5EE4-473A-A7E2-8BF5415FD71F}|GameStateManagement.Core\\GameStateManagement.Core.csproj|solutionrelative:gamestatemanagement.core\\screenmanager\\gamescreen.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{E44EFCD8-9817-400F-986E-3D6D1662C893}|GameStateManagement.DesktopGL\\GameStateManagement.DesktopGL.csproj|c:\\users\\savag\\source\\repos\\cartblanche\\monogame\\monogame-samples\\gamestatemanagement\\gamestatemanagement.desktopgl\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{E44EFCD8-9817-400F-986E-3D6D1662C893}|GameStateManagement.DesktopGL\\GameStateManagement.DesktopGL.csproj|solutionrelative:gamestatemanagement.desktopgl\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 1,
+          "Children": [
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{e506b91c-c606-466a-90a9-123d1d1e12b3}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "Program.cs",
+              "DocumentMoniker": "C:\\Users\\savag\\source\\repos\\CartBlanche\\MonoGame\\MonoGame-Samples\\GameStateManagement\\GameStateManagement.WindowsDX\\Program.cs",
+              "RelativeDocumentMoniker": "GameStateManagement.WindowsDX\\Program.cs",
+              "ToolTip": "C:\\Users\\savag\\source\\repos\\CartBlanche\\MonoGame\\MonoGame-Samples\\GameStateManagement\\GameStateManagement.WindowsDX\\Program.cs",
+              "RelativeToolTip": "GameStateManagement.WindowsDX\\Program.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAQAAABSAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-09-19T02:42:34.024Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "app.manifest",
+              "DocumentMoniker": "C:\\Users\\savag\\source\\repos\\CartBlanche\\MonoGame\\MonoGame-Samples\\GameStateManagement\\GameStateManagement.WindowsDX\\app.manifest",
+              "RelativeDocumentMoniker": "GameStateManagement.WindowsDX\\app.manifest",
+              "ToolTip": "C:\\Users\\savag\\source\\repos\\CartBlanche\\MonoGame\\MonoGame-Samples\\GameStateManagement\\GameStateManagement.WindowsDX\\app.manifest",
+              "RelativeToolTip": "GameStateManagement.WindowsDX\\app.manifest",
+              "ViewState": "AgIAABsAAAAAAAAAAAAnwCMAAAA4AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001203|",
+              "WhenOpened": "2024-09-19T02:39:12.883Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "GameStateManagement.WindowsDX.csproj",
+              "DocumentMoniker": "C:\\Users\\savag\\source\\repos\\CartBlanche\\MonoGame\\MonoGame-Samples\\GameStateManagement\\GameStateManagement.WindowsDX\\GameStateManagement.WindowsDX.csproj",
+              "RelativeDocumentMoniker": "GameStateManagement.WindowsDX\\GameStateManagement.WindowsDX.csproj",
+              "ToolTip": "C:\\Users\\savag\\source\\repos\\CartBlanche\\MonoGame\\MonoGame-Samples\\GameStateManagement\\GameStateManagement.WindowsDX\\GameStateManagement.WindowsDX.csproj",
+              "RelativeToolTip": "GameStateManagement.WindowsDX\\GameStateManagement.WindowsDX.csproj",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAkAAAARAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
+              "WhenOpened": "2024-09-19T02:18:14.882Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "GameStateManagement.DesktopGL.csproj",
+              "DocumentMoniker": "C:\\Users\\savag\\source\\repos\\CartBlanche\\MonoGame\\MonoGame-Samples\\GameStateManagement\\GameStateManagement.DesktopGL\\GameStateManagement.DesktopGL.csproj",
+              "RelativeDocumentMoniker": "GameStateManagement.DesktopGL\\GameStateManagement.DesktopGL.csproj",
+              "ToolTip": "C:\\Users\\savag\\source\\repos\\CartBlanche\\MonoGame\\MonoGame-Samples\\GameStateManagement\\GameStateManagement.DesktopGL\\GameStateManagement.DesktopGL.csproj",
+              "RelativeToolTip": "GameStateManagement.DesktopGL\\GameStateManagement.DesktopGL.csproj",
+              "ViewState": "AgIAABUAAAAAAAAAAAAAACQAAAAKAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
+              "WhenOpened": "2024-09-18T15:47:41.697Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "InputState.cs",
+              "DocumentMoniker": "C:\\Users\\savag\\source\\repos\\CartBlanche\\MonoGame\\MonoGame-Samples\\GameStateManagement\\GameStateManagement.Core\\ScreenManager\\InputState.cs",
+              "RelativeDocumentMoniker": "GameStateManagement.Core\\ScreenManager\\InputState.cs",
+              "ToolTip": "C:\\Users\\savag\\source\\repos\\CartBlanche\\MonoGame\\MonoGame-Samples\\GameStateManagement\\GameStateManagement.Core\\ScreenManager\\InputState.cs",
+              "RelativeToolTip": "GameStateManagement.Core\\ScreenManager\\InputState.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAE0AAAA7AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-09-18T15:49:42.61Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "GameplayScreen.cs",
+              "DocumentMoniker": "C:\\Users\\savag\\source\\repos\\CartBlanche\\MonoGame\\MonoGame-Samples\\GameStateManagement\\GameStateManagement.Core\\Screens\\GameplayScreen.cs",
+              "RelativeDocumentMoniker": "GameStateManagement.Core\\Screens\\GameplayScreen.cs",
+              "ToolTip": "C:\\Users\\savag\\source\\repos\\CartBlanche\\MonoGame\\MonoGame-Samples\\GameStateManagement\\GameStateManagement.Core\\Screens\\GameplayScreen.cs",
+              "RelativeToolTip": "GameStateManagement.Core\\Screens\\GameplayScreen.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAD4AAAA+AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-09-18T15:50:04.357Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "MessageBoxScreen.cs",
+              "DocumentMoniker": "C:\\Users\\savag\\source\\repos\\CartBlanche\\MonoGame\\MonoGame-Samples\\GameStateManagement\\GameStateManagement.Core\\Screens\\MessageBoxScreen.cs",
+              "RelativeDocumentMoniker": "GameStateManagement.Core\\Screens\\MessageBoxScreen.cs",
+              "ToolTip": "C:\\Users\\savag\\source\\repos\\CartBlanche\\MonoGame\\MonoGame-Samples\\GameStateManagement\\GameStateManagement.Core\\Screens\\MessageBoxScreen.cs",
+              "RelativeToolTip": "GameStateManagement.Core\\Screens\\MessageBoxScreen.cs",
+              "ViewState": "AgIAAEkAAAAAAAAAAAD4v1EAAAA7AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-09-18T15:51:13.818Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "ScreenManager.cs",
+              "DocumentMoniker": "C:\\Users\\savag\\source\\repos\\CartBlanche\\MonoGame\\MonoGame-Samples\\GameStateManagement\\GameStateManagement.Core\\ScreenManager\\ScreenManager.cs",
+              "RelativeDocumentMoniker": "GameStateManagement.Core\\ScreenManager\\ScreenManager.cs",
+              "ToolTip": "C:\\Users\\savag\\source\\repos\\CartBlanche\\MonoGame\\MonoGame-Samples\\GameStateManagement\\GameStateManagement.Core\\ScreenManager\\ScreenManager.cs",
+              "RelativeToolTip": "GameStateManagement.Core\\ScreenManager\\ScreenManager.cs",
+              "ViewState": "AgIAAG8AAAAAAAAAAAD4v3YAAAAnAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-09-18T15:49:47.375Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "gamefont.spritefont",
+              "DocumentMoniker": "C:\\Users\\savag\\source\\repos\\CartBlanche\\MonoGame\\MonoGame-Samples\\GameStateManagement\\GameStateManagement.Core\\Content\\Fonts\\gamefont.spritefont",
+              "RelativeDocumentMoniker": "GameStateManagement.Core\\Content\\Fonts\\gamefont.spritefont",
+              "ToolTip": "C:\\Users\\savag\\source\\repos\\CartBlanche\\MonoGame\\MonoGame-Samples\\GameStateManagement\\GameStateManagement.Core\\Content\\Fonts\\gamefont.spritefont",
+              "RelativeToolTip": "GameStateManagement.Core\\Content\\Fonts\\gamefont.spritefont",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAMAAAARAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001001|",
+              "WhenOpened": "2024-09-19T01:16:39.44Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
+              "Title": "BackgroundScreen.cs",
+              "DocumentMoniker": "C:\\Users\\savag\\source\\repos\\CartBlanche\\MonoGame\\MonoGame-Samples\\GameStateManagement\\GameStateManagement.Core\\Screens\\BackgroundScreen.cs",
+              "RelativeDocumentMoniker": "GameStateManagement.Core\\Screens\\BackgroundScreen.cs",
+              "ToolTip": "C:\\Users\\savag\\source\\repos\\CartBlanche\\MonoGame\\MonoGame-Samples\\GameStateManagement\\GameStateManagement.Core\\Screens\\BackgroundScreen.cs",
+              "RelativeToolTip": "GameStateManagement.Core\\Screens\\BackgroundScreen.cs",
+              "ViewState": "AgIAAC8AAAAAAAAAAAAAADkAAAAzAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-09-18T15:49:57.495Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 10,
+              "Title": "GameStateManagement.mgcb",
+              "DocumentMoniker": "C:\\Users\\savag\\source\\repos\\CartBlanche\\MonoGame\\MonoGame-Samples\\GameStateManagement\\GameStateManagement.Core\\Content\\GameStateManagement.mgcb",
+              "RelativeDocumentMoniker": "GameStateManagement.Core\\Content\\GameStateManagement.mgcb",
+              "ToolTip": "C:\\Users\\savag\\source\\repos\\CartBlanche\\MonoGame\\MonoGame-Samples\\GameStateManagement\\GameStateManagement.Core\\Content\\GameStateManagement.mgcb",
+              "RelativeToolTip": "GameStateManagement.Core\\Content\\GameStateManagement.mgcb",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA8AAAAdAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001001|",
+              "WhenOpened": "2024-09-18T15:56:23.624Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 11,
+              "Title": "Strings.xml",
+              "DocumentMoniker": "C:\\Users\\savag\\source\\repos\\CartBlanche\\MonoGame\\MonoGame-Samples\\GameStateManagement\\GameStateManagement.Android\\Resources\\Values\\Strings.xml",
+              "RelativeDocumentMoniker": "GameStateManagement.Android\\Resources\\Values\\Strings.xml",
+              "ToolTip": "C:\\Users\\savag\\source\\repos\\CartBlanche\\MonoGame\\MonoGame-Samples\\GameStateManagement\\GameStateManagement.Android\\Resources\\Values\\Strings.xml",
+              "RelativeToolTip": "GameStateManagement.Android\\Resources\\Values\\Strings.xml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAIAAAAtAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003576|",
+              "WhenOpened": "2024-09-18T15:54:37.411Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 12,
+              "Title": "MainActivity.cs",
+              "DocumentMoniker": "C:\\Users\\savag\\source\\repos\\CartBlanche\\MonoGame\\MonoGame-Samples\\GameStateManagement\\GameStateManagement.Android\\MainActivity.cs",
+              "RelativeDocumentMoniker": "GameStateManagement.Android\\MainActivity.cs",
+              "ToolTip": "C:\\Users\\savag\\source\\repos\\CartBlanche\\MonoGame\\MonoGame-Samples\\GameStateManagement\\GameStateManagement.Android\\MainActivity.cs",
+              "RelativeToolTip": "GameStateManagement.Android\\MainActivity.cs",
+              "ViewState": "AgIAAB8AAAAAAAAAAAD4vycAAAAnAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-09-18T15:53:42.25Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 13,
+              "Title": "AndroidManifest.xml",
+              "DocumentMoniker": "C:\\Users\\savag\\source\\repos\\CartBlanche\\MonoGame\\MonoGame-Samples\\GameStateManagement\\GameStateManagement.Android\\AndroidManifest.xml",
+              "RelativeDocumentMoniker": "GameStateManagement.Android\\AndroidManifest.xml",
+              "ToolTip": "C:\\Users\\savag\\source\\repos\\CartBlanche\\MonoGame\\MonoGame-Samples\\GameStateManagement\\GameStateManagement.Android\\AndroidManifest.xml",
+              "RelativeToolTip": "GameStateManagement.Android\\AndroidManifest.xml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAQAAAAwAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003576|",
+              "WhenOpened": "2024-09-18T15:53:21.733Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 14,
+              "Title": "PlayerIndexEventArgs.cs",
+              "DocumentMoniker": "C:\\Users\\savag\\source\\repos\\CartBlanche\\MonoGame\\MonoGame-Samples\\GameStateManagement\\GameStateManagement.Core\\Screens\\PlayerIndexEventArgs.cs",
+              "RelativeDocumentMoniker": "GameStateManagement.Core\\Screens\\PlayerIndexEventArgs.cs",
+              "ToolTip": "C:\\Users\\savag\\source\\repos\\CartBlanche\\MonoGame\\MonoGame-Samples\\GameStateManagement\\GameStateManagement.Core\\Screens\\PlayerIndexEventArgs.cs",
+              "RelativeToolTip": "GameStateManagement.Core\\Screens\\PlayerIndexEventArgs.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA4AAAAjAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-09-18T15:51:28.556Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 15,
+              "Title": "PauseMenuScreen.cs",
+              "DocumentMoniker": "C:\\Users\\savag\\source\\repos\\CartBlanche\\MonoGame\\MonoGame-Samples\\GameStateManagement\\GameStateManagement.Core\\Screens\\PauseMenuScreen.cs",
+              "RelativeDocumentMoniker": "GameStateManagement.Core\\Screens\\PauseMenuScreen.cs",
+              "ToolTip": "C:\\Users\\savag\\source\\repos\\CartBlanche\\MonoGame\\MonoGame-Samples\\GameStateManagement\\GameStateManagement.Core\\Screens\\PauseMenuScreen.cs",
+              "RelativeToolTip": "GameStateManagement.Core\\Screens\\PauseMenuScreen.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA0AAAAjAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-09-18T15:51:23.915Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 16,
+              "Title": "OptionsMenuScreen.cs",
+              "DocumentMoniker": "C:\\Users\\savag\\source\\repos\\CartBlanche\\MonoGame\\MonoGame-Samples\\GameStateManagement\\GameStateManagement.Core\\Screens\\OptionsMenuScreen.cs",
+              "RelativeDocumentMoniker": "GameStateManagement.Core\\Screens\\OptionsMenuScreen.cs",
+              "ToolTip": "C:\\Users\\savag\\source\\repos\\CartBlanche\\MonoGame\\MonoGame-Samples\\GameStateManagement\\GameStateManagement.Core\\Screens\\OptionsMenuScreen.cs",
+              "RelativeToolTip": "GameStateManagement.Core\\Screens\\OptionsMenuScreen.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA0AAAAjAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-09-18T15:51:19.079Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 17,
+              "Title": "MenuScreen.cs",
+              "DocumentMoniker": "C:\\Users\\savag\\source\\repos\\CartBlanche\\MonoGame\\MonoGame-Samples\\GameStateManagement\\GameStateManagement.Core\\Screens\\MenuScreen.cs",
+              "RelativeDocumentMoniker": "GameStateManagement.Core\\Screens\\MenuScreen.cs",
+              "ToolTip": "C:\\Users\\savag\\source\\repos\\CartBlanche\\MonoGame\\MonoGame-Samples\\GameStateManagement\\GameStateManagement.Core\\Screens\\MenuScreen.cs",
+              "RelativeToolTip": "GameStateManagement.Core\\Screens\\MenuScreen.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABIAAAAjAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-09-18T15:51:07.412Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 18,
+              "Title": "MenuEntry.cs",
+              "DocumentMoniker": "C:\\Users\\savag\\source\\repos\\CartBlanche\\MonoGame\\MonoGame-Samples\\GameStateManagement\\GameStateManagement.Core\\Screens\\MenuEntry.cs",
+              "RelativeDocumentMoniker": "GameStateManagement.Core\\Screens\\MenuEntry.cs",
+              "ToolTip": "C:\\Users\\savag\\source\\repos\\CartBlanche\\MonoGame\\MonoGame-Samples\\GameStateManagement\\GameStateManagement.Core\\Screens\\MenuEntry.cs",
+              "RelativeToolTip": "GameStateManagement.Core\\Screens\\MenuEntry.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA8AAAAjAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-09-18T15:51:03.392Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 19,
+              "Title": "MainMenuScreen.cs",
+              "DocumentMoniker": "C:\\Users\\savag\\source\\repos\\CartBlanche\\MonoGame\\MonoGame-Samples\\GameStateManagement\\GameStateManagement.Core\\Screens\\MainMenuScreen.cs",
+              "RelativeDocumentMoniker": "GameStateManagement.Core\\Screens\\MainMenuScreen.cs",
+              "ToolTip": "C:\\Users\\savag\\source\\repos\\CartBlanche\\MonoGame\\MonoGame-Samples\\GameStateManagement\\GameStateManagement.Core\\Screens\\MainMenuScreen.cs",
+              "RelativeToolTip": "GameStateManagement.Core\\Screens\\MainMenuScreen.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA0AAAAjAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-09-18T15:50:55.244Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 20,
+              "Title": "LoadingScreen.cs",
+              "DocumentMoniker": "C:\\Users\\savag\\source\\repos\\CartBlanche\\MonoGame\\MonoGame-Samples\\GameStateManagement\\GameStateManagement.Core\\Screens\\LoadingScreen.cs",
+              "RelativeDocumentMoniker": "GameStateManagement.Core\\Screens\\LoadingScreen.cs",
+              "ToolTip": "C:\\Users\\savag\\source\\repos\\CartBlanche\\MonoGame\\MonoGame-Samples\\GameStateManagement\\GameStateManagement.Core\\Screens\\LoadingScreen.cs",
+              "RelativeToolTip": "GameStateManagement.Core\\Screens\\LoadingScreen.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA8AAAAjAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-09-18T15:50:49.596Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 21,
+              "Title": "GameScreen.cs",
+              "DocumentMoniker": "C:\\Users\\savag\\source\\repos\\CartBlanche\\MonoGame\\MonoGame-Samples\\GameStateManagement\\GameStateManagement.Core\\ScreenManager\\GameScreen.cs",
+              "RelativeDocumentMoniker": "GameStateManagement.Core\\ScreenManager\\GameScreen.cs",
+              "ToolTip": "C:\\Users\\savag\\source\\repos\\CartBlanche\\MonoGame\\MonoGame-Samples\\GameStateManagement\\GameStateManagement.Core\\ScreenManager\\GameScreen.cs",
+              "RelativeToolTip": "GameStateManagement.Core\\ScreenManager\\GameScreen.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABAAAAAiAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-09-18T15:49:17.851Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 22,
+              "Title": "Program.cs",
+              "DocumentMoniker": "C:\\Users\\savag\\source\\repos\\CartBlanche\\MonoGame\\MonoGame-Samples\\GameStateManagement\\GameStateManagement.DesktopGL\\Program.cs",
+              "RelativeDocumentMoniker": "GameStateManagement.DesktopGL\\Program.cs",
+              "ToolTip": "C:\\Users\\savag\\source\\repos\\CartBlanche\\MonoGame\\MonoGame-Samples\\GameStateManagement\\GameStateManagement.DesktopGL\\Program.cs",
+              "RelativeToolTip": "GameStateManagement.DesktopGL\\Program.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAMAAAAoAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-09-18T15:48:18.94Z"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

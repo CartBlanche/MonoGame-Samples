@@ -1,0 +1,48 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net8.0-ios</TargetFramework>
+    <RollForward>Major</RollForward>
+    <PublishReadyToRun>false</PublishReadyToRun>
+    <TieredCompilation>false</TieredCompilation>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <Title>Game State Management</Title>
+    <Product>Game State Management</Product>
+    <Description>This sample shows how to manage the transitions between different menus and gameplay states.</Description>
+    <Company>Microsoft</Company>
+    <Copyright>Copyright © Microsoft 2007</Copyright>
+    <Trademark></Trademark>
+    <AssemblyVersion>1.0.0.0</AssemblyVersion>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="MonoGame.Framework.iOS" Version="3.8.*" />
+    <PackageReference Include="MonoGame.Content.Builder.Task" Version="3.8.*" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="../../Core/GameStateManagement.Core.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="..\..\..\CompiledContent\iOS\Content\Fonts\menufont.xnb" Link="Content\menufont.xnb">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\..\CompiledContent\iOS\Content\Fonts\gamefont.xnb" Link="Content\gamefont.xnb">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\..\CompiledContent\iOS\Content\Textures\blank.xnb" Link="Content\blank.xnb">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\..\CompiledContent\iOS\Content\Textures\background.xnb" Link="Content\background.xnb">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\..\CompiledContent\iOS\Content\Textures\gradient.xnb" Link="Content\gradient.xnb">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+</Project>

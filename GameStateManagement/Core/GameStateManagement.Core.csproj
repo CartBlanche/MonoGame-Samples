@@ -1,0 +1,22 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <RootNamespace>GameStateManagement.Core</RootNamespace>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <Title>Game State Management</Title>
+    <Product>Game State Management</Product>
+    <Description>This sample shows how to manage the transitions between different menus and gameplay states.</Description>
+    <Company>Microsoft</Company>
+    <Copyright>Copyright © Microsoft 2007</Copyright>
+    <Trademark></Trademark>
+    <AssemblyVersion>1.0.0.0</AssemblyVersion>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="MonoGame.Framework.DesktopGL" Version="3.8.*" />
+  </ItemGroup>
+
+</Project>
