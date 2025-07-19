@@ -8,7 +8,7 @@ using Android.Views;
 using Android.Widget;
 using Android.OS;
 
-namespace MonoGame.Samples.Input
+namespace MonoGame.Samples.Input.Android
 {
 	[Activity (Label = "MonoGame.Samples.Input"
 	           , MainLauncher = true
@@ -16,15 +16,14 @@ namespace MonoGame.Samples.Input
 	           , Theme = "@style/Theme.Splash"
 	           ,ConfigurationChanges=ConfigChanges.Orientation|ConfigChanges.Keyboard|ConfigChanges.KeyboardHidden
 	           )]
-	public class Activity1 :  Microsoft.Xna.Framework.AndroidGameActivity
+	public class Activity1 : AndroidGameActivity
 	{
 		protected override void OnCreate (Bundle bundle)
 		{
 			base.OnCreate (bundle);
 	        Game1.Activity = this;
-            var g = new Game1();
-            SetContentView(g.Window);
-            g.Run();
+            var game = new Game1();
+            game.Run();
 		}
 	}
 }
