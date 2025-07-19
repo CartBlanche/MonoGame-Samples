@@ -1,17 +1,22 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 11.00
-# Visual Studio 2010
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HoneycombRush", "HoneycombRush.csproj", "{2C0696B3-0D1E-4039-B4AB-9A210B3CF290}"
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HoneycombRush.Core", "Core\HoneycombRush.Core.csproj", "{E1A1B2C3-D4E5-6789-ABCD-1234567890AB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonoGame.Framework.MacOS", "..\..\..\..\..\..\..\Users\Jimmy\Public\Share\MonoMacSource\kjpgit\MonoGame\MonoGame.Framework\MonoGame.Framework.MacOS.csproj", "{36C538E6-C32A-4A8D-A39C-566173D7118E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HoneycombRush.Windows", "Platforms\Windows\HoneycombRush.Windows.csproj", "{2C0696B3-0D1E-4039-B4AB-9A210B3CF290}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lidgren.Network.MacOS", "..\..\..\..\..\..\..\Users\Jimmy\Public\Share\MonoMacSource\kjpgit\MonoGame\ThirdParty\Lidgren.Network\Lidgren.Network.MacOS.csproj", "{AE483C29-042E-4226-BA52-D247CE7676DA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HoneycombRush.DesktopGL", "Platforms\Desktop\HoneycombRush.DesktopGL.csproj", "{36C538E6-C32A-4A8D-A39C-566173D7118E}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HoneycombRush.Android", "Platforms\Android\HoneycombRush.Android.csproj", "{AE483C29-042E-4226-BA52-D247CE7676DA}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HoneycombRush.iOS", "Platforms\iOS\HoneycombRush.iOS.csproj", "{B8C7B5F4-7F8E-4A9D-8F0E-5D2E1A9B8C7D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
-		Distribution|Any CPU = Distribution|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{2C0696B3-0D1E-4039-B4AB-9A210B3CF290}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -20,18 +25,21 @@ Global
 		{2C0696B3-0D1E-4039-B4AB-9A210B3CF290}.Release|Any CPU.Build.0 = Release|Any CPU
 		{36C538E6-C32A-4A8D-A39C-566173D7118E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{36C538E6-C32A-4A8D-A39C-566173D7118E}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{36C538E6-C32A-4A8D-A39C-566173D7118E}.Distribution|Any CPU.ActiveCfg = Distribution|Any CPU
-		{36C538E6-C32A-4A8D-A39C-566173D7118E}.Distribution|Any CPU.Build.0 = Distribution|Any CPU
 		{36C538E6-C32A-4A8D-A39C-566173D7118E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{36C538E6-C32A-4A8D-A39C-566173D7118E}.Release|Any CPU.Build.0 = Release|Any CPU
 		{AE483C29-042E-4226-BA52-D247CE7676DA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{AE483C29-042E-4226-BA52-D247CE7676DA}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{AE483C29-042E-4226-BA52-D247CE7676DA}.Distribution|Any CPU.ActiveCfg = Debug|Any CPU
-		{AE483C29-042E-4226-BA52-D247CE7676DA}.Distribution|Any CPU.Build.0 = Debug|Any CPU
 		{AE483C29-042E-4226-BA52-D247CE7676DA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AE483C29-042E-4226-BA52-D247CE7676DA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B8C7B5F4-7F8E-4A9D-8F0E-5D2E1A9B8C7D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B8C7B5F4-7F8E-4A9D-8F0E-5D2E1A9B8C7D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B8C7B5F4-7F8E-4A9D-8F0E-5D2E1A9B8C7D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B8C7B5F4-7F8E-4A9D-8F0E-5D2E1A9B8C7D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
-	GlobalSection(MonoDevelopProperties) = preSolution
-		StartupItem = HoneycombRush.csproj
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {8A73F2A1-EC53-4E4D-B827-5F88F3A9C18D}
 	EndGlobalSection
 EndGlobal
