@@ -1,0 +1,45 @@
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.5.2.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MultiTouch.Windows", "MultiTouch.Windows.csproj", "{A7D5D4E1-4F8C-4D5B-8E9A-1B2C3D4E5F60}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MultiTouch.Windows", "Platforms\Windows\MultiTouch.Windows.csproj", "{A7D5D4E1-4F8C-4D5B-8E9A-1B2C3D4E5F60}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MultiTouch.DesktopGL", "Platforms\Desktop\MultiTouch.DesktopGL.csproj", "{B8E6E5F2-5F9D-4E6C-9FAB-2C3D4E5F6A71}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MultiTouch.iOS", "Platforms\iOS\MultiTouch.iOS.csproj", "{C9F7F6F3-6FAE-4F7D-A0BC-3D4E5F6A7B82}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MultiTouch.Android", "Platforms\Android\MultiTouch.Android.csproj", "{DAF8F7F4-7FBF-4F8E-B1CD-4E5F6A7B8C93}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MultiTouch.Core", "Core\MultiTouch.Core.csproj", "{EAF9F8F5-8FC0-4F9F-B2DE-5F6A7B8C9D04}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{A7D5D4E1-4F8C-4D5B-8E9A-1B2C3D4E5F60}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A7D5D4E1-4F8C-4D5B-8E9A-1B2C3D4E5F60}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A7D5D4E1-4F8C-4D5B-8E9A-1B2C3D4E5F60}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A7D5D4E1-4F8C-4D5B-8E9A-1B2C3D4E5F60}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B8E6E5F2-5F9D-4E6C-9FAB-2C3D4E5F6A71}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B8E6E5F2-5F9D-4E6C-9FAB-2C3D4E5F6A71}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B8E6E5F2-5F9D-4E6C-9FAB-2C3D4E5F6A71}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B8E6E5F2-5F9D-4E6C-9FAB-2C3D4E5F6A71}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C9F7F6F3-6FAE-4F7D-A0BC-3D4E5F6A7B82}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C9F7F6F3-6FAE-4F7D-A0BC-3D4E5F6A7B82}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C9F7F6F3-6FAE-4F7D-A0BC-3D4E5F6A7B82}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C9F7F6F3-6FAE-4F7D-A0BC-3D4E5F6A7B82}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DAF8F7F4-7FBF-4F8E-B1CD-4E5F6A7B8C93}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DAF8F7F4-7FBF-4F8E-B1CD-4E5F6A7B8C93}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DAF8F7F4-7FBF-4F8E-B1CD-4E5F6A7B8C93}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DAF8F7F4-7FBF-4F8E-B1CD-4E5F6A7B8C93}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {A234CC61-6902-4EF3-9C97-BBEBCF832AC5}
+	EndGlobalSection
+EndGlobal
