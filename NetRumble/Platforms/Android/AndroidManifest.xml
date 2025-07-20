@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" 
+          android:versionCode="1" 
+          android:versionName="1.0" 
+          package="com.netrumble.game"
+          android:installLocation="auto">
+  
+  <uses-sdk android:minSdkVersion="28" android:targetSdkVersion="33" />
+  
+  <application android:label="NetRumble" 
+               android:icon="@drawable/icon"
+               android:theme="@style/Theme.Splash"
+               android:resizeableActivity="false">
+    
+    <activity android:name="crc64e1fb321c08285b90.GameActivity" 
+              android:label="NetRumble"
+              android:mainLauncher="true"
+              android:icon="@drawable/icon"
+              android:theme="@style/Theme.Splash"
+              android:launchMode="singleInstance"
+              android:screenOrientation="fullUser"
+              android:configChanges="orientation|keyboardHidden|keyboard|screenSize">
+      
+      <intent-filter>
+        <action android:name="android.intent.action.MAIN" />
+        <category android:name="android.intent.category.LAUNCHER" />
+      </intent-filter>
+      
+    </activity>
+  </application>
+  
+  <uses-permission android:name="android.permission.WAKE_LOCK" />
+  <uses-permission android:name="android.permission.INTERNET" />
+  <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+  
+</manifest>

@@ -1,37 +1,54 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 11.00
-# Visual Studio 2010
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetRumble", "NetRumble.csproj", "{52735207-2136-433B-A3E4-4C082728EED8}"
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NetRumble.Core", "Core\NetRumble.Core.csproj", "{A2D8F8D1-2AA4-4E5E-9C8A-123456789000}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lidgren.Network.MacOS", "..\..\..\..\MonoGame\ThirdParty\Lidgren.Network\Lidgren.Network.MacOS.csproj", "{AE483C29-042E-4226-BA52-D247CE7676DA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NetRumble.Windows", "Platforms\Windows\NetRumble.Windows.csproj", "{A2D8F8D1-2AA4-4E5E-9C8A-123456789001}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonoGame.Framework.MacOS", "..\..\..\..\MonoGame\MonoGame.Framework\MonoGame.Framework.MacOS.csproj", "{36C538E6-C32A-4A8D-A39C-566173D7118E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NetRumble.DesktopGL", "Platforms\Desktop\NetRumble.DesktopGL.csproj", "{A2D8F8D1-2AA4-4E5E-9C8A-123456789002}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NetRumble.Android", "Platforms\Android\NetRumble.Android.csproj", "{A2D8F8D1-2AA4-4E5E-9C8A-123456789003}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NetRumble.iOS", "Platforms\iOS\NetRumble.iOS.csproj", "{A2D8F8D1-2AA4-4E5E-9C8A-123456789004}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonoGame.Xna.Framework.Net", "MonoGame.Xna.Framework.Net\MonoGame.Xna.Framework.Net.csproj", "{6EBFD7EA-D749-9DA1-9331-91D4EBC26861}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
-		Distribution|Any CPU = Distribution|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{36C538E6-C32A-4A8D-A39C-566173D7118E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{36C538E6-C32A-4A8D-A39C-566173D7118E}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{36C538E6-C32A-4A8D-A39C-566173D7118E}.Distribution|Any CPU.ActiveCfg = Distribution|Any CPU
-		{36C538E6-C32A-4A8D-A39C-566173D7118E}.Distribution|Any CPU.Build.0 = Distribution|Any CPU
-		{36C538E6-C32A-4A8D-A39C-566173D7118E}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{36C538E6-C32A-4A8D-A39C-566173D7118E}.Release|Any CPU.Build.0 = Release|Any CPU
-		{52735207-2136-433B-A3E4-4C082728EED8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{52735207-2136-433B-A3E4-4C082728EED8}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{52735207-2136-433B-A3E4-4C082728EED8}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{52735207-2136-433B-A3E4-4C082728EED8}.Release|Any CPU.Build.0 = Release|Any CPU
-		{AE483C29-042E-4226-BA52-D247CE7676DA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{AE483C29-042E-4226-BA52-D247CE7676DA}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{AE483C29-042E-4226-BA52-D247CE7676DA}.Distribution|Any CPU.ActiveCfg = Debug|Any CPU
-		{AE483C29-042E-4226-BA52-D247CE7676DA}.Distribution|Any CPU.Build.0 = Debug|Any CPU
-		{AE483C29-042E-4226-BA52-D247CE7676DA}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{AE483C29-042E-4226-BA52-D247CE7676DA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A2D8F8D1-2AA4-4E5E-9C8A-123456789001}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A2D8F8D1-2AA4-4E5E-9C8A-123456789001}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A2D8F8D1-2AA4-4E5E-9C8A-123456789001}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A2D8F8D1-2AA4-4E5E-9C8A-123456789001}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A2D8F8D1-2AA4-4E5E-9C8A-123456789002}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A2D8F8D1-2AA4-4E5E-9C8A-123456789002}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A2D8F8D1-2AA4-4E5E-9C8A-123456789002}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A2D8F8D1-2AA4-4E5E-9C8A-123456789002}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A2D8F8D1-2AA4-4E5E-9C8A-123456789003}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A2D8F8D1-2AA4-4E5E-9C8A-123456789003}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A2D8F8D1-2AA4-4E5E-9C8A-123456789003}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A2D8F8D1-2AA4-4E5E-9C8A-123456789003}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A2D8F8D1-2AA4-4E5E-9C8A-123456789004}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A2D8F8D1-2AA4-4E5E-9C8A-123456789004}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A2D8F8D1-2AA4-4E5E-9C8A-123456789004}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A2D8F8D1-2AA4-4E5E-9C8A-123456789004}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6EBFD7EA-D749-9DA1-9331-91D4EBC26861}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6EBFD7EA-D749-9DA1-9331-91D4EBC26861}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6EBFD7EA-D749-9DA1-9331-91D4EBC26861}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6EBFD7EA-D749-9DA1-9331-91D4EBC26861}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
-	GlobalSection(MonoDevelopProperties) = preSolution
-		StartupItem = NetRumble.csproj
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
 	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {12345678-1234-1234-1234-123456789012}
+	EndGlobalSection
+GlobalSection(MonoDevelopProperties) = preSolution
+	StartupItem = Platforms\Windows\NetRumble.Windows.csproj
+EndGlobalSection
 EndGlobal
