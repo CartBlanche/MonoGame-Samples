@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.yourcompany.lensflare"
+    android:versionCode="1"
+    android:versionName="1.0">
+
+  <uses-sdk android:minSdkVersion="21" android:targetSdkVersion="34" />
+
+  <uses-feature android:glEsVersion="0x00020000" android:required="true" />
+
+  <application android:label="LensFlare" 
+               android:icon="@drawable/icon">
+  </application>
+  
+  <uses-permission android:name="android.permission.WAKE_LOCK" />
+</manifest>

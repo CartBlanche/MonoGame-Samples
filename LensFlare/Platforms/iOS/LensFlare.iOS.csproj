@@ -1,0 +1,29 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0-ios</TargetFramework>
+    <OutputType>Exe</OutputType>
+    <RootNamespace>LensFlare</RootNamespace>
+    <AssemblyName>LensFlare</AssemblyName>
+    <SupportedOSPlatformVersion>11.0</SupportedOSPlatformVersion>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>disable</ImplicitUsings>
+    <DefineConstants>IOS</DefineConstants>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="MonoGame.Framework.iOS" Version="3.8.*" />
+    <PackageReference Include="MonoGame.Content.Builder.Task" Version="3.8.*" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Core\LensFlare.Core.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="..\..\Core\Content\**\*.xnb" Link="Content\%(RecursiveDir)%(Filename)%(Extension)">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+</Project>
