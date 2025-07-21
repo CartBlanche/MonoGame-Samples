@@ -324,7 +324,34 @@ namespace Microsoft.Xna.Framework.Net
             }
         }
 
-        /// <summary>
+        public static Task<NetworkSession> JoinInvitedAsync(IEnumerable<SignedInGamer> localGamers, object state = null, CancellationToken cancellationToken = default)
+        {
+            if (localGamers == null || !localGamers.Any())
+                throw new ArgumentException("At least one local gamer must be provided.", nameof(localGamers));
+
+            // Simulate invite acceptance logic
+            var inviteAcceptedEventArgs = new InviteAcceptedEventArgs(localGamers.First(), true);
+            InviteAccepted?.Invoke(null, inviteAcceptedEventArgs);
+
+            if (!inviteAcceptedEventArgs.IsSignedInGamer)
+                throw new InvalidOperationException("The gamer is not signed in.");
+
+            // Simulate finding the session associated with the invite
+            var availableSession = new AvailableNetworkSession(
+                sessionName: "InvitedSession",
+                hostGamertag: "HostPlayer",
+                currentGamerCount: 1,
+                openPublicGamerSlots: 3,
+                openPrivateGamerSlots: 1,
+                sessionType: NetworkSessionType.PlayerMatch,
+                sessionProperties: new Dictionary<string, object>(),
+                sessionId: Guid.NewGuid().ToString()
+            );
+
+            // Join the session
+            var joinedSession = SystemLinkSessionManager.JoinSessionAsync(availableSession, cancellationToken);
+            return joinedSession;
+        }
 
         /// <summary>
         /// Creates a new network session synchronously with default properties.
@@ -354,10 +381,15 @@ namespace Microsoft.Xna.Framework.Net
             return JoinAsync(availableSession).GetAwaiter().GetResult();
         }
 
-        /// <summary>
-        /// Updates the network session.
-        /// </summary>
-        public void Update()
+		public static NetworkSession JoinInvited(IEnumerable<SignedInGamer> localGamers, object state = null)
+		{
+			return JoinInvitedAsync(localGamers, state).GetAwaiter().GetResult();
+		}
+
+		/// <summary>
+		/// Updates the network session.
+		/// </summary>
+		public void Update()
         {
             if (disposed)
                 return;
