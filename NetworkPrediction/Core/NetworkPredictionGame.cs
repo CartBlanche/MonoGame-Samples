@@ -1,20 +1,16 @@
-#region File Description
 //-----------------------------------------------------------------------------
 // NetworkPredictionGame.cs
 //
 // Microsoft XNA Community Game Platform
 // Copyright (C) Microsoft Corporation. All rights reserved.
 //-----------------------------------------------------------------------------
-#endregion
 
-#region Using Statements
 using System;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.GamerServices;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Net;
-#endregion
 
 namespace NetworkPrediction
 {
@@ -25,17 +21,14 @@ namespace NetworkPrediction
     /// </summary>
     public class NetworkPredictionGame : Microsoft.Xna.Framework.Game
     {
-        #region Constants
 
-        const int screenWidth = 1067;
+        const int screenWidth = 800;
         const int screenHeight = 600;
 
         const int maxGamers = 16;
         const int maxLocalGamers = 4;
 
-        #endregion
 
-        #region Fields
 
 
         // Graphics objects.
@@ -81,18 +74,14 @@ namespace NetworkPrediction
         bool enablePrediction = true;
         bool enableSmoothing = true;
 
-
-        #endregion
-
-        #region Initialization
-
-
         public NetworkPredictionGame()
         {
             graphics = new GraphicsDeviceManager(this);
 
             graphics.PreferredBackBufferWidth = screenWidth;
-            graphics.PreferredBackBufferHeight = screenHeight;            
+            graphics.PreferredBackBufferHeight = screenHeight; 
+
+            IsMouseVisible = true;           
 
             Content.RootDirectory = "Content";
 
@@ -109,12 +98,6 @@ namespace NetworkPrediction
             
             font = Content.Load<SpriteFont>("Font");
         }
-
-
-        #endregion
-
-        #region Update
-
 
         /// <summary>
         /// Allows the game to run logic.
@@ -229,6 +212,18 @@ namespace NetworkPrediction
         {
             networkSession.GamerJoined += GamerJoinedEventHandler;
             networkSession.SessionEnded += SessionEndedEventHandler;
+
+            // Create tank objects for any gamers already in the session.
+            // This handles the case where the local gamer doesn't trigger 
+            // the GamerJoined event for themselves.
+            foreach (NetworkGamer gamer in networkSession.AllGamers)
+            {
+                if (gamer.Tag == null)
+                {
+                    int gamerIndex = networkSession.AllGamers.IndexOf(gamer);
+                    gamer.Tag = new Tank(gamerIndex, Content, screenWidth, screenHeight);
+                }
+            }
         }
 
 
@@ -325,7 +320,7 @@ namespace NetworkPrediction
             Tank tank = gamer.Tag as Tank;
 
             // Read the inputs controlling this tank.
-            PlayerIndex playerIndex = gamer.SignedInGamer.PlayerIndex;
+            Microsoft.Xna.Framework.PlayerIndex playerIndex = (Microsoft.Xna.Framework.PlayerIndex)gamer.SignedInGamer.PlayerIndex;
 
             Vector2 tankInput;
             Vector2 turretInput;
@@ -356,7 +351,7 @@ namespace NetworkPrediction
                 NetworkGamer sender;
 
                 // Read a single packet from the network.
-                gamer.ReceiveData(packetReader, out sender);
+                gamer.ReceiveData(out packetReader, out sender);
 
                 // Discard packets sent by local gamers: we already know their state!
                 if (sender.IsLocal)
@@ -417,18 +412,18 @@ namespace NetworkPrediction
                     enableSmoothing = !enableSmoothing;
 
                 // Stores the latest settings into NetworkSession.SessionProperties.
-                networkSession.SessionProperties[0] = (int)networkQuality;
-                networkSession.SessionProperties[1] = framesBetweenPackets;
-                networkSession.SessionProperties[2] = enablePrediction ? 1 : 0;
-                networkSession.SessionProperties[3] = enableSmoothing ? 1 : 0;
+                networkSession.SessionProperties["0"] = (int)networkQuality;
+                networkSession.SessionProperties["1"] = framesBetweenPackets;
+                networkSession.SessionProperties["2"] = enablePrediction ? 1 : 0;
+                networkSession.SessionProperties["3"] = enableSmoothing ? 1 : 0;
             }
             else
             {
                 // Client machines read the latest settings from the session properties.
-                networkQuality = (NetworkQuality)networkSession.SessionProperties[0];
-                framesBetweenPackets = networkSession.SessionProperties[1].Value;
-                enablePrediction = networkSession.SessionProperties[2] != 0;
-                enableSmoothing = networkSession.SessionProperties[3] != 0;
+                networkQuality = (NetworkQuality)(int)networkSession.SessionProperties["0"];
+                framesBetweenPackets = (int)networkSession.SessionProperties["1"];
+                enablePrediction = (int)networkSession.SessionProperties["2"] != 0;
+                enableSmoothing = (int)networkSession.SessionProperties["3"] != 0;
             }
 
             // Update the SimulatedLatency and SimulatedPacketLoss properties.
@@ -450,12 +445,6 @@ namespace NetworkPrediction
                     break;
             }
         }
-
-
-        #endregion
-
-        #region Draw
-
 
         /// <summary>
         /// This is called when the game should draw itself.
@@ -517,6 +506,10 @@ namespace NetworkPrediction
                 // Look up the tank object belonging to this network gamer.
                 Tank tank = gamer.Tag as Tank;
 
+                // Skip if no tank is associated with this gamer yet
+                if (tank == null)
+                    continue;
+
                 // Draw the tank.
                 tank.Draw(spriteBatch);
 
@@ -535,7 +528,9 @@ namespace NetworkPrediction
         /// </summary>
         void DrawOptions()
         {
-            string quality =
+            string isHost = networkSession.IsHost ? "Host" : "Client";
+
+			string quality =
                 string.Format("Network simulation = {0} ms, {1}% packet loss",
                               networkSession.SimulatedLatency.TotalMilliseconds,
                               networkSession.SimulatedPacketLoss * 100);
@@ -559,10 +554,12 @@ namespace NetworkPrediction
             }
 
             // Draw combined text to the screen.
-            string message = quality + "\n" +
-                             sendRate + "\n" +
-                             prediction + "\n" +
-                             smoothing;
+            string message =
+				isHost + "\n" + "\n" +
+				quality + "\n" +
+                sendRate + "\n" +
+                prediction + "\n" +
+                smoothing;
 
             spriteBatch.DrawString(font, message, new Vector2(161, 321), Color.Black);
             spriteBatch.DrawString(font, message, new Vector2(160, 320), Color.White);
@@ -590,9 +587,7 @@ namespace NetworkPrediction
         }
 
         
-        #endregion
 
-        #region Handle Input
 
 
         /// <summary>
@@ -609,7 +604,9 @@ namespace NetworkPrediction
             // Check for exit.
             if (IsActive && IsPressed(Keys.Escape, Buttons.Back))
             {
+#if !IOS
                 Exit();
+#endif
             }
         }
 
@@ -640,7 +637,7 @@ namespace NetworkPrediction
             turretInput = gamePad.ThumbSticks.Right;
 
             // Read the keyboard.
-            KeyboardState keyboard = Keyboard.GetState(playerIndex);
+            KeyboardState keyboard = Keyboard.GetState();
 
             if (keyboard.IsKeyDown(Keys.Left))
                 tankInput.X = -1;
@@ -671,7 +668,6 @@ namespace NetworkPrediction
         }
 
 
-        #endregion
     }
     
 }

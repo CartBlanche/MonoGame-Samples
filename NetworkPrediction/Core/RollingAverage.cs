@@ -1,11 +1,9 @@
-#region File Description
 //-----------------------------------------------------------------------------
 // RollingAverage.cs
 //
 // Microsoft XNA Community Game Platform
 // Copyright (C) Microsoft Corporation. All rights reserved.
 //-----------------------------------------------------------------------------
-#endregion
 
 namespace NetworkPrediction
 {
@@ -22,7 +20,6 @@ namespace NetworkPrediction
     /// </summary>
     class RollingAverage
     {
-        #region Fields
 
         // Array holding the N most recent sample values.
         float[] sampleValues;
@@ -37,7 +34,6 @@ namespace NetworkPrediction
         // it wraps around, so we overwrite the oldest samples with newer data.
         int currentPosition;
 
-        #endregion
 
 
         /// <summary>

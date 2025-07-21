@@ -1,20 +1,16 @@
-#region File Description
 //-----------------------------------------------------------------------------
 // Tank.cs
 //
 // Microsoft XNA Community Game Platform
 // Copyright (C) Microsoft Corporation. All rights reserved.
 //-----------------------------------------------------------------------------
-#endregion
 
-#region Using Statements
 using System;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Net;
-#endregion
 
 namespace NetworkPrediction
 {
@@ -26,7 +22,6 @@ namespace NetworkPrediction
     /// </summary>
     class Tank
     {
-        #region Constants
 
         // Constants control how fast the tank moves and turns.
         const float TankTurnRate = 0.01f;
@@ -34,9 +29,7 @@ namespace NetworkPrediction
         const float TankSpeed = 0.3f;
         const float TankFriction = 0.9f;
 
-        #endregion
 
-        #region Fields
 
 
         // To implement smoothing, we need more than one copy of the tank state.
@@ -93,9 +86,7 @@ namespace NetworkPrediction
         Vector2 screenSize;
 
 
-        #endregion
 
-        #region Properties
 
 
         /// <summary>
@@ -107,7 +98,6 @@ namespace NetworkPrediction
         }
 
 
-        #endregion
 
 
         /// <summary>
