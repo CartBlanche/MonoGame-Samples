@@ -1,37 +1,55 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 11.00
-# Visual Studio 2010
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetworkStateManagement", "NetworkStateManagement.csproj", "{71871CF8-8563-4FA3-ABF2-EC1CBBF817E4}"
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.14.36301.6 d17.14
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetworkStateManagement.Core", "Core\NetworkStateManagement.Core.csproj", "{A1B2C3D4-1234-5678-ABCD-1234567890AB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonoGame.Framework.MacOS", "..\..\..\..\..\..\..\Users\Jimmy\Public\Share\MonoMacSource\kjpgit\MonoGame\MonoGame.Framework\MonoGame.Framework.MacOS.csproj", "{36C538E6-C32A-4A8D-A39C-566173D7118E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetworkStateManagement.Windows", "Platforms\Windows\NetworkStateManagement.Windows.csproj", "{D0E05092-60B2-47FF-B924-D5CDED0C0DD1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lidgren.Network", "..\..\..\lidgren-network-gen3\Lidgren.Network\Lidgren.Network.csproj", "{AE483C29-042E-4226-BA52-D247CE7676DA}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetworkStateManagement.DesktopGL", "Platforms\Desktop\NetworkStateManagement.DesktopGL.csproj", "{E1A1C2D3-45F6-7890-ABCD-EF1234567890}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetworkStateManagement.Android", "Platforms\Android\NetworkStateManagement.Android.csproj", "{F2B3C4D5-67E8-9012-3456-7890ABCDEF12}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetworkStateManagement.iOS", "Platforms\iOS\NetworkStateManagement.iOS.csproj", "{B1C2D3E4-2345-6789-BCDE-2345678901BC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonoGame.Xna.Framework.Net", "..\MonoGame.Xna.Framework.Net\MonoGame.Xna.Framework.Net.csproj", "{86E1E7AD-DD62-384D-A073-092A5F875CF0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
-		Distribution|Any CPU = Distribution|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{36C538E6-C32A-4A8D-A39C-566173D7118E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{36C538E6-C32A-4A8D-A39C-566173D7118E}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{36C538E6-C32A-4A8D-A39C-566173D7118E}.Distribution|Any CPU.ActiveCfg = Distribution|Any CPU
-		{36C538E6-C32A-4A8D-A39C-566173D7118E}.Distribution|Any CPU.Build.0 = Distribution|Any CPU
-		{36C538E6-C32A-4A8D-A39C-566173D7118E}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{36C538E6-C32A-4A8D-A39C-566173D7118E}.Release|Any CPU.Build.0 = Release|Any CPU
-		{71871CF8-8563-4FA3-ABF2-EC1CBBF817E4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{71871CF8-8563-4FA3-ABF2-EC1CBBF817E4}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{71871CF8-8563-4FA3-ABF2-EC1CBBF817E4}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{71871CF8-8563-4FA3-ABF2-EC1CBBF817E4}.Release|Any CPU.Build.0 = Release|Any CPU
-		{AE483C29-042E-4226-BA52-D247CE7676DA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{AE483C29-042E-4226-BA52-D247CE7676DA}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{AE483C29-042E-4226-BA52-D247CE7676DA}.Distribution|Any CPU.ActiveCfg = Debug|Any CPU
-		{AE483C29-042E-4226-BA52-D247CE7676DA}.Distribution|Any CPU.Build.0 = Debug|Any CPU
-		{AE483C29-042E-4226-BA52-D247CE7676DA}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{AE483C29-042E-4226-BA52-D247CE7676DA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A1B2C3D4-1234-5678-ABCD-1234567890AB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A1B2C3D4-1234-5678-ABCD-1234567890AB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A1B2C3D4-1234-5678-ABCD-1234567890AB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A1B2C3D4-1234-5678-ABCD-1234567890AB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D0E05092-60B2-47FF-B924-D5CDED0C0DD1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D0E05092-60B2-47FF-B924-D5CDED0C0DD1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D0E05092-60B2-47FF-B924-D5CDED0C0DD1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D0E05092-60B2-47FF-B924-D5CDED0C0DD1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E1A1C2D3-45F6-7890-ABCD-EF1234567890}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E1A1C2D3-45F6-7890-ABCD-EF1234567890}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E1A1C2D3-45F6-7890-ABCD-EF1234567890}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E1A1C2D3-45F6-7890-ABCD-EF1234567890}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F2B3C4D5-67E8-9012-3456-7890ABCDEF12}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F2B3C4D5-67E8-9012-3456-7890ABCDEF12}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F2B3C4D5-67E8-9012-3456-7890ABCDEF12}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F2B3C4D5-67E8-9012-3456-7890ABCDEF12}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B1C2D3E4-2345-6789-BCDE-2345678901BC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B1C2D3E4-2345-6789-BCDE-2345678901BC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B1C2D3E4-2345-6789-BCDE-2345678901BC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B1C2D3E4-2345-6789-BCDE-2345678901BC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{86E1E7AD-DD62-384D-A073-092A5F875CF0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{86E1E7AD-DD62-384D-A073-092A5F875CF0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{86E1E7AD-DD62-384D-A073-092A5F875CF0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{86E1E7AD-DD62-384D-A073-092A5F875CF0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
-	GlobalSection(MonoDevelopProperties) = preSolution
-		StartupItem = NetworkStateManagement.csproj
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {771DE562-A8C4-4266-9773-DEEC69DCB3DE}
 	EndGlobalSection
 EndGlobal
