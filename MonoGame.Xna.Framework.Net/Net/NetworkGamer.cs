@@ -1,7 +1,8 @@
+using Microsoft.Xna.Framework.GamerServices;
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using Microsoft.Xna.Framework.GamerServices;
+using System.Diagnostics;
+using System.Net;
 
 namespace Microsoft.Xna.Framework.Net
 {
@@ -21,15 +22,6 @@ namespace Microsoft.Xna.Framework.Net
 
         // Network performance properties
         private TimeSpan roundtripTime = TimeSpan.Zero;
-
-        internal NetworkGamer(NetworkSession session, string id, bool isLocal, bool isHost, string gamertag)
-        {
-            this.session = session;
-            this.id = id;
-            this.isLocal = isLocal;
-            this.isHost = isHost;
-            this.gamertag = gamertag;
-        }
 
         /// <summary>
         /// Gets the unique identifier for this gamer.
@@ -92,12 +84,12 @@ namespace Microsoft.Xna.Framework.Net
         /// <summary>
         /// Gets whether data is available to be received from this gamer.
         /// </summary>
-        public bool IsDataAvailable => false; // Mock implementation
+        public bool IsDataAvailable => incomingPackets.Count > 0;
 
         /// <summary>
         /// Gets the SignedInGamer associated with this NetworkGamer.
         /// </summary>
-        public GamerServices.SignedInGamer SignedInGamer => GamerServices.SignedInGamer.Current;
+        public SignedInGamer SignedInGamer => SignedInGamer.Current;
 
         /// <summary>
         /// Gets whether this gamer is muted by the local user.
@@ -114,6 +106,18 @@ namespace Microsoft.Xna.Framework.Net
         /// </summary>
         public bool HasVoice => false; // Mock implementation
 
+        // Add to NetworkGamer class
+        private readonly Queue<(byte[] Data, NetworkGamer Sender)> incomingPackets = new Queue<(byte[], NetworkGamer)>();
+
+        internal NetworkGamer(NetworkSession session, string id, bool isLocal, bool isHost, string gamertag)
+        {
+            this.session = session;
+            this.id = id;
+            this.isLocal = isLocal;
+            this.isHost = isHost;
+            this.gamertag = gamertag;
+        }
+
         /// <summary>
         /// Receives data from this gamer.
         /// </summary>
@@ -122,8 +126,20 @@ namespace Microsoft.Xna.Framework.Net
         /// <returns>The number of bytes received.</returns>
         public int ReceiveData(byte[] data, out NetworkGamer sender)
         {
+            if (data == null)
+                throw new ArgumentNullException(nameof(data));
+
             sender = null;
-            return 0; // Mock implementation
+
+            // Check if data is available
+            if (!IsDataAvailable)
+                return 0;
+
+            var packet = incomingPackets.Dequeue();
+            sender = packet.Sender;
+            int length = Math.Min(data.Length, packet.Data.Length);
+            Array.Copy(packet.Data, data, length);
+            return length;
         }
 
         /// <summary>
@@ -132,10 +148,23 @@ namespace Microsoft.Xna.Framework.Net
         /// <param name="data">Array to receive the data into.</param>
         /// <param name="sender">The gamer who sent the data.</param>
         /// <returns>The number of bytes received.</returns>
-        public int ReceiveData(PacketReader data, out NetworkGamer sender)
+        public int ReceiveData(out PacketReader reader, out NetworkGamer sender)
         {
+            // Ensure the session is valid
+            if (session == null)
+                throw new InvalidOperationException("Network session is not initialized.");
+
+            reader = null;
             sender = null;
-            return 0; // Mock implementation
+
+            // Check if data is available
+            if (!IsDataAvailable)
+                return 0;
+
+            var packet = incomingPackets.Dequeue();
+            sender = packet.Sender;
+            reader = new PacketReader(packet.Data);
+            return packet.Data.Length;
         }
 
         /// <summary>
@@ -145,7 +174,13 @@ namespace Microsoft.Xna.Framework.Net
         /// <param name="options">Send options.</param>
         public void SendData(byte[] data, SendDataOptions options)
         {
-            // Mock implementation
+            if (data == null)
+                throw new ArgumentNullException(nameof(data));
+
+            if (!Enum.IsDefined(typeof(SendDataOptions), options))
+                throw new ArgumentOutOfRangeException(nameof(options), "Invalid send data option.");
+
+            SendDataInternal(data, options, session.AllGamers);
         }
 
         /// <summary>
@@ -156,7 +191,13 @@ namespace Microsoft.Xna.Framework.Net
         /// <param name="recipients">The gamers to send to.</param>
         public void SendData(byte[] data, SendDataOptions options, IEnumerable<NetworkGamer> recipients)
         {
-            // Mock implementation
+            if (data == null)
+                throw new ArgumentNullException(nameof(data));
+
+            if (!Enum.IsDefined(typeof(SendDataOptions), options))
+                throw new ArgumentOutOfRangeException(nameof(options), "Invalid send data option.");
+
+            SendDataInternal(data, options, recipients);
         }
 
         /// <summary>
@@ -166,7 +207,14 @@ namespace Microsoft.Xna.Framework.Net
         /// <param name="options">Send options.</param>
         public void SendData(PacketWriter data, SendDataOptions options)
         {
-            // Mock implementation
+            if (data == null)
+                throw new ArgumentNullException(nameof(data), "PacketWriter cannot be null.");
+
+            if (!Enum.IsDefined(typeof(SendDataOptions), options))
+                throw new ArgumentOutOfRangeException(nameof(options), "Invalid send data option.");
+
+            byte[] serializedData = data.GetData();
+            SendDataInternal(serializedData, options, session.AllGamers);
         }
 
         /// <summary>
@@ -177,7 +225,14 @@ namespace Microsoft.Xna.Framework.Net
         /// <param name="recipients">The gamers to send to.</param>
         public void SendData(PacketWriter data, SendDataOptions options, IEnumerable<NetworkGamer> recipients)
         {
-            // Mock implementation
+            if (data == null)
+                throw new ArgumentNullException(nameof(data), "PacketWriter cannot be null.");
+
+            if (recipients == null)
+                throw new ArgumentNullException(nameof(recipients));
+
+            byte[] serializedData = data.GetData();
+            SendDataInternal(serializedData, options, recipients);
         }
 
         /// <summary>
@@ -188,7 +243,6 @@ namespace Microsoft.Xna.Framework.Net
         /// <param name="recipient">The gamer to send to.</param>
         public void SendData(PacketWriter data, SendDataOptions options, NetworkGamer recipient)
         {
-            // Mock implementation - convert single gamer to enumerable
             SendData(data, options, new[] { recipient });
         }
 
@@ -200,7 +254,6 @@ namespace Microsoft.Xna.Framework.Net
         /// <param name="recipient">The gamer to send to.</param>
         public void SendData(byte[] data, SendDataOptions options, NetworkGamer recipient)
         {
-            // Mock implementation - convert single gamer to enumerable
             SendData(data, options, new[] { recipient });
         }
 
@@ -235,10 +288,10 @@ namespace Microsoft.Xna.Framework.Net
         /// <summary>
         /// Gets the local gamer.
         /// </summary>
-        public static NetworkGamer LocalGamer 
-        { 
-            get => localGamer; 
-            internal set => localGamer = value; 
+        public static NetworkGamer LocalGamer
+        {
+            get => localGamer;
+            internal set => localGamer = value;
         }
 
         /// <summary>
@@ -248,119 +301,41 @@ namespace Microsoft.Xna.Framework.Net
         {
             return gamer?.SignedInGamer;
         }
-    }
 
-    /// <summary>
-    /// Collection of network gamers in a session.
-    /// </summary>
-    public class GamerCollection : ReadOnlyCollection<NetworkGamer>
-    {
-        internal GamerCollection(IList<NetworkGamer> list) : base(list) { }
-
-        /// <summary>
-        /// Finds a gamer by their gamertag.
-        /// </summary>
-        /// <param name="gamertag">The gamertag to search for.</param>
-        /// <returns>The gamer with the specified gamertag, or null if not found.</returns>
-        public NetworkGamer FindGamerById(string id)
+        private void SendDataInternal(byte[] data, SendDataOptions options, IEnumerable<NetworkGamer> recipients)
         {
-            foreach (var gamer in this)
+            switch (session.SessionType)
             {
-                if (gamer.Id == id)
-                    return gamer;
-            }
-            return null;
-        }
+                case NetworkSessionType.SystemLink:
+                    foreach (var recipient in recipients)
+                    {
+                        session.SendDataToGamer(recipient, data, options);
+                    }
+                    break;
 
-        /// <summary>
-        /// Gets the host gamer of the session.
-        /// </summary>
-        public NetworkGamer Host
-        {
-            get
-            {
-                foreach (var gamer in this)
-                {
-                    if (gamer.IsHost)
-                        return gamer;
-                }
-                return null;
+                case NetworkSessionType.Local:
+                    // TODO: session.ProcessIncomingMessages(); // Simulate message delivery
+                    break;
+
+                case NetworkSessionType.PlayerMatch:
+                    // Placeholder for future implementation
+                    throw new NotImplementedException("PlayerMatch session type is not yet supported.");
+
+                case NetworkSessionType.Ranked:
+                    // Placeholder for future implementation
+                    throw new NotImplementedException("Ranked session type is not yet supported.");
+
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(session.SessionType), $"Unsupported session type: {session.SessionType}");
             }
         }
-    }
 
-    /// <summary>
-    /// Represents a machine in a network session.
-    /// </summary>
-    public class NetworkMachine
-    {
-        /// <summary>
-        /// Gets the gamers on this machine.
-        /// </summary>
-        public GamerCollection Gamers { get; } = new GamerCollection(new List<NetworkGamer>());
-    }
-
-    /// <summary>
-    /// Collection of local network gamers in a session.
-    /// </summary>
-    public class LocalGamerCollection : ReadOnlyCollection<LocalNetworkGamer>
-    {
-        internal LocalGamerCollection(IList<LocalNetworkGamer> list) : base(list) { }
-
-        /// <summary>
-        /// Finds a local gamer by their ID.
-        /// </summary>
-        /// <param name="id">The ID to search for.</param>
-        /// <returns>The local gamer with the specified ID, or null if not found.</returns>
-        public LocalNetworkGamer FindGamerById(string id)
+        internal void EnqueueIncomingPacket(byte[] data, NetworkGamer sender)
         {
-            foreach (var gamer in this)
+            lock (incomingPackets)
             {
-                if (gamer.Id == id)
-                    return gamer;
+                incomingPackets.Enqueue((data, sender));
             }
-            return null;
-        }
-
-        /// <summary>
-        /// Gets the host gamer of the session (if local).
-        /// </summary>
-        public LocalNetworkGamer Host
-        {
-            get
-            {
-                foreach (var gamer in this)
-                {
-                    if (gamer.IsHost)
-                        return gamer;
-                }
-                return null;
-            }
-        }
-    }
-
-    /// <summary>
-    /// Represents a local network gamer.
-    /// </summary>
-    public class LocalNetworkGamer : NetworkGamer
-    {
-        internal LocalNetworkGamer(NetworkSession session, string id, bool isHost, string gamertag)
-            : base(session, id, true, isHost, gamertag)
-        {
-        }
-
-        /// <summary>
-        /// Gets whether this local gamer is sending data.
-        /// </summary>
-        public bool IsSendingData => false; // Mock implementation
-
-        /// <summary>
-        /// Enables or disables sending data for this local gamer.
-        /// </summary>
-        /// <param name="options">Send data options.</param>
-        public void EnableSendData(SendDataOptions options)
-        {
-            // Mock implementation
         }
     }
 }

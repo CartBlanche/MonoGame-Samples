@@ -1,7 +1,8 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
 using System.Net.Sockets;
 using System.Threading;
 using System.Threading.Tasks;
@@ -12,21 +13,23 @@ namespace Microsoft.Xna.Framework.Net
     /// <summary>
     /// Represents a network session for multiplayer gaming.
     /// </summary>
-    public class NetworkSession : IDisposable
+    public class NetworkSession : IDisposable, IAsyncDisposable
     {
+        // Event for received messages
+        public event EventHandler<MessageReceivedEventArgs> MessageReceived;
         private readonly List<NetworkGamer> gamers;
         private readonly GamerCollection gamerCollection;
         private readonly NetworkSessionType sessionType;
         private readonly int maxGamers;
         private readonly int privateGamerSlots;
-        private readonly UdpClient udpClient;
         private readonly Dictionary<string, IPEndPoint> gamerEndpoints;
         private readonly object lockObject = new object();
-        
-        private NetworkSessionState sessionState;
+
+        private INetworkTransport networkTransport;
+        internal NetworkSessionState sessionState;
         private bool disposed;
         private bool isHost;
-        private string sessionId;
+        internal string sessionId;
         private Task receiveTask;
         private CancellationTokenSource cancellationTokenSource;
 
@@ -41,29 +44,55 @@ namespace Microsoft.Xna.Framework.Net
         public static event EventHandler<InviteAcceptedEventArgs> InviteAccepted;
 
         /// <summary>
+        /// Allows changing the network transport implementation.
+        /// </summary>
+        public INetworkTransport NetworkTransport
+        {
+            get => networkTransport;
+            set => networkTransport = value ?? throw new ArgumentNullException(nameof(value));
+        }
+
+        /// <summary>
         /// Initializes a new NetworkSession.
         /// </summary>
         private NetworkSession(NetworkSessionType sessionType, int maxGamers, int privateGamerSlots, bool isHost)
         {
+            // Register message types (can be moved to static constructor)
+            NetworkMessageRegistry.Register<PlayerMoveMessage>(1);
+
             this.sessionType = sessionType;
             this.maxGamers = maxGamers;
             this.privateGamerSlots = privateGamerSlots;
             this.isHost = isHost;
             this.sessionId = Guid.NewGuid().ToString();
             this.sessionState = NetworkSessionState.Creating;
-            
+
             gamers = new List<NetworkGamer>();
             gamerCollection = new GamerCollection(gamers);
             gamerEndpoints = new Dictionary<string, IPEndPoint>();
-            
-            // Initialize UDP client for networking
-            udpClient = new UdpClient();
+
+            networkTransport = new UdpTransport();
             cancellationTokenSource = new CancellationTokenSource();
-            
+
             // Add local gamer
-            var localGamer = new LocalNetworkGamer(this, Guid.NewGuid().ToString(), isHost, SignedInGamer.Current?.Gamertag ?? "Player");
+            var gamerGuid = Guid.NewGuid().ToString();
+            var localGamer = new LocalNetworkGamer(this, gamerGuid, isHost, $"{SignedInGamer.Current?.Gamertag ?? "Player"}_{gamerGuid.Substring(0, 8)}");
             NetworkGamer.LocalGamer = localGamer;
             AddGamer(localGamer);
+
+            // Start receive loop for SystemLink sessions
+            if (sessionType == NetworkSessionType.SystemLink)
+            {
+                receiveTask = Task.Run(() => ReceiveLoopAsync(cancellationTokenSource.Token));
+            }
+        }
+
+        // Internal constructor for SystemLink join
+        internal NetworkSession(NetworkSessionType sessionType, int maxGamers, int privateGamerSlots, bool isHost, string sessionId)
+            : this(sessionType, maxGamers, privateGamerSlots, isHost)
+        {
+            this.sessionId = sessionId;
+            this.sessionState = NetworkSessionState.Lobby;
         }
 
         /// <summary>
@@ -150,10 +179,24 @@ namespace Microsoft.Xna.Framework.Net
         /// </summary>
         public bool AllowJoinInProgress { get; set; } = true;
 
+        private IDictionary<string, object> sessionProperties = new Dictionary<string, object>();
         /// <summary>
         /// Gets or sets custom session properties.
         /// </summary>
-        public IDictionary<string, object> SessionProperties { get; set; } = new Dictionary<string, object>();
+        public IDictionary<string, object> SessionProperties
+        {
+            get => sessionProperties;
+            set
+            {
+                sessionProperties = value ?? throw new ArgumentNullException(nameof(value));
+
+                // Automatically broadcast changes if this machine is the host
+                if (IsHost)
+                {
+                    BroadcastSessionProperties();
+                }
+            }
+        }
 
         // Simulation properties for testing network conditions
         private TimeSpan simulatedLatency = TimeSpan.Zero;
@@ -162,300 +205,153 @@ namespace Microsoft.Xna.Framework.Net
         /// <summary>
         /// Gets or sets the simulated network latency for testing purposes.
         /// </summary>
-        public TimeSpan SimulatedLatency 
-        { 
-            get => simulatedLatency; 
-            set => simulatedLatency = value; 
+        public TimeSpan SimulatedLatency
+        {
+            get => simulatedLatency;
+            set => simulatedLatency = value;
         }
 
         /// <summary>
         /// Gets or sets the simulated packet loss percentage for testing purposes.
         /// </summary>
-        public float SimulatedPacketLoss 
-        { 
-            get => simulatedPacketLoss; 
-            set => simulatedPacketLoss = Math.Max(0.0f, Math.Min(1.0f, value)); 
+        public float SimulatedPacketLoss
+        {
+            get => simulatedPacketLoss;
+            set => simulatedPacketLoss = Math.Max(0.0f, Math.Min(1.0f, value));
         }
 
         /// <summary>
-        /// Begins creating a new network session.
+        /// Cancels all ongoing async operations for this session.
         /// </summary>
-		public static IAsyncResult BeginCreate(
-            NetworkSessionType sessionType,
-            IEnumerable<SignedInGamer> localGamers,
-            int maxGamers,
-            int privateGamerSlots,
-            NetworkSessionProperties sessionProperties,
-            AsyncCallback callback,
-            object asyncState
-        )
-		{
-			if (maxGamers < 1 || maxGamers > 4)
-			{
-				throw new ArgumentOutOfRangeException(nameof(maxGamers));
-			}
-			if (privateGamerSlots < 0 || privateGamerSlots > maxGamers)
-			{
-                throw new ArgumentOutOfRangeException(nameof(privateGamerSlots));
-			}
+        public void Cancel()
+        {
+            cancellationTokenSource?.Cancel();
+        }
 
-            throw new NotImplementedException("Async creation with callback is not implemented yet.");
-		}
-
-		public static IAsyncResult BeginCreate(
-            NetworkSessionType sessionType,
-            int maxLocalGamers,
-            int maxGamers,
-            AsyncCallback callback = null,
-            object asyncState = null
-        )
-		{
+        /// <summary>
+        /// Asynchronously creates a new network session.
+        /// </summary>
+        public static async Task<NetworkSession> CreateAsync(NetworkSessionType sessionType, int maxLocalGamers, int maxGamers, int privateGamerSlots, IDictionary<string, object> sessionProperties, CancellationToken cancellationToken = default)
+        {
             if (maxLocalGamers < 1 || maxLocalGamers > 4)
-            {
                 throw new ArgumentOutOfRangeException(nameof(maxLocalGamers));
+            if (privateGamerSlots < 0 || privateGamerSlots > maxGamers)
+                throw new ArgumentOutOfRangeException(nameof(privateGamerSlots));
+
+            NetworkSession session = null;
+            switch (sessionType)
+            {
+                case NetworkSessionType.Local:
+                    // Local session: in-memory only
+                    await Task.Delay(5, cancellationToken);
+                    session = new NetworkSession(sessionType, maxGamers, privateGamerSlots, true);
+                    session.sessionState = NetworkSessionState.Lobby;
+                    // Register in local session list for FindAsync
+                    LocalSessionRegistry.RegisterSession(session);
+                    break;
+                case NetworkSessionType.SystemLink:
+                    // SystemLink: start UDP listener and broadcast session
+                    session = new NetworkSession(sessionType, maxGamers, privateGamerSlots, true);
+                    session.sessionState = NetworkSessionState.Lobby;
+                    _ = SystemLinkSessionManager.AdvertiseSessionAsync(session, cancellationToken); // Fire-and-forget
+                    break;
+                default:
+                    // Not implemented
+                    throw new NotSupportedException($"SessionType {sessionType} not supported yet.");
             }
-
-			throw new NotImplementedException("Async creation with callback is not implemented yet.");
-		}
-
-		public static IAsyncResult BeginCreate(
-            NetworkSessionType sessionType,
-            int maxLocalGamers,
-            int maxGamers,
-            int privateGamerSlots,
-            NetworkSessionProperties sessionProperties,
-            AsyncCallback callback = null,
-            object asyncState = null
-        )
-		{
-			if (maxLocalGamers < 1 || maxLocalGamers > 4)
-			{
-				throw new ArgumentOutOfRangeException(nameof(maxLocalGamers));
-			}
-
-			if (maxLocalGamers < 1 || maxLocalGamers > 4)
-			{
-				throw new ArgumentOutOfRangeException(nameof(maxLocalGamers));
-			}
-			if (privateGamerSlots < 0 || privateGamerSlots > maxGamers)
-			{
-				throw new ArgumentOutOfRangeException(nameof(privateGamerSlots));
-			}
-
-			var task = Task.Run(() =>
-			{
-				var session = new NetworkSession(sessionType, maxGamers, privateGamerSlots, true);
-				session.sessionState = NetworkSessionState.Lobby;
-				return session;
-			});
-
-			return new AsyncResultWrapper<NetworkSession>(task, null, null);
-		}
-
-		/// <summary>
-		/// Ends the create session operation.
-		/// </summary>
-		public static NetworkSession EndCreate(IAsyncResult asyncResult)
-        {
-            if (asyncResult is AsyncResultWrapper<NetworkSession> wrapper)
-            {
-                return wrapper.GetResult();
-            }
-            throw new ArgumentException("Invalid async result", nameof(asyncResult));
+            return session;
         }
 
         /// <summary>
-        /// Begins finding available network sessions.
+        /// Synchronous wrapper for CreateAsync (for XNA compatibility).
         /// </summary>
-        public static IAsyncResult BeginFind(
-            NetworkSessionType sessionType,
-            int maxLocalGamers,
-            NetworkSessionProperties searchProperties,
-            AsyncCallback callback,
-            object asyncState)
-        {
-            var task = Task.Run(() =>
-            {
-                // Mock implementation - return empty collection for now
-                // In a real implementation, this would search for available sessions
-                return new AvailableNetworkSessionCollection();
-            });
-
-            return new AsyncResultWrapper<AvailableNetworkSessionCollection>(task, callback, asyncState);
-        }
-
-		public static IAsyncResult BeginFind(
-            NetworkSessionType sessionType,
-            IEnumerable<SignedInGamer> localGamers,
-            NetworkSessionProperties searchProperties,
-            AsyncCallback callback = null,
-            object asyncState = null
-        )
-		{
-			var task = Task.Run(() =>
-			{
-				// Mock implementation - return empty collection for now
-				// In a real implementation, this would search for available sessions
-				return new AvailableNetworkSessionCollection();
-			});
-
-			return new AsyncResultWrapper<AvailableNetworkSessionCollection>(task, callback, asyncState);
-		}
-
-		/// <summary>
-		/// Ends the find sessions operation.
-		/// </summary>
-		public static AvailableNetworkSessionCollection EndFind(IAsyncResult asyncResult)
-        {
-            if (asyncResult is AsyncResultWrapper<AvailableNetworkSessionCollection> wrapper)
-            {
-                return wrapper.GetResult();
-            }
-            throw new ArgumentException("Invalid async result", nameof(asyncResult));
-        }
-
-        /// <summary>
-        /// Begins joining a network session.
-        /// </summary>
-        public static IAsyncResult BeginJoin(
-            AvailableNetworkSession availableSession,
-            AsyncCallback callback,
-            object asyncState)
-        {
-            var task = Task.Run(() =>
-            {
-                // Mock implementation - create a new session as a client
-                var session = new NetworkSession(availableSession.SessionType, availableSession.CurrentGamerCount, 0, false);
-                session.sessionState = NetworkSessionState.Lobby;
-                return session;
-            });
-
-            return new AsyncResultWrapper<NetworkSession>(task, callback, asyncState);
-        }
-
-        /// <summary>
-        /// Ends the join session operation.
-        /// </summary>
-        public static NetworkSession EndJoin(IAsyncResult asyncResult)
-        {
-            if (asyncResult is AsyncResultWrapper<NetworkSession> wrapper)
-            {
-                return wrapper.GetResult();
-            }
-            throw new ArgumentException("Invalid async result", nameof(asyncResult));
-        }
-
-        /// <summary>
-        /// Begins joining an invited session.
-        /// </summary>
-        public static IAsyncResult BeginJoinInvited(int maxLocalGamers, AsyncCallback callback, object asyncState)
-        {
-            var task = Task.Run(() =>
-            {
-                // Mock implementation
-                var session = new NetworkSession(NetworkSessionType.PlayerMatch, 8, 0, false);
-                session.sessionState = NetworkSessionState.Lobby;
-                // Fire invite accepted event - pass a mock gamer
-                InviteAccepted?.Invoke(null, new InviteAcceptedEventArgs(GamerServices.SignedInGamer.Current, false));
-                return session;
-            });
-
-            return new AsyncResultWrapper<NetworkSession>(task, callback, asyncState);
-        }
-
-        public static IAsyncResult BeginJoinInvited(
-            IEnumerable<SignedInGamer> localGamers,
-            AsyncCallback callback,
-            object asyncState
-        )
-        {
-            throw new NotImplementedException();
-        }
-
-		/// <summary>
-		/// Ends the join invited session operation.
-		/// </summary>
-		public static NetworkSession EndJoinInvited(IAsyncResult asyncResult)
-        {
-            return EndJoin(asyncResult);
-        }
-
-        /// <summary>
-        /// Creates a new network session synchronously.
-        /// </summary>
-        /// <param name="sessionType">The type of session to create.</param>
-        /// <param name="maxLocalGamers">Maximum number of local gamers.</param>
-        /// <param name="maxGamers">Maximum total number of gamers.</param>
-        /// <param name="privateGamerSlots">Number of private gamer slots.</param>
-        /// <param name="sessionProperties">Session properties.</param>
-        /// <returns>The created network session.</returns>
         public static NetworkSession Create(NetworkSessionType sessionType, int maxLocalGamers, int maxGamers, int privateGamerSlots, IDictionary<string, object> sessionProperties)
         {
-            var props = new NetworkSessionProperties();
-            if (sessionProperties != null)
-            {
-                foreach (var kvp in sessionProperties)
-                {
-                    props[kvp.Key] = kvp.Value;
-                }
-            }
-            var asyncResult = BeginCreate(sessionType, maxLocalGamers, maxGamers, privateGamerSlots, props);
-            return EndCreate(asyncResult);
+            return CreateAsync(sessionType, maxLocalGamers, maxGamers, privateGamerSlots, sessionProperties).GetAwaiter().GetResult();
         }
+
+        /// <summary>
+        /// Asynchronously finds available network sessions.
+        /// </summary>
+        public static async Task<AvailableNetworkSessionCollection> FindAsync(NetworkSessionType sessionType, int maxLocalGamers, IDictionary<string, object> sessionProperties, CancellationToken cancellationToken = default)
+        {
+            switch (sessionType)
+            {
+                case NetworkSessionType.Local:
+                    await Task.Delay(5, cancellationToken);
+                    // Return sessions in local registry
+                    var localSessions = LocalSessionRegistry.FindSessions(maxLocalGamers).ToList();
+                    return new AvailableNetworkSessionCollection(localSessions);
+                case NetworkSessionType.SystemLink:
+                    // Discover sessions via UDP broadcast
+                    var systemLinkSessions = (await SystemLinkSessionManager.DiscoverSessionsAsync(maxLocalGamers, cancellationToken)).ToList();
+                    return new AvailableNetworkSessionCollection(systemLinkSessions);
+                default:
+                    throw new NotSupportedException($"SessionType {sessionType} not supported yet.");
+            }
+        }
+
+        /// <summary>
+        /// Synchronous wrapper for FindAsync (for XNA compatibility).
+        /// </summary>
+        public static AvailableNetworkSessionCollection Find(NetworkSessionType sessionType, int maxLocalGamers, IDictionary<string, object> sessionProperties)
+        {
+            return FindAsync(sessionType, maxLocalGamers, sessionProperties).GetAwaiter().GetResult();
+        }
+
+        /// <summary>
+        /// Asynchronously joins an available network session.
+        /// </summary>
+        public static async Task<NetworkSession> JoinAsync(AvailableNetworkSession availableSession, CancellationToken cancellationToken = default)
+        {
+            switch (availableSession.SessionType)
+            {
+                case NetworkSessionType.Local:
+                    // Attach to local session
+                    var localSession = LocalSessionRegistry.GetSessionById(availableSession.SessionId);
+                    if (localSession == null)
+                        throw new NetworkSessionJoinException(NetworkSessionJoinError.SessionNotFound);
+                    // Add local gamer
+                    var newGamer = new LocalNetworkGamer(localSession, Guid.NewGuid().ToString(), false, SignedInGamer.Current?.Gamertag ?? "Player");
+                    localSession.AddGamer(newGamer);
+                    return localSession;
+                case NetworkSessionType.SystemLink:
+                    // Connect to host via network
+                    var joinedSession = await SystemLinkSessionManager.JoinSessionAsync(availableSession, cancellationToken);
+                    return joinedSession;
+                default:
+                    throw new NotSupportedException($"SessionType {availableSession.SessionType} not supported yet.");
+            }
+        }
+
+        /// <summary>
 
         /// <summary>
         /// Creates a new network session synchronously with default properties.
         /// </summary>
-        /// <param name="sessionType">The type of session to create.</param>
-        /// <param name="maxLocalGamers">Maximum number of local gamers.</param>
-        /// <param name="maxGamers">Maximum total number of gamers.</param>
-        /// <returns>The created network session.</returns>
         public static NetworkSession Create(NetworkSessionType sessionType, int maxLocalGamers, int maxGamers)
         {
-            return Create(sessionType, maxLocalGamers, maxGamers, 0, new Dictionary<string, object>());
+            return CreateAsync(sessionType, maxLocalGamers, maxGamers, 0, new Dictionary<string, object>()).GetAwaiter().GetResult();
         }
 
         /// <summary>
-        /// Finds available network sessions synchronously.
-        /// </summary>
-        /// <param name="sessionType">The type of sessions to find.</param>
-        /// <param name="maxLocalGamers">Maximum number of local gamers.</param>
-        /// <param name="sessionProperties">Session properties to search for.</param>
-        /// <returns>Collection of available sessions.</returns>
-        public static AvailableNetworkSessionCollection Find(NetworkSessionType sessionType, int maxLocalGamers, IDictionary<string, object> sessionProperties)
-        {
-            var props = new NetworkSessionProperties();
-            if (sessionProperties != null)
-            {
-                foreach (var kvp in sessionProperties)
-                {
-                    props[kvp.Key] = kvp.Value;
-                }
-            }
-            var asyncResult = BeginFind(sessionType, maxLocalGamers, props, null, null);
-            return EndFind(asyncResult);
-        }
 
         /// <summary>
         /// Finds available network sessions synchronously with default properties.
         /// </summary>
-        /// <param name="sessionType">The type of sessions to find.</param>
-        /// <param name="maxLocalGamers">Maximum number of local gamers.</param>
-        /// <returns>Collection of available sessions.</returns>
         public static AvailableNetworkSessionCollection Find(NetworkSessionType sessionType, int maxLocalGamers)
         {
-            return Find(sessionType, maxLocalGamers, new Dictionary<string, object>());
+            return FindAsync(sessionType, maxLocalGamers, new Dictionary<string, object>()).GetAwaiter().GetResult();
         }
+
+        /// <summary>
 
         /// <summary>
         /// Joins an available network session synchronously.
         /// </summary>
-        /// <param name="availableSession">The session to join.</param>
-        /// <returns>The joined network session.</returns>
         public static NetworkSession Join(AvailableNetworkSession availableSession)
         {
-            var asyncResult = BeginJoin(availableSession, null, null);
-            return EndJoin(asyncResult);
+            return JoinAsync(availableSession).GetAwaiter().GetResult();
         }
 
         /// <summary>
@@ -487,7 +383,7 @@ namespace Microsoft.Xna.Framework.Net
                 throw new ArgumentNullException(nameof(writer));
 
             byte[] data = writer.GetData();
-            
+
             lock (lockObject)
             {
                 foreach (var gamer in gamers)
@@ -548,18 +444,17 @@ namespace Microsoft.Xna.Framework.Net
             SendDataToGamer(gamer, writer.GetData(), options);
         }
 
-        private void SendDataToGamer(NetworkGamer gamer, byte[] data, SendDataOptions options)
+        internal void SendDataToGamer(NetworkGamer gamer, byte[] data, SendDataOptions options)
         {
             if (gamerEndpoints.TryGetValue(gamer.Id, out IPEndPoint endpoint))
             {
                 try
                 {
-                    udpClient.Send(data, data.Length, endpoint);
+                    networkTransport.Send(data, endpoint);
                 }
                 catch (Exception ex)
                 {
-                    // Log the error but don't crash the game
-                    System.Diagnostics.Debug.WriteLine($"Failed to send data to {gamer.Gamertag}: {ex.Message}");
+                    Debug.WriteLine($"Failed to send data to {gamer.Gamertag}: {ex.Message}");
                 }
             }
         }
@@ -583,9 +478,53 @@ namespace Microsoft.Xna.Framework.Net
             OnGamerLeft(gamer);
         }
 
-        private void ProcessIncomingMessages()
+        // Modern async receive loop for SystemLink
+        private async Task ReceiveLoopAsync(CancellationToken cancellationToken)
         {
-            // Mock implementation - in a real scenario this would process UDP messages
+            using var udpClient = new UdpClient();
+            udpClient.Client.Bind(new IPEndPoint(IPAddress.Any, 0)); // Use a dynamic port for tests
+            while (!cancellationToken.IsCancellationRequested)
+            {
+                try
+                {
+                    var result = await udpClient.ReceiveAsync();
+                    var data = result.Buffer;
+                    if (data.Length > 1)
+                    {
+                        var senderEndpoint = result.RemoteEndPoint;
+
+                        NetworkGamer senderGamer = null;
+                        lock (lockObject)
+                        {
+                            senderGamer = gamers.FirstOrDefault(g => gamerEndpoints.TryGetValue(g.Id, out var ep) && ep.Equals(senderEndpoint));
+                        }
+
+                        if (senderGamer != null)
+                        {
+                            senderGamer.EnqueueIncomingPacket(data, senderGamer);
+                        }
+
+                        var typeId = data[0];
+                        var reader = new PacketReader(data); // Use only the byte array
+                        var message = NetworkMessageRegistry.CreateMessage(typeId);
+                        message?.Deserialize(reader);
+                        OnMessageReceived(new MessageReceivedEventArgs(message, result.RemoteEndPoint));
+                    }
+                }
+                catch (ObjectDisposedException) { break; }
+                catch (Exception ex)
+                {
+                    Debug.WriteLine($"ReceiveLoop error: {ex.Message}");
+                }
+            }
+        }
+
+        private void OnMessageReceived(MessageReceivedEventArgs e)
+        {
+            // Raise the MessageReceived event
+            var handler = MessageReceived;
+            if (handler != null)
+                handler(this, e);
         }
 
         private void OnGameStarted()
@@ -623,13 +562,114 @@ namespace Microsoft.Xna.Framework.Net
             {
                 cancellationTokenSource?.Cancel();
                 receiveTask?.Wait(1000); // Wait up to 1 second
-                
-                udpClient?.Close();
-                udpClient?.Dispose();
+                networkTransport?.Dispose();
                 cancellationTokenSource?.Dispose();
-                
                 OnSessionEnded(NetworkSessionEndReason.ClientSignedOut);
                 disposed = true;
+            }
+        }
+
+        public async ValueTask DisposeAsync()
+        {
+            if (!disposed)
+            {
+                cancellationTokenSource?.Cancel();
+                if (receiveTask != null)
+                    await receiveTask;
+                if (networkTransport is IAsyncDisposable asyncTransport)
+                    await asyncTransport.DisposeAsync();
+                else
+                    networkTransport?.Dispose();
+                cancellationTokenSource?.Dispose();
+                OnSessionEnded(NetworkSessionEndReason.ClientSignedOut);
+                disposed = true;
+            }
+        }
+
+        internal byte[] SerializeSessionPropertiesBinary()
+        {
+            using (var ms = new MemoryStream())
+            using (var writer = new BinaryWriter(ms))
+            {
+                writer.Write(SessionProperties.Count);
+                foreach (var kvp in SessionProperties)
+                {
+                    writer.Write(kvp.Key);
+                    // Write type info and value
+                    if (kvp.Value is int i)
+                    {
+                        writer.Write((byte)1); // type marker
+                        writer.Write(i);
+                    }
+                    else if (kvp.Value is bool b)
+                    {
+                        writer.Write((byte)2);
+                        writer.Write(b);
+                    }
+                    else if (kvp.Value is string s)
+                    {
+                        writer.Write((byte)3);
+                        writer.Write(s ?? "");
+                    }
+                    // Add more types as needed
+                    else
+                    {
+                        writer.Write((byte)255); // unknown type
+                        writer.Write(kvp.Value?.ToString() ?? "");
+                    }
+                }
+                return ms.ToArray();
+            }
+        }
+
+        internal void DeserializeSessionPropertiesBinary(byte[] data)
+        {
+            using (var ms = new MemoryStream(data))
+            using (var reader = new BinaryReader(ms))
+            {
+                SessionProperties.Clear();
+                int count = reader.ReadInt32();
+                for (int i = 0; i < count; i++)
+                {
+                    string key = reader.ReadString();
+                    byte type = reader.ReadByte();
+                    object value = null;
+                    switch (type)
+                    {
+                        case 1: value = reader.ReadInt32(); break;
+                        case 2: value = reader.ReadBoolean(); break;
+                        case 3: value = reader.ReadString(); break;
+                        default: value = reader.ReadString(); break;
+                    }
+                    SessionProperties[key] = value;
+                }
+            }
+        }
+
+        private void BroadcastSessionProperties()
+        {
+            var writer = new PacketWriter();
+            writer.Write("SessionPropertiesUpdate");
+            writer.Write(SerializeSessionPropertiesBinary());
+            SendToAll(writer, SendDataOptions.Reliable);
+        }
+
+        private void ProcessIncomingMessages()
+        {
+            foreach (var gamer in gamers)
+            {
+                while (gamer.IsDataAvailable)
+                {
+                    var reader = new PacketReader();
+                    gamer.ReceiveData(out reader, out var sender);
+
+                    var messageType = reader.ReadString();
+                    if (messageType == "SessionPropertiesUpdate")
+                    {
+                        var propertiesData = reader.ReadBytes();
+                        DeserializeSessionPropertiesBinary(propertiesData);
+                    }
+                }
             }
         }
     }

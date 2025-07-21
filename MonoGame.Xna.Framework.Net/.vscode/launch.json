@@ -1,0 +1,23 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Build Project",
+            "type": "coreclr",
+            "request": "launch",
+            "program": "dotnet",
+            "args": ["build", "MonoGame.Xna.Framework.Net.csproj"],
+            "cwd": "${workspaceFolder}",
+            "console": "integratedTerminal"
+        },
+        {
+            "name": "Run Unit Tests",
+            "type": "coreclr",
+            "request": "launch",
+            "program": "dotnet",
+            "args": ["test", "Tests/MonoGame.Xna.Framework.Net.Tests.csproj"],
+            "cwd": "${workspaceFolder}",
+            "console": "integratedTerminal"
+        }
+    ]
+}
