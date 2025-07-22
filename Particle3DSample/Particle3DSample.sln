@@ -1,26 +1,50 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 11.00
-# Visual Studio 2010
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Particle3DSample", "Particle3DSample.csproj", "{1230A19A-FA76-4D12-85E5-68A452315299}"
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
+MinimumVisualStudioVersion = 10.0.40219.1
+
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Particle3DSample.Windows", "Platforms\Windows\Particle3DSample.Windows.csproj", "{4E34D15A-4FDD-42D4-9645-83298049035C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonoGame.Framework.MacOS", "..\..\..\..\..\..\..\Users\Jimmy\Public\Share\MonoMacSource\kjpgit\MonoGame\MonoGame.Framework\MonoGame.Framework.MacOS.csproj", "{36C538E6-C32A-4A8D-A39C-566173D7118E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Particle3DSample.DesktopGL", "Platforms\Desktop\Particle3DSample.DesktopGL.csproj", "{5A2F42F1-5B25-4E88-9B47-F8E93A5D8E92}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Particle3DSample.Android", "Platforms\Android\Particle3DSample.Android.csproj", "{6B73D2C9-8C4D-4F35-B5A1-F1E4A3C8D5E0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Particle3DSample.iOS", "Platforms\iOS\Particle3DSample.iOS.csproj", "{7C84E3D2-9D5E-4F46-C6B2-A2F5B4C7D6F1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Particle3DSample.Core", "Core\Particle3DSample.Core.csproj", "{A1B2C3D4-1234-5678-ABCD-1234567890AB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ParticleSettings", "ParticleSettings\ParticleSettings.csproj", "{3388FF68-6F15-4F36-B226-7823E5309E92}"
+EndProject
+
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{1230A19A-FA76-4D12-85E5-68A452315299}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{1230A19A-FA76-4D12-85E5-68A452315299}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{1230A19A-FA76-4D12-85E5-68A452315299}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{1230A19A-FA76-4D12-85E5-68A452315299}.Release|Any CPU.Build.0 = Release|Any CPU
-		{36C538E6-C32A-4A8D-A39C-566173D7118E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{36C538E6-C32A-4A8D-A39C-566173D7118E}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{36C538E6-C32A-4A8D-A39C-566173D7118E}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{36C538E6-C32A-4A8D-A39C-566173D7118E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4E34D15A-4FDD-42D4-9645-83298049035C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4E34D15A-4FDD-42D4-9645-83298049035C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4E34D15A-4FDD-42D4-9645-83298049035C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4E34D15A-4FDD-42D4-9645-83298049035C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5A2F42F1-5B25-4E88-9B47-F8E93A5D8E92}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5A2F42F1-5B25-4E88-9B47-F8E93A5D8E92}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5A2F42F1-5B25-4E88-9B47-F8E93A5D8E92}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5A2F42F1-5B25-4E88-9B47-F8E93A5D8E92}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6B73D2C9-8C4D-4F35-B5A1-F1E4A3C8D5E0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6B73D2C9-8C4D-4F35-B5A1-F1E4A3C8D5E0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6B73D2C9-8C4D-4F35-B5A1-F1E4A3C8D5E0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6B73D2C9-8C4D-4F35-B5A1-F1E4A3C8D5E0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7C84E3D2-9D5E-4F46-C6B2-A2F5B4C7D6F1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7C84E3D2-9D5E-4F46-C6B2-A2F5B4C7D6F1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7C84E3D2-9D5E-4F46-C6B2-A2F5B4C7D6F1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7C84E3D2-9D5E-4F46-C6B2-A2F5B4C7D6F1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3388FF68-6F15-4F36-B226-7823E5309E92}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3388FF68-6F15-4F36-B226-7823E5309E92}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3388FF68-6F15-4F36-B226-7823E5309E92}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3388FF68-6F15-4F36-B226-7823E5309E92}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
-	GlobalSection(MonoDevelopProperties) = preSolution
-		StartupItem = Particle3DSample.csproj
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
 	EndGlobalSection
 EndGlobal

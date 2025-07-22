@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PipelineBuildEvent xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <SourceFile>C:/Users/savag/source/repos/CartBlanche/MonoGame/MonoGame-Samples/Particle3DSample/Content/ParticleEffect.fx</SourceFile>
+  <SourceTime>2024-09-18T16:04:30.4252028+01:00</SourceTime>
+  <DestFile>C:/Users/savag/source/repos/CartBlanche/MonoGame/MonoGame-Samples/Particle3DSample/Content/bin/DesktopGL/ParticleEffect.xnb</DestFile>
+  <DestTime>2025-07-07T19:02:01.6811055+01:00</DestTime>
+  <Importer>EffectImporter</Importer>
+  <ImporterTime>2025-06-02T11:31:02+01:00</ImporterTime>
+  <Processor>EffectProcessor</Processor>
+  <ProcessorTime>2025-06-02T11:31:02+01:00</ProcessorTime>
+  <Dependencies />
+  <BuildAsset />
+  <BuildOutput />
+</PipelineBuildEvent>

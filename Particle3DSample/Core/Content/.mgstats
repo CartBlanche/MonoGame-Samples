@@ -1,0 +1,2 @@
+Source File,Dest File,Processor Type,Content Type,Source File Size,Dest File Size,Build Seconds
+"C:/Users/savag/source/repos/CartBlanche/MonoGame/MonoGame-Samples/Particle3DSample/Content/ParticleEffect.fx","C:/Users/savag/source/repos/CartBlanche/MonoGame/MonoGame-Samples/Particle3DSample/Content/bin/DesktopGL/ParticleEffect.xnb","EffectProcessor","CompiledEffectContent",6534,4942,0.5059261
