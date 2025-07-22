@@ -2,20 +2,20 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-using MonoTouch.Foundation;
-using MonoTouch.UIKit;
+using Foundation;
+using UIKit;
 
-namespace OrientationSample
+namespace OrientationSample.iOS
 {
 	[Register ("AppDelegate")]
 	class Program : UIApplicationDelegate 
 	{
-		private OrientationSample game;
+		private OrientationSampleGame game;
 
 		public override void FinishedLaunching (UIApplication app)
 		{
 			// Fun begins..
-			game = new OrientationSample();
+			game = new OrientationSampleGame();
 			game.Run();
 		}
 

@@ -1,28 +1,23 @@
-#region File Information
 //-----------------------------------------------------------------------------
 // OrientationSample.cs
 //
 // Microsoft XNA Community Game Platform
 // Copyright (C) Microsoft Corporation. All rights reserved.
 //-----------------------------------------------------------------------------
-#endregion
 
-#region Using Statements
 using System;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Input.Touch;
-#endregion
 
 namespace OrientationSample
 {
     /// <summary>
     /// This is the main type for your game
     /// </summary>
-    public class OrientationSample : Microsoft.Xna.Framework.Game
+    public class OrientationSampleGame : Game
     {
-        #region Fields
         
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
@@ -36,11 +31,9 @@ namespace OrientationSample
         // Do we allow dynamically locking/unlocking the orientation?
         bool enableOrientationLocking = false;
 
-        #endregion
 
-        #region Initialization
 
-        public OrientationSample()
+        public OrientationSampleGame()
         {
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
@@ -76,13 +69,14 @@ namespace OrientationSample
             // Game supports all possible orientations and enablyes dynamically locking/unlocking the
             // orientation.
             // (Uncomment the following lines):
-             graphics.SupportedOrientations = DisplayOrientation.Portrait |
-                                              DisplayOrientation.LandscapeLeft |
-                                              DisplayOrientation.LandscapeRight;
+            graphics.SupportedOrientations = DisplayOrientation.Portrait |
+                                             DisplayOrientation.LandscapeLeft |
+                                             DisplayOrientation.LandscapeRight;
             //enableOrientationLocking = true;
 
-            // Switch to full screen mode
-            graphics.IsFullScreen = true;
+            graphics.IsFullScreen = false;
+            
+            IsMouseVisible = true;
         }
 
         /// <summary>
@@ -99,9 +93,7 @@ namespace OrientationSample
             base.Initialize();
         }
 
-        #endregion
 
-        #region Load and Unload
 
         /// <summary>
         /// LoadContent will be called once per game and is the place to load
@@ -125,9 +117,7 @@ namespace OrientationSample
             // Nothing to unload in this sample
         }
 
-        #endregion
 
-        #region Update and Render
 
         /// <summary>
         /// Allows the game to run logic such as updating the world,
@@ -137,7 +127,7 @@ namespace OrientationSample
         protected override void Update(GameTime gameTime)
         {
             // Allows the game to exit
-            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed)
+            if (Keyboard.GetState().IsKeyDown(Keys.Escape) || GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed)
                 this.Exit();
 
             // If we enable locking/unlocking the orientation...
@@ -226,6 +216,5 @@ namespace OrientationSample
             base.Draw(gameTime);
         }
 
-        #endregion
     }
 }

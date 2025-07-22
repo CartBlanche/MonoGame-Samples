@@ -1,19 +1,15 @@
-#region File Information
 //-----------------------------------------------------------------------------
 // LayoutSample.cs
 //
 // Microsoft XNA Community Game Platform
 // Copyright (C) Microsoft Corporation. All rights reserved.
 //-----------------------------------------------------------------------------
-#endregion
 
-#region Using Statements
 using System;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Input.Touch;
-#endregion
 
 namespace LayoutSample
 {
@@ -22,7 +18,6 @@ namespace LayoutSample
     /// </summary>
     public class LayoutSample : Microsoft.Xna.Framework.Game
     {
-        #region Fields
         
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
@@ -36,17 +31,12 @@ namespace LayoutSample
         // Do we allow dynamically locking/unlocking the orientation?
         bool enableOrientationLocking = false;
 
-        #endregion
 
-        #region Initialization
 
         public LayoutSample()
         {
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
-
-            // Frame rate is 30 fps by default for Windows Phone.
-            TargetElapsedTime = TimeSpan.FromTicks(333333);
 
             // DISCLAMER:
             // Four different scenarios for initializing orientation support are presented below.
@@ -82,7 +72,9 @@ namespace LayoutSample
             // enableOrientationLocking = true;
 
             // Switch to full screen mode
+#if MOBILE
             graphics.IsFullScreen = true;
+#endif
         }
 
         /// <summary>
@@ -99,9 +91,7 @@ namespace LayoutSample
             base.Initialize();
         }
 
-        #endregion
 
-        #region Load and Unload
 
         /// <summary>
         /// LoadContent will be called once per game and is the place to load
@@ -125,9 +115,7 @@ namespace LayoutSample
             // Nothing to unload in this sample
         }
 
-        #endregion
 
-        #region Update and Render
 
         /// <summary>
         /// Allows the game to run logic such as updating the world,
@@ -226,6 +214,5 @@ namespace LayoutSample
             base.Draw(gameTime);
         }
 
-        #endregion
     }
 }
