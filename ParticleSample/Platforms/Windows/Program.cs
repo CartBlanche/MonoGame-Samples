@@ -10,7 +10,6 @@ using MonoTouch.UIKit;
 
 namespace ParticleSample
 {
-	#region Entry Point
 #if IPHONE
 	[Register("AppDelegate")]
 	class Program : UIApplicationDelegate
@@ -79,6 +78,5 @@ namespace ParticleSample
 		}
 	}	
 #endif
-	#endregion
 }
 
