@@ -1,29 +1,42 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 11.00
-# Visual Studio 2010
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RenderTarget2DSample", "RenderTarget2DSample.csproj", "{973C423F-0CC0-4230-9E67-D944ED70ED19}"
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
+MinimumVisualStudioVersion = 10.0.40219.1
+
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RenderTarget2D.Windows", "RenderTarget2D.Windows.csproj", "{B3DD03E0-4DEC-45A0-A481-2CF90A51C516}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonoGame.Framework.MacOS", "..\..\..\..\..\..\..\Users\Jimmy\Public\Share\MonoMacSource\kjpgit\MonoGame\MonoGame.Framework\MonoGame.Framework.MacOS.csproj", "{36C538E6-C32A-4A8D-A39C-566173D7118E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RenderTarget2D.DesktopGL", "RenderTarget2D.DesktopGL.csproj", "{7DE47032-A904-4C29-BD22-2D235E8D91BA}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RenderTarget2D.Android", "RenderTarget2D.Android.csproj", "{DEDD20B5-8F83-46FD-AD05-8F8FCC49FCD6}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RenderTarget2D.iOS", "RenderTarget2D.iOS.csproj", "{36C538E6-C32A-4A8D-A39C-566173D7118E}"
+EndProject
+
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
-		Distribution|Any CPU = Distribution|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{B3DD03E0-4DEC-45A0-A481-2CF90A51C516}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B3DD03E0-4DEC-45A0-A481-2CF90A51C516}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B3DD03E0-4DEC-45A0-A481-2CF90A51C516}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B3DD03E0-4DEC-45A0-A481-2CF90A51C516}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7DE47032-A904-4C29-BD22-2D235E8D91BA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7DE47032-A904-4C29-BD22-2D235E8D91BA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7DE47032-A904-4C29-BD22-2D235E8D91BA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7DE47032-A904-4C29-BD22-2D235E8D91BA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DEDD20B5-8F83-46FD-AD05-8F8FCC49FCD6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DEDD20B5-8F83-46FD-AD05-8F8FCC49FCD6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DEDD20B5-8F83-46FD-AD05-8F8FCC49FCD6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DEDD20B5-8F83-46FD-AD05-8F8FCC49FCD6}.Release|Any CPU.Build.0 = Release|Any CPU
 		{36C538E6-C32A-4A8D-A39C-566173D7118E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{36C538E6-C32A-4A8D-A39C-566173D7118E}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{36C538E6-C32A-4A8D-A39C-566173D7118E}.Distribution|Any CPU.ActiveCfg = Distribution|Any CPU
-		{36C538E6-C32A-4A8D-A39C-566173D7118E}.Distribution|Any CPU.Build.0 = Distribution|Any CPU
 		{36C538E6-C32A-4A8D-A39C-566173D7118E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{36C538E6-C32A-4A8D-A39C-566173D7118E}.Release|Any CPU.Build.0 = Release|Any CPU
-		{973C423F-0CC0-4230-9E67-D944ED70ED19}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{973C423F-0CC0-4230-9E67-D944ED70ED19}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{973C423F-0CC0-4230-9E67-D944ED70ED19}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{973C423F-0CC0-4230-9E67-D944ED70ED19}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
-	GlobalSection(MonoDevelopProperties) = preSolution
-		StartupItem = RenderTarget2DSample.csproj
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
 	EndGlobalSection
 EndGlobal
