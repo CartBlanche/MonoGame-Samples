@@ -351,7 +351,7 @@ namespace NetworkPrediction
                 NetworkGamer sender;
 
                 // Read a single packet from the network.
-                gamer.ReceiveData(out packetReader, out sender);
+                gamer.ReceiveData(packetReader, out sender);
 
                 // Discard packets sent by local gamers: we already know their state!
                 if (sender.IsLocal)

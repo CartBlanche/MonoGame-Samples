@@ -8,7 +8,7 @@
     <AndroidUseLatestPlatformSdk>true</AndroidUseLatestPlatformSdk>
     <AndroidApplication>true</AndroidApplication>
     <RuntimeIdentifiers>android-arm;android-arm64;android-x86;android-x64</RuntimeIdentifiers>
-    <AndroidManifest>Platforms\Android\AndroidManifest.xml</AndroidManifest>
+    <AndroidManifest>AndroidManifest.xml</AndroidManifest>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <Title>Network Prediction</Title>
     <Product>NetworkPrediction</Product>
