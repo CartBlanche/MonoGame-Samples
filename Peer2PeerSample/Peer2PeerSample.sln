@@ -1,37 +1,58 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 11.00
-# Visual Studio 2010
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Peer2PeerSample", "Peer2PeerSample.csproj", "{27C1B777-4E37-4E2B-9CE4-5FDEE8CD9C40}"
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Peer2PeerSample.Windows", "Platforms\Windows\Peer2PeerSample.Windows.csproj", "{5FAEAF4E-75EC-41E4-8D01-EF1CBB9EEAB6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonoGame.Framework.MacOS", "..\..\..\..\..\..\..\Users\Jimmy\Public\Share\MonoMacSource\kjpgit\MonoGame\MonoGame.Framework\MonoGame.Framework.MacOS.csproj", "{36C538E6-C32A-4A8D-A39C-566173D7118E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Peer2PeerSample.DesktopGL", "Platforms\Desktop\Peer2PeerSample.DesktopGL.csproj", "{27C1B777-4E37-4E2B-9CE4-5FDEE8CD9C40}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lidgren.Network", "..\..\..\lidgren-network-gen3\Lidgren.Network\Lidgren.Network.csproj", "{AE483C29-042E-4226-BA52-D247CE7676DA}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Peer2Peer.Android", "Platforms\Android\Peer2Peer.Android.csproj", "{56F6C06F-6F07-402E-89A5-39EDB037A516}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Peer2Peer.iOS", "Platforms\iOS\Peer2Peer.iOS.csproj", "{1217FD6D-AFF5-4A21-AA0C-0AE7F14B848F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Peer2PeerSample.Core", "Core\Peer2PeerSample.Core.csproj", "{A1B2C3D4-E5F6-7890-1234-56789ABCDEF0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonoGame.Xna.Framework.Net", "..\MonoGame.Xna.Framework.Net\MonoGame.Xna.Framework.Net.csproj", "{86E1E7AD-DD62-384D-A073-092A5F875CF0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Peer2PeerMasterServer", "Peer2PeerMasterServer\Peer2PeerMasterServer.csproj", "{5B387405-901A-2547-BA97-DDF3180E221C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
-		Distribution|Any CPU = Distribution|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{5FAEAF4E-75EC-41E4-8D01-EF1CBB9EEAB6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5FAEAF4E-75EC-41E4-8D01-EF1CBB9EEAB6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5FAEAF4E-75EC-41E4-8D01-EF1CBB9EEAB6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5FAEAF4E-75EC-41E4-8D01-EF1CBB9EEAB6}.Release|Any CPU.Build.0 = Release|Any CPU
 		{27C1B777-4E37-4E2B-9CE4-5FDEE8CD9C40}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{27C1B777-4E37-4E2B-9CE4-5FDEE8CD9C40}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{27C1B777-4E37-4E2B-9CE4-5FDEE8CD9C40}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{27C1B777-4E37-4E2B-9CE4-5FDEE8CD9C40}.Release|Any CPU.Build.0 = Release|Any CPU
-		{36C538E6-C32A-4A8D-A39C-566173D7118E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{36C538E6-C32A-4A8D-A39C-566173D7118E}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{36C538E6-C32A-4A8D-A39C-566173D7118E}.Distribution|Any CPU.ActiveCfg = Distribution|Any CPU
-		{36C538E6-C32A-4A8D-A39C-566173D7118E}.Distribution|Any CPU.Build.0 = Distribution|Any CPU
-		{36C538E6-C32A-4A8D-A39C-566173D7118E}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{36C538E6-C32A-4A8D-A39C-566173D7118E}.Release|Any CPU.Build.0 = Release|Any CPU
-		{AE483C29-042E-4226-BA52-D247CE7676DA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{AE483C29-042E-4226-BA52-D247CE7676DA}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{AE483C29-042E-4226-BA52-D247CE7676DA}.Distribution|Any CPU.ActiveCfg = Debug|Any CPU
-		{AE483C29-042E-4226-BA52-D247CE7676DA}.Distribution|Any CPU.Build.0 = Debug|Any CPU
-		{AE483C29-042E-4226-BA52-D247CE7676DA}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{AE483C29-042E-4226-BA52-D247CE7676DA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{56F6C06F-6F07-402E-89A5-39EDB037A516}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{56F6C06F-6F07-402E-89A5-39EDB037A516}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{56F6C06F-6F07-402E-89A5-39EDB037A516}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{56F6C06F-6F07-402E-89A5-39EDB037A516}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1217FD6D-AFF5-4A21-AA0C-0AE7F14B848F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1217FD6D-AFF5-4A21-AA0C-0AE7F14B848F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1217FD6D-AFF5-4A21-AA0C-0AE7F14B848F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1217FD6D-AFF5-4A21-AA0C-0AE7F14B848F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A1B2C3D4-E5F6-7890-1234-56789ABCDEF0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A1B2C3D4-E5F6-7890-1234-56789ABCDEF0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A1B2C3D4-E5F6-7890-1234-56789ABCDEF0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A1B2C3D4-E5F6-7890-1234-56789ABCDEF0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{86E1E7AD-DD62-384D-A073-092A5F875CF0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{86E1E7AD-DD62-384D-A073-092A5F875CF0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{86E1E7AD-DD62-384D-A073-092A5F875CF0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{86E1E7AD-DD62-384D-A073-092A5F875CF0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5B387405-901A-2547-BA97-DDF3180E221C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5B387405-901A-2547-BA97-DDF3180E221C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5B387405-901A-2547-BA97-DDF3180E221C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5B387405-901A-2547-BA97-DDF3180E221C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
-	GlobalSection(MonoDevelopProperties) = preSolution
-		StartupItem = Peer2PeerSample.csproj
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
 	EndGlobalSection
 EndGlobal
