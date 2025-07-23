@@ -34,5 +34,15 @@ namespace Microsoft.Xna.Framework.Net
         /// <param name="endpoint">The endpoint to send the data to.</param>
         /// <returns>A task that represents the asynchronous operation.</returns>
         Task SendAsync(byte[] data, IPEndPoint endpoint);
+
+        /// <summary>
+        /// Binds the transport to a local endpoint for receiving data.
+        /// </summary>
+        void Bind();
+
+        /// <summary>
+        /// Indicates whether the transport is currently bound to a local endpoint.
+        /// </summary>
+        bool IsBound { get; }
     }
 }

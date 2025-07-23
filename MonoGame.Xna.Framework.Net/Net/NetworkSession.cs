@@ -36,7 +36,32 @@ namespace Microsoft.Xna.Framework.Net
         // Events
         public event EventHandler<GameStartedEventArgs> GameStarted;
         public event EventHandler<GameEndedEventArgs> GameEnded;
-        public event EventHandler<GamerJoinedEventArgs> GamerJoined;
+
+        private event EventHandler<GamerJoinedEventArgs> gamerJoined;
+        private bool isGamerJoinedSubscribed = false;
+        public event EventHandler<GamerJoinedEventArgs> GamerJoined
+        {
+            add
+            {
+                lock (lockObject)
+                {
+                    gamerJoined += value;
+                    isGamerJoinedSubscribed = true;
+
+                    // Notify pending gamers if this is the first subscription
+                    NotifyPendingGamers();
+                }
+            }
+            remove
+            {
+                lock (lockObject)
+                {
+                    gamerJoined -= value;
+                    isGamerJoinedSubscribed = gamerJoined != null;
+                }
+            }
+        }
+
         public event EventHandler<GamerLeftEventArgs> GamerLeft;
         public event EventHandler<NetworkSessionEndedEventArgs> SessionEnded;
 
@@ -381,15 +406,15 @@ namespace Microsoft.Xna.Framework.Net
             return JoinAsync(availableSession).GetAwaiter().GetResult();
         }
 
-		public static NetworkSession JoinInvited(IEnumerable<SignedInGamer> localGamers, object state = null)
-		{
-			return JoinInvitedAsync(localGamers, state).GetAwaiter().GetResult();
-		}
+        public static NetworkSession JoinInvited(IEnumerable<SignedInGamer> localGamers, object state = null)
+        {
+            return JoinInvitedAsync(localGamers, state).GetAwaiter().GetResult();
+        }
 
-		/// <summary>
-		/// Updates the network session.
-		/// </summary>
-		public void Update()
+        /// <summary>
+        /// Updates the network session.
+        /// </summary>
+        public void Update()
         {
             if (disposed)
                 return;
@@ -491,6 +516,12 @@ namespace Microsoft.Xna.Framework.Net
             }
         }
 
+        public void AddLocalGamer(SignedInGamer gamer)
+        {
+            throw new NotImplementedException();
+        }
+
+
         private void AddGamer(NetworkGamer gamer)
         {
             lock (lockObject)
@@ -513,18 +544,19 @@ namespace Microsoft.Xna.Framework.Net
         // Modern async receive loop for SystemLink
         private async Task ReceiveLoopAsync(CancellationToken cancellationToken)
         {
-            using var udpClient = new UdpClient();
-            udpClient.Client.Bind(new IPEndPoint(IPAddress.Any, 0)); // Use a dynamic port for tests
             while (!cancellationToken.IsCancellationRequested)
             {
                 try
                 {
-                    var result = await udpClient.ReceiveAsync();
-                    var data = result.Buffer;
+                    // Ensure the network transport is bound before receiving data
+                    if (!networkTransport.IsBound)
+                    {
+                        networkTransport.Bind();
+                    }
+
+                    var (data, senderEndpoint) = await networkTransport.ReceiveAsync();
                     if (data.Length > 1)
                     {
-                        var senderEndpoint = result.RemoteEndPoint;
-
                         NetworkGamer senderGamer = null;
                         lock (lockObject)
                         {
@@ -540,7 +572,7 @@ namespace Microsoft.Xna.Framework.Net
                         var reader = new PacketReader(data); // Use only the byte array
                         var message = NetworkMessageRegistry.CreateMessage(typeId);
                         message?.Deserialize(reader);
-                        OnMessageReceived(new MessageReceivedEventArgs(message, result.RemoteEndPoint));
+                        OnMessageReceived(new MessageReceivedEventArgs(message, senderEndpoint));
                     }
                 }
                 catch (ObjectDisposedException) { break; }
@@ -571,7 +603,7 @@ namespace Microsoft.Xna.Framework.Net
 
         private void OnGamerJoined(NetworkGamer gamer)
         {
-            GamerJoined?.Invoke(this, new GamerJoinedEventArgs(gamer));
+            gamerJoined?.Invoke(this, new GamerJoinedEventArgs(gamer));
         }
 
         private void OnGamerLeft(NetworkGamer gamer)
@@ -693,7 +725,7 @@ namespace Microsoft.Xna.Framework.Net
                 while (gamer.IsDataAvailable)
                 {
                     var reader = new PacketReader();
-                    gamer.ReceiveData(out reader, out var sender);
+                    gamer.ReceiveData(reader, out var sender);
 
                     var messageType = reader.ReadString();
                     if (messageType == "SessionPropertiesUpdate")
@@ -704,5 +736,16 @@ namespace Microsoft.Xna.Framework.Net
                 }
             }
         }
+        private void NotifyPendingGamers()
+        {
+            if (isGamerJoinedSubscribed && sessionState == NetworkSessionState.Lobby)
+            {
+                // Notify all pending gamers that they can join
+                foreach (var gamer in gamers/*.Where(g => !g.IsLocal && !g.IsReady)*/)
+                {
+                    gamerJoined?.Invoke(this, new GamerJoinedEventArgs(gamer));
+                }
+			}
+		}
     }
 }

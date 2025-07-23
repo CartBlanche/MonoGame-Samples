@@ -10,6 +10,7 @@ namespace Microsoft.Xna.Framework.Net
     public class UdpTransport : INetworkTransport
     {
         private readonly UdpClient udpClient;
+        private bool isBound;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="UdpTransport"/> class.
@@ -69,5 +70,22 @@ namespace Microsoft.Xna.Framework.Net
             udpClient?.Close();
             udpClient?.Dispose();
         }
+
+        /// <summary>
+        /// Binds the transport to a local endpoint.
+        /// </summary>
+        public void Bind()
+        {
+            if (!isBound)
+            {
+                udpClient.Client.Bind(new IPEndPoint(IPAddress.Any, 0));
+                isBound = true;
+            }
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether the transport is bound to a local endpoint.
+        /// </summary>
+        public bool IsBound => isBound;
     }
 }

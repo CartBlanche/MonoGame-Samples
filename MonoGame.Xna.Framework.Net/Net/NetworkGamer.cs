@@ -142,13 +142,34 @@ namespace Microsoft.Xna.Framework.Net
             return length;
         }
 
-        /// <summary>
-        /// Receives data from this gamer using PacketReader.
-        /// </summary>
-        /// <param name="data">Array to receive the data into.</param>
-        /// <param name="sender">The gamer who sent the data.</param>
-        /// <returns>The number of bytes received.</returns>
-        public int ReceiveData(out PacketReader reader, out NetworkGamer sender)
+		public int ReceiveData(byte[] data, int offset, out NetworkGamer sender)
+        {
+            if (data == null)
+                throw new ArgumentNullException(nameof(data));
+
+            if (offset < 0 || offset >= data.Length)
+                throw new ArgumentOutOfRangeException(nameof(offset), "Offset must be within the bounds of the data array.");
+
+            sender = null;
+
+            // Check if data is available
+            if (!IsDataAvailable)
+                return 0;
+
+            var packet = incomingPackets.Dequeue();
+            sender = packet.Sender;
+            int length = Math.Min(data.Length - offset, packet.Data.Length);
+            Array.Copy(packet.Data, 0, data, offset, length);
+            return length;
+		}
+
+		/// <summary>
+		/// Receives data from this gamer using PacketReader.
+		/// </summary>
+		/// <param name="data">Array to receive the data into.</param>
+		/// <param name="sender">The gamer who sent the data.</param>
+		/// <returns>The number of bytes received.</returns>
+		public int ReceiveData(PacketReader reader, out NetworkGamer sender)
         {
             // Ensure the session is valid
             if (session == null)
