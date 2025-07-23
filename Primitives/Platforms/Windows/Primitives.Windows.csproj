@@ -1,0 +1,30 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <UseWindowsForms>true</UseWindowsForms>
+    <AssemblyName>Primitives.Windows</AssemblyName>
+    <RootNamespace>PrimitivesSample</RootNamespace>
+    <ApplicationIcon>..\..\Core\Content\Game.ico</ApplicationIcon>
+    <AssemblyTitle>MonoGame.Samples.Primitives.Windows</AssemblyTitle>
+    <AssemblyDescription></AssemblyDescription>
+    <AssemblyConfiguration></AssemblyConfiguration>
+    <AssemblyCompany>Savage Software Solutions Ltd.</AssemblyCompany>
+    <AssemblyProduct></AssemblyProduct>
+    <AssemblyCopyright>Savage Software Solutions Ltd.</AssemblyCopyright>
+    <AssemblyTrademark></AssemblyTrademark>
+    <AssemblyCulture></AssemblyCulture>
+    <AssemblyVersion>1.0</AssemblyVersion>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="MonoGame.Framework.WindowsDX" Version="3.8.*" />
+    <ProjectReference Include="..\..\Core\Primitives.Core.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="..\..\Core\Content\**\*.xnb" Link="Content\%(RecursiveDir)%(Filename)%(Extension)">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+</Project>
