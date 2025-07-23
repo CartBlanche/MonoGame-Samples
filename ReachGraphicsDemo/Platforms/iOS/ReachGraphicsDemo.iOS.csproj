@@ -1,0 +1,31 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0-ios</TargetFramework>
+    <OutputType>Exe</OutputType>
+    <RootNamespace>XnaGraphicsDemo</RootNamespace>
+    <AssemblyName>XnaGraphicsDemo</AssemblyName>
+    <SupportedOSPlatformVersion>10.0</SupportedOSPlatformVersion>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="MonoGame.Framework.iOS" Version="3.8.*" />
+    <PackageReference Include="MonoGame.Content.Builder.Task" Version="3.8.*" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Core\ReachGraphicsDemo.Core.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <BundleResource Include="..\..\Core\Content\**\*.xnb" Link="Content\%(RecursiveDir)%(Filename)%(Extension)">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </BundleResource>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="Platforms\iOS\Info.plist" />
+  </ItemGroup>
+
+</Project>
