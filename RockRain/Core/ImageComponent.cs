@@ -1,11 +1,9 @@
-#region Using Statements
 
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-#endregion
 
-namespace RockRainIphone.Core
+namespace RockRain.Core
 {
     /// <summary>
     /// This is a game component that draw a image.

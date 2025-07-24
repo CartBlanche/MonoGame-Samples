@@ -1,18 +1,14 @@
-#region File Description
 //-----------------------------------------------------------------------------
 // Particle.cs
 //
 // Microsoft XNA Community Game Platform
 // Copyright (C) Microsoft Corporation. All rights reserved.
 //-----------------------------------------------------------------------------
-#endregion
 
-#region Using Statements
 using System;
 using Microsoft.Xna.Framework;
-#endregion
 
-namespace RockRainIphone.Core
+namespace RockRain.Core
 {
     /// <summary>
     /// particles are the little bits that will make up an effect. each effect will

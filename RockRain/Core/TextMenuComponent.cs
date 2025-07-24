@@ -1,4 +1,3 @@
-#region Using Statements
 
 using System.Collections.Specialized;
 using Microsoft.Xna.Framework;
@@ -7,9 +6,8 @@ using Microsoft.Xna.Framework.Input;
 using System.Collections.Generic;
 using System;
 
-#endregion
 
-namespace RockRainIphone.Core
+namespace RockRain.Core
 {
     /// <summary>
     /// This is a game component that implements a menu with text elements.

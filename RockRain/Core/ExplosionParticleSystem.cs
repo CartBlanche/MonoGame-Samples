@@ -1,18 +1,14 @@
-#region File Description
 //-----------------------------------------------------------------------------
 // ExplosionParticleSystem.cs
 //
 // Microsoft XNA Community Game Platform
 // Copyright (C) Microsoft Corporation. All rights reserved.
 //-----------------------------------------------------------------------------
-#endregion
 
-#region Using Statements
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-#endregion
 
-namespace RockRainIphone.Core
+namespace RockRain.Core
 {
     /// <summary>
     /// ExplosionParticleSystem is a specialization of ParticleSystem which creates a

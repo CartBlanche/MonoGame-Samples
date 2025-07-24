@@ -1,20 +1,16 @@
-#region File Description
 //-----------------------------------------------------------------------------
 // SmokePlumeParticleSystem.cs
 //
 // Microsoft XNA Community Game Platform
 // Copyright (C) Microsoft Corporation. All rights reserved.
 //-----------------------------------------------------------------------------
-#endregion
 
-#region Using Statements
 using System;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-#endregion
 
-namespace RockRainIphone.Core
+namespace RockRain.Core
 {
     /// <summary>
     /// ParticleSystem is an abstract class that provides the basic functionality to
@@ -69,7 +65,6 @@ namespace RockRainIphone.Core
         // values are then used by the virtual function InitializeParticle. Subclasses
         // can override InitializeParticle for further
         // customization.
-        #region constants to be set by subclasses
 
         /// <summary>
         /// minNumParticles and maxNumParticles control the number of particles that are
@@ -138,7 +133,6 @@ namespace RockRainIphone.Core
         /// </summary>
         protected BlendState spriteBlendMode;
 
-        #endregion
         
         /// <summary>
         /// Constructs a new ParticleSystem.

@@ -1,11 +1,9 @@
-#region Using Statements
 
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 
-#endregion
 
-namespace RockRainIphone.Core
+namespace RockRain.Core
 {
     /// <summary>
     /// This is the base class for all game scenes.
