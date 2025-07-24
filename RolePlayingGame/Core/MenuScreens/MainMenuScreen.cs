@@ -62,7 +62,8 @@ namespace RolePlaying
             newGameMenuEntry = new MenuEntry("New Game");
             newGameMenuEntry.Description = "Start a New Game";
             newGameMenuEntry.Font = Fonts.HeaderFont;
-            newGameMenuEntry.Position = new Vector2(715, 0f);
+            newGameMenuEntry.Position = new Vector2(RolePlayingGame.BUFFER_HEIGHT - 5, 0f);
+            newGameMenuEntry.Angle = -3.0f;
             newGameMenuEntry.Selected += NewGameMenuEntrySelected;
             MenuEntries.Add(newGameMenuEntry);
 
@@ -73,7 +74,7 @@ namespace RolePlaying
                 saveGameMenuEntry = new MenuEntry("Save Game");
                 saveGameMenuEntry.Description = "Save the Game";
                 saveGameMenuEntry.Font = Fonts.HeaderFont;
-                saveGameMenuEntry.Position = new Vector2(730, 0f);
+                saveGameMenuEntry.Position = new Vector2(RolePlayingGame.BUFFER_HEIGHT + 10, 0f);
                 saveGameMenuEntry.Selected += SaveGameMenuEntrySelected;
                 MenuEntries.Add(saveGameMenuEntry);
             }
@@ -86,7 +87,7 @@ namespace RolePlaying
             loadGameMenuEntry = new MenuEntry("Load Game");
             loadGameMenuEntry.Description = "Load the Game";
             loadGameMenuEntry.Font = Fonts.HeaderFont;
-            loadGameMenuEntry.Position = new Vector2(700, 0f);
+            loadGameMenuEntry.Position = new Vector2(RolePlayingGame.BUFFER_HEIGHT - 20, 0f);
             loadGameMenuEntry.Selected += LoadGameMenuEntrySelected;
             MenuEntries.Add(loadGameMenuEntry);
 
@@ -94,7 +95,8 @@ namespace RolePlaying
             controlsMenuEntry = new MenuEntry("Controls");
             controlsMenuEntry.Description = "View Game Controls";
             controlsMenuEntry.Font = Fonts.HeaderFont;
-            controlsMenuEntry.Position = new Vector2(720, 0f);
+            controlsMenuEntry.Position = new Vector2(RolePlayingGame.BUFFER_HEIGHT, 0f);
+            controlsMenuEntry.Angle = 5.0f;
             controlsMenuEntry.Selected += ControlsMenuEntrySelected;
             MenuEntries.Add(controlsMenuEntry);
 
@@ -102,7 +104,8 @@ namespace RolePlaying
             helpMenuEntry = new MenuEntry("Help");
             helpMenuEntry.Description = "View Game Help";
             helpMenuEntry.Font = Fonts.HeaderFont;
-            helpMenuEntry.Position = new Vector2(700, 0f);
+            helpMenuEntry.Position = new Vector2(RolePlayingGame.BUFFER_HEIGHT - 20, 0f);
+            helpMenuEntry.Angle = -5.0f;
             helpMenuEntry.Selected += HelpMenuEntrySelected;
             MenuEntries.Add(helpMenuEntry);
 
@@ -110,7 +113,7 @@ namespace RolePlaying
             exitGameMenuEntry = new MenuEntry("Exit");
             exitGameMenuEntry.Description = "Quit the Game";
             exitGameMenuEntry.Font = Fonts.HeaderFont;
-            exitGameMenuEntry.Position = new Vector2(720, 0f);
+            exitGameMenuEntry.Position = new Vector2(RolePlayingGame.BUFFER_HEIGHT, 0f);
             exitGameMenuEntry.Selected += OnCancel;
             MenuEntries.Add(exitGameMenuEntry);
 

@@ -302,7 +302,7 @@ namespace RolePlaying
             spriteBatch.Begin();
 
             // draw the fading screen
-            spriteBatch.Draw(fadeTexture, new Rectangle(0, 0, 1280, 720), Color.White);
+            spriteBatch.Draw(fadeTexture, new Rectangle(0, 0, RolePlayingGame.BUFFER_WIDTH, RolePlayingGame.BUFFER_HEIGHT), Color.White);
 
             // draw popup background
             spriteBatch.Draw(backgroundTexture, backgroundPosition, Color.White);

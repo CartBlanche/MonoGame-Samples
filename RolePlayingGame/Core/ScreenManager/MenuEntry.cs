@@ -41,6 +41,11 @@ namespace RolePlaying
         /// </summary>
         Vector2 position;
 
+        /// <summary>
+        /// The angle of this menu item on the screen.
+        /// </summary>
+        float angle = 0f;
+
 
         /// <summary>
         /// A description of the function of the button.
@@ -86,6 +91,15 @@ namespace RolePlaying
         {
             get { return position; }
             set { position = value; }
+        }
+
+        /// <summary>
+        /// Gets or sets the angle of this menu entry.
+        /// </summary>
+        public float Angle
+        {
+            get { return angle; }
+            set { angle = value; }
         }
 
 
@@ -175,12 +189,12 @@ namespace RolePlaying
                     Vector2 textPosition = position + new Vector2(
                         (float)Math.Floor((texture.Width - textSize.X) / 2),
                         (float)Math.Floor((texture.Height - textSize.Y) / 2));
-                    spriteBatch.DrawString(spriteFont, text, textPosition, color);
+                    spriteBatch.DrawString(spriteFont, text, textPosition, color, MathHelper.ToRadians(angle), Vector2.Zero, 1.0f, SpriteEffects.None, 0f);
                 }
             }
             else if ((spriteFont != null) && !String.IsNullOrEmpty(text))
             {
-                spriteBatch.DrawString(spriteFont, text, position, color);
+                spriteBatch.DrawString(spriteFont, text, position, color, MathHelper.ToRadians(angle), Vector2.Zero, 1.0f, SpriteEffects.None, 0f);
             }
         }
 

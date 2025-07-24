@@ -306,7 +306,7 @@ namespace RolePlaying
 
             spriteBatch.Begin();
 
-            spriteBatch.Draw(fadeTexture, new Rectangle(0, 0, 1280, 720), Color.White);
+            spriteBatch.Draw(fadeTexture, new Rectangle(0, 0, RolePlayingGame.BUFFER_WIDTH, RolePlayingGame.BUFFER_HEIGHT), Color.White);
 
             currentTextPosition = textPosition;
 

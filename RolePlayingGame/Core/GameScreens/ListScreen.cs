@@ -25,7 +25,7 @@ namespace RolePlaying
 
         private Texture2D backgroundTexture;
         private readonly Rectangle backgroundDestination =
-            new Rectangle(0, 0, 1280, 720);
+            new Rectangle(0, 0, RolePlayingGame.BUFFER_WIDTH, RolePlayingGame.BUFFER_HEIGHT);
         private Texture2D fadeTexture;
 
         private Texture2D listTexture;

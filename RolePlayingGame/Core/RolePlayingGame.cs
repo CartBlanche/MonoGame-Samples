@@ -17,8 +17,10 @@ namespace RolePlaying
     /// <summary>
     /// The Game object for the Role-Playing Game starter kit.
     /// </summary>
-    public class RolePlayingGame : Microsoft.Xna.Framework.Game
+    public class RolePlayingGame : Game
     {
+        internal const int BUFFER_WIDTH = 1280;
+        internal const int BUFFER_HEIGHT = 720;
         GraphicsDeviceManager graphics;
         ScreenManager screenManager;
 
@@ -29,9 +31,9 @@ namespace RolePlaying
         {
             // initialize the graphics system
             graphics = new GraphicsDeviceManager(this);
-            graphics.PreferredBackBufferWidth = 1280;
-            graphics.PreferredBackBufferHeight = 720;
-            
+            graphics.PreferredBackBufferWidth = BUFFER_WIDTH;
+            graphics.PreferredBackBufferHeight = BUFFER_HEIGHT;
+
             // configure the content manager
             Content.RootDirectory = "Content";
 

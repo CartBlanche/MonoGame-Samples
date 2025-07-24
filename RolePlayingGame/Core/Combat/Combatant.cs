@@ -286,7 +286,7 @@ namespace RolePlaying
         public virtual void Draw(GameTime gameTime)
         {
             CombatSprite.Draw(Session.ScreenManager.SpriteBatch,
-                Position, 1f - Position.Y / 720f);
+                Position, 1f - Position.Y / RolePlayingGame.BUFFER_WIDTH);
 
             Session.ScreenManager.SpriteBatch.Draw(Character.ShadowTexture, Position, 
                 null, Color.White, 0f, new Vector2(Character.ShadowTexture.Width / 2, 

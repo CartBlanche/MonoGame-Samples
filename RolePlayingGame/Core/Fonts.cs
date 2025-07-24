@@ -387,7 +387,7 @@ namespace RolePlaying
 
             // draw the string
             spriteBatch.DrawString(font, text, centeredPosition, color, 0f, 
-                Vector2.Zero, 1f, SpriteEffects.None, 1f - position.Y / 720f);
+                Vector2.Zero, 1f, SpriteEffects.None, 1f - position.Y / RolePlayingGame.BUFFER_HEIGHT);
         }
 
 
