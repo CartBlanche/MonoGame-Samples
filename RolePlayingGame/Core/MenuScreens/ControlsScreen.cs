@@ -11,9 +11,9 @@ using System.Text;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Content;
-using RolePlayingGameData;
+using RolePlaying.Data;
 
-namespace RolePlaying
+namespace RolePlaying.Core
 {
     /// <summary>
     /// Displays the in-game controls to the user.

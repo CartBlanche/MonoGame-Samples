@@ -1,4 +1,4 @@
-using Microsoft.Xna.Framework;
+using RolePlaying.Core;
 
 namespace RolePlaying.Desktop
 {

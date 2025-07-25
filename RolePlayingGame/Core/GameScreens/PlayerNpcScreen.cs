@@ -6,9 +6,9 @@
 //-----------------------------------------------------------------------------
 
 using System;
-using RolePlayingGameData;
+using RolePlaying.Data;
 
-namespace RolePlaying
+namespace RolePlaying.Core
 {
     /// <summary>
     /// Displays the Player NPC screen, shown when encountering a player on the map.

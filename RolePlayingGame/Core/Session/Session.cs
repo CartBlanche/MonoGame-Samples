@@ -12,9 +12,9 @@ using System.Xml.Serialization;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
-using RolePlayingGameData;
+using RolePlaying.Data;
 
-namespace RolePlaying
+namespace RolePlaying.Core
 {
     class Session
     {

@@ -12,9 +12,9 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using RolePlayingGameData;
+using RolePlaying.Data;
 
-namespace RolePlaying
+namespace RolePlaying.Core
 {
     /// <summary>
     /// The runtime execution engine for the combat system.

@@ -6,11 +6,11 @@
 //-----------------------------------------------------------------------------
 
 using System;
-using RolePlayingGameData;
+using RolePlaying.Data;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace RolePlaying
+namespace RolePlaying.Core
 {
     /// <summary>
     /// An action taken by an individual character in combat.

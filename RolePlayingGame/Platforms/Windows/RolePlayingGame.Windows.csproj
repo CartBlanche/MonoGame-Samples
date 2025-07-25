@@ -15,6 +15,7 @@
     <UseWindowsForms>true</UseWindowsForms>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <ApplicationIcon>..\..\Core\Content\Game.ico</ApplicationIcon>
+    <MonoGamePlatform>Windows</MonoGamePlatform>
   </PropertyGroup>
 
   <ItemGroup>
@@ -24,24 +25,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Content Include="..\..\Core\Content\**\*.xnb" Link="Content\%(RecursiveDir)%(Filename)%(Extension)">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="..\..\Core\Content\**\*.xap" Link="Content\%(RecursiveDir)%(Filename)%(Extension)">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="..\..\Core\Content\**\*.xgs" Link="Content\%(RecursiveDir)%(Filename)%(Extension)">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="..\..\Core\Content\**\*.xwb" Link="Content\%(RecursiveDir)%(Filename)%(Extension)">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="..\..\Core\Content\**\*.xsb" Link="Content\%(RecursiveDir)%(Filename)%(Extension)">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="..\..\Core\Content\**\*.xml" Link="Content\%(RecursiveDir)%(Filename)%(Extension)">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
+    <MonoGameContentReference Include="..\..\Core\Content\Content.mgcb" />
   </ItemGroup>
 
 </Project>

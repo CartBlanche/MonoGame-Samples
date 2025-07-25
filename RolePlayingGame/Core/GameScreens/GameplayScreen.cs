@@ -11,11 +11,11 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using RolePlayingGameData;
+using RolePlaying.Data;
 using System.Collections.Generic;
 using System.IO;
 
-namespace RolePlaying
+namespace RolePlaying.Core
 {
     /// <summary>
     /// This screen implements the actual game logic. It is just a

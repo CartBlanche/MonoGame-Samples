@@ -7,9 +7,9 @@
 
 using System;
 using Microsoft.Xna.Framework;
-using RolePlayingGameData;
+using RolePlaying.Data;
 
-namespace RolePlaying
+namespace RolePlaying.Core
 {
     /// <summary>
     /// Encapsulates all of the combat-runtime data for a particular player combatant.
@@ -55,15 +55,15 @@ namespace RolePlaying
                 player.State = value;
                 switch (player.State)
                 {
-                    case RolePlayingGameData.Character.CharacterState.Idle:
+                    case RolePlaying.Data.Character.CharacterState.Idle:
                         CombatSprite.PlayAnimation("Idle");
                         break;
 
-                    case RolePlayingGameData.Character.CharacterState.Hit:
+                    case RolePlaying.Data.Character.CharacterState.Hit:
                         CombatSprite.PlayAnimation("Hit");
                         break;
 
-                    case RolePlayingGameData.Character.CharacterState.Dying:
+                    case RolePlaying.Data.Character.CharacterState.Dying:
                         player.StatisticsModifiers.HealthPoints = 
                             -1 * player.CharacterStatistics.HealthPoints;
                         CombatSprite.PlayAnimation("Die");
@@ -184,7 +184,7 @@ namespace RolePlaying
             {
                 if (Statistics.HealthPoints > 0)
                 {
-                    State = RolePlayingGameData.Character.CharacterState.Idle;
+                    State = RolePlaying.Data.Character.CharacterState.Idle;
                 }
                 else
                 {
@@ -194,7 +194,7 @@ namespace RolePlaying
             }
             else
             {
-                State = RolePlayingGameData.Character.CharacterState.Idle;
+                State = RolePlaying.Data.Character.CharacterState.Idle;
                 CombatSprite.PlayAnimation("Idle");
             }
         }

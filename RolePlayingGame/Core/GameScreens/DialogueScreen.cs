@@ -11,7 +11,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Content;
 
-namespace RolePlaying
+namespace RolePlaying.Core
 {
     /// <summary>
     /// Display of conversation dialog between the player and the npc

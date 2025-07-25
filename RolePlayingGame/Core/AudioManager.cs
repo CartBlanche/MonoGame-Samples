@@ -10,7 +10,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
 using System.Collections.Generic;
 
-namespace RolePlaying
+namespace RolePlaying.Core
 {
     /// <summary>
     /// Component that manages audio playback for all cues.

@@ -10,7 +10,7 @@ using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 
-namespace RolePlaying
+namespace RolePlaying.Core
 {
     /// <summary>
     /// This class handles all keyboard and gamepad actions in the game.

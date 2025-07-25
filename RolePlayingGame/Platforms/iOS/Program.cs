@@ -1,12 +1,14 @@
 using Foundation;
 using UIKit;
 
+using RolePlaying.Core;
+
 namespace RolePlaying.iOS
 {
     [Register("AppDelegate")]
     public class AppDelegate : UIApplicationDelegate
     {
-        private static RolePlaying.RolePlayingGame _game;
+        private static RolePlayingGame _game;
 
         internal static void RunGame()
         {

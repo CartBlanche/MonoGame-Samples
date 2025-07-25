@@ -6,11 +6,11 @@
 //-----------------------------------------------------------------------------
 
 using System;
-using RolePlayingGameData;
+using RolePlaying.Data;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace RolePlaying
+namespace RolePlaying.Core
 {
     /// <summary>
     /// Base class for all combatants.
@@ -45,8 +45,8 @@ namespace RolePlaying
         {
             get
             {
-                return ((State == RolePlayingGameData.Character.CharacterState.Dying) ||
-                    (State == RolePlayingGameData.Character.CharacterState.Dead));
+                return ((State == RolePlaying.Data.Character.CharacterState.Dying) ||
+                    (State == RolePlaying.Data.Character.CharacterState.Dead));
             }
         }
 
@@ -154,7 +154,7 @@ namespace RolePlaying
         /// </summary>
         public virtual void Damage(StatisticsValue damageStatistics, int duration)
         {
-            State = RolePlayingGameData.Character.CharacterState.Hit;
+            State = RolePlaying.Data.Character.CharacterState.Hit;
             CombatEngine.AddNewDamageEffects(OriginalPosition, damageStatistics);
         }
 
@@ -245,22 +245,22 @@ namespace RolePlaying
             if (!IsDeadOrDying && (Statistics.HealthPoints <= 0))
             {
                 AudioManager.PlayCue("Death");
-                State = RolePlayingGameData.Character.CharacterState.Dying;
+                State = RolePlaying.Data.Character.CharacterState.Dying;
             }
             // check for waking up
             else if (IsDeadOrDying && (Statistics.HealthPoints > 0))
             {
-                State = RolePlayingGameData.Character.CharacterState.Idle;
+                State = RolePlaying.Data.Character.CharacterState.Idle;
             }
             else if (CombatSprite.IsPlaybackComplete)
             {
-                if (State == RolePlayingGameData.Character.CharacterState.Hit)
+                if (State == RolePlaying.Data.Character.CharacterState.Hit)
                 {
-                    State = RolePlayingGameData.Character.CharacterState.Idle;
+                    State = RolePlaying.Data.Character.CharacterState.Idle;
                 }
-                else if (State == RolePlayingGameData.Character.CharacterState.Dying)
+                else if (State == RolePlaying.Data.Character.CharacterState.Dying)
                 {
-                    State = RolePlayingGameData.Character.CharacterState.Dead;
+                    State = RolePlaying.Data.Character.CharacterState.Dead;
                 }
             }
         }

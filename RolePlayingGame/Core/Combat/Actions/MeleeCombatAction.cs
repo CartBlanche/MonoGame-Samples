@@ -7,10 +7,10 @@
 
 using System;
 using Microsoft.Xna.Framework;
-using RolePlayingGameData;
+using RolePlaying.Data;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace RolePlaying
+namespace RolePlaying.Core
 {
     /// <summary>
     /// A melee-attack combat action, including related data and calculations.

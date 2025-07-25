@@ -6,9 +6,9 @@
 //-----------------------------------------------------------------------------
 
 using System;
-using RolePlayingGameData;
+using RolePlaying.Data;
 
-namespace RolePlaying
+namespace RolePlaying.Core
 {
     class QuestNpcScreen : NpcScreen<QuestNpc>
     {

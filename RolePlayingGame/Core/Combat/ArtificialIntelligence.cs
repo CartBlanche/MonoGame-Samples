@@ -7,9 +7,9 @@
 
 using System;
 using System.Collections.Generic;
-using RolePlayingGameData;
+using RolePlaying.Data;
 
-namespace RolePlaying
+namespace RolePlaying.Core
 {
     /// <summary>
     /// Determines actions for a given monster in combat.

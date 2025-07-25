@@ -7,11 +7,11 @@
 
 using System;
 using Microsoft.Xna.Framework;
-using RolePlayingGameData;
+using RolePlaying.Data;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Audio;
 
-namespace RolePlaying
+namespace RolePlaying.Core
 {
     /// <summary>
     /// A item-casting combat action, including related data and calculations.

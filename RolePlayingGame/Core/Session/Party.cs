@@ -10,9 +10,9 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
 using Microsoft.Xna.Framework.Content;
-using RolePlayingGameData;
+using RolePlaying.Data;
 
-namespace RolePlaying
+namespace RolePlaying.Core
 {
     /// <summary>
     /// The group of players, under control of the user.

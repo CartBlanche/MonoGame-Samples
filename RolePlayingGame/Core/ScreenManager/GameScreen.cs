@@ -8,7 +8,7 @@
 using System;
 using Microsoft.Xna.Framework;
 
-namespace RolePlaying
+namespace RolePlaying.Core
 {
     /// <summary>
     /// Enum describes the screen transition state.

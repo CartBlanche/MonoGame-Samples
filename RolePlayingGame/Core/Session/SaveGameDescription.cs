@@ -8,7 +8,7 @@
 using System;
 using System.Xml.Serialization;
 
-namespace RolePlaying
+namespace RolePlaying.Core
 {
     /// <summary>
     /// The description of a save game file.
