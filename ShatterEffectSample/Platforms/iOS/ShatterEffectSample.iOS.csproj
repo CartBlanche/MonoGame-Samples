@@ -9,16 +9,17 @@
     <Company>Microsoft</Company>
     <Copyright>Copyright © Microsoft</Copyright>
     <Version>1.0.0.0</Version>
+    <MonoGamePlaform>iOS</MonoGamePlaform>
   </PropertyGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\..\Core\ShatterEffectSample.Core.csproj" />
     <PackageReference Include="MonoGame.Framework.iOS" Version="3.8.*" />
+    <PackageReference Include="MonoGame.Content.Builder.Task" Version="3.8.*" />
   </ItemGroup>
 
   <ItemGroup>
-    <Content Include="..\..\Core\Content\**\*.xnb" Link="Content\%(RecursiveDir)%(Filename)%(Extension)">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
+    <MonoGameContentReference Include="..\..\Core\Content\Content.mgcb" />
   </ItemGroup>
+  
 </Project>

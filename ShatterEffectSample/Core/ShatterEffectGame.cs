@@ -55,7 +55,7 @@ namespace ShatterEffect
             spriteBatch = new SpriteBatch(this.graphics.GraphicsDevice);
             
             font = Content.Load<SpriteFont>("font");
-            model = Content.Load<Model>("tank");
+            model = Content.Load<Model>("model/tank");
 
             // Calculate View/Projection Matrices.
             view = Matrix.CreateLookAt(cameraPosition, targetPosition, Vector3.Up);
