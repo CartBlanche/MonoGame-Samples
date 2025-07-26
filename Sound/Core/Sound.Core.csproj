@@ -1,0 +1,13 @@
+  <!-- .xnb copy ItemGroup moved inside <Project> below -->
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <RootNamespace>Sound.Core</RootNamespace>
+    <AssemblyName>Sound.Core</AssemblyName>
+  </PropertyGroup>
+  
+  <ItemGroup>
+    <PackageReference Include="MonoGame.Framework.DesktopGL" Version="3.8.*" />
+  </ItemGroup>
+  
+</Project>

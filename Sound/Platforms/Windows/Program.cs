@@ -1,12 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+using System;
 
-namespace Microsoft.Xna.Samples.Sound
+namespace SoundSample.Windows
 {
     static class Program
     {
-        private static Game1 game;
+        private static SoundGame game;
 
         /// <summary>
         /// The main entry point for the application.
@@ -14,7 +12,7 @@ namespace Microsoft.Xna.Samples.Sound
         [STAThread]
         static void Main()
         {
-            game = new Game1();
+            game = new SoundGame();
             game.Run();
         }
     }

@@ -9,18 +9,17 @@ using Android.Widget;
 using Android.OS;
 using Microsoft.Xna.Framework;
 
-namespace Microsoft.Xna.Samples.Sound
+namespace SoundSample.Android
 {
     [Activity(Label = "Sound", MainLauncher = true, Icon = "@drawable/icon"
         , Theme = "@style/Theme.Splash",ConfigurationChanges=ConfigChanges.Orientation|ConfigChanges.Keyboard|ConfigChanges.KeyboardHidden)]
-    public class Activity1 : AndroidGameActivity
+    public class MainActivity : AndroidGameActivity
     {
         protected override void OnCreate(Bundle bundle)
         {
             base.OnCreate(bundle);
-            Game1.Activity = this;
-            var g = new Game1();
-            SetContentView(g.Window);
+            // SoundGame.Activity = this; // Not needed in MonoGame 3.8 Android
+            var g = new SoundGame();
             g.Run();
                
         }
