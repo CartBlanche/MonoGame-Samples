@@ -1,0 +1,49 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Launch Windows",
+      "type": "coreclr",
+      "request": "launch",
+      "preLaunchTask": "Build Windows",
+      "program": "${workspaceFolder}/Platforms/Windows/bin/Debug/net8.0-windows/ShadowMapping.Windows.exe",
+      "args": [],
+      "cwd": "${workspaceFolder}",
+      "stopAtEntry": false,
+      "console": "internalConsole"
+    },
+    {
+      "name": "Launch DesktopGL",
+      "type": "coreclr",
+      "request": "launch",
+      "preLaunchTask": "Build DesktopGL",
+      "program": "${workspaceFolder}/Platforms/Desktop/bin/Debug/net8.0/ShadowMapping.DesktopGL.exe",
+      "args": [],
+      "cwd": "${workspaceFolder}",
+      "stopAtEntry": false,
+      "console": "internalConsole"
+    },
+    {
+      "name": "Launch Android",
+      "type": "coreclr",
+      "request": "launch",
+      "preLaunchTask": "Build Android",
+      "program": "${workspaceFolder}/Platforms/Android/bin/Debug/net8.0-android/ShadowMapping.Android.dll",
+      "args": [],
+      "cwd": "${workspaceFolder}",
+      "stopAtEntry": false,
+      "console": "internalConsole"
+    },
+    {
+      "name": "Launch iOS",
+      "type": "coreclr",
+      "request": "launch",
+      "preLaunchTask": "Build iOS",
+      "program": "${workspaceFolder}/Platforms/iOS/bin/Debug/net8.0-ios/ShadowMapping.iOS.dll",
+      "args": [],
+      "cwd": "${workspaceFolder}",
+      "stopAtEntry": false,
+      "console": "internalConsole"
+    }
+  ]
+}

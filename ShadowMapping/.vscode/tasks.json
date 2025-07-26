@@ -1,0 +1,53 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Build Windows",
+      "type": "shell",
+      "command": "dotnet build Platforms/Windows/ShadowMapping.Windows.csproj",
+      "group": "build"
+    },
+    {
+      "label": "Build DesktopGL",
+      "type": "shell",
+      "command": "dotnet build Platforms/Desktop/ShadowMapping.DesktopGL.csproj",
+      "group": "build"
+    },
+    {
+      "label": "Build Android",
+      "type": "shell",
+      "command": "dotnet build Platforms/Android/ShadowMapping.Android.csproj",
+      "group": "build"
+    },
+    {
+      "label": "Build iOS",
+      "type": "shell",
+      "command": "dotnet build Platforms/iOS/ShadowMapping.iOS.csproj",
+      "group": "build"
+    },
+    {
+      "label": "Run Windows",
+      "type": "shell",
+      "command": "dotnet run --project Platforms/Windows/ShadowMapping.Windows.csproj",
+      "group": "test"
+    },
+    {
+      "label": "Run DesktopGL",
+      "type": "shell",
+      "command": "dotnet run --project Platforms/DesktopGL/ShadowMapping.DesktopGL.csproj",
+      "group": "test"
+    },
+    {
+      "label": "Run Android",
+      "type": "shell",
+      "command": "dotnet run --project Platforms/Android/ShadowMapping.Android.csproj",
+      "group": "test"
+    },
+    {
+      "label": "Run iOS",
+      "type": "shell",
+      "command": "dotnet run --project Platforms/iOS/ShadowMapping.iOS.csproj",
+      "group": "test"
+    }
+  ]
+}
