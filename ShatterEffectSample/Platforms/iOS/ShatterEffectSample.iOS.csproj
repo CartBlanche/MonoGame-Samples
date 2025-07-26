@@ -1,0 +1,24 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net8.0-ios</TargetFramework>
+    <RootNamespace>ShatterEffectSample.iOS</RootNamespace>
+    <AssemblyTitle>Shatter Effect</AssemblyTitle>
+    <AssemblyProduct>Shatter Effect</AssemblyProduct>
+    <Description>This sample shows how you can apply an effect on any model in your game to shatter it apart. The effect is simulated with a vertex shader.</Description>
+    <Company>Microsoft</Company>
+    <Copyright>Copyright © Microsoft</Copyright>
+    <Version>1.0.0.0</Version>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Core\ShatterEffectSample.Core.csproj" />
+    <PackageReference Include="MonoGame.Framework.iOS" Version="3.8.*" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="..\..\Core\Content\**\*.xnb" Link="Content\%(RecursiveDir)%(Filename)%(Extension)">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+</Project>
