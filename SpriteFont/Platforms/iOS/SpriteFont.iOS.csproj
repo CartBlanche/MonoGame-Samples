@@ -1,0 +1,21 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net8.0-ios</TargetFramework>
+    <RootNamespace>SpriteFont.iOS</RootNamespace>
+    <AssemblyName>SpriteFont.iOS</AssemblyName>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+  </PropertyGroup>
+  
+  <ItemGroup>
+    <ProjectReference Include="..\..\Core\SpriteFont.Core.csproj" />
+    <PackageReference Include="MonoGame.Framework.iOS" Version="3.8.*" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="..\..\Core\Content\**\*.xnb">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <Link>Content\%(RecursiveDir)%(Filename)%(Extension)</Link>
+    </None>
+  </ItemGroup>
+</Project>
