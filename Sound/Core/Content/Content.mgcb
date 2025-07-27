@@ -14,6 +14,7 @@
 #begin Explosion1.mp3
 /importer:Mp3Importer
 /processor:SongProcessor
+/processorParam:Quality=Best
 /build:Explosion1.mp3
 
 #begin Fonts

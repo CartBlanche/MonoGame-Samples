@@ -19,8 +19,11 @@
     <PackageReference Include="MonoGame.Framework.DesktopGL" Version="3.8.*" />
     <PackageReference Include="MonoGame.Content.Builder.Task" Version="3.8.*" />
   </ItemGroup>
+
   <ItemGroup>
-    <MonoGameContentReference Include="..\..\Core\Content\Content.mgcb" />
+    <MonoGameContentReference Include="..\..\Core\Content\Content.mgcb">
+      <Link>Content\Content.mgcb</Link>
+    </MonoGameContentReference>
   </ItemGroup>
   
 </Project>
