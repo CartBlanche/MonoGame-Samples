@@ -1,20 +1,16 @@
-#region File Description
 //-----------------------------------------------------------------------------
 // SpriteEffects.cs
 //
 // Microsoft XNA Community Game Platform
 // Copyright (C) Microsoft Corporation. All rights reserved.
 //-----------------------------------------------------------------------------
-#endregion
 
-#region Using Statements
 using System;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
-#endregion
 
 namespace SpriteEffects
 {
@@ -24,7 +20,6 @@ namespace SpriteEffects
 	/// </summary>
 	public class SpriteEffectsGame : Microsoft.Xna.Framework.Game
 	{
-	#region Fields
 
 
 		GraphicsDeviceManager graphics;
@@ -63,9 +58,7 @@ namespace SpriteEffects
 		// SpriteBatch instance used to render all the effects.
 		SpriteBatch spriteBatch;
 
-	#endregion
 
-	#region Initialization
 
 
 		public SpriteEffectsGame ()
@@ -80,22 +73,23 @@ namespace SpriteEffects
 		/// </summary>
 		protected override void LoadContent ()
 		{
+			spriteBatch = new SpriteBatch(graphics.GraphicsDevice);
+
+			// Load Textures
+			catTexture = Content.Load<Texture2D>("cat");
+			catNormalmapTexture = Content.Load<Texture2D>("cat_normalmap");
+			glacierTexture = Content.Load<Texture2D>("glacier");
+			waterfallTexture = Content.Load<Texture2D>("waterfall");
+
+			// Load Shaders
 			desaturateEffect = Content.Load<Effect> ("desaturate");
 			disappearEffect = Content.Load<Effect> ("disappear");
 			normalmapEffect = Content.Load<Effect> ("normalmap");
 			refractionEffect = Content.Load<Effect> ("refraction");
-			catTexture = Content.Load<Texture2D> ("cat");
-			catNormalmapTexture = Content.Load<Texture2D> ("cat_normalmap");
-			glacierTexture = Content.Load<Texture2D> ("glacier");
-			waterfallTexture = Content.Load<Texture2D> ("waterfall");
-
-			spriteBatch = new SpriteBatch (graphics.GraphicsDevice);
 		}
 
 
-	#endregion
 
-	#region Update and Draw
 
 
 		/// <summary>
@@ -166,21 +160,22 @@ namespace SpriteEffects
 
 			byte pulsate = (byte)Pulsate (gameTime, 4, 0, 255);
 
+			// Use explicit byte casts to avoid ambiguity between int and byte overloads
 			spriteBatch.Draw (glacierTexture, 
 				QuarterOfScreen (0, 0), 
-				new Color (255, 255, 255, 0));
+				new Color ((byte)255, (byte)255, (byte)255, (byte)0));
 
 			spriteBatch.Draw (glacierTexture, 
 				QuarterOfScreen (1, 0), 
-				new Color (255, 255, 255, 64));
+				new Color ((byte)255, (byte)255, (byte)255, (byte)64));
 
 			spriteBatch.Draw (glacierTexture, 
 				QuarterOfScreen (0, 1), 
-				new Color (255, 255, 255, 255));
+				new Color ((byte)255, (byte)255, (byte)255, (byte)255));
 
 			spriteBatch.Draw (glacierTexture, 
 				QuarterOfScreen (1, 1), 
-				new Color (255, 255, 255, pulsate));
+				new Color ((byte)255, (byte)255, (byte)255, (byte)pulsate));
 
 			// End the sprite batch.
 			spriteBatch.End ();
@@ -220,7 +215,7 @@ namespace SpriteEffects
 
 			spriteBatch.Draw (catTexture, 
 				MoveInCircle (gameTime, catTexture, 1), 
-				new Color (255, 255, 255, fade));			
+				new Color ((byte)255, (byte)255, (byte)255, (byte)fade));
 
 			// End the sprite batch.
 			spriteBatch.End ();
@@ -409,9 +404,7 @@ namespace SpriteEffects
 		}
 
 
-	#endregion
 
-	#region Handle Input
 
 
 		/// <summary>
@@ -452,7 +445,6 @@ namespace SpriteEffects
 		}
 
 
-	#endregion
 	}
 
 }
