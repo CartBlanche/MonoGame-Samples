@@ -1,0 +1,33 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "build-windows",
+            "type": "shell",
+            "command": "dotnet build Platforms/Windows/Tetris.Windows.csproj",
+            "group": "build",
+            "problemMatcher": "$msCompile"
+        },
+        {
+            "label": "build-desktopgl",
+            "type": "shell",
+            "command": "dotnet build Platforms/DesktopGL/Tetris.DesktopGL.csproj",
+            "group": "build",
+            "problemMatcher": "$msCompile"
+        },
+        {
+            "label": "build-ios",
+            "type": "shell",
+            "command": "dotnet build Platforms/iOS/Tetris.iOS.csproj",
+            "group": "build",
+            "problemMatcher": "$msCompile"
+        },
+        {
+            "label": "build-android",
+            "type": "shell",
+            "command": "dotnet build Platforms/Android/Tetris.Android.csproj",
+            "group": "build",
+            "problemMatcher": "$msCompile"
+        }
+    ]
+}
