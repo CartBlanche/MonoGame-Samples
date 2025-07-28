@@ -9,7 +9,7 @@ This project demonstrates video playback using MonoGame 3.8.* across multiple pl
  - **/Platforms/DesktopGL**: DesktopGL-specific entry point and project
  - **/Platforms/Android**: Android entry point, manifest, and project
  - **/Platforms/iOS**: iOS entry point, Info.plist, and project
- - **/Content**: Game assets, including fonts and video files (e.g., .mp4)
+ - **/Core/Content**: Game assets, including fonts and video files (e.g., .mp4)
 
 ## Building and Running
 
