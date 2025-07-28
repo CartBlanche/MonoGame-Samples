@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Runtime.InteropServices;
 using Microsoft.Xna.Framework.Graphics;
 using SharpDX.Direct3D9;
@@ -23,14 +23,11 @@ namespace WpfInteropSample
         // The code requires Windows Vista and up using the Windows Display Driver Model (WDDM). 
         // It does not work with the Windows 2000 Display Driver Model (XDDM).
 
-        #region Fields
         private bool _disposed;
         private Direct3DEx _direct3D;
         private DeviceEx _device;
-        #endregion
 
 
-        #region Creation & Cleanup
         /// <summary>
         /// Initializes a new instance of the <see cref="D3D9"/> class.
         /// </summary>
@@ -121,10 +118,8 @@ namespace WpfInteropSample
                 _disposed = true;
             }
         }
-        #endregion
 
 
-        #region Methods
         
         [DllImport("user32.dll", SetLastError = false)]
         private static extern IntPtr GetDesktopWindow();
@@ -173,6 +168,5 @@ namespace WpfInteropSample
 
             return new Texture(_device, renderTarget.Width, renderTarget.Height, 1, Usage.RenderTarget, format, Pool.Default, ref handle);
         }
-        #endregion
     }
 }

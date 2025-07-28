@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Windows;
 using System.Windows.Interop;
 using Microsoft.Xna.Framework.Graphics;
@@ -16,7 +16,6 @@ namespace WpfInteropSample
     /// </remarks>
     internal class D3D11Image : D3DImage, IDisposable
     {
-        #region Fields
         // Use a Direct3D 9 device for interoperability. The device is shared by 
         // all D3D11Images.
         private static D3D9 _d3D9;
@@ -25,10 +24,8 @@ namespace WpfInteropSample
 
         private bool _disposed;
         private Texture _backBuffer;
-        #endregion
 
 
-        #region Creation & Cleanup
         /// <summary>
         /// Initializes a new instance of the <see cref="D3D11Image"/> class.
         /// </summary>
@@ -94,10 +91,8 @@ namespace WpfInteropSample
                 _disposed = true;
             }
         }
-        #endregion
 
 
-        #region Methods
         /// <summary>
         /// Initializes the Direct3D 9 device.
         /// </summary>
@@ -185,6 +180,5 @@ namespace WpfInteropSample
             if (previousBackBuffer != null)
                 previousBackBuffer.Dispose();
         }
-        #endregion
     }
 }

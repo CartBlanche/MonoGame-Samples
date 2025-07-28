@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Windows;
@@ -17,7 +17,6 @@ namespace WpfInteropSample
     /// </summary>
     public class D3D11Host : Image
     {
-        #region Fields
         // The Direct3D 11 device (shared by all D3D11Host elements):
         private static GraphicsDevice _graphicsDevice;
         private static int _referenceCount;
@@ -31,9 +30,7 @@ namespace WpfInteropSample
         // Render timing:
         private readonly Stopwatch _timer;
         private TimeSpan _lastRenderingTime;
-        #endregion
 
-        #region Properties
         /// <summary>
         /// Gets a value indicating whether the controls runs in the context of a designer (e.g.
         /// Visual Studio Designer or Expression Blend).
@@ -63,10 +60,8 @@ namespace WpfInteropSample
         {
             get { return _graphicsDevice; }
         }
-        #endregion
 
 
-        #region Constructors
         /// <summary>
         /// Initializes a new instance of the <see cref="D3D11Host"/> class.
         /// </summary>
@@ -76,10 +71,8 @@ namespace WpfInteropSample
             Loaded += OnLoaded;
             Unloaded += OnUnloaded;
         }
-        #endregion
 
 
-        #region Methods
         private void OnLoaded(object sender, RoutedEventArgs eventArgs)
         {
             if (IsInDesignMode)
@@ -112,12 +105,12 @@ namespace WpfInteropSample
                 if (_referenceCount == 1)
                 {
                     // Create Direct3D 11 device.
+                    var graphicsAdapter = GraphicsAdapter.DefaultAdapter;
                     var presentationParameters = new PresentationParameters
                     {
-                        // Do not associate graphics device with window.
                         DeviceWindowHandle = IntPtr.Zero,
                     };
-                    _graphicsDevice = new GraphicsDevice(GraphicsProfile.HiDef, presentationParameters);
+                    _graphicsDevice = new GraphicsDevice(graphicsAdapter, GraphicsProfile.HiDef, presentationParameters);
                 }
             }
         }
@@ -254,7 +247,6 @@ namespace WpfInteropSample
         }
 
 
-        #region ----- Example Scene -----
 
         // Source: http://msdn.microsoft.com/en-us/library/bb203926(v=xnagamestudio.40).aspx
 
@@ -439,8 +431,6 @@ namespace WpfInteropSample
                 GraphicsDevice.DrawPrimitives(PrimitiveType.TriangleList, 0, 12);
             }
         }
-        #endregion
         
-        #endregion
     }
 }
