@@ -25,7 +25,9 @@ namespace RolePlayingGame.Processors
     {
         public override string GetRuntimeReader(TargetPlatform targetPlatform)
         {
-            return typeof(T).AssemblyQualifiedName;
+            Type type = typeof(T);
+            string readerType = $"{type.Namespace}.{type.Name}.{type.Name}Reader, {type.Assembly.FullName}";
+            return readerType;
         }
 
         public override string GetRuntimeType(TargetPlatform targetPlatform)
