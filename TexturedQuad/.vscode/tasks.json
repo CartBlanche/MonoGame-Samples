@@ -1,0 +1,34 @@
+{
+    // See https://code.visualstudio.com/docs/editor/tasks for more details
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "build-windows",
+            "type": "shell",
+            "command": "dotnet build Platforms/Windows/TexturedQuad.Windows.csproj -c Debug",
+            "group": "build",
+            "problemMatcher": "$msCompile"
+        },
+        {
+            "label": "build-desktopgl",
+            "type": "shell",
+            "command": "dotnet build Platforms/DesktopGL/TexturedQuad.DesktopGL.csproj -c Debug",
+            "group": "build",
+            "problemMatcher": "$msCompile"
+        },
+        {
+            "label": "build-ios",
+            "type": "shell",
+            "command": "dotnet build Platforms/iOS/TexturedQuad.iOS.csproj -c Debug",
+            "group": "build",
+            "problemMatcher": "$msCompile"
+        },
+        {
+            "label": "build-android",
+            "type": "shell",
+            "command": "dotnet build Platforms/Android/TexturedQuad.Android.csproj -c Debug",
+            "group": "build",
+            "problemMatcher": "$msCompile"
+        }   
+    ]
+}
