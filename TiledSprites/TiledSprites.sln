@@ -1,9 +1,18 @@
-﻿
-Microsoft Visual Studio Solution File, Format Version 11.00
-# Visual Studio 2010
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TiledSprites", "TiledSprites.csproj", "{7D24D7EA-822C-4991-8BC9-1C2EF9C5F59A}"
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.5.2.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TiledSprites.Core", "Core\TiledSprites.Core.csproj", "{4F8FB59E-7E2D-01D4-556F-F2B3CD55A76D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonoGame.Framework.MacOS", "..\..\MonoGame.Framework\MonoGame.Framework.MacOS.csproj", "{36C538E6-C32A-4A8D-A39C-566173D7118E}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Platforms", "Platforms", "{324791A1-5798-203D-0CA6-A8E0DAEC81C8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TiledSprites.Android", "Platforms\Android\TiledSprites.Android.csproj", "{B0480B5A-A563-7D78-645E-9A21D73CD2A1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TiledSprites.DesktopGL", "Platforms\DesktopGL\TiledSprites.DesktopGL.csproj", "{BF6358F0-66DD-7F6D-4CE0-237277324783}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TiledSprites.iOS", "Platforms\iOS\TiledSprites.iOS.csproj", "{9B0D8634-5535-4C77-D1A8-1AFCDE65788F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TiledSprites.Windows", "Platforms\Windows\TiledSprites.Windows.csproj", "{EA92B871-B4D9-296A-5A58-C9077592050A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -11,16 +20,37 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{36C538E6-C32A-4A8D-A39C-566173D7118E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{36C538E6-C32A-4A8D-A39C-566173D7118E}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{36C538E6-C32A-4A8D-A39C-566173D7118E}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{36C538E6-C32A-4A8D-A39C-566173D7118E}.Release|Any CPU.Build.0 = Release|Any CPU
-		{7D24D7EA-822C-4991-8BC9-1C2EF9C5F59A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{7D24D7EA-822C-4991-8BC9-1C2EF9C5F59A}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{7D24D7EA-822C-4991-8BC9-1C2EF9C5F59A}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{7D24D7EA-822C-4991-8BC9-1C2EF9C5F59A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4F8FB59E-7E2D-01D4-556F-F2B3CD55A76D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4F8FB59E-7E2D-01D4-556F-F2B3CD55A76D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4F8FB59E-7E2D-01D4-556F-F2B3CD55A76D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4F8FB59E-7E2D-01D4-556F-F2B3CD55A76D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B0480B5A-A563-7D78-645E-9A21D73CD2A1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B0480B5A-A563-7D78-645E-9A21D73CD2A1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B0480B5A-A563-7D78-645E-9A21D73CD2A1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B0480B5A-A563-7D78-645E-9A21D73CD2A1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BF6358F0-66DD-7F6D-4CE0-237277324783}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BF6358F0-66DD-7F6D-4CE0-237277324783}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BF6358F0-66DD-7F6D-4CE0-237277324783}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BF6358F0-66DD-7F6D-4CE0-237277324783}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9B0D8634-5535-4C77-D1A8-1AFCDE65788F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9B0D8634-5535-4C77-D1A8-1AFCDE65788F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9B0D8634-5535-4C77-D1A8-1AFCDE65788F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9B0D8634-5535-4C77-D1A8-1AFCDE65788F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EA92B871-B4D9-296A-5A58-C9077592050A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EA92B871-B4D9-296A-5A58-C9077592050A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EA92B871-B4D9-296A-5A58-C9077592050A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EA92B871-B4D9-296A-5A58-C9077592050A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
-	GlobalSection(MonoDevelopProperties) = preSolution
-		StartupItem = TiledSprites.csproj
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{B0480B5A-A563-7D78-645E-9A21D73CD2A1} = {324791A1-5798-203D-0CA6-A8E0DAEC81C8}
+		{BF6358F0-66DD-7F6D-4CE0-237277324783} = {324791A1-5798-203D-0CA6-A8E0DAEC81C8}
+		{9B0D8634-5535-4C77-D1A8-1AFCDE65788F} = {324791A1-5798-203D-0CA6-A8E0DAEC81C8}
+		{EA92B871-B4D9-296A-5A58-C9077592050A} = {324791A1-5798-203D-0CA6-A8E0DAEC81C8}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {202FB032-8F86-4813-A24E-BF2858E73601}
 	EndGlobalSection
 EndGlobal
