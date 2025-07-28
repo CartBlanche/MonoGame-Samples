@@ -1,0 +1,18 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <RootNamespace>Storage.Core</RootNamespace>
+    <Nullable>enable</Nullable>
+    <AssemblyTitle>Storage.Core</AssemblyTitle>
+    <AssemblyVersion>1.0.0.0</AssemblyVersion>
+    <FileVersion>1.0.0.0</FileVersion>
+    <Authors>YourName</Authors>
+    <Company>YourCompany</Company>
+    <Product>Storage</Product>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="MonoGame.Framework.DesktopGL" Version="3.8.4.2491-develop" />
+  </ItemGroup>
+  
+</Project>
