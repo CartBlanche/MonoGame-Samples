@@ -1,0 +1,22 @@
+
+#----------------------------- Global Properties ----------------------------#
+
+/outputDir:bin/$(Platform)
+/intermediateDir:obj/$(Platform)
+/platform:DesktopGL
+/config:$(Configuration)
+/profile:HiDef
+/compress:False
+
+#-------------------------------- References --------------------------------#
+
+
+#---------------------------------- Content ---------------------------------#
+
+#begin Fonts
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/build:font.spritefont
+
+#begin Videos
+/build:sintel_trailer.mp4
