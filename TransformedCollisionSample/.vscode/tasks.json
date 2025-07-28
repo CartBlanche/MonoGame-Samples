@@ -1,0 +1,45 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "build-windows",
+      "command": "dotnet",
+      "type": "process",
+      "args": [
+        "build",
+        "Platforms/Windows/TransformedCollision.Windows.csproj"
+      ],
+      "problemMatcher": "$msCompile"
+    },
+    {
+      "label": "build-desktopgl",
+      "command": "dotnet",
+      "type": "process",
+      "args": [
+        "build",
+        "Platforms/DesktopGL/TransformedCollision.DesktopGL.csproj"
+      ],
+      "problemMatcher": "$msCompile"
+    },
+    {
+      "label": "build-ios",
+      "command": "dotnet",
+      "type": "process",
+      "args": [
+        "build",
+        "Platforms/iOS/TransformedCollision.iOS.csproj"
+      ],
+      "problemMatcher": "$msCompile"
+    },
+    {
+      "label": "build-android",
+      "command": "dotnet",
+      "type": "process",
+      "args": [
+        "build",
+        "Platforms/Android/TransformedCollision.Android.csproj"
+      ],
+      "problemMatcher": "$msCompile"
+    }
+  ]
+}
