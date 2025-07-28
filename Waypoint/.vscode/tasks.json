@@ -1,0 +1,41 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"type": "shell",
+			"label": "build-windows",
+			"command": "dotnet build Platforms/Windows/Waypoint.Windows.csproj",
+			"group": "build",
+			"problemMatcher": [
+				"$msCompile"
+			]
+		},
+		{
+			"type": "shell",
+			"label": "build-desktopgl",
+			"command": "dotnet build Platforms/DesktopGL/Waypoint.DesktopGL.csproj",
+			"group": "build",
+			"problemMatcher": [
+				"$msCompile"
+			]
+		},
+		{
+			"type": "shell",
+			"label": "build-android",
+			"command": "dotnet build Platforms/Android/Waypoint.Android.csproj",
+			"group": "build",
+			"problemMatcher": [
+				"$msCompile"
+			]
+		},
+		{
+			"type": "shell",
+			"label": "build-ios",
+			"command": "dotnet build Platforms/iOS/Waypoint.iOS.csproj",
+			"group": "build",
+			"problemMatcher": [
+				"$msCompile"
+			]
+		}
+	]
+}
