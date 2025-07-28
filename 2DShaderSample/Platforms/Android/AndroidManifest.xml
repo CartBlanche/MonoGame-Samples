@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" package="com.example.xna2dshaderexamples">
+  <application android:label="XNA2DShaderExamples" android:icon="@mipmap/icon">
+    <activity android:name="android.app.Activity" android:label="XNA2DShaderExamples" android:exported="true">
+      <intent-filter>
+        <action android:name="android.intent.action.MAIN" />
+        <category android:name="android.intent.category.LAUNCHER" />
+      </intent-filter>
+    </activity>
+  </application>
+</manifest>
