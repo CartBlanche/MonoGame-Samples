@@ -47,6 +47,9 @@ _ReSharper*/
 # Office Temp Files
 ~$*
 
+# Visual Studio Solution files
+.vs
+
 #monodroid private beta
 monodroid*.msi
 /CompiledContent/Android/IgnoreMe.dll
