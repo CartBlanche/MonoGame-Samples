@@ -27,8 +27,8 @@
   <ItemGroup>
     <ProjectReference Include="..\..\Core\RolePlaying.Core.csproj" />
     <ProjectReference Include="..\..\RolePlayingGameData\RolePlaying.Data.csproj" />
-    <PackageReference Include="MonoGame.Framework.Android" Version="3.8.*" />
-    <PackageReference Include="MonoGame.Content.Builder.Task" Version="3.8.*" />
+    <PackageReference Include="MonoGame.Framework.Android" Version="3.8.*" PrivateAssets="All"/>
+    <PackageReference Include="MonoGame.Content.Builder.Task" Version="3.8.*" PrivateAssets="All"/>
   </ItemGroup>
 
   <ItemGroup>
