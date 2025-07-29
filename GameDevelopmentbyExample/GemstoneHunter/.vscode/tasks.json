@@ -1,0 +1,33 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "build-windows",
+            "type": "shell",
+            "command": "dotnet build Platforms/Windows/GemstoneHunter.Windows.csproj",
+            "group": "build",
+            "problemMatcher": ["$msCompile"]
+        },
+        {
+            "label": "build-desktopgl",
+            "type": "shell",
+            "command": "dotnet build Platforms/Desktop/GemstoneHunter.DesktopGL.csproj",
+            "group": "build",
+            "problemMatcher": ["$msCompile"]
+        },
+        {
+            "label": "build-android",
+            "type": "shell",
+            "command": "dotnet build Platforms/Android/GemstoneHunter.Android.csproj",
+            "group": "build",
+            "problemMatcher": ["$msCompile"]
+        },
+        {
+            "label": "build-ios",
+            "type": "shell",
+            "command": "dotnet build Platforms/iOS/GemstoneHunter.iOS.csproj",
+            "group": "build",
+            "problemMatcher": ["$msCompile"]
+        }
+    ]
+}
