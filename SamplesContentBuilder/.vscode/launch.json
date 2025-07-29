@@ -1,0 +1,49 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Android Build",
+            "type": "coreclr",
+            "request": "launch",
+            "preLaunchTask": "build-android",
+            "program": "dotnet",
+            "args": [],
+            "cwd": "${workspaceFolder}",
+            "console": "internalConsole",
+            "stopAtEntry": true
+        },
+        {
+            "name": "Desktop Build",
+            "type": "coreclr",
+            "request": "launch",
+            "preLaunchTask": "build-desktopgl",
+            "program": "dotnet",
+            "args": [],
+            "cwd": "${workspaceFolder}",
+            "console": "internalConsole",
+            "stopAtEntry": true
+        },
+        {
+            "name": "iOS Build",
+            "type": "coreclr",
+            "request": "launch",
+            "preLaunchTask": "build-ios",
+            "program": "dotnet",
+            "args": [],
+            "cwd": "${workspaceFolder}",
+            "console": "internalConsole",
+            "stopAtEntry": true
+        },
+        {
+            "name": "Windows Build",
+            "type": "coreclr",
+            "request": "launch",
+            "preLaunchTask": "build-windows",
+            "program": "dotnet",
+            "args": [],
+            "cwd": "${workspaceFolder}",
+            "console": "internalConsole",
+            "stopAtEntry": true
+        }
+    ]
+}

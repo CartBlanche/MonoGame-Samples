@@ -1,0 +1,72 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "build-windows",
+            "command": "dotnet",
+            "type": "process",
+            "args": [
+                "build",
+                "${workspaceFolder}/Platforms/Windows/InputReporter.Windows.csproj",
+                "/property:GenerateFullPaths=true",
+                "/consoleloggerparameters:NoSummary"
+            ],
+            "group": "build",
+            "presentation": {
+                "reveal": "silent"
+            },
+            "problemMatcher": "$msCompile"
+        },
+        {
+            "label": "build-desktopgl",
+            "command": "dotnet",
+            "type": "process",
+            "args": [
+                "build",
+                "${workspaceFolder}/Platforms/Desktop/InputReporter.DesktopGL.csproj",
+                "/property:GenerateFullPaths=true",
+                "/consoleloggerparameters:NoSummary"
+            ],
+            "group": "build",
+            "presentation": {
+                "reveal": "silent"
+            },
+            "problemMatcher": "$msCompile"
+        },
+        {
+            "label": "build-android",
+            "command": "dotnet",
+            "type": "process",
+            "args": [
+                "build",
+                "${workspaceFolder}/Platforms/Android/InputReporter.Android.csproj",
+                "/property:GenerateFullPaths=true",
+                "/consoleloggerparameters:NoSummary"
+            ],
+            "group": "build",
+            "presentation": {
+                "reveal": "silent"
+            },
+            "problemMatcher": "$msCompile"
+        }
+    ,
+    {
+        "label": "run-windows",
+        "type": "shell",
+        "command": "dotnet run --project Platforms/Windows/InputReporter.Windows.csproj",
+        "group": "build"
+    },
+    {
+        "label": "run-desktopgl",
+        "type": "shell",
+        "command": "dotnet run --project Platforms/Desktop/InputReporter.DesktopGL.csproj",
+        "group": "build"
+    },
+    {
+        "label": "run-android",
+        "type": "shell",
+        "command": "dotnet run --project Platforms/Android/InputReporter.Android.csproj",
+        "group": "build"
+    }
+    ]
+}

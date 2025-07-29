@@ -1,0 +1,108 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "build-windows",
+            "type": "shell",
+            "command": "dotnet",
+            "args": ["build", "Platforms/Windows/Primitives.Windows.csproj"],
+            "group": "build",
+            "problemMatcher": "$msCompile"
+        },
+        {
+            "label": "build-desktopgl",
+            "type": "shell",
+            "command": "dotnet",
+            "args": ["build", "Platforms/Desktop/Primitives.DesktopGL.csproj"],
+            "group": "build",
+            "problemMatcher": "$msCompile"
+        },
+        {
+            "label": "build-android",
+            "type": "shell",
+            "command": "dotnet",
+            "args": ["build", "Platforms/Android/Primitives.Android.csproj"],
+            "group": "build",
+            "problemMatcher": "$msCompile"
+        },
+        {
+            "label": "build-all",
+            "type": "shell",
+            "command": "dotnet",
+            "args": ["build", "Primitives.sln"],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "problemMatcher": "$msCompile"
+        },
+        {
+            "label": "run-windows",
+            "type": "shell",
+            "command": "dotnet",
+            "args": ["run", "--project", "Platforms/Windows/Primitives.Windows.csproj"],
+            "group": "test",
+            "dependsOn": "build-windows",
+            "problemMatcher": "$msCompile"
+        },
+        {
+            "label": "run-desktopgl",
+            "type": "shell",
+            "command": "dotnet",
+            "args": ["run", "--project", "Platforms/Desktop/Primitives.DesktopGL.csproj"],
+            "group": "test",
+            "dependsOn": "build-desktopgl",
+            "problemMatcher": "$msCompile"
+        },
+        {
+            "label": "build-android",
+            "type": "shell",
+            "command": "dotnet",
+            "args": ["build", "Platforms/Android/Primitives.Android.csproj"],
+            "group": "build",
+            "problemMatcher": "$msCompile"
+        },
+        {
+            "label": "run-android",
+            "type": "shell",
+            "command": "dotnet",
+            "args": ["run", "--project", "Platforms/Android/Primitives.Android.csproj"],
+            "group": "test",
+            "dependsOn": "build-android",
+            "problemMatcher": "$msCompile"
+        },
+        {
+            "label": "build-ios",
+            "type": "shell",
+            "command": "dotnet",
+            "args": ["build", "Platforms/iOS/Primitives.iOS.csproj"],
+            "group": "build",
+            "problemMatcher": "$msCompile"
+        },
+        {
+            "label": "run-ios",
+            "type": "shell",
+            "command": "dotnet",
+            "args": ["run", "--project", "Platforms/iOS/Primitives.iOS.csproj"],
+            "group": "test",
+            "dependsOn": "build-ios",
+            "problemMatcher": "$msCompile"
+        },
+        {
+            "label": "clean",
+            "type": "shell",
+            "command": "dotnet",
+            "args": ["clean", "Primitives.sln"],
+            "group": "build",
+            "problemMatcher": "$msCompile"
+        },
+        {
+            "label": "restore",
+            "type": "shell",
+            "command": "dotnet",
+            "args": ["restore", "Primitives.sln"],
+            "group": "build",
+            "problemMatcher": "$msCompile"
+        }
+    ]
+}

@@ -1,0 +1,49 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Launch Windows",
+            "type": "coreclr",
+            "request": "launch",
+            "preLaunchTask": "build-windows",
+            "program": "${workspaceFolder}/Platforms/Windows/bin/Debug/net8.0-windows/Peer2PeerSample.exe",
+            "args": [],
+            "cwd": "${workspaceFolder}/Platforms/Windows",
+            "console": "internalConsole",
+            "stopAtEntry": false
+        },
+        {
+            "name": "Launch DesktopGL",
+            "type": "coreclr",
+            "request": "launch",
+            "preLaunchTask": "build-desktopgl",
+            "program": "${workspaceFolder}/Platforms/Desktop/bin/Debug/net8.0/Peer2PeerSample.exe",
+            "args": [],
+            "cwd": "${workspaceFolder}/Platforms/Desktop",
+            "console": "internalConsole",
+            "stopAtEntry": false
+        },
+        {
+            "name": "Launch Android",
+            "type": "coreclr",
+            "request": "launch",
+            "preLaunchTask": "build-android",
+            "program": "${workspaceFolder}/Platforms/Android/bin/Debug/net8.0-android/Peer2PeerSample.dll",
+            "args": [],
+            "cwd": "${workspaceFolder}/Platforms/Android",
+            "console": "internalConsole",
+            "stopAtEntry": false
+        },
+        {
+            "name": "Launch iOS",
+            "type": "coreclr",
+            "request": "launch",
+            "preLaunchTask": "build-ios",
+            "program": "${workspaceFolder}/Platforms/iOS/bin/Debug/net8.0-ios/Peer2PeerSample.dll",
+            "args": [],
+            "cwd": "${workspaceFolder}/Platforms/iOS",
+            "console": "internalConsole",
+            "stopAtEntry": false
+        }
+    ]
+}

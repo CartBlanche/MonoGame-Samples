@@ -1,0 +1,35 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net8.0-android</TargetFramework>
+    <RootNamespace>NetworkPrediction</RootNamespace>
+    <AssemblyName>NetworkPrediction.Android</AssemblyName>
+    <AndroidUseLatestPlatformSdk>true</AndroidUseLatestPlatformSdk>
+    <AndroidApplication>true</AndroidApplication>
+    <RuntimeIdentifiers>android-arm;android-arm64;android-x86;android-x64</RuntimeIdentifiers>
+    <AndroidManifest>AndroidManifest.xml</AndroidManifest>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <Title>Network Prediction</Title>
+    <Product>NetworkPrediction</Product>
+    <Description>This sample shows how to use prediction and smoothing algorithms to compensate for network lag, making remotely controlled objects appear to move smoothly even when there is a significant delay in packets being delivered over the network.</Description>
+    <Company>Microsoft</Company>
+    <Copyright>Copyright © Microsoft 2007</Copyright>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="MonoGame.Framework.Android" Version="3.8.*" />
+    <PackageReference Include="MonoGame.Content.Builder.Task" Version="3.8.*" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Core\NetworkPrediction.Core.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="..\..\Core\Content\**\*.xnb" Link="Content\%(RecursiveDir)%(Filename)%(Extension)">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+</Project>

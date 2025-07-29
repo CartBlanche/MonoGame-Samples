@@ -1,0 +1,23 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net8.0</TargetFramework>
+    <RootNamespace>ShadowMapping</RootNamespace>
+    <AssemblyTitle>Shadow Mapping</AssemblyTitle>
+    <Product>Shadow Mapping</Product>
+    <Description>This sample shows you how to implement basic shadow mapping from a directional light</Description>
+    <Company>Microsoft</Company>
+    <Copyright>Copyright © Microsoft 2008</Copyright>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="MonoGame.Framework.DesktopGL" Version="3.8.*" />
+    <ProjectReference Include="..\..\Core\ShadowMapping.Core.csproj" />
+  </ItemGroup>
+  
+  <ItemGroup>
+    <Content Include="..\..\Core\Content\**\*.xnb" Link="Content\%(RecursiveDir)%(Filename)%(Extension)">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+</Project>

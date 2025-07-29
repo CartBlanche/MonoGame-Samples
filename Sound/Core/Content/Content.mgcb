@@ -1,0 +1,25 @@
+
+#----------------------------- Global Properties ----------------------------#
+
+/outputDir:bin/$(Platform)
+/intermediateDir:obj/$(Platform)
+/platform:DesktopGL
+/config:$(Configuration)
+/profile:HiDef
+/compress:False
+
+#----------------------------- Content References --------------------------#
+
+# Audio (.mp3)
+#begin Explosion1.mp3
+/importer:Mp3Importer
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:Explosion1.mp3
+
+#begin Fonts
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:Font.spritefont

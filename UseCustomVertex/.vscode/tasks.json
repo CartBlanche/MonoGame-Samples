@@ -1,0 +1,33 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "build-windows",
+            "type": "shell",
+            "command": "dotnet build Platforms/Windows/UseCustomVertex.Windows.csproj",
+            "group": "build",
+            "problemMatcher": "$msCompile"
+        },
+        {
+            "label": "build-desktopgl",
+            "type": "shell",
+            "command": "dotnet build Platforms/DesktopGL/UseCustomVertex.DesktopGL.csproj",
+            "group": "build",
+            "problemMatcher": "$msCompile"
+        },
+        {
+            "label": "build-android",
+            "type": "shell",
+            "command": "dotnet build Platforms/Android/UseCustomVertex.Android.csproj",
+            "group": "build",
+            "problemMatcher": "$msCompile"
+        },
+        {
+            "label": "build-ios",
+            "type": "shell",
+            "command": "dotnet build Platforms/iOS/UseCustomVertex.iOS.csproj",
+            "group": "build",
+            "problemMatcher": "$msCompile"
+        }
+    ]
+}

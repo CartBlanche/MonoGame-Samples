@@ -1,0 +1,33 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "build-windows",
+            "type": "shell",
+            "command": "dotnet build Platforms/Windows/Audio3D.Windows.csproj",
+            "group": "build",
+            "problemMatcher": "$msCompile"
+        },
+        {
+            "label": "build-desktopgl",
+            "type": "shell",
+            "command": "dotnet build Platforms/DesktopGL/Audio3D.DesktopGL.csproj",
+            "group": "build",
+            "problemMatcher": "$msCompile"
+        },
+        {
+            "label": "run-windows",
+            "type": "shell",
+            "command": "dotnet run --project Platforms/Windows/Audio3D.Windows.csproj",
+            "group": "test",
+            "problemMatcher": "$msCompile"
+        },
+        {
+            "label": "run-desktopgl",
+            "type": "shell",
+            "command": "dotnet run --project Platforms/DesktopGL/Audio3D.DesktopGL.csproj",
+            "group": "test",
+            "problemMatcher": "$msCompile"
+        }
+    ]
+}

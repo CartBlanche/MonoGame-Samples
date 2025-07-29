@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" 
+          package="com.monogame.rendertarget2d" 
+          android:versionCode="1" 
+          android:versionName="1.0">
+  
+  <uses-sdk android:minSdkVersion="21" android:targetSdkVersion="34" />
+  
+  <uses-permission android:name="android.permission.WAKE_LOCK" />
+  
+  <application android:label="RenderTarget2D"
+               android:icon="@drawable/icon"
+               android:theme="@style/Theme.Splash">
+    <activity android:name="Activity1"
+              android:label="RenderTarget2D"
+              android:mainLauncher="true"
+              android:icon="@drawable/icon"
+              android:theme="@style/Theme.Splash"
+              android:configChanges="orientation|keyboard|keyboardHidden|screenSize"
+              android:screenOrientation="landscape" />
+  </application>
+  
+</manifest>

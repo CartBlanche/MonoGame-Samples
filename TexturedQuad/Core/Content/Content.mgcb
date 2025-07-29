@@ -1,0 +1,32 @@
+#----------------------------- Global Properties ----------------------------#
+
+/outputDir:bin/$(Platform)
+/intermediateDir:obj/$(Platform)
+/platform:DesktopGL
+/config:
+/profile:HiDef
+/compress:False
+
+#---------------------------------- Content ----------------------------------#
+
+#begin Textures
+/importer:TextureImporter
+/processor:TextureProcessor
+/build:Glass.png
+
+/importer:TextureImporter
+/processor:TextureProcessor
+/build:GlassPane.png
+
+/importer:TextureImporter
+/processor:TextureProcessor
+/build:GlassPane1.png
+
+/importer:TextureImporter
+/processor:TextureProcessor
+/build:GlassPane2.png
+
+#begin Fonts
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/build:font.spritefont

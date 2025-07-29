@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" 
+          android:versionCode="1" 
+          android:versionName="1.0" 
+          package="com.monogame.rockrain">
+  
+  <uses-sdk android:minSdkVersion="21" android:targetSdkVersion="34" />
+  
+  <uses-permission android:name="android.permission.VIBRATE" />
+  <uses-permission android:name="android.permission.WAKE_LOCK" />
+  
+  <uses-feature android:glEsVersion="0x00020000" android:required="true" />
+  
+  <application android:allowBackup="true" 
+               android:label="RockRain"
+               android:theme="@android:style/Theme.NoTitleBar.Fullscreen">
+    
+    <activity android:name="crc6414252091ad8633ca.MainActivity"
+              android:exported="true"
+              android:label="RockRain"
+              android:launchMode="singleInstance"
+              android:screenOrientation="fullUser"
+              android:configChanges="orientation|keyboardHidden|keyboard">
+      <intent-filter>
+        <action android:name="android.intent.action.MAIN" />
+        <category android:name="android.intent.category.LAUNCHER" />
+      </intent-filter>
+    </activity>
+    
+  </application>
+  
+</manifest>

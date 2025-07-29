@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" 
+    android:versionCode="1" 
+    android:versionName="1.0" 
+    package="monogame.samples.input">
+    
+    <uses-sdk android:minSdkVersion="28" android:targetSdkVersion="34" />
+    
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.SET_ORIENTATION" />
+    
+    <application 
+        android:label="MonoGame Input Sample" 
+        android:debuggable="true" 
+        android:icon="@drawable/icon"
+        android:theme="@style/Theme.Splash">
+        
+        <activity 
+            android:name="monogame.samples.input.Activity1"
+            android:label="MonoGame Input Sample"
+            android:exported="true"
+            android:icon="@drawable/icon"
+            android:theme="@style/Theme.Splash"
+            android:configChanges="orientation|keyboard|keyboardHidden|screenSize"
+            android:screenOrientation="sensor">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+    </application>
+</manifest>

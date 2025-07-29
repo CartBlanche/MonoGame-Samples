@@ -1,0 +1,49 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "build-windows",
+            "command": "dotnet",
+            "type": "shell",
+            "args": [
+                "build",
+                "Platforms/Windows/ShatterEffectSample.Windows.csproj"
+            ],
+            "group": "build",
+            "problemMatcher": "$msCompile"
+        },
+        {
+            "label": "build-desktopgl",
+            "command": "dotnet",
+            "type": "shell",
+            "args": [
+                "build",
+                "Platforms/DesktopGL/ShatterEffectSample.DesktopGL.csproj"
+            ],
+            "group": "build",
+            "problemMatcher": "$msCompile"
+        },
+        {
+            "label": "build-android",
+            "command": "dotnet",
+            "type": "shell",
+            "args": [
+                "build",
+                "Platforms/Android/ShatterEffectSample.Android.csproj"
+            ],
+            "group": "build",
+            "problemMatcher": "$msCompile"
+        },
+        {
+            "label": "build-ios",
+            "command": "dotnet",
+            "type": "shell",
+            "args": [
+                "build",
+                "Platforms/iOS/ShatterEffectSample.iOS.csproj"
+            ],
+            "group": "build",
+            "problemMatcher": "$msCompile"
+        }
+    ]
+}

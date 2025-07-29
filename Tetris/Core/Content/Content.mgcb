@@ -1,0 +1,25 @@
+#----------------------------- Global Properties ----------------------------#
+
+/outputDir:bin/$(Platform)
+/intermediateDir:obj/$(Platform)
+/platform:DesktopGL
+/config:
+/profile:HiDef
+/compress:False
+
+#---------------------------------- Content ----------------------------------#
+
+#begin tetris.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/build:tetris.png
+
+#begin background.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/build:background.png
+
+#begin font.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/build:font.spritefont

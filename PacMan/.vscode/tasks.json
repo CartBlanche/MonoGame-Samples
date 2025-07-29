@@ -1,0 +1,46 @@
+{
+    // See https://go.microsoft.com/fwlink/?LinkId=733558
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "build-windows",
+            "command": "dotnet",
+            "type": "process",
+            "args": [
+                "build",
+                "Platforms/Windows/PacMan.Windows.csproj"
+            ],
+            "problemMatcher": "$msCompile"
+        },
+        {
+            "label": "build-desktopgl",
+            "command": "dotnet",
+            "type": "process",
+            "args": [
+                "build",
+                "Platforms/DesktopGL/PacMan.DesktopGL.csproj"
+            ],
+            "problemMatcher": "$msCompile"
+        },
+        {
+            "label": "build-android",
+            "command": "dotnet",
+            "type": "process",
+            "args": [
+                "build",
+                "Platforms/Android/PacMan.Android.csproj"
+            ],
+            "problemMatcher": "$msCompile"
+        },
+        {
+            "label": "build-ios",
+            "command": "dotnet",
+            "type": "process",
+            "args": [
+                "build",
+                "Platforms/iOS/PacMan.iOS.csproj"
+            ],
+            "problemMatcher": "$msCompile"
+        }
+    ]
+}

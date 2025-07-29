@@ -1,0 +1,24 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net8.0-android</TargetFramework>
+    <RootNamespace>ShatterEffectSample.Android</RootNamespace>
+    <AssemblyTitle>Shatter Effect</AssemblyTitle>
+    <AssemblyProduct>Shatter Effect</AssemblyProduct>
+    <Description>This sample shows how you can apply an effect on any model in your game to shatter it apart. The effect is simulated with a vertex shader.</Description>
+    <Company>Microsoft</Company>
+    <Copyright>Copyright © Microsoft</Copyright>
+    <Version>1.0.0.0</Version>
+    <MonoGamePlatform>Android</MonoGamePlatform>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Core\ShatterEffectSample.Core.csproj" />
+    <PackageReference Include="MonoGame.Framework.Android" Version="3.8.*" />
+    <PackageReference Include="MonoGame.Content.Builder.Task" Version="3.8.*" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <MonoGameContentReference Include="..\..\Core\Content\Content.mgcb" />
+  </ItemGroup>
+</Project>

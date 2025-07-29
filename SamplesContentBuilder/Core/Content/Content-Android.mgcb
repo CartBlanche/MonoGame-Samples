@@ -1,0 +1,13 @@
+#----------------------------- Global Properties ----------------------------#
+
+/outputDir:bin/$(Platform)
+/intermediateDir:obj/$(Platform)
+/platform:Android
+/config:
+/profile:HiDef
+/compress:False
+
+#-------------------------------- References --------------------------------#
+
+#---------------------------------- Content ----------------------------------#
+# (Reference all shared content here, similar to other .mgcb files)

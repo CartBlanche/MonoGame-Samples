@@ -1,0 +1,31 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0-ios</TargetFramework>
+    <OutputType>Exe</OutputType>
+    <RootNamespace>RolePlaying.iOS</RootNamespace>
+    <AssemblyName>RolePlayingGame</AssemblyName>
+    <AssemblyTitle>Role Playing Game - iOS</AssemblyTitle>
+    <AssemblyDescription>MonoGame Role Playing Game Sample for iOS</AssemblyDescription>
+    <AssemblyCompany>MonoGame Samples</AssemblyCompany>
+    <AssemblyProduct>Role Playing Game</AssemblyProduct>
+    <AssemblyCopyright>Copyright (c) 2011 Kenneth J. Pouncey - MIT License</AssemblyCopyright>
+    <AssemblyVersion>1.0.0.0</AssemblyVersion>
+    <FileVersion>1.0.0.0</FileVersion>
+    <RuntimeIdentifier>ios-arm64</RuntimeIdentifier>
+    <UseInterpreter>true</UseInterpreter>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <MonoGamePlatform>iOS</MonoGamePlatform>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="MonoGame.Framework.iOS" Version="3.8.*" />
+    <PackageReference Include="MonoGame.Content.Builder.Task" Version="3.8.*" />
+    <ProjectReference Include="..\..\Core\RolePlayingGame.Core.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <MonoGameContentReference Include="..\..\Core\Content\Content.mgcb" />
+  </ItemGroup>
+
+</Project>

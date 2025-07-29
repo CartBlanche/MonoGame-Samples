@@ -1,0 +1,170 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "build-content-windows",
+            "type": "shell",
+            "command": "mgcb",
+            "args": ["Core/Content/Content-Windows.mgcb"],
+            "group": "build",
+            "presentation": {
+                "echo": true,
+                "reveal": "silent",
+                "focus": false,
+                "panel": "shared",
+                "showReuseMessage": true,
+                "clear": false
+            },
+            "problemMatcher": []
+        },
+        {
+            "label": "build-content-desktopgl",
+            "type": "shell",
+            "command": "mgcb",
+            "args": ["Core/Content/Content-DesktopGL.mgcb"],
+            "group": "build",
+            "presentation": {
+                "echo": true,
+                "reveal": "silent",
+                "focus": false,
+                "panel": "shared",
+                "showReuseMessage": true,
+                "clear": false
+            },
+            "problemMatcher": []
+        },
+        {
+            "label": "build-content-ios",
+            "type": "shell",
+            "command": "mgcb",
+            "args": ["Core/Content/Content-iOS.mgcb"],
+            "group": "build",
+            "presentation": {
+                "echo": true,
+                "reveal": "silent",
+                "focus": false,
+                "panel": "shared",
+                "showReuseMessage": true,
+                "clear": false
+            },
+            "problemMatcher": []
+        },
+        {
+            "label": "build-content-android",
+            "type": "shell",
+            "command": "mgcb",
+            "args": ["Core/Content/Content-Android.mgcb"],
+            "group": "build",
+            "presentation": {
+                "echo": true,
+                "reveal": "silent",
+                "focus": false,
+                "panel": "shared",
+                "showReuseMessage": true,
+                "clear": false
+            },
+            "problemMatcher": []
+        },
+        {
+            "label": "build-windows",
+            "type": "shell",
+            "command": "dotnet",
+            "args": ["build", "Platforms/Windows/SamplesContentBuilder.Windows.csproj", "-c", "Debug"],
+            "group": "build",
+            "dependsOn": "build-content-windows",
+            "presentation": {
+                "echo": true,
+                "reveal": "silent",
+                "focus": false,
+                "panel": "shared",
+                "showReuseMessage": true,
+                "clear": false
+            },
+            "problemMatcher": ["$msCompile"]
+        },
+        {
+            "label": "build-desktopgl",
+            "type": "shell",
+            "command": "dotnet",
+            "args": ["build", "Platforms/DesktopGL/SamplesContentBuilder.DesktopGL.csproj", "-c", "Debug"],
+            "group": "build",
+            "dependsOn": "build-content-desktopgl",
+            "presentation": {
+                "echo": true,
+                "reveal": "silent",
+                "focus": false,
+                "panel": "shared",
+                "showReuseMessage": true,
+                "clear": false
+            },
+            "problemMatcher": ["$msCompile"]
+        },
+        {
+            "label": "build-ios",
+            "type": "shell",
+            "command": "dotnet",
+            "args": ["build", "Platforms/iOS/SamplesContentBuilder.iOS.csproj", "-c", "Debug"],
+            "group": "build",
+            "dependsOn": "build-content-ios",
+            "presentation": {
+                "echo": true,
+                "reveal": "silent",
+                "focus": false,
+                "panel": "shared",
+                "showReuseMessage": true,
+                "clear": false
+            },
+            "problemMatcher": ["$msCompile"]
+        },
+        {
+            "label": "build-android",
+            "type": "shell",
+            "command": "dotnet",
+            "args": ["build", "Platforms/Android/SamplesContentBuilder.Android.csproj", "-c", "Debug"],
+            "group": "build",
+            "dependsOn": "build-content-android",
+            "presentation": {
+                "echo": true,
+                "reveal": "silent",
+                "focus": false,
+                "panel": "shared",
+                "showReuseMessage": true,
+                "clear": false
+            },
+            "problemMatcher": ["$msCompile"]
+        },
+        {
+            "label": "clean-content",
+            "type": "shell",
+            "command": "mgcb",
+            "args": ["Core/Content/Content-Windows.mgcb", "--clean"],
+            "group": "build",
+            "presentation": {
+                "echo": true,
+                "reveal": "silent",
+                "focus": false,
+                "panel": "shared",
+                "showReuseMessage": true,
+                "clear": false
+            },
+            "problemMatcher": []
+        },
+        {
+            "label": "clean-all",
+            "type": "shell",
+            "command": "dotnet",
+            "args": ["clean"],
+            "group": "build",
+            "dependsOn": "clean-content",
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": false,
+                "panel": "shared",
+                "showReuseMessage": true,
+                "clear": false
+            },
+            "problemMatcher": []
+        }
+    ]
+}

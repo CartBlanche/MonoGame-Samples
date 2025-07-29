@@ -1,0 +1,29 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net8.0-android</TargetFramework>
+    <OutputType>Exe</OutputType>
+    <RootNamespace>Aiming.Android</RootNamespace>
+    <AssemblyName>Aiming.Android</AssemblyName>
+    <Description>Android platform for Aiming MonoGame sample.</Description>
+    <Authors>CartBlanche</Authors>
+    <Company>MonoGame Foundation</Company>
+    <Version>1.0.0</Version>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <AndroidManifest>AndroidManifest.xml</AndroidManifest>
+    <SupportedOSPlatformVersion>28.0</SupportedOSPlatformVersion>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Core\Aiming.Core.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="MonoGame.Framework.Android" Version="3.8.4" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="..\..\..\CompiledContent\Android\Content\Textures\cat.xnb" Link="Content\cat.xnb">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\..\CompiledContent\Android\Content\Textures\spotlight.xnb" Link="Content\spotlight.xnb">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+</Project>

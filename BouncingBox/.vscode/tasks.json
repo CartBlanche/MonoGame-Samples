@@ -1,0 +1,33 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "build-windows",
+            "type": "shell",
+            "command": "dotnet build Platforms/Windows/BouncingBox.Windows.csproj",
+            "group": "build",
+            "problemMatcher": "$msCompile"
+        },
+        {
+            "label": "build-desktopgl",
+            "type": "shell",
+            "command": "dotnet build Platforms/Desktop/BouncingBox.DesktopGL.csproj",
+            "group": "build",
+            "problemMatcher": "$msCompile"
+        },
+        {
+            "label": "run-windows",
+            "type": "shell",
+            "command": "dotnet run --project Platforms/Windows/BouncingBox.Windows.csproj",
+            "group": "test",
+            "problemMatcher": []
+        },
+        {
+            "label": "run-desktopgl",
+            "type": "shell",
+            "command": "dotnet run --project Platforms/Desktop/BouncingBox.DesktopGL.csproj",
+            "group": "test",
+            "problemMatcher": []
+        }
+    ]
+}

@@ -1,0 +1,42 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0-android</TargetFramework>
+    <OutputType>Exe</OutputType>
+    <RollForward>Major</RollForward>
+    <PublishReadyToRun>false</PublishReadyToRun>
+    <TieredCompilation>false</TieredCompilation>
+    <UseAndroidX>true</UseAndroidX>
+    <AndroidApplication>true</AndroidApplication>
+    <AndroidUseAapt2>true</AndroidUseAapt2>
+    <AndroidManifest>Platforms\Android\AndroidManifest.xml</AndroidManifest>
+    <AssemblyName>RockRain.Android</AssemblyName>
+    <RootNamespace>RockRain</RootNamespace>
+    <ApplicationId>com.monogame.rockrain</ApplicationId>
+    <ApplicationDisplayName>RockRain</ApplicationDisplayName>
+    <ApplicationVersion>1</ApplicationVersion>
+    <ApplicationVersionName>1.0</ApplicationVersionName>
+    <SupportedOSPlatformVersion>21</SupportedOSPlatformVersion>
+    <TargetSdkVersion>34</TargetSdkVersion>
+    <AssemblyTitle>RockRain</AssemblyTitle>
+    <Product>RockRain</Product>
+    <AssemblyDescription>A MonoGame sample game - RockRain</AssemblyDescription>
+    <AssemblyCompany>MonoGame Team</AssemblyCompany>
+    <AssemblyCopyright>Copyright © MonoGame Team 2024</AssemblyCopyright>
+    <AssemblyVersion>1.0.0.0</AssemblyVersion>
+    <FileVersion>1.0.0.0</FileVersion>
+    <MonoGamePlatform>Android</MonoGamePlatform>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Core\RockRain.Core.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <MonoGameContentReference Include="..\..\Core\Content\Content.mgcb" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="MonoGame.Framework.Android" Version="3.8.*" />
+    <PackageReference Include="MonoGame.Content.Builder.Task" Version="3.8.*" />
+  </ItemGroup>
+
+</Project>

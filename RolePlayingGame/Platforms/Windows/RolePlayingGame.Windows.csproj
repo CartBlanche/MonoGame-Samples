@@ -1,0 +1,31 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <OutputType>WinExe</OutputType>
+    <RootNamespace>RolePlaying.Windows</RootNamespace>
+    <AssemblyName>RolePlayingGame</AssemblyName>
+    <AssemblyTitle>Role Playing Game - Windows</AssemblyTitle>
+    <AssemblyDescription>MonoGame Role Playing Game Sample for Windows</AssemblyDescription>
+    <AssemblyCompany>MonoGame Samples</AssemblyCompany>
+    <AssemblyProduct>Role Playing Game</AssemblyProduct>
+    <AssemblyCopyright>Copyright (c) 2011 Kenneth J. Pouncey - MIT License</AssemblyCopyright>
+    <AssemblyVersion>1.0.0.0</AssemblyVersion>
+    <FileVersion>1.0.0.0</FileVersion>
+    <UseWindowsForms>true</UseWindowsForms>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <ApplicationIcon>..\..\Core\Content\Game.ico</ApplicationIcon>
+    <MonoGamePlatform>Windows</MonoGamePlatform>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="MonoGame.Framework.WindowsDX" Version="3.8.*" />
+    <PackageReference Include="MonoGame.Content.Builder.Task" Version="3.8.*" />
+    <ProjectReference Include="..\..\Core\RolePlayingGame.Core.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <MonoGameContentReference Include="..\..\Core\Content\Content.mgcb" />
+  </ItemGroup>
+
+</Project>

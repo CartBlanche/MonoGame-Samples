@@ -1,0 +1,140 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "build-windows",
+            "type": "shell",
+            "command": "dotnet",
+            "args": [
+                "build",
+                "Platforms/Windows/Orientation.Windows.csproj",
+                "/property:GenerateFullPaths=true",
+                "/consoleloggerparameters:NoSummary"
+            ],
+            "group": "build",
+            "presentation": {
+                "reveal": "silent"
+            },
+            "problemMatcher": "$msCompile",
+            "isBackground": false
+        },
+        {
+            "label": "build-desktopgl",
+            "type": "shell",
+            "command": "dotnet",
+            "args": [
+                "build",
+                "Platforms/Desktop/Orientation.DesktopGL.csproj",
+                "/property:GenerateFullPaths=true",
+                "/consoleloggerparameters:NoSummary"
+            ],
+            "group": "build",
+            "presentation": {
+                "reveal": "silent"
+            },
+            "problemMatcher": "$msCompile",
+            "isBackground": false
+        },
+        {
+            "label": "build-android",
+            "type": "shell",
+            "command": "dotnet",
+            "args": [
+                "build",
+                "Platforms/Android/Orientation.Android.csproj",
+                "/property:GenerateFullPaths=true",
+                "/consoleloggerparameters:NoSummary"
+            ],
+            "group": "build",
+            "presentation": {
+                "reveal": "always"
+            },
+            "problemMatcher": "$msCompile",
+            "isBackground": false
+        },
+        {
+            "label": "build-ios",
+            "type": "shell",
+            "command": "dotnet",
+            "args": [
+                "build",
+                "Platforms/iOS/Orientation.iOS.csproj",
+                "/property:GenerateFullPaths=true",
+                "/consoleloggerparameters:NoSummary"
+            ],
+            "group": "build",
+            "presentation": {
+                "reveal": "always"
+            },
+            "problemMatcher": "$msCompile",
+            "isBackground": false
+        },
+        {
+            "label": "run-windows",
+            "type": "shell",
+            "command": "dotnet",
+            "args": [
+                "run",
+                "--project",
+                "Platforms/Windows/Orientation.Windows.csproj"
+            ],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "presentation": {
+                "reveal": "always"
+            },
+            "problemMatcher": "$msCompile",
+            "isBackground": false
+        },
+        {
+            "label": "run-desktopgl",
+            "type": "shell",
+            "command": "dotnet",
+            "args": [
+                "run",
+                "--project",
+                "Platforms/Desktop/Orientation.DesktopGL.csproj"
+            ],
+            "group": "build",
+            "presentation": {
+                "reveal": "always"
+            },
+            "problemMatcher": "$msCompile",
+            "isBackground": false
+        },
+        {
+            "label": "run-android",
+            "type": "shell",
+            "command": "dotnet",
+            "args": [
+                "run",
+                "--project",
+                "Platforms/Android/Orientation.Android.csproj"
+            ],
+            "group": "build",
+            "presentation": {
+                "reveal": "always"
+            },
+            "problemMatcher": "$msCompile",
+            "isBackground": false
+        },
+        {
+            "label": "run-ios",
+            "type": "shell",
+            "command": "dotnet",
+            "args": [
+                "run",
+                "--project",
+                "Platforms/iOS/Orientation.iOS.csproj"
+            ],
+            "group": "build",
+            "presentation": {
+                "reveal": "always"
+            },
+            "problemMatcher": "$msCompile",
+            "isBackground": false
+        }
+    ]
+}

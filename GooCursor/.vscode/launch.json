@@ -1,0 +1,37 @@
+{
+    "version": "2.0.0",
+    "configurations": [
+        {
+            "name": "Launch Windows",
+            "type": "coreclr",
+            "request": "launch",
+            "preLaunchTask": "build-windows",
+            "program": "${workspaceFolder}/Platforms/Windows/bin/Debug/net8.0-windows/GooCursor.Windows.exe",
+            "args": [],
+            "cwd": "${workspaceFolder}/Platforms/Windows",
+            "console": "internalConsole",
+            "stopAtEntry": false
+        },
+        {
+            "name": "Launch DesktopGL",
+            "type": "coreclr",
+            "request": "launch",
+            "preLaunchTask": "build-desktopgl",
+            "program": "${workspaceFolder}/Platforms/Desktop/bin/Debug/net8.0/GooCursor.DesktopGL.exe",
+            "args": [],
+            "cwd": "${workspaceFolder}/Platforms/Desktop",
+            "console": "internalConsole",
+            "stopAtEntry": false
+        },
+        {
+            "name": "Attach to Windows",
+            "type": "coreclr",
+            "request": "attach"
+        },
+        {
+            "name": "Attach to DesktopGL",
+            "type": "coreclr",
+            "request": "attach"
+        }
+    ]
+}

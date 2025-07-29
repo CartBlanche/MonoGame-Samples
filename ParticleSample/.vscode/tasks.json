@@ -1,0 +1,179 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "build-windows",
+            "command": "dotnet",
+            "args": [
+                "build",
+                "Platforms/Windows/ParticleSample.Windows.csproj",
+                "-c", "Debug"
+            ],
+            "type": "shell",
+            "group": "build",
+            "presentation": {
+                "echo": true,
+                "reveal": "silent",
+                "focus": false,
+                "panel": "shared"
+            },
+            "problemMatcher": ["$msCompile"]
+        },
+        {
+            "label": "build-desktopgl",
+            "command": "dotnet",
+            "args": [
+                "build",
+                "Platforms/Desktop/ParticleSample.DesktopGL.csproj",
+                "-c", "Debug"
+            ],
+            "type": "shell",
+            "group": "build",
+            "presentation": {
+                "echo": true,
+                "reveal": "silent",
+                "focus": false,
+                "panel": "shared"
+            },
+            "problemMatcher": ["$msCompile"]
+        },
+        {
+            "label": "build-android",
+            "command": "dotnet",
+            "args": [
+                "build",
+                "Platforms/Android/ParticleSample.Android.csproj",
+                "-c", "Debug"
+            ],
+            "type": "shell",
+            "group": "build",
+            "presentation": {
+                "echo": true,
+                "reveal": "silent",
+                "focus": false,
+                "panel": "shared"
+            },
+            "problemMatcher": ["$msCompile"]
+        },
+        {
+            "label": "build-ios",
+            "command": "dotnet",
+            "args": [
+                "build",
+                "Platforms/iOS/ParticleSample.iOS.csproj",
+                "-c", "Debug"
+            ],
+            "type": "shell",
+            "group": "build",
+            "presentation": {
+                "echo": true,
+                "reveal": "silent",
+                "focus": false,
+                "panel": "shared"
+            },
+            "problemMatcher": ["$msCompile"]
+        },
+        {
+            "label": "run-windows",
+            "command": "dotnet",
+            "args": [
+                "run",
+                "--project",
+                "Platforms/Windows/ParticleSample.Windows.csproj",
+                "-c", "Debug"
+            ],
+            "type": "shell",
+            "group": "test",
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": false,
+                "panel": "shared"
+            },
+            "dependsOn": "build-windows"
+        },
+        {
+            "label": "run-desktopgl",
+            "command": "dotnet",
+            "args": [
+                "run",
+                "--project",
+                "Platforms/Desktop/ParticleSample.DesktopGL.csproj",
+                "-c", "Debug"
+            ],
+            "type": "shell",
+            "group": "test",
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": false,
+                "panel": "shared"
+            },
+            "dependsOn": "build-desktopgl"
+        },
+        {
+            "label": "run-android",
+            "command": "dotnet",
+            "args": [
+                "run",
+                "--project",
+                "Platforms/Android/ParticleSample.Android.csproj",
+                "-c", "Debug"
+            ],
+            "type": "shell",
+            "group": "test",
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": false,
+                "panel": "shared"
+            },
+            "dependsOn": "build-android"
+        },
+        {
+            "label": "run-ios",
+            "command": "dotnet",
+            "args": [
+                "run",
+                "--project",
+                "Platforms/iOS/ParticleSample.iOS.csproj",
+                "-c", "Debug"
+            ],
+            "type": "shell",
+            "group": "test",
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": false,
+                "panel": "shared"
+            },
+            "dependsOn": "build-ios"
+        },
+        {
+            "label": "clean",
+            "command": "dotnet",
+            "args": ["clean"],
+            "type": "shell",
+            "group": "build",
+            "presentation": {
+                "echo": true,
+                "reveal": "silent",
+                "focus": false,
+                "panel": "shared"
+            }
+        },
+        {
+            "label": "restore",
+            "command": "dotnet",
+            "args": ["restore"],
+            "type": "shell",
+            "group": "build",
+            "presentation": {
+                "echo": true,
+                "reveal": "silent",
+                "focus": false,
+                "panel": "shared"
+            }
+        }
+    ]
+}

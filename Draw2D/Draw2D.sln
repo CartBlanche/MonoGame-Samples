@@ -1,0 +1,56 @@
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.5.2.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Draw2D.Core", "Core\Draw2D.Core.csproj", "{A1A1A1A1-1111-1111-1111-111111111111}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Draw2D.Windows", "Platforms\Windows\Draw2D.Windows.csproj", "{718CE0A5-5BE4-6B8B-2887-5C993E103D0C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Draw2D.DesktopGL", "Platforms\Desktop\Draw2D.DesktopGL.csproj", "{E8B2E3A1-4F5C-4A8B-9E2D-1234567890AB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Draw2D.Android", "Platforms\Android\Draw2D.Android.csproj", "{38EF25F3-7056-8170-D8D4-337849703EE6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Draw2D.iOS", "Platforms\iOS\Draw2D.iOS.csproj", "{5305C373-ACF4-3261-AA32-C5B2000965C7}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{38EF25F3-7056-8170-D8D4-337849703EE6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{38EF25F3-7056-8170-D8D4-337849703EE6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{38EF25F3-7056-8170-D8D4-337849703EE6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{38EF25F3-7056-8170-D8D4-337849703EE6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5305C373-ACF4-3261-AA32-C5B2000965C7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5305C373-ACF4-3261-AA32-C5B2000965C7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5305C373-ACF4-3261-AA32-C5B2000965C7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5305C373-ACF4-3261-AA32-C5B2000965C7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{525B3F24-3918-6683-5219-39D5AD491A70}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{525B3F24-3918-6683-5219-39D5AD491A70}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{525B3F24-3918-6683-5219-39D5AD491A70}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{525B3F24-3918-6683-5219-39D5AD491A70}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B9F212F5-A41B-FF66-4520-DA8995005EEB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B9F212F5-A41B-FF66-4520-DA8995005EEB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B9F212F5-A41B-FF66-4520-DA8995005EEB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B9F212F5-A41B-FF66-4520-DA8995005EEB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C23C0C7A-B142-EF17-C11B-75603A5E537B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C23C0C7A-B142-EF17-C11B-75603A5E537B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C23C0C7A-B142-EF17-C11B-75603A5E537B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C23C0C7A-B142-EF17-C11B-75603A5E537B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{718CE0A5-5BE4-6B8B-2887-5C993E103D0C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{718CE0A5-5BE4-6B8B-2887-5C993E103D0C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{718CE0A5-5BE4-6B8B-2887-5C993E103D0C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{718CE0A5-5BE4-6B8B-2887-5C993E103D0C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E8B2E3A1-4F5C-4A8B-9E2D-1234567890AB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E8B2E3A1-4F5C-4A8B-9E2D-1234567890AB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E8B2E3A1-4F5C-4A8B-9E2D-1234567890AB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E8B2E3A1-4F5C-4A8B-9E2D-1234567890AB}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {D5E9BAD4-D128-46BE-98F1-0ED4468953EC}
+	EndGlobalSection
+EndGlobal

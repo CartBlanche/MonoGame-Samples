@@ -1,0 +1,49 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Launch Windows",
+            "type": "coreclr",
+            "request": "launch",
+            "program": "${workspaceFolder}/Platforms/Windows/bin/Debug/net8.0-windows/HoneycombRush.Windows.exe",
+            "args": [],
+            "cwd": "${workspaceFolder}",
+            "stopAtEntry": false,
+            "console": "internalConsole",
+            "preLaunchTask": "run-windows"
+        },
+        {
+            "name": "Launch DesktopGL",
+            "type": "coreclr",
+            "request": "launch",
+            "program": "${workspaceFolder}/Platforms/Desktop/bin/Debug/net8.0/HoneycombRush.DesktopGL.dll",
+            "args": [],
+            "cwd": "${workspaceFolder}",
+            "stopAtEntry": false,
+            "console": "internalConsole",
+            "preLaunchTask": "run-desktopgl"
+        },
+        {
+            "name": "Launch Android",
+            "type": "coreclr",
+            "request": "launch",
+            "program": "${workspaceFolder}/Platforms/Android/bin/Debug/net8.0-android/HoneycombRush.Android.dll",
+            "args": [],
+            "cwd": "${workspaceFolder}",
+            "stopAtEntry": false,
+            "console": "internalConsole",
+            "preLaunchTask": "run-android"
+        },
+        {
+            "name": "Launch iOS",
+            "type": "coreclr",
+            "request": "launch",
+            "program": "${workspaceFolder}/Platforms/iOS/bin/Debug/net8.0-ios/HoneycombRush.iOS.dll",
+            "args": [],
+            "cwd": "${workspaceFolder}",
+            "stopAtEntry": false,
+            "console": "internalConsole",
+            "preLaunchTask": "run-ios"
+        }
+    ]
+}

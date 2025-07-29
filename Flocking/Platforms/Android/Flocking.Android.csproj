@@ -1,0 +1,30 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0-android</TargetFramework>
+    <OutputType>Exe</OutputType>
+    <RootNamespace>Flocking.Android</RootNamespace>
+    <AssemblyName>Flocking.Android</AssemblyName>
+    <AndroidApplication>true</AndroidApplication>
+    <ApplicationId>com.monogame.flocking</ApplicationId>
+    <AndroidManifest>AndroidManifest.xml</AndroidManifest>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DefineConstants>DEBUG;TRACE;ANDROID;MOBILE</DefineConstants>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <DefineConstants>TRACE;ANDROID;MOBILE</DefineConstants>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Core\Flocking.Core.csproj" />
+    <PackageReference Include="MonoGame.Framework.Android" Version="3.8.*" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <AndroidAsset Include="..\..\Core\Content\**\*.xnb" />
+  </ItemGroup>
+
+</Project>

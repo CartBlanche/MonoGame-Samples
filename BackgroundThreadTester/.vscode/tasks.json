@@ -1,0 +1,136 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "build-windows",
+            "type": "shell",
+            "command": "dotnet",
+            "args": ["build", "Platforms/Windows/BackgroundThreadTester.Windows.csproj"],
+            "group": "build",
+            "problemMatcher": "$msCompile",
+            "presentation": {
+                "echo": true,
+                "reveal": "silent",
+                "focus": false,
+                "panel": "shared"
+            }
+        },
+        {
+            "label": "build-desktopgl",
+            "type": "shell",
+            "command": "dotnet",
+            "args": ["build", "Platforms/DesktopGL/BackgroundThreadTester.DesktopGL.csproj"],
+            "group": "build",
+            "problemMatcher": "$msCompile",
+            "presentation": {
+                "echo": true,
+                "reveal": "silent",
+                "focus": false,
+                "panel": "shared"
+            }
+        },
+        {
+            "label": "build-android",
+            "type": "shell",
+            "command": "dotnet",
+            "args": ["build", "Platforms/Android/BackgroundThreadTester.Android.csproj"],
+            "group": "build",
+            "problemMatcher": "$msCompile",
+            "presentation": {
+                "echo": true,
+                "reveal": "silent",
+                "focus": false,
+                "panel": "shared"
+            }
+        },
+        {
+            "label": "build-ios",
+            "type": "shell",
+            "command": "dotnet",
+            "args": ["build", "Platforms/iOS/BackgroundThreadTester.iOS.csproj"],
+            "group": "build",
+            "problemMatcher": "$msCompile",
+            "presentation": {
+                "echo": true,
+                "reveal": "silent",
+                "focus": false,
+                "panel": "shared"
+            }
+        },
+        {
+            "label": "build-core",
+            "type": "shell",
+            "command": "dotnet",
+            "args": ["build", "Core/BackgroundThreadTester.Core.csproj"],
+            "group": "build",
+            "problemMatcher": "$msCompile",
+            "presentation": {
+                "echo": true,
+                "reveal": "silent",
+                "focus": false,
+                "panel": "shared"
+            }
+        },
+        {
+            "label": "run-windows",
+            "type": "shell",
+            "command": "dotnet",
+            "args": ["run", "--project", "Platforms/Windows/BackgroundThreadTester.Windows.csproj"],
+            "group": "build",
+            "problemMatcher": "$msCompile",
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": false,
+                "panel": "shared"
+            },
+            "dependsOn": "build-windows"
+        },
+        {
+            "label": "run-desktopgl",
+            "type": "shell",
+            "command": "dotnet",
+            "args": ["run", "--project", "Platforms/DesktopGL/BackgroundThreadTester.DesktopGL.csproj"],
+            "group": "build",
+            "problemMatcher": "$msCompile",
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": false,
+                "panel": "shared"
+            },
+            "dependsOn": "build-desktopgl"
+        },
+        {
+            "label": "run-desktopgl",
+            "type": "shell",
+            "command": "dotnet",
+            "args": ["run", "--project", "Platforms/DesktopGL/BackgroundThreadTester.DesktopGL.csproj"],
+            "group": "build",
+            "problemMatcher": "$msCompile",
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": false,
+                "panel": "shared"
+            },
+            "dependsOn": "build-desktopgl"
+        },
+        {
+            "label": "clean",
+            "type": "shell",
+            "command": "dotnet",
+            "args": ["clean"],
+            "group": "build",
+            "problemMatcher": "$msCompile"
+        },
+        {
+            "label": "restore",
+            "type": "shell",
+            "command": "dotnet",
+            "args": ["restore"],
+            "group": "build",
+            "problemMatcher": "$msCompile"
+        }
+    ]
+}

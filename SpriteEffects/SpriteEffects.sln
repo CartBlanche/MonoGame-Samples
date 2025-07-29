@@ -1,0 +1,62 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.14.36301.6 d17.14
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpriteEffects.Processor", "Processor\SpriteEffects.Processor.csproj", "{930F624B-57E9-6C95-3C74-0E1D23D26AC4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpriteEffects.Core", "Core\SpriteEffects.Core.csproj", "{986126B8-F1ED-C0DC-1990-CEB4E96B6CD0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpriteEffects.Android", "Platform\Android\SpriteEffects.Android.csproj", "{FE453FCF-2BE1-E16C-C626-C8A9D2791B14}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpriteEffects.DesktopGL", "Platform\DesktopGL\SpriteEffects.DesktopGL.csproj", "{F2B835F1-9F82-EB30-0036-8B7CCC3B07DF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpriteEffects.iOS", "Platform\iOS\SpriteEffects.iOS.csproj", "{E73EA002-EBC1-64DB-3767-8220C8F0459A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpriteEffects.Windows", "Platform\Windows\SpriteEffects.Windows.csproj", "{407CD235-33D3-F670-DC9E-E5AE61F93336}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{930F624B-57E9-6C95-3C74-0E1D23D26AC4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{930F624B-57E9-6C95-3C74-0E1D23D26AC4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{930F624B-57E9-6C95-3C74-0E1D23D26AC4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{930F624B-57E9-6C95-3C74-0E1D23D26AC4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{986126B8-F1ED-C0DC-1990-CEB4E96B6CD0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{986126B8-F1ED-C0DC-1990-CEB4E96B6CD0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{986126B8-F1ED-C0DC-1990-CEB4E96B6CD0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{986126B8-F1ED-C0DC-1990-CEB4E96B6CD0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FE453FCF-2BE1-E16C-C626-C8A9D2791B14}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FE453FCF-2BE1-E16C-C626-C8A9D2791B14}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FE453FCF-2BE1-E16C-C626-C8A9D2791B14}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{FE453FCF-2BE1-E16C-C626-C8A9D2791B14}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FE453FCF-2BE1-E16C-C626-C8A9D2791B14}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FE453FCF-2BE1-E16C-C626-C8A9D2791B14}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{F2B835F1-9F82-EB30-0036-8B7CCC3B07DF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F2B835F1-9F82-EB30-0036-8B7CCC3B07DF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F2B835F1-9F82-EB30-0036-8B7CCC3B07DF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F2B835F1-9F82-EB30-0036-8B7CCC3B07DF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E73EA002-EBC1-64DB-3767-8220C8F0459A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E73EA002-EBC1-64DB-3767-8220C8F0459A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E73EA002-EBC1-64DB-3767-8220C8F0459A}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{E73EA002-EBC1-64DB-3767-8220C8F0459A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E73EA002-EBC1-64DB-3767-8220C8F0459A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E73EA002-EBC1-64DB-3767-8220C8F0459A}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{407CD235-33D3-F670-DC9E-E5AE61F93336}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{407CD235-33D3-F670-DC9E-E5AE61F93336}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{407CD235-33D3-F670-DC9E-E5AE61F93336}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{407CD235-33D3-F670-DC9E-E5AE61F93336}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {52140568-312B-4714-B87E-87D3EC8309A2}
+	EndGlobalSection
+	GlobalSection(MonoDevelopProperties) = preSolution
+		StartupItem = SpriteEffects.csproj
+	EndGlobalSection
+EndGlobal

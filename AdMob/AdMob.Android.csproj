@@ -1,0 +1,38 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0-android</TargetFramework>
+    <OutputType>Exe</OutputType>
+    <RootNamespace>MonoGame.Samples.AdMob</RootNamespace>
+    <AssemblyName>MonoGame.Samples.AdMob</AssemblyName>
+    <AndroidApplication>true</AndroidApplication>
+    <AndroidManifest>Properties\AndroidManifest.xml</AndroidManifest>
+    <UseMaui>false</UseMaui>
+    <ImplicitUsings>disable</ImplicitUsings>
+    <Nullable>disable</Nullable>
+    <GenerateAssemblyInfo>true</GenerateAssemblyInfo>
+    <AssemblyTitle>MonoGame AdMob Sample</AssemblyTitle>
+    <AssemblyCompany>MonoGame</AssemblyCompany>
+    <AssemblyProduct>MonoGame AdMob Sample</AssemblyProduct>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DefineConstants>DEBUG;ANDROID</DefineConstants>
+    <AndroidLinkMode>None</AndroidLinkMode>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <DefineConstants>ANDROID</DefineConstants>
+    <AndroidLinkMode>SdkOnly</AndroidLinkMode>
+    <AndroidUseSharedRuntime>false</AndroidUseSharedRuntime>
+    <DebugType>none</DebugType>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="MonoGame.Framework.Android" Version="3.8.*" />
+    <PackageReference Include="Xamarin.GooglePlayServices.Ads" Version="120.0.0" />
+  </ItemGroup>
+
+</Project>

@@ -1,0 +1,16 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net8.0-android</TargetFramework>
+    <RootNamespace>BackgroundThreadTester.Android</RootNamespace>
+    <AssemblyName>BackgroundThreadTester.Android</AssemblyName>
+    <Nullable>enable</Nullable>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Core\BackgroundThreadTester.Core.csproj" />
+    <PackageReference Include="MonoGame.Framework.Android" Version="3.8.*" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="..\..\Core\Content\**" CopyToOutputDirectory="PreserveNewest" />
+  </ItemGroup>
+</Project>

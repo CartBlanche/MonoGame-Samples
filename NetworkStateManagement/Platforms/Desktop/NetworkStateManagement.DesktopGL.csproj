@@ -1,0 +1,29 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net8.0</TargetFramework>
+    <RootNamespace>NetworkStateManagement</RootNamespace>
+    <AssemblyName>NetworkStateManagement.DesktopGL</AssemblyName>
+    <GenerateAssemblyInfo>true</GenerateAssemblyInfo>
+    <AssemblyTitle>NetworkStateManagement</AssemblyTitle>
+    <AssemblyDescription></AssemblyDescription>
+    <AssemblyConfiguration></AssemblyConfiguration>
+    <Company>Microsoft</Company>
+    <Product>NetworkStateManagement</Product>
+    <Copyright>Copyright © Microsoft 2011</Copyright>
+    <Trademark></Trademark>
+    <AssemblyVersion>1.0.0.0</AssemblyVersion>
+    <FileVersion>1.0.0.0</FileVersion>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="MonoGame.Framework.DesktopGL" Version="3.8.*" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Core\NetworkStateManagement.Core.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="..\..\Core\Content\**\*.xnb" Link="Content\%(RecursiveDir)%(Filename)%(Extension)">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+</Project>

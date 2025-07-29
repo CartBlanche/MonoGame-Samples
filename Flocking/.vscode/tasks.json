@@ -1,0 +1,255 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "build-desktopgl",
+      "command": "dotnet",
+      "type": "shell",
+      "args": [
+        "build",
+        "${workspaceFolder}/Platforms/Desktop/Flocking.DesktopGL.csproj"
+      ],
+      "group": "build",
+      "presentation": {
+        "echo": true,
+        "reveal": "silent",
+        "focus": false,
+        "panel": "shared"
+      },
+      "problemMatcher": "$msCompile"
+    },
+    {
+      "label": "build-windows",
+      "command": "dotnet",
+      "type": "shell",
+      "args": [
+        "build",
+        "${workspaceFolder}/Platforms/Windows/Flocking.Windows.csproj"
+      ],
+      "group": "build",
+      "presentation": {
+        "echo": true,
+        "reveal": "silent",
+        "focus": false,
+        "panel": "shared"
+      },
+      "problemMatcher": "$msCompile"
+    },
+    {
+      "label": "run-desktopgl",
+      "command": "dotnet",
+      "type": "shell",
+      "args": [
+        "run",
+        "--project",
+        "${workspaceFolder}/Platforms/Desktop/Flocking.DesktopGL.csproj"
+      ],
+      "group": "test",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "shared"
+      },
+      "dependsOn": "build-desktopgl"
+    },
+    {
+      "label": "run-windows",
+      "command": "dotnet",
+      "type": "shell",
+      "args": [
+        "run",
+        "--project",
+        "${workspaceFolder}/Platforms/Windows/Flocking.Windows.csproj"
+      ],
+      "group": "test",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "shared"
+      },
+      "dependsOn": "build-windows"
+    },
+    {
+      "label": "clean-desktopgl",
+      "command": "dotnet",
+      "type": "shell",
+      "args": [
+        "clean",
+        "${workspaceFolder}/Platforms/Desktop/Flocking.DesktopGL.csproj"
+      ],
+      "group": "build",
+      "presentation": {
+        "echo": true,
+        "reveal": "silent",
+        "focus": false,
+        "panel": "shared"
+      }
+    },
+    {
+      "label": "clean-windows",
+      "command": "dotnet",
+      "type": "shell",
+      "args": [
+        "clean",
+        "${workspaceFolder}/Platforms/Windows/Flocking.Windows.csproj"
+      ],
+      "group": "build",
+      "presentation": {
+        "echo": true,
+        "reveal": "silent",
+        "focus": false,
+        "panel": "shared"
+      }
+    },
+    {
+      "label": "restore-desktopgl",
+      "command": "dotnet",
+      "type": "shell",
+      "args": [
+        "restore",
+        "${workspaceFolder}/Platforms/Desktop/Flocking.DesktopGL.csproj"
+      ],
+      "group": "build",
+      "presentation": {
+        "echo": true,
+        "reveal": "silent",
+        "focus": false,
+        "panel": "shared"
+      }
+    },
+    {
+      "label": "restore-windows",
+      "command": "dotnet",
+      "type": "shell",
+      "args": [
+        "restore",
+        "${workspaceFolder}/Platforms/Windows/Flocking.Windows.csproj"
+      ],
+      "group": "build",
+      "presentation": {
+        "echo": true,
+        "reveal": "silent",
+        "focus": false,
+        "panel": "shared"
+      }
+    },
+    {
+      "label": "build-android",
+      "command": "dotnet",
+      "type": "shell",
+      "args": [
+        "build",
+        "${workspaceFolder}/Platforms/Android/Flocking.Android.csproj"
+      ],
+      "group": "build",
+      "presentation": {
+        "echo": true,
+        "reveal": "silent",
+        "focus": false,
+        "panel": "shared"
+      },
+      "problemMatcher": "$msCompile"
+    },
+    {
+      "label": "build-ios",
+      "command": "dotnet",
+      "type": "shell",
+      "args": [
+        "build",
+        "${workspaceFolder}/Platforms/iOS/Flocking.iOS.csproj"
+      ],
+      "group": "build",
+      "presentation": {
+        "echo": true,
+        "reveal": "silent",
+        "focus": false,
+        "panel": "shared"
+      },
+      "problemMatcher": "$msCompile"
+    },
+    {
+      "label": "run-android",
+      "command": "dotnet",
+      "type": "shell",
+      "args": [
+        "run",
+        "--project",
+        "${workspaceFolder}/Platforms/Android/Flocking.Android.csproj"
+      ],
+      "group": "test",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "shared"
+      },
+      "dependsOn": "build-android"
+    },
+    {
+      "label": "clean-android",
+      "command": "dotnet",
+      "type": "shell",
+      "args": [
+        "clean",
+        "${workspaceFolder}/Platforms/Android/Flocking.Android.csproj"
+      ],
+      "group": "build",
+      "presentation": {
+        "echo": true,
+        "reveal": "silent",
+        "focus": false,
+        "panel": "shared"
+      }
+    },
+    {
+      "label": "clean-ios",
+      "command": "dotnet",
+      "type": "shell",
+      "args": [
+        "clean",
+        "${workspaceFolder}/Platforms/iOS/Flocking.iOS.csproj"
+      ],
+      "group": "build",
+      "presentation": {
+        "echo": true,
+        "reveal": "silent",
+        "focus": false,
+        "panel": "shared"
+      }
+    },
+    {
+      "label": "restore-android",
+      "command": "dotnet",
+      "type": "shell",
+      "args": [
+        "restore",
+        "${workspaceFolder}/Platforms/Android/Flocking.Android.csproj"
+      ],
+      "group": "build",
+      "presentation": {
+        "echo": true,
+        "reveal": "silent",
+        "focus": false,
+        "panel": "shared"
+      }
+    },
+    {
+      "label": "restore-ios",
+      "command": "dotnet",
+      "type": "shell",
+      "args": [
+        "restore",
+        "${workspaceFolder}/Platforms/iOS/Flocking.iOS.csproj"
+      ],
+      "group": "build",
+      "presentation": {
+        "echo": true,
+        "reveal": "silent",
+        "focus": false,
+        "panel": "shared"
+      }
+    }
+  ]
+}

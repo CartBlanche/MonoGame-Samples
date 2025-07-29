@@ -1,0 +1,41 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "build-windows",
+      "type": "shell",
+      "command": "dotnet build Platforms/Windows/NetworkStateManagement.Windows.csproj",
+      "group": "build"
+    },
+    {
+      "label": "build-desktopgl",
+      "type": "shell",
+      "command": "dotnet build Platforms/Desktop/NetworkStateManagement.DesktopGL.csproj",
+      "group": "build"
+    },
+    {
+      "label": "build-android",
+      "type": "shell",
+      "command": "dotnet build Platforms/Android/NetworkStateManagement.Android.csproj",
+      "group": "build"
+    },
+    {
+      "label": "build-ios",
+      "type": "shell",
+      "command": "dotnet build Platforms/iOS/NetworkStateManagement.iOS.csproj",
+      "group": "build"
+    },
+    {
+      "label": "run-windows",
+      "type": "shell",
+      "command": "dotnet run --project Platforms/Windows/NetworkStateManagement.Windows.csproj",
+      "group": "test"
+    },
+    {
+      "label": "run-desktopgl",
+      "type": "shell",
+      "command": "dotnet run --project Platforms/Desktop/NetworkStateManagement.DesktopGL.csproj",
+      "group": "test"
+    }
+  ]
+}

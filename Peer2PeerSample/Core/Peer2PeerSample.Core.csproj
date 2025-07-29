@@ -1,0 +1,14 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <RootNamespace>PeerToPeer</RootNamespace>
+    <AssemblyName>Peer2PeerSample.Core</AssemblyName>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <Nullable>disable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="MonoGame.Framework.DesktopGL" Version="3.8.*" />
+    <ProjectReference Include="..\..\MonoGame.Xna.Framework.Net\MonoGame.Xna.Framework.Net.csproj" />
+  </ItemGroup>
+</Project>

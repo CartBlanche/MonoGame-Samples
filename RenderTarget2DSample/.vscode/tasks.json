@@ -1,0 +1,76 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "build-windows",
+            "type": "shell",
+            "command": "dotnet",
+            "args": ["build", "Platforms/Windows/RenderTarget2D.Windows.csproj"],
+            "group": "build",
+            "problemMatcher": ["$msCompile"]
+        },
+        {
+            "label": "build-desktopgl",
+            "type": "shell",
+            "command": "dotnet",
+            "args": ["build", "Platforms/Desktop/RenderTarget2D.DesktopGL.csproj"],
+            "group": "build",
+            "problemMatcher": ["$msCompile"]
+        },
+        {
+            "label": "build-android",
+            "type": "shell",
+            "command": "dotnet",
+            "args": ["build", "Platforms/Android/RenderTarget2D.Android.csproj"],
+            "group": "build",
+            "problemMatcher": ["$msCompile"]
+        },
+        {
+            "label": "build-ios",
+            "type": "shell",
+            "command": "dotnet",
+            "args": ["build", "Platforms/iOS/RenderTarget2D.iOS.csproj"],
+            "group": "build",
+            "problemMatcher": ["$msCompile"]
+        },
+        {
+            "label": "run-windows",
+            "type": "shell",
+            "command": "dotnet",
+            "args": ["run", "--project", "Platforms/Windows/RenderTarget2D.Windows.csproj"],
+            "group": "test",
+            "dependsOn": "build-windows"
+        },
+        {
+            "label": "run-desktopgl",
+            "type": "shell",
+            "command": "dotnet",
+            "args": ["run", "--project", "Platforms/Desktop/RenderTarget2D.DesktopGL.csproj"],
+            "group": "test",
+            "dependsOn": "build-desktopgl"
+        },
+        {
+            "label": "run-android",
+            "type": "shell",
+            "command": "dotnet",
+            "args": ["run", "--project", "Platforms/Android/RenderTarget2D.Android.csproj"],
+            "group": "test",
+            "dependsOn": "build-android"
+        },
+        {
+            "label": "run-ios",
+            "type": "shell",
+            "command": "dotnet",
+            "args": ["run", "--project", "Platforms/iOS/RenderTarget2D.iOS.csproj"],
+            "group": "test",
+            "dependsOn": "build-ios"
+        },
+        {
+            "label": "clean",
+            "type": "shell",
+            "command": "dotnet",
+            "args": ["clean"],
+            "group": "build"
+        }
+    ]
+}

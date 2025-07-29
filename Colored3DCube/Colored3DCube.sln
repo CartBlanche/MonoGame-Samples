@@ -1,0 +1,45 @@
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.5.2.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Colored3DCube.Core", "Core\Colored3DCube.Core.csproj", "{CF7A194A-CF38-4379-909F-1B5FFB8F79C1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Colored3DCube.DesktopGL", "Platforms\DesktopGL\Colored3DCube.DesktopGL.csproj", "{CF7A194A-CF38-4379-909F-1B5FFB8F79C2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Colored3DCube.Windows", "Platforms\Windows\Colored3DCube.Windows.csproj", "{CF7A194A-CF38-4379-909F-1B5FFB8F79C3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Colored3DCube.Android", "Platforms\Android\Colored3DCube.Android.csproj", "{CF7A194A-CF38-4379-909F-1B5FFB8F79C4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Colored3DCube.iOS", "Platforms\iOS\Colored3DCube.iOS.csproj", "{CF7A194A-CF38-4379-909F-1B5FFB8F79C5}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{CF7A194A-CF38-4379-909F-1B5FFB8F79C1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CF7A194A-CF38-4379-909F-1B5FFB8F79C1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CF7A194A-CF38-4379-909F-1B5FFB8F79C1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CF7A194A-CF38-4379-909F-1B5FFB8F79C1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CF7A194A-CF38-4379-909F-1B5FFB8F79C2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CF7A194A-CF38-4379-909F-1B5FFB8F79C2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CF7A194A-CF38-4379-909F-1B5FFB8F79C2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CF7A194A-CF38-4379-909F-1B5FFB8F79C2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CF7A194A-CF38-4379-909F-1B5FFB8F79C3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CF7A194A-CF38-4379-909F-1B5FFB8F79C3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CF7A194A-CF38-4379-909F-1B5FFB8F79C3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CF7A194A-CF38-4379-909F-1B5FFB8F79C3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CF7A194A-CF38-4379-909F-1B5FFB8F79C4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CF7A194A-CF38-4379-909F-1B5FFB8F79C4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CF7A194A-CF38-4379-909F-1B5FFB8F79C4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CF7A194A-CF38-4379-909F-1B5FFB8F79C4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CF7A194A-CF38-4379-909F-1B5FFB8F79C5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CF7A194A-CF38-4379-909F-1B5FFB8F79C5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CF7A194A-CF38-4379-909F-1B5FFB8F79C5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CF7A194A-CF38-4379-909F-1B5FFB8F79C5}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

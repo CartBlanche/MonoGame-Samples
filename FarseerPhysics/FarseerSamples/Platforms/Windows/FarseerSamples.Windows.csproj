@@ -1,0 +1,41 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <RootNamespace>FarseerSamples</RootNamespace>
+    <AssemblyName>FarseerSamples</AssemblyName>
+    <UseWindowsForms>false</UseWindowsForms>
+    <PublishReadyToRun>false</PublishReadyToRun>
+    <TieredCompilation>false</TieredCompilation>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <DefineConstants>WINDOWS</DefineConstants>
+    <ApplicationManifest>..\..\Core\Content\app.manifest</ApplicationManifest>
+    <ApplicationIcon>..\..\Core\Content\Icon.ico</ApplicationIcon>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <PackageId>FarseerSamples.Windows</PackageId>
+    <Title>Farseer Physics Samples - Windows</Title>
+    <Product>FarseerSamples</Product>
+    <Description>Farseer Physics Engine samples for MonoGame Windows</Description>
+    <Company>Farseer Physics</Company>
+    <Copyright>Copyright © Farseer Physics 2023</Copyright>
+    <Version>1.0.0</Version>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="MonoGame.Framework.WindowsDX" Version="3.8.*" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Core\FarseerSamples.Core.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="..\..\Core\Content\**\*.xnb" Link="Content\%(RecursiveDir)%(Filename)%(Extension)">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+</Project>

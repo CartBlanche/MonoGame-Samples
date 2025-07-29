@@ -1,0 +1,49 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "run-windows",
+            "command": "dotnet",
+            "type": "process",
+            "args": [
+                "run",
+                "--project",
+                "${workspaceFolder}/Platforms/Windows/HoneycombRush.Windows.csproj"
+            ],
+            "group": "test"
+        },
+        {
+            "label": "run-desktopgl",
+            "command": "dotnet",
+            "type": "process",
+            "args": [
+                "run",
+                "--project",
+                "${workspaceFolder}/Platforms/Desktop/HoneycombRush.DesktopGL.csproj"
+            ],
+            "group": "test"
+        },
+        {
+            "label": "run-android",
+            "command": "dotnet",
+            "type": "process",
+            "args": [
+                "run",
+                "--project",
+                "${workspaceFolder}/Platforms/Android/HoneycombRush.Android.csproj"
+            ],
+            "group": "test"
+        },
+        {
+            "label": "run-ios",
+            "command": "dotnet",
+            "type": "process",
+            "args": [
+                "run",
+                "--project",
+                "${workspaceFolder}/Platforms/iOS/HoneycombRush.iOS.csproj"
+            ],
+            "group": "test"
+        }
+    ]
+}

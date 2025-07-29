@@ -1,0 +1,86 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"label": "build-windows",
+			"type": "shell",
+			"command": "dotnet",
+	"args": [
+		"build",
+		"Platforms/Windows/PerformanceMeasuring.Windows.csproj"
+	],
+			"group": "build",
+			"problemMatcher": [
+				"$msCompile"
+			]
+		},
+		{
+			"label": "build-desktopgl",
+			"type": "shell",
+			"command": "dotnet",
+	"args": [
+		"build",
+		"Platforms/DesktopGL/PerformanceMeasuring.DesktopGL.csproj"
+	],
+			"group": "build",
+			"problemMatcher": [
+				"$msCompile"
+			]
+		},
+		{
+			"label": "build-android",
+			"type": "shell",
+			"command": "dotnet",
+	"args": [
+		"build",
+		"Platforms/Android/PerformanceMeasuring.Android.csproj"
+	],
+			"group": "build",
+			"problemMatcher": [
+				"$msCompile"
+			]
+		},
+		{
+			"label": "run-windows",
+			"type": "shell",
+			"command": "dotnet",
+	"args": [
+		"run",
+		"--project",
+		"Platforms/Windows/PerformanceMeasuring.Windows.csproj"
+	],
+			"group": "test",
+			"dependsOn": "build-windows",
+			"problemMatcher": [
+				"$msCompile"
+			]
+		},
+		{
+			"label": "run-desktopgl",
+			"type": "shell",
+			"command": "dotnet",
+	"args": [
+		"run",
+		"--project",
+		"Platforms/DesktopGL/PerformanceMeasuring.DesktopGL.csproj"
+	],
+			"group": "test",
+			"dependsOn": "build-desktopgl",
+			"problemMatcher": [
+				"$msCompile"
+			]
+		},
+		{
+			"label": "clean",
+			"type": "shell",
+			"command": "dotnet",
+			"args": [
+				"clean"
+			],
+			"group": "build",
+			"problemMatcher": [
+				"$msCompile"
+			]
+		}
+	]
+}
