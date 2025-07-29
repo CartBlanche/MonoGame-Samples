@@ -1,0 +1,83 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\Users\\savag\\source\\repos\\CartBlanche\\MonoGame\\MonoGame-Samples\\RolePlayingGame\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{201DEFB0-AC20-2D12-682E-1F278895F197}|RolePlayingGameProcessors\\RolePlayingGame.Processors.csproj|c:\\users\\savag\\source\\repos\\cartblanche\\monogame\\monogame-samples\\roleplayinggame\\roleplayinggameprocessors\\roleplayinggame.processors.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|",
+      "RelativeMoniker": "D:0:0:{201DEFB0-AC20-2D12-682E-1F278895F197}|RolePlayingGameProcessors\\RolePlayingGame.Processors.csproj|solutionrelative:roleplayinggameprocessors\\roleplayinggame.processors.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{68408B9D-273A-5946-C7E2-2E5AB96D6FB3}|RolePlayingGameData\\RolePlayingGame.Data.csproj|c:\\users\\savag\\source\\repos\\cartblanche\\monogame\\monogame-samples\\roleplayinggame\\roleplayinggamedata\\roleplayinggame.data.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|",
+      "RelativeMoniker": "D:0:0:{68408B9D-273A-5946-C7E2-2E5AB96D6FB3}|RolePlayingGameData\\RolePlayingGame.Data.csproj|solutionrelative:roleplayinggamedata\\roleplayinggame.data.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{32028705-62B7-4256-B1F5-439BE79DBBCA}|Core\\RolePlayingGame.Core.csproj|c:\\users\\savag\\source\\repos\\cartblanche\\monogame\\monogame-samples\\roleplayinggame\\core\\roleplayinggame.core.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|",
+      "RelativeMoniker": "D:0:0:{32028705-62B7-4256-B1F5-439BE79DBBCA}|Core\\RolePlayingGame.Core.csproj|solutionrelative:core\\roleplayinggame.core.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 0,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "RolePlayingGame.Processors",
+              "DocumentMoniker": "C:\\Users\\savag\\source\\repos\\CartBlanche\\MonoGame\\MonoGame-Samples\\RolePlayingGame\\RolePlayingGameProcessors\\RolePlayingGame.Processors.csproj",
+              "RelativeDocumentMoniker": "RolePlayingGameProcessors\\RolePlayingGame.Processors.csproj",
+              "ToolTip": "C:\\Users\\savag\\source\\repos\\CartBlanche\\MonoGame\\MonoGame-Samples\\RolePlayingGame\\RolePlayingGameProcessors\\RolePlayingGame.Processors.csproj",
+              "RelativeToolTip": "RolePlayingGameProcessors\\RolePlayingGame.Processors.csproj",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
+              "WhenOpened": "2025-07-29T14:12:24.722Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "RolePlayingGame.Data",
+              "DocumentMoniker": "C:\\Users\\savag\\source\\repos\\CartBlanche\\MonoGame\\MonoGame-Samples\\RolePlayingGame\\RolePlayingGameData\\RolePlayingGame.Data.csproj",
+              "RelativeDocumentMoniker": "RolePlayingGameData\\RolePlayingGame.Data.csproj",
+              "ToolTip": "C:\\Users\\savag\\source\\repos\\CartBlanche\\MonoGame\\MonoGame-Samples\\RolePlayingGame\\RolePlayingGameData\\RolePlayingGame.Data.csproj",
+              "RelativeToolTip": "RolePlayingGameData\\RolePlayingGame.Data.csproj",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
+              "WhenOpened": "2025-07-29T14:12:20.472Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "RolePlayingGame.Core",
+              "DocumentMoniker": "C:\\Users\\savag\\source\\repos\\CartBlanche\\MonoGame\\MonoGame-Samples\\RolePlayingGame\\Core\\RolePlayingGame.Core.csproj",
+              "RelativeDocumentMoniker": "Core\\RolePlayingGame.Core.csproj",
+              "ToolTip": "C:\\Users\\savag\\source\\repos\\CartBlanche\\MonoGame\\MonoGame-Samples\\RolePlayingGame\\Core\\RolePlayingGame.Core.csproj",
+              "RelativeToolTip": "Core\\RolePlayingGame.Core.csproj",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
+              "WhenOpened": "2025-07-29T14:12:13.049Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{e506b91c-c606-466a-90a9-123d1d1e12b3}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{1c4feeaa-4718-4aa9-859d-94ce25d182ba}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{aa2115a1-9712-457b-9047-dbb71ca2cdd2}"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

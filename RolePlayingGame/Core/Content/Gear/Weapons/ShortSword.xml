@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <XnaContent>
-  <Asset Type="RolePlayingGameData.Weapon">
+  <Asset Type="RolePlaying.Data.Weapon">
       <Name>Short Sword</Name>
       <Description>The short sword is short, swift, and sharp.  It is a staple for all warriors.</Description>
       <GoldValue>100</GoldValue>

@@ -10,7 +10,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Core\RolePlayingGame.Core.csproj" />
+    <ProjectReference Include="..\..\Core\RolePlaying.Core.csproj" />
+    <ProjectReference Include="..\..\RolePlayingGameData\RolePlaying.Data.csproj" />
     <PackageReference Include="MonoGame.Framework.DesktopGL" Version="3.8.*" />
     <PackageReference Include="MonoGame.Content.Builder.Task" Version="3.8.*" />
   </ItemGroup>

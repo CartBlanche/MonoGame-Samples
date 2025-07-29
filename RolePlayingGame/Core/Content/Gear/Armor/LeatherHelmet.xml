@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <XnaContent>
-  <Asset Type="RolePlayingGameData.Armor">
+  <Asset Type="RolePlaying.Data.Armor">
       <Name>Leather Helmet</Name>
       <Description>This armor set is made out of hardened leather.</Description>
       <GoldValue>150</GoldValue>

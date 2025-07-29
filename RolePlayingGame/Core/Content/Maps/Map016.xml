@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <XnaContent>
-  <Asset Type="RolePlayingGameData.Map">
+  <Asset Type="RolePlaying.Data.Map">
       <Name>Map016</Name>
       <MapDimensions>23 13</MapDimensions>
       <TileSize>64 64</TileSize>

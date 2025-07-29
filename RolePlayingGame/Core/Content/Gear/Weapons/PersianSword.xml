@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <XnaContent>
-  <Asset Type="RolePlayingGameData.Weapon">
+  <Asset Type="RolePlaying.Data.Weapon">
       <Name>Persian Sword</Name>
       <Description>The curved sword with unbridled attack speed.</Description>
       <GoldValue>450</GoldValue>

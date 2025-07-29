@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <XnaContent>
-  <Asset Type="RolePlayingGameData.Weapon">
+  <Asset Type="RolePlaying.Data.Weapon">
       <Name>Legendary Club</Name>
       <Description>This club has an unusual design and unknown origin.</Description>
       <GoldValue>-1</GoldValue>

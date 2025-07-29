@@ -13,7 +13,7 @@ using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using System.Text;
 
-namespace RolePlaying.Core
+namespace RolePlaying
 {
     /// <summary>
     /// The screen manager is a component which manages one or more GameScreen

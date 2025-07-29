@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <XnaContent>
-  <Asset Type="RolePlayingGameData.Weapon">
+  <Asset Type="RolePlaying.Data.Weapon">
       <Name>Giant Club</Name>
       <Description>This magically-embued large club is an excessively brutal bludgeoning weapon.</Description>
       <GoldValue>1000</GoldValue>

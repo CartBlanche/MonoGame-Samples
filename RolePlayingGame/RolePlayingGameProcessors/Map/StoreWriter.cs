@@ -21,7 +21,7 @@ using RolePlaying.Data;
 
 #endregion
 
-namespace RolePlayingGame.Processors
+namespace RolePlaying.Processors
 {
     /// <summary>
     /// This class will be instantiated by the XNA Framework Content Pipeline

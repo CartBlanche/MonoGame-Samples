@@ -14,7 +14,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using RolePlaying.Data;
 
-namespace RolePlaying.Core
+namespace RolePlaying
 {
     /// <summary>
     /// The runtime execution engine for the combat system.

@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <XnaContent>
-  <Asset Type="RolePlayingGameData.Quest">
+  <Asset Type="RolePlaying.Data.Quest">
       <Name>The Bandit Leader</Name>
       <Description>The bandit leader has been supplying Tamar with weaponry for his horde of monsters.  Find him by the beach to the east.  It won't be easy to defeat him and his marauding raiders.  Stop by Apple Village to the west first, and stock up for the big fight!</Description>
       <ObjectiveMessage>Find the bandit leader and defeat him.</ObjectiveMessage>

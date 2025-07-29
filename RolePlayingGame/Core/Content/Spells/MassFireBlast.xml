@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <XnaContent>
-  <Asset Type="RolePlayingGameData.Spell">
+  <Asset Type="RolePlaying.Data.Spell">
 	  <Name>Fire Blast</Name>
 	  <Description>Mid-level fire spell that targets up to three enemies.</Description>
 	  <MagicPointCost>40</MagicPointCost>

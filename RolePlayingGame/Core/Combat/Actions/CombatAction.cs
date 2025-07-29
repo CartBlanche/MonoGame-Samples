@@ -10,7 +10,7 @@ using RolePlaying.Data;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace RolePlaying.Core
+namespace RolePlaying
 {
     /// <summary>
     /// An action taken by an individual character in combat.

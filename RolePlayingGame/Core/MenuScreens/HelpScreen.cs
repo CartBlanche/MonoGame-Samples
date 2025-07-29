@@ -13,7 +13,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Content;
 using RolePlaying.Data;
 
-namespace RolePlaying.Core
+namespace RolePlaying
 {
     /// <summary>
     /// Shows the help screen, explaining the basic game idea to the user.

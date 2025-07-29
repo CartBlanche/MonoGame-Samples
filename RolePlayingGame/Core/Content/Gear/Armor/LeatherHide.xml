@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <XnaContent>
-  <Asset Type="RolePlayingGameData.Armor">
+  <Asset Type="RolePlaying.Data.Armor">
       <Name>Leather Hide</Name>
       <Description>The hardened-hide armor provides basic protection for all heroes.</Description>
       <GoldValue>30</GoldValue>

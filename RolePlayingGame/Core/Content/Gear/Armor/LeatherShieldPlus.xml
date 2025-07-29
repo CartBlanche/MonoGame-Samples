@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <XnaContent>
-  <Asset Type="RolePlayingGameData.Armor">
+  <Asset Type="RolePlaying.Data.Armor">
       <Name>Leather Shield</Name>
       <Description>This shield is made out of wood covered with hardened leather with additional magical protection.</Description>
       <GoldValue>350</GoldValue>

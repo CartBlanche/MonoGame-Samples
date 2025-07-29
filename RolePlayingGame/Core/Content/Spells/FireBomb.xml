@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <XnaContent>
-    <Asset Type="RolePlayingGameData.Spell">
+    <Asset Type="RolePlaying.Data.Spell">
         <Name>Fire Bomb</Name>
         <Description>High-Level Fire Spell.</Description>
         <MagicPointCost>50</MagicPointCost>

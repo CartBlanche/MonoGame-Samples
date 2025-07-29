@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <XnaContent>
-  <Asset Type="RolePlayingGameData.Quest">
+  <Asset Type="RolePlaying.Data.Quest">
       <Name>Short Sword</Name>
       <Description>Find another Glimmering Ruby for Shed-darr the Wise.  He will give you the Short Sword in return.</Description>
       <ObjectiveMessage>Look for a nearby chest that contains another Glimmering Ruby.</ObjectiveMessage>

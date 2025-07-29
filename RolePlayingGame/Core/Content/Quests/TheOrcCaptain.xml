@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <XnaContent>
-  <Asset Type="RolePlayingGameData.Quest">
+  <Asset Type="RolePlaying.Data.Quest">
       <Name>The Orc Captain</Name>
       <Description>The Orc Captain is creating a ruckus south of here.  He has stolen some Sir Thansharp's prized possessions.  Find him and defeat him.  Whatever you find is yours.</Description>
       <ObjectiveMessage>Teach the Orc Captain how to behave himself.  You'll have to kill him, of course.</ObjectiveMessage>

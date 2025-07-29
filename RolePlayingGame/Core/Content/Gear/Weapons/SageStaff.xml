@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <XnaContent>
-  <Asset Type="RolePlayingGameData.Weapon">
+  <Asset Type="RolePlaying.Data.Weapon">
       <Name>Sage Staff</Name>
       <Description>A sage staff belongs only to the greatest of spellcasters.</Description>
       <GoldValue>500</GoldValue>

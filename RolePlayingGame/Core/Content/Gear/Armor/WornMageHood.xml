@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <XnaContent>
-  <Asset Type="RolePlayingGameData.Armor">
+  <Asset Type="RolePlaying.Data.Armor">
       <Name>Worn Mage Hood</Name>
       <Description>This set provides basic magical protection for spellcasters.</Description>
       <GoldValue>300</GoldValue>

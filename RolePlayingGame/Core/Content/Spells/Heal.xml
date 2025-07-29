@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <XnaContent>
-  <Asset Type="RolePlayingGameData.Spell">
+  <Asset Type="RolePlaying.Data.Spell">
 	  <Name>Heal</Name>
 	  <Description>Mid-Level Healing Spell.</Description>
 	  <MagicPointCost>15</MagicPointCost>

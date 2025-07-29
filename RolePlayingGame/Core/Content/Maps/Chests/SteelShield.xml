@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<XnaContent><Asset Type="RolePlayingGameData.Chest">
+<XnaContent><Asset Type="RolePlaying.Data.Chest">
   <Name>Steel Shield</Name>
   <Gold>0</Gold>
   <Entries>

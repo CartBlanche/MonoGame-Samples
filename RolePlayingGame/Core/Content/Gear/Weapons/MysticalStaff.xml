@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <XnaContent>
-  <Asset Type="RolePlayingGameData.Weapon">
+  <Asset Type="RolePlaying.Data.Weapon">
       <Name>Mystical Staff</Name>
       <Description>This staff is clearly magical but is of unknown origin.</Description>
       <GoldValue>350</GoldValue>

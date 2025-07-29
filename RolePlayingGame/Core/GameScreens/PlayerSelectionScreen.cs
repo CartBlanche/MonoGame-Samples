@@ -13,7 +13,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Content;
 using RolePlaying.Data;
 
-namespace RolePlaying.Core
+namespace RolePlaying
 {
     /// <summary>
     /// Shows a list of players and allows the user to equip or use items.

@@ -1,6 +1,3 @@
-
-using RolePlaying.Core;
-
 namespace RolePlaying.Windows
 {
     internal static class Program

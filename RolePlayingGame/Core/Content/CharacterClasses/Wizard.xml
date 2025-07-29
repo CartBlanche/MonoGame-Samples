@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <XnaContent>
-  <Asset Type="RolePlayingGameData.CharacterClass">
+  <Asset Type="RolePlaying.Data.CharacterClass">
       <Name>Wizard</Name>
       <InitialStatistics>
           <HealthPoints>20</HealthPoints>

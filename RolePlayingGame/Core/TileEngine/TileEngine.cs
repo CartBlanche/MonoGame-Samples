@@ -11,7 +11,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using RolePlaying.Data;
 
-namespace RolePlaying.Core
+namespace RolePlaying
 {
     /// <summary>
     /// Static class for a tileable map

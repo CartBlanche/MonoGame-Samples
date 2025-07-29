@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <XnaContent>
-  <Asset Type="RolePlayingGameData.Weapon">
+  <Asset Type="RolePlaying.Data.Weapon">
       <Name>Long Blade</Name>
       <Description>The long blade combines the long sword's length with an edged blade.</Description>
       <GoldValue>650</GoldValue>

@@ -7,7 +7,7 @@
 
 using System;
 
-namespace RolePlaying.Core
+namespace RolePlaying
 {
     enum CombatEndingState
     {

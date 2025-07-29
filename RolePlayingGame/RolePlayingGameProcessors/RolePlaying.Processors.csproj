@@ -1,8 +1,8 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
-    <AssemblyName>RolePlayingGame.Processors</AssemblyName>
-    <RootNamespace>RolePlayingGame.Processors</RootNamespace>
+    <AssemblyName>RolePlaying.Processors</AssemblyName>
+    <RootNamespace>RolePlaying.Processors</RootNamespace>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
   </PropertyGroup>
 
@@ -12,6 +12,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\RolePlayingGameData\RolePlayingGame.Data.csproj" />
+    <ProjectReference Include="..\RolePlayingGameData\RolePlaying.Data.csproj" />
   </ItemGroup>
 </Project>

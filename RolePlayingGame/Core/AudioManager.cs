@@ -10,7 +10,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
 using System.Collections.Generic;
 
-namespace RolePlaying.Core
+namespace RolePlaying
 {
     /// <summary>
     /// Component that manages audio playback for all cues.
@@ -64,13 +64,13 @@ namespace RolePlaying.Core
             string soundBankFile)
             : base(game)
         {
-            try
+            /*TODO: try
             {
                 audioEngine = new AudioEngine(settingsFile);
                 waveBank = new WaveBank(audioEngine, waveBankFile);
                 soundBank = new SoundBank(audioEngine, soundBankFile);
             }
-            catch (NoAudioHardwareException)
+            catch (NoAudioHardwareException)*/
             {
                 // silently fall back to silence
                 audioEngine = null;

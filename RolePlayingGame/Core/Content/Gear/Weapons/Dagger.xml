@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <XnaContent>
-  <Asset Type="RolePlayingGameData.Weapon">
+  <Asset Type="RolePlaying.Data.Weapon">
       <Name>Dagger</Name>
       <Description>The dagger is small, sharp, and light.</Description>
       <GoldValue>50</GoldValue>

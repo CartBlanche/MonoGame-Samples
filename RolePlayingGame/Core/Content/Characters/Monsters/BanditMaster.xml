@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <XnaContent>
-  <Asset Type="RolePlayingGameData.Monster">
+  <Asset Type="RolePlaying.Data.Monster">
       <Name>Bandit Master</Name>
       <MapSprite>
           <TextureName>Characters\Warrior1IdleRight</TextureName>

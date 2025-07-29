@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <XnaContent>
-  <Asset Type="RolePlayingGameData.Weapon">
+  <Asset Type="RolePlaying.Data.Weapon">
       <Name>Claymore Plus</Name>
       <Description>Magically embued, this claymore will enhance a hero's abilities.</Description>
       <GoldValue>350</GoldValue>

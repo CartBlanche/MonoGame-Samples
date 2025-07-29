@@ -15,7 +15,7 @@ using RolePlaying.Data;
 using System.Collections.Generic;
 using System.IO;
 
-namespace RolePlaying.Core
+namespace RolePlaying
 {
     /// <summary>
     /// This screen implements the actual game logic. It is just a

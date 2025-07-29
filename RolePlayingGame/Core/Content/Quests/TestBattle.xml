@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <XnaContent>
-  <Asset Type="RolePlayingGameData.Quest">
+  <Asset Type="RolePlaying.Data.Quest">
       <Name>Test Battle</Name>
       <Description>It's time to test your mettle in combat!  Find Sir Shire and let's see what you're capable of!</Description>
       <ObjectiveMessage>Walk south to the bottom of the map.  There you will find Sir Shire awaiting you for combat!</ObjectiveMessage>

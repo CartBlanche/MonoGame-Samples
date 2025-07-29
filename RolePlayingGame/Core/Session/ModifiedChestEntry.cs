@@ -9,7 +9,7 @@ using System;
 using System.Collections.Generic;
 using RolePlaying.Data;
 
-namespace RolePlaying.Core
+namespace RolePlaying
 {
     /// <summary>
     /// A serializable description of the modified contents of a chest in the world.

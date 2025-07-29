@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <XnaContent>
-  <Asset Type="RolePlayingGameData.Armor">
+  <Asset Type="RolePlaying.Data.Armor">
       <Name>Mage Boots</Name>
       <Description>This set provides magical protection for spellcasters.</Description>
       <GoldValue>400</GoldValue>

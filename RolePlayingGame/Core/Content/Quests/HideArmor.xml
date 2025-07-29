@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <XnaContent>
-  <Asset Type="RolePlayingGameData.Quest">
+  <Asset Type="RolePlaying.Data.Quest">
       <Name>Hide Shield</Name>
       <Description>Your first quest is to find a Glimmering Ruby for Shed-darr The Wise.  He will give you the Hide Shield in return.</Description>
       <ObjectiveMessage>Look for a nearby chest that contains the Glimmering Ruby.</ObjectiveMessage>

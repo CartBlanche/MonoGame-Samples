@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <XnaContent>
-  <Asset Type="RolePlayingGameData.Armor">
+  <Asset Type="RolePlaying.Data.Armor">
       <Name>Iron Shield Plus</Name>
       <Description>This iron shield provides additional protection against magical attacks.</Description>
       <GoldValue>750</GoldValue>

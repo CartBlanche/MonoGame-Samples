@@ -1,8 +1,6 @@
 using Foundation;
 using UIKit;
 
-using RolePlaying.Core;
-
 namespace RolePlaying.iOS
 {
     [Register("AppDelegate")]

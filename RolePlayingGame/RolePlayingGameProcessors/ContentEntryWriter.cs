@@ -15,7 +15,7 @@ using Microsoft.Xna.Framework.Content.Pipeline.Processors;
 using Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler;
 using RolePlaying.Data;
 
-namespace RolePlayingGame.Processors
+namespace RolePlaying.Processors
 {
     /// <summary>
     /// This class will be instantiated by the XNA Framework Content Pipeline

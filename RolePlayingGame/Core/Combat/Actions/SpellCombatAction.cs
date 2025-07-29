@@ -11,7 +11,7 @@ using RolePlaying.Data;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Audio;
 
-namespace RolePlaying.Core
+namespace RolePlaying
 {
     /// <summary>
     /// A spell-casting combat action, including related data and calculations.

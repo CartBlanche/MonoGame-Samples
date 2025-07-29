@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <XnaContent>
-  <Asset Type="RolePlayingGameData.Item">
+  <Asset Type="RolePlaying.Data.Item">
       <Name>Fire Bolt Scroll</Name>
       <Description>Casts a Fire Bolt spell.</Description>
       <GoldValue>10</GoldValue>

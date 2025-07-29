@@ -12,7 +12,7 @@ using System.IO;
 using Microsoft.Xna.Framework.Content;
 using RolePlaying.Data;
 
-namespace RolePlaying.Core
+namespace RolePlaying
 {
     /// <summary>
     /// The group of players, under control of the user.

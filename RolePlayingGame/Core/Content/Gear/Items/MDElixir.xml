@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <XnaContent>
-  <Asset Type="RolePlayingGameData.Item">
+  <Asset Type="RolePlaying.Data.Item">
       <Name>Magical Defense Elixir</Name>
       <Description>Increases magical defense by 1 point.</Description>
       <GoldValue>500</GoldValue>

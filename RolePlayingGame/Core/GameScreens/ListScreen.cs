@@ -13,7 +13,7 @@ using Microsoft.Xna.Framework.Content;
 using RolePlaying.Data;
 using System.Collections.ObjectModel;
 
-namespace RolePlaying.Core
+namespace RolePlaying
 {
     abstract class ListScreen<T> : GameScreen
     {

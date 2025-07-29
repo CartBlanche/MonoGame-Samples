@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <XnaContent>
-  <Asset Type="RolePlayingGameData.Weapon">
+  <Asset Type="RolePlaying.Data.Weapon">
       <Name>Legendary Staff</Name>
       <Description>This staff has strange runes carved into it.  It is of unknown origin.</Description>
       <GoldValue>-1</GoldValue>

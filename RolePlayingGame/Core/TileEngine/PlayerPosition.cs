@@ -9,7 +9,7 @@ using System;
 using Microsoft.Xna.Framework;
 using RolePlaying.Data;
 
-namespace RolePlaying.Core
+namespace RolePlaying
 {
     /// <summary>
     /// The position of a player in the tile engine.

@@ -11,7 +11,7 @@ using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using RolePlaying.Data;
 
-namespace RolePlaying.Core
+namespace RolePlaying
 {
     /// <summary>
     /// The main menu screen is the first thing displayed when the game starts up.
@@ -208,6 +208,7 @@ namespace RolePlaying.Core
             }
 
             ContentManager content = ScreenManager.Game.Content;
+            
             var gameDescription = content.Load<GameStartDescription>("MainGameDescription");
             var gameplayScreen = new GameplayScreen(gameDescription);
 			LoadingScreen.Load(ScreenManager, true, gameplayScreen);

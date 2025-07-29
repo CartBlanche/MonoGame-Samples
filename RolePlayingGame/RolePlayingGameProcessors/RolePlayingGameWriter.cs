@@ -18,7 +18,7 @@ using Microsoft.Xna.Framework.Content.Pipeline.Processors;
 using Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler;
 #endregion
 
-namespace RolePlayingGame.Processors
+namespace RolePlaying.Processors
 {
     public abstract class RolePlayingGameWriter<T> : ContentTypeWriter<T>
     {

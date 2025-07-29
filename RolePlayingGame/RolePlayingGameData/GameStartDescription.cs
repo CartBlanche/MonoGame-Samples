@@ -60,27 +60,5 @@ namespace RolePlaying.Data
             get { return questLineContentName; }
             set { questLineContentName = value; }
         }
-
-        /// <summary>
-        /// Read a GameStartDescription object from the content pipeline.
-        /// </summary>
-        public class GameStartDescriptionReader : ContentTypeReader<GameStartDescription>
-        {
-            protected override GameStartDescription Read(ContentReader input,
-                GameStartDescription existingInstance)
-            {
-                GameStartDescription desc = existingInstance;
-                if (desc == null)
-                {
-                    desc = new GameStartDescription();
-                }
-
-                desc.MapContentName = input.ReadString();
-                desc.PlayerContentNames.AddRange(input.ReadObject<List<string>>());
-                desc.QuestLineContentName = input.ReadString();
-
-                return desc;
-            }
-        }
     }
 }

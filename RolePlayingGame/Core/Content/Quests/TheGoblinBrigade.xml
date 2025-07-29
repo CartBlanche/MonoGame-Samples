@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <XnaContent>
-  <Asset Type="RolePlayingGameData.Quest">
+  <Asset Type="RolePlaying.Data.Quest">
       <Name>The Goblin Brigade</Name>
       <Description>The Goblin Brigade is blocking the path to Lush Village south of here.  Defeat them, please!</Description>
       <ObjectiveMessage>Find the four Goblin Grunts, and teach them a lesson!</ObjectiveMessage>

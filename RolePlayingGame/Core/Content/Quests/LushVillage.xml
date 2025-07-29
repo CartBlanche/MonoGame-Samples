@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <XnaContent>
-  <Asset Type="RolePlayingGameData.Quest">
+  <Asset Type="RolePlaying.Data.Quest">
       <Name>Save Lush Village... Again</Name>
       <Description>Clear out the goblin horde around Lush Village to the south.  Again.</Description>
       <ObjectiveMessage>Eliminate those pesky Goblin Grunts!</ObjectiveMessage>

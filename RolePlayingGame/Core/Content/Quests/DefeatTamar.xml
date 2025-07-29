@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <XnaContent>
-  <Asset Type="RolePlayingGameData.Quest">
+  <Asset Type="RolePlaying.Data.Quest">
       <Name>Defeat Tamar</Name>
       <Description>Your quest will only be complete once you have defeated the evil Tamar.  Good luck, Hero.</Description>
       <ObjectiveMessage>Find the evil Tamar in his treacherous dungeon that lies south of Apple Village. Defeat him, and save the world of Mercadia!</ObjectiveMessage>

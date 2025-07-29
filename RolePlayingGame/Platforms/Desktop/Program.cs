@@ -1,4 +1,3 @@
-using RolePlaying.Core;
 
 namespace RolePlaying.Desktop
 {

@@ -12,7 +12,7 @@ using System.Text;
 using Microsoft.Xna.Framework;
 using System.Collections.Generic;
 
-namespace RolePlaying.Core
+namespace RolePlaying
 {
     /// <summary>
     /// Static storage of SpriteFont objects and colors for use throughout the game.

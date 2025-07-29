@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <XnaContent>
-  <Asset Type="RolePlayingGameData.Armor">
+  <Asset Type="RolePlaying.Data.Armor">
       <Name>Chain Helmet</Name>
       <Description>Iron links form a chain, providing mobility and superior protection.</Description>
       <GoldValue>250</GoldValue>

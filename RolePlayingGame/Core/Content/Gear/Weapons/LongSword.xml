@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <XnaContent>
-  <Asset Type="RolePlayingGameData.Weapon">
+  <Asset Type="RolePlaying.Data.Weapon">
       <Name>Long Sword</Name>
       <Description>The long sword's advantage lies in its incredible length.</Description>
       <GoldValue>350</GoldValue>

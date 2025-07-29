@@ -9,7 +9,7 @@ using System;
 using Microsoft.Xna.Framework;
 using RolePlaying.Data;
 
-namespace RolePlaying.Core
+namespace RolePlaying
 {
     /// <summary>
     /// Encapsulates all of the combat-runtime data for a particular player combatant.

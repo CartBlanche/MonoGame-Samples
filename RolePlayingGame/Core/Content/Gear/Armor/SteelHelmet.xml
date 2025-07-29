@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <XnaContent>
-  <Asset Type="RolePlayingGameData.Armor">
+  <Asset Type="RolePlaying.Data.Armor">
       <Name>Steel Helmet</Name>
       <Description>The steel armor set is made of the hardest metal for maximum defense.</Description>
       <GoldValue>600</GoldValue>

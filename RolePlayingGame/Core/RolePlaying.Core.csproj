@@ -11,6 +11,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\RolePlayingGameData\RolePlayingGame.Data.csproj" />
+    <ProjectReference Include="..\RolePlayingGameData\RolePlaying.Data.csproj" />
   </ItemGroup>
 </Project>

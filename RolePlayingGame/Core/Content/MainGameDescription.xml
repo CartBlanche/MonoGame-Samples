@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <XnaContent>
-  <Asset Type="RolePlayingGameData.GameStartDescription">
+  <Asset Type="RolePlaying.Data.GameStartDescription">
       <MapContentName>Map001</MapContentName>
 	  <PlayerContentNames>
 		  <Item>Kolatt</Item>

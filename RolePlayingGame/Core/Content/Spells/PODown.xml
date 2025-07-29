@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <XnaContent>
-  <Asset Type="RolePlayingGameData.Spell">
+  <Asset Type="RolePlaying.Data.Spell">
 	  <Name>Physical-Offense Down</Name>
 	  <Description>Reduces an enemy's physical offense.</Description>
 	  <MagicPointCost>5</MagicPointCost>

@@ -10,7 +10,7 @@ using RolePlaying.Data;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace RolePlaying.Core
+namespace RolePlaying
 {
     /// <summary>
     /// Base class for all combatants.

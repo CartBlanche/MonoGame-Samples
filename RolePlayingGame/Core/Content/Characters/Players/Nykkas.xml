@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <XnaContent>
-  <Asset Type="RolePlayingGameData.Player">
+  <Asset Type="RolePlaying.Data.Player">
       <Name>Nykkas</Name>
       <MapSprite>
           <TextureName>Characters\WizardIdleRight</TextureName>

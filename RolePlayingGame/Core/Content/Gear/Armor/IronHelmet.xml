@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <XnaContent>
-  <Asset Type="RolePlayingGameData.Armor">
+  <Asset Type="RolePlaying.Data.Armor">
       <Name>Iron Helmet</Name>
       <Description>The iron armor set is inlaid with bronze.</Description>
       <GoldValue>500</GoldValue>

@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <XnaContent>
-  <Asset Type="RolePlayingGameData.Weapon">
+  <Asset Type="RolePlaying.Data.Weapon">
       <Name>Worn Staff</Name>
       <Description>Every spellcaster needs a trusty staff.</Description>
       <GoldValue>100</GoldValue>

@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <XnaContent>
-  <Asset Type="RolePlayingGameData.Item">
+  <Asset Type="RolePlaying.Data.Item">
       <Name>Healing Potion</Name>
       <Description>Restores the target's health points by 40 points.</Description>
       <GoldValue>40</GoldValue>

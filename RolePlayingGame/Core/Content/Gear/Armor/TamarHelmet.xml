@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <XnaContent>
-  <Asset Type="RolePlayingGameData.Armor">
+  <Asset Type="RolePlaying.Data.Armor">
       <Name>Tamar Helmet</Name>
       <Description>The personal armor set of the Tamar.</Description>
       <GoldValue>-1</GoldValue>

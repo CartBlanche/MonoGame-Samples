@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <XnaContent>
-  <Asset Type="RolePlayingGameData.Item">
+  <Asset Type="RolePlaying.Data.Item">
       <Name>Major Magic Potion</Name>
       <Description>Restores the target's magic points by 80 points.</Description>
       <GoldValue>90</GoldValue>

@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <XnaContent>
-  <Asset Type="RolePlayingGameData.Store">
+  <Asset Type="RolePlaying.Data.Store">
       <Name>Who Me Shop</Name>
       <BuyMultiplier>2.0</BuyMultiplier>
       <SellMultiplier>0.2</SellMultiplier>

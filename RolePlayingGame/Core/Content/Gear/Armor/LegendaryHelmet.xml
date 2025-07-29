@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <XnaContent>
-  <Asset Type="RolePlayingGameData.Armor">
+  <Asset Type="RolePlaying.Data.Armor">
       <Name>Legendary Helmet</Name>
       <Description>The legendary armor set is very powerful and of unknown origin.</Description>
       <GoldValue>-1</GoldValue>

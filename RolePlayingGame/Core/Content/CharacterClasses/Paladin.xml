@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <XnaContent>
-  <Asset Type="RolePlayingGameData.CharacterClass">
+  <Asset Type="RolePlaying.Data.CharacterClass">
       <Name>Paladin</Name>
       <InitialStatistics>
           <HealthPoints>30</HealthPoints>

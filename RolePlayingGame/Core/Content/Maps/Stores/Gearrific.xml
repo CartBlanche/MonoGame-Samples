@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <XnaContent>
-  <Asset Type="RolePlayingGameData.Store">
+  <Asset Type="RolePlaying.Data.Store">
       <Name>Gearrific!</Name>
       <BuyMultiplier>1.1</BuyMultiplier>
       <SellMultiplier>0.4</SellMultiplier>

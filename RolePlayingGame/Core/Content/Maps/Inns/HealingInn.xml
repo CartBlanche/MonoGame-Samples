@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <XnaContent>
-  <Asset Type="RolePlayingGameData.Inn">
+  <Asset Type="RolePlaying.Data.Inn">
       <Name>Healing Inn</Name>
       <ChargePerPlayer>10</ChargePerPlayer>
       <WelcomeMessage>Welcome!  Enjoy your stay.</WelcomeMessage>

@@ -1,8 +1,8 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
-    <AssemblyName>RolePlayingGame.Data</AssemblyName>
-    <RootNamespace>RolePlayingGame.Data</RootNamespace>
+    <AssemblyName>RolePlaying.Data</AssemblyName>
+    <RootNamespace>RolePlaying.Data</RootNamespace>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
   </PropertyGroup>
 
