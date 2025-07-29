@@ -1,0 +1,174 @@
+#----------------------------- Global Properties ----------------------------#
+
+/outputDir:bin/$(Platform)
+/intermediateDir:obj/$(Platform)
+/platform:DesktopGL
+/config:$(Configuration)
+/profile:HiDef
+/compress:False
+
+#-------------------------------- References --------------------------------#
+
+
+#---------------------------------- Content ---------------------------------#
+
+#begin font.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/build:font.spritefont
+
+#begin Grid.txt
+/copy:Grid.txt
+
+#begin MenuItem.xnb
+/copy:MenuItem.xnb
+
+#begin Score.xnb
+/copy:Score.xnb
+
+#begin ScoreEvent.xnb
+/copy:ScoreEvent.xnb
+
+#begin Audio
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Audio/bg1.wav
+/build:Audio/bg2.wav
+/build:Audio/bg3.wav
+/build:Audio/bgghost.wav
+/build:Audio/bgghosteyes.wav
+/build:Audio/eatfruit.wav
+/build:Audio/eatghost.wav
+/build:Audio/eatpill1.wav
+/build:Audio/eatpill2.wav
+/build:Audio/extralife.wav
+/build:Audio/killed.wav
+/build:Audio/newgame.wav
+/build:Audio/newlevel.wav
+
+#begin Audio/Sound Bank.xsb
+/copy:Audio/Sound Bank.xsb
+#begin Audio/Wave Bank.xwb
+/copy:Audio/Wave Bank.xwb
+#begin Audio/XNAPacManAudio.xap
+/copy:Audio/XNAPacManAudio.xap
+#begin Audio/XNAPacManAudio.xml
+/copy:Audio/XNAPacManAudio.xml
+#begin Audio/YEPAudio.xgs
+/copy:Audio/YEPAudio.xgs
+
+#begin bonus
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyEnabled=False
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:bonus/Apple.png
+/build:bonus/Banana.png
+/build:bonus/Bell.png
+/build:bonus/Cherry.png
+/build:bonus/Key.png
+/build:bonus/Orange.png
+/build:bonus/Pear.png
+/build:bonus/Pretzel.png
+/build:bonus/Strawberry.png
+
+#begin bonus/Apple.xnb
+/copy:bonus/Apple.xnb
+#begin bonus/Banana.xnb
+/copy:bonus/Banana.xnb
+#begin bonus/Bell.xnb
+/copy:bonus/Bell.xnb
+#begin bonus/Cherry.xnb
+/copy:bonus/Cherry.xnb
+#begin bonus/Key.xnb
+/copy:bonus/Key.xnb
+#begin bonus/Orange.xnb
+/copy:bonus/Orange.xnb
+#begin bonus/Pear.xnb
+/copy:bonus/Pear.xnb
+#begin bonus/Pretzel.xnb
+/copy:bonus/Pretzel.xnb
+#begin bonus/Strawberry.xnb
+/copy:bonus/Strawberry.xnb
+
+#begin sprites
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyEnabled=False
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:sprites/Board.png
+/build:sprites/BoardFlash.png
+/build:sprites/Crump.png
+/build:sprites/DyingSheetNew.png
+/build:sprites/ExtraLife.png
+/build:sprites/GhostBase.png
+/build:sprites/GhostBase2.png
+/build:sprites/GhostChased.png
+/build:sprites/GhostEyes.png
+/build:sprites/GhostEyesCenter.png
+/build:sprites/PacManEating1.png
+/build:sprites/PacManEating2.png
+/build:sprites/PacManEating3.png
+/build:sprites/PacManEating4.png
+/build:sprites/PacManEating5.png
+/build:sprites/PacManEating6.png
+/build:sprites/PacManEating7.png
+/build:sprites/PacManEating8.png
+/build:sprites/PacManEating9.png
+/build:sprites/PowerPill.png
+/build:sprites/Selection.png
+/build:sprites/Title.png
+
+#begin sprites/Board.xnb
+/copy:sprites/Board.xnb
+#begin sprites/BoardFlash.xnb
+/copy:sprites/BoardFlash.xnb
+#begin sprites/Crump.xnb
+/copy:sprites/Crump.xnb
+#begin sprites/DyingSheetNew.xnb
+/copy:sprites/DyingSheetNew.xnb
+#begin sprites/ExtraLife.xnb
+/copy:sprites/ExtraLife.xnb
+#begin sprites/GhostBase.xnb
+/copy:sprites/GhostBase.xnb
+#begin sprites/GhostBase2.xnb
+/copy:sprites/GhostBase2.xnb
+#begin sprites/GhostChased.xnb
+/copy:sprites/GhostChased.xnb
+#begin sprites/GhostEyes.xnb
+/copy:sprites/GhostEyes.xnb
+#begin sprites/GhostEyesCenter.xnb
+/copy:sprites/GhostEyesCenter.xnb
+#begin sprites/PacManEating1.xnb
+/copy:sprites/PacManEating1.xnb
+#begin sprites/PacManEating2.xnb
+/copy:sprites/PacManEating2.xnb
+#begin sprites/PacManEating3.xnb
+/copy:sprites/PacManEating3.xnb
+#begin sprites/PacManEating4.xnb
+/copy:sprites/PacManEating4.xnb
+#begin sprites/PacManEating5.xnb
+/copy:sprites/PacManEating5.xnb
+#begin sprites/PacManEating6.xnb
+/copy:sprites/PacManEating6.xnb
+#begin sprites/PacManEating7.xnb
+/copy:sprites/PacManEating7.xnb
+#begin sprites/PacManEating8.xnb
+/copy:sprites/PacManEating8.xnb
+#begin sprites/PacManEating9.xnb
+/copy:sprites/PacManEating9.xnb
+#begin sprites/PowerPill.xnb
+/copy:sprites/PowerPill.xnb
+#begin sprites/Selection.xnb
+/copy:sprites/Selection.xnb
+#begin sprites/Title.xnb
+/copy:sprites/Title.xnb
