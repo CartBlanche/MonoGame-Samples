@@ -1,0 +1,27 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Run Windows",
+      "type": "coreclr",
+      "request": "launch",
+      "preLaunchTask": "build-windows",
+      "program": "${workspaceFolder}/Platforms/Windows/bin/Debug/net8.0-windows/BloomSample.Windows.exe",
+      "args": [],
+      "cwd": "${workspaceFolder}/Platforms/Windows",
+      "stopAtEntry": false,
+      "console": "internalConsole"
+    },
+    {
+      "name": "Run DesktopGL",
+      "type": "coreclr",
+      "request": "launch",
+      "preLaunchTask": "build-desktopgl",
+      "program": "${workspaceFolder}/Platforms/DesktopGL/bin/Debug/net8.0/BloomSample.DesktopGL.exe",
+      "args": [],
+      "cwd": "${workspaceFolder}/Platforms/DesktopGL",
+      "stopAtEntry": false,
+      "console": "internalConsole"
+    }
+  ]
+}

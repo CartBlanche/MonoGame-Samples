@@ -1,0 +1,30 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0-android</TargetFramework>
+    <OutputType>Exe</OutputType>
+    <Nullable>disable</Nullable>
+    <ImplicitUsings>disable</ImplicitUsings>
+    <SupportedOSPlatformVersion>21</SupportedOSPlatformVersion>
+    <ApplicationId>com.monogame.performancemeasuring</ApplicationId>
+    <ApplicationVersion>1</ApplicationVersion>
+    <ApplicationDisplayVersion>1.0</ApplicationDisplayVersion>
+    <ApplicationTitle>Performance Measuring</ApplicationTitle>
+    <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+
+    <!-- Assembly info migrated from AssemblyInfo.cs -->
+    <AssemblyTitle>PerformanceMeasuring</AssemblyTitle>
+    <Product>PerformanceMeasuring</Product>
+    <Description></Description>
+    <Company>Microsoft</Company>
+    <Copyright>Copyright © Microsoft 2010</Copyright>
+    <Trademark></Trademark>
+    <AssemblyVersion>1.0.0.0</AssemblyVersion>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="MonoGame.Framework.Android" Version="3.8.*" />
+    <ProjectReference Include="..\..\Core\PerformanceMeasuring.Core.csproj" />
+  </ItemGroup>
+
+</Project>

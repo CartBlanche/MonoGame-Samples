@@ -1,0 +1,20 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net8.0-ios</TargetFramework>
+    <OutputType>Exe</OutputType>
+    <RollForward>Major</RollForward>
+    <IsPackable>false</IsPackable>
+    <AssemblyName>SamplesContentBuilder.iOS</AssemblyName>
+    <RootNamespace>SamplesContentBuilder.iOS</RootNamespace>
+    <SupportedOSPlatformVersion>11.0</SupportedOSPlatformVersion>
+    <ProvisioningType>automatic</ProvisioningType>
+    <MonoGamePlatform>iOS</MonoGamePlatform>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="MonoGame.Framework.iOS" Version="3.8.*" />
+    <PackageReference Include="MonoGame.Content.Builder.Task" Version="3.8.*" />
+  </ItemGroup>
+  <ItemGroup>
+    <MonoGameContentReference Include="..\..\Core\Content\Content-iOS.mgcb" />
+  </ItemGroup>
+</Project>

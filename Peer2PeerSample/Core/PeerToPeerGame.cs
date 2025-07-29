@@ -357,7 +357,7 @@ namespace PeerToPeer
 		/// </summary>
 		protected override void Draw(GameTime gameTime)
 		{
-			GraphicsDevice.Clear(Color.CornflowerBlue);
+			GraphicsDevice.Clear(Color.MonoGameOrange);
 
 			if (networkSession == null)
 			{
@@ -450,7 +450,7 @@ namespace PeerToPeer
 			if (!BeginDraw())
 				return;
 
-			GraphicsDevice.Clear(Color.CornflowerBlue);
+			GraphicsDevice.Clear(Color.MonoGameOrange);
 
 			spriteBatch.Begin();
 

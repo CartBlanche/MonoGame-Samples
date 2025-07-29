@@ -105,7 +105,7 @@ namespace Aiming
         }
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.CornflowerBlue);
+            GraphicsDevice.Clear(Color.MonoGameOrange);
             spriteBatch.Begin();
             spriteBatch.Draw(spotlightTexture, spotlightPosition, null, Color.White, spotlightAngle, spotlightOrigin, 1.0f, SpriteEffects.None, 0f);
             spriteBatch.Draw(catTexture, catPosition, null, Color.White, 0f, catOrigin, 1.0f, SpriteEffects.None, 0f);

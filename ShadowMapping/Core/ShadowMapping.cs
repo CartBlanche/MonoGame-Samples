@@ -230,7 +230,7 @@ namespace ShadowMapping
         /// </summary>
         void DrawWithShadowMap()
         {
-            graphics.GraphicsDevice.Clear(Color.CornflowerBlue);
+            graphics.GraphicsDevice.Clear(Color.MonoGameOrange);
 
             GraphicsDevice.SamplerStates[1] = SamplerState.PointClamp;
 

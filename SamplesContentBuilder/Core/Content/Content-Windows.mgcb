@@ -1,0 +1,623 @@
+#----------------------------- Global Properties ----------------------------#
+
+/outputDir:bin/$(Platform)
+/intermediateDir:obj/$(Platform)
+/platform:Windows
+/config:
+/profile:HiDef
+/compress:False
+
+#-------------------------------- References --------------------------------#
+
+
+#---------------------------------- Content ----------------------------------#
+
+#begin Effects/BloomCombine.fx
+/importer:EffectImporter
+/processor:EffectProcessor
+/build:Effects/BloomCombine.fx
+
+#begin Effects/BloomExtract.fx
+/importer:EffectImporter
+/processor:EffectProcessor
+/build:Effects/BloomExtract.fx
+
+#begin Effects/Clouds.fx
+/importer:EffectImporter
+/processor:EffectProcessor
+/build:Effects/Clouds.fx
+
+#begin Effects/GaussianBlur.fx
+/importer:EffectImporter
+/processor:EffectProcessor
+/build:Effects/GaussianBlur.fx
+
+#begin Effects/ParticleEffect.fx
+/importer:EffectImporter
+/processor:EffectProcessor
+/build:Effects/ParticleEffect.fx
+
+# Additional Effects
+#begin Effects/PPVertexShader.fxh
+/importer:EffectImporter
+/processor:EffectProcessor
+/build:Effects/PPVertexShader.fxh
+
+#begin Fonts/Arial.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/build:Fonts/Arial.spritefont
+
+#begin Fonts/DataActiveFont.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/build:Fonts/DataActiveFont.spritefont
+
+#begin Fonts/DataFont.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/build:Fonts/DataFont.spritefont
+
+#begin Fonts/Font.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/build:Fonts/Font.spritefont
+
+#begin Fonts/gamefont.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/build:Fonts/gamefont.spritefont
+
+#begin Fonts/GameScreenFont14px.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/build:Fonts/GameScreenFont14px.spritefont
+
+#begin Fonts/GameScreenFont16px.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/build:Fonts/GameScreenFont16px.spritefont
+
+#begin Fonts/GameScreenFont36px.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/build:Fonts/GameScreenFont36px.spritefont
+
+#begin Fonts/HighScoreFont.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/build:Fonts/HighScoreFont.spritefont
+
+#begin Fonts/HUDFont.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/build:Fonts/HUDFont.spritefont
+
+#begin Fonts/InstructionsActiveFont.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/build:Fonts/InstructionsActiveFont.spritefont
+
+#begin Fonts/InstructionsFont.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/build:Fonts/InstructionsFont.spritefont
+
+#begin Fonts/MenuFont.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/build:Fonts/MenuFont.spritefont
+
+#begin Fonts/TitleFont.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/build:Fonts/TitleFont.spritefont
+
+#begin Fonts/TypeFont.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/build:Fonts/TypeFont.spritefont
+
+#begin Models/Ground.x
+/importer:XImporter
+/processor:ModelProcessor
+/build:Models/Ground.x
+
+#begin Models/spaceship.fbx
+/importer:FbxImporter
+/processor:ModelProcessor
+/build:Models/spaceship.fbx
+
+#begin Models/tank.fbx
+/importer:FbxImporter
+/processor:ModelProcessor
+/build:Models/tank.fbx
+
+#begin Models/terrain.fbx
+/importer:FbxImporter
+/processor:ModelProcessor
+/build:Models/terrain.fbx
+
+# Additional Models
+#begin Models/checker.bmp
+/importer:TextureImporter
+/processor:TextureProcessor
+/build:Models/checker.bmp
+
+#begin Models/checker.tga
+/importer:TextureImporter
+/processor:TextureProcessor
+/build:Models/checker.tga
+
+#begin Models/enemy.tga
+/importer:TextureImporter
+/processor:TextureProcessor
+/build:Models/enemy.tga
+
+#begin Models/engine_diff_tex.tga
+/importer:TextureImporter
+/processor:TextureProcessor
+/build:Models/engine_diff_tex.tga
+
+#begin Models/grid.x
+/importer:XImporter
+/processor:ModelProcessor
+/build:Models/grid.x
+
+#begin Models/ground.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/build:Models/ground.png
+
+#begin Models/turret_alt_diff_tex.tga
+/importer:TextureImporter
+/processor:TextureProcessor
+/build:Models/turret_alt_diff_tex.tga
+
+#begin Music/InGameSong_Loop.mp3
+/importer:Mp3Importer
+/processor:SongProcessor
+/build:Music/InGameSong_Loop.mp3
+
+#begin Music/MenuMusic_Loop.mp3
+/importer:Mp3Importer
+/processor:SongProcessor
+/build:Music/MenuMusic_Loop.mp3
+
+#begin Music/One Step Beyond.mp3
+/importer:Mp3Importer
+/processor:SongProcessor
+/build:Music/One Step Beyond.mp3
+
+# Additional Music
+#begin Music/InGameSong_Loop.wma
+/importer:WmaImporter
+/processor:SongProcessor
+/build:Music/InGameSong_Loop.wma
+
+#begin Music/MenuMusic_Loop.wma
+/importer:WmaImporter
+/processor:SongProcessor
+/build:Music/MenuMusic_Loop.wma
+
+#begin Music/One Step Beyond.wma
+/importer:WmaImporter
+/processor:SongProcessor
+/build:Music/One Step Beyond.wma
+
+# Additional Wavs
+#begin Wavs/10SecondCountdown.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/build:Wavs/10SecondCountdown.wav
+
+#begin Wavs/30SecondWarning.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/build:Wavs/30SecondWarning.wav
+
+#begin Wavs/BeeBuzzing_Loop.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/build:Wavs/BeeBuzzing_Loop.wav
+
+#begin Wavs/BoulderHit.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/build:Wavs/BoulderHit.wav
+
+#begin Wavs/CatSound0.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/build:Wavs/CatSound0.wav
+
+#begin Wavs/CatSound1.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/build:Wavs/CatSound1.wav
+
+#begin Wavs/CatSound2.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/build:Wavs/CatSound2.wav
+
+#begin Wavs/CatapultExplosion.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/build:Wavs/CatapultExplosion.wav
+
+#begin Wavs/CatapultFire.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/build:Wavs/CatapultFire.wav
+
+#begin Wavs/CatSound1.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/build:Wavs/CatSound1.wav
+
+#begin Wavs/Defeat.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/build:Wavs/Defeat.wav
+
+#begin Wavs/DepositingIntoVat_Loop.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/build:Wavs/DepositingIntoVat_Loop.wav
+
+#begin Wavs/DogSound.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/build:Wavs/DogSound.wav
+
+#begin Wavs/eatfruit.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/build:Wavs/eatfruit.wav
+
+#begin Wavs/eatghost.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/build:Wavs/eatghost.wav
+
+#begin Wavs/eatpill1.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/build:Wavs/eatpill1.wav
+
+#begin Wavs/extralife.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/build:Wavs/extralife.wav
+
+#begin Wavs/FillingHoneyPot_Loop.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/build:Wavs/FillingHoneyPot_Loop.wav
+
+#begin Wavs/HighScore.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/build:Wavs/HighScore.wav
+
+#begin Wavs/HoneyPotBreak.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/build:Wavs/HoneyPotBreak.wav
+
+#begin Wavs/InGameSong_Loop.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/build:Wavs/InGameSong_Loop.wav
+
+#begin Wavs/killed.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/build:Wavs/killed.wav
+
+#begin Wavs/Lose.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/build:Wavs/Lose.wav
+
+#begin Wavs/MenuMusic_Loop.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/build:Wavs/MenuMusic_Loop.wav
+
+#begin Wavs/newgame.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/build:Wavs/newgame.wav
+
+#begin Wavs/newlevel.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/build:Wavs/newlevel.wav
+
+#begin Wavs/PacManDeath.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/build:Wavs/PacManDeath.wav
+
+#begin Wavs/PacManEatFruit.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/build:Wavs/PacManEatFruit.wav
+
+#begin Wavs/PacManEatGhost.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/build:Wavs/PacManEatGhost.wav
+
+#begin Wavs/PacManExtraLife.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/build:Wavs/PacManExtraLife.wav
+
+#begin Wavs/PacManMunch.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/build:Wavs/PacManMunch.wav
+
+#begin Wavs/PacManPowerPill.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/build:Wavs/PacManPowerPill.wav
+
+#begin Wavs/RopeStretch.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/build:Wavs/RopeStretch.wav
+
+#begin Wavs/SmokeGun_Loop.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/build:Wavs/SmokeGun_Loop.wav
+
+#begin Wavs/Stung.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/build:Wavs/Stung.wav
+
+#begin Wavs/Stunned.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/build:Wavs/Stunned.wav
+
+#begin Wavs/Victory.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/build:Wavs/Victory.wav
+
+#begin Wavs/Win.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/build:Wavs/Win.wav
+
+#begin Wavs/bg1.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/build:Wavs/bg1.wav
+
+#begin Wavs/bg2.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/build:Wavs/bg2.wav
+
+#begin Wavs/bg3.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/build:Wavs/bg3.wav
+
+#begin Wavs/bgghost.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/build:Wavs/bgghost.wav
+
+#begin Wavs/bgghosteyes.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/build:Wavs/bgghosteyes.wav
+
+#begin Textures/background.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/build:Textures/background.png
+
+#begin Textures/cat.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/build:Textures/cat.png
+
+# Additional Textures
+#begin Textures/arrow.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/build:Textures/arrow.png
+
+#begin Textures/arrow1_left_60x60.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/build:Textures/arrow1_left_60x60.png
+
+#begin Textures/arrow1_right_60x60.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/build:Textures/arrow1_right_60x60.png
+
+#begin Textures/animation_60x60.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/build:Textures/animation_60x60.png
+
+#begin Textures/blank.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/build:Textures/blank.png
+
+#begin Textures/CatTexture.tga
+/importer:TextureImporter
+/processor:TextureProcessor
+/build:Textures/CatTexture.tga
+
+#begin Textures/checker.bmp
+/importer:TextureImporter
+/processor:TextureProcessor
+/build:Textures/checker.bmp
+
+#begin Textures/circle.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/build:Textures/circle.png
+
+#begin Textures/collect.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/build:Textures/collect.png
+
+#begin Textures/controlstick.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/build:Textures/controlstick.png
+
+#begin Textures/cursor.bmp
+/importer:TextureImporter
+/processor:TextureProcessor
+/build:Textures/cursor.bmp
+
+#begin Textures/deposit.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/build:Textures/deposit.png
+
+#begin Textures/explosionStrip.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/build:Textures/explosionStrip.png
+
+#begin Textures/fire.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/build:Textures/fire.png
+
+#begin Textures/flare1.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/build:Textures/flare1.png
+
+#begin Textures/flare2.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/build:Textures/flare2.png
+
+#begin Textures/flare3.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/build:Textures/flare3.png
+
+#begin Textures/glow.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/build:Textures/glow.png
+
+#begin Textures/gradient.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/build:Textures/gradient.png
+
+#begin Textures/hit.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/build:Textures/hit.png
+
+#begin Textures/honeyJar.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/build:Textures/honeyJar.png
+
+#begin Textures/lamp_60x60.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/build:Textures/lamp_60x60.png
+
+#begin Textures/logo.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/build:Textures/logo.png
+
+#begin Textures/mouse.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/build:Textures/mouse.png
+
+#begin Textures/perPixelLight_60x60.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/build:Textures/perPixelLight_60x60.png
+
+#begin Textures/select_controller1.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/build:Textures/select_controller1.png
+
+#begin Textures/select_controller2.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/build:Textures/select_controller2.png
+
+#begin Textures/select_controller3.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/build:Textures/select_controller3.png
+
+#begin Textures/select_controller4.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/build:Textures/select_controller4.png
+
+#begin bonus/Apple.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/build:bonus/Apple.png
+
+#begin bonus/Banana.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/build:bonus/Banana.png
+
+#begin bonus/Bell.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/build:bonus/Bell.png
+
+#begin bonus/Cherry.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/build:bonus/Cherry.png
+
+#begin bonus/Key.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/build:bonus/Key.png
+
+#begin bonus/Orange.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/build:bonus/Orange.png
+
+#begin bonus/Pear.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/build:bonus/Pear.png
+
+#begin bonus/Pretzel.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/build:bonus/Pretzel.png
+
+#begin bonus/Strawberry.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/build:bonus/Strawberry.png

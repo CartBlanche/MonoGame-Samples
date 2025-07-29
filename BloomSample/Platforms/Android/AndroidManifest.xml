@@ -1,0 +1,17 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.cartblanche.bloomsample"
+    android:versionCode="1"
+    android:versionName="1.0">
+    <application android:label="BloomSample" android:icon="@mipmap/ic_launcher">
+        <activity android:name="android.app.NativeActivity"
+            android:label="BloomSample"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:screenOrientation="landscape"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+    </application>
+</manifest>

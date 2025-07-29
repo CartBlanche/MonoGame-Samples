@@ -1,0 +1,22 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net8.0-android</TargetFramework>
+    <OutputType>Exe</OutputType>
+    <RollForward>Major</RollForward>
+    <IsPackable>false</IsPackable>
+    <AssemblyName>SamplesContentBuilder.Android</AssemblyName>
+    <RootNamespace>SamplesContentBuilder.Android</RootNamespace>
+    <SupportedOSPlatformVersion>28.0</SupportedOSPlatformVersion>
+    <MonoGamePlatform>Android</MonoGamePlatform>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="MonoGame.Framework.Android" Version="3.8.*" />
+    <PackageReference Include="MonoGame.Content.Builder.Task" Version="3.8.*" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Core\SamplesContentBuilder.Core.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <MonoGameContentReference Include="..\..\Core\Content\Content-Android.mgcb" />
+  </ItemGroup>
+</Project>

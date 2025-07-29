@@ -10,7 +10,7 @@
     <Copyright>Copyright © Microsoft</Copyright>
     <Version>1.0.0.0</Version>
     <UseWindowsForms>true</UseWindowsForms>
-    <MonoGamePlaform>Windows</MonoGamePlaform>
+    <MonoGamePlatform>Windows</MonoGamePlatform>
   </PropertyGroup>
 
   <ItemGroup>
@@ -22,7 +22,5 @@
   <ItemGroup>
     <MonoGameContentReference Include="..\..\Core\Content\Content.mgcb" />
   </ItemGroup>
-
-  
   
 </Project>

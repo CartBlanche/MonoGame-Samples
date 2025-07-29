@@ -26,7 +26,7 @@
 /processor:TextureProcessor
 /build:GlassPane2.png
 
-#begin font.spritefont
+#begin Fonts
 /importer:FontDescriptionImporter
 /processor:FontDescriptionProcessor
 /build:font.spritefont

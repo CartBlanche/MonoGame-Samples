@@ -6,7 +6,7 @@
     <RootNamespace>StarWarrior.DesktopGL</RootNamespace>
     <AssemblyName>StarWarrior.DesktopGL</AssemblyName>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
-    MonoGamePlatform>DesktopGL</MonoGamePlatform>
+    <MonoGamePlatform>DesktopGL</MonoGamePlatform>
   </PropertyGroup>
   
   <ItemGroup>

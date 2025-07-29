@@ -77,7 +77,7 @@ namespace LensFlare
         /// </summary>
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.CornflowerBlue);
+            GraphicsDevice.Clear(Color.MonoGameOrange);
 
             // Compute camera matrices.
             Matrix view = Matrix.CreateLookAt(cameraPosition,

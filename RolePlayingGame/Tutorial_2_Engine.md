@@ -518,7 +518,7 @@ Finally, the tile engine needs to be drawn.   Add calls to begin and end the **S
 
 protected override void Draw(GameTime gameTime)  
 {  
-    graphics.GraphicsDevice.Clear(Color.CornflowerBlue);
+    graphics.GraphicsDevice.Clear(Color.MonoGameOrange);
 
     spriteBatch.Begin();
 
@@ -548,7 +548,7 @@ There are many ways to add a current-position marker.  One way to add a simple r
 
 protected override void Draw(GameTime gameTime)  
 {  
-    graphics.GraphicsDevice.Clear(Color.CornflowerBlue);
+    graphics.GraphicsDevice.Clear(Color.MonoGameOrange);
 
     spriteBatch.Begin();
 

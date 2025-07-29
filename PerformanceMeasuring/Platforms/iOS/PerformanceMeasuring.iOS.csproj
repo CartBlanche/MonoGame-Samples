@@ -1,0 +1,24 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0-ios</TargetFramework>
+    <OutputType>Exe</OutputType>
+    <Nullable>disable</Nullable>
+    <ImplicitUsings>disable</ImplicitUsings>
+    <ApplicationTitle>PerformanceMeasuring</ApplicationTitle>
+    <Description></Description>
+    <Company>Microsoft</Company>
+    <Copyright>Copyright © Microsoft 2010</Copyright>
+    <ApplicationIcon>Game.ico</ApplicationIcon>
+    <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+    <AssemblyVersion>1.0.0.0</AssemblyVersion>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="MonoGame.Framework.iOS" Version="3.8.*" />
+    <ProjectReference Include="..\..\Core\PerformanceMeasuring.Core.csproj" />
+  </ItemGroup>
+
+  
+
+</Project>

@@ -610,29 +610,20 @@ namespace ChaseAndEvade
 		/// </summary>
 		void HandleInput()
 		{
-#if WINDOWS_PHONE
-			KeyboardState currentKeyboardState = new KeyboardState();
-#else
-			KeyboardState currentKeyboardState = Keyboard.GetState();
 			MouseState currentMouseState = Mouse.GetState();
-#endif
 
-#if IPHONE || PSM
+			KeyboardState currentKeyboardState = Keyboard.GetState();
 			GamePadState currentGamePadState = GamePad.GetState (PlayerIndex.One);
 
 			// Check for exit.
-			if (currentKeyboardState.IsKeyDown (Keys.Escape) || 
-				currentGamePadState.Buttons.Back == ButtonState.Pressed) {
-				Exit ();
-			}
-#else
-			// Check for exit.
-			if (currentKeyboardState.IsKeyDown(Keys.Escape))
+			if (currentKeyboardState.IsKeyDown(Keys.Escape) ||
+				currentGamePadState.Buttons.Back == ButtonState.Pressed)
 			{
+#if !___IOS___
 				Exit();
+#endif
 			}
 
-#endif
 
 			// check to see if the user wants to move the cat. we'll create a vector
 			// called catMovement, which will store the sum of all the user's inputs.

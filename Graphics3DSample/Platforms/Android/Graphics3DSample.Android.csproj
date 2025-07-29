@@ -10,7 +10,7 @@
     <SupportedOSPlatformVersion>21</SupportedOSPlatformVersion>
     <AssemblyTitle>Graphics3DSample</AssemblyTitle>
     <Product>Graphics3DSample</Product>
-    <AndroidManifest>Platforms\Android\AndroidManifest.xml</AndroidManifest>
+    <AndroidManifest>AndroidManifest.xml</AndroidManifest>
   </PropertyGroup>
 
   <ItemGroup>

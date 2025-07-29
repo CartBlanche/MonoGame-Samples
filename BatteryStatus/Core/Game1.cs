@@ -37,7 +37,7 @@ namespace BatteryStatusDemo
 
         protected override void Draw(GameTime gameTime)
         {
-            graphics.GraphicsDevice.Clear(Color.CornflowerBlue);
+            graphics.GraphicsDevice.Clear(Color.MonoGameOrange);
             spriteBatch.Begin();
             spriteBatch.DrawString(font, "[Battery Status]\n" + PowerStatus.BatteryChargeStatus, new Vector2(10, 100), Color.Black);
             spriteBatch.DrawString(font, "[PowerLine Status]\n" + PowerStatus.PowerLineStatus, new Vector2(10, 200), Color.Black);

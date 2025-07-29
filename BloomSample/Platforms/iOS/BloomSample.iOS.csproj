@@ -1,0 +1,32 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net8.0-ios</TargetFramework>
+    <OutputType>Exe</OutputType>
+    <RootNamespace>BloomSample.iOS</RootNamespace>
+    <AssemblyName>BloomSample.iOS</AssemblyName>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Core\BloomSample.Core.csproj" />
+    <PackageReference Include="MonoGame.Framework.iOS" Version="3.8.*" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="..\..\..\CompiledContent\iOS\Content\Textures\sunset.xnb" Link="Content\sunset.xnb">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\..\CompiledContent\iOS\Content\Fonts\hudFont.xnb" Link="Content\hudFont.xnb">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\..\CompiledContent\iOS\Content\Models\tank.xnb" Link="Content\tank.xnb">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\..\CompiledContent\iOS\Content\Effects\BloomExtract.xnb" Link="Content\BloomExtract.xnb">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\..\CompiledContent\iOS\Content\Effects\BloomCombine.xnb" Link="Content\BloomCombine.xnb">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\..\CompiledContent\iOS\Content\Effects\GaussianBlur.xnb" Link="Content\GaussianBlur.xnb">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+</Project>

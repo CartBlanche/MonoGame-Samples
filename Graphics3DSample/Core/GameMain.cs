@@ -390,7 +390,7 @@ namespace Graphics3DSample
         /// </summary>
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.CornflowerBlue);
+            GraphicsDevice.Clear(Color.MonoGameOrange);
 
             if (backgroundTextureEnablingButton.IsChecked)
             {
