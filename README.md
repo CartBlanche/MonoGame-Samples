@@ -36,9 +36,10 @@ Samples focused on 2D graphics, gameplay, and mechanics.
   [More info](Flocking/README.md)
 - **GameDevelopmentbyExample**  
   Multiple 2D samples from the "XNA Game Development by Example" book:  
-  - [AsteroidBeltAssault README](GameDevelopmentbyExample/AsteroidBeltAssault/README.md)
-  - [GemstoneHunter README](GameDevelopmentbyExample/GemstoneHunter/README.md)
-  - [RobotRampage README](GameDevelopmentbyExample/RobotRampage/README.md)
+  - [AsteroidBeltAssault Info](GameDevelopmentbyExample/AsteroidBeltAssault/README.md)
+  - [FloodControl Info](GameDevelopmentbyExample/FloodControl/README.md)
+  - [GemstoneHunter Info](GameDevelopmentbyExample/GemstoneHunter/README.md)
+  - [RobotRampage Info](GameDevelopmentbyExample/RobotRampage/README.md)
 - **GameStateManagement**  
   Sample for managing game states and screens.  
   [More info](GameStateManagement/README.md)
@@ -121,7 +122,7 @@ Samples focused on 3D graphics, rendering, and effects.
 ---
 
 ## Networking Samples
-Samples demonstrating networking and multiplayer features using MonoGame.Xna.Framework.Net.
+Samples demonstrating networking and multiplayer features using `MonoGame.Xna.Framework.Net`. These build, but require `MonoGame.Xna.Framework.Net` to be fleshed out more, to be fully working.
 
 - **CatapultNetWars**  
   Networked multiplayer catapult game.  
