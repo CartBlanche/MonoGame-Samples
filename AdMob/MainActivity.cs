@@ -10,7 +10,7 @@ using Microsoft.Xna.Framework;
 using Android.Gms.Ads;
 using Android.Content.PM;
 
-namespace MonoGame.Samples.AdMob
+namespace AdMob.Android
 {
     [Activity (
         Label = "AdMob",
@@ -18,9 +18,9 @@ namespace MonoGame.Samples.AdMob
         Icon = "@drawable/icon",
         Theme = "@style/Theme.Splash",
         ConfigurationChanges=ConfigChanges.Orientation|ConfigChanges.Keyboard|ConfigChanges.KeyboardHidden)]	
-    public class Activity1 : AndroidGameActivity
+    public class MainActivity : AndroidGameActivity
     {
-        private Game1 _game;
+        private AdMobGame _game;
         private View _view;
 
         protected override void OnCreate(Bundle bundle)
@@ -31,7 +31,7 @@ namespace MonoGame.Samples.AdMob
             MobileAds.Initialize(this);
 
             // Create the MonoGame view
-            _game = new Game1();
+            _game = new AdMobGame();
             _view = _game.Services.GetService(typeof(View)) as View;
 
             // Create a layout to hold both the game and the ad

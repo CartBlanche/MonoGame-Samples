@@ -11,19 +11,19 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
 
-namespace MonoGame.Samples.AdMob
+namespace AdMob
 {
 	/// <summary>
 	/// This is the main type for your game
 	/// </summary>
-	public class Game1 : Game
+	public class AdMobGame : Game
 	{
-		public static Game1 Instance { get; private set; }
+		public static AdMobGame Instance { get; private set; }
 		
 		GraphicsDeviceManager graphics;
 		SpriteBatch spriteBatch;		
 		
-		public Game1 ()  
+		public AdMobGame ()  
 		{
 			Instance = this;
 			graphics = new GraphicsDeviceManager (this);

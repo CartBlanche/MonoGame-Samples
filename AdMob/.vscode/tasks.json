@@ -2,10 +2,14 @@
     "version": "2.0.0",
     "tasks": [
         {
-            "label": "Install and Run APK",
-            "type": "shell",
-            "command": "adb install -r bin/Debug/net8.0-android/com.companyname.admob.apk && adb shell monkey -p com.companyname.admob -c android.intent.category.LAUNCHER 1",
-            "problemMatcher": []
-        }
+            "label": "build-android",
+            "command": "dotnet",
+            "type": "process",
+            "args": [
+                "build",
+                "AdMob.Android.csproj"
+            ],
+            "problemMatcher": "$msCompile"
+        },
     ]
 }
