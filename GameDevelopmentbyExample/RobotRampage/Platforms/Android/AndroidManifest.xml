@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+          android:versionCode="1"
+          android:versionName="1.0"
+          package="com.yourcompany.robotrampage">
+    
+    <uses-sdk android:minSdkVersion="21" android:targetSdkVersion="34" />
+    
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    
+    <application android:allowBackup="true"
+                 android:theme="@android:style/Theme.NoTitleBar.Fullscreen"
+                 android:label="Robot Rampage">
+        
+        <activity android:name="Microsoft.Xna.Framework.AndroidGameActivity"
+                  android:label="Robot Rampage"
+                  android:launchMode="singleInstance"
+                  android:screenOrientation="landscape"
+                  android:configChanges="orientation|keyboardHidden|keyboard"
+                  android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+    </application>
+</manifest>
