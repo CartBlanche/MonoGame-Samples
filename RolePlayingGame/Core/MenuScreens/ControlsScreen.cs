@@ -300,7 +300,7 @@ namespace RolePlaying
             // draw the control pad screen
             if (isShowControlPad)
             {
-                spriteBatch.Draw(controlPadTexture, controlPosition, 
+                spriteBatch.Draw(controlPadTexture, controlPosition,
                     Color.White);
 
                 for (int i = 0; i < leftStrings.Length; i++)
@@ -315,7 +315,6 @@ namespace RolePlaying
                         rightStrings[i].textPosition, Color.Black);
                 }
 
-#if !XBOX
                 // Near left trigger
                 spriteBatch.DrawString(Fonts.PlayerStatisticsFont, "Keyboard",
                     new Vector2(leftTriggerPosition.X + (leftTriggerButton.Width -
@@ -329,15 +328,13 @@ namespace RolePlaying
                     Fonts.PlayerStatisticsFont.MeasureString("Keyboard").X) / 2,
                     rightTriggerPosition.Y + 85),
                     Color.Black);
-#endif
 
                 // Draw the title text
                 titlePosition.X = plankPosition.X + (plankTexture.Width -
                     Fonts.HeaderFont.MeasureString("Gamepad").X) / 2;
                 titlePosition.Y = plankPosition.Y + (plankTexture.Height -
                     Fonts.HeaderFont.MeasureString("Gamepad").Y) / 2;
-                spriteBatch.DrawString(Fonts.HeaderFont, "Gamepad", titlePosition,
-                    Fonts.TitleColor);
+                spriteBatch.DrawString(Fonts.HeaderFont, "Gamepad", titlePosition, Fonts.TitleColor, MathHelper.ToRadians(-3.0f), Vector2.Zero, 1.0f, SpriteEffects.None, 0f);
             }
             else // draws the keyboard screen
             {
@@ -349,22 +346,22 @@ namespace RolePlaying
                     i++, j++)
                 {
                     keyboardString = InputManager.GetActionName((InputManager.Action)i);
-                    textPosition.X = chartLine1Position + 
+                    textPosition.X = chartLine1Position +
                         ((chartLine2Position - chartLine1Position) -
                         Fonts.DescriptionFont.MeasureString(keyboardString).X) / 2;
                     textPosition.Y = 253 + (spacing * j);
 
                     // Draw the action
-                    spriteBatch.DrawString(Fonts.DescriptionFont, keyboardString, 
+                    spriteBatch.DrawString(Fonts.DescriptionFont, keyboardString,
                         textPosition, Color.Black);
 
                     // Draw the key one
-                    keyboardString = 
+                    keyboardString =
                         keyboardInfo.totalActionList[i].keyboardKeys[0].ToString();
-                    textPosition.X = chartLine2Position + 
+                    textPosition.X = chartLine2Position +
                         ((chartLine3Position - chartLine2Position) -
                         Fonts.DescriptionFont.MeasureString(keyboardString).X) / 2;
-                    spriteBatch.DrawString(Fonts.DescriptionFont, keyboardString, 
+                    spriteBatch.DrawString(Fonts.DescriptionFont, keyboardString,
                         textPosition, Color.Black);
 
                     // Draw the key two
@@ -372,15 +369,15 @@ namespace RolePlaying
                     {
                         keyboardString = keyboardInfo.totalActionList[i].
                             keyboardKeys[1].ToString();
-                        textPosition.X = chartLine3Position + 
+                        textPosition.X = chartLine3Position +
                             ((chartLine4Position - chartLine3Position) -
                         Fonts.DescriptionFont.MeasureString(keyboardString).X) / 2;
-                        spriteBatch.DrawString(Fonts.DescriptionFont, keyboardString, 
+                        spriteBatch.DrawString(Fonts.DescriptionFont, keyboardString,
                             textPosition, Color.Black);
                     }
                     else
                     {
-                        textPosition.X = chartLine3Position + 
+                        textPosition.X = chartLine3Position +
                             ((chartLine4Position - chartLine3Position) -
                             Fonts.DescriptionFont.MeasureString("---").X) / 2;
                         spriteBatch.DrawString(Fonts.DescriptionFont, "---",
@@ -389,7 +386,7 @@ namespace RolePlaying
                 }
 
                 // Draw the Action
-                actionPosition.X = chartLine1Position + 
+                actionPosition.X = chartLine1Position +
                     ((chartLine2Position - chartLine1Position) -
                         Fonts.CaptionFont.MeasureString("Action").X) / 2;
                 actionPosition.Y = 200;
@@ -397,7 +394,7 @@ namespace RolePlaying
                     Fonts.CaptionColor);
 
                 // Draw the Key 1
-                key1Position.X = chartLine2Position + 
+                key1Position.X = chartLine2Position +
                     ((chartLine3Position - chartLine2Position) -
                     Fonts.CaptionFont.MeasureString("Key 1").X) / 2;
                 key1Position.Y = 200;
@@ -405,7 +402,7 @@ namespace RolePlaying
                     Fonts.CaptionColor);
 
                 // Draw the Key 2
-                key2Position.X = chartLine3Position + 
+                key2Position.X = chartLine3Position +
                     ((chartLine4Position - chartLine3Position) -
                     Fonts.CaptionFont.MeasureString("Key 2").X) / 2;
                 key2Position.Y = 200;
@@ -429,8 +426,7 @@ namespace RolePlaying
                     Fonts.HeaderFont.MeasureString("Keyboard").X) / 2;
                 titlePosition.Y = plankPosition.Y + (plankTexture.Height -
                     Fonts.HeaderFont.MeasureString("Keyboard").Y) / 2;
-                spriteBatch.DrawString(Fonts.HeaderFont, "Keyboard", titlePosition,
-                    Fonts.TitleColor);
+                spriteBatch.DrawString(Fonts.HeaderFont, "Keyboard", titlePosition, Fonts.TitleColor, MathHelper.ToRadians(-3.0f), Vector2.Zero, 1.0f, SpriteEffects.None, 0f);
 
                 // Draw the scroll textures
                 spriteBatch.Draw(scrollUpTexture, scrollUpPosition, Color.White);
@@ -439,7 +435,5 @@ namespace RolePlaying
 
             spriteBatch.End();
         }
-
-
     }
 }

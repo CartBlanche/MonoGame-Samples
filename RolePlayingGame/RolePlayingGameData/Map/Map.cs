@@ -5,11 +5,13 @@
 // Copyright (C) Microsoft Corporation. All rights reserved.
 //-----------------------------------------------------------------------------
 
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Content;
+using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Content;
+using System.IO;
+using System.Linq;
 
 namespace RolePlaying.Data
 {
@@ -36,11 +38,6 @@ namespace RolePlaying.Data
             get { return name; }
             set { name = value; }
         }
-
-
-
-
-
 
         /// <summary>
         /// The dimensions of the map, in tiles.
@@ -90,6 +87,7 @@ namespace RolePlaying.Data
         public int TilesPerRow
         {
             get { return tilesPerRow; }
+            set { tilesPerRow = value; }
         }
 
 
@@ -143,6 +141,7 @@ namespace RolePlaying.Data
         public Texture2D Texture
         {
             get { return texture; }
+            set { texture = value; }
         }
 
 
@@ -177,6 +176,7 @@ namespace RolePlaying.Data
         public Texture2D CombatTexture
         {
             get { return combatTexture; }
+            set { combatTexture = value; }
         }
 
 
@@ -249,7 +249,7 @@ namespace RolePlaying.Data
 
             return baseLayer[mapPosition.Y * mapDimensions.X + mapPosition.X];
         }
-        
+
 
         /// <summary>
         /// Retrieves the source rectangle for the tile in the given position
@@ -386,8 +386,8 @@ namespace RolePlaying.Data
                 (mapPosition.Y < 0) || (mapPosition.Y >= mapDimensions.Y))
             {
                 return Rectangle.Empty;
-            } 
-            
+            }
+
             int objectLayerValue = GetObjectLayerValue(mapPosition);
             if (objectLayerValue < 0)
             {
@@ -395,7 +395,7 @@ namespace RolePlaying.Data
             }
 
             return new Rectangle(
-                (objectLayerValue % tilesPerRow) * tileSize.X, 
+                (objectLayerValue % tilesPerRow) * tileSize.X,
                 (objectLayerValue / tilesPerRow) * tileSize.Y,
                 tileSize.X, tileSize.Y);
         }
@@ -476,7 +476,7 @@ namespace RolePlaying.Data
 
 
 
-        
+
 
         /// <summary>
         /// The content names and positions of the portals on this map.
@@ -504,12 +504,12 @@ namespace RolePlaying.Data
                 throw new ArgumentNullException("name");
             }
 
-            return portalEntries.Find(delegate(MapEntry<Portal> portalEntry)
+            return portalEntries.Find(delegate (MapEntry<Portal> portalEntry)
             {
                 return (portalEntry.ContentName == name);
             });
         }
-        
+
 
         /// <summary>
         /// The content names and positions of the treasure chests on this map.
@@ -563,7 +563,7 @@ namespace RolePlaying.Data
         /// <summary>
         /// The content names, positions, and orientations of quest Npcs on this map.
         /// </summary>
-        private List<MapEntry<QuestNpc>> questNpcEntries = 
+        private List<MapEntry<QuestNpc>> questNpcEntries =
             new List<MapEntry<QuestNpc>>();
 
         /// <summary>
@@ -579,7 +579,7 @@ namespace RolePlaying.Data
         /// <summary>
         /// The content names, positions, and orientations of player Npcs on this map.
         /// </summary>
-        private List<MapEntry<Player>> playerNpcEntries = 
+        private List<MapEntry<Player>> playerNpcEntries =
             new List<MapEntry<Player>>();
 
         /// <summary>
@@ -675,6 +675,141 @@ namespace RolePlaying.Data
             return map;
         }
 
+        public static Map Load(string mapContentName, ContentManager content)
+        {
+            var asset = XmlHelper.GetAssetElementFromXML(mapContentName);
+            var map = new Map
+            {
+                Name = asset.Element("Name").Value,
+                MapDimensions = new Point(
+                    int.Parse(asset.Element("MapDimensions").Value.Split(' ')[0]),
+                    int.Parse(asset.Element("MapDimensions").Value.Split(' ')[1])), // e.g. [20, 23]
+                TileSize = new Point(
+                    int.Parse(asset.Element("TileSize").Value.Split(' ')[0]),
+                    int.Parse(asset.Element("TileSize").Value.Split(' ')[1])), // e.g. [64, 64]
+                SpawnMapPosition = new Point(
+                    int.Parse(asset.Element("SpawnMapPosition").Value.Split(' ')[0]),
+                    int.Parse(asset.Element("SpawnMapPosition").Value.Split(' ')[1])), // e.g. [9, 7]
+                TextureName = (string)asset.Element("TextureName"),
+                Texture = content.Load<Texture2D>(
+                    Path.Combine(@"Textures\Maps\NonCombat", (string)asset.Element("TextureName"))),
+                CombatTextureName = (string)asset.Element("CombatTextureName"),
+                CombatTexture = content.Load<Texture2D>(
+                    Path.Combine(@"Textures\Maps\Combat", (string)asset.Element("CombatTextureName"))),
+                MusicCueName = (string)asset.Element("MusicCueName"),
+                CombatMusicCueName = (string)asset.Element("CombatMusicCueName"),
+                BaseLayer = asset.Element("BaseLayer").Value
+                    .Split(new[] { ' ', '\n', '\r' }, StringSplitOptions.RemoveEmptyEntries)
+                    .Select(int.Parse)
+                    .ToArray(),
+                FringeLayer = asset.Element("FringeLayer").Value
+                    .Split(new[] { ' ', '\n', '\r' }, StringSplitOptions.RemoveEmptyEntries)
+                    .Select(int.Parse)
+                    .ToArray(),
+                ObjectLayer = asset.Element("ObjectLayer").Value
+                    .Split(new[] { ' ', '\n', '\r' }, StringSplitOptions.RemoveEmptyEntries)
+                    .Select(int.Parse)
+                    .ToArray(),
+                CollisionLayer = asset.Element("CollisionLayer").Value
+                    .Split(new[] { ' ', '\n', '\r' }, StringSplitOptions.RemoveEmptyEntries)
+                    .Select(int.Parse)
+                    .ToArray(),
+                Portals = asset.Element("Portals")?.Elements("Item")
+                    .Select(item => new Portal
+                    {
+                        Name = (string)item.Element("Name"),
+                        LandingMapPosition = new Point(
+                            int.Parse(item.Element("LandingMapPosition").Value.Split(' ')[0]),
+                            int.Parse(item.Element("LandingMapPosition").Value.Split(' ')[1])),
+                        DestinationMapContentName = (string)item.Element("DestinationMapContentName"),
+                        DestinationMapPortalName = (string)item.Element("DestinationMapPortalName")
+                    }).ToList(),
+                PortalEntries = asset.Element("PortalEntries")?.Elements("Item")
+                    .Select(item => new MapEntry<Portal>
+                    {
+                        ContentName = (string)item.Element("ContentName"),
+                        MapPosition = new Point(
+                            int.Parse(item.Element("MapPosition").Value.Split(' ')[0]),
+                            int.Parse(item.Element("MapPosition").Value.Split(' ')[1]))
+                    }).ToList(),
+                ChestEntries = asset.Element("ChestEntries")?.Elements("Item")
+                    .Select(item => new MapEntry<Chest>
+                    {
+                        ContentName = (string)item.Element("ContentName"),
+                        MapPosition = new Point(
+                            int.Parse(item.Element("MapPosition").Value.Split(' ')[0]),
+                            int.Parse(item.Element("MapPosition").Value.Split(' ')[1]))
+                    }).ToList(),
+                FixedCombatEntries = asset.Element("FixedCombatEntries")?.Elements("Item")
+                    .Select(item => new MapEntry<FixedCombat>
+                    {
+                        ContentName = (string)item.Element("ContentName"),
+                        MapPosition = new Point(
+                            int.Parse(item.Element("MapPosition").Value.Split(' ')[0]),
+                            int.Parse(item.Element("MapPosition").Value.Split(' ')[1]))
+                    }).ToList(),
+                PlayerNpcEntries = asset.Element("PlayerNpcEntries")?.Elements("Item")
+                    .Select(item => new MapEntry<Player>
+                    {
+                        ContentName = (string)item.Element("ContentName"),
+                        MapPosition = new Point(
+                            int.Parse(item.Element("MapPosition").Value.Split(' ')[0]),
+                            int.Parse(item.Element("MapPosition").Value.Split(' ')[1]))
+                    }).ToList(),
+                QuestNpcEntries = asset.Element("QuestNpcEntries")?.Elements("Item")
+                    .Select(item => new MapEntry<QuestNpc>
+                    {
+                        ContentName = (string)item.Element("ContentName"),
+                        Direction = Enum.TryParse<Direction>((string)item.Element("Direction"), out var dir) ? dir : default,
+                        MapPosition = new Point(
+                            int.Parse(item.Element("MapPosition").Value.Split(' ')[0]),
+                            int.Parse(item.Element("MapPosition").Value.Split(' ')[1]))
+                    }).ToList(),
+                InnEntries = asset.Element("InnEntries")?.Elements("Item")
+                    .Select(item => new MapEntry<Inn>
+                    {
+                        ContentName = (string)item.Element("ContentName"),
+                        MapPosition = new Point(
+                            int.Parse(item.Element("MapPosition").Value.Split(' ')[0]),
+                            int.Parse(item.Element("MapPosition").Value.Split(' ')[1]))
+                    }).ToList(),
+                StoreEntries = asset.Element("StoreEntries")?.Elements("Item")
+                    .Select(item => new MapEntry<Store>
+                    {
+                        ContentName = (string)item.Element("ContentName"),
+                        MapPosition = new Point(
+                            int.Parse(item.Element("MapPosition").Value.Split(' ')[0]),
+                            int.Parse(item.Element("MapPosition").Value.Split(' ')[1]))
+                    }).ToList(),
+            };
+
+            var randomCombatElement = asset.Element("RandomCombat");
+            if (randomCombatElement != null)
+            {
+                map.RandomCombat = new RandomCombat
+                {
+                    CombatProbability = (int?)randomCombatElement.Element("CombatProbability") ?? 0,
+                    FleeProbability = (int?)randomCombatElement.Element("FleeProbability") ?? 0,
+                    MonsterCountRange = new Int32Range
+                    {
+                        Minimum = (int?)randomCombatElement.Element("MonsterCountRange")?.Element("Minimum") ?? 0,
+                        Maximum = (int?)randomCombatElement.Element("MonsterCountRange")?.Element("Maximum") ?? 0
+                    },
+                    Entries = randomCombatElement.Element("Entries")?.Elements("Item")
+                            .Select(item => new WeightedContentEntry<Monster>
+                            {
+                                ContentName = (string)item.Element("ContentName"),
+                                Count = (int?)item.Element("Count") ?? 0,
+                                Weight = (int?)item.Element("Weight") ?? 0
+                            }).ToList()
+                };
+            }
+
+            map.TilesPerRow = map.Texture.Width / map.TileSize.X;
+
+            return map;
+        }
+
 
 
 
@@ -723,7 +858,7 @@ namespace RolePlaying.Data
                     input.ReadObject<List<MapEntry<Portal>>>());
                 foreach (MapEntry<Portal> portalEntry in map.PortalEntries)
                 {
-                    portalEntry.Content = map.Portals.Find(delegate(Portal portal)
+                    portalEntry.Content = map.Portals.Find(delegate (Portal portal)
                         {
                             return (portal.Name == portalEntry.ContentName);
                         });
@@ -742,12 +877,12 @@ namespace RolePlaying.Data
                 Random random = new Random();
                 map.FixedCombatEntries.AddRange(
                     input.ReadObject<List<MapEntry<FixedCombat>>>());
-                foreach (MapEntry<FixedCombat> fixedCombatEntry in 
+                foreach (MapEntry<FixedCombat> fixedCombatEntry in
                     map.fixedCombatEntries)
                 {
-                    fixedCombatEntry.Content = 
+                    fixedCombatEntry.Content =
                         input.ContentManager.Load<FixedCombat>(
-                        System.IO.Path.Combine(@"Maps\FixedCombats", 
+                        System.IO.Path.Combine(@"Maps\FixedCombats",
                         fixedCombatEntry.ContentName));
                     // clone the map sprite in the entry, as there may be many entries
                     // per FixedCombat
@@ -755,7 +890,7 @@ namespace RolePlaying.Data
                         fixedCombatEntry.Content.Entries[0].Content.MapSprite.Clone()
                         as AnimatingSprite;
                     // play the idle animation
-                    fixedCombatEntry.MapSprite.PlayAnimation("Idle", 
+                    fixedCombatEntry.MapSprite.PlayAnimation("Idle",
                         fixedCombatEntry.Direction);
                     // advance in a random amount so the animations aren't synchronized
                     fixedCombatEntry.MapSprite.UpdateAnimation(
@@ -766,7 +901,7 @@ namespace RolePlaying.Data
 
                 map.QuestNpcEntries.AddRange(
                     input.ReadObject<List<MapEntry<QuestNpc>>>());
-                foreach (MapEntry<QuestNpc> questNpcEntry in 
+                foreach (MapEntry<QuestNpc> questNpcEntry in
                     map.questNpcEntries)
                 {
                     questNpcEntry.Content = input.ContentManager.Load<QuestNpc>(
@@ -778,7 +913,7 @@ namespace RolePlaying.Data
 
                 map.PlayerNpcEntries.AddRange(
                     input.ReadObject<List<MapEntry<Player>>>());
-                foreach (MapEntry<Player> playerNpcEntry in 
+                foreach (MapEntry<Player> playerNpcEntry in
                     map.playerNpcEntries)
                 {
                     playerNpcEntry.Content = input.ContentManager.Load<Player>(
@@ -790,28 +925,26 @@ namespace RolePlaying.Data
 
                 map.InnEntries.AddRange(
                     input.ReadObject<List<MapEntry<Inn>>>());
-                foreach (MapEntry<Inn> innEntry in 
+                foreach (MapEntry<Inn> innEntry in
                     map.innEntries)
                 {
                     innEntry.Content = input.ContentManager.Load<Inn>(
-                        System.IO.Path.Combine(@"Maps\Inns", 
+                        System.IO.Path.Combine(@"Maps\Inns",
                         innEntry.ContentName));
                 }
 
                 map.StoreEntries.AddRange(
                     input.ReadObject<List<MapEntry<Store>>>());
-                foreach (MapEntry<Store> storeEntry in 
+                foreach (MapEntry<Store> storeEntry in
                     map.storeEntries)
                 {
                     storeEntry.Content = input.ContentManager.Load<Store>(
-                        System.IO.Path.Combine(@"Maps\Stores", 
+                        System.IO.Path.Combine(@"Maps\Stores",
                         storeEntry.ContentName));
                 }
 
                 return map;
             }
         }
-
-
     }
 }

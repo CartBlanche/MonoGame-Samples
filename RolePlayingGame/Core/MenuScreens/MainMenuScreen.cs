@@ -6,6 +6,9 @@
 //-----------------------------------------------------------------------------
 
 using System;
+using System.Linq;
+using System.Xml.Linq;
+using System.Xml.Serialization;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
@@ -43,7 +46,7 @@ namespace RolePlaying
 
 
 
-        MenuEntry newGameMenuEntry, exitGameMenuEntry; 
+        MenuEntry newGameMenuEntry, exitGameMenuEntry;
         MenuEntry saveGameMenuEntry, loadGameMenuEntry;
         MenuEntry controlsMenuEntry, helpMenuEntry;
 
@@ -64,6 +67,7 @@ namespace RolePlaying
             newGameMenuEntry.Font = Fonts.HeaderFont;
             newGameMenuEntry.Position = new Vector2(RolePlayingGame.BUFFER_HEIGHT - 5, 0f);
             newGameMenuEntry.Angle = -3.0f;
+            newGameMenuEntry.TextOffset = new Vector2(0f, 5.0f);
             newGameMenuEntry.Selected += NewGameMenuEntrySelected;
             MenuEntries.Add(newGameMenuEntry);
 
@@ -97,6 +101,7 @@ namespace RolePlaying
             controlsMenuEntry.Font = Fonts.HeaderFont;
             controlsMenuEntry.Position = new Vector2(RolePlayingGame.BUFFER_HEIGHT, 0f);
             controlsMenuEntry.Angle = 5.0f;
+            controlsMenuEntry.TextOffset = new Vector2(0f, -15.0f);
             controlsMenuEntry.Selected += ControlsMenuEntrySelected;
             MenuEntries.Add(controlsMenuEntry);
 
@@ -130,14 +135,14 @@ namespace RolePlaying
             // load the textures
             ContentManager content = ScreenManager.Game.Content;
             backgroundTexture = content.Load<Texture2D>(@"Textures\MainMenu\MainMenu");
-            descriptionAreaTexture = 
+            descriptionAreaTexture =
                 content.Load<Texture2D>(@"Textures\MainMenu\MainMenuInfoSpace");
             iconTexture = content.Load<Texture2D>(@"Textures\MainMenu\GameLogo");
-            plankTexture1 = 
+            plankTexture1 =
                 content.Load<Texture2D>(@"Textures\MainMenu\MainMenuPlank");
-            plankTexture2 = 
+            plankTexture2 =
                 content.Load<Texture2D>(@"Textures\MainMenu\MainMenuPlank02");
-            plankTexture3 = 
+            plankTexture3 =
                 content.Load<Texture2D>(@"Textures\MainMenu\MainMenuPlank03");
             backTexture = content.Load<Texture2D>(@"Textures\Buttons\BButton");
             selectTexture = content.Load<Texture2D>(@"Textures\Buttons\AButton");
@@ -169,7 +174,7 @@ namespace RolePlaying
             {
                 MenuEntries[i].Position = new Vector2(
                     MenuEntries[i].Position.X,
-                    500f - ((MenuEntries[i].Texture.Height - 10) * 
+                    500f - ((MenuEntries[i].Texture.Height - 10) *
                         (MenuEntries.Count - 1 - i)));
             }
 
@@ -208,10 +213,13 @@ namespace RolePlaying
             }
 
             ContentManager content = ScreenManager.Game.Content;
-            
-            var gameDescription = content.Load<GameStartDescription>("MainGameDescription");
-            var gameplayScreen = new GameplayScreen(gameDescription);
-			LoadingScreen.Load(ScreenManager, true, gameplayScreen);
+
+            //var gameStartDescription = content.Load<GameStartDescription>("MainGameDescription");
+
+            var gameStartDescription = GameStartDescription.Load("MainGameDescription");
+
+            var gameplayScreen = new GameplayScreen(gameStartDescription);
+            LoadingScreen.Load(ScreenManager, true, gameplayScreen);
         }
 
 
@@ -230,7 +238,7 @@ namespace RolePlaying
         /// </summary>
         void LoadGameMenuEntrySelected(object sender, EventArgs e)
         {
-            SaveLoadScreen loadGameScreen = 
+            SaveLoadScreen loadGameScreen =
                 new SaveLoadScreen(SaveLoadScreen.SaveLoadScreenMode.Load);
             loadGameScreen.LoadingSaveGame += new SaveLoadScreen.LoadingSaveGameHandler(
                 loadGameScreen_LoadingSaveGame);
@@ -247,7 +255,7 @@ namespace RolePlaying
             {
                 ExitScreen();
             }
-            LoadingScreen.Load(ScreenManager, true, 
+            LoadingScreen.Load(ScreenManager, true,
                 new GameplayScreen(saveGameDescription));
         }
 
@@ -269,7 +277,7 @@ namespace RolePlaying
             ScreenManager.AddScreen(new HelpScreen());
         }
 
-        
+
         /// <summary>
         /// When the user cancels the main menu,
         /// or when the Exit Game menu entry is selected.
@@ -280,7 +288,7 @@ namespace RolePlaying
             string message = String.Empty;
             if (Session.IsActive)
             {
-                message = 
+                message =
                     "Are you sure you want to exit?  All unsaved progress will be lost.";
             }
             else
@@ -301,7 +309,7 @@ namespace RolePlaying
         {
             ScreenManager.Game.Exit();
         }
-        
+
 
 
 
@@ -318,7 +326,7 @@ namespace RolePlaying
 
             // draw the background images
             spriteBatch.Draw(backgroundTexture, backgroundPosition, Color.White);
-            spriteBatch.Draw(descriptionAreaTexture, descriptionAreaPosition, 
+            spriteBatch.Draw(descriptionAreaTexture, descriptionAreaPosition,
                 Color.White);
             spriteBatch.Draw(iconTexture, iconPosition, Color.White);
 
@@ -335,12 +343,12 @@ namespace RolePlaying
             if ((selectedMenuEntry != null) &&
                 !String.IsNullOrEmpty(selectedMenuEntry.Description))
             {
-                Vector2 textSize = 
+                Vector2 textSize =
                     Fonts.DescriptionFont.MeasureString(selectedMenuEntry.Description);
                 Vector2 textPosition = descriptionAreaTextPosition + new Vector2(
                     (float)Math.Floor((descriptionAreaTexture.Width - textSize.X) / 2),
                     0f);
-                spriteBatch.DrawString(Fonts.DescriptionFont, 
+                spriteBatch.DrawString(Fonts.DescriptionFont,
                     selectedMenuEntry.Description, textPosition, Color.White);
             }
 
@@ -348,7 +356,7 @@ namespace RolePlaying
             spriteBatch.Draw(selectTexture, selectPosition, Color.White);
             spriteBatch.DrawString(Fonts.ButtonNamesFont, "Select",
                 new Vector2(
-                selectPosition.X - Fonts.ButtonNamesFont.MeasureString("Select").X - 5, 
+                selectPosition.X - Fonts.ButtonNamesFont.MeasureString("Select").X - 5,
                 selectPosition.Y + 5), Color.White);
 
             // if we are in-game, draw the back instruction
@@ -361,6 +369,5 @@ namespace RolePlaying
 
             spriteBatch.End();
         }
-
     }
 }

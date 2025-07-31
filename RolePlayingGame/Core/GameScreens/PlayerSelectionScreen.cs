@@ -102,7 +102,7 @@ namespace RolePlaying
         /// <summary>
         /// Load the graphics content from the content manager.
         /// </summary>
-        public override void  LoadContent()
+        public override void LoadContent()
         {
             Viewport viewport = ScreenManager.GraphicsDevice.Viewport;
             ContentManager content = ScreenManager.Game.Content;
@@ -110,22 +110,22 @@ namespace RolePlaying
             fadeTexture = content.Load<Texture2D>(@"Textures\GameScreens\FadeScreen");
 
             // Display screens
-            playerInfoScreen = 
+            playerInfoScreen =
                 content.Load<Texture2D>(@"Textures\GameScreens\PopupScreen");
             popupPosition = new Vector2(viewport.Width / 2f, viewport.Height / 2f);
             popupPosition.X -= playerInfoScreen.Width / 2;
             popupPosition.Y -= playerInfoScreen.Height / 2;
 
-            scoreBoard = 
+            scoreBoard =
                 content.Load<Texture2D>(@"Textures\GameScreens\CountShieldWithArrow");
-            lineTexture = 
+            lineTexture =
                 content.Load<Texture2D>(@"Textures\GameScreens\SeparationLine");
             selectButton = content.Load<Texture2D>(@"Textures\Buttons\AButton");
             backButton = content.Load<Texture2D>(@"Textures\Buttons\BButton");
             tickMarkTexture = content.Load<Texture2D>(@"Textures\GameScreens\TickMark");
-            playerSelTexture = 
+            playerSelTexture =
                 content.Load<Texture2D>(@"Textures\GameScreens\PlayerSelected");
-            playerUnSelTexture = 
+            playerUnSelTexture =
                 content.Load<Texture2D>(@"Textures\GameScreens\PlayerUnSelected");
 
             titlePosition = new Vector2(
@@ -189,7 +189,7 @@ namespace RolePlaying
                 return;
             }
             // use the item or close the screen
-            else if (isUseAllowed && 
+            else if (isUseAllowed &&
                 InputManager.IsActionTriggered(InputManager.Action.Ok))
             {
                 if (isGearUsed)
@@ -239,7 +239,7 @@ namespace RolePlaying
                 return;
             }
             // cursor up
-            else if (!isGearUsed && 
+            else if (!isGearUsed &&
                 InputManager.IsActionTriggered(InputManager.Action.CursorUp))
             {
                 if (selectionMark > 0)
@@ -264,7 +264,7 @@ namespace RolePlaying
                 }
             }
             // cursor down
-            else if (!isGearUsed && 
+            else if (!isGearUsed &&
                 InputManager.IsActionTriggered(InputManager.Action.CursorDown))
             {
                 isGearUsed = false;
@@ -319,8 +319,7 @@ namespace RolePlaying
             DrawViewablePlayers();
 
             // Display Title of the Screen
-            spriteBatch.DrawString(Fonts.HeaderFont, "Choose Player", titlePosition,
-                Fonts.TitleColor);
+            spriteBatch.DrawString(Fonts.HeaderFont, "Choose Player", titlePosition, Fonts.TitleColor, MathHelper.ToRadians(-3.0f), Vector2.Zero, 1.0f, SpriteEffects.None, 0f);
 
             spriteBatch.End();
         }
@@ -372,7 +371,7 @@ namespace RolePlaying
             // Draw portrait
             portraitPosition.X = position.X + 3f;
             portraitPosition.Y = position.Y + 16f;
-            spriteBatch.Draw(player.ActivePortraitTexture, portraitPosition, 
+            spriteBatch.Draw(player.ActivePortraitTexture, portraitPosition,
                 Color.White);
             if (isGearUsed && isSelected)
             {
@@ -429,9 +428,9 @@ namespace RolePlaying
                             previewDamageRange -= equippedWeapon.TargetDamageRange;
                             previewDamageRange -=
                                 equippedWeapon.OwnerBuffStatistics.PhysicalOffense;
-                            previewHealthDefenseRange -= 
+                            previewHealthDefenseRange -=
                                 equippedWeapon.OwnerBuffStatistics.PhysicalDefense;
-                            previewMagicDefenseRange -= 
+                            previewMagicDefenseRange -=
                                 equippedWeapon.OwnerBuffStatistics.MagicalDefense;
                         }
                     }
@@ -501,7 +500,7 @@ namespace RolePlaying
                 Fonts.CountColor);
             equipEffectPosition.X += length;
 
-            Int32Range drawHealthDefenseRange = player.HealthDefenseRange + 
+            Int32Range drawHealthDefenseRange = player.HealthDefenseRange +
                 previewHealthDefenseRange + player.CharacterStatistics.PhysicalDefense;
             text = drawHealthDefenseRange.Minimum.ToString();
             length = (int)Fonts.DescriptionFont.MeasureString(text).X;
@@ -539,7 +538,7 @@ namespace RolePlaying
                 Fonts.CountColor);
             equipEffectPosition.X += length;
 
-            Int32Range drawMagicDefenseRange = player.MagicDefenseRange + 
+            Int32Range drawMagicDefenseRange = player.MagicDefenseRange +
                 previewMagicDefenseRange + player.CharacterStatistics.MagicalDefense;
             text = drawMagicDefenseRange.Minimum.ToString();
             length = (int)Fonts.DescriptionFont.MeasureString(text).X;
@@ -616,10 +615,10 @@ namespace RolePlaying
             }
 
             // Calculate HP and MP string Length
-            detail1 = "HP: " + player.CurrentStatistics.HealthPoints + "/" + 
+            detail1 = "HP: " + player.CurrentStatistics.HealthPoints + "/" +
                 player.CharacterStatistics.HealthPoints;
             length1 = Fonts.DescriptionFont.MeasureString(detail1).X;
-            detail2 = "MP: " + player.CurrentStatistics.MagicPoints + "/" + 
+            detail2 = "MP: " + player.CurrentStatistics.MagicPoints + "/" +
                 player.CharacterStatistics.MagicPoints;
             length2 = Fonts.DescriptionFont.MeasureString(detail2).X;
 
@@ -670,7 +669,7 @@ namespace RolePlaying
             color = GetStatColor(playersStatisticsModifier.MagicalDefense, isSelected);
             spriteBatch.DrawString(Fonts.DescriptionFont, "MD: " +
                 drawCurrentStatistics.MagicalDefense, position, color);
-            
+
 
             position.Y += Fonts.DescriptionFont.LineSpacing;
         }
@@ -743,7 +742,7 @@ namespace RolePlaying
                 position, Fonts.CountColor);
             position.Y += 30;
             // Display Total Players count
-            spriteBatch.DrawString(Fonts.GearInfoFont, 
+            spriteBatch.DrawString(Fonts.GearInfoFont,
                 Session.Party.Players.Count.ToString(), position, Fonts.CountColor);
         }
 
@@ -876,12 +875,12 @@ namespace RolePlaying
             selectedPlayers.Add(selMark);
             for (int i = 1; i <= range; i++)
             {
-                if ((selMark >= i) && 
+                if ((selMark >= i) &&
                     !Session.Party.Players[selMark - i].IsDeadOrDying)
                 {
                     selectedPlayers.Add(selMark - i);
                 }
-                if ((selMark < (Session.Party.Players.Count - i)) && 
+                if ((selMark < (Session.Party.Players.Count - i)) &&
                     !Session.Party.Players[selMark + i].IsDeadOrDying)
                 {
                     selectedPlayers.Add(selMark + i);

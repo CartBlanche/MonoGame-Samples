@@ -45,7 +45,7 @@ namespace RolePlaying.Data
         public CharacterClass CharacterClass
         {
             get { return characterClass; }
-            set 
+            set
             {
                 characterClass = value;
                 ResetBaseStatistics();
@@ -64,8 +64,8 @@ namespace RolePlaying.Data
         public int CharacterLevel
         {
             get { return characterLevel; }
-            set 
-            { 
+            set
+            {
                 characterLevel = value;
                 ResetBaseStatistics();
                 spells = null;
@@ -83,7 +83,7 @@ namespace RolePlaying.Data
                 return characterLevel >= characterClass.LevelEntries.Count;
             }
         }
-        
+
 
         /// <summary>
         /// The cached list of spells for this level.
@@ -96,8 +96,8 @@ namespace RolePlaying.Data
         [ContentSerializerIgnore]
         public List<Spell> Spells
         {
-            get 
-            { 
+            get
+            {
                 if ((spells == null) && (characterClass != null))
                 {
                     spells = characterClass.GetAllSpellsForLevel(characterLevel);
@@ -124,8 +124,8 @@ namespace RolePlaying.Data
         public int Experience
         {
             get { return experience; }
-            set 
-            { 
+            set
+            {
                 experience = value;
                 while (experience >= ExperienceForNextLevel)
                 {
@@ -156,7 +156,7 @@ namespace RolePlaying.Data
 
 
 
-        
+
 
         /// <summary>
         /// The base statistics of this character, from the character class and level.
@@ -240,7 +240,7 @@ namespace RolePlaying.Data
         /// <remarks>There can only be one weapon equipped at the same time.</remarks>
         public Weapon GetEquippedWeapon()
         {
-            return equippedEquipment.Find(delegate(Equipment equipment)
+            return equippedEquipment.Find(delegate (Equipment equipment)
                 { return equipment is Weapon; }) as Weapon;
         }
 
@@ -292,7 +292,7 @@ namespace RolePlaying.Data
         /// </summary>
         public void UnequipWeapon()
         {
-            equippedEquipment.RemoveAll(delegate(Equipment equipment)
+            equippedEquipment.RemoveAll(delegate (Equipment equipment)
                 { return equipment is Weapon; });
             RecalculateEquipmentStatistics();
         }
@@ -303,7 +303,7 @@ namespace RolePlaying.Data
         /// </summary>
         public Armor GetEquippedArmor(Armor.ArmorSlot slot)
         {
-            return equippedEquipment.Find(delegate(Equipment equipment)
+            return equippedEquipment.Find(delegate (Equipment equipment)
                 {
                     Armor armor = equipment as Armor;
                     return ((armor != null) && (armor.Slot == slot));
@@ -351,7 +351,7 @@ namespace RolePlaying.Data
             // recalculate the statistics buffs from equipment
             RecalculateEquipmentStatistics();
 
-            return true;        
+            return true;
         }
 
 
@@ -360,7 +360,7 @@ namespace RolePlaying.Data
         /// </summary>
         public void UnequipArmor(Armor.ArmorSlot slot)
         {
-            equippedEquipment.RemoveAll(delegate(Equipment equipment)
+            equippedEquipment.RemoveAll(delegate (Equipment equipment)
                 {
                     Armor armor = equipment as Armor;
                     return ((armor != null) && (armor.Slot == slot));
@@ -382,7 +382,7 @@ namespace RolePlaying.Data
             return Equip(equipment, out oldEquipment);
         }
 
-            
+
         /// <summary>
         /// Equip a new piece of equipment, specifying any equipment auto-unequipped.
         /// </summary>
@@ -568,6 +568,7 @@ namespace RolePlaying.Data
         public List<ContentEntry<Gear>> Inventory
         {
             get { return inventory; }
+            set { inventory = value; }
         }
 
 
@@ -615,7 +616,7 @@ namespace RolePlaying.Data
         /// <summary>
         /// The default animation interval for the combat map sprite.
         /// </summary>
-        [ContentSerializer(Optional=true)]
+        [ContentSerializer(Optional = true)]
         public int CombatAnimationInterval
         {
             get { return combatAnimationInterval; }
@@ -630,29 +631,24 @@ namespace RolePlaying.Data
         {
             if (combatSprite != null)
             {
-                combatSprite.AddAnimation(new Animation("Idle", 37, 42, 
+                combatSprite.AddAnimation(new Animation("Idle", 37, 42,
                     CombatAnimationInterval, true));
                 combatSprite.AddAnimation(new Animation("Walk", 25, 30,
                     CombatAnimationInterval, true));
-                combatSprite.AddAnimation(new Animation("Attack", 1, 6, 
+                combatSprite.AddAnimation(new Animation("Attack", 1, 6,
                     CombatAnimationInterval, false));
-                combatSprite.AddAnimation(new Animation("SpellCast", 31, 36, 
+                combatSprite.AddAnimation(new Animation("SpellCast", 31, 36,
                     CombatAnimationInterval, false));
-                combatSprite.AddAnimation(new Animation("Defend", 13, 18, 
+                combatSprite.AddAnimation(new Animation("Defend", 13, 18,
                     CombatAnimationInterval, false));
-                combatSprite.AddAnimation(new Animation("Dodge", 13, 18, 
+                combatSprite.AddAnimation(new Animation("Dodge", 13, 18,
                     CombatAnimationInterval, false));
-                combatSprite.AddAnimation(new Animation("Hit", 19, 24, 
+                combatSprite.AddAnimation(new Animation("Hit", 19, 24,
                     CombatAnimationInterval, false));
-                combatSprite.AddAnimation(new Animation("Die", 7, 12, 
+                combatSprite.AddAnimation(new Animation("Die", 7, 12,
                     CombatAnimationInterval, false));
             }
         }
-
-
-
-
-
 
         /// <summary>
         /// Reads a FightingCharacter object from the content pipeline.
@@ -662,7 +658,7 @@ namespace RolePlaying.Data
             /// <summary>
             /// Reads a FightingCharacter object from the content pipeline.
             /// </summary>
-            protected override FightingCharacter Read(ContentReader input, 
+            protected override FightingCharacter Read(ContentReader input,
                 FightingCharacter existingInstance)
             {
                 FightingCharacter fightingCharacter = existingInstance;
@@ -691,7 +687,7 @@ namespace RolePlaying.Data
                             fightingCharacter.CharacterClassContentName));
 
                 // populate the equipment list
-                foreach (string gearName in 
+                foreach (string gearName in
                     fightingCharacter.InitialEquipmentContentNames)
                 {
                     fightingCharacter.Equip(input.ContentManager.Load<Equipment>(
@@ -702,7 +698,7 @@ namespace RolePlaying.Data
                 fightingCharacter.RecalculateTotalDefenseRanges();
 
                 // populate the inventory based on the content names
-                foreach (ContentEntry<Gear> inventoryEntry in 
+                foreach (ContentEntry<Gear> inventoryEntry in
                     fightingCharacter.Inventory)
                 {
                     inventoryEntry.Content = input.ContentManager.Load<Gear>(
@@ -712,7 +708,5 @@ namespace RolePlaying.Data
                 return fightingCharacter;
             }
         }
-
-
     }
 }

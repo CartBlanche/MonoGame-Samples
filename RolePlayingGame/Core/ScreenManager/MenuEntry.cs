@@ -42,6 +42,11 @@ namespace RolePlaying
         Vector2 position;
 
         /// <summary>
+        /// The offset from the positionof this menu item.
+        /// </summary>
+        Vector2 textOffset = new Vector2(0, 0);
+
+        /// <summary>
         /// The angle of this menu item on the screen.
         /// </summary>
         float angle = 0f;
@@ -83,7 +88,7 @@ namespace RolePlaying
             set { spriteFont = value; }
         }
 
-        
+
         /// <summary>
         /// Gets or sets the position of this menu entry.
         /// </summary>
@@ -100,6 +105,15 @@ namespace RolePlaying
         {
             get { return angle; }
             set { angle = value; }
+        }
+
+        /// <summary>
+        /// Gets or sets the position of this menu entry.
+        /// </summary>
+        public Vector2 TextOffset
+        {
+            get { return textOffset; }
+            set { textOffset = value; }
         }
 
 
@@ -175,7 +189,7 @@ namespace RolePlaying
         {
             // Draw the selected entry in yellow, otherwise white.
             Color color = isSelected ? Fonts.MenuSelectedColor : Fonts.TitleColor;
-            
+
             // Draw text, centered on the middle of each line.
             ScreenManager screenManager = screen.ScreenManager;
             SpriteBatch spriteBatch = screenManager.SpriteBatch;
@@ -187,8 +201,8 @@ namespace RolePlaying
                 {
                     Vector2 textSize = spriteFont.MeasureString(text);
                     Vector2 textPosition = position + new Vector2(
-                        (float)Math.Floor((texture.Width - textSize.X) / 2),
-                        (float)Math.Floor((texture.Height - textSize.Y) / 2));
+                        (float)Math.Floor((texture.Width - textSize.X + textOffset.X) / 2),
+                        (float)Math.Floor((texture.Height - textSize.Y + textOffset.Y) / 2));
                     spriteBatch.DrawString(spriteFont, text, textPosition, color, MathHelper.ToRadians(angle), Vector2.Zero, 1.0f, SpriteEffects.None, 0f);
                 }
             }

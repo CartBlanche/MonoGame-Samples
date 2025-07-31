@@ -30,7 +30,7 @@ namespace RolePlaying
 
         private Texture2D listTexture;
         private readonly Vector2 listTexturePosition = new Vector2(187f, 180f);
-        protected readonly Vector2 listEntryStartPosition = new Vector2(200f, 202f);
+        protected readonly Vector2 listEntryStartPosition = new Vector2(200f, 195f);
         protected const int listLineSpacing = 76;
 
         private Texture2D plankTexture;
@@ -166,8 +166,8 @@ namespace RolePlaying
         /// Increase the selected quantity by one.
         /// </summary>
         protected virtual void MoveCursorRight() { }
-        
-        
+
+
         /// <summary>
         /// The first index displayed on the screen from the list.
         /// </summary>
@@ -212,11 +212,11 @@ namespace RolePlaying
         /// Constructs a new ListScreen object.
         /// </summary>
         public ListScreen()
-            : base() 
+            : base()
         {
             this.IsPopup = true;
         }
- 
+
 
         /// <summary>
         /// Load the graphics content from the content manager.
@@ -227,9 +227,9 @@ namespace RolePlaying
 
             // load the background textures
             fadeTexture = content.Load<Texture2D>(@"Textures\GameScreens\FadeScreen");
-            backgroundTexture = 
+            backgroundTexture =
                 content.Load<Texture2D>(@"Textures\GameScreens\GameScreenBkgd");
-            listTexture = 
+            listTexture =
                 content.Load<Texture2D>(@"Textures\GameScreens\InfoDisplay");
             plankTexture =
                 content.Load<Texture2D>(@"Textures\MainMenu\MainMenuPlank03");
@@ -243,21 +243,21 @@ namespace RolePlaying
                 content.Load<Texture2D>(@"Textures\GameScreens\SelectionArrow");
 
             // load the trigger images
-            leftTriggerTexture = 
+            leftTriggerTexture =
                 content.Load<Texture2D>(@"Textures\Buttons\LeftTriggerButton");
-            rightTriggerTexture = 
+            rightTriggerTexture =
                 content.Load<Texture2D>(@"Textures\Buttons\RightTriggerButton");
-            leftQuantityArrowTexture = 
+            leftQuantityArrowTexture =
                 content.Load<Texture2D>(@"Textures\Buttons\QuantityArrowLeft");
-            rightQuantityArrowTexture = 
+            rightQuantityArrowTexture =
                 content.Load<Texture2D>(@"Textures\Buttons\QuantityArrowRight");
-            backButtonTexture = 
+            backButtonTexture =
                 content.Load<Texture2D>(@"Textures\Buttons\BButton");
-            selectButtonTexture = 
+            selectButtonTexture =
                 content.Load<Texture2D>(@"Textures\Buttons\AButton");
             xButtonTexture =
                 content.Load<Texture2D>(@"Textures\Buttons\XButton");
-            yButtonTexture = 
+            yButtonTexture =
                 content.Load<Texture2D>(@"Textures\Buttons\YButton");
 
             // calculate the centered positions
@@ -274,7 +274,7 @@ namespace RolePlaying
             {
                 xButtonTextPosition.X += xButtonTexture.Width;
             }
-            
+
             base.LoadContent();
         }
 
@@ -407,7 +407,7 @@ namespace RolePlaying
 
             // fix the indices for the current list size
             SelectedIndex = (int)MathHelper.Clamp(SelectedIndex, 0, dataList.Count - 1);
-            startIndex = (int)MathHelper.Clamp(startIndex, 0, 
+            startIndex = (int)MathHelper.Clamp(startIndex, 0,
                 dataList.Count - MaximumListEntries);
             endIndex = Math.Min(startIndex + MaximumListEntries, dataList.Count);
 
@@ -424,7 +424,7 @@ namespace RolePlaying
             DrawTitle();
 
             // draw each item currently shown
-            Vector2 position = listEntryStartPosition + 
+            Vector2 position = listEntryStartPosition +
                 new Vector2(0f, listLineSpacing / 2);
             if (startIndex >= 0)
             {
@@ -466,7 +466,7 @@ namespace RolePlaying
         {
             SpriteBatch spriteBatch = ScreenManager.SpriteBatch;
 
-            spriteBatch.Draw(highlightTexture, 
+            spriteBatch.Draw(highlightTexture,
                 new Vector2(highlightStartPosition.X, position.Y), Color.White);
             spriteBatch.Draw(selectionArrowTexture,
                 new Vector2(selectionArrowPosition.X, position.Y + 10f), Color.White);
@@ -512,7 +512,7 @@ namespace RolePlaying
                 drawPosition, Fonts.CountColor);
         }
 
-        
+
         /// <summary>
         /// Draw the party gold text.
         /// </summary>
@@ -563,7 +563,7 @@ namespace RolePlaying
                     leftTriggerTexture.Width / 2f - (float)Math.Ceiling(
                     Fonts.PlayerStatisticsFont.MeasureString(leftTriggerText).X / 2f),
                     90f);
-                spriteBatch.Draw(leftTriggerTexture, leftTriggerTexturePosition, 
+                spriteBatch.Draw(leftTriggerTexture, leftTriggerTexturePosition,
                     Color.White);
                 spriteBatch.DrawString(Fonts.PlayerStatisticsFont, leftTriggerText,
                     position, Color.Black);
@@ -639,11 +639,10 @@ namespace RolePlaying
                 Vector2 titleTextSize = Fonts.HeaderFont.MeasureString(titleText);
                 Viewport viewport = ScreenManager.GraphicsDevice.Viewport;
                 Vector2 position = new Vector2(
-                    (float)Math.Floor(viewport.X + viewport.Width / 2 - 
-                    titleTextSize.X / 2f), 90f);
+                    (float)Math.Floor(viewport.X + viewport.Width / 2 -
+                    titleTextSize.X / 2f), 95f);
                 spriteBatch.Draw(plankTexture, plankTexturePosition, Color.White);
-                spriteBatch.DrawString(Fonts.HeaderFont, titleText, position,
-                    Fonts.TitleColor);
+                spriteBatch.DrawString(Fonts.HeaderFont, titleText, position, Fonts.TitleColor, MathHelper.ToRadians(-3.0f), Vector2.Zero, 1.0f, SpriteEffects.None, 0f);
             }
         }
 

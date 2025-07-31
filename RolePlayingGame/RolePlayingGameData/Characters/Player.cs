@@ -5,9 +5,14 @@
 // Copyright (C) Microsoft Corporation. All rights reserved.
 //-----------------------------------------------------------------------------
 
-using System;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Xml.Linq;
 
 namespace RolePlaying.Data
 {
@@ -142,6 +147,7 @@ namespace RolePlaying.Data
         public Texture2D ActivePortraitTexture
         {
             get { return activePortraitTexture; }
+            set { activePortraitTexture = value; }
         }
 
 
@@ -172,6 +178,7 @@ namespace RolePlaying.Data
         public Texture2D InactivePortraitTexture
         {
             get { return inactivePortraitTexture; }
+            set { inactivePortraitTexture = value; }
         }
 
 
@@ -202,6 +209,7 @@ namespace RolePlaying.Data
         public Texture2D UnselectablePortraitTexture
         {
             get { return unselectablePortraitTexture; }
+            set { unselectablePortraitTexture = value; }
         }
 
 
@@ -229,17 +237,17 @@ namespace RolePlaying.Data
                 player.JoinAcceptedDialogue = input.ReadString();
                 player.JoinRejectedDialogue = input.ReadString();
                 player.ActivePortraitTextureName = input.ReadString();
-                player.activePortraitTexture = 
+                player.activePortraitTexture =
                     input.ContentManager.Load<Texture2D>(
                         System.IO.Path.Combine(@"Textures\Characters\Portraits",
                         player.ActivePortraitTextureName));
                 player.InactivePortraitTextureName = input.ReadString();
-                player.inactivePortraitTexture = 
+                player.inactivePortraitTexture =
                     input.ContentManager.Load<Texture2D>(
                         System.IO.Path.Combine(@"Textures\Characters\Portraits",
                         player.InactivePortraitTextureName));
                 player.UnselectablePortraitTextureName = input.ReadString();
-                player.unselectablePortraitTexture = 
+                player.unselectablePortraitTexture =
                     input.ContentManager.Load<Texture2D>(
                         System.IO.Path.Combine(@"Textures\Characters\Portraits",
                         player.UnselectablePortraitTextureName));
@@ -296,6 +304,86 @@ namespace RolePlaying.Data
             return player;
         }
 
+        public static Player Load(string playerPath, ContentManager contentManager)
+        {
+            var asset = XmlHelper.GetAssetElementFromXML(playerPath);
 
+            var player = new Player
+            {
+                Name = (string)asset.Element("Name"),
+                MapSprite = new AnimatingSprite
+                {
+                    TextureName = (string)asset.Element("MapSprite").Element("TextureName"),
+                    Texture = contentManager.Load<Texture2D>(
+                        Path.Combine(@"Textures\", (string)asset.Element("MapSprite").Element("TextureName"))),
+                    FrameDimensions = new Point(
+                        int.Parse(asset.Element("MapSprite").Element("FrameDimensions").Value.Split(' ')[0]),
+                        int.Parse(asset.Element("MapSprite").Element("FrameDimensions").Value.Split(' ')[1])),
+                    FramesPerRow = (int)asset.Element("MapSprite").Element("FramesPerRow"),
+                    SourceOffset = new Vector2(
+                        int.Parse(asset.Element("MapSprite").Element("SourceOffset").Value.Split(' ')[0]),
+                        int.Parse(asset.Element("MapSprite").Element("SourceOffset").Value.Split(' ')[1])),
+                    // Handle Animations if needed
+                },
+                WalkingSprite = new AnimatingSprite
+                {
+                    TextureName = (string)asset.Element("WalkingSprite").Element("TextureName"),
+                    Texture = contentManager.Load<Texture2D>(
+                        Path.Combine(@"Textures\", (string)asset.Element("WalkingSprite").Element("TextureName"))),
+                    FrameDimensions = new Point(
+                        int.Parse(asset.Element("WalkingSprite").Element("FrameDimensions").Value.Split(' ')[0]),
+                        int.Parse(asset.Element("WalkingSprite").Element("FrameDimensions").Value.Split(' ')[1])),
+                    FramesPerRow = (int)asset.Element("WalkingSprite").Element("FramesPerRow"),
+                    SourceOffset = new Vector2(
+                        int.Parse(asset.Element("WalkingSprite").Element("SourceOffset").Value.Split(' ')[0]),
+                        int.Parse(asset.Element("WalkingSprite").Element("SourceOffset").Value.Split(' ')[1])),
+                    // Handle Animations if needed
+                },
+                MapIdleAnimationInterval = (int)asset.Element("MapIdleAnimationInterval"),
+                CharacterClassContentName = (string)asset.Element("CharacterClassContentName"),
+                CharacterLevel = (int)asset.Element("CharacterLevel"),
+                InitialEquipmentContentNames = asset.Element("InitialEquipmentContentNames")
+                    .Elements("Item").Select(x => (string)x).ToList(),
+                CombatSprite = new AnimatingSprite
+                {
+                    TextureName = (string)asset.Element("CombatSprite").Element("TextureName"),
+                    Texture = contentManager.Load<Texture2D>(
+                        Path.Combine(@"Textures\", (string)asset.Element("CombatSprite").Element("TextureName"))),
+                    FrameDimensions = new Point(
+                        int.Parse(asset.Element("CombatSprite").Element("FrameDimensions").Value.Split(' ')[0]),
+                        int.Parse(asset.Element("CombatSprite").Element("FrameDimensions").Value.Split(' ')[1])),
+                    FramesPerRow = (int)asset.Element("CombatSprite").Element("FramesPerRow"),
+                    SourceOffset = new Vector2(
+                        int.Parse(asset.Element("CombatSprite").Element("SourceOffset").Value.Split(' ')[0]),
+                        int.Parse(asset.Element("CombatSprite").Element("SourceOffset").Value.Split(' ')[1])),
+                    // Handle Animations if needed
+                },
+                Gold = (int)asset.Element("Gold"),
+                IntroductionDialogue = (string)asset.Element("IntroductionDialogue"),
+                JoinAcceptedDialogue = (string)asset.Element("JoinAcceptedDialogue"),
+                JoinRejectedDialogue = (string)asset.Element("JoinRejectedDialogue"),
+                ActivePortraitTextureName = (string)asset.Element("ActivePortraitTextureName"),
+                ActivePortraitTexture = contentManager.Load<Texture2D>(
+                    Path.Combine(@"Textures\Characters\Portraits", (string)asset.Element("ActivePortraitTextureName"))),
+                InactivePortraitTextureName = (string)asset.Element("InactivePortraitTextureName"),
+                InactivePortraitTexture = contentManager.Load<Texture2D>(
+                    Path.Combine(@"Textures\Characters\Portraits", (string)asset.Element("InactivePortraitTextureName"))),
+                UnselectablePortraitTextureName = (string)asset.Element("UnselectablePortraitTextureName"),
+                UnselectablePortraitTexture = contentManager.Load<Texture2D>(
+                    Path.Combine(@"Textures\Characters\Portraits", (string)asset.Element("UnselectablePortraitTextureName"))),
+                Inventory = asset.Element("Inventory")?.Elements("Item")
+                    .Select(x => new ContentEntry<Gear>
+                    {
+                        ContentName = (string)x.Element("ContentName"),
+                        Count = (int?)x.Element("Count") ?? 1 // Default to 1 if not specified
+                    })
+                    .ToList() ?? new List<ContentEntry<Gear>>()
+            };
+
+            // load the character class
+            player.CharacterClass = CharacterClass.Load(Path.Combine("CharacterClasses", player.CharacterClassContentName));
+
+            return player;
+        }
     }
 }

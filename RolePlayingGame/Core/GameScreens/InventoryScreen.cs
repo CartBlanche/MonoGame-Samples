@@ -72,7 +72,7 @@ namespace RolePlaying
 
             // sort the list by name
             dataList.Sort(
-                delegate(ContentEntry<Gear> gearEntry1, ContentEntry<Gear> gearEntry2)
+                delegate (ContentEntry<Gear> gearEntry1, ContentEntry<Gear> gearEntry2)
                 {
                     // handle null values
                     if ((gearEntry1 == null) || (gearEntry1.Content == null))
@@ -181,7 +181,7 @@ namespace RolePlaying
                 new MessageBoxScreen("Are you sure you want to drop the " +
                 entry.Content.Name + "?");
             dropEquipmentConfirmationScreen.Accepted +=
-                new EventHandler<EventArgs>(delegate(object sender, EventArgs args)
+                new EventHandler<EventArgs>(delegate (object sender, EventArgs args)
                 {
                     Session.Party.RemoveFromInventory(entry.Content, 1);
                 });
@@ -234,7 +234,7 @@ namespace RolePlaying
             }
         }
 
-        
+
         /// <summary>
         /// Reset the trigger button text to the names of the 
         /// previous and next UI screens.
@@ -254,7 +254,7 @@ namespace RolePlaying
                 }
                 else
                 {
-                    leftTriggerText = "Items";
+                    leftTriggerText = "Inventory";
                     rightTriggerText = "Quests";
                 }
             }

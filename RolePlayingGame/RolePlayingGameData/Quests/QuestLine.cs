@@ -5,10 +5,13 @@
 // Copyright (C) Microsoft Corporation. All rights reserved.
 //-----------------------------------------------------------------------------
 
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Content;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using Microsoft.Xna.Framework.Content;
+using System.Linq;
+using System.Xml.Linq;
 
 namespace RolePlaying.Data
 {
@@ -67,7 +70,7 @@ namespace RolePlaying.Data
         {
             get { return quests; }
         }
-    
+
 
 
 
@@ -80,7 +83,7 @@ namespace RolePlaying.Data
             /// <summary>
             /// Reads a QuestLine object from the content pipeline.
             /// </summary>
-            protected override QuestLine Read(ContentReader input, 
+            protected override QuestLine Read(ContentReader input,
                 QuestLine existingInstance)
             {
                 QuestLine questLine = existingInstance;
@@ -125,6 +128,23 @@ namespace RolePlaying.Data
             return questLine;
         }
 
+        public static QuestLine Load(string questPath)
+        {
+            var asset = XmlHelper.GetAssetElementFromXML(questPath);
 
+            var name = asset.Element("Name").Value;
+            var questContentNames = asset.Element("QuestContentNames")
+                .Elements("Item")
+                .Select(x => (string)x)
+                .ToList();
+
+            var loadedQuestLine = new QuestLine
+            {
+                Name = name,
+                QuestContentNames = questContentNames,
+            };
+
+            return loadedQuestLine;
+        }
     }
 }

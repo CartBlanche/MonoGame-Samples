@@ -8,6 +8,8 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
+using System.Xml.Linq;
 using System.Xml.Serialization;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
@@ -71,7 +73,9 @@ namespace RolePlaying
 
             // load the map
             ContentManager content = singleton.screenManager.Game.Content;
-            Map map = content.Load<Map>(mapContentName).Clone() as Map;
+
+            //Map map = content.Load<Map>(mapContentName).Clone() as Map;
+            var map = Map.Load(mapContentName, content);
 
             // modify the map based on the world changes (removed chests, etc.).
             singleton.ModifyMap(map);
@@ -99,11 +103,11 @@ namespace RolePlaying
             {
                 MapEntry<FixedCombat> fixedCombatEntry =
                     singleton.quest.FixedCombatEntries.Find(
-                        delegate(WorldEntry<FixedCombat> worldEntry)
+                        delegate (WorldEntry<FixedCombat> worldEntry)
                         {
-                            return 
+                            return
                                 TileEngine.Map.AssetName.EndsWith(
-                                    worldEntry.MapContentName) && 
+                                    worldEntry.MapContentName) &&
                                 worldEntry.MapPosition == mapPosition;
                         });
                 if (fixedCombatEntry != null)
@@ -114,9 +118,9 @@ namespace RolePlaying
             }
 
             // look for fixed-combats from the map
-            MapEntry<FixedCombat> fixedCombatMapEntry = 
+            MapEntry<FixedCombat> fixedCombatMapEntry =
                 TileEngine.Map.FixedCombatEntries.Find(
-                    delegate(MapEntry<FixedCombat> mapEntry)
+                    delegate (MapEntry<FixedCombat> mapEntry)
                     {
                         return mapEntry.MapPosition == mapPosition;
                     });
@@ -130,7 +134,7 @@ namespace RolePlaying
             if (singleton.quest != null)
             {
                 MapEntry<Chest> chestEntry = singleton.quest.ChestEntries.Find(
-                    delegate(WorldEntry<Chest> worldEntry)
+                    delegate (WorldEntry<Chest> worldEntry)
                     {
                         return
                             TileEngine.Map.AssetName.EndsWith(
@@ -146,7 +150,7 @@ namespace RolePlaying
 
             // look for chests from the map
             MapEntry<Chest> chestMapEntry =
-                TileEngine.Map.ChestEntries.Find(delegate(MapEntry<Chest> mapEntry)
+                TileEngine.Map.ChestEntries.Find(delegate (MapEntry<Chest> mapEntry)
                 {
                     return mapEntry.MapPosition == mapPosition;
                 });
@@ -158,7 +162,7 @@ namespace RolePlaying
 
             // look for player NPCs from the map
             MapEntry<Player> playerNpcEntry =
-                TileEngine.Map.PlayerNpcEntries.Find(delegate(MapEntry<Player> mapEntry)
+                TileEngine.Map.PlayerNpcEntries.Find(delegate (MapEntry<Player> mapEntry)
                 {
                     return mapEntry.MapPosition == mapPosition;
                 });
@@ -170,7 +174,7 @@ namespace RolePlaying
 
             // look for quest NPCs from the map
             MapEntry<QuestNpc> questNpcEntry =
-                TileEngine.Map.QuestNpcEntries.Find(delegate(MapEntry<QuestNpc> mapEntry)
+                TileEngine.Map.QuestNpcEntries.Find(delegate (MapEntry<QuestNpc> mapEntry)
                 {
                     return mapEntry.MapPosition == mapPosition;
                 });
@@ -182,7 +186,7 @@ namespace RolePlaying
 
             // look for portals from the map
             MapEntry<Portal> portalEntry =
-                TileEngine.Map.PortalEntries.Find(delegate(MapEntry<Portal> mapEntry)
+                TileEngine.Map.PortalEntries.Find(delegate (MapEntry<Portal> mapEntry)
                 {
                     return mapEntry.MapPosition == mapPosition;
                 });
@@ -194,7 +198,7 @@ namespace RolePlaying
 
             // look for inns from the map
             MapEntry<Inn> innEntry =
-                TileEngine.Map.InnEntries.Find(delegate(MapEntry<Inn> mapEntry)
+                TileEngine.Map.InnEntries.Find(delegate (MapEntry<Inn> mapEntry)
                 {
                     return mapEntry.MapPosition == mapPosition;
                 });
@@ -206,7 +210,7 @@ namespace RolePlaying
 
             // look for stores from the map
             MapEntry<Store> storeEntry =
-                TileEngine.Map.StoreEntries.Find(delegate(MapEntry<Store> mapEntry)
+                TileEngine.Map.StoreEntries.Find(delegate (MapEntry<Store> mapEntry)
                 {
                     return mapEntry.MapPosition == mapPosition;
                 });
@@ -318,7 +322,7 @@ namespace RolePlaying
             // add the store screen
             singleton.screenManager.AddScreen(new StoreScreen(storeEntry.Content));
         }
-        
+
 
         /// <summary>
         /// Performs the actions associated with encountering a Portal entry.
@@ -332,7 +336,7 @@ namespace RolePlaying
             }
 
             // change to the new map
-            ChangeMap(portalEntry.Content.DestinationMapContentName, 
+            ChangeMap(portalEntry.Content.DestinationMapContentName,
                 portalEntry.Content);
         }
 
@@ -369,7 +373,7 @@ namespace RolePlaying
         }
 
 
-        
+
 
 
 
@@ -399,7 +403,7 @@ namespace RolePlaying
                 {
                     return false;
                 }
-                return singleton.currentQuestIndex >= 
+                return singleton.currentQuestIndex >=
                     singleton.questLine.QuestContentNames.Count;
             }
         }
@@ -445,7 +449,7 @@ namespace RolePlaying
             }
 
             // if we don't have a quest, then take the next one from teh list
-            if ((quest == null) && (questLine.Quests.Count > 0) && 
+            if ((quest == null) && (questLine.Quests.Count > 0) &&
                 !Session.IsQuestLineComplete)
             {
                 quest = questLine.Quests[currentQuestIndex];
@@ -561,13 +565,13 @@ namespace RolePlaying
         /// <summary>
         /// The chests removed from the map asset by player actions.
         /// </summary>
-        private List<WorldEntry<Chest>> removedMapChests = 
+        private List<WorldEntry<Chest>> removedMapChests =
             new List<WorldEntry<Chest>>();
 
         /// <summary>
         /// The chests removed from the current quest asset by player actions.
         /// </summary>
-        private List<WorldEntry<Chest>> removedQuestChests = 
+        private List<WorldEntry<Chest>> removedQuestChests =
             new List<WorldEntry<Chest>>();
 
         /// <summary>
@@ -585,7 +589,7 @@ namespace RolePlaying
             if (TileEngine.Map != null)
             {
                 int removedEntries = TileEngine.Map.ChestEntries.RemoveAll(
-                    delegate(MapEntry<Chest> entry)
+                    delegate (MapEntry<Chest> entry)
                     {
                         return ((entry.ContentName == mapEntry.ContentName) &&
                             (entry.MapPosition == mapEntry.MapPosition));
@@ -608,7 +612,7 @@ namespace RolePlaying
             if (singleton.quest != null)
             {
                 int removedEntries = singleton.quest.ChestEntries.RemoveAll(
-                    delegate(WorldEntry<Chest> entry)
+                    delegate (WorldEntry<Chest> entry)
                     {
                         return ((entry.ContentName == mapEntry.ContentName) &&
                             (entry.MapPosition == mapEntry.MapPosition) &&
@@ -657,7 +661,7 @@ namespace RolePlaying
             if (TileEngine.Map != null)
             {
                 int removedEntries = TileEngine.Map.FixedCombatEntries.RemoveAll(
-                    delegate(MapEntry<FixedCombat> entry)
+                    delegate (MapEntry<FixedCombat> entry)
                     {
                         return ((entry.ContentName == mapEntry.ContentName) &&
                             (entry.MapPosition == mapEntry.MapPosition));
@@ -680,7 +684,7 @@ namespace RolePlaying
             if (singleton.quest != null)
             {
                 int removedEntries = singleton.quest.FixedCombatEntries.RemoveAll(
-                    delegate(WorldEntry<FixedCombat> entry)
+                    delegate (WorldEntry<FixedCombat> entry)
                     {
                         return ((entry.ContentName == mapEntry.ContentName) &&
                             (entry.MapPosition == mapEntry.MapPosition) &&
@@ -723,7 +727,7 @@ namespace RolePlaying
             if (TileEngine.Map != null)
             {
                 int removedEntries = TileEngine.Map.PlayerNpcEntries.RemoveAll(
-                    delegate(MapEntry<Player> entry)
+                    delegate (MapEntry<Player> entry)
                     {
                         return ((entry.ContentName == mapEntry.ContentName) &&
                             (entry.MapPosition == mapEntry.MapPosition));
@@ -749,7 +753,7 @@ namespace RolePlaying
         /// <summary>
         /// The chests that have been modified, but not emptied, by player action.
         /// </summary>
-        private List<ModifiedChestEntry> modifiedMapChests = 
+        private List<ModifiedChestEntry> modifiedMapChests =
             new List<ModifiedChestEntry>();
 
 
@@ -757,7 +761,7 @@ namespace RolePlaying
         /// The chests belonging to the current quest that have been modified,
         /// but not emptied, by player action.
         /// </summary>
-        private List<ModifiedChestEntry> modifiedQuestChests = 
+        private List<ModifiedChestEntry> modifiedQuestChests =
             new List<ModifiedChestEntry>();
 
 
@@ -773,8 +777,8 @@ namespace RolePlaying
                 throw new ArgumentNullException("mapEntry");
             }
 
-            Predicate<ModifiedChestEntry> checkModifiedChests = 
-                delegate(ModifiedChestEntry entry)
+            Predicate<ModifiedChestEntry> checkModifiedChests =
+                delegate (ModifiedChestEntry entry)
                 {
                     return
                         (TileEngine.Map.AssetName.EndsWith(
@@ -785,7 +789,7 @@ namespace RolePlaying
 
             // check the map for the item first
             if ((TileEngine.Map != null) && TileEngine.Map.ChestEntries.Exists(
-                delegate(MapEntry<Chest> entry)
+                delegate (MapEntry<Chest> entry)
                 {
                     return ((entry.ContentName == mapEntry.ContentName) &&
                         (entry.MapPosition == mapEntry.MapPosition));
@@ -797,7 +801,7 @@ namespace RolePlaying
                 modifiedChestEntry.WorldEntry.ContentName = mapEntry.ContentName;
                 modifiedChestEntry.WorldEntry.Count = mapEntry.Count;
                 modifiedChestEntry.WorldEntry.Direction = mapEntry.Direction;
-                modifiedChestEntry.WorldEntry.MapContentName = 
+                modifiedChestEntry.WorldEntry.MapContentName =
                     TileEngine.Map.AssetName;
                 modifiedChestEntry.WorldEntry.MapPosition = mapEntry.MapPosition;
                 Chest chest = mapEntry.Content;
@@ -806,11 +810,11 @@ namespace RolePlaying
                 singleton.modifiedMapChests.Add(modifiedChestEntry);
                 return;
             }
-            
+
 
             // look for the map entry within the quest
             if ((singleton.quest != null) && singleton.quest.ChestEntries.Exists(
-                delegate(WorldEntry<Chest> entry)
+                delegate (WorldEntry<Chest> entry)
                 {
                     return ((entry.ContentName == mapEntry.ContentName) &&
                         (entry.MapPosition == mapEntry.MapPosition) &&
@@ -849,12 +853,12 @@ namespace RolePlaying
             if ((removedMapChests != null) && (removedMapChests.Count > 0))
             {
                 // check each removed-content entry
-                map.ChestEntries.RemoveAll(delegate(MapEntry<Chest> mapEntry)
+                map.ChestEntries.RemoveAll(delegate (MapEntry<Chest> mapEntry)
                 {
                     return (removedMapChests.Exists(
-                        delegate(WorldEntry<Chest> removedEntry)
+                        delegate (WorldEntry<Chest> removedEntry)
                         {
-                            return 
+                            return
                                 (map.AssetName.EndsWith(removedEntry.MapContentName) &&
                                 (removedEntry.ContentName == mapEntry.ContentName) &&
                                 (removedEntry.MapPosition == mapEntry.MapPosition));
@@ -866,10 +870,10 @@ namespace RolePlaying
             if ((removedMapFixedCombats != null) && (removedMapFixedCombats.Count > 0))
             {
                 // check each removed-content entry
-                map.FixedCombatEntries.RemoveAll(delegate(MapEntry<FixedCombat> mapEntry)
+                map.FixedCombatEntries.RemoveAll(delegate (MapEntry<FixedCombat> mapEntry)
                 {
                     return (removedMapFixedCombats.Exists(
-                        delegate(WorldEntry<FixedCombat> removedEntry)
+                        delegate (WorldEntry<FixedCombat> removedEntry)
                         {
                             return
                                 (map.AssetName.EndsWith(removedEntry.MapContentName) &&
@@ -883,10 +887,10 @@ namespace RolePlaying
             if ((removedMapPlayerNpcs != null) && (removedMapPlayerNpcs.Count > 0))
             {
                 // check each removed-content entry
-                map.PlayerNpcEntries.RemoveAll(delegate(MapEntry<Player> mapEntry)
+                map.PlayerNpcEntries.RemoveAll(delegate (MapEntry<Player> mapEntry)
                 {
                     return (removedMapPlayerNpcs.Exists(
-                        delegate(WorldEntry<Player> removedEntry)
+                        delegate (WorldEntry<Player> removedEntry)
                         {
                             return
                                 (map.AssetName.EndsWith(removedEntry.MapContentName) &&
@@ -902,14 +906,14 @@ namespace RolePlaying
                 foreach (MapEntry<Chest> entry in map.ChestEntries)
                 {
                     ModifiedChestEntry modifiedEntry = modifiedMapChests.Find(
-                        delegate(ModifiedChestEntry modifiedTestEntry)
+                        delegate (ModifiedChestEntry modifiedTestEntry)
                         {
                             return
                                 (map.AssetName.EndsWith(
                                     modifiedTestEntry.WorldEntry.MapContentName) &&
-                                (modifiedTestEntry.WorldEntry.ContentName == 
+                                (modifiedTestEntry.WorldEntry.ContentName ==
                                     entry.ContentName) &&
-                                (modifiedTestEntry.WorldEntry.MapPosition == 
+                                (modifiedTestEntry.WorldEntry.MapPosition ==
                                     entry.MapPosition));
                         });
                     // if the chest has been modified, apply the changes
@@ -938,17 +942,17 @@ namespace RolePlaying
             {
                 // check each removed-content entry
                 quest.ChestEntries.RemoveAll(
-                    delegate(WorldEntry<Chest> worldEntry)
+                    delegate (WorldEntry<Chest> worldEntry)
                     {
                         return (removedQuestChests.Exists(
-                            delegate(WorldEntry<Chest> removedEntry)
+                            delegate (WorldEntry<Chest> removedEntry)
                             {
                                 return
                                     (removedEntry.MapContentName.EndsWith(
                                         worldEntry.MapContentName) &&
-                                    (removedEntry.ContentName == 
+                                    (removedEntry.ContentName ==
                                         worldEntry.ContentName) &&
-                                    (removedEntry.MapPosition == 
+                                    (removedEntry.MapPosition ==
                                         worldEntry.MapPosition));
                             }));
                     });
@@ -960,17 +964,17 @@ namespace RolePlaying
             {
                 // check each removed-content entry
                 quest.FixedCombatEntries.RemoveAll(
-                    delegate(WorldEntry<FixedCombat> worldEntry)
+                    delegate (WorldEntry<FixedCombat> worldEntry)
                     {
                         return (removedQuestFixedCombats.Exists(
-                            delegate(WorldEntry<FixedCombat> removedEntry)
+                            delegate (WorldEntry<FixedCombat> removedEntry)
                             {
                                 return
                                     (removedEntry.MapContentName.EndsWith(
                                         worldEntry.MapContentName) &&
-                                    (removedEntry.ContentName == 
+                                    (removedEntry.ContentName ==
                                         worldEntry.ContentName) &&
-                                    (removedEntry.MapPosition == 
+                                    (removedEntry.MapPosition ==
                                         worldEntry.MapPosition));
                             }));
                     });
@@ -982,14 +986,14 @@ namespace RolePlaying
                 foreach (WorldEntry<Chest> entry in quest.ChestEntries)
                 {
                     ModifiedChestEntry modifiedEntry = modifiedQuestChests.Find(
-                        delegate(ModifiedChestEntry modifiedTestEntry)
+                        delegate (ModifiedChestEntry modifiedTestEntry)
                         {
                             return
-                                ((modifiedTestEntry.WorldEntry.MapContentName == 
+                                ((modifiedTestEntry.WorldEntry.MapContentName ==
                                     entry.MapContentName) &&
-                                (modifiedTestEntry.WorldEntry.ContentName == 
+                                (modifiedTestEntry.WorldEntry.ContentName ==
                                     entry.ContentName) &&
-                                (modifiedTestEntry.WorldEntry.MapPosition == 
+                                (modifiedTestEntry.WorldEntry.MapPosition ==
                                     entry.MapPosition));
                         });
                     // if the chest has been modified, apply the changes
@@ -1017,10 +1021,10 @@ namespace RolePlaying
             chest.Gold = modifiedChestEntry.Gold;
 
             // remove all contents not found in the modified version
-            chest.Entries.RemoveAll(delegate(ContentEntry<Gear> contentEntry)
+            chest.Entries.RemoveAll(delegate (ContentEntry<Gear> contentEntry)
             {
                 return !modifiedChestEntry.ChestEntries.Exists(
-                    delegate(ContentEntry<Gear> modifiedTestEntry)
+                    delegate (ContentEntry<Gear> modifiedTestEntry)
                     {
                         return (contentEntry.ContentName ==
                             modifiedTestEntry.ContentName);
@@ -1032,7 +1036,7 @@ namespace RolePlaying
             {
                 ContentEntry<Gear> modifiedGearEntry =
                     modifiedChestEntry.ChestEntries.Find(
-                        delegate(ContentEntry<Gear> modifiedTestEntry)
+                        delegate (ContentEntry<Gear> modifiedTestEntry)
                         {
                             return (contentEntry.ContentName ==
                                 modifiedTestEntry.ContentName);
@@ -1082,7 +1086,7 @@ namespace RolePlaying
             get { return (singleton == null ? null : singleton.hud); }
         }
 
-        
+
 
 
 
@@ -1173,7 +1177,7 @@ namespace RolePlaying
                 if (TileEngine.Map.CombatTexture != null)
                 {
                     spriteBatch.Begin();
-                    spriteBatch.Draw(TileEngine.Map.CombatTexture, Vector2.Zero, 
+                    spriteBatch.Draw(TileEngine.Map.CombatTexture, Vector2.Zero,
                         Color.White);
                     spriteBatch.End();
                 }
@@ -1257,7 +1261,7 @@ namespace RolePlaying
                 {
                     continue;
                 }
-                Vector2 position = 
+                Vector2 position =
                     TileEngine.GetScreenPosition(playerEntry.MapPosition);
                 playerEntry.Content.ResetAnimation(false);
                 switch (playerEntry.Content.State)
@@ -1298,7 +1302,7 @@ namespace RolePlaying
                 {
                     continue;
                 }
-                Vector2 position = 
+                Vector2 position =
                     TileEngine.GetScreenPosition(questNpcEntry.MapPosition);
                 questNpcEntry.Content.ResetAnimation(false);
                 switch (questNpcEntry.Content.State)
@@ -1318,7 +1322,7 @@ namespace RolePlaying
                         {
                             questNpcEntry.Content.WalkingSprite.UpdateAnimation(
                                 elapsedSeconds);
-                            questNpcEntry.Content.WalkingSprite.Draw(spriteBatch, 
+                            questNpcEntry.Content.WalkingSprite.Draw(spriteBatch,
                                 position,
                                 1f - position.Y / (float)TileEngine.Viewport.Height);
                         }
@@ -1336,15 +1340,15 @@ namespace RolePlaying
             // draw the fixed-combat monsters NPCs from the TileEngine.Map
             // -- since there may be many of the same FixedCombat object 
             //    on the TileEngine.Map, but their animations are handled differently
-            foreach (MapEntry<FixedCombat> fixedCombatEntry in 
+            foreach (MapEntry<FixedCombat> fixedCombatEntry in
                 TileEngine.Map.FixedCombatEntries)
             {
-                if ((fixedCombatEntry.Content == null) || 
+                if ((fixedCombatEntry.Content == null) ||
                     (fixedCombatEntry.Content.Entries.Count <= 0))
                 {
                     continue;
                 }
-                Vector2 position = 
+                Vector2 position =
                     TileEngine.GetScreenPosition(fixedCombatEntry.MapPosition);
                 fixedCombatEntry.MapSprite.UpdateAnimation(elapsedSeconds);
                 fixedCombatEntry.MapSprite.Draw(spriteBatch, position,
@@ -1357,10 +1361,10 @@ namespace RolePlaying
             if ((quest != null) && ((quest.Stage == Quest.QuestStage.InProgress) ||
                 (quest.Stage == Quest.QuestStage.RequirementsMet)))
             {
-                foreach (WorldEntry<FixedCombat> fixedCombatEntry 
+                foreach (WorldEntry<FixedCombat> fixedCombatEntry
                     in quest.FixedCombatEntries)
                 {
-                    if ((fixedCombatEntry.Content == null) || 
+                    if ((fixedCombatEntry.Content == null) ||
                         (fixedCombatEntry.Content.Entries.Count <= 0) ||
                         !TileEngine.Map.AssetName.EndsWith(
                             fixedCombatEntry.MapContentName))
@@ -1386,7 +1390,7 @@ namespace RolePlaying
                 spriteBatch.Draw(chestEntry.Content.Texture,
                     position, null, Color.White, 0f, Vector2.Zero, 1f,
                     SpriteEffects.None,
-                    MathHelper.Clamp(1f - position.Y / 
+                    MathHelper.Clamp(1f - position.Y /
                         (float)TileEngine.Viewport.Height, 0f, 1f));
             }
 
@@ -1396,17 +1400,17 @@ namespace RolePlaying
             {
                 foreach (WorldEntry<Chest> chestEntry in quest.ChestEntries)
                 {
-                    if ((chestEntry.Content == null) || 
+                    if ((chestEntry.Content == null) ||
                         !TileEngine.Map.AssetName.EndsWith(chestEntry.MapContentName))
                     {
                         continue;
                     }
-                    Vector2 position = 
+                    Vector2 position =
                         TileEngine.GetScreenPosition(chestEntry.MapPosition);
                     spriteBatch.Draw(chestEntry.Content.Texture,
                         position, null, Color.White, 0f, Vector2.Zero, 1f,
                         SpriteEffects.None,
-                        MathHelper.Clamp(1f - position.Y / 
+                        MathHelper.Clamp(1f - position.Y /
                             (float)TileEngine.Viewport.Height, 0f, 1f));
                 }
             }
@@ -1432,12 +1436,12 @@ namespace RolePlaying
             Player player = party.Players[0];
             if (player.ShadowTexture != null)
             {
-                spriteBatch.Draw(player.ShadowTexture, 
+                spriteBatch.Draw(player.ShadowTexture,
                     TileEngine.PartyLeaderPosition.ScreenPosition, null, Color.White, 0f,
                     new Vector2(
                         (player.ShadowTexture.Width - TileEngine.Map.TileSize.X) / 2,
-                        (player.ShadowTexture.Height - TileEngine.Map.TileSize.Y) / 2 - 
-                            player.ShadowTexture.Height / 6), 
+                        (player.ShadowTexture.Height - TileEngine.Map.TileSize.Y) / 2 -
+                            player.ShadowTexture.Height / 6),
                     1f, SpriteEffects.None, 1f);
             }
 
@@ -1450,15 +1454,15 @@ namespace RolePlaying
                 }
                 if (playerEntry.Content.ShadowTexture != null)
                 {
-                    Vector2 position = 
+                    Vector2 position =
                         TileEngine.GetScreenPosition(playerEntry.MapPosition);
                     spriteBatch.Draw(playerEntry.Content.ShadowTexture, position,
-                        null, Color.White, 0f, 
+                        null, Color.White, 0f,
                         new Vector2(
-                        (playerEntry.Content.ShadowTexture.Width - 
+                        (playerEntry.Content.ShadowTexture.Width -
                             TileEngine.Map.TileSize.X) / 2,
-                        (playerEntry.Content.ShadowTexture.Height - 
-                            TileEngine.Map.TileSize.Y) / 2 - 
+                        (playerEntry.Content.ShadowTexture.Height -
+                            TileEngine.Map.TileSize.Y) / 2 -
                             playerEntry.Content.ShadowTexture.Height / 6),
                         1f, SpriteEffects.None, 1f);
                 }
@@ -1473,25 +1477,25 @@ namespace RolePlaying
                 }
                 if (questNpcEntry.Content.ShadowTexture != null)
                 {
-                    Vector2 position = 
+                    Vector2 position =
                         TileEngine.GetScreenPosition(questNpcEntry.MapPosition);
                     spriteBatch.Draw(questNpcEntry.Content.ShadowTexture, position,
                         null, Color.White, 0f,
                         new Vector2(
-                            (questNpcEntry.Content.ShadowTexture.Width - 
+                            (questNpcEntry.Content.ShadowTexture.Width -
                                 TileEngine.Map.TileSize.X) / 2,
-                            (questNpcEntry.Content.ShadowTexture.Height - 
-                                TileEngine.Map.TileSize.Y) / 2 - 
+                            (questNpcEntry.Content.ShadowTexture.Height -
+                                TileEngine.Map.TileSize.Y) / 2 -
                                 questNpcEntry.Content.ShadowTexture.Height / 6),
                         1f, SpriteEffects.None, 1f);
                 }
             }
 
             // draw the fixed-combat monsters NPCs' shadows
-            foreach (MapEntry<FixedCombat> fixedCombatEntry in 
+            foreach (MapEntry<FixedCombat> fixedCombatEntry in
                 TileEngine.Map.FixedCombatEntries)
             {
-                if ((fixedCombatEntry.Content == null) || 
+                if ((fixedCombatEntry.Content == null) ||
                     (fixedCombatEntry.Content.Entries.Count <= 0))
                 {
                     continue;
@@ -1499,13 +1503,13 @@ namespace RolePlaying
                 Monster monster = fixedCombatEntry.Content.Entries[0].Content;
                 if (monster.ShadowTexture != null)
                 {
-                    Vector2 position = 
+                    Vector2 position =
                         TileEngine.GetScreenPosition(fixedCombatEntry.MapPosition);
                     spriteBatch.Draw(monster.ShadowTexture, position,
                         null, Color.White, 0f,
                         new Vector2(
                         (monster.ShadowTexture.Width - TileEngine.Map.TileSize.X) / 2,
-                        (monster.ShadowTexture.Height - TileEngine.Map.TileSize.Y) / 2 - 
+                        (monster.ShadowTexture.Height - TileEngine.Map.TileSize.Y) / 2 -
                             monster.ShadowTexture.Height / 6),
                         1f, SpriteEffects.None, 1f);
                 }
@@ -1520,7 +1524,7 @@ namespace RolePlaying
         /// <summary>
         /// Start a new session based on the data provided.
         /// </summary>
-        public static void StartNewSession(GameStartDescription gameStartDescription, 
+        public static void StartNewSession(GameStartDescription gameStartDescription,
             ScreenManager screenManager, GameplayScreen gameplayScreen)
         {
             // check the parameters
@@ -1550,10 +1554,15 @@ namespace RolePlaying
             ContentManager content = singleton.screenManager.Game.Content;
             singleton.party = new Party(gameStartDescription, content);
 
+            /* var loadedQuestLine = content.Load<QuestLine>(
+                Path.Combine(@"Quests\QuestLines",
+                gameStartDescription.QuestLineContentName)).Clone() as QuestLine;*/
+
+            var loadedQuestLine = QuestLine.Load(Path.Combine(@"Quests\QuestLines",
+                gameStartDescription.QuestLineContentName));
+
             // load the quest line
-            singleton.questLine = content.Load<QuestLine>(
-                Path.Combine(@"Quests\QuestLines", 
-                gameStartDescription.QuestLineContentName)).Clone() as QuestLine;
+            singleton.questLine = loadedQuestLine;
         }
 
 
@@ -1966,10 +1975,10 @@ namespace RolePlaying
         /// <summary>
         /// XML serializer for SaveGameDescription objects.
         /// </summary>
-        private static XmlSerializer saveGameDescriptionSerializer = 
+        private static XmlSerializer saveGameDescriptionSerializer =
             new XmlSerializer(typeof(SaveGameDescription));
 
-        
+
         /// <summary>
         /// Refresh the list of save-game descriptions.
         /// </summary>
@@ -2161,7 +2170,7 @@ namespace RolePlaying
 
 
 
-    
+
 
 
         /// <summary>
@@ -2176,7 +2185,5 @@ namespace RolePlaying
         {
             get { return random; }
         }
-
-
     }
 }

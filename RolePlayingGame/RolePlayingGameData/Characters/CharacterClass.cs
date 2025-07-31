@@ -7,6 +7,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Microsoft.Xna.Framework.Content;
 
 namespace RolePlaying.Data
@@ -51,7 +52,7 @@ namespace RolePlaying.Data
             set { initialStatistics = value; }
         }
 
-        
+
 
 
 
@@ -74,7 +75,7 @@ namespace RolePlaying.Data
         /// <summary>
         /// Entries of the requirements and rewards for each level of this class.
         /// </summary>
-        private List<CharacterLevelDescription> levelEntries = 
+        private List<CharacterLevelDescription> levelEntries =
             new List<CharacterLevelDescription>();
 
         /// <summary>
@@ -166,9 +167,9 @@ namespace RolePlaying.Data
                 foreach (Spell spell in levelEntries[i].Spells)
                 {
                     Spell existingSpell = spells.Find(
-                        delegate(Spell testSpell)
+                        delegate (Spell testSpell)
                         {
-                            return spell.AssetName == testSpell.AssetName; 
+                            return spell.AssetName == testSpell.AssetName;
                         });
                     if (existingSpell == null)
                     {
@@ -182,6 +183,55 @@ namespace RolePlaying.Data
             }
 
             return spells;
+        }
+
+        internal static CharacterClass Load(string path)
+        {
+            var asset = XmlHelper.GetAssetElementFromXML(path);
+
+            var characterClass = new CharacterClass
+            {
+                Name = (string)asset.Element("Name"),
+                InitialStatistics = new StatisticsValue
+                {
+                    HealthPoints = (int?)asset.Element("InitialStatistics").Element("HealthPoints") ?? 0,
+                    MagicPoints = (int?)asset.Element("InitialStatistics").Element("MagicPoints") ?? 0,
+                    PhysicalOffense = (int?)asset.Element("InitialStatistics").Element("PhysicalOffense") ?? 0,
+                    PhysicalDefense = (int?)asset.Element("InitialStatistics").Element("PhysicalDefense") ?? 0,
+                    MagicalOffense = (int?)asset.Element("InitialStatistics").Element("MagicalOffense") ?? 0,
+                    MagicalDefense = (int?)asset.Element("InitialStatistics").Element("MagicalDefense") ?? 0,
+                },
+                LevelingStatistics = new CharacterLevelingStatistics
+                {
+                    HealthPointsIncrease = (int?)asset.Element("LevelingStatistics").Element("HealthPointsIncrease") ?? 0,
+                    LevelsPerHealthPointsIncrease = (int?)asset.Element("LevelingStatistics").Element("LevelsPerHealthPointsIncrease") ?? 0,
+                    MagicPointsIncrease = (int?)asset.Element("LevelingStatistics").Element("MagicPointsIncrease") ?? 0,
+                    LevelsPerMagicPointsIncrease = (int?)asset.Element("LevelingStatistics").Element("LevelsPerMagicPointsIncrease") ?? 0,
+                    PhysicalOffenseIncrease = (int?)asset.Element("LevelingStatistics").Element("PhysicalOffenseIncrease") ?? 0,
+                    LevelsPerPhysicalOffenseIncrease = (int?)asset.Element("LevelingStatistics").Element("LevelsPerPhysicalOffenseIncrease") ?? 0,
+                    PhysicalDefenseIncrease = (int?)asset.Element("LevelingStatistics").Element("PhysicalDefenseIncrease") ?? 0,
+                    LevelsPerPhysicalDefenseIncrease = (int?)asset.Element("LevelingStatistics").Element("LevelsPerPhysicalDefenseIncrease") ?? 0,
+                    MagicalOffenseIncrease = (int?)asset.Element("LevelingStatistics").Element("MagicalOffenseIncrease") ?? 0,
+                    LevelsPerMagicalOffenseIncrease = (int?)asset.Element("LevelingStatistics").Element("LevelsPerMagicalOffenseIncrease") ?? 0,
+                    MagicalDefenseIncrease = (int?)asset.Element("LevelingStatistics").Element("MagicalDefenseIncrease") ?? 0,
+                    LevelsPerMagicalDefenseIncrease = (int?)asset.Element("LevelingStatistics").Element("LevelsPerMagicalDefenseIncrease") ?? 0,
+                },
+                LevelEntries = asset.Element("LevelEntries")
+                    .Elements("Item")
+                    .Select(item => new CharacterLevelDescription
+                    {
+                        ExperiencePoints = (int?)item.Element("ExperiencePoints") ?? 0,
+                        SpellContentNames = item.Element("SpellContentNames")?
+                            .Elements("Item")
+                            .Select(x => (string)x)
+                            .ToList() ?? new List<string>()
+                    })
+                    .ToList(),
+                BaseExperienceValue = (int?)asset.Element("BaseExperienceValue") ?? 0,
+                BaseGoldValue = (int?)asset.Element("BaseGoldValue") ?? 0
+            };
+
+            return characterClass;
         }
 
 
@@ -235,7 +285,7 @@ namespace RolePlaying.Data
             /// <summary>
             /// Reads a CharacterClass object from the content pipeline.
             /// </summary>
-            protected override CharacterClass Read(ContentReader input, 
+            protected override CharacterClass Read(ContentReader input,
                 CharacterClass existingInstance)
             {
                 CharacterClass characterClass = existingInstance;
@@ -247,9 +297,9 @@ namespace RolePlaying.Data
                 characterClass.AssetName = input.AssetName;
 
                 characterClass.Name = input.ReadString();
-                characterClass.InitialStatistics = 
+                characterClass.InitialStatistics =
                     input.ReadObject<StatisticsValue>();
-                characterClass.LevelingStatistics = 
+                characterClass.LevelingStatistics =
                     input.ReadObject<CharacterLevelingStatistics>();
                 characterClass.LevelEntries.AddRange(
                     input.ReadObject<List<CharacterLevelDescription>>());
@@ -259,7 +309,5 @@ namespace RolePlaying.Data
                 return characterClass;
             }
         }
-
-
     }
 }

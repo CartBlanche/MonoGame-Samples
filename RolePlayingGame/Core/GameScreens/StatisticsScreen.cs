@@ -5,11 +5,9 @@
 // Copyright (C) Microsoft Corporation. All rights reserved.
 //-----------------------------------------------------------------------------
 
-using System;
-using System.Collections.Generic;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Content;
+using Microsoft.Xna.Framework.Graphics;
 using RolePlaying.Data;
 
 namespace RolePlaying
@@ -142,7 +140,7 @@ namespace RolePlaying
 
             statisticsNamePosition.X = (viewport.Width -
                 Fonts.HeaderFont.MeasureString("Statistics").X) / 2;
-            statisticsNamePosition.Y = 90f;
+            statisticsNamePosition.Y = 95f;
 
             plankPosition.X = (viewport.Width - plankTexture.Width) / 2;
             plankPosition.Y = 67f;
@@ -167,8 +165,7 @@ namespace RolePlaying
             // shows the spells for this player
             else if (InputManager.IsActionTriggered(InputManager.Action.Ok))
             {
-                ScreenManager.AddScreen(new SpellbookScreen(player,
-                    player.CharacterStatistics));
+                ScreenManager.AddScreen(new SpellbookScreen(player, player.CharacterStatistics));
                 return;
             }
             // show the equipment for this player, allowing the user to unequip
@@ -283,8 +280,8 @@ namespace RolePlaying
                  new Vector2(screenAnimation.SourceOffset.X,
                  screenAnimation.SourceOffset.Y), 1f, SpriteEffects.None, 0f);
 
-            spriteBatch.DrawString(Fonts.HeaderFont, "Statistics",
-                statisticsNamePosition, Fonts.TitleColor);
+            spriteBatch.DrawString(Fonts.HeaderFont, "Statistics", statisticsNamePosition, Fonts.TitleColor, MathHelper.ToRadians(-3.0f), Vector2.Zero, 1.0f, SpriteEffects.None, 0f);
+
             DrawPlayerDetails();
             DrawButtons();
         }
@@ -322,9 +319,9 @@ namespace RolePlaying
 
                 // Draw Right Trigger Information
                 position.Y += rightTriggerButton.Height;
-                placeTextMid = Fonts.PlayerStatisticsFont.MeasureString("Items");
+                placeTextMid = Fonts.PlayerStatisticsFont.MeasureString("Inventory");
                 position.X += (leftTriggerButton.Width / 2) - placeTextMid.X / 2;
-                spriteBatch.DrawString(Fonts.PlayerStatisticsFont, "Items", position,
+                spriteBatch.DrawString(Fonts.PlayerStatisticsFont, "Inventory", position,
                     Color.Black);
             }
 
@@ -567,7 +564,5 @@ namespace RolePlaying
                 magicDefenseRange.Maximum + ")",
                 position, Color.Black);
         }
-
-
     }
 }

@@ -5,9 +5,12 @@
 // Copyright (C) Microsoft Corporation. All rights reserved.
 //-----------------------------------------------------------------------------
 
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Content;
 using System;
 using System.Collections.Generic;
-using Microsoft.Xna.Framework.Content;
+using System.Linq;
+using System.Xml.Linq;
 
 namespace RolePlaying.Data
 {
@@ -59,6 +62,23 @@ namespace RolePlaying.Data
         {
             get { return questLineContentName; }
             set { questLineContentName = value; }
+        }
+
+        public static GameStartDescription Load(string description)
+        {
+            XElement asset = XmlHelper.GetAssetElementFromXML(description);
+
+            var gameStartDescription = new GameStartDescription
+            {
+                MapContentName = (string)asset.Element("MapContentName"),
+                PlayerContentNames = asset.Element("PlayerContentNames")
+                    .Elements("Item")
+                    .Select(x => (string)x)
+                    .ToList(),
+                QuestLineContentName = (string)asset.Element("QuestLineContentName"),
+            };
+
+            return gameStartDescription;
         }
     }
 }

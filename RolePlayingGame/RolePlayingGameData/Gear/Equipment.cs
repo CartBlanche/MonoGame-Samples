@@ -28,17 +28,17 @@ namespace RolePlaying.Data
         /// The statistics buff applied by this equipment to its owner.
         /// </summary>
         /// <remarks>Buff values are positive, and will be added.</remarks>
-        [ContentSerializer(Optional=true)]
+        [ContentSerializer(Optional = true)]
         public StatisticsValue OwnerBuffStatistics
         {
             get { return ownerBuffStatistics; }
             set { ownerBuffStatistics = value; }
         }
 
-
-
-
-
+        public static Equipment Load(string equipmentAssetName)
+        {
+            throw new NotImplementedException();
+        }
 
         /// <summary>
         /// Read the Equipment type from the content pipeline.
@@ -48,7 +48,7 @@ namespace RolePlaying.Data
             /// <summary>
             /// Read the Equipment type from the content pipeline.
             /// </summary>
-            protected override Equipment Read(ContentReader input, 
+            protected override Equipment Read(ContentReader input,
                 Equipment existingInstance)
             {
                 Equipment equipment = existingInstance;
@@ -68,7 +68,5 @@ namespace RolePlaying.Data
                 return equipment;
             }
         }
-
-
     }
 }

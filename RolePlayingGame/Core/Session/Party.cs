@@ -9,7 +9,11 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
+using System.Linq;
+using System.Xml.Linq;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
+using Microsoft.Xna.Framework.Graphics;
 using RolePlaying.Data;
 
 namespace RolePlaying
@@ -38,7 +42,7 @@ namespace RolePlaying
             set { players = value; }
         }
 
-        
+
 
         /// <summary>
         /// Add a new player to the party.
@@ -144,7 +148,7 @@ namespace RolePlaying
 
             // search for an existing entry
             ContentEntry<Gear> existingEntry = inventory.Find(
-                delegate(ContentEntry<Gear> entry)
+                delegate (ContentEntry<Gear> entry)
                 {
                     return (entry.Content == gear);
                 });
@@ -186,7 +190,7 @@ namespace RolePlaying
 
             // search for an existing entry
             ContentEntry<Gear> existingEntry = inventory.Find(
-                delegate(ContentEntry<Gear> entry)
+                delegate (ContentEntry<Gear> entry)
                 {
                     return (entry.Content == gear);
                 });
@@ -229,7 +233,7 @@ namespace RolePlaying
 
 
 
-        
+
         /// <summary>
         /// The name and kill-count of monsters killed in the active quest.
         /// </summary>
@@ -273,7 +277,7 @@ namespace RolePlaying
         /// <summary>
         /// Creates a new Party object from the game-start description.
         /// </summary>
-        public Party(GameStartDescription gameStartDescription, 
+        public Party(GameStartDescription gameStartDescription,
             ContentManager contentManager)
         {
             // check the parameters
@@ -289,9 +293,14 @@ namespace RolePlaying
             // load the players
             foreach (string contentName in gameStartDescription.PlayerContentNames)
             {
-                JoinParty(contentManager.Load<Player>(
+                // load the player and add it to the party
+                /* TODO var player = contentManager.Load<Player>(
                     Path.Combine(@"Characters\Players", contentName)).Clone()
-                    as Player);
+                    as Player;*/
+
+                var player = Player.Load(Path.Combine(@"Characters\Players", contentName), contentManager);
+
+                JoinParty(player);
             }
         }
 
@@ -314,16 +323,24 @@ namespace RolePlaying
             // load the players
             foreach (PlayerSaveData playerData in partyData.players)
             {
-                Player player = 
-                    contentManager.Load<Player>(playerData.assetName).Clone() as Player;
+                /*Player player = 
+                    contentManager.Load<Player>(playerData.assetName).Clone() as Player;*/
+
+                var player = Player.Load(playerData.assetName, contentManager);
+
                 player.CharacterLevel = playerData.characterLevel;
                 player.Experience = playerData.experience;
                 player.EquippedEquipment.Clear();
                 foreach (string equipmentAssetName in playerData.equipmentAssetNames)
                 {
-                    player.Equip(contentManager.Load<Equipment>(equipmentAssetName));
+                    // TODO var equipment = contentManager.Load<Equipment>(equipmentAssetName);
+
+                    var equipment = Equipment.Load(equipmentAssetName);
+
+                    player.Equip(equipment);
                 }
                 player.StatisticsModifiers = playerData.statisticsModifiers;
+
                 JoinParty(player);
             }
 
@@ -344,9 +361,7 @@ namespace RolePlaying
             {
                 monsterKills.Add(partyData.monsterKillNames[i],
                     partyData.monsterKillCounts[i]);
-            }            
+            }
         }
-
-
     }
 }

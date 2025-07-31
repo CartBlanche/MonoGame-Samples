@@ -70,7 +70,7 @@ namespace RolePlaying
             selectedQuantity = 1;
         }
 
-        
+
 
 
 
@@ -165,7 +165,7 @@ namespace RolePlaying
             ResetQuantities();
         }
 
-        
+
         /// <summary>
         /// Load the graphics content from the content manager.
         /// </summary>
@@ -189,7 +189,7 @@ namespace RolePlaying
         /// <summary>
         /// Respond to the triggering of the Select action.
         /// </summary>
-        protected override void SelectTriggered(ContentEntry<Gear> entry) 
+        protected override void SelectTriggered(ContentEntry<Gear> entry)
         {
             // check the parameter
             if ((entry == null) || (entry.Content == null))
@@ -215,7 +215,7 @@ namespace RolePlaying
         /// <summary>
         /// Switch to the previous store category.
         /// </summary>
-        protected override void PageScreenLeft() 
+        protected override void PageScreenLeft()
         {
             isItems = !isItems;
             ResetTriggerText();
@@ -226,7 +226,7 @@ namespace RolePlaying
         /// <summary>
         /// Switch to the next store category.
         /// </summary>
-        protected override void PageScreenRight() 
+        protected override void PageScreenRight()
         {
             isItems = !isItems;
             ResetTriggerText();
@@ -240,7 +240,7 @@ namespace RolePlaying
         /// </summary>
         protected override void ResetTriggerText()
         {
-            leftTriggerText = rightTriggerText = isItems ? "Equipment" : "Items";
+            leftTriggerText = rightTriggerText = isItems ? "Equipment" : "Inventory";
         }
 
 
@@ -267,14 +267,14 @@ namespace RolePlaying
             Vector2 drawPosition = position;
 
             // draw the icon
-            spriteBatch.Draw(entry.Content.IconTexture, drawPosition + iconOffset, 
+            spriteBatch.Draw(entry.Content.IconTexture, drawPosition + iconOffset,
                 Color.White);
 
             // draw the name
             Color color = isSelected ? Fonts.HighlightColor : Fonts.DisplayColor;
             drawPosition.Y += listLineSpacing / 4;
             drawPosition.X += nameColumnInterval;
-            spriteBatch.DrawString(Fonts.GearInfoFont, entry.Content.Name, 
+            spriteBatch.DrawString(Fonts.GearInfoFont, entry.Content.Name,
                 drawPosition, color);
 
             // draw the power
@@ -329,7 +329,7 @@ namespace RolePlaying
             }
             else
             {
-                priceText = ((int)Math.Ceiling(entry.Content.GoldValue * 
+                priceText = ((int)Math.Ceiling(entry.Content.GoldValue *
                     store.SellMultiplier)).ToString();
             }
             spriteBatch.DrawString(Fonts.GearInfoFont, priceText,

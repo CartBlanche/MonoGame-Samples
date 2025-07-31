@@ -261,7 +261,7 @@ namespace RolePlaying.Data
         /// </param>
         /// <param name="maximumLines">The maximum number of lines to draw.</param>
         public virtual void DrawDescription(SpriteBatch spriteBatch,
-            SpriteFont spriteFont, Color color, Vector2 position, 
+            SpriteFont spriteFont, Color color, Vector2 position,
             int maximumCharactersPerLine, int maximumLines)
         {
             // check the parameters
@@ -314,14 +314,9 @@ namespace RolePlaying.Data
             }
 
             // draw the string
-            spriteBatch.DrawString(spriteFont, stringBuilder.ToString(), 
+            spriteBatch.DrawString(spriteFont, stringBuilder.ToString(),
                 position, color);
         }
-
-
-
-
-
 
         /// <summary>
         /// Reads a Gear object from the content pipeline.
@@ -355,7 +350,5 @@ namespace RolePlaying.Data
                 return gear;
             }
         }
-
-
     }
 }
