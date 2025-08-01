@@ -623,11 +623,6 @@ namespace RolePlaying.Data
             set { storeEntries = value; }
         }
 
-
-
-
-
-
         public object Clone()
         {
             Map map = new Map();
@@ -675,11 +670,12 @@ namespace RolePlaying.Data
             return map;
         }
 
-        public static Map Load(string mapContentName, ContentManager content)
+        public static Map Load(string mapContentName, ContentManager contentManager)
         {
             var asset = XmlHelper.GetAssetElementFromXML(mapContentName);
             var map = new Map
             {
+                AssetName = mapContentName,
                 Name = asset.Element("Name").Value,
                 MapDimensions = new Point(
                     int.Parse(asset.Element("MapDimensions").Value.Split(' ')[0]),
@@ -691,10 +687,10 @@ namespace RolePlaying.Data
                     int.Parse(asset.Element("SpawnMapPosition").Value.Split(' ')[0]),
                     int.Parse(asset.Element("SpawnMapPosition").Value.Split(' ')[1])), // e.g. [9, 7]
                 TextureName = (string)asset.Element("TextureName"),
-                Texture = content.Load<Texture2D>(
+                Texture = contentManager.Load<Texture2D>(
                     Path.Combine(@"Textures\Maps\NonCombat", (string)asset.Element("TextureName"))),
                 CombatTextureName = (string)asset.Element("CombatTextureName"),
-                CombatTexture = content.Load<Texture2D>(
+                CombatTexture = contentManager.Load<Texture2D>(
                     Path.Combine(@"Textures\Maps\Combat", (string)asset.Element("CombatTextureName"))),
                 MusicCueName = (string)asset.Element("MusicCueName"),
                 CombatMusicCueName = (string)asset.Element("CombatMusicCueName"),
@@ -725,62 +721,179 @@ namespace RolePlaying.Data
                         DestinationMapPortalName = (string)item.Element("DestinationMapPortalName")
                     }).ToList(),
                 PortalEntries = asset.Element("PortalEntries")?.Elements("Item")
-                    .Select(item => new MapEntry<Portal>
+                    .Select(item =>
                     {
-                        ContentName = (string)item.Element("ContentName"),
-                        MapPosition = new Point(
+                        var contentName = (string)item.Element("ContentName");
+                        var direction = Enum.TryParse<Direction>((string)item.Element("Direction"), out var dir) ? dir : default;
+                        var mapPosition = new Point(
                             int.Parse(item.Element("MapPosition").Value.Split(' ')[0]),
-                            int.Parse(item.Element("MapPosition").Value.Split(' ')[1]))
+                            int.Parse(item.Element("MapPosition").Value.Split(' ')[1]));
+
+                        // Load the QuestNpc asset XML using contentName
+                        var portalItem = asset.Element("Portals")?.Elements("Item").FirstOrDefault(p => (string)p.Element("Name") == contentName);
+
+                        var portal = new Portal
+						{
+                            Name = (string)portalItem.Element("Name"),
+							LandingMapPosition = new Point(
+							    int.Parse(portalItem.Element("LandingMapPosition").Value.Split(' ')[0]),
+							    int.Parse(portalItem.Element("LandingMapPosition").Value.Split(' ')[1])),
+							DestinationMapContentName = (string)portalItem.Element("DestinationMapContentName"),
+							DestinationMapPortalName = (string)portalItem.Element("DestinationMapPortalName")
+						};
+
+                        return new MapEntry<Portal>
+                        {
+                            ContentName = contentName,
+                            Content = portal,
+                            Direction = direction,
+                            MapPosition = mapPosition
+                        };
                     }).ToList(),
                 ChestEntries = asset.Element("ChestEntries")?.Elements("Item")
-                    .Select(item => new MapEntry<Chest>
-                    {
-                        ContentName = (string)item.Element("ContentName"),
-                        MapPosition = new Point(
-                            int.Parse(item.Element("MapPosition").Value.Split(' ')[0]),
-                            int.Parse(item.Element("MapPosition").Value.Split(' ')[1]))
-                    }).ToList(),
+                    .Select(item => {
+						var contentName = (string)item.Element("ContentName");
+						var direction = Enum.TryParse<Direction>((string)item.Element("Direction"), out var dir) ? dir : default;
+						var mapPosition = new Point(
+							int.Parse(item.Element("MapPosition").Value.Split(' ')[0]),
+							int.Parse(item.Element("MapPosition").Value.Split(' ')[1]));
+
+						// Load the QuestNpc asset XML using contentName
+						var chestAsset = XmlHelper.GetAssetElementFromXML(Path.Combine(@"Maps/Chests", contentName));
+						var chest = new Chest
+						{
+							Name = (string)chestAsset.Element("Name"),
+                            Gold = (int)chestAsset.Element("Gold"),
+							Entries = chestAsset.Element("Entries")?.Elements("Item").Select(chestItem => {
+								var contentName = (string)chestItem.Element("ContentName");
+								var gearAsset = XmlHelper.GetAssetElementFromXML(Path.Combine(@"Gear", contentName));
+								var gear = new Equipment
+								{
+                                    AssetName = contentName,
+									Name = (string)gearAsset.Element("Name"),
+									Description = (string)gearAsset.Element("Description"),
+									GoldValue = (int?)gearAsset.Element("GoldValue") ?? 0,
+									IconTextureName = (string)gearAsset.Element("IconTextureName"),
+									IconTexture = contentManager.Load<Texture2D>(
+										Path.Combine(@"Textures\Gear", (string)gearAsset.Element("IconTextureName"))),
+									// Add other properties as needed
+								};
+
+								return new ContentEntry<Gear>
+								{
+									ContentName = contentName,
+									Content = gear,
+									Count = (int?)chestItem.Element("Count") ?? 1,
+								};
+							}).ToList(),
+							TextureName = (string)chestAsset.Element("TextureName"),
+							Texture = contentManager.Load<Texture2D>(
+					            Path.Combine(@"Textures\Chests", (string)chestAsset.Element("TextureName"))),
+						};
+
+						return new MapEntry<Chest>
+						{
+							ContentName = contentName,
+							Content = chest,
+							Direction = direction,
+							MapPosition = mapPosition
+						};
+					}).ToList(),
                 FixedCombatEntries = asset.Element("FixedCombatEntries")?.Elements("Item")
-                    .Select(item => new MapEntry<FixedCombat>
-                    {
-                        ContentName = (string)item.Element("ContentName"),
-                        MapPosition = new Point(
-                            int.Parse(item.Element("MapPosition").Value.Split(' ')[0]),
-                            int.Parse(item.Element("MapPosition").Value.Split(' ')[1]))
-                    }).ToList(),
+                    .Select(item => {
+						var contentName = (string)item.Element("ContentName");
+						var direction = Enum.TryParse<Direction>((string)item.Element("Direction"), out var dir) ? dir : default;
+						var mapPosition = new Point(
+							int.Parse(item.Element("MapPosition").Value.Split(' ')[0]),
+							int.Parse(item.Element("MapPosition").Value.Split(' ')[1]));
+
+						// Load the fixed combat asset XML using contentName
+                        var fixedCombat = FixedCombat.Load(Path.Combine(@"Maps/FixedCombats", contentName), contentManager);
+
+						return new MapEntry<FixedCombat>
+                        {
+                            ContentName = contentName,
+                            Content = fixedCombat,
+                            Direction = direction,
+                            MapPosition = mapPosition
+                        };
+					}).ToList(),
                 PlayerNpcEntries = asset.Element("PlayerNpcEntries")?.Elements("Item")
-                    .Select(item => new MapEntry<Player>
-                    {
-                        ContentName = (string)item.Element("ContentName"),
-                        MapPosition = new Point(
-                            int.Parse(item.Element("MapPosition").Value.Split(' ')[0]),
-                            int.Parse(item.Element("MapPosition").Value.Split(' ')[1]))
-                    }).ToList(),
+                    .Select(item => {
+						var contentName = (string)item.Element("ContentName");
+						var direction = Enum.TryParse<Direction>((string)item.Element("Direction"), out var dir) ? dir : default;
+						var mapPosition = new Point(
+							int.Parse(item.Element("MapPosition").Value.Split(' ')[0]),
+							int.Parse(item.Element("MapPosition").Value.Split(' ')[1]));
+
+						// Load the PlayerNpc asset XML using contentName
+                        var playerNpc = Player.Load(Path.Combine(@"Characters/Players", contentName), contentManager);
+
+                        return new MapEntry<Player>
+                        {
+                            ContentName = contentName,
+                            Content = playerNpc,
+                            Direction = direction,
+                            MapPosition = mapPosition
+                        };
+					}).ToList(),
                 QuestNpcEntries = asset.Element("QuestNpcEntries")?.Elements("Item")
-                    .Select(item => new MapEntry<QuestNpc>
-                    {
-                        ContentName = (string)item.Element("ContentName"),
-                        Direction = Enum.TryParse<Direction>((string)item.Element("Direction"), out var dir) ? dir : default,
-                        MapPosition = new Point(
-                            int.Parse(item.Element("MapPosition").Value.Split(' ')[0]),
-                            int.Parse(item.Element("MapPosition").Value.Split(' ')[1]))
-                    }).ToList(),
+                    .Select(item => {
+						var contentName = (string)item.Element("ContentName");
+						var direction = Enum.TryParse<Direction>((string)item.Element("Direction"), out var dir) ? dir : default;
+						var mapPosition = new Point(
+							int.Parse(item.Element("MapPosition").Value.Split(' ')[0]),
+							int.Parse(item.Element("MapPosition").Value.Split(' ')[1]));
+
+						// Load the QuestNpc asset XML using contentName
+                        var questNpc = QuestNpc.Load(Path.Combine(@"Characters/QuestNPCs", contentName), contentManager);
+                        
+						return new MapEntry<QuestNpc>
+                        {
+                            ContentName = contentName,
+                            Content = questNpc,
+                            Direction = direction,
+                            MapPosition = mapPosition
+                        };
+					}).ToList(),
                 InnEntries = asset.Element("InnEntries")?.Elements("Item")
-                    .Select(item => new MapEntry<Inn>
-                    {
-                        ContentName = (string)item.Element("ContentName"),
-                        MapPosition = new Point(
-                            int.Parse(item.Element("MapPosition").Value.Split(' ')[0]),
-                            int.Parse(item.Element("MapPosition").Value.Split(' ')[1]))
-                    }).ToList(),
+                    .Select(item => {
+						var contentName = (string)item.Element("ContentName");
+						var direction = Enum.TryParse<Direction>((string)item.Element("Direction"), out var dir) ? dir : default;
+						var mapPosition = new Point(
+							int.Parse(item.Element("MapPosition").Value.Split(' ')[0]),
+							int.Parse(item.Element("MapPosition").Value.Split(' ')[1]));
+
+						// Load the Inn asset XML using contentName
+                        var inn = Inn.Load(Path.Combine(@"Maps/Inns", contentName), contentManager);
+
+						return new MapEntry<Inn>
+                        {
+                            ContentName = contentName,
+                            Content = inn,
+                            Direction = direction,
+                            MapPosition = mapPosition
+                        };
+					}).ToList(),
                 StoreEntries = asset.Element("StoreEntries")?.Elements("Item")
-                    .Select(item => new MapEntry<Store>
-                    {
-                        ContentName = (string)item.Element("ContentName"),
-                        MapPosition = new Point(
-                            int.Parse(item.Element("MapPosition").Value.Split(' ')[0]),
-                            int.Parse(item.Element("MapPosition").Value.Split(' ')[1]))
-                    }).ToList(),
+                    .Select(item => {
+						var contentName = (string)item.Element("ContentName");
+						var direction = Enum.TryParse<Direction>((string)item.Element("Direction"), out var dir) ? dir : default;
+						var mapPosition = new Point(
+							int.Parse(item.Element("MapPosition").Value.Split(' ')[0]),
+							int.Parse(item.Element("MapPosition").Value.Split(' ')[1]));
+
+						// Load the Store asset XML using contentName
+                        var store = Store.Load(Path.Combine(@"Maps/Stores", contentName), contentManager);
+
+						return new MapEntry<Store>
+                        {
+                            ContentName = contentName,
+                            Content = store,
+                            Direction = direction,
+                            MapPosition = mapPosition
+                        };
+					}).ToList(),
             };
 
             var randomCombatElement = asset.Element("RandomCombat");

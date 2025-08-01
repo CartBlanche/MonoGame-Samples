@@ -19,10 +19,10 @@
       <MapIdleAnimationInterval>180</MapIdleAnimationInterval>
       <CharacterClassContentName>Warrior</CharacterClassContentName>
       <CharacterLevel>2</CharacterLevel>
-	  <InitialEquipmentContentNames>
-		  <Item>Weapons\Dagger</Item>
-		  <Item>Armor\HideArmor</Item>
-	  </InitialEquipmentContentNames>
+	    <InitialEquipmentContentNames>
+		    <Item>Weapons\Dagger</Item>
+		    <Item>Armor\HideArmor</Item>
+	    </InitialEquipmentContentNames>
       <Inventory />
       <CombatSprite>
           <TextureName>Characters\Warrior1AttackRight</TextureName>

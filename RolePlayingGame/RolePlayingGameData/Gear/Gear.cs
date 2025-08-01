@@ -221,6 +221,7 @@ namespace RolePlaying.Data
         public Texture2D IconTexture
         {
             get { return iconTexture; }
+            set { iconTexture = value; }
         }
 
 

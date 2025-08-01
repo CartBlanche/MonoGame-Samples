@@ -304,12 +304,14 @@ namespace RolePlaying.Data
             return player;
         }
 
-        public static Player Load(string playerPath, ContentManager contentManager)
+        public static Player Load(string contentName, ContentManager contentManager)
         {
-            var asset = XmlHelper.GetAssetElementFromXML(playerPath);
-
-            var player = new Player
+            var asset = XmlHelper.GetAssetElementFromXML(contentName);
+            
+			// Create a new Player instance and populate it with data from the XML asset
+			var player = new Player
             {
+                AssetName = contentName,
                 Name = (string)asset.Element("Name"),
                 MapSprite = new AnimatingSprite
                 {
@@ -382,6 +384,14 @@ namespace RolePlaying.Data
 
             // load the character class
             player.CharacterClass = CharacterClass.Load(Path.Combine("CharacterClasses", player.CharacterClassContentName));
+
+            player.AddStandardCharacterCombatAnimations();
+            player.AddStandardCharacterIdleAnimations();
+            player.AddStandardCharacterWalkingAnimations();
+            
+            player.ResetAnimation(false);
+
+            // TODO Looks like player is floating. Offset issue.player.ShadowTexture = contentManager.Load<Texture2D>(@"Textures\Characters\CharacterShadow");
 
             return player;
         }

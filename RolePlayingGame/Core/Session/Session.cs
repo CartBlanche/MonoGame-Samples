@@ -72,10 +72,10 @@ namespace RolePlaying
             }
 
             // load the map
-            ContentManager content = singleton.screenManager.Game.Content;
+            ContentManager contentManager = singleton.screenManager.Game.Content;
 
-            //Map map = content.Load<Map>(mapContentName).Clone() as Map;
-            var map = Map.Load(mapContentName, content);
+            //TODO Map map = content.Load<Map>(mapContentName).Clone() as Map;
+            var map = Map.Load(mapContentName, contentManager);
 
             // modify the map based on the world changes (removed chests, etc.).
             singleton.ModifyMap(map);

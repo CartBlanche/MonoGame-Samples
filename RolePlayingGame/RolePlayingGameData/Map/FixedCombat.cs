@@ -8,6 +8,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using Microsoft.Xna.Framework.Content;
 
 namespace RolePlaying.Data
@@ -29,6 +30,35 @@ namespace RolePlaying.Data
         {
             get { return entries; }
             set { entries = value; }
+        }
+
+        internal static FixedCombat Load(string contentName, ContentManager contentManager)
+        {
+            var asset = XmlHelper.GetAssetElementFromXML(contentName);
+
+            // Create a new FixedCombat instance and populate it with data from the XML asset
+            var fixedCombat = new FixedCombat()
+            {
+                AssetName = contentName,
+                Name = (string)asset.Element("Name"),
+                Entries = asset.Element("Entries")?.Elements("Item")
+                    .Select(entry =>
+                    {
+                        var monsterContentName = (string)entry.Element("ContentName");
+                        var monsterCount = (int?)entry.Element("Count") ?? 1;
+
+                        var monster = Monster.Load(Path.Combine(@"Characters\Monsters", monsterContentName), contentManager);
+
+                        return new ContentEntry<Monster>
+                        {
+                            ContentName = monsterContentName,
+                            Count = monsterCount,
+                            Content = monster
+                        };
+                    }).ToList(),
+            };
+
+            return fixedCombat;
         }
 
 

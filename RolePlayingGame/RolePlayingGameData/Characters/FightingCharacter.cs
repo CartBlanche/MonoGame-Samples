@@ -627,7 +627,7 @@ namespace RolePlaying.Data
         /// <summary>
         /// Add the standard character walk animations to this character.
         /// </summary>
-        private void AddStandardCharacterCombatAnimations()
+        internal void AddStandardCharacterCombatAnimations()
         {
             if (combatSprite != null)
             {

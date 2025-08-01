@@ -7,8 +7,11 @@
 
 using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace RolePlaying.Data
 {
@@ -88,6 +91,64 @@ namespace RolePlaying.Data
             }
 
             return gearRewards;
+        }
+
+        internal static Monster Load(string monsterContentName, ContentManager contentManager)
+        {
+            var asset = XmlHelper.GetAssetElementFromXML(monsterContentName);
+            var monster = new Monster
+            {
+                AssetName = monsterContentName,
+                Name = (string)asset.Element("Name"),
+                CharacterClassContentName = (string)asset.Element("CharacterClassContentName"),
+                CharacterLevel = (int)asset.Element("CharacterLevel"),
+                InitialEquipmentContentNames = asset.Element("InitialEquipmentContentNames")
+                    .Elements("Item").Select(x => (string)x).ToList(),
+                CombatSprite = new AnimatingSprite
+                {
+                    TextureName = (string)asset.Element("CombatSprite").Element("TextureName"),
+                    Texture = contentManager.Load<Texture2D>(
+                        Path.Combine(@"Textures\", (string)asset.Element("CombatSprite").Element("TextureName"))),
+                    FrameDimensions = new Point(
+                        int.Parse(asset.Element("CombatSprite").Element("FrameDimensions").Value.Split(' ')[0]),
+                        int.Parse(asset.Element("CombatSprite").Element("FrameDimensions").Value.Split(' ')[1])),
+                    FramesPerRow = (int)asset.Element("CombatSprite").Element("FramesPerRow"),
+                    SourceOffset = new Vector2(
+                        int.Parse(asset.Element("CombatSprite").Element("SourceOffset").Value.Split(' ')[0]),
+                        int.Parse(asset.Element("CombatSprite").Element("SourceOffset").Value.Split(' ')[1])),
+                    // Handle Animations if needed
+                },
+                MapSprite = new AnimatingSprite
+                {
+                    TextureName = (string)asset.Element("MapSprite").Element("TextureName"),
+                    Texture = contentManager.Load<Texture2D>(
+                        Path.Combine(@"Textures\", (string)asset.Element("MapSprite").Element("TextureName"))),
+                    FrameDimensions = new Point(
+                        int.Parse(asset.Element("MapSprite").Element("FrameDimensions").Value.Split(' ')[0]),
+                        int.Parse(asset.Element("MapSprite").Element("FrameDimensions").Value.Split(' ')[1])),
+                    FramesPerRow = (int)asset.Element("MapSprite").Element("FramesPerRow"),
+                    SourceOffset = new Vector2(
+                        int.Parse(asset.Element("MapSprite").Element("SourceOffset").Value.Split(' ')[0]),
+                        int.Parse(asset.Element("MapSprite").Element("SourceOffset").Value.Split(' ')[1])),
+                    // Handle Animations if needed
+                },
+                GearDrops = asset.Element("GearDrops")?.Elements("Item")
+                    .Select(item => new GearDrop
+                    {
+                        GearName = (string)item.Element("GearName"),
+                        DropPercentage = (int)item.Element("DropPercentage")
+                    }).ToList()
+            };
+
+            monster.CharacterClass = CharacterClass.Load(Path.Combine("CharacterClasses", monster.CharacterClassContentName));
+
+            monster.AddStandardCharacterCombatAnimations();
+            monster.AddStandardCharacterIdleAnimations();
+            monster.AddStandardCharacterWalkingAnimations();
+
+            monster.ResetAnimation(false);
+
+            return monster;
         }
 
 

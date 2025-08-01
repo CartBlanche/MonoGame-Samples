@@ -297,15 +297,18 @@ namespace RolePlaying
 
             // Draw the background
             spriteBatch.Draw(backgroundTexture, backgroundPosition, Color.White);
+
             // Draw the wooden plank
             spriteBatch.Draw(plankTexture, plankPosition, Color.White);
+
             // Draw the select icon
             spriteBatch.Draw(selectIconTexture, selectIconPosition, Color.White);
+
             // Draw the back icon
             spriteBatch.Draw(backIconTexture, backIconPosition, Color.White);
+
             // Draw the inn name on the wooden plank
-            spriteBatch.DrawString(Fonts.HeaderFont, inn.Name, namePosition,
-                Fonts.DisplayColor);
+            spriteBatch.DrawString(Fonts.HeaderFont, inn.Name, namePosition, Fonts.DisplayColor, MathHelper.ToRadians(-3.0f), Vector2.Zero, 1.0f, SpriteEffects.None, 0f);
 
             // Draw the stay and leave option texts based on the current selection
             if (selectionMark == 1)
@@ -323,7 +326,7 @@ namespace RolePlaying
                 spriteBatch.Draw(arrowTexture, leaveArrowPosition, Color.White);
                 spriteBatch.DrawString(Fonts.GearInfoFont, stayString, stayPosition,
                     Fonts.DisplayColor);
-                spriteBatch.DrawString(Fonts.GearInfoFont, leaveString, leavePosition, 
+                spriteBatch.DrawString(Fonts.GearInfoFont, leaveString, leavePosition,
                     Fonts.HighlightColor);
             }
             // Draw the amount of gold

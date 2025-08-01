@@ -7,6 +7,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 
@@ -114,12 +115,37 @@ namespace RolePlaying.Data
         public Texture2D ShopkeeperTexture
         {
             get { return shopkeeperTexture; }
+            set { shopkeeperTexture = value; }
         }
 
+        internal static Store Load(string contentName, ContentManager contentManager)
+        {
+            var asset = XmlHelper.GetAssetElementFromXML(contentName);
+            var store = new Store
+            {
+                AssetName = contentName,
+                Name = asset.Element("Name").Value,
+                BuyMultiplier = float.Parse(asset.Element("BuyMultiplier").Value),
+                SellMultiplier = float.Parse(asset.Element("SellMultiplier").Value),
+                WelcomeMessage = asset.Element("WelcomeMessage").Value,
+                ShopkeeperTextureName = asset.Element("ShopkeeperTextureName").Value,
+                ShopkeeperTexture = contentManager.Load<Texture2D>(
+                    System.IO.Path.Combine(@"Textures\Characters\Portraits",
+                    asset.Element("ShopkeeperTextureName").Value)),
+                StoreCategories = asset.Element("StoreCategories")
+                    .Elements("StoreCategory")
+                    .Select(storeCategory => new StoreCategory
+                    {
+                        Name = storeCategory.Element("Name").Value,
+                        AvailableContentNames = storeCategory.Element("AvailableContentNames")
+                            .Elements("ContentName")
+                            .Select(contentNameElement => contentNameElement.Value)
+                            .ToList(),
+                    }).ToList(),
+            };
 
-
-
-
+            return store;
+        }
 
         /// <summary>
         /// Reads an Store object from the content pipeline.
@@ -142,13 +168,11 @@ namespace RolePlaying.Data
                 store.WelcomeMessage = input.ReadString();
                 store.ShopkeeperTextureName = input.ReadString();
                 store.shopkeeperTexture = input.ContentManager.Load<Texture2D>(
-                    System.IO.Path.Combine(@"Textures\Characters\Portraits", 
+                    System.IO.Path.Combine(@"Textures\Characters\Portraits",
                     store.ShopkeeperTextureName));
 
                 return store;
             }
         }
-
-
     }
 }

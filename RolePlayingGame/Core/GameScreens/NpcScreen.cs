@@ -23,9 +23,6 @@ namespace RolePlaying
         protected MapEntry<T> mapEntry = null;
         protected Character character = null;
 
-
-
-
         /// <summary>
         /// Create a new NpcScreen object.
         /// </summary>

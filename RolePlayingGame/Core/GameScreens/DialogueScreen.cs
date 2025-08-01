@@ -18,8 +18,6 @@ namespace RolePlaying
     /// </summary>
     class DialogueScreen : GameScreen
     {
-
-
         private Texture2D backgroundTexture;
         private Vector2 backgroundPosition;
         private Texture2D fadeTexture;
@@ -42,11 +40,6 @@ namespace RolePlaying
         private Vector2 titlePosition;
         private Vector2 dialogueStartPosition;
 
-
-
-
-
-
         /// <summary>
         /// The title text shown at the top of the screen.
         /// </summary>
@@ -60,7 +53,6 @@ namespace RolePlaying
             get { return titleText; }
             set { titleText = value; }
         }
-
 
         /// <summary>
         /// The dialogue shown in the main portion of this dialog.
@@ -96,7 +88,7 @@ namespace RolePlaying
                 }
                 else
                 {
-                    dialogueList = Fonts.BreakTextIntoList(dialogueText, 
+                    dialogueList = Fonts.BreakTextIntoList(dialogueText,
                         Fonts.DescriptionFont, maxWidth);
                 }
                 // set which lines ar edrawn
@@ -116,7 +108,6 @@ namespace RolePlaying
             }
         }
 
-
         /// <summary>
         /// The text shown next to the A button, if any.
         /// </summary>
@@ -128,7 +119,7 @@ namespace RolePlaying
         public string SelectText
         {
             get { return selectText; }
-            set 
+            set
             {
                 if (selectText != value)
                 {
@@ -142,7 +133,6 @@ namespace RolePlaying
                 }
             }
         }
-
 
         /// <summary>
         /// The text shown next to the B button, if any.
@@ -158,34 +148,25 @@ namespace RolePlaying
             set { backText = value; }
         }
 
-
         /// <summary>
         /// Maximum width of each line in pixels
         /// </summary>
         private const int maxWidth = 705;
-
 
         /// <summary>
         /// Starting index of the list to be displayed
         /// </summary>
         private int startIndex = 0;
 
-
         /// <summary>
         /// Ending index of the list to be displayed
         /// </summary>
         private int endIndex = drawMaxLines;
 
-
         /// <summary>
         /// Maximum number of lines to draw in the screen
         /// </summary>
         private const int drawMaxLines = 13;
-
-
-
-
-
 
         /// <summary>
         /// Construct a new DialogueScreen object.
@@ -195,7 +176,6 @@ namespace RolePlaying
         {
             this.IsPopup = true;
         }
-
 
         /// <summary>
         /// Load the graphics content
@@ -248,11 +228,6 @@ namespace RolePlaying
             titlePosition.Y = backgroundPosition.Y + 70f;
         }
 
-
-
-
-
-
         /// <summary>
         /// Handles user input to the dialog.
         /// </summary>
@@ -285,11 +260,6 @@ namespace RolePlaying
                 }
             }
         }
-
-
-
-
-
 
         /// <summary>
         /// draws the dialog.
@@ -349,7 +319,5 @@ namespace RolePlaying
 
             spriteBatch.End();
         }
-
-
     }
 }

@@ -113,6 +113,7 @@ namespace RolePlaying.Data
         public Texture2D ShopkeeperTexture
         {
             get { return shopkeeperTexture; }
+            set { shopkeeperTexture = value; }
         }
 
 
@@ -148,6 +149,23 @@ namespace RolePlaying.Data
             }
         }
 
-
+        internal static Inn Load(string contentName, ContentManager contentManager)
+        {
+            var asset = XmlHelper.GetAssetElementFromXML(contentName);
+            var inn = new Inn
+            {
+                AssetName = contentName,
+                Name = asset.Element("Name").Value,
+                ChargePerPlayer = int.Parse(asset.Element("ChargePerPlayer").Value),
+                WelcomeMessage = asset.Element("WelcomeMessage").Value,
+                PaidMessage = asset.Element("PaidMessage").Value,
+                NotEnoughGoldMessage = asset.Element("NotEnoughGoldMessage").Value,
+                ShopkeeperTextureName = asset.Element("ShopkeeperTextureName").Value,
+                ShopkeeperTexture = contentManager.Load<Texture2D>(
+                    System.IO.Path.Combine(@"Textures\Characters\Portraits",
+                    asset.Element("ShopkeeperTextureName").Value)),
+            };
+            return inn;
+        }
     }
 }

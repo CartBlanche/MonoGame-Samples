@@ -111,32 +111,32 @@
       </CollisionLayer>
       <Portals>
           <Item>
-			  <Name>P1</Name>
-			  <LandingMapPosition>8 20</LandingMapPosition>
+			        <Name>P1</Name>
+			        <LandingMapPosition>8 20</LandingMapPosition>
               <DestinationMapContentName>Map002</DestinationMapContentName>
               <DestinationMapPortalName>P1</DestinationMapPortalName>
           </Item>
           <Item>
-			  <Name>P2</Name>
-			  <LandingMapPosition>9 20</LandingMapPosition>
+			        <Name>P2</Name>
+			        <LandingMapPosition>9 20</LandingMapPosition>
               <DestinationMapContentName>Map002</DestinationMapContentName>
               <DestinationMapPortalName>P3</DestinationMapPortalName>
           </Item>
           <Item>
-			  <Name>P3</Name>
-			  <LandingMapPosition>10 20</LandingMapPosition>
+			        <Name>P3</Name>
+			        <LandingMapPosition>10 20</LandingMapPosition>
               <DestinationMapContentName>Map002</DestinationMapContentName>
               <DestinationMapPortalName>P4</DestinationMapPortalName>
           </Item>
           <Item>
-			  <Name>P4</Name>
-			  <LandingMapPosition>11 20</LandingMapPosition>
+			        <Name>P4</Name>
+			        <LandingMapPosition>11 20</LandingMapPosition>
               <DestinationMapContentName>Map002</DestinationMapContentName>
               <DestinationMapPortalName>P5</DestinationMapPortalName>
           </Item>
           <Item>
-			  <Name>P5</Name>
-			  <LandingMapPosition>11 3</LandingMapPosition>
+			        <Name>P5</Name>
+			        <LandingMapPosition>11 3</LandingMapPosition>
               <DestinationMapContentName>Map001</DestinationMapContentName>
               <DestinationMapPortalName>P1</DestinationMapPortalName>
           </Item>

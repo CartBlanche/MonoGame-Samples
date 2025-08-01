@@ -19,52 +19,8 @@ namespace RolePlaying.Data
 #if !XBOX
     [DebuggerDisplay("Name = {name}")]
 #endif
-    public abstract class Character : WorldObject
+    public abstract partial class Character : WorldObject
     {
-
-
-        /// <summary>
-        /// The state of a character.
-        /// </summary>
-        public enum CharacterState
-        {
-            /// <summary>
-            /// Ready to perform an action, and playing the idle animation
-            /// </summary>
-            Idle,
-
-            /// <summary>
-            /// Walking in the world.
-            /// </summary>
-            Walking,
-
-            /// <summary>
-            /// In defense mode
-            /// </summary>
-            Defending,
-
-            /// <summary>
-            /// Performing Dodge Animation
-            /// </summary>
-            Dodging,
-
-            /// <summary>
-            /// Performing Hit Animation
-            /// </summary>
-            Hit,
-
-            /// <summary>
-            /// Dead, but still playing the dying animation.
-            /// </summary>
-            Dying,
-
-            /// <summary>
-            /// Dead, with the dead animation.
-            /// </summary>
-            Dead,
-        }
-
-
         /// <summary>
         /// The state of this character.
         /// </summary>
@@ -88,7 +44,7 @@ namespace RolePlaying.Data
         {
             get
             {
-                return ((State == CharacterState.Dying) || 
+                return ((State == CharacterState.Dying) ||
                     (State == CharacterState.Dead));
             }
         }
@@ -164,7 +120,7 @@ namespace RolePlaying.Data
         /// <remarks>
         /// If this object is null, then the animations are taken from MapSprite.
         /// </remarks>
-        [ContentSerializer(Optional=true)]
+        [ContentSerializer(Optional = true)]
         public AnimatingSprite WalkingSprite
         {
             get { return walkingSprite; }
@@ -232,7 +188,7 @@ namespace RolePlaying.Data
         /// <summary>
         /// The default idle-animation interval for the animating map sprite.
         /// </summary>
-        [ContentSerializer(Optional=true)]
+        [ContentSerializer(Optional = true)]
         public int MapIdleAnimationInterval
         {
             get { return mapIdleAnimationInterval; }
@@ -243,25 +199,25 @@ namespace RolePlaying.Data
         /// <summary>
         /// Add the standard character idle animations to this character.
         /// </summary>
-        private void AddStandardCharacterIdleAnimations()
+        internal void AddStandardCharacterIdleAnimations()
         {
             if (mapSprite != null)
             {
-                mapSprite.AddAnimation(new Animation("IdleSouth", 1, 6, 
+                mapSprite.AddAnimation(new Animation("IdleSouth", 1, 6,
                     MapIdleAnimationInterval, true));
-                mapSprite.AddAnimation(new Animation("IdleSouthwest", 7, 12, 
+                mapSprite.AddAnimation(new Animation("IdleSouthwest", 7, 12,
                     MapIdleAnimationInterval, true));
-                mapSprite.AddAnimation(new Animation("IdleWest", 13, 18, 
+                mapSprite.AddAnimation(new Animation("IdleWest", 13, 18,
                     MapIdleAnimationInterval, true));
-                mapSprite.AddAnimation(new Animation("IdleNorthwest", 19, 24, 
+                mapSprite.AddAnimation(new Animation("IdleNorthwest", 19, 24,
                     MapIdleAnimationInterval, true));
-                mapSprite.AddAnimation(new Animation("IdleNorth", 25, 30, 
+                mapSprite.AddAnimation(new Animation("IdleNorth", 25, 30,
                     MapIdleAnimationInterval, true));
-                mapSprite.AddAnimation(new Animation("IdleNortheast", 31, 36, 
+                mapSprite.AddAnimation(new Animation("IdleNortheast", 31, 36,
                     MapIdleAnimationInterval, true));
-                mapSprite.AddAnimation(new Animation("IdleEast", 37, 42, 
+                mapSprite.AddAnimation(new Animation("IdleEast", 37, 42,
                     MapIdleAnimationInterval, true));
-                mapSprite.AddAnimation(new Animation("IdleSoutheast", 43, 48, 
+                mapSprite.AddAnimation(new Animation("IdleSoutheast", 43, 48,
                     MapIdleAnimationInterval, true));
             }
         }
@@ -286,34 +242,29 @@ namespace RolePlaying.Data
         /// <summary>
         /// Add the standard character walk animations to this character.
         /// </summary>
-        private void AddStandardCharacterWalkingAnimations()
+        internal void AddStandardCharacterWalkingAnimations()
         {
             AnimatingSprite sprite = (walkingSprite == null ? mapSprite : walkingSprite);
             if (sprite != null)
             {
-                sprite.AddAnimation(new Animation("WalkSouth", 1, 6, 
+                sprite.AddAnimation(new Animation("WalkSouth", 1, 6,
                     MapWalkingAnimationInterval, true));
-                sprite.AddAnimation(new Animation("WalkSouthwest", 7, 12, 
+                sprite.AddAnimation(new Animation("WalkSouthwest", 7, 12,
                     MapWalkingAnimationInterval, true));
-                sprite.AddAnimation(new Animation("WalkWest", 13, 18, 
+                sprite.AddAnimation(new Animation("WalkWest", 13, 18,
                     MapWalkingAnimationInterval, true));
                 sprite.AddAnimation(new Animation("WalkNorthwest", 19, 24,
                     MapWalkingAnimationInterval, true));
                 sprite.AddAnimation(new Animation("WalkNorth", 25, 30,
                     MapWalkingAnimationInterval, true));
-                sprite.AddAnimation(new Animation("WalkNortheast", 31, 36, 
+                sprite.AddAnimation(new Animation("WalkNortheast", 31, 36,
                     MapWalkingAnimationInterval, true));
                 sprite.AddAnimation(new Animation("WalkEast", 37, 42,
                     MapWalkingAnimationInterval, true));
-                sprite.AddAnimation(new Animation("WalkSoutheast", 43, 48, 
+                sprite.AddAnimation(new Animation("WalkSoutheast", 43, 48,
                     MapWalkingAnimationInterval, true));
             }
         }
-
-
-
-
-
 
         /// <summary>
         /// Reads a Character object from the content pipeline.
@@ -323,7 +274,7 @@ namespace RolePlaying.Data
             /// <summary>
             /// Reads a Character object from the content pipeline.
             /// </summary>
-            protected override Character Read(ContentReader input, 
+            protected override Character Read(ContentReader input,
                 Character existingInstance)
             {
                 Character character = existingInstance;
@@ -364,7 +315,5 @@ namespace RolePlaying.Data
                 return character;
             }
         }
-
-
     }
 }

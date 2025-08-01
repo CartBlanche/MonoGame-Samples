@@ -645,7 +645,5 @@ namespace RolePlaying
                 spriteBatch.DrawString(Fonts.HeaderFont, titleText, position, Fonts.TitleColor, MathHelper.ToRadians(-3.0f), Vector2.Zero, 1.0f, SpriteEffects.None, 0f);
             }
         }
-
-
     }
 }
