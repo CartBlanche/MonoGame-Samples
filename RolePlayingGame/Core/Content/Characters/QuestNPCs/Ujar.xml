@@ -1,7 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <XnaContent>
   <Asset Type="RolePlaying.Data.QuestNpc">
-      <Name>Ayttas</Name>
+      <Name>Ujar</Name>
+      <Direction>SouthWest</Direction>
       <MapSprite>
           <TextureName>Characters\Villager1IdleRight</TextureName>
           <FrameDimensions>92 120</FrameDimensions>

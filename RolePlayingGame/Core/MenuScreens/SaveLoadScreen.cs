@@ -333,9 +333,7 @@ namespace RolePlaying
             spriteBatch.DrawString(Fonts.ButtonNamesFont, "Back", 
                 backTextPosition, Color.White);
 
-            spriteBatch.DrawString(Fonts.HeaderFont, 
-                (mode == SaveLoadScreenMode.Load ? "Load" : "Save"), 
-                titleTextPosition, Fonts.TitleColor);
+            spriteBatch.DrawString(Fonts.HeaderFont, (mode == SaveLoadScreenMode.Load ? "Load" : "Save"), titleTextPosition, Fonts.TitleColor, MathHelper.ToRadians(-3.0f), Vector2.Zero, 1.0f, SpriteEffects.None, 0f);
 
             if ((Session.SaveGameDescriptions != null))
             {

@@ -38,11 +38,6 @@ namespace RolePlaying
 
         GameScreen[] screensToLoad;
 
-
-
-
-
-
         private Texture2D loadingTexture;
         private Vector2 loadingPosition;
 

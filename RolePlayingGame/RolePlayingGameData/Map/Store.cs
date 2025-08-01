@@ -133,15 +133,8 @@ namespace RolePlaying.Data
                     System.IO.Path.Combine(@"Textures\Characters\Portraits",
                     asset.Element("ShopkeeperTextureName").Value)),
                 StoreCategories = asset.Element("StoreCategories")
-                    .Elements("StoreCategory")
-                    .Select(storeCategory => new StoreCategory
-                    {
-                        Name = storeCategory.Element("Name").Value,
-                        AvailableContentNames = storeCategory.Element("AvailableContentNames")
-                            .Elements("ContentName")
-                            .Select(contentNameElement => contentNameElement.Value)
-                            .ToList(),
-                    }).ToList(),
+                    .Elements("Item")
+                    .Select(storeCategory => StoreCategory.Load(storeCategory, contentManager)).ToList(),
             };
 
             return store;

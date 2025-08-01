@@ -303,11 +303,6 @@ namespace RolePlaying
             rightTriggerText = store.StoreCategories[index].Name;
         }
 
-
-
-
-
-
         /// <summary>
         /// Draw the entry at the given position in the list.
         /// </summary>
@@ -394,8 +389,7 @@ namespace RolePlaying
                 priceText = ((int)Math.Floor(entry.GoldValue * 
                     store.BuyMultiplier)).ToString();
             }
-            spriteBatch.DrawString(Fonts.GearInfoFont, priceText,
-                drawPosition, color);
+            spriteBatch.DrawString(Fonts.GearInfoFont, priceText, drawPosition, color);
         }
 
 

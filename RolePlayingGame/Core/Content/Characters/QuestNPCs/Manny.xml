@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <XnaContent>
   <Asset Type="RolePlaying.Data.QuestNpc">
-      <Name>Ayttas</Name>
+      <Name>Manny</Name>
       <MapSprite>
           <TextureName>Characters\Villager2IdleRight</TextureName>
           <FrameDimensions>92 120</FrameDimensions>

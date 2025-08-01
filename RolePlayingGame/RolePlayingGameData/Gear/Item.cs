@@ -47,11 +47,6 @@ namespace RolePlaying.Data
             set { usage = value; }
         }
 
-
-
-
-
-
         /// <summary>
         /// Builds and returns a string describing the power of this item.
         /// </summary>
@@ -59,11 +54,6 @@ namespace RolePlaying.Data
         {
             return TargetEffectRange.GetModifierString();
         }
-
-
-
-
-
 
         /// <summary>
         /// If true, the statistics change are used as a debuff (subtracted).
@@ -137,11 +127,6 @@ namespace RolePlaying.Data
             get { return adjacentTargets; }
             set { adjacentTargets = value; }
         }
-
-
-
-
-
 
         /// <summary>
         /// The name of the sound effect cue played when the item is used.

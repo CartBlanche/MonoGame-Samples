@@ -156,7 +156,7 @@ namespace RolePlaying
                 (viewport.Height - backgroundTexture.Height) / 2);
 
             namePosition = new Vector2(
-                (viewport.Width - Fonts.HeaderFont.MeasureString(inn.Name).X) / 2, 90f);
+                (viewport.Width - Fonts.HeaderFont.MeasureString(inn.Name).X) / 2, 95f);
 
             selectTextPosition = selectIconPosition;
             selectTextPosition.X -= 

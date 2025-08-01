@@ -288,16 +288,19 @@ namespace RolePlaying
             CombatSprite.Draw(Session.ScreenManager.SpriteBatch,
                 Position, 1f - Position.Y / RolePlayingGame.BUFFER_WIDTH);
 
-            Session.ScreenManager.SpriteBatch.Draw(Character.ShadowTexture, Position, 
-                null, Color.White, 0f, new Vector2(Character.ShadowTexture.Width / 2, 
-                Character.ShadowTexture.Height / 2), 1f, SpriteEffects.None, 1f);
+            if (Character.ShadowTexture != null)
+            {
+                Session.ScreenManager.SpriteBatch.Draw(Character.ShadowTexture, Position,
+                    null, Color.White, 0f, new Vector2(Character.ShadowTexture.Width / 2,
+                    Character.ShadowTexture.Height / 2), 1f, SpriteEffects.None, 1f);
+            }
 
             // draw the combat action
-            if (combatAction != null)
-            {
-                // update the combat action
-                combatAction.Draw(gameTime, Session.ScreenManager.SpriteBatch);
-            }
+                if (combatAction != null)
+                {
+                    // update the combat action
+                    combatAction.Draw(gameTime, Session.ScreenManager.SpriteBatch);
+                }
         }
 
 

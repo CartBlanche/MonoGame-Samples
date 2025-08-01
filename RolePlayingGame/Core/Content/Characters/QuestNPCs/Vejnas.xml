@@ -2,6 +2,7 @@
 <XnaContent>
   <Asset Type="RolePlaying.Data.QuestNpc">
       <Name>Vejnas</Name>
+      <Direction>East</Direction>
       <MapSprite>
           <TextureName>Characters\Villager1IdleRight</TextureName>
           <FrameDimensions>92 120</FrameDimensions>

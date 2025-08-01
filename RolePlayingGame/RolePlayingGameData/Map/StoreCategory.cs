@@ -5,9 +5,12 @@
 // Copyright (C) Microsoft Corporation. All rights reserved.
 //-----------------------------------------------------------------------------
 
+using Microsoft.Xna.Framework.Content;
+using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
-using Microsoft.Xna.Framework.Content;
+using System.Linq;
+using System.Xml.Linq;
 
 namespace RolePlaying.Data
 {
@@ -72,7 +75,7 @@ namespace RolePlaying.Data
             /// <summary>
             /// Reads a StoreCategory object from the content pipeline.
             /// </summary>
-            protected override StoreCategory Read(ContentReader input, 
+            protected override StoreCategory Read(ContentReader input,
                 StoreCategory existingInstance)
             {
                 StoreCategory storeCategory = existingInstance;
@@ -96,6 +99,45 @@ namespace RolePlaying.Data
             }
         }
 
+		internal static StoreCategory Load(XElement storeCategoryElement, ContentManager contentManager)
+		{
+            var storeCategory = new StoreCategory
+            {
+                Name = storeCategoryElement.Element("Name").Value,
+                AvailableContentNames = storeCategoryElement.Element("AvailableContentNames")
+                            .Elements("Item")
+                            .Select(contentNameElement => contentNameElement.Value)
+                            .ToList(),
+			};
 
-    }
+			foreach (string gearName in storeCategory.AvailableContentNames)
+			{
+				var gearAsset = XmlHelper.GetAssetElementFromXML(System.IO.Path.Combine("Gear", gearName));
+				
+                var gear = new Item
+                {
+                    AssetName = gearName,
+                    Name = gearAsset.Element("Name").Value,
+                    Description = gearAsset.Element("Description").Value,
+					GoldValue = int.Parse(gearAsset.Element("GoldValue").Value),
+					IsDroppable = bool.Parse(gearAsset.Element("IsDroppable").Value),
+					IsOffensive = bool.Parse(gearAsset.Element("IsOffensive").Value),
+					MinimumCharacterLevel = int.Parse(gearAsset.Element("MinimumCharacterLevel").Value),
+					IconTextureName = gearAsset.Element("IconTextureName").Value,
+					IconTexture = contentManager.Load<Texture2D>(
+                        System.IO.Path.Combine("Textures", "Gear", gearAsset.Element("IconTextureName").Value)),
+					TargetDuration = int.Parse(gearAsset.Element("TargetDuration").Value),
+					AdjacentTargets = int.Parse(gearAsset.Element("AdjacentTargets").Value),
+					UsingCueName = gearAsset.Element("UsingCueName").Value,
+					ImpactCueName = gearAsset.Element("ImpactCueName").Value,
+					BlockCueName = gearAsset.Element("BlockCueName").Value,
+				};
+
+				// Load other properties of Gear as needed
+				storeCategory.AvailableGear.Add(gear);
+			}
+
+			return storeCategory;
+		}
+	}
 }

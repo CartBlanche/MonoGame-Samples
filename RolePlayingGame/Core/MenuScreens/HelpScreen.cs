@@ -20,8 +20,6 @@ namespace RolePlaying
     /// </summary>
     class HelpScreen : GameScreen
     {
-
-
         private Texture2D backgroundTexture;
 
         private Texture2D plankTexture;
@@ -153,8 +151,7 @@ namespace RolePlaying
             spriteBatch.Draw(scrollUpTexture, scrollUpPosition, Color.White);
             spriteBatch.Draw(scrollDownTexture, scrollDownPosition, Color.White);
 
-            spriteBatch.DrawString(Fonts.HeaderFont, "Help", titlePosition,
-                Fonts.TitleColor);
+            spriteBatch.DrawString(Fonts.HeaderFont, "Help", titlePosition, Fonts.TitleColor, MathHelper.ToRadians(-3.0f), Vector2.Zero, 1.0f, SpriteEffects.None, 0f);
 
             for (int i = 0; i < maxLineDisplay; i++)
             {

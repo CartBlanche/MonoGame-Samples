@@ -21,9 +21,6 @@ namespace RolePlaying
     {
         private Store store = null;
 
-
-
-
         private Texture2D shopDrawScreen;
         private Texture2D selectButton;
         private Texture2D backButton;
@@ -112,13 +109,8 @@ namespace RolePlaying
                 (viewport.Width - plankTexture.Width) / 2, 66f);
             shopNamePosition = new Vector2(
                 (viewport.Width - Fonts.HeaderFont.MeasureString(store.Name).X) / 2, 
-                90f);
+                95f);
         }
-
-
-
-
-
 
         /// <summary>
         /// Handles user input.
@@ -200,11 +192,10 @@ namespace RolePlaying
             spriteBatch.Draw(plankTexture, plankPosition, Color.White);
 
             // Draw the Title of the Screen
-            spriteBatch.DrawString(Fonts.HeaderFont, store.Name,
-                shopNamePosition, Fonts.TitleColor);
+			spriteBatch.DrawString(Fonts.HeaderFont, store.Name, shopNamePosition, Fonts.TitleColor, MathHelper.ToRadians(-3.0f), Vector2.Zero, 1.0f, SpriteEffects.None, 0f);
 
-            // Draw Conversation Strip
-            spriteBatch.Draw(conversationStrip, conversationStripPosition,
+			// Draw Conversation Strip
+			spriteBatch.Draw(conversationStrip, conversationStripPosition,
                 Color.White);
 
             // Draw Shop Keeper

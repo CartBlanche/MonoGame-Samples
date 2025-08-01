@@ -1049,14 +1049,7 @@ namespace RolePlaying
         {
             SpriteBatch spriteBatch = Session.ScreenManager.SpriteBatch;
             Viewport viewport = Session.ScreenManager.GraphicsDevice.Viewport;
-            
-            // update the animations
-            float elapsedSeconds = (float)gameTime.ElapsedGameTime.TotalSeconds;
-            highlightForegroundSprite.UpdateAnimation(elapsedSeconds);
-            highlightBackgroundSprite.UpdateAnimation(elapsedSeconds);
-            primaryTargetSprite.UpdateAnimation(elapsedSeconds);
-            secondaryTargetSprite.UpdateAnimation(elapsedSeconds);
-            
+
             // draw the highlighted-player sprite, if any
             if (highlightedCombatant != null)
             {
@@ -1067,6 +1060,13 @@ namespace RolePlaying
                     highlightedCombatant.Position,
                     1f - (highlightedCombatant.Position.Y + 1) / viewport.Height);
             }
+
+            // update the animations
+            float elapsedSeconds = (float)gameTime.ElapsedGameTime.TotalSeconds;
+            highlightForegroundSprite.UpdateAnimation(elapsedSeconds);
+            highlightBackgroundSprite.UpdateAnimation(elapsedSeconds);
+            primaryTargetSprite.UpdateAnimation(elapsedSeconds);
+            secondaryTargetSprite.UpdateAnimation(elapsedSeconds);
 
             // draw the primary target sprite and name, if any
             if (primaryTargetedCombatant != null)
@@ -1929,6 +1929,9 @@ namespace RolePlaying
         /// </summary>
         private void DrawCombatEngine(GameTime gameTime)
         {
+            // draw the selection animations
+            DrawSelectionSprites(gameTime);
+            
             // draw the players
             foreach (CombatantPlayer player in players)
             {
@@ -1940,9 +1943,6 @@ namespace RolePlaying
             {
                 monster.Draw(gameTime);
             }
-
-            // draw the selection animations
-            DrawSelectionSprites(gameTime);
 
             // draw the combat effects
             DrawCombatEffects(gameTime);

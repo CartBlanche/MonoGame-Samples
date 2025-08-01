@@ -1,7 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <XnaContent>
   <Asset Type="RolePlaying.Data.QuestNpc">
-      <Name>Manny</Name>
+      <Name>Jang Elder</Name>
+      <Direction>SouthEast</Direction>
       <MapSprite>
           <TextureName>Characters\VillagerIdleRight</TextureName>
           <FrameDimensions>92 120</FrameDimensions>

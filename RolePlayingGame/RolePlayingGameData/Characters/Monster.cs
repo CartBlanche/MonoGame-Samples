@@ -99,39 +99,14 @@ namespace RolePlaying.Data
             var monster = new Monster
             {
                 AssetName = monsterContentName,
-                Name = (string)asset.Element("Name"),
+                Name = asset.Element("Name").Value,
+                Direction = Enum.TryParse<Direction>((string)asset.Element("Direction"), out var dir) ? dir : default,
                 CharacterClassContentName = (string)asset.Element("CharacterClassContentName"),
                 CharacterLevel = (int)asset.Element("CharacterLevel"),
                 InitialEquipmentContentNames = asset.Element("InitialEquipmentContentNames")
                     .Elements("Item").Select(x => (string)x).ToList(),
-                CombatSprite = new AnimatingSprite
-                {
-                    TextureName = (string)asset.Element("CombatSprite").Element("TextureName"),
-                    Texture = contentManager.Load<Texture2D>(
-                        Path.Combine(@"Textures\", (string)asset.Element("CombatSprite").Element("TextureName"))),
-                    FrameDimensions = new Point(
-                        int.Parse(asset.Element("CombatSprite").Element("FrameDimensions").Value.Split(' ')[0]),
-                        int.Parse(asset.Element("CombatSprite").Element("FrameDimensions").Value.Split(' ')[1])),
-                    FramesPerRow = (int)asset.Element("CombatSprite").Element("FramesPerRow"),
-                    SourceOffset = new Vector2(
-                        int.Parse(asset.Element("CombatSprite").Element("SourceOffset").Value.Split(' ')[0]),
-                        int.Parse(asset.Element("CombatSprite").Element("SourceOffset").Value.Split(' ')[1])),
-                    // Handle Animations if needed
-                },
-                MapSprite = new AnimatingSprite
-                {
-                    TextureName = (string)asset.Element("MapSprite").Element("TextureName"),
-                    Texture = contentManager.Load<Texture2D>(
-                        Path.Combine(@"Textures\", (string)asset.Element("MapSprite").Element("TextureName"))),
-                    FrameDimensions = new Point(
-                        int.Parse(asset.Element("MapSprite").Element("FrameDimensions").Value.Split(' ')[0]),
-                        int.Parse(asset.Element("MapSprite").Element("FrameDimensions").Value.Split(' ')[1])),
-                    FramesPerRow = (int)asset.Element("MapSprite").Element("FramesPerRow"),
-                    SourceOffset = new Vector2(
-                        int.Parse(asset.Element("MapSprite").Element("SourceOffset").Value.Split(' ')[0]),
-                        int.Parse(asset.Element("MapSprite").Element("SourceOffset").Value.Split(' ')[1])),
-                    // Handle Animations if needed
-                },
+                CombatSprite = AnimatingSprite.Load(asset.Element("CombatSprite"), contentManager),
+                MapSprite = AnimatingSprite.Load(asset.Element("MapSprite"), contentManager),
                 GearDrops = asset.Element("GearDrops")?.Elements("Item")
                     .Select(item => new GearDrop
                     {
@@ -151,17 +126,12 @@ namespace RolePlaying.Data
             return monster;
         }
 
-
-
-
-
-
         /// <summary>
         /// Reads a Monster object from the content pipeline.
         /// </summary>
         public class MonsterReader : ContentTypeReader<Monster>
         {
-            protected override Monster Read(ContentReader input, 
+            protected override Monster Read(ContentReader input,
                 Monster existingInstance)
             {
                 Monster monster = existingInstance;
@@ -178,7 +148,5 @@ namespace RolePlaying.Data
                 return monster;
             }
         }
-
-
     }
 }

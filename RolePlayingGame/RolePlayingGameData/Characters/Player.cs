@@ -307,59 +307,21 @@ namespace RolePlaying.Data
         public static Player Load(string contentName, ContentManager contentManager)
         {
             var asset = XmlHelper.GetAssetElementFromXML(contentName);
-            
-			// Create a new Player instance and populate it with data from the XML asset
-			var player = new Player
+
+            // Create a new Player instance and populate it with data from the XML asset
+            var player = new Player
             {
                 AssetName = contentName,
                 Name = (string)asset.Element("Name"),
-                MapSprite = new AnimatingSprite
-                {
-                    TextureName = (string)asset.Element("MapSprite").Element("TextureName"),
-                    Texture = contentManager.Load<Texture2D>(
-                        Path.Combine(@"Textures\", (string)asset.Element("MapSprite").Element("TextureName"))),
-                    FrameDimensions = new Point(
-                        int.Parse(asset.Element("MapSprite").Element("FrameDimensions").Value.Split(' ')[0]),
-                        int.Parse(asset.Element("MapSprite").Element("FrameDimensions").Value.Split(' ')[1])),
-                    FramesPerRow = (int)asset.Element("MapSprite").Element("FramesPerRow"),
-                    SourceOffset = new Vector2(
-                        int.Parse(asset.Element("MapSprite").Element("SourceOffset").Value.Split(' ')[0]),
-                        int.Parse(asset.Element("MapSprite").Element("SourceOffset").Value.Split(' ')[1])),
-                    // Handle Animations if needed
-                },
-                WalkingSprite = new AnimatingSprite
-                {
-                    TextureName = (string)asset.Element("WalkingSprite").Element("TextureName"),
-                    Texture = contentManager.Load<Texture2D>(
-                        Path.Combine(@"Textures\", (string)asset.Element("WalkingSprite").Element("TextureName"))),
-                    FrameDimensions = new Point(
-                        int.Parse(asset.Element("WalkingSprite").Element("FrameDimensions").Value.Split(' ')[0]),
-                        int.Parse(asset.Element("WalkingSprite").Element("FrameDimensions").Value.Split(' ')[1])),
-                    FramesPerRow = (int)asset.Element("WalkingSprite").Element("FramesPerRow"),
-                    SourceOffset = new Vector2(
-                        int.Parse(asset.Element("WalkingSprite").Element("SourceOffset").Value.Split(' ')[0]),
-                        int.Parse(asset.Element("WalkingSprite").Element("SourceOffset").Value.Split(' ')[1])),
-                    // Handle Animations if needed
-                },
+                Direction = Enum.TryParse<Direction>((string)asset.Element("Direction"), out var dir) ? dir : default,
+                MapSprite = AnimatingSprite.Load(asset.Element("MapSprite"), contentManager),
+                WalkingSprite = AnimatingSprite.Load(asset.Element("WalkingSprite"), contentManager),
                 MapIdleAnimationInterval = (int)asset.Element("MapIdleAnimationInterval"),
                 CharacterClassContentName = (string)asset.Element("CharacterClassContentName"),
                 CharacterLevel = (int)asset.Element("CharacterLevel"),
                 InitialEquipmentContentNames = asset.Element("InitialEquipmentContentNames")
                     .Elements("Item").Select(x => (string)x).ToList(),
-                CombatSprite = new AnimatingSprite
-                {
-                    TextureName = (string)asset.Element("CombatSprite").Element("TextureName"),
-                    Texture = contentManager.Load<Texture2D>(
-                        Path.Combine(@"Textures\", (string)asset.Element("CombatSprite").Element("TextureName"))),
-                    FrameDimensions = new Point(
-                        int.Parse(asset.Element("CombatSprite").Element("FrameDimensions").Value.Split(' ')[0]),
-                        int.Parse(asset.Element("CombatSprite").Element("FrameDimensions").Value.Split(' ')[1])),
-                    FramesPerRow = (int)asset.Element("CombatSprite").Element("FramesPerRow"),
-                    SourceOffset = new Vector2(
-                        int.Parse(asset.Element("CombatSprite").Element("SourceOffset").Value.Split(' ')[0]),
-                        int.Parse(asset.Element("CombatSprite").Element("SourceOffset").Value.Split(' ')[1])),
-                    // Handle Animations if needed
-                },
+                CombatSprite = AnimatingSprite.Load(asset.Element("CombatSprite"), contentManager),
                 Gold = (int)asset.Element("Gold"),
                 IntroductionDialogue = (string)asset.Element("IntroductionDialogue"),
                 JoinAcceptedDialogue = (string)asset.Element("JoinAcceptedDialogue"),
@@ -388,7 +350,7 @@ namespace RolePlaying.Data
             player.AddStandardCharacterCombatAnimations();
             player.AddStandardCharacterIdleAnimations();
             player.AddStandardCharacterWalkingAnimations();
-            
+
             player.ResetAnimation(false);
 
             // TODO Looks like player is floating. Offset issue.player.ShadowTexture = contentManager.Load<Texture2D>(@"Textures\Characters\CharacterShadow");

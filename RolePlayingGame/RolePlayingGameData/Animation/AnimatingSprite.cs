@@ -7,6 +7,9 @@
 
 using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Xml.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
@@ -470,6 +473,24 @@ namespace RolePlaying.Data
             return animatingSprite;
         }
 
+        internal static AnimatingSprite Load(XElement xElement, ContentManager contentManager)
+        {
+            var animatingSprite = new AnimatingSprite
+            {
+                TextureName = (string)xElement.Element("TextureName"),
+                Texture = contentManager.Load<Texture2D>(
+                    Path.Combine(@"Textures\", (string)xElement.Element("TextureName"))),
+                FrameDimensions = new Point(
+                    int.Parse(xElement.Element("FrameDimensions").Value.Split(' ')[0]),
+                    int.Parse(xElement.Element("FrameDimensions").Value.Split(' ')[1])),
+                FramesPerRow = (int)xElement.Element("FramesPerRow"),
+                SourceOffset = new Vector2(
+                    int.Parse(xElement.Element("SourceOffset").Value.Split(' ')[0]),
+                    int.Parse(xElement.Element("SourceOffset").Value.Split(' ')[1])),
+                // Handle Animations if needed
+            };
 
+            return animatingSprite;
+        }
     }
 }

@@ -810,12 +810,20 @@ namespace RolePlaying.Data
 						// Load the fixed combat asset XML using contentName
                         var fixedCombat = FixedCombat.Load(Path.Combine(@"Maps/FixedCombats", contentName), contentManager);
 
+                        AnimatingSprite animatingSprite = null;
+
+                        if (fixedCombat.Entries.Count > 0)
+                        {
+                            animatingSprite = fixedCombat.Entries[0].Content.MapSprite.Clone() as AnimatingSprite;
+                        }
+
 						return new MapEntry<FixedCombat>
                         {
                             ContentName = contentName,
                             Content = fixedCombat,
                             Direction = direction,
-                            MapPosition = mapPosition
+                            MapPosition = mapPosition,
+                            MapSprite = animatingSprite,
                         };
 					}).ToList(),
                 PlayerNpcEntries = asset.Element("PlayerNpcEntries")?.Elements("Item")
