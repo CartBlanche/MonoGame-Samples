@@ -185,59 +185,47 @@ namespace RolePlaying.Data
             return spells;
         }
 
-        internal static CharacterClass Load(string path)
+        internal static CharacterClass Load(string characterAssetName, ContentManager contentManager)
         {
-            var asset = XmlHelper.GetAssetElementFromXML(path);
+            var characterAsset = XmlHelper.GetAssetElementFromXML(characterAssetName);
 
             var characterClass = new CharacterClass
             {
-                Name = (string)asset.Element("Name"),
+                Name = (string)characterAsset.Element("Name"),
                 InitialStatistics = new StatisticsValue
                 {
-                    HealthPoints = (int?)asset.Element("InitialStatistics").Element("HealthPoints") ?? 0,
-                    MagicPoints = (int?)asset.Element("InitialStatistics").Element("MagicPoints") ?? 0,
-                    PhysicalOffense = (int?)asset.Element("InitialStatistics").Element("PhysicalOffense") ?? 0,
-                    PhysicalDefense = (int?)asset.Element("InitialStatistics").Element("PhysicalDefense") ?? 0,
-                    MagicalOffense = (int?)asset.Element("InitialStatistics").Element("MagicalOffense") ?? 0,
-                    MagicalDefense = (int?)asset.Element("InitialStatistics").Element("MagicalDefense") ?? 0,
+                    HealthPoints = (int?)characterAsset.Element("InitialStatistics").Element("HealthPoints") ?? 0,
+                    MagicPoints = (int?)characterAsset.Element("InitialStatistics").Element("MagicPoints") ?? 0,
+                    PhysicalOffense = (int?)characterAsset.Element("InitialStatistics").Element("PhysicalOffense") ?? 0,
+                    PhysicalDefense = (int?)characterAsset.Element("InitialStatistics").Element("PhysicalDefense") ?? 0,
+                    MagicalOffense = (int?)characterAsset.Element("InitialStatistics").Element("MagicalOffense") ?? 0,
+                    MagicalDefense = (int?)characterAsset.Element("InitialStatistics").Element("MagicalDefense") ?? 0,
                 },
                 LevelingStatistics = new CharacterLevelingStatistics
                 {
-                    HealthPointsIncrease = (int?)asset.Element("LevelingStatistics").Element("HealthPointsIncrease") ?? 0,
-                    LevelsPerHealthPointsIncrease = (int?)asset.Element("LevelingStatistics").Element("LevelsPerHealthPointsIncrease") ?? 0,
-                    MagicPointsIncrease = (int?)asset.Element("LevelingStatistics").Element("MagicPointsIncrease") ?? 0,
-                    LevelsPerMagicPointsIncrease = (int?)asset.Element("LevelingStatistics").Element("LevelsPerMagicPointsIncrease") ?? 0,
-                    PhysicalOffenseIncrease = (int?)asset.Element("LevelingStatistics").Element("PhysicalOffenseIncrease") ?? 0,
-                    LevelsPerPhysicalOffenseIncrease = (int?)asset.Element("LevelingStatistics").Element("LevelsPerPhysicalOffenseIncrease") ?? 0,
-                    PhysicalDefenseIncrease = (int?)asset.Element("LevelingStatistics").Element("PhysicalDefenseIncrease") ?? 0,
-                    LevelsPerPhysicalDefenseIncrease = (int?)asset.Element("LevelingStatistics").Element("LevelsPerPhysicalDefenseIncrease") ?? 0,
-                    MagicalOffenseIncrease = (int?)asset.Element("LevelingStatistics").Element("MagicalOffenseIncrease") ?? 0,
-                    LevelsPerMagicalOffenseIncrease = (int?)asset.Element("LevelingStatistics").Element("LevelsPerMagicalOffenseIncrease") ?? 0,
-                    MagicalDefenseIncrease = (int?)asset.Element("LevelingStatistics").Element("MagicalDefenseIncrease") ?? 0,
-                    LevelsPerMagicalDefenseIncrease = (int?)asset.Element("LevelingStatistics").Element("LevelsPerMagicalDefenseIncrease") ?? 0,
+                    HealthPointsIncrease = (int?)characterAsset.Element("LevelingStatistics").Element("HealthPointsIncrease") ?? 0,
+                    LevelsPerHealthPointsIncrease = (int?)characterAsset.Element("LevelingStatistics").Element("LevelsPerHealthPointsIncrease") ?? 0,
+                    MagicPointsIncrease = (int?)characterAsset.Element("LevelingStatistics").Element("MagicPointsIncrease") ?? 0,
+                    LevelsPerMagicPointsIncrease = (int?)characterAsset.Element("LevelingStatistics").Element("LevelsPerMagicPointsIncrease") ?? 0,
+                    PhysicalOffenseIncrease = (int?)characterAsset.Element("LevelingStatistics").Element("PhysicalOffenseIncrease") ?? 0,
+                    LevelsPerPhysicalOffenseIncrease = (int?)characterAsset.Element("LevelingStatistics").Element("LevelsPerPhysicalOffenseIncrease") ?? 0,
+                    PhysicalDefenseIncrease = (int?)characterAsset.Element("LevelingStatistics").Element("PhysicalDefenseIncrease") ?? 0,
+                    LevelsPerPhysicalDefenseIncrease = (int?)characterAsset.Element("LevelingStatistics").Element("LevelsPerPhysicalDefenseIncrease") ?? 0,
+                    MagicalOffenseIncrease = (int?)characterAsset.Element("LevelingStatistics").Element("MagicalOffenseIncrease") ?? 0,
+                    LevelsPerMagicalOffenseIncrease = (int?)characterAsset.Element("LevelingStatistics").Element("LevelsPerMagicalOffenseIncrease") ?? 0,
+                    MagicalDefenseIncrease = (int?)characterAsset.Element("LevelingStatistics").Element("MagicalDefenseIncrease") ?? 0,
+                    LevelsPerMagicalDefenseIncrease = (int?)characterAsset.Element("LevelingStatistics").Element("LevelsPerMagicalDefenseIncrease") ?? 0,
                 },
-                LevelEntries = asset.Element("LevelEntries")
+                LevelEntries = characterAsset.Element("LevelEntries")
                     .Elements("Item")
-                    .Select(item => new CharacterLevelDescription
-                    {
-                        ExperiencePoints = (int?)item.Element("ExperiencePoints") ?? 0,
-                        SpellContentNames = item.Element("SpellContentNames")?
-                            .Elements("Item")
-                            .Select(x => (string)x)
-                            .ToList() ?? new List<string>()
-                    })
+                    .Select(item => CharacterLevelDescription.Load(item, contentManager))
                     .ToList(),
-                BaseExperienceValue = (int?)asset.Element("BaseExperienceValue") ?? 0,
-                BaseGoldValue = (int?)asset.Element("BaseGoldValue") ?? 0
+                BaseExperienceValue = (int?)characterAsset.Element("BaseExperienceValue") ?? 0,
+                BaseGoldValue = (int?)characterAsset.Element("BaseGoldValue") ?? 0
             };
 
             return characterClass;
         }
-
-
-
-
-
 
         /// <summary>
         /// The base experience value of Npcs of this character class.
@@ -271,11 +259,6 @@ namespace RolePlaying.Data
             get { return baseGoldValue; }
             set { baseGoldValue = value; }
         }
-
-
-
-
-
 
         /// <summary>
         /// Reads a CharacterClass object from the content pipeline.

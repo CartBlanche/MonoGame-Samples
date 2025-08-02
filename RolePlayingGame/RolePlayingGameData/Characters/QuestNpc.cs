@@ -55,7 +55,7 @@ namespace RolePlaying.Data
 
             questNpc.ResetAnimation(false);
 
-            // TODO Looks like player is floating. Offset issue. questNpc.ShadowTexture = contentManager.Load<Texture2D>(@"Textures\Characters\CharacterShadow");
+            questNpc.ShadowTexture = contentManager.Load<Texture2D>(@"Textures\Characters\CharacterShadow");
 
             return questNpc;
         }

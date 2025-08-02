@@ -346,7 +346,7 @@ namespace RolePlaying.Data
             };
 
             // load the character class
-            player.CharacterClass = CharacterClass.Load(Path.Combine("CharacterClasses", player.CharacterClassContentName));
+            player.CharacterClass = CharacterClass.Load(Path.Combine("CharacterClasses", player.CharacterClassContentName), contentManager);
             foreach (var item in player.InitialEquipmentContentNames)
             {
                 player.EquippedEquipment.Add(Equipment.Load(Path.Combine(@"Gear", item), contentManager));
@@ -358,7 +358,7 @@ namespace RolePlaying.Data
 
             player.ResetAnimation(false);
 
-            // TODO Looks like player is floating. Offset issue.player.ShadowTexture = contentManager.Load<Texture2D>(@"Textures\Characters\CharacterShadow");
+            player.ShadowTexture = contentManager.Load<Texture2D>(@"Textures\Characters\CharacterShadow");
 
             return player;
         }

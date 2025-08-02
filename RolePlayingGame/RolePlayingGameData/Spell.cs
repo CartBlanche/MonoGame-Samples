@@ -188,7 +188,7 @@ namespace RolePlaying.Data
         public int Level
         {
             get { return level; }
-            set 
+            set
             {
                 level = value;
                 targetEffectRange = initialTargetEffectRange;
@@ -311,8 +311,8 @@ namespace RolePlaying.Data
         {
             get { return iconTexture; }
         }
-        
-        
+
+
         /// <summary>
         /// The animating sprite used when this spell is in action.
         /// </summary>
@@ -373,7 +373,7 @@ namespace RolePlaying.Data
                     System.IO.Path.Combine(@"Textures\Spells", spell.IconTextureName));
                 spell.IsOffensive = input.ReadBoolean();
                 spell.TargetDuration = input.ReadInt32();
-                spell.targetEffectRange = spell.InitialTargetEffectRange = 
+                spell.targetEffectRange = spell.InitialTargetEffectRange =
                     input.ReadObject<StatisticsRange>();
                 spell.AdjacentTargets = input.ReadInt32();
                 spell.LevelingProgression = input.ReadObject<StatisticsValue>();
@@ -387,7 +387,7 @@ namespace RolePlaying.Data
                     spell.SpellSprite.FrameDimensions.Y);
                 spell.Overlay = input.ReadObject<AnimatingSprite>();
                 spell.Overlay.SourceOffset = new Vector2(
-                    spell.Overlay.FrameDimensions.X / 2, 
+                    spell.Overlay.FrameDimensions.X / 2,
                     spell.Overlay.FrameDimensions.Y);
 
                 spell.Level = 1;
@@ -428,6 +428,36 @@ namespace RolePlaying.Data
             return spell;
         }
 
+        internal static Spell Load(string spellAssetName, ContentManager contentManager)
+        {
+            var asset = XmlHelper.GetAssetElementFromXML(spellAssetName);
+            var spell = new Spell()
+            {
+                AssetName = spellAssetName,
+                Name = asset.Element("Name")?.Value ?? "Unknown Spell",
+                Description = asset.Element("Description")?.Value ?? "No Description",
+                MagicPointCost = int.Parse(asset.Element("MagicPointCost")?.Value ?? "0"),
+                IconTextureName = asset.Element("IconTextureName")?.Value ?? "UnknownIcon",
+                iconTexture = contentManager.Load<Texture2D>(
+                    System.IO.Path.Combine(@"Textures\Spells", asset.Element("IconTextureName").Value)),
+                IsOffensive = bool.Parse(asset.Element("IsOffensive")?.Value ?? "false"),
+                TargetDuration = int.Parse(asset.Element("TargetDuration")?.Value ?? "0"),
+                /*targetEffectRange = StatisticsRange.FromString(
+                    asset.Element("TargetEffectRange")?.Value ?? "0");
+                initialTargetEffectRange = targetEffectRange;*/
+                AdjacentTargets = int.Parse(asset.Element("AdjacentTargets")?.Value ?? "0"),
+                /*LevelingProgression = StatisticsValue.FromString(
+                    asset.Element("LevelingProgression")?.Value ?? "0");*/
+                CreatingCueName = asset.Element("CreatingCueName")?.Value ?? "UnknownCue",
+                TravelingCueName = asset.Element("TravelingCueName")?.Value ?? "UnknownCue",
+                ImpactCueName = asset.Element("ImpactCueName")?.Value ?? "UnknownCue",
+                BlockCueName = asset.Element("BlockCueName")?.Value ?? "UnknownCue",
+                SpellSprite = asset.Element("SpellSprite") != null ? AnimatingSprite.Load(asset.Element("SpellSprite"), contentManager) : null,
+                Overlay = asset.Element("Overlay") != null ? AnimatingSprite.Load(asset.Element("Overlay"), contentManager) : null,
+                Level = int.Parse(asset.Element("Level")?.Value ?? "1")
+            };
 
+            return spell;
+        }
     }
 }

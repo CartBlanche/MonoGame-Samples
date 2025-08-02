@@ -7,6 +7,9 @@
 
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.Linq;
+using System.Xml.Linq;
 using Microsoft.Xna.Framework.Content;
 
 namespace RolePlaying.Data
@@ -68,16 +71,11 @@ namespace RolePlaying.Data
             get { return spells; }
             set { spells = value; }
         }
-        
-
-
-
-
 
         /// <summary>
         /// Read a CharacterLevelDescription object from the content pipeline.
         /// </summary>
-        public class CharacterLevelDescriptionReader : 
+        public class CharacterLevelDescriptionReader :
             ContentTypeReader<CharacterLevelDescription>
         {
             /// <summary>
@@ -106,6 +104,32 @@ namespace RolePlaying.Data
             }
         }
 
+        internal static CharacterLevelDescription Load(XElement item, ContentManager contentManager)
+        {
+            var characterLevelDescription = new CharacterLevelDescription
+            {
+                ExperiencePoints = (int?)item.Element("ExperiencePoints") ?? 0,
+                SpellContentNames = item.Element("SpellContentNames")?
+                    .Elements("Item")
+                    .Select(x =>
+                    {
+                        return (string)x;
+                    })
+                    .ToList() ?? new List<string>(),
+            };
 
+            if (characterLevelDescription.SpellContentNames.Count > 0)
+            {
+                // Load the spells for this level
+                characterLevelDescription.Spells = new List<Spell>();
+                foreach (var spellContentName in characterLevelDescription.SpellContentNames)
+                {
+                    var spell = Spell.Load(System.IO.Path.Combine("Spells", spellContentName), contentManager);
+                    characterLevelDescription.Spells.Add(spell);
+                }
+            }
+
+            return characterLevelDescription;
+        }
     }
 }

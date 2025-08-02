@@ -1368,12 +1368,18 @@ namespace RolePlaying
         /// </summary>
         private void DrawShadows(SpriteBatch spriteBatch)
         {
+            var shadowXOffset = 20;
+            var shadowYOffset = 20;
+
             // draw the shadow of the party leader
             Player player = party.Players[0];
             if (player.ShadowTexture != null)
             {
+                var position = TileEngine.PartyLeaderPosition.ScreenPosition;
+                position.X -= shadowXOffset;
+                position.Y -= shadowYOffset;
                 spriteBatch.Draw(player.ShadowTexture,
-                    TileEngine.PartyLeaderPosition.ScreenPosition, null, Color.White, 0f,
+                    position, null, Color.White, 0f,
                     new Vector2(
                         (player.ShadowTexture.Width - TileEngine.Map.TileSize.X) / 2,
                         (player.ShadowTexture.Height - TileEngine.Map.TileSize.Y) / 2 -
@@ -1392,6 +1398,8 @@ namespace RolePlaying
                 {
                     Vector2 position =
                         TileEngine.GetScreenPosition(playerEntry.MapPosition);
+                    position.X -= shadowXOffset;
+                    position.Y -= shadowYOffset;
                     spriteBatch.Draw(playerEntry.Content.ShadowTexture, position,
                         null, Color.White, 0f,
                         new Vector2(
@@ -1415,6 +1423,8 @@ namespace RolePlaying
                 {
                     Vector2 position =
                         TileEngine.GetScreenPosition(questNpcEntry.MapPosition);
+                    position.X -= shadowXOffset;
+                    position.Y -= shadowYOffset;
                     spriteBatch.Draw(questNpcEntry.Content.ShadowTexture, position,
                         null, Color.White, 0f,
                         new Vector2(
@@ -1441,6 +1451,9 @@ namespace RolePlaying
                 {
                     Vector2 position =
                         TileEngine.GetScreenPosition(fixedCombatEntry.MapPosition);
+                    position.X -= shadowXOffset;
+                    position.Y -= shadowYOffset;
+
                     spriteBatch.Draw(monster.ShadowTexture, position,
                         null, Color.White, 0f,
                         new Vector2(
