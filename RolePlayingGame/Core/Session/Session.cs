@@ -24,6 +24,7 @@ namespace RolePlaying
         /// The single Session instance that can be active at a time.
         /// </summary>
         private static Session singleton;
+        internal static Session Singleton => singleton;
 
         /// <summary>
         /// The party that is playing the game right now.
@@ -37,6 +38,8 @@ namespace RolePlaying
         {
             get { return (singleton == null ? null : singleton.party); }
         }
+
+        static GameStartDescription gameStartDesc;
 
         /// <summary>
         /// Change the current map, arriving at the given portal if any.
@@ -1485,6 +1488,8 @@ namespace RolePlaying
                 throw new ArgumentNullException("gameplayScreen");
             }
 
+            gameStartDesc = gameStartDescription;
+
             // end any existing session
             EndSession();
 
@@ -1497,14 +1502,6 @@ namespace RolePlaying
             // set up the initial party
             ContentManager contentManager = singleton.screenManager.Game.Content;
             singleton.party = new Party(gameStartDescription, contentManager);
-
-            /* var loadedQuestLine = content.Load<QuestLine>(
-                Path.Combine("Quests", "QuestLines", gameStartDescription.QuestLineContentName)).Clone() as QuestLine;*/
-
-            var questLine = QuestLine.Load(Path.Combine("Quests", "QuestLines", gameStartDescription.QuestLineContentName), contentManager);
-
-            // load the quest line
-            singleton.questLine = questLine;
         }
 
         /// <summary>
@@ -1691,6 +1688,21 @@ namespace RolePlaying
                 SaveSessionResult(storageDevice, overwriteDescription);
             });
             */
+        }
+
+        internal void StartMainQuestLine()
+        {
+            // load the quest line
+            /* var loadedQuestLine = content.Load<QuestLine>(
+                Path.Combine("Quests", "QuestLines", gameStartDescription.QuestLineContentName)).Clone() as QuestLine;*/
+
+            var questLine = QuestLine.Load(Path.Combine("Quests", "QuestLines", gameStartDesc.QuestLineContentName), singleton.screenManager.Game.Content);
+
+            if (singleton.questLine != questLine)
+            {
+                // set the quest line
+                singleton.questLine = questLine;
+            }
         }
 
         /// <summary>

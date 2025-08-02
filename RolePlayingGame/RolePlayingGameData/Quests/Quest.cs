@@ -500,6 +500,8 @@ namespace RolePlaying.Data
                         var mapPosition = new Point(
                             int.Parse(chestRequirement.Element("MapPosition").Value.Split(' ')[0]),
                             int.Parse(chestRequirement.Element("MapPosition").Value.Split(' ')[1]));
+                        var mapContentName = (string)chestRequirement.Element("MapContentName");
+                        var count = (int?)chestRequirement.Element("Count") ?? 1;
 
                         // Load the QuestNpc asset XML using contentName
                         var chestAsset = XmlHelper.GetAssetElementFromXML(Path.Combine("Maps", "Chests", contentName));
@@ -509,11 +511,21 @@ namespace RolePlaying.Data
                         {
                             ContentName = contentName,
                             Content = chest,
+                            Count = count,
                             Direction = direction,
-                            MapPosition = mapPosition
+                            MapContentName = mapContentName,
+                            MapPosition = mapPosition,
+                            MapSprite = null,
                         };
                     }).ToList() ?? new List<WorldEntry<Chest>>(),
             };
+
+            // Load the gear rewards
+            foreach (var gearContentName in quest.GearRewardContentNames)
+            {
+                var gear = Equipment.Load(Path.Combine("Gear", gearContentName), contentManager);
+                quest.GearRewards.Add(gear);
+            }
 
             return quest;
         }

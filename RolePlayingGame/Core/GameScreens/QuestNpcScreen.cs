@@ -28,7 +28,7 @@ namespace RolePlaying
             }
 
             // check to see if this is NPC is the current quest destination
-            if ((Session.Quest != null) && 
+            if ((Session.Quest != null) &&
                 (Session.Quest.Stage == Quest.QuestStage.RequirementsMet) &&
                 TileEngine.Map.AssetName.EndsWith(
                     Session.Quest.DestinationMapContentName) &&
@@ -44,6 +44,13 @@ namespace RolePlaying
             {
                 // this NPC is not the destination, so use the npc's welcome text
                 this.DialogueText = questNpc.IntroductionDialogue;
+
+                // Bit of a hack to only start the main quests after meeting Shed-darr the Wise
+                // This is to ensure that the player has met the NPC before starting the main quest line
+                if (questNpc.Name == "Shed-darr the Wise")
+                {
+                    Session.Singleton.StartMainQuestLine();
+                }
             }
         }
     }
