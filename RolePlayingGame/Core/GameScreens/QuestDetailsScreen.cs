@@ -21,9 +21,6 @@ namespace RolePlaying
     {
         private Quest quest;
 
-
-
-
         private Texture2D backgroundTexture;
         private Texture2D backIconTexture;
         private Texture2D scrollTexture;
@@ -44,22 +41,12 @@ namespace RolePlaying
         private Color headerColor = new Color(128, 6, 6);
         private Color textColor = new Color(102, 40, 16);
 
-
-
-
-
-
         private string titleString = "Quest Details";
         private List<Line> currentDialogue;
 
         private int startIndex;
         private int endIndex;
         private int maxLines;
-
-
-
-
-
 
         /// <summary>
         /// Creates a new QuestDetailsScreen object.
@@ -84,7 +71,6 @@ namespace RolePlaying
                 Fonts.BreakTextIntoList(this.quest.Description,
                 Fonts.DescriptionFont, 715), GetRequirements(this.quest));
         }
-
 
         /// <summary>
         /// Loads the graphics content from the content manager.
@@ -128,11 +114,6 @@ namespace RolePlaying
             bottomLinePosition = new Vector2(topLinePosition.X, 550f);
         }
 
-
-
-
-
-
         /// <summary>
         /// A line of text with its own color and font.
         /// </summary>
@@ -142,7 +123,6 @@ namespace RolePlaying
             public Color color;
             public SpriteFont font;
         }
-
 
         /// <summary>
         /// Add strings to list of lines
@@ -196,7 +176,6 @@ namespace RolePlaying
             }
         }
 
-
         /// <summary>
         /// Get the quest requirements
         /// </summary>
@@ -228,7 +207,7 @@ namespace RolePlaying
                     currentCount = quest.MonsterRequirements[i].CompletedCount;
                     totalCount = quest.MonsterRequirements[i].Count;
                     Monster monster = quest.MonsterRequirements[i].Content;
-                    reqd.text = monster.Name + " = " + currentCount + " / " + 
+                    reqd.text = monster.Name + " = " + currentCount + " / " +
                         totalCount;
 
                     if (currentCount == totalCount)
@@ -304,11 +283,6 @@ namespace RolePlaying
             return reqdList;
         }
 
-
-
-
-
-
         /// <summary>
         /// Handles user input.
         /// </summary>
@@ -340,11 +314,6 @@ namespace RolePlaying
                 }
             }
         }
-
-
-
-
-
 
         /// <summary>
         /// Draw the screen
@@ -388,14 +357,12 @@ namespace RolePlaying
                     currentDialogue[i].text).X) / 2) - 20;
 
                 spriteBatch.DrawString(currentDialogue[i].font,
-                    currentDialogue[i].text, dialoguePosition, 
+                    currentDialogue[i].text, dialoguePosition,
                     currentDialogue[i].color);
                 dialoguePosition.Y += currentDialogue[i].font.LineSpacing;
             }
 
             spriteBatch.End();
         }
-
-
     }
 }

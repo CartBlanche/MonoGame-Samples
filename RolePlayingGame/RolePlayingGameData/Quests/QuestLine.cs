@@ -69,6 +69,7 @@ namespace RolePlaying.Data
         public List<Quest> Quests
         {
             get { return quests; }
+            set { quests = value; }
         }
 
 
@@ -128,21 +129,22 @@ namespace RolePlaying.Data
             return questLine;
         }
 
-        public static QuestLine Load(string questPath)
+        public static QuestLine Load(string questPath, ContentManager contentManager)
         {
             var asset = XmlHelper.GetAssetElementFromXML(questPath);
 
-            var name = asset.Element("Name").Value;
-            var questContentNames = asset.Element("QuestContentNames")
-                .Elements("Item")
-                .Select(x => (string)x)
-                .ToList();
-
             var loadedQuestLine = new QuestLine
             {
-                Name = name,
-                QuestContentNames = questContentNames,
+                Name = asset.Element("Name").Value,
+                QuestContentNames = asset.Element("QuestContentNames")?
+                    .Elements("Item")
+                    .Select(x => (string)x)
+                    .ToList(),
             };
+
+            loadedQuestLine.Quests = loadedQuestLine.QuestContentNames
+                .Select(x => Quest.Load(x, contentManager))
+                .ToList() ?? new List<Quest>();
 
             return loadedQuestLine;
         }

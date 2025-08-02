@@ -104,8 +104,7 @@ namespace RolePlaying.Data
                 foreach (ContentEntry<Monster> randomCombatEntry in randomCombat.Entries)
                 {
                     randomCombatEntry.Content = input.ContentManager.Load<Monster>(
-                        Path.Combine(@"Characters\Monsters",
-                            randomCombatEntry.ContentName));
+                        Path.Combine("Characters", "Monsters", randomCombatEntry.ContentName));
                 }
 
                 return randomCombat;

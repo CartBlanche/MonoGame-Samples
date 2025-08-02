@@ -315,6 +315,9 @@ namespace RolePlaying.Data
                 Name = (string)asset.Element("Name"),
                 Direction = Enum.TryParse<Direction>((string)asset.Element("Direction"), out var dir) ? dir : default,
                 MapSprite = AnimatingSprite.Load(asset.Element("MapSprite"), contentManager),
+                MapPosition = asset.Element("MapPosition") != null ? new Point(
+                    (int)asset.Element("MapPosition").Element("X"),
+                    (int)asset.Element("MapPosition").Element("Y")) : Point.Zero,
                 WalkingSprite = AnimatingSprite.Load(asset.Element("WalkingSprite"), contentManager),
                 MapIdleAnimationInterval = (int)asset.Element("MapIdleAnimationInterval"),
                 CharacterClassContentName = (string)asset.Element("CharacterClassContentName"),
@@ -338,7 +341,7 @@ namespace RolePlaying.Data
                 Inventory = asset.Element("Inventory")?.Elements("Item")
                     .Select(x => new ContentEntry<Gear>
                     {
-                        Content = Item.Load(Path.Combine(@"Gear", (string)x.Element("ContentName")), contentManager),
+                        Content = Item.Load(Path.Combine("Gear", (string)x.Element("ContentName")), contentManager),
                         ContentName = (string)x.Element("ContentName"),
                         Count = (int?)x.Element("Count") ?? 1 // Default to 1 if not specified
                     })
@@ -349,7 +352,7 @@ namespace RolePlaying.Data
             player.CharacterClass = CharacterClass.Load(Path.Combine("CharacterClasses", player.CharacterClassContentName), contentManager);
             foreach (var item in player.InitialEquipmentContentNames)
             {
-                player.EquippedEquipment.Add(Equipment.Load(Path.Combine(@"Gear", item), contentManager));
+                player.EquippedEquipment.Add(Equipment.Load(Path.Combine("Gear", item), contentManager));
             }
 
             player.AddStandardCharacterCombatAnimations();

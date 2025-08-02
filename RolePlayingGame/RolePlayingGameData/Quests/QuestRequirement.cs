@@ -6,6 +6,7 @@
 //-----------------------------------------------------------------------------
 
 using System;
+using System.IO;
 using Microsoft.Xna.Framework.Content;
 
 namespace RolePlaying.Data
@@ -55,13 +56,12 @@ namespace RolePlaying.Data
                 if (typeof(T) == typeof(Gear))
                 {
                     requirement.Content = input.ContentManager.Load<T>(
-                        System.IO.Path.Combine("Gear", requirement.ContentName));
+                        Path.Combine("Gear", requirement.ContentName));
                 }
                 else if (typeof(T) == typeof(Monster))
                 {
                     requirement.Content = input.ContentManager.Load<T>(
-                        System.IO.Path.Combine(@"Characters\Monsters", 
-                        requirement.ContentName));
+                        Path.Combine("Characters", "Monsters", requirement.ContentName));
                 }
 
                 return requirement;

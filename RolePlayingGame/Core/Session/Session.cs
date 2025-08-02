@@ -47,9 +47,9 @@ namespace RolePlaying
         {
             // make sure the content name is valid
             string mapContentName = contentName;
-            if (!mapContentName.StartsWith(@"Maps\"))
+            if (!mapContentName.StartsWith("Maps" + Path.DirectorySeparatorChar.ToString()))
             {
-                mapContentName = Path.Combine(@"Maps", mapContentName);
+                mapContentName = Path.Combine("Maps", mapContentName);
             }
 
             // check for trivial movement - typically intra-map portals
@@ -418,7 +418,7 @@ namespace RolePlaying
                 return;
             }
 
-            // if we don't have a quest, then take the next one from teh list
+            // if we don't have a quest, then take the next one from the list
             if ((quest == null) && (questLine.Quests.Count > 0) &&
                 !Session.IsQuestLineComplete)
             {
@@ -1495,18 +1495,16 @@ namespace RolePlaying
             ChangeMap(gameStartDescription.MapContentName, null);
 
             // set up the initial party
-            ContentManager content = singleton.screenManager.Game.Content;
-            singleton.party = new Party(gameStartDescription, content);
+            ContentManager contentManager = singleton.screenManager.Game.Content;
+            singleton.party = new Party(gameStartDescription, contentManager);
 
             /* var loadedQuestLine = content.Load<QuestLine>(
-                Path.Combine(@"Quests\QuestLines",
-                gameStartDescription.QuestLineContentName)).Clone() as QuestLine;*/
+                Path.Combine("Quests", "QuestLines", gameStartDescription.QuestLineContentName)).Clone() as QuestLine;*/
 
-            var loadedQuestLine = QuestLine.Load(Path.Combine(@"Quests\QuestLines",
-                gameStartDescription.QuestLineContentName));
+            var questLine = QuestLine.Load(Path.Combine("Quests", "QuestLines", gameStartDescription.QuestLineContentName), contentManager);
 
             // load the quest line
-            singleton.questLine = loadedQuestLine;
+            singleton.questLine = questLine;
         }
 
         /// <summary>

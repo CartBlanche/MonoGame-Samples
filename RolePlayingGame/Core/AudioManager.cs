@@ -21,17 +21,10 @@ namespace RolePlaying
     /// </remarks>
     public class AudioManager : GameComponent
     {
-
-
         /// <summary>
         /// The singleton for this type.
         /// </summary>
         private static AudioManager audioManager = null;
-
-
-
-
-
 
         /// <summary>
         /// The audio engine used to play all cues.
@@ -48,11 +41,6 @@ namespace RolePlaying
         /// </summary>
         private WaveBank waveBank;
 
-
-
-
-
-
         /// <summary>
         /// Constructs the manager for audio playback of all cues.
         /// </summary>
@@ -64,13 +52,13 @@ namespace RolePlaying
             string soundBankFile)
             : base(game)
         {
-            /*TODO: try
+            try
             {
                 audioEngine = new AudioEngine(settingsFile);
                 waveBank = new WaveBank(audioEngine, waveBankFile);
                 soundBank = new SoundBank(audioEngine, soundBankFile);
             }
-            catch (NoAudioHardwareException)*/
+            catch (NoAudioHardwareException)
             {
                 // silently fall back to silence
                 audioEngine = null;
@@ -79,7 +67,6 @@ namespace RolePlaying
             }
         }
 
-
         /// <summary>
         /// Initialize the static AudioManager functionality.
         /// </summary>
@@ -87,21 +74,19 @@ namespace RolePlaying
         /// <param name="settingsFile">The filename of the XACT settings file.</param>
         /// <param name="waveBankFile">The filename of the XACT wavebank file.</param>
         /// <param name="soundBankFile">The filename of the XACT soundbank file.</param>
-        public static void Initialize(Game game, string settingsFile, 
+        public static void Initialize(Game game, string settingsFile,
             string waveBankFile, string soundBankFile)
         {
-            audioManager = new AudioManager(game, settingsFile, waveBankFile,
+            audioManager = new AudioManager(game,
+                settingsFile,
+                waveBankFile,
                 soundBankFile);
+
             if (game != null)
             {
                 game.Components.Add(audioManager);
             }
         }
-
-
-
-
-
 
         /// <summary>
         /// Retrieve a cue by name.
@@ -119,7 +104,6 @@ namespace RolePlaying
             return audioManager.soundBank.GetCue(cueName);
         }
 
-
         /// <summary>
         /// Plays a cue by name.
         /// </summary>
@@ -133,22 +117,15 @@ namespace RolePlaying
             }
         }
 
-
-
-
-
-
         /// <summary>
         /// The cue for the music currently playing, if any.
         /// </summary>
         private Cue musicCue;
 
-
         /// <summary>
         /// Stack of music cue names, for layered music playback.
         /// </summary>
         private Stack<string> musicCueNameStack = new Stack<string>();
-
 
         /// <summary>
         /// Plays the desired music, clearing the stack of music cues.
@@ -163,7 +140,6 @@ namespace RolePlaying
                 PushMusic(cueName);
             }
         }
-
 
         /// <summary>
         /// Plays the music for this game, adding it to the music stack.
@@ -193,7 +169,6 @@ namespace RolePlaying
                 }
             }
         }
-
 
         /// <summary>
         /// Stops the current music and plays the previous music on the stack.
@@ -234,7 +209,6 @@ namespace RolePlaying
             }
         }
 
-
         /// <summary>
         /// Stop music playback, clearing the cue.
         /// </summary>
@@ -251,11 +225,6 @@ namespace RolePlaying
                 }
             }
         }
-
-
-
-
-
 
         /// <summary>
         /// Update the audio manager, particularly the engine.
@@ -276,11 +245,6 @@ namespace RolePlaying
 
             base.Update(gameTime);
         }
-
-
-
-
-
 
         /// <summary>
         /// Clean up the component when it is disposing.
@@ -314,7 +278,5 @@ namespace RolePlaying
                 base.Dispose(disposing);
             }
         }
-
-
     }
 }

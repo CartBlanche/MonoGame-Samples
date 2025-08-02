@@ -8,6 +8,9 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
+using System.Xml.Linq;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 
 namespace RolePlaying.Data
@@ -47,11 +50,6 @@ namespace RolePlaying.Data
             get { return stage; }
             set { stage = value; }
         }
-        
-
-
-
-
 
         /// <summary>
         /// The name of the quest.
@@ -67,7 +65,6 @@ namespace RolePlaying.Data
             set { name = value; }
         }
 
-
         /// <summary>
         /// A description of the quest.
         /// </summary>
@@ -81,7 +78,6 @@ namespace RolePlaying.Data
             get { return description; }
             set { description = value; }
         }
-
 
         /// <summary>
         /// A message describing the objective of the quest, 
@@ -99,7 +95,6 @@ namespace RolePlaying.Data
             set { objectiveMessage = value; }
         }
 
-
         /// <summary>
         /// A message announcing the completion of the quest, 
         /// presented when the player reaches the goals of the quest.
@@ -111,11 +106,6 @@ namespace RolePlaying.Data
             get { return completionMessage; }
             set { completionMessage = value; }
         }
-
-
-
-
-
 
         /// <summary>
         /// The gear that the player must have to finish the quest.
@@ -132,7 +122,6 @@ namespace RolePlaying.Data
             set { gearRequirements = value; }
         }
 
-
         /// <summary>
         /// The monsters that must be killed to finish the quest.
         /// </summary>
@@ -148,7 +137,6 @@ namespace RolePlaying.Data
             set { monsterRequirements = value; }
         }
 
-
         /// <summary>
         /// Returns true if all requirements for this quest have been met.
         /// </summary>
@@ -163,7 +151,7 @@ namespace RolePlaying.Data
                         return false;
                     }
                 }
-                foreach (QuestRequirement<Monster> monsterRequirement 
+                foreach (QuestRequirement<Monster> monsterRequirement
                     in monsterRequirements)
                 {
                     if (monsterRequirement.CompletedCount < monsterRequirement.Count)
@@ -175,15 +163,10 @@ namespace RolePlaying.Data
             }
         }
 
-
-
-
-
-
         /// <summary>
         /// The fixed combat encounters added to the world when this quest is active.
         /// </summary>
-        private List<WorldEntry<FixedCombat>> fixedCombatEntries = 
+        private List<WorldEntry<FixedCombat>> fixedCombatEntries =
             new List<WorldEntry<FixedCombat>>();
 
         /// <summary>
@@ -194,7 +177,6 @@ namespace RolePlaying.Data
             get { return fixedCombatEntries; }
             set { fixedCombatEntries = value; }
         }
-
 
         /// <summary>
         /// The chests added to thew orld when this quest is active.
@@ -209,11 +191,6 @@ namespace RolePlaying.Data
             get { return chestEntries; }
             set { chestEntries = value; }
         }
-
-
-
-
-
 
         /// <summary>
         /// The map with the destination Npc, if any.
@@ -230,7 +207,6 @@ namespace RolePlaying.Data
             set { destinationMapContentName = value; }
         }
 
-
         /// <summary>
         /// The Npc that the party must visit to finish the quest, if any.
         /// </summary>
@@ -245,7 +221,6 @@ namespace RolePlaying.Data
             get { return destinationNpcContentName; }
             set { destinationNpcContentName = value; }
         }
-
 
         /// <summary>
         /// The message shown when the party is eligible to complete the quest, if any.
@@ -262,11 +237,6 @@ namespace RolePlaying.Data
             set { destinationObjectiveMessage = value; }
         }
 
-
-
-
-
-
         /// <summary>
         /// The number of experience points given to each party member as a reward.
         /// </summary>
@@ -281,7 +251,6 @@ namespace RolePlaying.Data
             get { return experienceReward; }
             set { experienceReward = value; }
         }
-
 
         /// <summary>
         /// The amount of gold given to the party as a reward.
@@ -298,7 +267,6 @@ namespace RolePlaying.Data
             set { goldReward = value; }
         }
 
-
         /// <summary>
         /// The content names of the gear given to the party as a reward.
         /// </summary>
@@ -314,7 +282,6 @@ namespace RolePlaying.Data
             set { gearRewardContentNames = value; }
         }
 
-
         /// <summary>
         /// The gear given to the party as a reward.
         /// </summary>
@@ -329,11 +296,6 @@ namespace RolePlaying.Data
             get { return gearRewards; }
             set { gearRewards = value; }
         }
-
-
-
-
-
 
         /// <summary>
         /// Reads a Quest object from the content pipeline.
@@ -372,7 +334,7 @@ namespace RolePlaying.Data
                 {
                     fixedCombatEntry.Content =
                         input.ContentManager.Load<FixedCombat>(
-                        System.IO.Path.Combine(@"Maps\FixedCombats",
+                        Path.Combine("Maps", "FixedCombats",
                         fixedCombatEntry.ContentName));
                     // clone the map sprite in the entry, as there may be many entries
                     // per FixedCombat
@@ -392,8 +354,7 @@ namespace RolePlaying.Data
                 foreach (WorldEntry<Chest> chestEntry in quest.ChestEntries)
                 {
                     chestEntry.Content = input.ContentManager.Load<Chest>(
-                        System.IO.Path.Combine(@"Maps\Chests",
-                        chestEntry.ContentName)).Clone() as Chest;
+                        Path.Combine("Maps", "Chests", chestEntry.ContentName)).Clone() as Chest;
                 }
 
                 quest.DestinationMapContentName = input.ReadString();
@@ -414,11 +375,6 @@ namespace RolePlaying.Data
                 return quest;
             }
         }
-
-
-
-
-
 
         public object Clone()
         {
@@ -455,6 +411,111 @@ namespace RolePlaying.Data
             return quest;
         }
 
+        internal static Quest Load(string questContentName, ContentManager contentManager)
+        {
+            var questElement = XmlHelper.GetAssetElementFromXML(Path.Combine("Quests", questContentName));
+            var quest = new Quest
+            {
+                AssetName = questContentName,
+                Name = (string)questElement.Element("Name"),
+                Description = (string)questElement.Element("Description"),
+                ObjectiveMessage = (string)questElement.Element("ObjectiveMessage"),
+                CompletionMessage = (string)questElement.Element("CompletionMessage"),
+                DestinationMapContentName = (string)questElement.Element("DestinationMapContentName"),
+                DestinationNpcContentName = (string)questElement.Element("DestinationNpcContentName"),
+                DestinationObjectiveMessage = (string)questElement.Element("DestinationObjectiveMessage"),
+                ExperienceReward = (int?)questElement.Element("ExperienceReward") ?? 0,
+                GoldReward = (int?)questElement.Element("GoldReward") ?? 0,
+                Stage = Enum.TryParse<QuestStage>((string)questElement.Element("Stage"), out var stage) ? stage : QuestStage.NotStarted,
+                GearRewardContentNames = questElement.Element("GearRewardContentNames")?
+                    .Elements("Item")
+                    .Select(x => (string)x)
+                    .ToList() ?? new List<string>(),
+                GearRequirements = questElement.Element("GearRequirements")?
+                    .Elements("Item")
+                    .Select(gearElement =>
+                    {
+                        var gearContentName = (string)gearElement.Element("ContentName");
+                        var gearCount = (int?)gearElement.Element("Count") ?? 1;
 
+                        var gear = Equipment.Load(Path.Combine("Gear", gearContentName), contentManager);
+
+                        return new QuestRequirement<Gear>
+                        {
+                            ContentName = gearContentName,
+                            Count = gearCount,
+                            Content = gear
+                        };
+                    }).ToList() ?? new List<QuestRequirement<Gear>>(),
+                MonsterRequirements = questElement.Element("MonsterRequirements")?
+                    .Elements("Item")
+                    .Select(entry =>
+                    {
+                        var monsterContentName = (string)entry.Element("ContentName");
+                        var monsterCount = (int?)entry.Element("Count") ?? 1;
+
+                        var monster = Monster.Load(Path.Combine("Characters", "Monsters", monsterContentName), contentManager);
+
+                        return new QuestRequirement<Monster>
+                        {
+                            ContentName = monsterContentName,
+                            Count = monsterCount,
+                            Content = monster
+                        };
+                    }).ToList() ?? new List<QuestRequirement<Monster>>(),
+                FixedCombatEntries = questElement.Element("FixedCombatEntries")?.Elements("Item")
+                    .Select(item =>
+                    {
+                        var contentName = (string)item.Element("ContentName");
+                        var direction = Enum.TryParse<Direction>((string)item.Element("Direction"), out var dir) ? dir : default;
+                        var mapPosition = new Point(
+                            int.Parse(item.Element("MapPosition").Value.Split(' ')[0]),
+                            int.Parse(item.Element("MapPosition").Value.Split(' ')[1]));
+
+                        // Load the fixed combat asset XML using contentName
+                        var fixedCombat = FixedCombat.Load(Path.Combine("Maps", "FixedCombats", contentName), contentManager);
+
+                        AnimatingSprite animatingSprite = null;
+
+                        if (fixedCombat.Entries.Count > 0)
+                        {
+                            animatingSprite = fixedCombat.Entries[0].Content.MapSprite.Clone() as AnimatingSprite;
+                        }
+
+                        return new WorldEntry<FixedCombat>
+                        {
+                            ContentName = contentName,
+                            Content = fixedCombat,
+                            Direction = direction,
+                            MapPosition = mapPosition,
+                            MapSprite = animatingSprite,
+                        };
+                    }).ToList() ?? new List<WorldEntry<FixedCombat>>(),
+                ChestEntries = questElement.Element("ChestEntries")?
+                    .Elements("Item")
+                    .Select(chestRequirement =>
+                    {
+                        var contentName = (string)chestRequirement.Element("ContentName");
+                        var direction = Enum.TryParse<Direction>((string)chestRequirement.Element("Direction"), out var dir) ? dir : default;
+                        var mapPosition = new Point(
+                            int.Parse(chestRequirement.Element("MapPosition").Value.Split(' ')[0]),
+                            int.Parse(chestRequirement.Element("MapPosition").Value.Split(' ')[1]));
+
+                        // Load the QuestNpc asset XML using contentName
+                        var chestAsset = XmlHelper.GetAssetElementFromXML(Path.Combine("Maps", "Chests", contentName));
+                        var chest = Chest.Load(chestAsset, contentManager);
+
+                        return new WorldEntry<Chest>
+                        {
+                            ContentName = contentName,
+                            Content = chest,
+                            Direction = direction,
+                            MapPosition = mapPosition
+                        };
+                    }).ToList() ?? new List<WorldEntry<Chest>>(),
+            };
+
+            return quest;
+        }
     }
 }

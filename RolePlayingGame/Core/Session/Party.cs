@@ -164,7 +164,7 @@ namespace RolePlaying
             newEntry.Content = gear;
             newEntry.Count = count;
             newEntry.ContentName = gear.AssetName;
-            if (newEntry.ContentName.StartsWith(@"Gear\"))
+            if (newEntry.ContentName.StartsWith("Gear" + Path.DirectorySeparatorChar.ToString()))
             {
                 newEntry.ContentName = newEntry.ContentName.Substring(5);
             }
@@ -295,10 +295,10 @@ namespace RolePlaying
             {
                 // load the player and add it to the party
                 /* TODO var player = contentManager.Load<Player>(
-                    Path.Combine(@"Characters\Players", contentName)).Clone()
+                    Path.Combine("Characters", "Players", contentName)).Clone()
                     as Player;*/
 
-                var player = Player.Load(Path.Combine(@"Characters\Players", contentName), contentManager);
+                var player = Player.Load(Path.Combine("Characters", "Players", contentName), contentManager);
 
                 JoinParty(player);
             }
@@ -350,7 +350,7 @@ namespace RolePlaying
             foreach (ContentEntry<Gear> entry in inventory)
             {
                 entry.Content = contentManager.Load<Gear>(
-                    Path.Combine(@"Gear", entry.ContentName));
+                    Path.Combine("Gear", entry.ContentName));
             }
 
             // set the party gold

@@ -47,7 +47,7 @@ namespace RolePlaying.Data
                         var monsterContentName = (string)entry.Element("ContentName");
                         var monsterCount = (int?)entry.Element("Count") ?? 1;
 
-                        var monster = Monster.Load(Path.Combine(@"Characters\Monsters", monsterContentName), contentManager);
+                        var monster = Monster.Load(Path.Combine("Characters", "Monsters", monsterContentName), contentManager);
 
                         return new ContentEntry<Monster>
                         {

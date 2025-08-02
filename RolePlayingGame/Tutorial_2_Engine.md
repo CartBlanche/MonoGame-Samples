@@ -194,7 +194,7 @@ Map existingInstance)
 
                 map.TextureName \= input.ReadString();  
                 map.texture \= input.ContentManager.Load\<Texture2D\>(  
-                    System.IO.Path.Combine(@"Textures\\Maps\\NonCombat",  
+                    System.IO.Path.Combine("Textures", "Maps", "NonCombat",  
                     map.TextureName));  
                 map.tilesPerRow \= map.texture.Width / map.TileSize.X;
 
@@ -425,9 +425,9 @@ Next, we need to make sure that the map name in the **portalEntry** object is a 
         // make sure the content name is valid  
         string mapContentName \=   
             portalEntry.Content.DestinationMapContentName;  
-        if (\!mapContentName.StartsWith(@"Maps\\"))  
+        if (\!mapContentName.StartsWith("Maps" + Path.IO.DirectorySeparator.ToString()))  
         {  
-            mapContentName \= System.IO.Path.Combine(@"Maps", mapContentName);  
+            mapContentName \= System.IO.Path.Combine("Maps", mapContentName);  
         }  
         return false;  
     }
@@ -447,9 +447,9 @@ Finally, add calls to load the new map and to **TileEngine.SetMap**, passing in 
         // make sure the content name is valid  
         string mapContentName \=   
             portalEntry.Content.DestinationMapContentName;  
-        if (\!mapContentName.StartsWith(@"Maps\\"))  
+        if (\!mapContentName.StartsWith("Maps" + + Path.IO.DirectorySeparator.ToString()))  
         {  
-            mapContentName \= System.IO.Path.Combine(@"Maps", mapContentName);  
+            mapContentName \= System.IO.Path.Combine("Maps", mapContentName);  
         }  
         // load the new map  
         Map newMap \= ContentManager.Load\<Map\>(mapContentName);  

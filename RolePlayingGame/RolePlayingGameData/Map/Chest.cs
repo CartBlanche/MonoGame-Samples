@@ -120,13 +120,12 @@ namespace RolePlaying.Data
                 foreach (ContentEntry<Gear> contentEntry in chest.Entries)
                 {
                     contentEntry.Content = input.ContentManager.Load<Gear>(
-                        System.IO.Path.Combine(@"Gear",
-                        contentEntry.ContentName));
+                        Path.Combine("Gear",  contentEntry.ContentName));
                 }
 
                 chest.TextureName = input.ReadString();
                 chest.Texture = input.ContentManager.Load<Texture2D>(
-                    System.IO.Path.Combine(@"Textures\Chests", chest.TextureName));
+                    Path.Combine("Textures", "Chests", chest.TextureName));
 
                 return chest;
             }
@@ -173,7 +172,7 @@ namespace RolePlaying.Data
                 Entries = chestAsset.Element("Entries")?.Elements("Item").Select(chestItem =>
                 {
                     var contentName = (string)chestItem.Element("ContentName");
-                    var gearAsset = XmlHelper.GetAssetElementFromXML(Path.Combine(@"Gear", contentName));
+                    var gearAsset = XmlHelper.GetAssetElementFromXML(Path.Combine("Gear", contentName));
                     var gear = new Equipment
                     {
                         AssetName = contentName,
@@ -182,7 +181,7 @@ namespace RolePlaying.Data
                         GoldValue = (int?)gearAsset.Element("GoldValue") ?? 0,
                         IconTextureName = (string)gearAsset.Element("IconTextureName"),
                         IconTexture = contentManager.Load<Texture2D>(
-                            Path.Combine(@"Textures\Gear", (string)gearAsset.Element("IconTextureName"))),
+                            Path.Combine("Textures", "Gear", (string)gearAsset.Element("IconTextureName"))),
                         IsDroppable = (bool?)gearAsset.Element("IsDroppable") ?? true,
 
                         // Add other properties as needed

@@ -5,6 +5,7 @@
 // Copyright (C) Microsoft Corporation. All rights reserved.
 //-----------------------------------------------------------------------------
 
+using System.IO;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Content;
@@ -44,8 +45,10 @@ namespace RolePlaying
             // Components.Add(new GamerServicesComponent(this));
 
             // add the audio manager
-            AudioManager.Initialize(this, @"Content\Audio\RpgAudio.xgs",
-                @"Content\Audio\Wave Bank.xwb", @"Content\Audio\Sound Bank.xsb");
+            AudioManager.Initialize(this,
+                Path.Combine("Content", "Audio", "RpgAudio.xgs"),
+                Path.Combine("Content", "Audio", "Wave Bank.xwb"),
+                Path.Combine("Content", "Audio", "Sound Bank.xsb"));
 
             // add the screen manager
             screenManager = new ScreenManager(this);

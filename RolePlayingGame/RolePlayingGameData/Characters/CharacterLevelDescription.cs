@@ -8,6 +8,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.IO;
 using System.Linq;
 using System.Xml.Linq;
 using Microsoft.Xna.Framework.Content;
@@ -124,7 +125,7 @@ namespace RolePlaying.Data
                 characterLevelDescription.Spells = new List<Spell>();
                 foreach (var spellContentName in characterLevelDescription.SpellContentNames)
                 {
-                    var spell = Spell.Load(System.IO.Path.Combine("Spells", spellContentName), contentManager);
+                    var spell = Spell.Load(Path.Combine("Spells", spellContentName), contentManager);
                     characterLevelDescription.Spells.Add(spell);
                 }
             }

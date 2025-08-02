@@ -7,6 +7,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
@@ -130,7 +131,7 @@ namespace RolePlaying.Data
                 WelcomeMessage = asset.Element("WelcomeMessage").Value,
                 ShopkeeperTextureName = asset.Element("ShopkeeperTextureName").Value,
                 ShopkeeperTexture = contentManager.Load<Texture2D>(
-                    System.IO.Path.Combine(@"Textures\Characters\Portraits",
+                    Path.Combine("Textures", "Characters", "Portraits",
                     asset.Element("ShopkeeperTextureName").Value)),
                 StoreCategories = asset.Element("StoreCategories")
                     .Elements("Item")
@@ -161,7 +162,7 @@ namespace RolePlaying.Data
                 store.WelcomeMessage = input.ReadString();
                 store.ShopkeeperTextureName = input.ReadString();
                 store.shopkeeperTexture = input.ContentManager.Load<Texture2D>(
-                    System.IO.Path.Combine(@"Textures\Characters\Portraits",
+                    Path.Combine("Textures", "Characters", "Portraits",
                     store.ShopkeeperTextureName));
 
                 return store;

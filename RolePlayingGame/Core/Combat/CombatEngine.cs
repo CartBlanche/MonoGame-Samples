@@ -1594,7 +1594,7 @@ namespace RolePlaying
                     foreach (string gearRewardName in gearRewardNames)
                     {
                         gearRewards.Add(Session.ScreenManager.Game.Content.Load<Gear>(
-                            Path.Combine(@"Gear", gearRewardName)));
+                            Path.Combine("Gear", gearRewardName)));
                     }
                     // add the reward screen
                     Session.ScreenManager.AddScreen(new RewardsScreen(

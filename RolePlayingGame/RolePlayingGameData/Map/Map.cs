@@ -617,10 +617,10 @@ namespace RolePlaying.Data
                     int.Parse(asset.Element("SpawnMapPosition").Value.Split(' ')[1])), // e.g. [9, 7]
                 TextureName = (string)asset.Element("TextureName"),
                 Texture = contentManager.Load<Texture2D>(
-                    Path.Combine(@"Textures\Maps\NonCombat", (string)asset.Element("TextureName"))),
+                    Path.Combine("Textures", "Maps", "NonCombat", (string)asset.Element("TextureName"))),
                 CombatTextureName = (string)asset.Element("CombatTextureName"),
                 CombatTexture = contentManager.Load<Texture2D>(
-                    Path.Combine(@"Textures\Maps\Combat", (string)asset.Element("CombatTextureName"))),
+                    Path.Combine("Textures", "Maps", "Combat", (string)asset.Element("CombatTextureName"))),
                 MusicCueName = (string)asset.Element("MusicCueName"),
                 CombatMusicCueName = (string)asset.Element("CombatMusicCueName"),
                 BaseLayer = asset.Element("BaseLayer").Value
@@ -689,7 +689,7 @@ namespace RolePlaying.Data
                             int.Parse(item.Element("MapPosition").Value.Split(' ')[1]));
 
                         // Load the QuestNpc asset XML using contentName
-                        var chestAsset = XmlHelper.GetAssetElementFromXML(Path.Combine(@"Maps/Chests", contentName));
+                        var chestAsset = XmlHelper.GetAssetElementFromXML(Path.Combine("Maps", "Chests", contentName));
                         var chest = Chest.Load(chestAsset, contentManager);
 
                         return new MapEntry<Chest>
@@ -710,7 +710,7 @@ namespace RolePlaying.Data
                             int.Parse(item.Element("MapPosition").Value.Split(' ')[1]));
 
                         // Load the fixed combat asset XML using contentName
-                        var fixedCombat = FixedCombat.Load(Path.Combine(@"Maps/FixedCombats", contentName), contentManager);
+                        var fixedCombat = FixedCombat.Load(Path.Combine("Maps", "FixedCombats", contentName), contentManager);
 
                         AnimatingSprite animatingSprite = null;
 
@@ -738,7 +738,7 @@ namespace RolePlaying.Data
                             int.Parse(item.Element("MapPosition").Value.Split(' ')[1]));
 
                         // Load the PlayerNpc asset XML using contentName
-                        var playerNpc = Player.Load(Path.Combine(@"Characters/Players", contentName), contentManager);
+                        var playerNpc = Player.Load(Path.Combine("Characters", "Players", contentName), contentManager);
 
                         return new MapEntry<Player>
                         {
@@ -758,7 +758,7 @@ namespace RolePlaying.Data
                             int.Parse(item.Element("MapPosition").Value.Split(' ')[1]));
 
                         // Load the QuestNpc asset XML using contentName
-                        var questNpc = QuestNpc.Load(Path.Combine(@"Characters/QuestNPCs", contentName), contentManager);
+                        var questNpc = QuestNpc.Load(Path.Combine("Characters", "QuestNPCs", contentName), contentManager);
 
                         return new MapEntry<QuestNpc>
                         {
@@ -778,7 +778,7 @@ namespace RolePlaying.Data
                             int.Parse(item.Element("MapPosition").Value.Split(' ')[1]));
 
                         // Load the Inn asset XML using contentName
-                        var inn = Inn.Load(Path.Combine(@"Maps/Inns", contentName), contentManager);
+                        var inn = Inn.Load(Path.Combine("Maps", "Inns", contentName), contentManager);
 
                         return new MapEntry<Inn>
                         {
@@ -798,7 +798,7 @@ namespace RolePlaying.Data
                             int.Parse(item.Element("MapPosition").Value.Split(' ')[1]));
 
                         // Load the Store asset XML using contentName
-                        var store = Store.Load(Path.Combine(@"Maps/Stores", contentName), contentManager);
+                        var store = Store.Load(Path.Combine("Maps", "Stores", contentName), contentManager);
 
                         return new MapEntry<Store>
                         {
