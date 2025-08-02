@@ -17,7 +17,7 @@ This repository contains a collection of cross-platform MonoGame samples and gam
 | [Draw2D](Draw2D/README.md) | Basic 2D drawing and sprite rendering. |
 | [FarseerPhysics](FarseerPhysics/README.md) | Physics engine integration sample. |
 | [Flocking](Flocking/README.md) | Flocking AI behaviors. |
-| [GameDevelopmentbyExample](GameDevelopmentbyExample/README.md) | 4 2D samples from the "XNA Game Development by Example" book. |
+| [GameDevelopmentbyExample](GameDevelopmentbyExample/README.md) | 4 2D samples from the "XNA Game Development by Example" book. Namely: [AsteroidBeltAssault](GameDevelopmentbyExample/AsteroidBeltAssault/README.md), [FloodControl](GameDevelopmentbyExample/FloodControl/README.md), [GemstoneHunter](GameDevelopmentbyExample/GemstoneHunter/README.md), [RobotRampage](GameDevelopmentbyExample/RobotRampage/README.md) |
 | [GameStateManagement](GameStateManagement/README.md) | Sample for managing game states and screens. |
 | [GooCursor](GooCursor/README.md) | Custom cursor rendering and effects. |
 | [HoneycombRush](HoneycombRush/README.md) | Arcade-style honeycomb collection game. |
