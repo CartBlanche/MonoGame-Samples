@@ -335,7 +335,7 @@ namespace RolePlaying
                 {
                     // TODO var equipment = contentManager.Load<Equipment>(equipmentAssetName);
 
-                    var equipment = Equipment.Load(equipmentAssetName);
+                    var equipment = Equipment.Load(equipmentAssetName, contentManager);
 
                     player.Equip(equipment);
                 }

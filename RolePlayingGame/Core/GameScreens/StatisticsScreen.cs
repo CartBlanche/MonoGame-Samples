@@ -22,9 +22,6 @@ namespace RolePlaying
         /// </summary>
         private Player player;
 
-
-
-
         private Texture2D statisticsScreen;
         private Texture2D selectButton;
         private Texture2D backButton;
@@ -43,23 +40,18 @@ namespace RolePlaying
         private int playerIndex = 0;
         private AnimatingSprite screenAnimation;
 
-
-
-
-
-
         private readonly Vector2 playerTextPosition = new Vector2(515, 200);
         private Vector2 currentTextPosition;
         private readonly Vector2 scoreBoardPosition = new Vector2(1160, 354);
         private Vector2 placeTextMid;
         private Vector2 statisticsNamePosition;
         private readonly Vector2 shieldPosition = new Vector2(1124, 253);
-        private readonly Vector2 idlePortraitPosition = new Vector2(300f, 380f);
+        private readonly Vector2 idlePortraitPosition = new Vector2(300f, 400f);
         private readonly Vector2 dropButtonPosition = new Vector2(900, 640);
         private readonly Vector2 statisticsBorderPosition = new Vector2(180, 147);
         private readonly Vector2 borderLinePosition = new Vector2(184, 523);
-        private readonly Vector2 characterNamePosition = new Vector2(330, 180);
-        private readonly Vector2 classNamePosition = new Vector2(330, 465);
+        private readonly Vector2 characterNamePosition = new Vector2(330, 188);
+        private readonly Vector2 classNamePosition = new Vector2(330, 460);
         private Vector2 plankPosition;
         private readonly Vector2 goldIconPosition = new Vector2(490, 640);
         private readonly Vector2 weaponPosition = new Vector2(790, 220);
@@ -72,16 +64,10 @@ namespace RolePlaying
         private readonly Vector2 backButtonPosition = new Vector2(80, 640);
         private readonly Vector2 goldPosition = new Vector2(565, 648);
 
-
-
-
-
-
         /// <summary>
         /// Creates a new StatisticsScreen object for the first party member.
         /// </summary>
         public StatisticsScreen() : this(Session.Party.Players[0]) { }
-
 
         /// <summary>
         /// Creates a new StatisticsScreen object for the given player.
@@ -100,7 +86,6 @@ namespace RolePlaying
             screenAnimation.AddAnimation(new Animation("Idle", 43, 48, 150, true));
             screenAnimation.PlayAnimation(0);
         }
-
 
         /// <summary>
         /// Loads graphics content from the content manager.
@@ -145,11 +130,6 @@ namespace RolePlaying
             plankPosition.X = (viewport.Width - plankTexture.Width) / 2;
             plankPosition.Y = 67f;
         }
-
-
-
-
-
 
         /// <summary>
         /// Handle user input.
@@ -203,13 +183,11 @@ namespace RolePlaying
                     {
                         player = newPlayer;
                         screenAnimation = new AnimatingSprite();
-                        screenAnimation.FrameDimensions =
-                            player.MapSprite.FrameDimensions;
+                        screenAnimation.FrameDimensions = player.MapSprite.FrameDimensions;
                         screenAnimation.FramesPerRow = player.MapSprite.FramesPerRow;
                         screenAnimation.SourceOffset = player.MapSprite.SourceOffset;
                         screenAnimation.Texture = player.MapSprite.Texture;
-                        screenAnimation.AddAnimation(
-                            new Animation("Idle", 43, 48, 150, true));
+                        screenAnimation.AddAnimation(new Animation("Idle", 43, 48, 150, true));
                         screenAnimation.PlayAnimation(0);
                     }
                 }
@@ -226,37 +204,28 @@ namespace RolePlaying
                     {
                         player = newPlayer;
                         screenAnimation = new AnimatingSprite();
-                        screenAnimation.FrameDimensions =
-                            player.MapSprite.FrameDimensions;
+                        screenAnimation.FrameDimensions = player.MapSprite.FrameDimensions;
                         screenAnimation.FramesPerRow = player.MapSprite.FramesPerRow;
                         screenAnimation.SourceOffset = player.MapSprite.SourceOffset;
                         screenAnimation.Texture = player.MapSprite.Texture;
-                        screenAnimation.AddAnimation(
-                            new Animation("Idle", 43, 48, 150, true));
+                        screenAnimation.AddAnimation(new Animation("Idle", 43, 48, 150, true));
                         screenAnimation.PlayAnimation(0);
                     }
                 }
             }
         }
 
-
-
-
-
-
         /// <summary>
         /// Draws the screen.
         /// </summary>
         public override void Draw(GameTime gameTime)
         {
-            screenAnimation.UpdateAnimation(
-                (float)gameTime.ElapsedGameTime.TotalSeconds);
+            screenAnimation.UpdateAnimation((float)gameTime.ElapsedGameTime.TotalSeconds);
 
             ScreenManager.SpriteBatch.Begin();
             DrawStatistics();
             ScreenManager.SpriteBatch.End();
         }
-
 
         /// <summary>
         /// Draws the player statistics.
@@ -285,7 +254,6 @@ namespace RolePlaying
             DrawPlayerDetails();
             DrawButtons();
         }
-
 
         /// <summary>
         /// D
@@ -319,9 +287,9 @@ namespace RolePlaying
 
                 // Draw Right Trigger Information
                 position.Y += rightTriggerButton.Height;
-                placeTextMid = Fonts.PlayerStatisticsFont.MeasureString("Inventory");
+                placeTextMid = Fonts.PlayerStatisticsFont.MeasureString("Equipment");
                 position.X += (leftTriggerButton.Width / 2) - placeTextMid.X / 2;
-                spriteBatch.DrawString(Fonts.PlayerStatisticsFont, "Inventory", position,
+                spriteBatch.DrawString(Fonts.PlayerStatisticsFont, "Equipment", position,
                     Color.Black);
             }
 
@@ -353,7 +321,6 @@ namespace RolePlaying
             // Draw Gold Icon
             spriteBatch.Draw(goldIcon, goldIconPosition, Color.White);
         }
-
 
         /// <summary>
         /// Draws player information.
@@ -418,7 +385,6 @@ namespace RolePlaying
                 Color.White);
         }
 
-
         /// <summary>
         /// Draws Current Selected Player Count to Total Player count
         /// </summary>
@@ -448,7 +414,6 @@ namespace RolePlaying
                 Session.Party.Players.Count.ToString(), position, Fonts.CountColor);
         }
 
-
         /// <summary>
         /// Draw Equipment Info of the player selected 
         /// </summary>
@@ -459,19 +424,14 @@ namespace RolePlaying
             // Character name
             currentTextPosition = characterNamePosition;
 
-            currentTextPosition.X -=
-                Fonts.HeaderFont.MeasureString(selectedPlayer.Name).X / 2;
-            spriteBatch.DrawString(Fonts.HeaderFont, selectedPlayer.Name,
-                currentTextPosition, Fonts.TitleColor);
+            currentTextPosition.X -= Fonts.HeaderFont.MeasureString(selectedPlayer.Name).X / 2;
+            spriteBatch.DrawString(Fonts.HeaderFont, selectedPlayer.Name, currentTextPosition, Fonts.TitleColor);
 
             // Class name
             currentTextPosition = classNamePosition;
-            currentTextPosition.X -= Fonts.GearInfoFont.MeasureString(
-                selectedPlayer.CharacterClass.Name).X / 2;
-            spriteBatch.DrawString(Fonts.GearInfoFont,
-                selectedPlayer.CharacterClass.Name, currentTextPosition, Color.Black);
+            currentTextPosition.X -= Fonts.HeaderFont.MeasureString(selectedPlayer.CharacterClass.Name).X / 2;
+            spriteBatch.DrawString(Fonts.HeaderFont, selectedPlayer.CharacterClass.Name, currentTextPosition, Color.Black);
         }
-
 
         /// <summary>
         /// Draw Base Amount Plus any Modifiers
@@ -506,7 +466,6 @@ namespace RolePlaying
                 selectedPlayer.CurrentStatistics.MagicalDefense,
                 currentTextPosition, Color.Black);
         }
-
 
         /// <summary>
         /// Draw the equipment statistics

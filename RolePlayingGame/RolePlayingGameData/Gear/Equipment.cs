@@ -7,7 +7,9 @@
 
 using System;
 using System.Collections.Generic;
+using System.IO;
 using Microsoft.Xna.Framework.Content;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace RolePlaying.Data
 {
@@ -35,9 +37,21 @@ namespace RolePlaying.Data
             set { ownerBuffStatistics = value; }
         }
 
-        public static Equipment Load(string equipmentAssetName)
+        public static Equipment Load(string equipmentAssetName, ContentManager contentManager)
         {
-            throw new NotImplementedException();
+            var equipmentAsset = XmlHelper.GetAssetElementFromXML(equipmentAssetName);
+            var equipment = new Equipment()
+            {
+                AssetName = equipmentAssetName,
+                Name = (string)equipmentAsset.Element("Name"),
+                Description = (string)equipmentAsset.Element("Description"),
+                GoldValue = (int)equipmentAsset.Element("GoldValue"),
+                IconTextureName = (string)equipmentAsset.Element("IconTextureName"),
+                IconTexture = contentManager.Load<Texture2D>(Path.Combine("Textures", "Gear", (string)equipmentAsset.Element("IconTextureName"))),
+                MinimumCharacterLevel = int.Parse(equipmentAsset.Element("MinimumCharacterLevel").Value),
+            };
+
+            return equipment;
         }
 
         /// <summary>

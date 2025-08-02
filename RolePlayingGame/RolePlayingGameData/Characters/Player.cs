@@ -320,7 +320,7 @@ namespace RolePlaying.Data
                 CharacterClassContentName = (string)asset.Element("CharacterClassContentName"),
                 CharacterLevel = (int)asset.Element("CharacterLevel"),
                 InitialEquipmentContentNames = asset.Element("InitialEquipmentContentNames")
-                    .Elements("Item").Select(x => (string)x).ToList(),
+                    .Elements("Item").Select(x => (string)x).ToList() ?? new List<string>(),
                 CombatSprite = AnimatingSprite.Load(asset.Element("CombatSprite"), contentManager),
                 Gold = (int)asset.Element("Gold"),
                 IntroductionDialogue = (string)asset.Element("IntroductionDialogue"),
@@ -338,6 +338,7 @@ namespace RolePlaying.Data
                 Inventory = asset.Element("Inventory")?.Elements("Item")
                     .Select(x => new ContentEntry<Gear>
                     {
+                        Content = Item.Load(Path.Combine(@"Gear", (string)x.Element("ContentName")), contentManager),
                         ContentName = (string)x.Element("ContentName"),
                         Count = (int?)x.Element("Count") ?? 1 // Default to 1 if not specified
                     })
@@ -346,6 +347,10 @@ namespace RolePlaying.Data
 
             // load the character class
             player.CharacterClass = CharacterClass.Load(Path.Combine("CharacterClasses", player.CharacterClassContentName));
+            foreach (var item in player.InitialEquipmentContentNames)
+            {
+                player.EquippedEquipment.Add(Equipment.Load(Path.Combine(@"Gear", item), contentManager));
+            }
 
             player.AddStandardCharacterCombatAnimations();
             player.AddStandardCharacterIdleAnimations();

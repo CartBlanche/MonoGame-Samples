@@ -20,15 +20,8 @@ namespace RolePlaying
     /// </summary>
     class SpellbookScreen : ListScreen<Spell>
     {
-
-
         private readonly Vector2 spellDescriptionPosition = new Vector2(200, 550);
         private readonly Vector2 warningMessagePosition = new Vector2(200, 580);
-
-
-
-
-
 
         private string nameColumnText = "Name";
         private const int nameColumnInterval = 80;
@@ -42,16 +35,10 @@ namespace RolePlaying
         private string magicCostColumnText = "MP";
         private const int magicCostColumnInterval = 380;
 
-
-
-
-
-
         /// <summary>
         /// The FightingCharacter object whose spells are displayed.
         /// </summary>
         private FightingCharacter fightingCharacter;
-
 
         /// <summary>
         /// The statistics of the character, for calculating the eligibility of spells.
@@ -61,7 +48,6 @@ namespace RolePlaying
         /// </remarks>
         private StatisticsValue statistics;
 
-
         /// <summary>
         /// Get the list that this screen displays.
         /// </summary>
@@ -69,11 +55,6 @@ namespace RolePlaying
         {
             return fightingCharacter.Spells.AsReadOnly();
         }
-
-
-
-
-
 
         /// <summary>
         /// Creates a new SpellbookScreen object for the given player and statistics.
@@ -92,7 +73,7 @@ namespace RolePlaying
 
             // sort the player's spell
             this.fightingCharacter.Spells.Sort(
-                delegate(Spell spell1, Spell spell2)
+                delegate (Spell spell1, Spell spell2)
                 {
                     // handle null values
                     if (spell1 == null)
@@ -118,16 +99,10 @@ namespace RolePlaying
             rightTriggerText = String.Empty;
         }
 
-
-
-
-
-
         /// <summary>
         /// Delegate for spell-selection events.
         /// </summary>
         public delegate void SpellSelectedHandler(Spell spell);
-
 
         /// <summary>
         /// Responds when an spell is selected by this menu.
@@ -137,7 +112,6 @@ namespace RolePlaying
         /// to respond to selection.
         /// </remarks>
         public event SpellSelectedHandler SpellSelected;
-
 
         /// <summary>
         /// Respond to the triggering of the Select action (and related key).
@@ -165,7 +139,6 @@ namespace RolePlaying
             }
         }
 
-
         /// <summary>
         /// Returns true if the specified spell can be selected.
         /// </summary>
@@ -179,11 +152,6 @@ namespace RolePlaying
             return (statistics.MagicPoints >= entry.MagicPointCost) &&
                 (!entry.IsOffensive || CombatEngine.IsActive);
         }
-
-
-
-
-
 
         /// <summary>
         /// Draw the spell at the given position in the list.
@@ -214,9 +182,9 @@ namespace RolePlaying
 
             // draw the level
             drawPosition.X += levelColumnInterval;
-            spriteBatch.DrawString(Fonts.GearInfoFont, entry.Level.ToString(), 
+            spriteBatch.DrawString(Fonts.GearInfoFont, entry.Level.ToString(),
                 drawPosition, color);
-            
+
             // draw the power
             drawPosition.X += powerColumnInterval;
             string powerText = entry.GetPowerText();
@@ -238,7 +206,6 @@ namespace RolePlaying
                     "Cast" : String.Empty;
             }
         }
-
 
         /// <summary>
         /// Draw the description of the selected item.
@@ -264,11 +231,10 @@ namespace RolePlaying
             }
 
             // draw the description
-            spriteBatch.DrawString(Fonts.DescriptionFont, 
-                Fonts.BreakTextIntoLines(entry.Description, 90, 3), 
+            spriteBatch.DrawString(Fonts.DescriptionFont,
+                Fonts.BreakTextIntoLines(entry.Description, 90, 3),
                 spellDescriptionPosition, Fonts.DescriptionColor);
         }
-
 
         /// <summary>
         /// Draw the column headers above the list.
@@ -306,7 +272,5 @@ namespace RolePlaying
                     Fonts.CaptionColor);
             }
         }
-
-
     }
 }

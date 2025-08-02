@@ -5,11 +5,12 @@
 // Copyright (C) Microsoft Corporation. All rights reserved.
 //-----------------------------------------------------------------------------
 
-using System;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
+using System;
 using System.Collections.Generic;
+using System.IO;
 
 namespace RolePlaying.Data
 {
@@ -18,8 +19,6 @@ namespace RolePlaying.Data
     /// </summary>
     public class Item : Gear
     {
-
-
         /// <summary>
         /// Flags that specify when an item may be used.
         /// </summary>
@@ -28,8 +27,7 @@ namespace RolePlaying.Data
             Combat = 1,
             NonCombat = 2,
         };
-        
-        
+
         /// <summary>
         /// Description of when the item may be used.
         /// </summary>
@@ -71,7 +69,6 @@ namespace RolePlaying.Data
             set { isOffensive = value; }
         }
 
-
         /// <summary>
         /// The duration of the effect of this item on its target, in rounds.
         /// </summary>
@@ -92,7 +89,6 @@ namespace RolePlaying.Data
             set { targetDuration = value; }
         }
 
-
         /// <summary>
         /// The range of statistics effects of this item on its target.
         /// </summary>
@@ -112,7 +108,6 @@ namespace RolePlaying.Data
             get { return targetEffectRange; }
             set { targetEffectRange = value; }
         }
-
 
         /// <summary>
         /// The number of simultaneous, adjacent targets affected by this item.
@@ -142,7 +137,6 @@ namespace RolePlaying.Data
             set { usingCueName = value; }
         }
 
-
         /// <summary>
         /// The name of the sound effect cue played when the item effect is traveling.
         /// </summary>
@@ -156,7 +150,6 @@ namespace RolePlaying.Data
             get { return travelingCueName; }
             set { travelingCueName = value; }
         }
-
 
         /// <summary>
         /// The name of the sound effect cue played when the item affects its target.
@@ -172,7 +165,6 @@ namespace RolePlaying.Data
             set { impactCueName = value; }
         }
 
-
         /// <summary>
         /// The name of the sound effect cue played when the item effect is blocked.
         /// </summary>
@@ -186,11 +178,6 @@ namespace RolePlaying.Data
             get { return blockCueName; }
             set { blockCueName = value; }
         }
-
-
-
-
-
 
         /// <summary>
         /// An animating sprite used when this item is used.
@@ -208,13 +195,12 @@ namespace RolePlaying.Data
         /// This is optional.  If it is null, then a Using or Creating animation
         /// in SpellSprite is used.
         /// </remarks>
-        [ContentSerializer(Optional=true)]
+        [ContentSerializer(Optional = true)]
         public AnimatingSprite CreationSprite
         {
             get { return creationSprite; }
             set { creationSprite = value; }
         }
-
 
         /// <summary>
         /// The animating sprite used when this item is in action.
@@ -230,7 +216,6 @@ namespace RolePlaying.Data
             set { spellSprite = value; }
         }
 
-
         /// <summary>
         /// The overlay sprite for this item.
         /// </summary>
@@ -245,10 +230,33 @@ namespace RolePlaying.Data
             set { overlay = value; }
         }
 
-    
+        internal static Item Load(string itemAssetName, ContentManager contentManager)
+        {
+            var itemAsset = XmlHelper.GetAssetElementFromXML(itemAssetName);
+            var item = new Item()
+            {
+                AssetName = itemAssetName,
+                Name = (string)itemAsset.Element("Name"),
+                Description = (string)itemAsset.Element("Description"),
+                GoldValue = (int)itemAsset.Element("GoldValue"),
+                IconTextureName = (string)itemAsset.Element("IconTextureName"),
+                IconTexture = contentManager.Load<Texture2D>(Path.Combine("Textures", "Gear", (string)itemAsset.Element("IconTextureName"))),
+                MinimumCharacterLevel = int.Parse(itemAsset.Element("MinimumCharacterLevel").Value),
+                Usage = itemAsset.Element("Usage") != null ? (ItemUsage)Enum.Parse(typeof(ItemUsage), (string)itemAsset.Element("Usage")) : default,
+                IsOffensive = bool.Parse(itemAsset.Element("IsOffensive").Value),
+                TargetDuration = int.Parse(itemAsset.Element("TargetDuration").Value),
+                AdjacentTargets = int.Parse(itemAsset.Element("AdjacentTargets").Value),
+                UsingCueName = (string)itemAsset.Element("UsingCueName"),
+                TravelingCueName = (string)itemAsset.Element("TravelingCueName"),
+                ImpactCueName = (string)itemAsset.Element("ImpactCueName"),
+                BlockCueName = (string)itemAsset.Element("BlockCueName"),
+                CreationSprite = itemAsset.Element("CreatingSprite") != null ? AnimatingSprite.Load(itemAsset.Element("CreatingSprite"), contentManager) : null,
+                SpellSprite = itemAsset.Element("SpellSprite") != null ? AnimatingSprite.Load(itemAsset.Element("SpellSprite"), contentManager) : null,
+                Overlay = itemAsset.Element("Overlay") != null ? AnimatingSprite.Load(itemAsset.Element("Overlay"), contentManager) : null,
+            };
 
-
-
+            return item;
+        }
 
         /// <summary>
         /// Read an Item object from the content pipeline
@@ -292,7 +300,5 @@ namespace RolePlaying.Data
                 return item;
             }
         }
-
-
     }
 }

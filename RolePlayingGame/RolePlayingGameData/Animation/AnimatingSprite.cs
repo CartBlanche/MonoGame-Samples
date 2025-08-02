@@ -72,8 +72,8 @@ namespace RolePlaying.Data
         public Point FrameDimensions
         {
             get { return frameDimensions; }
-            set 
-            { 
+            set
+            {
                 frameDimensions = value;
                 frameOrigin.X = frameDimensions.X / 2;
                 frameOrigin.Y = frameDimensions.Y / 2;
@@ -110,7 +110,7 @@ namespace RolePlaying.Data
         /// <summary>
         /// The offset of this sprite from the position it's drawn at.
         /// </summary>
-        [ContentSerializer(Optional=true)]
+        [ContentSerializer(Optional = true)]
         public Vector2 SourceOffset
         {
             get { return sourceOffset; }
@@ -225,7 +225,7 @@ namespace RolePlaying.Data
             }
         }
 
-        
+
         /// <summary>
         /// Play an animation given by index.
         /// </summary>
@@ -390,7 +390,7 @@ namespace RolePlaying.Data
         /// <param name="position">The position of the sprite on-screen.</param>
         /// <param name="layerDepth">The depth at which the sprite is drawn.</param>
         /// <param name="spriteEffect">The sprite-effect applied.</param>
-        public void Draw(SpriteBatch spriteBatch, Vector2 position, float layerDepth, 
+        public void Draw(SpriteBatch spriteBatch, Vector2 position, float layerDepth,
             SpriteEffects spriteEffect)
         {
             // check the parameters
@@ -402,7 +402,7 @@ namespace RolePlaying.Data
             if (texture != null)
             {
                 spriteBatch.Draw(texture, position, sourceRectangle, Color.White, 0f,
-                    sourceOffset, 1f, spriteEffect, 
+                    sourceOffset, 1f, spriteEffect,
                     MathHelper.Clamp(layerDepth, 0f, 1f));
             }
         }
@@ -420,7 +420,7 @@ namespace RolePlaying.Data
             /// <summary>
             /// Read an AnimatingSprite object from the content pipeline.
             /// </summary>
-            protected override AnimatingSprite Read(ContentReader input, 
+            protected override AnimatingSprite Read(ContentReader input,
                 AnimatingSprite existingInstance)
             {
                 AnimatingSprite animatingSprite = existingInstance;
@@ -475,6 +475,7 @@ namespace RolePlaying.Data
 
         internal static AnimatingSprite Load(XElement xElement, ContentManager contentManager)
         {
+            // Create the AnimatingSprite object
             var animatingSprite = new AnimatingSprite
             {
                 TextureName = (string)xElement.Element("TextureName"),
@@ -484,9 +485,17 @@ namespace RolePlaying.Data
                     int.Parse(xElement.Element("FrameDimensions").Value.Split(' ')[0]),
                     int.Parse(xElement.Element("FrameDimensions").Value.Split(' ')[1])),
                 FramesPerRow = (int)xElement.Element("FramesPerRow"),
-                SourceOffset = new Vector2(
+                SourceOffset = xElement.Element("SourceOffset") != null ? new Vector2(
                     int.Parse(xElement.Element("SourceOffset").Value.Split(' ')[0]),
-                    int.Parse(xElement.Element("SourceOffset").Value.Split(' ')[1])),
+                    int.Parse(xElement.Element("SourceOffset").Value.Split(' ')[1])) : default,
+                Animations = xElement.Element("Animations")?.Elements("Item").Aggregate(
+                    new List<Animation>(),
+                    (list, animationElement) =>
+                    {
+                        var animation = Animation.Load(animationElement, contentManager);
+                        list.Add(animation);
+                        return list;
+                    }) ?? new List<Animation>()
                 // Handle Animations if needed
             };
 

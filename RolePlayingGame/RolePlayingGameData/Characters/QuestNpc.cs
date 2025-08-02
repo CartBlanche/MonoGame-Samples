@@ -18,8 +18,6 @@ namespace RolePlaying.Data
     /// </summary>
     public class QuestNpc : Character
     {
-
-
         /// <summary>
         /// The dialogue that the Npc says when it is greeted in the world.
         /// </summary>
@@ -43,7 +41,7 @@ namespace RolePlaying.Data
                 AssetName = npcPath,
                 Name = (string)asset.Element("Name"),
                 Direction = Enum.TryParse<Direction>((string)asset.Element("Direction"), out var dir) ? dir : default,
-                IntroductionDialogue = (string)asset.Element("IntroductionDialogue"),
+                IntroductionDialogue = asset.Element("IntroductionDialogue").Value,
                 MapIdleAnimationInterval = asset.Element("MapIdleAnimationInterval") != null
                     ? int.TryParse((string)asset.Element("MapIdleAnimationInterval"), out var interval) ? interval : default
                     : default,

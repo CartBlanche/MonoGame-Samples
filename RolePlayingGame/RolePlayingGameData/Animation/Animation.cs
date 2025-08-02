@@ -5,9 +5,11 @@
 // Copyright (C) Microsoft Corporation. All rights reserved.
 //-----------------------------------------------------------------------------
 
-using System;
 using Microsoft.Xna.Framework.Content;
+using System;
 using System.Diagnostics;
+using System.Xml;
+using System.Xml.Linq;
 
 namespace RolePlaying.Data
 {
@@ -35,7 +37,6 @@ namespace RolePlaying.Data
         }
 
 
-
         /// <summary>
         /// The first frame of the animation.
         /// </summary>
@@ -49,7 +50,6 @@ namespace RolePlaying.Data
             get { return startingFrame; }
             set { startingFrame = value; }
         }
-
 
         /// <summary>
         /// The last frame of the animation.
@@ -65,7 +65,6 @@ namespace RolePlaying.Data
             set { endingFrame = value; }
         }
 
-
         /// <summary>
         /// The interval between frames of the animation.
         /// </summary>
@@ -79,7 +78,6 @@ namespace RolePlaying.Data
             get { return interval; }
             set { interval = value; }
         }
-
 
         /// <summary>
         /// If true, the animation loops.
@@ -95,19 +93,15 @@ namespace RolePlaying.Data
             set { isLoop = value; }
         }
 
-
-
-
         /// <summary>
         /// Creates a new Animation object.
         /// </summary>
         public Animation() { }
 
-
         /// <summary>
         /// Creates a new Animation object by full specification.
         /// </summary>
-        public Animation(string name, int startingFrame, int endingFrame, int interval, 
+        public Animation(string name, int startingFrame, int endingFrame, int interval,
             bool isLoop)
         {
             this.Name = name;
@@ -117,11 +111,6 @@ namespace RolePlaying.Data
             this.IsLoop = isLoop;
         }
 
-
-
-
-
-
         /// <summary>
         /// Read an Animation object from the content pipeline.
         /// </summary>
@@ -130,7 +119,7 @@ namespace RolePlaying.Data
             /// <summary>
             /// Read an Animation object from the content pipeline.
             /// </summary>
-            protected override Animation Read(ContentReader input, 
+            protected override Animation Read(ContentReader input,
                 Animation existingInstance)
             {
                 Animation animation = existingInstance;
@@ -151,6 +140,19 @@ namespace RolePlaying.Data
             }
         }
 
+        internal static Animation Load(XElement animationElement, ContentManager contentManager)
+        {
+            var animation = new Animation
+            {
+                AssetName = animationElement?.Value,
+                Name = animationElement?.Element("Name")?.Value,
+                StartingFrame = (int?)animationElement?.Element("StartingFrame") ?? 0,
+                EndingFrame = (int?)animationElement?.Element("EndingFrame") ?? 0,
+                Interval = (int?)animationElement?.Element("Interval") ?? 100,
+                IsLoop = (bool?)animationElement?.Element("IsLoop") ?? false,
+            };
 
+            return animation;
+        }
     }
 }

@@ -5,10 +5,13 @@
 // Copyright (C) Microsoft Corporation. All rights reserved.
 //-----------------------------------------------------------------------------
 
-using System;
-using System.Collections.Generic;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Xml.Linq;
 
 namespace RolePlaying.Data
 {
@@ -20,8 +23,6 @@ namespace RolePlaying.Data
 , ICloneable
 #endif
     {
-
-
         /// <summary>
         /// The amount of gold in the chest.
         /// </summary>
@@ -37,7 +38,6 @@ namespace RolePlaying.Data
             set { gold = value; }
         }
 
-
         /// <summary>
         /// The gear in the chest, along with quantities.
         /// </summary>
@@ -52,7 +52,6 @@ namespace RolePlaying.Data
             set { entries = value; }
         }
 
-
         /// <summary>
         /// Array accessor for the chest's contents.
         /// </summary>
@@ -61,7 +60,6 @@ namespace RolePlaying.Data
             get { return entries[index]; }
         }
 
-
         /// <summary>
         /// Returns true if the chest is empty.
         /// </summary>
@@ -69,11 +67,6 @@ namespace RolePlaying.Data
         {
             get { return ((gold <= 0) && (entries.Count <= 0)); }
         }
-
-
-
-
-
 
         /// <summary>
         /// The content name of the texture for this chest.
@@ -89,7 +82,6 @@ namespace RolePlaying.Data
             set { textureName = value; }
         }
 
-
         /// <summary>
         /// The texture for this chest.
         /// </summary>
@@ -104,11 +96,6 @@ namespace RolePlaying.Data
             get { return texture; }
             set { texture = value; }
         }
-
-
-
-
-
 
         /// <summary>
         /// Reads a Chest object from the content pipeline.
@@ -136,7 +123,7 @@ namespace RolePlaying.Data
                         System.IO.Path.Combine(@"Gear",
                         contentEntry.ContentName));
                 }
-                
+
                 chest.TextureName = input.ReadString();
                 chest.Texture = input.ContentManager.Load<Texture2D>(
                     System.IO.Path.Combine(@"Textures\Chests", chest.TextureName));
@@ -144,11 +131,6 @@ namespace RolePlaying.Data
                 return chest;
             }
         }
-
-
-
-
-
 
         /// <summary>
         /// Clone implementation for chest copies.
@@ -182,6 +164,41 @@ namespace RolePlaying.Data
             return chest;
         }
 
+        internal static Chest Load(XElement chestAsset, ContentManager contentManager)
+        {
+            var chest = new Chest
+            {
+                Name = (string)chestAsset.Element("Name"),
+                Gold = (int)chestAsset.Element("Gold"),
+                Entries = chestAsset.Element("Entries")?.Elements("Item").Select(chestItem =>
+                {
+                    var contentName = (string)chestItem.Element("ContentName");
+                    var gearAsset = XmlHelper.GetAssetElementFromXML(Path.Combine(@"Gear", contentName));
+                    var gear = new Equipment
+                    {
+                        AssetName = contentName,
+                        Name = (string)gearAsset.Element("Name"),
+                        Description = (string)gearAsset.Element("Description"),
+                        GoldValue = (int?)gearAsset.Element("GoldValue") ?? 0,
+                        IconTextureName = (string)gearAsset.Element("IconTextureName"),
+                        IconTexture = contentManager.Load<Texture2D>(
+                            Path.Combine(@"Textures\Gear", (string)gearAsset.Element("IconTextureName"))),
+                        IsDroppable = (bool?)gearAsset.Element("IsDroppable") ?? true,
 
+                        // Add other properties as needed
+                    };
+
+                    return new ContentEntry<Gear>
+                    {
+                        ContentName = contentName,
+                        Content = gear,
+                        Count = (int?)chestItem.Element("Count") ?? 1,
+                    };
+                }).ToList(),
+                TextureName = (string)chestAsset.Element("TextureName"),
+                Texture = contentManager.Load<Texture2D>(Path.Combine("Textures", "Chests", (string)chestAsset.Element("TextureName"))),
+            };
+            return chest;
+        }
     }
 }

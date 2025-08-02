@@ -20,17 +20,10 @@ namespace RolePlaying
 {
     class Session
     {
-
-
         /// <summary>
         /// The single Session instance that can be active at a time.
         /// </summary>
         private static Session singleton;
-
-
-
-
-
 
         /// <summary>
         /// The party that is playing the game right now.
@@ -44,11 +37,6 @@ namespace RolePlaying
         {
             get { return (singleton == null ? null : singleton.party); }
         }
-
-
-
-
-
 
         /// <summary>
         /// Change the current map, arriving at the given portal if any.
@@ -87,7 +75,6 @@ namespace RolePlaying
             TileEngine.SetMap(map, originalPortal == null ? null :
                 map.FindPortal(originalPortal.DestinationMapPortalName));
         }
-
 
         /// <summary>
         /// Perform any actions associated withe the given tile.
@@ -224,7 +211,6 @@ namespace RolePlaying
             return false;
         }
 
-
         /// <summary>
         /// Performs the actions associated with encountering a FixedCombat entry.
         /// </summary>
@@ -243,7 +229,6 @@ namespace RolePlaying
             }
         }
 
-
         /// <summary>
         /// Performs the actions associated with encountering a Chest entry.
         /// </summary>
@@ -258,7 +243,6 @@ namespace RolePlaying
             // add the chest screen
             singleton.screenManager.AddScreen(new ChestScreen(chestEntry));
         }
-
 
         /// <summary>
         /// Performs the actions associated with encountering a player-NPC entry.
@@ -275,7 +259,6 @@ namespace RolePlaying
             singleton.screenManager.AddScreen(new PlayerNpcScreen(playerEntry));
         }
 
-
         /// <summary>
         /// Performs the actions associated with encountering a QuestNpc entry.
         /// </summary>
@@ -290,7 +273,6 @@ namespace RolePlaying
             // add the quest-NPC screen
             singleton.screenManager.AddScreen(new QuestNpcScreen(questNpcEntry));
         }
-
 
         /// <summary>
         /// Performs the actions associated with encountering an Inn entry.
@@ -307,7 +289,6 @@ namespace RolePlaying
             singleton.screenManager.AddScreen(new InnScreen(innEntry.Content));
         }
 
-
         /// <summary>
         /// Performs the actions associated with encountering a Store entry.
         /// </summary>
@@ -322,7 +303,6 @@ namespace RolePlaying
             // add the store screen
             singleton.screenManager.AddScreen(new StoreScreen(storeEntry.Content));
         }
-
 
         /// <summary>
         /// Performs the actions associated with encountering a Portal entry.
@@ -339,7 +319,6 @@ namespace RolePlaying
             ChangeMap(portalEntry.Content.DestinationMapContentName,
                 portalEntry.Content);
         }
-
 
         /// <summary>
         /// Check if a random combat should start.  If so, start combat immediately.
@@ -372,11 +351,6 @@ namespace RolePlaying
             return false;
         }
 
-
-
-
-
-
         /// <summary>
         /// The main quest line for this session.
         /// </summary>
@@ -389,7 +363,6 @@ namespace RolePlaying
         {
             get { return (singleton == null ? null : singleton.questLine); }
         }
-
 
         /// <summary>
         /// If true, the main quest line for this session is complete.
@@ -408,7 +381,6 @@ namespace RolePlaying
             }
         }
 
-
         /// <summary>
         /// The current quest in this session.
         /// </summary>
@@ -422,7 +394,6 @@ namespace RolePlaying
             get { return (singleton == null ? null : singleton.quest); }
         }
 
-
         /// <summary>
         /// The index of the current quest into the quest line.
         /// </summary>
@@ -435,7 +406,6 @@ namespace RolePlaying
         {
             get { return (singleton == null ? -1 : singleton.currentQuestIndex); }
         }
-
 
         /// <summary>
         /// Update the current quest and quest line for this session.
@@ -557,11 +527,6 @@ namespace RolePlaying
             }
         }
 
-
-
-
-
-
         /// <summary>
         /// The chests removed from the map asset by player actions.
         /// </summary>
@@ -632,7 +597,6 @@ namespace RolePlaying
                 }
             }
         }
-
 
         /// <summary>
         /// The fixed-combats removed from the map asset by player actions.
@@ -705,7 +669,6 @@ namespace RolePlaying
             }
         }
 
-
         /// <summary>
         /// The player NPCs removed from the map asset by player actions.
         /// </summary>
@@ -748,7 +711,6 @@ namespace RolePlaying
 
             // quests don't have a list of player NPCs
         }
-
 
         /// <summary>
         /// The chests that have been modified, but not emptied, by player action.
@@ -811,7 +773,6 @@ namespace RolePlaying
                 return;
             }
 
-
             // look for the map entry within the quest
             if ((singleton.quest != null) && singleton.quest.ChestEntries.Exists(
                 delegate (WorldEntry<Chest> entry)
@@ -836,7 +797,6 @@ namespace RolePlaying
                 return;
             }
         }
-
 
         /// <summary>
         /// Remove the specified content from the map, typically from an earlier session.
@@ -925,7 +885,6 @@ namespace RolePlaying
             }
         }
 
-
         /// <summary>
         /// Remove the specified content from the map, typically from an earlier session.
         /// </summary>
@@ -1005,7 +964,6 @@ namespace RolePlaying
             }
         }
 
-
         /// <summary>
         /// Modify a Chest object based on the data in a ModifiedChestEntry object.
         /// </summary>
@@ -1048,11 +1006,6 @@ namespace RolePlaying
             }
         }
 
-
-
-
-
-
         /// <summary>
         /// The ScreenManager used to manage all UI in the game.
         /// </summary>
@@ -1066,12 +1019,10 @@ namespace RolePlaying
             get { return (singleton == null ? null : singleton.screenManager); }
         }
 
-
         /// <summary>
         /// The GameplayScreen object that created this session.
         /// </summary>
         private GameplayScreen gameplayScreen;
-
 
         /// <summary>
         /// The heads-up-display menu shown on the map and combat screens.
@@ -1086,11 +1037,6 @@ namespace RolePlaying
             get { return (singleton == null ? null : singleton.hud); }
         }
 
-
-
-
-
-
         /// <summary>
         /// Returns true if there is an active session.
         /// </summary>
@@ -1098,11 +1044,6 @@ namespace RolePlaying
         {
             get { return singleton != null; }
         }
-
-
-
-
-
 
         /// <summary>
         /// Private constructor of a Session object.
@@ -1131,11 +1072,6 @@ namespace RolePlaying
             this.hud.LoadContent();
         }
 
-
-
-
-
-
         /// <summary>
         /// Update the session for this frame.
         /// </summary>
@@ -1158,11 +1094,6 @@ namespace RolePlaying
                 TileEngine.Update(gameTime);
             }
         }
-
-
-
-
-
 
         /// <summary>
         /// Draws the session environment to the screen
@@ -1193,8 +1124,14 @@ namespace RolePlaying
             }
 
             singleton.hud.Draw();
-        }
 
+#if DEBUG
+            // draw the debug information
+            spriteBatch.Begin();
+            spriteBatch.DrawString(Fonts.DebugFont, "Map: " + TileEngine.Map.AssetName, new Vector2(10, 10), Color.Yellow);
+            spriteBatch.End();
+#endif
+        }
 
         /// <summary>
         /// Draws everything related to the non-combat part of the screen
@@ -1426,7 +1363,6 @@ namespace RolePlaying
             spriteBatch.End();
         }
 
-
         /// <summary>
         /// Draw the shadows that appear under all characters.
         /// </summary>
@@ -1516,11 +1452,6 @@ namespace RolePlaying
             }
         }
 
-
-
-
-
-
         /// <summary>
         /// Start a new session based on the data provided.
         /// </summary>
@@ -1565,11 +1496,6 @@ namespace RolePlaying
             singleton.questLine = loadedQuestLine;
         }
 
-
-
-
-
-
         /// <summary>
         /// End the current session.
         /// </summary>
@@ -1594,11 +1520,6 @@ namespace RolePlaying
                 }
             }
         }
-
-
-
-
-
 
         /// <summary>
         /// Start a new session, using the data in the given save game.
@@ -1638,7 +1559,6 @@ namespace RolePlaying
                 });
             */
         }
-
 
         /// <summary>
         /// Receives the storage device and starts a new session, 
@@ -1744,11 +1664,6 @@ namespace RolePlaying
         }
         */
 
-
-
-
-
-
         /// <summary>
         /// Save the current state of the session.
         /// </summary>
@@ -1766,7 +1681,6 @@ namespace RolePlaying
             });
             */
         }
-
 
         /// <summary>
         /// Save the current state of the session, with the given storage device.
@@ -1882,11 +1796,6 @@ namespace RolePlaying
         }
         */
 
-
-
-
-
-
         /// <summary>
         /// Delete the save game specified by the description.
         /// </summary>
@@ -1909,7 +1818,6 @@ namespace RolePlaying
                 });
         }
         */
-
 
         /// <summary>
         /// Delete the save game specified by the description.
@@ -1947,11 +1855,6 @@ namespace RolePlaying
         }
         */
 
-
-
-
-
-
         /// <summary>
         /// Save game descriptions for the current set of save games.
         /// </summary>
@@ -1965,19 +1868,16 @@ namespace RolePlaying
             get { return saveGameDescriptions; }
         }
 
-
         /// <summary>
         /// The maximum number of save-game descriptions that the list may hold.
         /// </summary>
         public const int MaximumSaveGameDescriptions = 5;
-
 
         /// <summary>
         /// XML serializer for SaveGameDescription objects.
         /// </summary>
         private static XmlSerializer saveGameDescriptionSerializer =
             new XmlSerializer(typeof(SaveGameDescription));
-
 
         /// <summary>
         /// Refresh the list of save-game descriptions.
@@ -2045,11 +1945,6 @@ namespace RolePlaying
             }
         }
         */
-
-
-
-
-
 
         /// <summary>
         /// The stored StorageDevice object.
@@ -2167,11 +2062,6 @@ namespace RolePlaying
             return container;
         }
         */
-
-
-
-
-
 
         /// <summary>
         /// The random-number generator used with game events.

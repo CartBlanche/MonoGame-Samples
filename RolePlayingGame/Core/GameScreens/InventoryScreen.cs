@@ -31,16 +31,10 @@ namespace RolePlaying
         protected string quantityColumnText = "Qty";
         private const int quantityColumnInterval = 450;
 
-
-
-
-
-
         /// <summary>
         /// If true, the menu is only displaying items; otherwise, only equipment.
         /// </summary>
         protected bool isItems;
-
 
         /// <summary>
         /// Retrieve the list of gear shown in this menu.
@@ -92,11 +86,6 @@ namespace RolePlaying
             return dataList.AsReadOnly();
         }
 
-
-
-
-
-
         /// <summary>
         /// Constructs a new InventoryScreen object.
         /// </summary>
@@ -113,11 +102,6 @@ namespace RolePlaying
             yButtonText = String.Empty;
             ResetTriggerText();
         }
-
-
-
-
-
 
         /// <summary>
         /// Delegate for item-selection events.
@@ -249,12 +233,14 @@ namespace RolePlaying
             {
                 if (isItems)
                 {
+                    titleText = "Equipment";
                     leftTriggerText = "Statistics";
-                    rightTriggerText = "Equipment";
+                    rightTriggerText = "Inventory";
                 }
                 else
                 {
-                    leftTriggerText = "Inventory";
+                    titleText = "Inventory";
+                    leftTriggerText = "Equipment";
                     rightTriggerText = "Quests";
                 }
             }
@@ -403,7 +389,5 @@ namespace RolePlaying
                     Fonts.CaptionColor);
             }
         }
-
-
     }
 }
