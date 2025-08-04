@@ -12,7 +12,7 @@
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Core\Audio3D.Core.csproj" />
-    <PackageReference Include="MonoGame.Framework.iOS" Version="3.8.4.2633-develop" />
+    <PackageReference Include="MonoGame.Framework.iOS" Version="3.8.*" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="..\..\Core\Content\**\*.xnb" Link="Content\%(RecursiveDir)%(Filename)%(Extension)">
