@@ -105,12 +105,13 @@ namespace RolePlaying
             controlsMenuEntry.Selected += ControlsMenuEntrySelected;
             MenuEntries.Add(controlsMenuEntry);
 
-            // add the Help menu entry
-            helpMenuEntry = new MenuEntry("Help");
-            helpMenuEntry.Description = "View Game Help";
+            // add the Backstory menu entry
+            helpMenuEntry = new MenuEntry("Backstory");
+            helpMenuEntry.Description = "View Game Backstory";
             helpMenuEntry.Font = Fonts.HeaderFont;
             helpMenuEntry.Position = new Vector2(RolePlayingGame.BUFFER_HEIGHT - 20, 0f);
-            helpMenuEntry.Angle = -5.0f;
+            helpMenuEntry.Angle = -4.0f;
+            helpMenuEntry.TextOffset = new Vector2(0f, 5.0f);
             helpMenuEntry.Selected += HelpMenuEntrySelected;
             MenuEntries.Add(helpMenuEntry);
 
@@ -274,7 +275,7 @@ namespace RolePlaying
         /// </summary>
         void HelpMenuEntrySelected(object sender, EventArgs e)
         {
-            ScreenManager.AddScreen(new HelpScreen());
+            ScreenManager.AddScreen(new BackstoryScreen());
         }
 
 

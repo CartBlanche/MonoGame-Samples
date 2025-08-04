@@ -1,5 +1,5 @@
 //-----------------------------------------------------------------------------
-// HelpScreen.cs
+// BackstoryScreen.cs
 //
 // Microsoft XNA Community Game Platform
 // Copyright (C) Microsoft Corporation. All rights reserved.
@@ -16,9 +16,9 @@ using RolePlaying.Data;
 namespace RolePlaying
 {
     /// <summary>
-    /// Shows the help screen, explaining the basic game idea to the user.
+    /// Shows the backstory screen, explaining the basic game idea to the user.
     /// </summary>
-    class HelpScreen : GameScreen
+    class BackstoryScreen : GameScreen
     {
         private Texture2D backgroundTexture;
 
@@ -26,7 +26,7 @@ namespace RolePlaying
         private Vector2 plankPosition;
         private Vector2 titlePosition;
 
-        private string helpText =
+        private string backstoryText =
             "Welcome, hero!  You must meet new comrades, earn necessary " +
             "experience, gold, spells, and the equipment required to challenge " +
             "and defeat the evil Tamar, who resides in his lair, known as the " +
@@ -49,15 +49,13 @@ namespace RolePlaying
 
         private int startIndex;
         private const int maxLineDisplay = 7;
+        
+        private const string screenName = "Backstory";
 
-
-
-
-
-        public HelpScreen() 
-            : base() 
+        public BackstoryScreen()
+            : base()
         {
-            textLines = Fonts.BreakTextIntoList(helpText, Fonts.DescriptionFont, 590);
+            textLines = Fonts.BreakTextIntoList(backstoryText, Fonts.DescriptionFont, 590);
         }
 
         /// <summary>
@@ -85,9 +83,9 @@ namespace RolePlaying
             plankPosition.Y = 60;
 
             titlePosition.X = plankPosition.X + (plankTexture.Width -
-                Fonts.HeaderFont.MeasureString("Help").X) / 2;
+                Fonts.HeaderFont.MeasureString(screenName).X) / 2;
             titlePosition.Y = plankPosition.Y + (plankTexture.Height -
-                Fonts.HeaderFont.MeasureString("Help").Y) / 2;
+                Fonts.HeaderFont.MeasureString(screenName).Y) / 2;
         }
 
 
@@ -126,11 +124,6 @@ namespace RolePlaying
             }
         }
 
-
-
-
-
-
         /// <summary>
         /// Draws the help screen.
         /// </summary>
@@ -151,7 +144,7 @@ namespace RolePlaying
             spriteBatch.Draw(scrollUpTexture, scrollUpPosition, Color.White);
             spriteBatch.Draw(scrollDownTexture, scrollDownPosition, Color.White);
 
-            spriteBatch.DrawString(Fonts.HeaderFont, "Help", titlePosition, Fonts.TitleColor, MathHelper.ToRadians(-3.0f), Vector2.Zero, 1.0f, SpriteEffects.None, 0f);
+            spriteBatch.DrawString(Fonts.HeaderFont, screenName, titlePosition, Fonts.TitleColor, MathHelper.ToRadians(-3.0f), Vector2.Zero, 1.0f, SpriteEffects.None, 0f);
 
             for (int i = 0; i < maxLineDisplay; i++)
             {
