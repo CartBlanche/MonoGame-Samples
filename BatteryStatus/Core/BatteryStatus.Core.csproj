@@ -1,20 +1,17 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
-    <OutputType>Exe</OutputType>
-    <RootNamespace>BatteryStatus.DesktopGL</RootNamespace>
+    <RootNamespace>BatteryStatus.Core</RootNamespace>
     <Nullable>enable</Nullable>
-    <AssemblyName>BatteryStatus</AssemblyName>
-    <AssemblyTitle>BatteryStatus DesktopGL</AssemblyTitle>
-    <Description>DesktopGL platform for BatteryStatus MonoGame sample.</Description>
+    <AssemblyTitle>BatteryStatus.Core</AssemblyTitle>
+    <Description>Core library for BatteryStatus MonoGame sample.</Description>
     <GenerateAssemblyInfo>true</GenerateAssemblyInfo>
   </PropertyGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Core\BatteryStatus.Core.csproj" />
     <PackageReference Include="MonoGame.Framework.DesktopGL" Version="3.8.*" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="..\..\Core\Content\SpriteFont1.xnb">
+    <Content Include="Content\SpriteFont1.xnb">
       <Link>Content\SpriteFont1.xnb</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

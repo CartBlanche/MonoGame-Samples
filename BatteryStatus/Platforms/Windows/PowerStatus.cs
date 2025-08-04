@@ -1,12 +1,13 @@
 
 using System.Windows.Forms;
+using BatteryStatus;
 
-namespace BatteryStatusDemo
+namespace BatteryStatus.Windows
 {
-    public static partial class PowerStatus
+    public class PowerStatus : IPowerStatus
     {
-        public static string BatteryChargeStatus => SystemInformation.PowerStatus.BatteryChargeStatus.ToString();
-        public static string PowerLineStatus => SystemInformation.PowerStatus.PowerLineStatus.ToString();
-        public static int BatteryLifePercent => (int)(SystemInformation.PowerStatus.BatteryLifePercent * 100);
+        public string BatteryChargeStatus => SystemInformation.PowerStatus.BatteryChargeStatus.ToString();
+        public string PowerLineStatus => SystemInformation.PowerStatus.PowerLineStatus.ToString();
+        public int BatteryLifePercent => (int)(SystemInformation.PowerStatus.BatteryLifePercent * 100);
     }
 }

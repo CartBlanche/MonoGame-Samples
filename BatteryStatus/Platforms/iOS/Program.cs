@@ -1,10 +1,20 @@
+using Foundation;
 using UIKit;
 
-namespace BatteryStatusDemo
+namespace BatteryStatus.iOS
 {
-    public class Application
+    [Register("AppDelegate")]
+    public class AppDelegate : UIApplicationDelegate
     {
-        // This is the main entry point of the application.
+        BatteryStatusGame? game;
+        public override bool FinishedLaunching(UIApplication app, NSDictionary options)
+        {
+            var powerStatus = new PowerStatus();
+            game = new BatteryStatusGame(powerStatus);
+            game.Run();
+            return true;
+        }
+
         static void Main(string[] args)
         {
             UIApplication.Main(args, null, typeof(AppDelegate));

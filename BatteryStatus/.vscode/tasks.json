@@ -22,31 +22,24 @@
             "problemMatcher": "$msCompile"
         },
         {
-            "label": "run-windows",
+            "label": "build-android",
             "command": "dotnet",
             "type": "process",
             "args": [
-                "run",
-                "--project",
-                "Platforms/Windows/BatteryStatus.Windows.csproj"
+                "build",
+                "Platforms/Android/BatteryStatus.Android.csproj"
             ],
             "problemMatcher": "$msCompile"
         },
         {
-            "label": "run-desktopgl",
+            "label": "build-ios",
             "command": "dotnet",
             "type": "process",
             "args": [
-                "run",
-                "--project",
-                "Platforms/DesktopGL/BatteryStatus.DesktopGL.csproj"
+                "build",
+                "Platforms/iOS/BatteryStatus.iOS.csproj"
             ],
             "problemMatcher": "$msCompile"
-        },
-        {
-			"label": "debug-android",
-			"type": "shell",
-			"command": "dotnet build -p:Configuration=Debug ${workspaceFolder}/Platforms/Android/BatteryStatus.Android.csproj \"/t:Install\" /p:AndroidAttachDebugger=true /p:AndroidSdbHostPort=10000"
-		}
+        }
     ]
 }

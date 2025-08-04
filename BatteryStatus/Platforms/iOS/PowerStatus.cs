@@ -1,16 +1,16 @@
-
+using BatteryStatus;
 using UIKit;
 
-namespace BatteryStatusDemo
+namespace BatteryStatus.iOS
 {
-    public static partial class PowerStatus
+    public class PowerStatus : IPowerStatus
     {
-        static PowerStatus()
+        public PowerStatus()
         {
             UIDevice.CurrentDevice.BatteryMonitoringEnabled = true;
         }
 
-        public static string BatteryChargeStatus
+        public string BatteryChargeStatus
         {
             get
             {
@@ -29,7 +29,7 @@ namespace BatteryStatusDemo
             }
         }
 
-        public static string PowerLineStatus
+        public string PowerLineStatus
         {
             get
             {
@@ -42,7 +42,7 @@ namespace BatteryStatusDemo
             }
         }
 
-        public static int BatteryLifePercent
+        public int BatteryLifePercent
         {
             get
             {

@@ -1,13 +1,14 @@
 using System;
 
-namespace BatteryStatusDemo
+namespace BatteryStatus.DesktopGL
 {
     public static class Program
     {
         [STAThread]
         static void Main()
         {
-            using (var game = new Game1())
+            var powerStatus = new PowerStatus();
+            using (var game = new BatteryStatusGame(powerStatus))
                 game.Run();
         }
     }

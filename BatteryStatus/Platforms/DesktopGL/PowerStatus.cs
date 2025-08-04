@@ -1,10 +1,12 @@
 
-namespace BatteryStatusDemo
+using BatteryStatus;
+
+namespace BatteryStatus.DesktopGL
 {
-    public static partial class PowerStatus
+    public class PowerStatus : IPowerStatus
     {
-        public static string BatteryChargeStatus => "N/A";
-        public static string PowerLineStatus => "N/A";
-        public static int BatteryLifePercent => 100;
+        public string BatteryChargeStatus => "N/A";
+        public string PowerLineStatus => "N/A";
+        public int BatteryLifePercent => 100;
     }
 }

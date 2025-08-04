@@ -2,12 +2,13 @@
 using Android.App;
 using Android.Content;
 using Android.OS;
+using BatteryStatus;
 
-namespace BatteryStatusDemo
+namespace BatteryStatus.Android
 {
-    public static partial class PowerStatus
+    public class PowerStatus : IPowerStatus
     {
-        public static string BatteryChargeStatus
+        public string BatteryChargeStatus
         {
             get
             {
@@ -17,17 +18,17 @@ namespace BatteryStatusDemo
                 {
                     int status = battery.GetIntExtra(BatteryManager.ExtraStatus, -1);
 
-                    switch ((Android.OS.BatteryStatus)status)
+                    switch ((global::Android.OS.BatteryStatus)status)
                     {
-                        case Android.OS.BatteryStatus.Charging:
+                        case global::Android.OS.BatteryStatus.Charging:
                             return "Charging";
-                        case Android.OS.BatteryStatus.Full:
+                        case global::Android.OS.BatteryStatus.Full:
                             return "Full";
-                        case Android.OS.BatteryStatus.Discharging:
+                        case global::Android.OS.BatteryStatus.Discharging:
                             return "Discharging";
-                        case Android.OS.BatteryStatus.NotCharging:
+                        case global::Android.OS.BatteryStatus.NotCharging:
                             return "Not Charging";
-                        case Android.OS.BatteryStatus.Unknown:
+                        case global::Android.OS.BatteryStatus.Unknown:
                         default:
                             return "Unknown";
                     }
@@ -37,7 +38,7 @@ namespace BatteryStatusDemo
 			}
         }
 
-        public static string PowerLineStatus
+        public string PowerLineStatus
         {
             get
             {
@@ -45,19 +46,19 @@ namespace BatteryStatusDemo
                 var battery = Application.Context.RegisterReceiver(null, filter);
                 if (battery != null)
                 {
-                    int plugged = battery.GetIntExtra(Android.OS.BatteryManager.ExtraPlugged, -1);
-                    if (plugged == (int)Android.OS.BatteryPlugged.Ac)
+                    int plugged = battery.GetIntExtra(global::Android.OS.BatteryManager.ExtraPlugged, -1);
+                    if (plugged == (int)global::Android.OS.BatteryPlugged.Ac)
                         return "AC";
-                    if (plugged == (int)Android.OS.BatteryPlugged.Usb)
+                    if (plugged == (int)global::Android.OS.BatteryPlugged.Usb)
                         return "USB";
-                    if (plugged == (int)Android.OS.BatteryPlugged.Wireless)
+                    if (plugged == (int)global::Android.OS.BatteryPlugged.Wireless)
                         return "Wireless";
                 }
                 return "Unplugged";
             }
         }
 
-        public static int BatteryLifePercent
+        public int BatteryLifePercent
         {
             get
             {
@@ -65,8 +66,8 @@ namespace BatteryStatusDemo
                 var battery = Application.Context.RegisterReceiver(null, filter);
                 if (battery != null)
                 {
-                    int level = battery.GetIntExtra(Android.OS.BatteryManager.ExtraLevel, -1);
-                    int scale = battery.GetIntExtra(Android.OS.BatteryManager.ExtraScale, -1);
+                    int level = battery.GetIntExtra(global::Android.OS.BatteryManager.ExtraLevel, -1);
+                    int scale = battery.GetIntExtra(global::Android.OS.BatteryManager.ExtraScale, -1);
                     if (level >= 0 && scale > 0)
                         return (int)((level / (float)scale) * 100);
                 }

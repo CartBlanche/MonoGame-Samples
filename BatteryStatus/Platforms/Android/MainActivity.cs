@@ -2,29 +2,33 @@ using Android.App;
 using Android.Content.PM;
 using Android.OS;
 using Android.Views;
+using BatteryStatus;
 using Microsoft.Xna.Framework;
 
-namespace BatteryStatusDemo
+namespace Ascent
 {
-	[Activity(Label = "BatteryStatus",
-		Name = "com.cartblanche.batterystatus.MainActivity",
-		MainLauncher = true,
-		ConfigurationChanges = ConfigChanges.Orientation | ConfigChanges.Keyboard | ConfigChanges.KeyboardHidden | ConfigChanges.ScreenSize)]
-	public class MainActivity : AndroidGameActivity
-	{
-		private Game1 _game;
-		private View _view;
+    [Activity(
+        Label = "@string/app_name",
+        MainLauncher = true,
+        Icon = "@drawable/icon",
+        AlwaysRetainTaskState = true,
+        LaunchMode = LaunchMode.SingleInstance,
+        ScreenOrientation = ScreenOrientation.FullUser,
+        ConfigurationChanges = ConfigChanges.Orientation | ConfigChanges.Keyboard | ConfigChanges.KeyboardHidden | ConfigChanges.ScreenSize
+    )]
+    public class MainActivity : AndroidGameActivity
+    {
+        private BatteryStatusGame _game;
+        private View _view;
 
-		protected override void OnCreate(Bundle bundle)
-		{
-			base.OnCreate(bundle);
+        protected override void OnCreate(Bundle bundle)
+        {
+            base.OnCreate(bundle);
 
-			_game = new Game1();
-			//Game1.SetInstance(_game);
-			_view = _game.Services.GetService(typeof(View)) as View;
-
-			SetContentView(_view);
-			_game.Run();
-		}
-	}
+            _game = new BatteryStatusGame();
+            _view = _game.Services.GetService(typeof(View)) as View;
+            SetContentView(_view);
+            _game.Run();
+        }
+    }
 }

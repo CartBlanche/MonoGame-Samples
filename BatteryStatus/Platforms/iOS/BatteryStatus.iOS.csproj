@@ -3,15 +3,14 @@
     <TargetFramework>net8.0-ios</TargetFramework>
     <OutputType>Exe</OutputType>
     <RootNamespace>BatteryStatus.iOS</RootNamespace>
+    <AssemblyName>BatteryStatus</AssemblyName>
     <Nullable>enable</Nullable>
-    <AssemblyTitle>BatteryStatus.iOS</AssemblyTitle>
+    <AssemblyTitle>BatteryStatus iOS</AssemblyTitle>
     <Description>iOS platform for BatteryStatus MonoGame sample.</Description>
     <GenerateAssemblyInfo>true</GenerateAssemblyInfo>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="..\..\Core\Game1.cs" Link="Game1.cs" />
-  </ItemGroup>
-  <ItemGroup>
+    <ProjectReference Include="..\..\Core\BatteryStatus.Core.csproj" />
     <PackageReference Include="MonoGame.Framework.iOS" Version="3.8.*" />
   </ItemGroup>
   <ItemGroup>
