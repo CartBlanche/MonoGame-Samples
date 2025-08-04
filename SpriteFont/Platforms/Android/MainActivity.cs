@@ -1,7 +1,6 @@
 using Android.App;
 using Android.Content.PM;
 using Android.OS;
-using SpriteFontSample.Core;
 
 namespace SpriteFontSample.Android
 {

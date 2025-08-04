@@ -1,7 +1,7 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace SpriteFontSample.Core
+namespace SpriteFontSample
 {
     /// <summary>
     /// This is the main type for your game

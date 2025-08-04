@@ -1,11 +1,10 @@
 using Foundation;
 using UIKit;
-using SpriteFontSample.Core;
 
 namespace SpriteFontSample.iOS
 {
     [Register("AppDelegate")]
-    class Program : UIApplicationDelegate
+    class AppDelegate : UIApplicationDelegate
     {
         private SpriteFontGame game;
 
@@ -17,7 +16,7 @@ namespace SpriteFontSample.iOS
 
         static void Main(string[] args)
         {
-            UIApplication.Main(args, null, "AppDelegate");
+            UIApplication.Main(args, null, typeof(AppDelegate));
         }
     }
 }
