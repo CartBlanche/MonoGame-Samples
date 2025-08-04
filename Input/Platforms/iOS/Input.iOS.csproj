@@ -2,8 +2,8 @@
   <PropertyGroup>
     <TargetFramework>net8.0-ios</TargetFramework>
     <OutputType>Exe</OutputType>
-    <AssemblyName>MonoGame.Samples.Input.iOS</AssemblyName>
-    <RootNamespace>MonoGame.Samples.Input.iOS</RootNamespace>
+    <AssemblyName>InputSample</AssemblyName>
+    <RootNamespace>InputSample.iOS</RootNamespace>
     <SupportedOSPlatformVersion>11.0</SupportedOSPlatformVersion>
   </PropertyGroup>
   <ItemGroup>

@@ -2,10 +2,11 @@
   <PropertyGroup>
     <TargetFramework>net8.0-android</TargetFramework>
     <OutputType>Exe</OutputType>
-    <AssemblyName>MonoGame.Samples.Input.Android</AssemblyName>
-    <RootNamespace>MonoGame.Samples.Input.Android</RootNamespace>
+    <AssemblyName>InputSample.Android</AssemblyName>
+    <RootNamespace>InputSample.Android</RootNamespace>
     <AndroidManifest>AndroidManifest.xml</AndroidManifest>
     <SupportedOSPlatformVersion>28</SupportedOSPlatformVersion>
+    <AndroidApplication>True</AndroidApplication>
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Core\Input.Core.csproj" />

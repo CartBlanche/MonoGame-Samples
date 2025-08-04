@@ -1,22 +1,22 @@
 using Foundation;
 using UIKit;
 
-namespace MonoGame.Samples.Input.iOS
+namespace InputSample.iOS
 {
     [Register("AppDelegate")]
-    class Program : UIApplicationDelegate
+    class AppDelegate : UIApplicationDelegate
     {
-        private Game1 game;
+        private InputGame game;
 
         public override void FinishedLaunching(UIApplication app)
         {
-            game = new Game1();
+            game = new InputGame();
             game.Run();
         }
 
         static void Main(string[] args)
         {
-            UIApplication.Main(args, null, "AppDelegate");
+            UIApplication.Main(args, null, typeof(AppDelegate));
         }
     }
 }

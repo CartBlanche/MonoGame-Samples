@@ -1,9 +1,9 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
-    <OutputType>WinExe</OutputType>
-    <AssemblyName>MonoGame.Samples.Input.DesktopGL</AssemblyName>
-    <RootNamespace>MonoGame.Samples.Input.DesktopGL</RootNamespace>
+    <OutputType>Exe</OutputType>
+    <AssemblyName>InputSample</AssemblyName>
+    <RootNamespace>InputSample.DesktopGL</RootNamespace>
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Core\Input.Core.csproj" />

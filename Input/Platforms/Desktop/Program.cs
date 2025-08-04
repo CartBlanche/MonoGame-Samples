@@ -1,13 +1,13 @@
 using System;
 
-namespace MonoGame.Samples.Input.DesktopGL
+namespace InputSample.DesktopGL
 {
     public static class Program
     {
         [STAThread]
         static void Main()
         {
-            using (var game = new Game1())
+            using (var game = new InputGame())
                 game.Run();
         }
     }

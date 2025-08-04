@@ -8,21 +8,20 @@ using Android.Views;
 using Android.Widget;
 using Android.OS;
 
-namespace MonoGame.Samples.Input.Android
+namespace InputSample.Android
 {
-	[Activity (Label = "MonoGame.Samples.Input"
+	[Activity (Label = "InputSamples.Android"
 	           , MainLauncher = true
 	           ,Icon = "@drawable/icon"
 	           , Theme = "@style/Theme.Splash"
 	           ,ConfigurationChanges=ConfigChanges.Orientation|ConfigChanges.Keyboard|ConfigChanges.KeyboardHidden
 	           )]
-	public class Activity1 : AndroidGameActivity
+	public class MainActivity : AndroidGameActivity
 	{
 		protected override void OnCreate (Bundle bundle)
 		{
 			base.OnCreate (bundle);
-	        Game1.Activity = this;
-            var game = new Game1();
+            var game = new InputGame();
             game.Run();
 		}
 	}

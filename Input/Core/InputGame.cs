@@ -7,9 +7,9 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Input.Touch;
 
-namespace MonoGame.Samples.Input
+namespace InputSample
 {
-    public class Game1 : Game
+    public class InputGame : Game
     {
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
@@ -25,7 +25,7 @@ namespace MonoGame.Samples.Input
 
         TimeSpan lastClickTime;
 
-        public Game1()
+        public InputGame()
         {
             graphics = new GraphicsDeviceManager(this);
 

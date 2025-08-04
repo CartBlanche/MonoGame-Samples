@@ -3,8 +3,8 @@
     <TargetFramework>net8.0-windows</TargetFramework>
     <OutputType>WinExe</OutputType>
     <UseWindowsForms>true</UseWindowsForms>
-    <AssemblyName>MonoGame.Samples.Input.Windows</AssemblyName>
-    <RootNamespace>MonoGame.Samples.Input.Windows</RootNamespace>
+    <AssemblyName>InputSample</AssemblyName>
+    <RootNamespace>InputSample.Windows</RootNamespace>
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Core\Input.Core.csproj" />
