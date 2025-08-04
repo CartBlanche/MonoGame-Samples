@@ -4,6 +4,6 @@
     <AssemblyName>Orientation.Core</AssemblyName>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="MonoGame.Framework.DesktopGL" Version="3.8.4.0" />
+    <PackageReference Include="MonoGame.Framework.DesktopGL" Version="3.8.4.0" PrivateAssets="all" />
   </ItemGroup>
 </Project>

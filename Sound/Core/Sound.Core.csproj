@@ -1,4 +1,4 @@
-  <!-- .xnb copy ItemGroup moved inside <Project> below -->
+<!-- .xnb copy ItemGroup moved inside <Project> below -->
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
@@ -7,7 +7,7 @@
   </PropertyGroup>
   
   <ItemGroup>
-    <PackageReference Include="MonoGame.Framework.DesktopGL" Version="3.8.*" />
+    <PackageReference Include="MonoGame.Framework.DesktopGL" Version="3.8.*" PrivateAssets="all" />
   </ItemGroup>
   
 </Project>
