@@ -3,6 +3,7 @@
     <TargetFramework>net8.0-windows</TargetFramework>
     <OutputType>WinExe</OutputType>
     <RootNamespace>Audio3D.Windows</RootNamespace>
+    <AssemblyName>Audio3D</AssemblyName>
     <AssemblyTitle>Audio3D Windows</AssemblyTitle>
     <Description>Windows platform for Audio3D MonoGame sample.</Description>
     <Authors>CartBlanche</Authors>

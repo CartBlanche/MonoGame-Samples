@@ -3,7 +3,8 @@
     <TargetFramework>net8.0-android</TargetFramework>
     <OutputType>Exe</OutputType>
     <RootNamespace>Audio3D.Android</RootNamespace>
-    <AssemblyTitle>Audio3D Android</AssemblyTitle>
+    <AssemblyName>Audio3D</AssemblyName>
+    <AssemblyTitle>Audio3D</AssemblyTitle>
     <Description>Android platform for Audio3D MonoGame sample.</Description>
     <Authors>CartBlanche</Authors>
     <Company>CartBlanche</Company>

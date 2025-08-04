@@ -3,6 +3,7 @@
     <TargetFramework>net8.0-ios</TargetFramework>
     <OutputType>Exe</OutputType>
     <RootNamespace>Audio3D.iOS</RootNamespace>
+    <AssemblyName>Audio3D</AssemblyName>
     <AssemblyTitle>Audio3D iOS</AssemblyTitle>
     <Description>iOS platform for Audio3D MonoGame sample.</Description>
     <Authors>CartBlanche</Authors>
@@ -11,7 +12,7 @@
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Core\Audio3D.Core.csproj" />
-    <PackageReference Include="MonoGame.Framework.iOS" Version="3.8.*" />
+    <PackageReference Include="MonoGame.Framework.iOS" Version="3.8.4.2633-develop" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="..\..\Core\Content\**\*.xnb" Link="Content\%(RecursiveDir)%(Filename)%(Extension)">

@@ -2,24 +2,46 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "Run Windows",
+            "name": "Launch Windows",
             "type": "coreclr",
             "request": "launch",
             "preLaunchTask": "build-windows",
-            "program": "${workspaceFolder}/Platforms/Windows/bin/Debug/net8.0-windows/Audio3D.Windows.exe",
+            "program": "${workspaceFolder}/Platforms/Windows/bin/Debug/net8.0-windows/Audio3D.exe",
             "args": [],
             "cwd": "${workspaceFolder}/Platforms/Windows",
             "stopAtEntry": false,
             "console": "internalConsole"
         },
         {
-            "name": "Run DesktopGL",
+            "name": "Launch DesktopGL",
             "type": "coreclr",
             "request": "launch",
             "preLaunchTask": "build-desktopgl",
-            "program": "${workspaceFolder}/Platforms/DesktopGL/bin/Debug/net8.0/Audio3D.DesktopGL.exe",
+            "program": "${workspaceFolder}/Platforms/DesktopGL/bin/Debug/net8.0/Audio3D",
             "args": [],
             "cwd": "${workspaceFolder}/Platforms/DesktopGL",
+            "stopAtEntry": false,
+            "console": "internalConsole"
+        },
+        {
+            "name": "Launch Android",
+            "type": "coreclr",
+            "request": "launch",
+            "preLaunchTask": "build-android",
+            "program": "${workspaceFolder}/Platforms/Android/bin/Debug/net8.0-android/Audio3D.dll",
+            "args": [],
+            "cwd": "${workspaceFolder}/Platforms/Android",
+            "stopAtEntry": false,
+            "console": "internalConsole"
+        },
+        {
+            "name": "Launch iOS",
+            "type": "coreclr",
+            "request": "launch",
+            "preLaunchTask": "build-ios",
+            "program": "${workspaceFolder}/Platforms/iOS/bin/Debug/net8.0-ios/iossimulator-arm64/Audio3D.app/Audio3D",
+            "args": [],
+            "cwd": "${workspaceFolder}/Platforms/iOS",
             "stopAtEntry": false,
             "console": "internalConsole"
         }

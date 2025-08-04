@@ -16,17 +16,17 @@
             "problemMatcher": "$msCompile"
         },
         {
-            "label": "run-windows",
+            "label": "build-android",
             "type": "shell",
-            "command": "dotnet run --project Platforms/Windows/Audio3D.Windows.csproj",
-            "group": "test",
+            "command": "dotnet build Platforms/Android/Audio3D.Android.csproj",
+            "group": "build",
             "problemMatcher": "$msCompile"
         },
         {
-            "label": "run-desktopgl",
+            "label": "build-ios",
             "type": "shell",
-            "command": "dotnet run --project Platforms/DesktopGL/Audio3D.DesktopGL.csproj",
-            "group": "test",
+            "command": "dotnet build Platforms/iOS/Audio3D.iOS.csproj",
+            "group": "build",
             "problemMatcher": "$msCompile"
         }
     ]
