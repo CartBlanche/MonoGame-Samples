@@ -165,7 +165,7 @@ namespace RolePlaying
 
                 Color color = new Color((byte)255, (byte)255, (byte)255, TransitionAlpha);
 
-                spriteBatch.Begin();
+                spriteBatch.Begin(SpriteSortMode.Deferred, null, null, null, null, null, ScreenManager.GlobalTransformation);
                 spriteBatch.Draw(loadingBlackTexture, loadingBlackTextureDestination,
                     Color.White);
                 spriteBatch.Draw(loadingTexture, loadingPosition, Color.White);

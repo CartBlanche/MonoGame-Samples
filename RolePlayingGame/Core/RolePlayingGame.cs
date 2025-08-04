@@ -5,6 +5,7 @@
 // Copyright (C) Microsoft Corporation. All rights reserved.
 //-----------------------------------------------------------------------------
 
+using System;
 using System.IO;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
@@ -20,10 +21,18 @@ namespace RolePlaying
     /// </summary>
     public class RolePlayingGame : Game
     {
-        internal const int BUFFER_WIDTH = 1280;
-        internal const int BUFFER_HEIGHT = 720;
-        GraphicsDeviceManager graphics;
+        GraphicsDeviceManager graphicsDeviceManager;
         ScreenManager screenManager;
+
+        /// <summary>
+        /// Indicates if the game is running on a mobile platform.
+        /// </summary>
+        public readonly static bool IsMobile = OperatingSystem.IsAndroid() || OperatingSystem.IsIOS();
+
+        /// <summary>
+        /// Indicates if the game is running on a desktop platform.
+        /// </summary>
+        public readonly static bool IsDesktop = OperatingSystem.IsMacOS() || OperatingSystem.IsLinux() || OperatingSystem.IsWindows();
 
         /// <summary>
         /// Create a new RolePlayingGame object.
@@ -31,14 +40,30 @@ namespace RolePlaying
         public RolePlayingGame()
         {
             // initialize the graphics system
-            graphics = new GraphicsDeviceManager(this);
-            graphics.PreferredBackBufferWidth = BUFFER_WIDTH;
-            graphics.PreferredBackBufferHeight = BUFFER_HEIGHT;
+            graphicsDeviceManager = new GraphicsDeviceManager(this);
+            graphicsDeviceManager.PreferredBackBufferWidth = Session.BACK_BUFFER_WIDTH;
+            graphicsDeviceManager.PreferredBackBufferHeight = Session.BACK_BUFFER_HEIGHT;
 
-            IsMouseVisible = true;
+            if (IsMobile)
+            {
+                graphicsDeviceManager.IsFullScreen = true;
+                IsMouseVisible = false;
+            }
+            else if (IsDesktop)
+            {
+                graphicsDeviceManager.IsFullScreen = false;
+                IsMouseVisible = true;
+            }
+            else
+            {
+                throw new PlatformNotSupportedException();
+            }
 
             // configure the content manager
             Content.RootDirectory = "Content";
+
+            // Configure screen orientations.
+            graphicsDeviceManager.SupportedOrientations = DisplayOrientation.LandscapeLeft | DisplayOrientation.LandscapeRight;
 
             // add a gamer-services component, which is required for the storage APIs
             // TODO: GamerServicesComponent was XNA-specific and not available in MonoGame
@@ -67,7 +92,7 @@ namespace RolePlaying
 
             base.Initialize();
 
-            TileEngine.Viewport = graphics.GraphicsDevice.Viewport;
+            TileEngine.Viewport = graphicsDeviceManager.GraphicsDevice.Viewport;
 
             screenManager.AddScreen(new MainMenuScreen());
         }
@@ -112,7 +137,7 @@ namespace RolePlaying
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Draw(GameTime gameTime)
         {
-            graphics.GraphicsDevice.Clear(Color.Transparent);
+            graphicsDeviceManager.GraphicsDevice.Clear(Color.Transparent);
 
             base.Draw(gameTime);
         }

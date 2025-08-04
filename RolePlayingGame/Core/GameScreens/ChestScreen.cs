@@ -452,7 +452,7 @@ namespace RolePlaying
                 maximumCount - MaximumListEntries);
             EndIndex = Math.Min(StartIndex + MaximumListEntries, maximumCount);
 
-            spriteBatch.Begin();
+            spriteBatch.Begin(SpriteSortMode.Deferred, null, null, null, null, null, ScreenManager.GlobalTransformation);
 
             DrawBackground();
             if (dataList.Count > 0)

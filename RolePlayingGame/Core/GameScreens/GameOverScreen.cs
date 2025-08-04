@@ -120,10 +120,10 @@ namespace RolePlaying
         public override void Draw(GameTime gameTime)
         {
             SpriteBatch spriteBatch = ScreenManager.SpriteBatch;
-            spriteBatch.Begin();
+            spriteBatch.Begin(SpriteSortMode.Deferred, null, null, null, null, null, ScreenManager.GlobalTransformation);
 
             // Draw fading screen
-            spriteBatch.Draw(fadeTexture, new Rectangle(0, 0, RolePlayingGame.BUFFER_WIDTH, RolePlayingGame.BUFFER_HEIGHT), Color.White);
+            spriteBatch.Draw(fadeTexture, new Rectangle(0, 0, Session.BACK_BUFFER_WIDTH, Session.BACK_BUFFER_HEIGHT), Color.White);
 
             // Draw popup texture
             spriteBatch.Draw(backTexture, backgroundPosition, Color.White);

@@ -41,19 +41,9 @@ namespace RolePlaying
 
         private Texture2D plankTexture1, plankTexture2, plankTexture3;
 
-
-
-
-
-
         MenuEntry newGameMenuEntry, exitGameMenuEntry;
         MenuEntry saveGameMenuEntry, loadGameMenuEntry;
         MenuEntry controlsMenuEntry, helpMenuEntry;
-
-
-
-
-
 
         /// <summary>
         /// Constructor fills in the menu contents.
@@ -65,7 +55,7 @@ namespace RolePlaying
             newGameMenuEntry = new MenuEntry("New Game");
             newGameMenuEntry.Description = "Start a New Game";
             newGameMenuEntry.Font = Fonts.HeaderFont;
-            newGameMenuEntry.Position = new Vector2(RolePlayingGame.BUFFER_HEIGHT - 5, 0f);
+            newGameMenuEntry.Position = new Vector2(Session.BACK_BUFFER_HEIGHT - 5, 0f);
             newGameMenuEntry.Angle = -3.0f;
             newGameMenuEntry.TextOffset = new Vector2(0f, 5.0f);
             newGameMenuEntry.Selected += NewGameMenuEntrySelected;
@@ -78,7 +68,7 @@ namespace RolePlaying
                 saveGameMenuEntry = new MenuEntry("Save Game");
                 saveGameMenuEntry.Description = "Save the Game";
                 saveGameMenuEntry.Font = Fonts.HeaderFont;
-                saveGameMenuEntry.Position = new Vector2(RolePlayingGame.BUFFER_HEIGHT + 10, 0f);
+                saveGameMenuEntry.Position = new Vector2(Session.BACK_BUFFER_HEIGHT + 10, 0f);
                 saveGameMenuEntry.Selected += SaveGameMenuEntrySelected;
                 MenuEntries.Add(saveGameMenuEntry);
             }
@@ -91,7 +81,7 @@ namespace RolePlaying
             loadGameMenuEntry = new MenuEntry("Load Game");
             loadGameMenuEntry.Description = "Load the Game";
             loadGameMenuEntry.Font = Fonts.HeaderFont;
-            loadGameMenuEntry.Position = new Vector2(RolePlayingGame.BUFFER_HEIGHT - 20, 0f);
+            loadGameMenuEntry.Position = new Vector2(Session.BACK_BUFFER_HEIGHT - 20, 0f);
             loadGameMenuEntry.Selected += LoadGameMenuEntrySelected;
             MenuEntries.Add(loadGameMenuEntry);
 
@@ -99,7 +89,7 @@ namespace RolePlaying
             controlsMenuEntry = new MenuEntry("Controls");
             controlsMenuEntry.Description = "View Game Controls";
             controlsMenuEntry.Font = Fonts.HeaderFont;
-            controlsMenuEntry.Position = new Vector2(RolePlayingGame.BUFFER_HEIGHT, 0f);
+            controlsMenuEntry.Position = new Vector2(Session.BACK_BUFFER_HEIGHT, 0f);
             controlsMenuEntry.Angle = 5.0f;
             controlsMenuEntry.TextOffset = new Vector2(0f, -15.0f);
             controlsMenuEntry.Selected += ControlsMenuEntrySelected;
@@ -109,7 +99,7 @@ namespace RolePlaying
             helpMenuEntry = new MenuEntry("Backstory");
             helpMenuEntry.Description = "View Game Backstory";
             helpMenuEntry.Font = Fonts.HeaderFont;
-            helpMenuEntry.Position = new Vector2(RolePlayingGame.BUFFER_HEIGHT - 20, 0f);
+            helpMenuEntry.Position = new Vector2(Session.BACK_BUFFER_HEIGHT - 20, 0f);
             helpMenuEntry.Angle = -4.0f;
             helpMenuEntry.TextOffset = new Vector2(0f, 5.0f);
             helpMenuEntry.Selected += HelpMenuEntrySelected;
@@ -119,14 +109,13 @@ namespace RolePlaying
             exitGameMenuEntry = new MenuEntry("Exit");
             exitGameMenuEntry.Description = "Quit the Game";
             exitGameMenuEntry.Font = Fonts.HeaderFont;
-            exitGameMenuEntry.Position = new Vector2(RolePlayingGame.BUFFER_HEIGHT, 0f);
+            exitGameMenuEntry.Position = new Vector2(Session.BACK_BUFFER_HEIGHT, 0f);
             exitGameMenuEntry.Selected += OnCancel;
             MenuEntries.Add(exitGameMenuEntry);
 
             // start the menu music
             AudioManager.PushMusic("MainTheme");
         }
-
 
         /// <summary>
         /// Load the graphics content for this screen.
@@ -323,7 +312,7 @@ namespace RolePlaying
         {
             SpriteBatch spriteBatch = ScreenManager.SpriteBatch;
 
-            spriteBatch.Begin();
+            spriteBatch.Begin(SpriteSortMode.Deferred, null, null, null, null, null, ScreenManager.GlobalTransformation);
 
             // draw the background images
             spriteBatch.Draw(backgroundTexture, backgroundPosition, Color.White);

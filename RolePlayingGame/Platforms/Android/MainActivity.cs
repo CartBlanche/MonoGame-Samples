@@ -12,8 +12,8 @@ namespace RolePlaying.Android
         Icon = "@drawable/icon",
         AlwaysRetainTaskState = true,
         LaunchMode = LaunchMode.SingleInstance,
-        ScreenOrientation = ScreenOrientation.FullUser,
-        ConfigurationChanges = ConfigChanges.Orientation | ConfigChanges.Keyboard | ConfigChanges.KeyboardHidden | ConfigChanges.ScreenSize
+        ScreenOrientation = ScreenOrientation.SensorLandscape,
+        ConfigurationChanges = ConfigChanges.Orientation | ConfigChanges.Keyboard | ConfigChanges.KeyboardHidden
     )]
     public class MainActivity : AndroidGameActivity
     {
@@ -25,8 +25,10 @@ namespace RolePlaying.Android
             base.OnCreate(bundle);
 
             _game = new RolePlayingGame();
+
             _view = _game.Services.GetService(typeof(View)) as View;
             SetContentView(_view);
+
             _game.Run();
         }
     }

@@ -131,7 +131,7 @@ namespace RolePlaying
         {
             SpriteBatch spriteBatch = ScreenManager.SpriteBatch;
 
-            spriteBatch.Begin();
+            spriteBatch.Begin(SpriteSortMode.Deferred, null, null, null, null, null, ScreenManager.GlobalTransformation);
 
             spriteBatch.Draw(backgroundTexture, Vector2.Zero, Color.White);
             spriteBatch.Draw(plankTexture, plankPosition, Color.White);

@@ -222,7 +222,7 @@ namespace RolePlaying
         {
             screenAnimation.UpdateAnimation((float)gameTime.ElapsedGameTime.TotalSeconds);
 
-            ScreenManager.SpriteBatch.Begin();
+            ScreenManager.SpriteBatch.Begin(SpriteSortMode.Deferred, null, null, null, null, null, ScreenManager.GlobalTransformation);
             DrawStatistics();
             ScreenManager.SpriteBatch.End();
         }

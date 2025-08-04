@@ -175,7 +175,7 @@ namespace RolePlaying
             SpriteBatch spriteBatch = ScreenManager.SpriteBatch;
 
             // Draw Shop Main Menu
-            spriteBatch.Begin();
+            spriteBatch.Begin(SpriteSortMode.Deferred, null, null, null, null, null, ScreenManager.GlobalTransformation);
 
             // Draw Shop Main Menu Screen
             DrawMainMenu();

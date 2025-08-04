@@ -157,7 +157,7 @@ namespace RolePlaying
         {
             SpriteBatch spriteBatch = screenManager.SpriteBatch;
 
-            spriteBatch.Begin();
+            spriteBatch.Begin(SpriteSortMode.Deferred, null, null, null, null, null, Session.ScreenManager.GlobalTransformation);
 
             startingInfoPosition.X = 640f;
 

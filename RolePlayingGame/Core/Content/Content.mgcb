@@ -3427,6 +3427,18 @@
 /processorParam:TextureFormat=Color
 /build:Textures/GameScreens/TitleBar.png
 
+#begin Textures/GameScreens/blank.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Textures/GameScreens/blank.png
+
 #begin Textures/Gear/Boots01a.png
 /importer:TextureImporter
 /processor:TextureProcessor

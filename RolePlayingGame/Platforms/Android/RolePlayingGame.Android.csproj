@@ -7,21 +7,14 @@
     <AssemblyName>RolePlayingGame</AssemblyName>
     <AssemblyTitle>Role Playing Game - Android</AssemblyTitle>
     <AssemblyDescription>MonoGame Role Playing Game Sample for Android</AssemblyDescription>
-    <AssemblyCompany>MonoGame Samples</AssemblyCompany>
+    <AssemblyCompany>MonoGame Foundation</AssemblyCompany>
     <AssemblyProduct>Role Playing Game</AssemblyProduct>
-    <AssemblyCopyright>Copyright (c) 2011 Kenneth J. Pouncey - MIT License</AssemblyCopyright>
     <AssemblyVersion>1.0.0.0</AssemblyVersion>
-    <FileVersion>1.0.0.0</FileVersion>
     <AndroidApplication>true</AndroidApplication>
-    <AndroidResgenFile>Resources\Resource.Designer.cs</AndroidResgenFile>
-    <AndroidResgenClass>Resource</AndroidResgenClass>
     <AndroidManifest>AndroidManifest.xml</AndroidManifest>
-    <MonoAndroidResourcePrefix>Resources</MonoAndroidResourcePrefix>
-    <MonoAndroidAssetsPrefix>Assets</MonoAndroidAssetsPrefix>
-    <AndroidUseLatestPlatformSdk>true</AndroidUseLatestPlatformSdk>
-    <AndroidSupportedAbis>armeabi-v7a;x86;arm64-v8a;x86_64</AndroidSupportedAbis>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <MonoGamePlatform>Android</MonoGamePlatform>
+    <SupportedOSPlatformVersion>28</SupportedOSPlatformVersion>
   </PropertyGroup>
 
   <ItemGroup>

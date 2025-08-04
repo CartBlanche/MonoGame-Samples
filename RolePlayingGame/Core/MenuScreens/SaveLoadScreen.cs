@@ -323,7 +323,7 @@ namespace RolePlaying
         public override void Draw(GameTime gameTime)
         {
             SpriteBatch spriteBatch = ScreenManager.SpriteBatch;
-            spriteBatch.Begin();
+            spriteBatch.Begin(SpriteSortMode.Deferred, null, null, null, null, null, ScreenManager.GlobalTransformation);
 
             spriteBatch.Draw(backgroundTexture, backgroundPosition, Color.White);
             spriteBatch.Draw(plankTexture, plankPosition, Color.White);

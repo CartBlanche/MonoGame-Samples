@@ -290,7 +290,7 @@ namespace RolePlaying
             SpriteBatch spriteBatch = ScreenManager.SpriteBatch;
             Vector2 dialogPosition = informationPosition;
 
-            spriteBatch.Begin();
+            spriteBatch.Begin(SpriteSortMode.Deferred, null, null, null, null, null, ScreenManager.GlobalTransformation);
 
             // Draw fade screen
             spriteBatch.Draw(fadeTexture, screenRectangle, Color.White);

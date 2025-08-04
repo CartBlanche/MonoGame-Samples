@@ -12,6 +12,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using System.Text;
+using Microsoft.Xna.Framework.Input.Touch;
 
 namespace RolePlaying
 {
@@ -27,18 +28,30 @@ namespace RolePlaying
     /// </remarks>
     public class ScreenManager : DrawableGameComponent
     {
-
         List<GameScreen> screens = new List<GameScreen>();
         List<GameScreen> screensToUpdate = new List<GameScreen>();
 
         SpriteBatch spriteBatch;
+        private Texture2D blankTexture;
 
         bool isInitialized;
         bool traceEnabled;
 
+        private int backbufferWidth;
+        /// <summary>Gets or sets the current backbuffer width.</summary>
+        public int BackbufferWidth { get => backbufferWidth; set => backbufferWidth = value; }
 
+        private int backbufferHeight;
+        /// <summary>Gets or sets the current backbuffer height.</summary>
+        public int BackbufferHeight { get => backbufferHeight; set => backbufferHeight = value; }
 
+        private Vector2 baseScreenSize = new Vector2(Session.BACK_BUFFER_WIDTH, Session.BACK_BUFFER_HEIGHT);
+        /// <summary>Gets or sets the base screen size used for scaling calculations.</summary>
+        public Vector2 BaseScreenSize { get => baseScreenSize; set => baseScreenSize = value; }
 
+        private Matrix globalTransformation;
+        /// <summary>Gets or sets the global transformation matrix for scaling and positioning.</summary>
+        public Matrix GlobalTransformation { get => globalTransformation; set => globalTransformation = value; }
 
         /// <summary>
         /// A default SpriteBatch shared by all the screens. This saves
@@ -48,7 +61,6 @@ namespace RolePlaying
         {
             get { return spriteBatch; }
         }
-
 
         /// <summary>
         /// If true, the manager prints out a list of all the screens
@@ -61,19 +73,14 @@ namespace RolePlaying
             set { traceEnabled = value; }
         }
 
-
-
-
-
-
         /// <summary>
         /// Constructs a new screen manager component.
         /// </summary>
         public ScreenManager(Game game)
             : base(game)
         {
+            TouchPanel.EnabledGestures = GestureType.None;
         }
-
 
         /// <summary>
         /// Initializes the screen manager component.
@@ -85,7 +92,6 @@ namespace RolePlaying
             isInitialized = true;
         }
 
-
         /// <summary>
         /// Load your graphics content.
         /// </summary>
@@ -96,13 +102,14 @@ namespace RolePlaying
 
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
+            blankTexture = content.Load<Texture2D>("Textures/GameScreens/blank");
+
             // Tell each of the screens to load their content.
             foreach (GameScreen screen in screens)
             {
                 screen.LoadContent();
             }
         }
-
 
         /// <summary>
         /// Unload your graphics content.
@@ -115,11 +122,6 @@ namespace RolePlaying
                 screen.UnloadContent();
             }
         }
-
-
-
-
-
 
         /// <summary>
         /// Allows each screen to run logic.
@@ -171,7 +173,6 @@ namespace RolePlaying
                 TraceScreens();
         }
 
-
         /// <summary>
         /// Prints a list of all the screens, for debugging.
         /// </summary>
@@ -182,7 +183,7 @@ namespace RolePlaying
             foreach (GameScreen screen in screens)
                 screenNames.Add(screen.GetType().Name);
 
-#if WINDOWS
+#if DEBUG
             Trace.WriteLine(string.Join(", ", screenNames.ToArray()));
 #endif
         }
@@ -202,11 +203,6 @@ namespace RolePlaying
             }
         }
 
-
-
-
-
-
         /// <summary>
         /// Adds a new screen to the screen manager.
         /// </summary>
@@ -222,6 +218,7 @@ namespace RolePlaying
             }
 
             screens.Add(screen);
+            TouchPanel.EnabledGestures = screen.EnabledGestures;
         }
 
 
@@ -254,6 +251,80 @@ namespace RolePlaying
             return screens.ToArray();
         }
 
+        /// <summary>
+        /// Draws a translucent black fullscreen sprite. This is used for fading
+        /// screens in and out, or for darkening the background behind popups.
+        /// </summary>
+        /// <param name="alpha">The opacity level of the fade (0 = fully transparent, 1 = fully opaque).</param>
+        public void FadeBackBufferToBlack(float alpha)
+        {
+            Viewport viewport = GraphicsDevice.Viewport;
 
+            spriteBatch.Begin(SpriteSortMode.Deferred, null, null, null, null, null, GlobalTransformation);
+
+            spriteBatch.Draw(blankTexture,
+                             new Rectangle(0, 0, viewport.Width, viewport.Height),
+                             Color.Black * alpha);
+
+            spriteBatch.End();
+        }
+
+        /// <summary>
+        /// Scales the game presentation area to match the screen's aspect ratio.
+        /// </summary>
+        public void ScalePresentationArea()
+        {
+            // Validate parameters before calculation
+            if (GraphicsDevice == null || baseScreenSize.X <= 0 || baseScreenSize.Y <= 0)
+            {
+                throw new InvalidOperationException("Invalid graphics configuration");
+            }
+
+            // Fetch screen dimensions
+            backbufferWidth = GraphicsDevice.PresentationParameters.BackBufferWidth;
+            backbufferHeight = GraphicsDevice.PresentationParameters.BackBufferHeight;
+
+            // Prevent division by zero
+            if (backbufferHeight == 0 || baseScreenSize.Y == 0)
+            {
+                return;
+            }
+
+            // Calculate aspect ratios
+            float baseAspectRatio = baseScreenSize.X / baseScreenSize.Y;
+            float screenAspectRatio = backbufferWidth / (float)backbufferHeight;
+
+            // Determine uniform scaling factor
+            float scalingFactor;
+            float horizontalOffset = 0;
+            float verticalOffset = 0;
+
+            if (screenAspectRatio > baseAspectRatio)
+            {
+                // Wider screen: scale by height
+                scalingFactor = backbufferHeight / baseScreenSize.Y;
+
+                // Centre things horizontally.
+                horizontalOffset = (backbufferWidth - baseScreenSize.X * scalingFactor) / 2;
+            }
+            else
+            {
+                // Taller screen: scale by width
+                scalingFactor = backbufferWidth / baseScreenSize.X;
+
+                // Centre things vertically.
+                verticalOffset = (backbufferHeight - baseScreenSize.Y * scalingFactor) / 2;
+            }
+
+            // Update the transformation matrix
+            globalTransformation = Matrix.CreateScale(scalingFactor) *
+                                   Matrix.CreateTranslation(horizontalOffset, verticalOffset, 0);
+
+            // Update the inputTransformation with the Inverted globalTransformation
+            // TODO inputState.UpdateInputTransformation(Matrix.Invert(globalTransformation));
+
+            // Debug info
+            Debug.WriteLine($"Screen Size - Width[{backbufferWidth}] Height[{backbufferHeight}] ScalingFactor[{scalingFactor}]");
+        }
     }
 }

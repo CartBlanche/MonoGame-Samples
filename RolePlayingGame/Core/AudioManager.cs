@@ -52,13 +52,13 @@ namespace RolePlaying
             string soundBankFile)
             : base(game)
         {
-            try
+            /*try
             {
                 audioEngine = new AudioEngine(settingsFile);
                 waveBank = new WaveBank(audioEngine, waveBankFile);
                 soundBank = new SoundBank(audioEngine, soundBankFile);
             }
-            catch (NoAudioHardwareException)
+            catch (NoAudioHardwareException)*/
             {
                 // silently fall back to silence
                 audioEngine = null;

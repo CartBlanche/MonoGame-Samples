@@ -266,7 +266,7 @@ namespace RolePlaying
             titlePosition.Y = backgroundPosition.Y + lineSpacing;
 
             SpriteBatch spriteBatch = ScreenManager.SpriteBatch;
-            spriteBatch.Begin();
+            spriteBatch.Begin(SpriteSortMode.Deferred, null, null, null, null, null, ScreenManager.GlobalTransformation);
 
             // Draw the fading screen
             spriteBatch.Draw(fadeTexture, fadeDest, Color.White);

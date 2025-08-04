@@ -25,7 +25,7 @@ namespace RolePlaying
 
         private Texture2D backgroundTexture;
         private readonly Rectangle backgroundDestination =
-            new Rectangle(0, 0, RolePlayingGame.BUFFER_WIDTH, RolePlayingGame.BUFFER_HEIGHT);
+            new Rectangle(0, 0, Session.BACK_BUFFER_WIDTH, Session.BACK_BUFFER_HEIGHT);
         private Texture2D fadeTexture;
 
         private Texture2D listTexture;
@@ -411,7 +411,7 @@ namespace RolePlaying
                 dataList.Count - MaximumListEntries);
             endIndex = Math.Min(startIndex + MaximumListEntries, dataList.Count);
 
-            spriteBatch.Begin();
+            spriteBatch.Begin(SpriteSortMode.Deferred, null, null, null, null, null, ScreenManager.GlobalTransformation);
 
             DrawBackground();
             if (dataList.Count > 0)

@@ -7,21 +7,10 @@
 
 using System;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Input.Touch;
 
 namespace RolePlaying
 {
-    /// <summary>
-    /// Enum describes the screen transition state.
-    /// </summary>
-    public enum ScreenState
-    {
-        TransitionOn,
-        Active,
-        TransitionOff,
-        Hidden,
-    }
-
-
     /// <summary>
     /// A screen is a single layer that has update and draw logic, and which
     /// can be combined with other layers to build up a complex menu system.
@@ -35,8 +24,6 @@ namespace RolePlaying
     /// </remarks>
     public abstract class GameScreen
     {
-
-
         /// <summary>
         /// Normally when one screen is brought up over the top of another,
         /// the first screen will transition off to make room for the new
@@ -52,7 +39,6 @@ namespace RolePlaying
 
         bool isPopup = false;
 
-
         /// <summary>
         /// Indicates how long the screen takes to
         /// transition on when it is activated.
@@ -65,7 +51,6 @@ namespace RolePlaying
 
         TimeSpan transitionOnTime = TimeSpan.Zero;
 
-
         /// <summary>
         /// Indicates how long the screen takes to
         /// transition off when it is deactivated.
@@ -77,7 +62,6 @@ namespace RolePlaying
         }
 
         TimeSpan transitionOffTime = TimeSpan.Zero;
-
 
         /// <summary>
         /// Gets the current position of the screen transition, ranging
@@ -92,7 +76,6 @@ namespace RolePlaying
 
         float transitionPosition = 1;
 
-
         /// <summary>
         /// Gets the current alpha of the screen transition, ranging
         /// from 255 (fully active, no transition) to 0 (transitioned
@@ -102,7 +85,6 @@ namespace RolePlaying
         {
             get { return (byte)(255 - TransitionPosition * 255); }
         }
-
 
         /// <summary>
         /// Gets the current screen transition state.
@@ -115,7 +97,6 @@ namespace RolePlaying
 
         ScreenState screenState = ScreenState.TransitionOn;
 
-
         /// <summary>
         /// There are two possible reasons why a screen might be transitioning
         /// off. It could be temporarily going away to make room for another
@@ -127,8 +108,8 @@ namespace RolePlaying
         public bool IsExiting
         {
             get { return isExiting; }
-            protected internal set 
-            { 
+            protected internal set
+            {
                 bool fireEvent = !isExiting && value;
                 isExiting = value;
                 if (fireEvent && (Exiting != null))
@@ -139,7 +120,6 @@ namespace RolePlaying
         }
 
         bool isExiting = false;
-
 
         /// <summary>
         /// Checks whether this screen is active and can respond to user input.
@@ -156,7 +136,6 @@ namespace RolePlaying
 
         bool otherScreenHasFocus;
 
-
         /// <summary>
         /// Gets the manager that this screen belongs to.
         /// </summary>
@@ -168,29 +147,46 @@ namespace RolePlaying
 
         ScreenManager screenManager;
 
-
         public event EventHandler Exiting;
 
+        private GestureType enabledGestures = GestureType.None;
 
+        /// <summary>
+        /// Gets the gestures the screen is interested in. Screens should be as specific
+        /// as possible with gestures to increase the accuracy of the gesture engine.
+        /// For example, most menus only need Tap or perhaps Tap and VerticalDrag to operate.
+        /// These gestures are handled by the ScreenManager when screens change and
+        /// all gestures are placed in the InputState passed to the HandleInput method.
+        /// </summary>
+        public GestureType EnabledGestures
+        {
+            get { return enabledGestures; }
+            protected set
+            {
+                enabledGestures = value;
 
-
-
+                // the screen manager handles this during screen changes, but
+                // if this screen is active and the gesture types are changing,
+                // we have to update the TouchPanel ourself.
+                if (ScreenState == ScreenState.Active)
+                {
+                    TouchPanel.EnabledGestures = value;
+                }
+            }
+        }
 
         /// <summary>
         /// Load graphics content for the screen.
         /// </summary>
-        public virtual void LoadContent() { }
-
+        public virtual void LoadContent()
+        {
+            ScreenManager.ScalePresentationArea();
+        }
 
         /// <summary>
         /// Unload content for the screen.
         /// </summary>
         public virtual void UnloadContent() { }
-
-
-
-
-
 
         /// <summary>
         /// Allows the screen to run logic, such as updating the transition position.
@@ -241,8 +237,15 @@ namespace RolePlaying
                     screenState = ScreenState.Active;
                 }
             }
-        }
 
+            // Check if the back buffer size has changed (e.g., window resize).
+            if (ScreenManager.BackbufferHeight != ScreenManager.GraphicsDevice.PresentationParameters.BackBufferHeight
+                || ScreenManager.BackbufferWidth != ScreenManager.GraphicsDevice.PresentationParameters.BackBufferWidth)
+            {
+                // Adjust the presentation area to match the new back buffer size.
+                ScreenManager.ScalePresentationArea();
+            }
+        }
 
         /// <summary>
         /// Helper for updating the screen transition position.
@@ -272,7 +275,6 @@ namespace RolePlaying
             return true;
         }
 
-
         /// <summary>
         /// Allows the screen to handle user input. Unlike Update, this method
         /// is only called when the screen is active, and not when some other
@@ -285,11 +287,6 @@ namespace RolePlaying
         /// This is called when the screen should draw itself.
         /// </summary>
         public virtual void Draw(GameTime gameTime) { }
-
-
-
-
-
 
         /// <summary>
         /// Tells the screen to go away. Unlike ScreenManager.RemoveScreen, which
@@ -306,7 +303,5 @@ namespace RolePlaying
                 ScreenManager.RemoveScreen(this);
             }
         }
-
-
     }
 }

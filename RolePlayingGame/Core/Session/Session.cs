@@ -20,6 +20,9 @@ namespace RolePlaying
 {
     class Session
     {
+        internal const int BACK_BUFFER_WIDTH = 1280;
+        internal const int BACK_BUFFER_HEIGHT = 720;
+
         /// <summary>
         /// The single Session instance that can be active at a time.
         /// </summary>
@@ -1110,14 +1113,14 @@ namespace RolePlaying
                 // draw the combat background
                 if (TileEngine.Map.CombatTexture != null)
                 {
-                    spriteBatch.Begin();
+                    spriteBatch.Begin(SpriteSortMode.Deferred, null, null, null, null, null, ScreenManager.GlobalTransformation);
                     spriteBatch.Draw(TileEngine.Map.CombatTexture, Vector2.Zero,
                         Color.White);
                     spriteBatch.End();
                 }
 
                 // draw the combat itself
-                spriteBatch.Begin(SpriteSortMode.BackToFront, BlendState.AlphaBlend);
+                spriteBatch.Begin(SpriteSortMode.BackToFront, BlendState.AlphaBlend, null, null, null, null, ScreenManager.GlobalTransformation);
                 CombatEngine.Draw(gameTime);
                 spriteBatch.End();
             }
@@ -1130,7 +1133,7 @@ namespace RolePlaying
 
 #if DEBUG
             // draw the debug information
-            spriteBatch.Begin();
+            spriteBatch.Begin(SpriteSortMode.Deferred, null, null, null, null, null, ScreenManager.GlobalTransformation);
             spriteBatch.DrawString(Fonts.DebugFont, "Map: " + TileEngine.Map.AssetName, new Vector2(10, 10), Color.Yellow);
             spriteBatch.End();
 #endif
@@ -1145,7 +1148,7 @@ namespace RolePlaying
             SpriteBatch spriteBatch = screenManager.SpriteBatch;
 
             // draw the background
-            spriteBatch.Begin();
+            spriteBatch.Begin(SpriteSortMode.Deferred, null, null, null, null, null, ScreenManager.GlobalTransformation);
             if (TileEngine.Map.Texture != null)
             {
                 // draw the ground layer
@@ -1156,7 +1159,7 @@ namespace RolePlaying
             spriteBatch.End();
 
             // Sort the object layer and player according to depth 
-            spriteBatch.Begin(SpriteSortMode.BackToFront, BlendState.AlphaBlend);
+            spriteBatch.Begin(SpriteSortMode.BackToFront, BlendState.AlphaBlend, null, null, null, null, ScreenManager.GlobalTransformation);
 
             float elapsedSeconds = (float)gameTime.ElapsedGameTime.TotalSeconds;
 
@@ -1358,7 +1361,7 @@ namespace RolePlaying
             spriteBatch.End();
 
             // draw the foreground
-            spriteBatch.Begin();
+            spriteBatch.Begin(SpriteSortMode.Deferred, null, null, null, null, null, ScreenManager.GlobalTransformation);
             if (TileEngine.Map.Texture != null)
             {
                 TileEngine.DrawLayers(spriteBatch, false, false, true);

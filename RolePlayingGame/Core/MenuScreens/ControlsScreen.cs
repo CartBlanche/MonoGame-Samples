@@ -275,7 +275,7 @@ namespace RolePlaying
             SpriteBatch spriteBatch = ScreenManager.SpriteBatch;
             Vector2 textPosition = Vector2.Zero;
 
-            spriteBatch.Begin();
+            spriteBatch.Begin(SpriteSortMode.Deferred, null, null, null, null, null, ScreenManager.GlobalTransformation);
 
             // Draw the background texture
             spriteBatch.Draw(backgroundTexture, Vector2.Zero, Color.White);
