@@ -102,13 +102,11 @@ namespace RolePlaying
             plankTexture = 
                 content.Load<Texture2D>(@"Textures\MainMenu\MainMenuPlank03");
 
-            Viewport viewport = ScreenManager.GraphicsDevice.Viewport;
-            screenRect = new Rectangle(viewport.X, viewport.Y,
-                viewport.Width, viewport.Height);
+            screenRect = new Rectangle(0, 0, Session.BACK_BUFFER_WIDTH, Session.BACK_BUFFER_HEIGHT);
             plankPosition = new Vector2(
-                (viewport.Width - plankTexture.Width) / 2, 66f);
+                (Session.BACK_BUFFER_WIDTH - plankTexture.Width) / 2, 66f);
             shopNamePosition = new Vector2(
-                (viewport.Width - Fonts.HeaderFont.MeasureString(store.Name).X) / 2, 
+                (Session.BACK_BUFFER_WIDTH - Fonts.HeaderFont.MeasureString(store.Name).X) / 2, 
                 95f);
         }
 

@@ -78,7 +78,6 @@ namespace RolePlaying
         public override void LoadContent()
         {
             ContentManager content = ScreenManager.Game.Content;
-            Viewport viewport = ScreenManager.GraphicsDevice.Viewport;
 
             backgroundTexture =
                 content.Load<Texture2D>(@"Textures\GameScreens\PopupScreen");
@@ -91,13 +90,12 @@ namespace RolePlaying
             fadeTexture = content.Load<Texture2D>(@"Textures\GameScreens\FadeScreen");
 
             // Get the screen positions
-            screenSize = new Vector2(viewport.Width, viewport.Height);
-            fadeDest = new Rectangle(viewport.X, viewport.Y,
-                viewport.Width, viewport.Height);
+            screenSize = new Vector2(Session.BACK_BUFFER_WIDTH, Session.BACK_BUFFER_HEIGHT);
+            fadeDest = new Rectangle(0, 0, Session.BACK_BUFFER_WIDTH, Session.BACK_BUFFER_HEIGHT);
 
             backgroundPosition = new Vector2(
-                (viewport.Width - backgroundTexture.Width) / 2,
-                (viewport.Height - backgroundTexture.Height) / 2);
+                (Session.BACK_BUFFER_WIDTH - backgroundTexture.Width) / 2,
+                (Session.BACK_BUFFER_HEIGHT - backgroundTexture.Height) / 2);
             scrollPosition = backgroundPosition + new Vector2(820f, 200f);
 
             titlePosition = new Vector2(
@@ -110,7 +108,7 @@ namespace RolePlaying
                 backTextPosition.X - backIconTexture.Width - 10f, backTextPosition.Y);
 
             topLinePosition = new Vector2(
-                (viewport.Width - lineTexture.Width) / 2 - 30f, 200f);
+                (Session.BACK_BUFFER_WIDTH - lineTexture.Width) / 2 - 30f, 200f);
             bottomLinePosition = new Vector2(topLinePosition.X, 550f);
         }
 

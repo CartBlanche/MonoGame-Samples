@@ -88,13 +88,11 @@ namespace RolePlaying
             loadingTexture = content.Load<Texture2D>(@"Textures\MainMenu\LoadingPause");
             loadingBlackTexture =
                 content.Load<Texture2D>(@"Textures\GameScreens\FadeScreen");
-            Viewport viewport = ScreenManager.GraphicsDevice.Viewport;
-            loadingBlackTextureDestination = new Rectangle(viewport.X, viewport.Y, 
-                viewport.Width, viewport.Height);
-            loadingPosition = new Vector2(
-                viewport.X + (float)Math.Floor((viewport.Width - 
-                    loadingTexture.Width) / 2f),
-                viewport.Y + (float)Math.Floor((viewport.Height - 
+
+            loadingBlackTextureDestination = new Rectangle(0, 0, 
+                Session.BACK_BUFFER_WIDTH, Session.BACK_BUFFER_HEIGHT);
+            loadingPosition = new Vector2((float)Math.Floor((Session.BACK_BUFFER_WIDTH - 
+                    loadingTexture.Width) / 2f), (float)Math.Floor((Session.BACK_BUFFER_HEIGHT -
                     loadingTexture.Height) / 2f));
 
             base.LoadContent();
@@ -160,9 +158,6 @@ namespace RolePlaying
                 SpriteBatch spriteBatch = ScreenManager.SpriteBatch;
 
                 // Center the text in the viewport.
-                Viewport viewport = ScreenManager.GraphicsDevice.Viewport;
-                Vector2 viewportSize = new Vector2(viewport.Width, viewport.Height);
-
                 Color color = new Color((byte)255, (byte)255, (byte)255, TransitionAlpha);
 
                 spriteBatch.Begin(SpriteSortMode.Deferred, null, null, null, null, null, ScreenManager.GlobalTransformation);

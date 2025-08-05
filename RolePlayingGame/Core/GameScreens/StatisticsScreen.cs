@@ -93,7 +93,6 @@ namespace RolePlaying
         public override void LoadContent()
         {
             ContentManager content = ScreenManager.Game.Content;
-            Viewport viewport = ScreenManager.GraphicsDevice.Viewport;
 
             statisticsScreen =
                 content.Load<Texture2D>(@"Textures\GameScreens\GameScreenBkgd");
@@ -120,14 +119,13 @@ namespace RolePlaying
             fadeTexture =
                 content.Load<Texture2D>(@"Textures\GameScreens\FadeScreen");
 
-            screenRectangle = new Rectangle(viewport.X, viewport.Y,
-                viewport.Width, viewport.Height);
+            screenRectangle = new Rectangle(0, 0, Session.BACK_BUFFER_WIDTH, Session.BACK_BUFFER_HEIGHT);
 
-            statisticsNamePosition.X = (viewport.Width -
+            statisticsNamePosition.X = (Session.BACK_BUFFER_WIDTH -
                 Fonts.HeaderFont.MeasureString("Statistics").X) / 2;
             statisticsNamePosition.Y = 95f;
 
-            plankPosition.X = (viewport.Width - plankTexture.Width) / 2;
+            plankPosition.X = (Session.BACK_BUFFER_WIDTH - plankTexture.Width) / 2;
             plankPosition.Y = 67f;
         }
 

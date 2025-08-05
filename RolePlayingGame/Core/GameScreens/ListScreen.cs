@@ -261,9 +261,7 @@ namespace RolePlaying
                 content.Load<Texture2D>(@"Textures\Buttons\YButton");
 
             // calculate the centered positions
-            Viewport viewport = ScreenManager.GraphicsDevice.Viewport;
-            plankTexturePosition = new Vector2(
-                viewport.X + (viewport.Width - plankTexture.Width) / 2f, 67f);
+            plankTexturePosition = new Vector2((Session.BACK_BUFFER_WIDTH - plankTexture.Width) / 2f, 67f);
 
             // adjust positions for texture sizes
             if (backButtonTexture != null)
@@ -637,9 +635,8 @@ namespace RolePlaying
             if ((plankTexture != null) && !String.IsNullOrEmpty(titleText))
             {
                 Vector2 titleTextSize = Fonts.HeaderFont.MeasureString(titleText);
-                Viewport viewport = ScreenManager.GraphicsDevice.Viewport;
                 Vector2 position = new Vector2(
-                    (float)Math.Floor(viewport.X + viewport.Width / 2 -
+                    (float)Math.Floor(Session.BACK_BUFFER_WIDTH / 2 -
                     titleTextSize.X / 2f), 95f);
                 spriteBatch.Draw(plankTexture, plankTexturePosition, Color.White);
                 spriteBatch.DrawString(Fonts.HeaderFont, titleText, position, Fonts.TitleColor, MathHelper.ToRadians(-3.0f), Vector2.Zero, 1.0f, SpriteEffects.None, 0f);

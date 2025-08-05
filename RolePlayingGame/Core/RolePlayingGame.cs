@@ -92,7 +92,7 @@ namespace RolePlaying
 
             base.Initialize();
 
-            TileEngine.Viewport = graphicsDeviceManager.GraphicsDevice.Viewport;
+            TileEngine.Viewport = screenManager.GraphicsDevice.Viewport;
 
             screenManager.AddScreen(new MainMenuScreen());
         }

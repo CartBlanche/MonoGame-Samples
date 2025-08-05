@@ -66,34 +66,28 @@ namespace RolePlaying
         public override void LoadContent()
         {
             ContentManager content = ScreenManager.Game.Content;
-            Viewport viewport = ScreenManager.GraphicsDevice.Viewport;
 
             fadeTexture = content.Load<Texture2D>(@"Textures\GameScreens\FadeScreen");
             backTexture = content.Load<Texture2D>(@"Textures\GameScreens\PopupScreen");
             selectIconTexture = content.Load<Texture2D>(@"Textures\Buttons\AButton");
 
-            backgroundPosition.X = (viewport.Width - backTexture.Width) / 2;
-            backgroundPosition.Y = (viewport.Height - backTexture.Height) / 2;
+            backgroundPosition.X = (Session.BACK_BUFFER_WIDTH - backTexture.Width) / 2;
+            backgroundPosition.Y = (Session.BACK_BUFFER_HEIGHT - backTexture.Height) / 2;
 
-            titlePosition.X = (viewport.Width -
+            titlePosition.X = (Session.BACK_BUFFER_WIDTH -
                 Fonts.HeaderFont.MeasureString(titleString).X) / 2;
             titlePosition.Y = backgroundPosition.Y + 70f;
 
-            gameOverPosition.X = (viewport.Width -
+            gameOverPosition.X = (Session.BACK_BUFFER_WIDTH -
                 Fonts.ButtonNamesFont.MeasureString(titleString).X) / 2;
             gameOverPosition.Y = backgroundPosition.Y + backTexture.Height / 2;
 
-            selectIconPosition.X = viewport.Width / 2 + 260;
+            selectIconPosition.X = Session.BACK_BUFFER_WIDTH / 2 + 260;
             selectIconPosition.Y = backgroundPosition.Y + 530f;
             selectPosition.X = selectIconPosition.X -
                 Fonts.ButtonNamesFont.MeasureString(selectString).X - 10f;
             selectPosition.Y = backgroundPosition.Y + 530f;
         }
-
-
-
-
-
 
         /// <summary>
         /// Handles user input.

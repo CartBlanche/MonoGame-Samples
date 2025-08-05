@@ -198,33 +198,30 @@ namespace RolePlaying
             lineTexture =
                 content.Load<Texture2D>(@"Textures\GameScreens\SeparationLine");
 
-            Viewport viewport = ScreenManager.GraphicsDevice.Viewport;
-
-            backgroundPosition.X = (viewport.Width - backgroundTexture.Width) / 2;
-            backgroundPosition.Y = (viewport.Height - backgroundTexture.Height) / 2;
+            backgroundPosition.X = (Session.BACK_BUFFER_WIDTH - backgroundTexture.Width) / 2;
+            backgroundPosition.Y = (Session.BACK_BUFFER_HEIGHT - backgroundTexture.Height) / 2;
 
 
-            selectButtonPosition.X = viewport.Width / 2 + 260;
+            selectButtonPosition.X = Session.BACK_BUFFER_WIDTH / 2 + 260;
             selectButtonPosition.Y = backgroundPosition.Y + 530f;
             selectPosition.X = selectButtonPosition.X -
                 Fonts.ButtonNamesFont.MeasureString(selectText).X - 10f;
             selectPosition.Y = selectButtonPosition.Y;
 
-            backPosition.X = viewport.Width / 2 - 250f;
+            backPosition.X = Session.BACK_BUFFER_WIDTH / 2 - 250f;
             backPosition.Y = backgroundPosition.Y + 530f;
             backButtonPosition.X = backPosition.X - backButtonTexture.Width - 10;
             backButtonPosition.Y = backPosition.Y;
 
             scrollPosition = backgroundPosition + new Vector2(820f, 200f);
 
-            topLinePosition.X = (viewport.Width - lineTexture.Width) / 2 - 30f;
+            topLinePosition.X = (Session.BACK_BUFFER_WIDTH - lineTexture.Width) / 2 - 30f;
             topLinePosition.Y = 200f;
 
             bottomLinePosition.X = topLinePosition.X;
             bottomLinePosition.Y = 550f;
 
-            titlePosition.X = (viewport.Width -
-                Fonts.HeaderFont.MeasureString(titleText).X) / 2;
+            titlePosition.X = (Session.BACK_BUFFER_WIDTH - Fonts.HeaderFont.MeasureString(titleText).X) / 2;
             titlePosition.Y = backgroundPosition.Y + 70f;
         }
 

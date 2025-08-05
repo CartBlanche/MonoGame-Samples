@@ -109,10 +109,9 @@ namespace RolePlaying
                 content.Load<Texture2D>(@"Textures\GameScreens\SelectionArrow");
 
             // calculate the image positions
-            Viewport viewport = ScreenManager.GraphicsDevice.Viewport;
             backgroundPosition = new Vector2(
-                (viewport.Width - backgroundTexture.Width) / 2,
-                (viewport.Height - backgroundTexture.Height) / 2); 
+                (Session.BACK_BUFFER_WIDTH - backgroundTexture.Width) / 2,
+                (Session.BACK_BUFFER_HEIGHT - backgroundTexture.Height) / 2);
             plankPosition = backgroundPosition + new Vector2(
                 backgroundTexture.Width / 2 - plankTexture.Width / 2, 
                 60f);

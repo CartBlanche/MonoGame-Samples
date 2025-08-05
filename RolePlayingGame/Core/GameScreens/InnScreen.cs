@@ -126,7 +126,6 @@ namespace RolePlaying
         /// <param name="screenHeight">Height of the screen</param>
         public override void LoadContent()
         {
-            Viewport viewport = ScreenManager.GraphicsDevice.Viewport;
             ContentManager content = ScreenManager.Game.Content;
 
             backgroundTexture = 
@@ -146,17 +145,17 @@ namespace RolePlaying
             goldIcon = content.Load<Texture2D>(@"Textures\GameScreens\GoldIcon");
             fadeTexture = content.Load<Texture2D>(@"Textures\GameScreens\FadeScreen");
 
-            screenRectangle = new Rectangle(viewport.X, viewport.Y,
-                viewport.Width, viewport.Height);
+            screenRectangle = new Rectangle(0, 0,
+                Session.BACK_BUFFER_WIDTH, Session.BACK_BUFFER_HEIGHT);
 
-            plankPosition = new Vector2((viewport.Width - plankTexture.Width) / 2, 67f);
+            plankPosition = new Vector2((Session.BACK_BUFFER_WIDTH - plankTexture.Width) / 2, 67f);
 
             backgroundPosition = new Vector2(
-                (viewport.Width - backgroundTexture.Width) / 2,
-                (viewport.Height - backgroundTexture.Height) / 2);
+                (Session.BACK_BUFFER_WIDTH - backgroundTexture.Width) / 2,
+                (Session.BACK_BUFFER_HEIGHT - backgroundTexture.Height) / 2);
 
             namePosition = new Vector2(
-                (viewport.Width - Fonts.HeaderFont.MeasureString(inn.Name).X) / 2, 95f);
+                (Session.BACK_BUFFER_WIDTH - Fonts.HeaderFont.MeasureString(inn.Name).X) / 2, 95f);
 
             selectTextPosition = selectIconPosition;
             selectTextPosition.X -= 

@@ -104,7 +104,6 @@ namespace RolePlaying
         /// </summary>
         public override void LoadContent()
         {
-            Viewport viewport = ScreenManager.GraphicsDevice.Viewport;
             ContentManager content = ScreenManager.Game.Content;
 
             fadeTexture = content.Load<Texture2D>(@"Textures\GameScreens\FadeScreen");
@@ -112,7 +111,7 @@ namespace RolePlaying
             // Display screens
             playerInfoScreen =
                 content.Load<Texture2D>(@"Textures\GameScreens\PopupScreen");
-            popupPosition = new Vector2(viewport.Width / 2f, viewport.Height / 2f);
+            popupPosition = new Vector2((Session.BACK_BUFFER_WIDTH / 2f), (Session.BACK_BUFFER_HEIGHT / 2f));
             popupPosition.X -= playerInfoScreen.Width / 2;
             popupPosition.Y -= playerInfoScreen.Height / 2;
 
@@ -129,8 +128,8 @@ namespace RolePlaying
                 content.Load<Texture2D>(@"Textures\GameScreens\PlayerUnSelected");
 
             titlePosition = new Vector2(
-                (viewport.Width - Fonts.HeaderFont.MeasureString("Choose Player").X) / 2,
-                (viewport.Height - playerInfoScreen.Height) / 2 + 70f);
+                (Session.BACK_BUFFER_WIDTH - Fonts.HeaderFont.MeasureString("Choose Player").X) / 2,
+                (Session.BACK_BUFFER_HEIGHT - playerInfoScreen.Height) / 2 + 70f);
         }
 
 

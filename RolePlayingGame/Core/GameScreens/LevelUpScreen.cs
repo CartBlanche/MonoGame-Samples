@@ -145,12 +145,11 @@ namespace RolePlaying
             fadeTexture = 
                 content.Load<Texture2D>(@"Textures\GameScreens\FadeScreen");
 
-            Viewport viewport = ScreenManager.GraphicsDevice.Viewport;
-            backgroundPosition.X = (viewport.Width - backTexture.Width) / 2;
-            backgroundPosition.Y = (viewport.Height - backTexture.Height) / 2;
+            backgroundPosition.X = (Session.BACK_BUFFER_WIDTH - backTexture.Width) / 2;
+            backgroundPosition.Y = (Session.BACK_BUFFER_HEIGHT - backTexture.Height) / 2;
 
-            screenSize = new Vector2(viewport.Width, viewport.Height);
-            fadeDest = new Rectangle(0, 0, viewport.Width, viewport.Height);
+            screenSize = new Vector2(Session.BACK_BUFFER_WIDTH, Session.BACK_BUFFER_HEIGHT);
+            fadeDest = new Rectangle(0, 0, Session.BACK_BUFFER_WIDTH, Session.BACK_BUFFER_HEIGHT);
 
             titlePosition.X = (screenSize.X -
                 Fonts.HeaderFont.MeasureString(titleText).X) / 2;

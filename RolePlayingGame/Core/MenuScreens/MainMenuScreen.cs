@@ -138,10 +138,9 @@ namespace RolePlaying
             selectTexture = content.Load<Texture2D>(@"Textures\Buttons\AButton");
 
             // calculate the texture positions
-            Viewport viewport = ScreenManager.GraphicsDevice.Viewport;
             backgroundPosition = new Vector2(
-                (viewport.Width - backgroundTexture.Width) / 2,
-                (viewport.Height - backgroundTexture.Height) / 2);
+                (Session.BACK_BUFFER_WIDTH - backgroundTexture.Width) / 2,
+                (Session.BACK_BUFFER_HEIGHT - backgroundTexture.Height) / 2);
             descriptionAreaPosition = backgroundPosition + new Vector2(158, 130);
             descriptionAreaTextPosition = backgroundPosition + new Vector2(158, 350);
             iconPosition = backgroundPosition + new Vector2(170, 80);

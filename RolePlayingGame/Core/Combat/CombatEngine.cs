@@ -1048,17 +1048,16 @@ namespace RolePlaying
         private void DrawSelectionSprites(GameTime gameTime)
         {
             SpriteBatch spriteBatch = Session.ScreenManager.SpriteBatch;
-            Viewport viewport = Session.ScreenManager.GraphicsDevice.Viewport;
 
             // draw the highlighted-player sprite, if any
             if (highlightedCombatant != null)
             {
                 highlightBackgroundSprite.Draw(spriteBatch,
                     highlightedCombatant.Position,
-                    1f - (highlightedCombatant.Position.Y - 1) / viewport.Height);
+                    1f - (highlightedCombatant.Position.Y - 1) / Session.BACK_BUFFER_HEIGHT);
                 highlightForegroundSprite.Draw(spriteBatch,
                     highlightedCombatant.Position,
-                    1f - (highlightedCombatant.Position.Y + 1) / viewport.Height);
+                    1f - (highlightedCombatant.Position.Y + 1) / Session.BACK_BUFFER_HEIGHT);
             }
 
             // update the animations
@@ -1073,7 +1072,7 @@ namespace RolePlaying
             {
                 primaryTargetSprite.Draw(spriteBatch,
                     primaryTargetedCombatant.Position,
-                    1f - (primaryTargetedCombatant.Position.Y - 1) / viewport.Height);
+                    1f - (primaryTargetedCombatant.Position.Y - 1) / Session.BACK_BUFFER_HEIGHT);
                 if (primaryTargetedCombatant.Character is Monster)
                 {
                     Fonts.DrawCenteredText(spriteBatch, Fonts.DamageFont,
@@ -1098,7 +1097,7 @@ namespace RolePlaying
                 }
                 secondaryTargetSprite.Draw(spriteBatch,
                     combatant.Position,
-                    1f - (combatant.Position.Y - 1) / viewport.Height);
+                    1f - (combatant.Position.Y - 1) / Session.BACK_BUFFER_HEIGHT);
                 if (combatant.Character is Monster)
                 {
                     Fonts.DrawCenteredText(spriteBatch, Fonts.DamageFont,

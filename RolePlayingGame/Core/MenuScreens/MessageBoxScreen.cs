@@ -81,12 +81,11 @@ namespace RolePlaying
             loadingBlackTexture =
                 content.Load<Texture2D>(@"Textures\GameScreens\FadeScreen");
 
-            Viewport viewport = ScreenManager.GraphicsDevice.Viewport;
             backgroundPosition = new Vector2(
-                (viewport.Width - backgroundTexture.Width) / 2,
-                (viewport.Height - backgroundTexture.Height) / 2);
-            loadingBlackTextureDestination = new Rectangle(viewport.X, viewport.Y,
-                viewport.Width, viewport.Height);
+                (Session.BACK_BUFFER_WIDTH - backgroundTexture.Width) / 2,
+                (Session.BACK_BUFFER_HEIGHT - backgroundTexture.Height) / 2);
+            loadingBlackTextureDestination = new Rectangle(0, 0,
+                Session.BACK_BUFFER_WIDTH, Session.BACK_BUFFER_HEIGHT);
 
             backPosition = backgroundPosition + new Vector2(50f,
                 backgroundTexture.Height - 100);

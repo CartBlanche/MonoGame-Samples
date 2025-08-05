@@ -124,7 +124,6 @@ namespace RolePlaying
         /// </summary>
         public override void LoadContent()
         {
-            Viewport viewport = ScreenManager.GraphicsDevice.Viewport;
             keyboardInfo.totalActionList = InputManager.ActionMaps;
             keyboardInfo.selectedIndex = 0;
 

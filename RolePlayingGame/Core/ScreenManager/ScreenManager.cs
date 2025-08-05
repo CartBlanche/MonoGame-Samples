@@ -258,12 +258,10 @@ namespace RolePlaying
         /// <param name="alpha">The opacity level of the fade (0 = fully transparent, 1 = fully opaque).</param>
         public void FadeBackBufferToBlack(float alpha)
         {
-            Viewport viewport = GraphicsDevice.Viewport;
-
             spriteBatch.Begin(SpriteSortMode.Deferred, null, null, null, null, null, GlobalTransformation);
 
             spriteBatch.Draw(blankTexture,
-                             new Rectangle(0, 0, viewport.Width, viewport.Height),
+                             new Rectangle(0, 0, Session.BACK_BUFFER_WIDTH, Session.BACK_BUFFER_HEIGHT),
                              Color.Black * alpha);
 
             spriteBatch.End();
