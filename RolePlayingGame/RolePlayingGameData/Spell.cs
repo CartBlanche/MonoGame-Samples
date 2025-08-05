@@ -6,6 +6,7 @@
 //-----------------------------------------------------------------------------
 
 using System;
+using System.IO;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
@@ -370,7 +371,7 @@ namespace RolePlaying.Data
                 spell.MagicPointCost = input.ReadInt32();
                 spell.IconTextureName = input.ReadString();
                 spell.iconTexture = input.ContentManager.Load<Texture2D>(
-                    System.IO.Path.Combine(@"Textures\Spells", spell.IconTextureName));
+                    Path.Combine("Textures", "Spells", spell.IconTextureName));
                 spell.IsOffensive = input.ReadBoolean();
                 spell.TargetDuration = input.ReadInt32();
                 spell.targetEffectRange = spell.InitialTargetEffectRange =
@@ -395,11 +396,6 @@ namespace RolePlaying.Data
                 return spell;
             }
         }
-
-
-
-
-
 
         public object Clone()
         {
@@ -438,8 +434,7 @@ namespace RolePlaying.Data
                 Description = asset.Element("Description")?.Value ?? "No Description",
                 MagicPointCost = int.Parse(asset.Element("MagicPointCost")?.Value ?? "0"),
                 IconTextureName = asset.Element("IconTextureName")?.Value ?? "UnknownIcon",
-                iconTexture = contentManager.Load<Texture2D>(
-                    System.IO.Path.Combine(@"Textures\Spells", asset.Element("IconTextureName").Value)),
+                iconTexture = contentManager.Load<Texture2D>(Path.Combine("Textures", "Spells", asset.Element("IconTextureName").Value)),
                 IsOffensive = bool.Parse(asset.Element("IsOffensive")?.Value ?? "false"),
                 TargetDuration = int.Parse(asset.Element("TargetDuration")?.Value ?? "0"),
                 /*targetEffectRange = StatisticsRange.FromString(

@@ -12,6 +12,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Content;
 using RolePlaying.Data;
+using System.IO;
 
 namespace RolePlaying
 {
@@ -67,17 +68,17 @@ namespace RolePlaying
 
             ContentManager content = ScreenManager.Game.Content;
 
-            backgroundTexture = content.Load<Texture2D>(@"Textures\MainMenu\MainMenu");
+            backgroundTexture = content.Load<Texture2D>(Path.Combine("Textures", "MainMenu", "MainMenu"));
             plankTexture =
-                content.Load<Texture2D>(@"Textures\MainMenu\MainMenuPlank03");
+                content.Load<Texture2D>(Path.Combine("Textures", "MainMenu", "MainMenuPlank03"));
             backTexture =
-                content.Load<Texture2D>(@"Textures\Buttons\BButton");
+                content.Load<Texture2D>(Path.Combine("Textures", "Buttons", "BButton"));
             scrollUpTexture =
-                content.Load<Texture2D>(@"Textures\GameScreens\ScrollUp");
+                content.Load<Texture2D>(Path.Combine("Textures", "GameScreens", "ScrollUp"));
             scrollDownTexture =
-                content.Load<Texture2D>(@"Textures\GameScreens\ScrollDown");
+                content.Load<Texture2D>(Path.Combine("Textures", "GameScreens", "ScrollDown"));
             lineBorderTexture =
-                content.Load<Texture2D>(@"Textures\GameScreens\LineBorder");
+                content.Load<Texture2D>(Path.Combine("Textures", "GameScreens", "LineBorder"));
 
             plankPosition.X = backgroundTexture.Width / 2 - plankTexture.Width / 2;
             plankPosition.Y = 60;

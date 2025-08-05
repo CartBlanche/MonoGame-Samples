@@ -103,8 +103,7 @@ namespace RolePlaying.Data
                     input.ReadObject<List<WeightedContentEntry<Monster>>>());
                 foreach (ContentEntry<Monster> randomCombatEntry in randomCombat.Entries)
                 {
-                    randomCombatEntry.Content = input.ContentManager.Load<Monster>(
-                        Path.Combine("Characters", "Monsters", randomCombatEntry.ContentName));
+                    randomCombatEntry.Content = input.ContentManager.Load<Monster>(Path.Combine("Characters", "Monsters", randomCombatEntry.ContentName));
                 }
 
                 return randomCombat;

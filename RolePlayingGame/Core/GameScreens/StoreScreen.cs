@@ -11,6 +11,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Content;
 using RolePlaying.Data;
+using System.IO;
 
 namespace RolePlaying
 {
@@ -84,23 +85,23 @@ namespace RolePlaying
             ContentManager content = ScreenManager.Game.Content;
 
             shopDrawScreen = 
-                content.Load<Texture2D>(@"Textures\GameScreens\GameScreenBkgd");
+                content.Load<Texture2D>(Path.Combine("Textures", "GameScreens", "GameScreenBkgd"));
             backButton = 
-                content.Load<Texture2D>(@"Textures\Buttons\BButton");
+                content.Load<Texture2D>(Path.Combine("Textures", "Buttons", "BButton"));
             selectButton = 
-                content.Load<Texture2D>(@"Textures\Buttons\AButton");
+                content.Load<Texture2D>(Path.Combine("Textures", "Buttons", "AButton"));
             highlightItem = 
-                content.Load<Texture2D>(@"Textures\GameScreens\HighlightLarge");
+                content.Load<Texture2D>(Path.Combine("Textures", "GameScreens", "HighlightLarge"));
             selectionArrow = 
-                content.Load<Texture2D>(@"Textures\GameScreens\SelectionArrow");
+                content.Load<Texture2D>(Path.Combine("Textures", "GameScreens", "SelectionArrow"));
             fadeTexture = 
-                content.Load<Texture2D>(@"Textures\GameScreens\FadeScreen");
+                content.Load<Texture2D>(Path.Combine("Textures", "GameScreens", "FadeScreen"));
             conversationStrip =
-                content.Load<Texture2D>(@"Textures\GameScreens\ConversationStrip");
-            goldIcon = 
-                content.Load<Texture2D>(@"Textures\GameScreens\GoldIcon");
-            plankTexture = 
-                content.Load<Texture2D>(@"Textures\MainMenu\MainMenuPlank03");
+                content.Load<Texture2D>(Path.Combine("Textures", "GameScreens", "ConversationStrip"));
+            goldIcon =
+                content.Load<Texture2D>(Path.Combine("Textures", "GameScreens", "GoldIcon"));
+            plankTexture =
+                content.Load<Texture2D>(Path.Combine("Textures", "MainMenu", "MainMenuPlank03"));
 
             screenRect = new Rectangle(0, 0, Session.BACK_BUFFER_WIDTH, Session.BACK_BUFFER_HEIGHT);
             plankPosition = new Vector2(

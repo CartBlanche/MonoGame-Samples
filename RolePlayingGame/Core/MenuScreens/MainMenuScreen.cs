@@ -6,6 +6,7 @@
 //-----------------------------------------------------------------------------
 
 using System;
+using System.IO;
 using System.Linq;
 using System.Xml.Linq;
 using System.Xml.Serialization;
@@ -124,18 +125,18 @@ namespace RolePlaying
         {
             // load the textures
             ContentManager content = ScreenManager.Game.Content;
-            backgroundTexture = content.Load<Texture2D>(@"Textures\MainMenu\MainMenu");
+            backgroundTexture = content.Load<Texture2D>(Path.Combine("Textures", "MainMenu", "MainMenu"));
             descriptionAreaTexture =
-                content.Load<Texture2D>(@"Textures\MainMenu\MainMenuInfoSpace");
-            iconTexture = content.Load<Texture2D>(@"Textures\MainMenu\GameLogo");
+                content.Load<Texture2D>(Path.Combine("Textures", "MainMenu", "MainMenuInfoSpace"));
+            iconTexture = content.Load<Texture2D>(Path.Combine("Textures", "MainMenu", "GameLogo"));
             plankTexture1 =
-                content.Load<Texture2D>(@"Textures\MainMenu\MainMenuPlank");
+                content.Load<Texture2D>(Path.Combine("Textures", "MainMenu", "MainMenuPlank"));
             plankTexture2 =
-                content.Load<Texture2D>(@"Textures\MainMenu\MainMenuPlank02");
+                content.Load<Texture2D>(Path.Combine("Textures", "MainMenu", "MainMenuPlank02"));
             plankTexture3 =
-                content.Load<Texture2D>(@"Textures\MainMenu\MainMenuPlank03");
-            backTexture = content.Load<Texture2D>(@"Textures\Buttons\BButton");
-            selectTexture = content.Load<Texture2D>(@"Textures\Buttons\AButton");
+                content.Load<Texture2D>(Path.Combine("Textures", "MainMenu", "MainMenuPlank03"));
+            backTexture = content.Load<Texture2D>(Path.Combine("Textures", "Buttons", "BButton"));
+            selectTexture = content.Load<Texture2D>(Path.Combine("Textures", "Buttons", "AButton"));
 
             // calculate the texture positions
             backgroundPosition = new Vector2(

@@ -11,6 +11,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Content;
 using RolePlaying.Data;
+using System.IO;
 
 namespace RolePlaying
 {
@@ -129,21 +130,21 @@ namespace RolePlaying
             ContentManager content = ScreenManager.Game.Content;
 
             backTexture = 
-                content.Load<Texture2D>(@"Textures\GameScreens\PopupScreen");
+                content.Load<Texture2D>(Path.Combine("Textures", "GameScreens", "PopupScreen"));
             selectIconTexture =
-                content.Load<Texture2D>(@"Textures\Buttons\AButton");
-            portraitBackTexture = 
-                content.Load<Texture2D>(@"Textures\GameScreens\PlayerSelected");
-            headerTexture = 
-                content.Load<Texture2D>(@"Textures\GameScreens\Caption");
+                content.Load<Texture2D>(Path.Combine("Textures", "Buttons", "AButton"));
+            portraitBackTexture =
+                content.Load<Texture2D>(Path.Combine("Textures", "GameScreens", "PlayerSelected"));
+            headerTexture =
+                content.Load<Texture2D>(Path.Combine("Textures", "GameScreens", "Caption"));
             lineTexture =
-                content.Load<Texture2D>(@"Textures\GameScreens\SeparationLine");
-            scrollUpTexture = 
-                content.Load<Texture2D>(@"Textures\GameScreens\ScrollUp");
-            scrollDownTexture = 
-                content.Load<Texture2D>(@"Textures\GameScreens\ScrollDown");
-            fadeTexture = 
-                content.Load<Texture2D>(@"Textures\GameScreens\FadeScreen");
+                content.Load<Texture2D>(Path.Combine("Textures", "GameScreens", "SeparationLine"));
+            scrollUpTexture =
+                content.Load<Texture2D>(Path.Combine("Textures", "GameScreens", "ScrollUp"));
+            scrollDownTexture =
+                content.Load<Texture2D>(Path.Combine("Textures", "GameScreens", "ScrollDown"));
+            fadeTexture =
+                content.Load<Texture2D>(Path.Combine("Textures", "GameScreens", "FadeScreen"));
 
             backgroundPosition.X = (Session.BACK_BUFFER_WIDTH - backTexture.Width) / 2;
             backgroundPosition.Y = (Session.BACK_BUFFER_HEIGHT - backTexture.Height) / 2;

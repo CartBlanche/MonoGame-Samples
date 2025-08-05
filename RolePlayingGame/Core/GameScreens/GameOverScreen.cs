@@ -10,6 +10,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Content;
 using RolePlaying.Data;
+using System.IO;
 
 namespace RolePlaying
 {
@@ -67,9 +68,9 @@ namespace RolePlaying
         {
             ContentManager content = ScreenManager.Game.Content;
 
-            fadeTexture = content.Load<Texture2D>(@"Textures\GameScreens\FadeScreen");
-            backTexture = content.Load<Texture2D>(@"Textures\GameScreens\PopupScreen");
-            selectIconTexture = content.Load<Texture2D>(@"Textures\Buttons\AButton");
+            fadeTexture = content.Load<Texture2D>(Path.Combine("Textures", "GameScreens", "FadeScreen"));
+            backTexture = content.Load<Texture2D>(Path.Combine("Textures", "GameScreens", "PopupScreen"));
+            selectIconTexture = content.Load<Texture2D>(Path.Combine("Textures", "Buttons", "AButton"));
 
             backgroundPosition.X = (Session.BACK_BUFFER_WIDTH - backTexture.Width) / 2;
             backgroundPosition.Y = (Session.BACK_BUFFER_HEIGHT - backTexture.Height) / 2;

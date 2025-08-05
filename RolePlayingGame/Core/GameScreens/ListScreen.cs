@@ -12,6 +12,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Content;
 using RolePlaying.Data;
 using System.Collections.ObjectModel;
+using System.IO;
 
 namespace RolePlaying
 {
@@ -226,39 +227,39 @@ namespace RolePlaying
             ContentManager content = ScreenManager.Game.Content;
 
             // load the background textures
-            fadeTexture = content.Load<Texture2D>(@"Textures\GameScreens\FadeScreen");
+            fadeTexture = content.Load<Texture2D>(Path.Combine("Textures", "GameScreens", "FadeScreen"));
             backgroundTexture =
-                content.Load<Texture2D>(@"Textures\GameScreens\GameScreenBkgd");
+                content.Load<Texture2D>(Path.Combine("Textures", "GameScreens", "GameScreenBkgd"));
             listTexture =
-                content.Load<Texture2D>(@"Textures\GameScreens\InfoDisplay");
+                content.Load<Texture2D>(Path.Combine("Textures", "GameScreens", "InfoDisplay"));
             plankTexture =
-                content.Load<Texture2D>(@"Textures\MainMenu\MainMenuPlank03");
+                content.Load<Texture2D>(Path.Combine("Textures", "MainMenu", "MainMenuPlank03"));
             goldTexture =
-                content.Load<Texture2D>(@"Textures\GameScreens\GoldIcon");
+                content.Load<Texture2D>(Path.Combine("Textures", "GameScreens", "GoldIcon"));
 
             // load the foreground textures
             highlightTexture =
-                content.Load<Texture2D>(@"Textures\GameScreens\HighlightLarge");
+                content.Load<Texture2D>(Path.Combine("Textures", "GameScreens", "HighlightLarge"));
             selectionArrowTexture =
-                content.Load<Texture2D>(@"Textures\GameScreens\SelectionArrow");
+                content.Load<Texture2D>(Path.Combine("Textures", "GameScreens", "SelectionArrow"));
 
             // load the trigger images
             leftTriggerTexture =
-                content.Load<Texture2D>(@"Textures\Buttons\LeftTriggerButton");
+                content.Load<Texture2D>(Path.Combine("Textures", "Buttons", "LeftTriggerButton"));
             rightTriggerTexture =
-                content.Load<Texture2D>(@"Textures\Buttons\RightTriggerButton");
+                content.Load<Texture2D>(Path.Combine("Textures", "Buttons", "RightTriggerButton"));
             leftQuantityArrowTexture =
-                content.Load<Texture2D>(@"Textures\Buttons\QuantityArrowLeft");
+                content.Load<Texture2D>(Path.Combine("Textures", "Buttons", "QuantityArrowLeft"));
             rightQuantityArrowTexture =
-                content.Load<Texture2D>(@"Textures\Buttons\QuantityArrowRight");
+                content.Load<Texture2D>(Path.Combine("Textures", "Buttons", "QuantityArrowRight"));
             backButtonTexture =
-                content.Load<Texture2D>(@"Textures\Buttons\BButton");
+                content.Load<Texture2D>(Path.Combine("Textures", "Buttons", "BButton"));
             selectButtonTexture =
-                content.Load<Texture2D>(@"Textures\Buttons\AButton");
+                content.Load<Texture2D>(Path.Combine("Textures", "Buttons", "AButton"));
             xButtonTexture =
-                content.Load<Texture2D>(@"Textures\Buttons\XButton");
+                content.Load<Texture2D>(Path.Combine("Textures", "Buttons", "XButton"));
             yButtonTexture =
-                content.Load<Texture2D>(@"Textures\Buttons\YButton");
+                content.Load<Texture2D>(Path.Combine("Textures", "Buttons", "YButton"));
 
             // calculate the centered positions
             plankTexturePosition = new Vector2((Session.BACK_BUFFER_WIDTH - plankTexture.Width) / 2f, 67f);

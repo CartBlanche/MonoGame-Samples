@@ -11,6 +11,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Content;
 using RolePlaying.Data;
+using System.IO;
 
 namespace RolePlaying
 {
@@ -92,21 +93,21 @@ namespace RolePlaying
             // load the textures
             ContentManager content = ScreenManager.Game.Content;
             backgroundTexture = 
-                content.Load<Texture2D>(@"Textures\MainMenu\MainMenu");
+                content.Load<Texture2D>(Path.Combine("Textures", "MainMenu", "MainMenu"));
             plankTexture = 
-                content.Load<Texture2D>(@"Textures\MainMenu\MainMenuPlank03");
+                content.Load<Texture2D>(Path.Combine("Textures", "MainMenu", "MainMenuPlank03"));
             backTexture = 
-                content.Load<Texture2D>(@"Textures\Buttons\BButton");
+                content.Load<Texture2D>(Path.Combine("Textures", "Buttons", "BButton"));
             selectTexture = 
-                content.Load<Texture2D>(@"Textures\Buttons\AButton");
+                content.Load<Texture2D>(Path.Combine("Textures", "Buttons", "AButton"));
             deleteTexture =
-                content.Load<Texture2D>(@"Textures\Buttons\XButton");
+                content.Load<Texture2D>(Path.Combine("Textures", "Buttons", "XButton"));
             lineBorderTexture = 
-                content.Load<Texture2D>(@"Textures\GameScreens\LineBorder");
+                content.Load<Texture2D>(Path.Combine("Textures", "GameScreens", "LineBorder"));
             highlightTexture = 
-                content.Load<Texture2D>(@"Textures\GameScreens\HighlightLarge");
+                content.Load<Texture2D>(Path.Combine("Textures", "GameScreens", "HighlightLarge"));
             arrowTexture = 
-                content.Load<Texture2D>(@"Textures\GameScreens\SelectionArrow");
+                content.Load<Texture2D>(Path.Combine("Textures", "GameScreens", "SelectionArrow"));
 
             // calculate the image positions
             backgroundPosition = new Vector2(

@@ -55,7 +55,7 @@ namespace RolePlaying.Data
 
             questNpc.ResetAnimation(false);
 
-            questNpc.ShadowTexture = contentManager.Load<Texture2D>(@"Textures\Characters\CharacterShadow");
+            questNpc.ShadowTexture = contentManager.Load<Texture2D>(Path.Combine("Textures", "Characters", "CharacterShadow"));
 
             return questNpc;
         }

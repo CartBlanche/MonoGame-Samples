@@ -12,6 +12,8 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Content;
 using RolePlaying.Data;
+using System.Runtime;
+using System.IO;
 
 namespace RolePlaying
 {
@@ -106,26 +108,26 @@ namespace RolePlaying
         {
             ContentManager content = ScreenManager.Game.Content;
 
-            fadeTexture = content.Load<Texture2D>(@"Textures\GameScreens\FadeScreen");
+            fadeTexture = content.Load<Texture2D>(Path.Combine("Textures", "GameScreens", "FadeScreen"));
 
             // Display screens
             playerInfoScreen =
-                content.Load<Texture2D>(@"Textures\GameScreens\PopupScreen");
+                content.Load<Texture2D>(Path.Combine("Textures", "GameScreens", "PopupScreen"));
             popupPosition = new Vector2((Session.BACK_BUFFER_WIDTH / 2f), (Session.BACK_BUFFER_HEIGHT / 2f));
             popupPosition.X -= playerInfoScreen.Width / 2;
             popupPosition.Y -= playerInfoScreen.Height / 2;
 
             scoreBoard =
-                content.Load<Texture2D>(@"Textures\GameScreens\CountShieldWithArrow");
+                content.Load<Texture2D>(Path.Combine("Textures", "GameScreens", "CountShieldWithArrow"));
             lineTexture =
-                content.Load<Texture2D>(@"Textures\GameScreens\SeparationLine");
-            selectButton = content.Load<Texture2D>(@"Textures\Buttons\AButton");
-            backButton = content.Load<Texture2D>(@"Textures\Buttons\BButton");
-            tickMarkTexture = content.Load<Texture2D>(@"Textures\GameScreens\TickMark");
+                content.Load<Texture2D>(Path.Combine("Textures", "GameScreens", "SeparationLine"));
+            selectButton = content.Load<Texture2D>(Path.Combine("Textures", "Buttons", "AButton"));
+            backButton = content.Load<Texture2D>(Path.Combine("Textures", "Buttons", "BButton"));
+            tickMarkTexture = content.Load<Texture2D>(Path.Combine("Textures", "GameScreens", "TickMark"));
             playerSelTexture =
-                content.Load<Texture2D>(@"Textures\GameScreens\PlayerSelected");
+                content.Load<Texture2D>(Path.Combine("Textures", "GameScreens", "PlayerSelected"));
             playerUnSelTexture =
-                content.Load<Texture2D>(@"Textures\GameScreens\PlayerUnSelected");
+                content.Load<Texture2D>(Path.Combine("Textures", "GameScreens", "PlayerUnSelected"));
 
             titlePosition = new Vector2(
                 (Session.BACK_BUFFER_WIDTH - Fonts.HeaderFont.MeasureString("Choose Player").X) / 2,

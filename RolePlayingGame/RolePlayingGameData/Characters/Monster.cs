@@ -116,7 +116,7 @@ namespace RolePlaying.Data
             };
 
             monster.CharacterClass = CharacterClass.Load(Path.Combine("CharacterClasses", monster.CharacterClassContentName), contentManager);
-            monster.ShadowTexture = contentManager.Load<Texture2D>(@"Textures\Characters\CharacterShadow");
+            monster.ShadowTexture = contentManager.Load<Texture2D>(Path.Combine("Textures", "Characters", "CharacterShadow"));
 
             monster.AddStandardCharacterCombatAnimations();
             monster.AddStandardCharacterIdleAnimations();

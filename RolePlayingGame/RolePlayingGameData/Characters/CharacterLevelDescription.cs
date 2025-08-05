@@ -97,8 +97,7 @@ namespace RolePlaying.Data
                 // load all of the spells immediately
                 foreach (string spellContentName in desc.SpellContentNames)
                 {
-                    desc.spells.Add(input.ContentManager.Load<Spell>(
-                        System.IO.Path.Combine("Spells", spellContentName)));
+                    desc.spells.Add(input.ContentManager.Load<Spell>(Path.Combine("Spells", spellContentName)));
                 }
 
                 return desc;

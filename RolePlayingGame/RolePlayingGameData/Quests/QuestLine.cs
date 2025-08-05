@@ -100,8 +100,7 @@ namespace RolePlaying.Data
                 questLine.QuestContentNames.AddRange(input.ReadObject<List<string>>());
                 foreach (string contentName in questLine.QuestContentNames)
                 {
-                    questLine.quests.Add(input.ContentManager.Load<Quest>(
-                        Path.Combine("Quests", contentName)));
+                    questLine.quests.Add(input.ContentManager.Load<Quest>(Path.Combine("Quests", contentName)));
 
                 }
 

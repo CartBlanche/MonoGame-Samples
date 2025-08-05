@@ -6,6 +6,7 @@
 //-----------------------------------------------------------------------------
 
 using System;
+using System.IO;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
@@ -75,11 +76,11 @@ namespace RolePlaying
         {
             ContentManager content = ScreenManager.Game.Content;
 
-            backgroundTexture = content.Load<Texture2D>(@"Textures\MainMenu\Confirm");
-            backTexture = content.Load<Texture2D>(@"Textures\Buttons\BButton");
-            selectTexture = content.Load<Texture2D>(@"Textures\Buttons\AButton");
+            backgroundTexture = content.Load<Texture2D>(Path.Combine("Textures", "MainMenu", "Confirm"));
+            backTexture = content.Load<Texture2D>(Path.Combine("Textures", "Buttons", "BButton"));
+            selectTexture = content.Load<Texture2D>(Path.Combine("Textures", "Buttons", "AButton"));
             loadingBlackTexture =
-                content.Load<Texture2D>(@"Textures\GameScreens\FadeScreen");
+                content.Load<Texture2D>(Path.Combine("Textures", "GameScreens", "FadeScreen"));
 
             backgroundPosition = new Vector2(
                 (Session.BACK_BUFFER_WIDTH - backgroundTexture.Width) / 2,

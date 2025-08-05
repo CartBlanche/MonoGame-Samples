@@ -12,6 +12,7 @@ using System.Diagnostics;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
+using System.IO;
 
 namespace RolePlaying.Data
 {
@@ -345,8 +346,7 @@ namespace RolePlaying.Data
                 gear.MinimumCharacterLevel = input.ReadInt32();
                 gear.SupportedClasses.AddRange(input.ReadObject<List<string>>());
                 gear.IconTextureName = input.ReadString();
-                gear.iconTexture = input.ContentManager.Load<Texture2D>(
-                    System.IO.Path.Combine(@"Textures\Gear", gear.IconTextureName));
+                gear.iconTexture = input.ContentManager.Load<Texture2D>(Path.Combine("Textures", "Gear", gear.IconTextureName));
 
                 return gear;
             }

@@ -497,7 +497,7 @@ protected override void LoadContent()
     TileEngine.Viewport \= graphics.GraphicsDevice.Viewport;
 
     // load the initial map and set it into the tile engine  
-    TileEngine.SetMap(Content.Load\<Map\>(@"Maps\\\\Map001"), null);  
+    TileEngine.SetMap(Content.Load\<Map\>(Path.Combine()"Maps", "Map001")), null);  
 }
 
 The tile engine needs to be updated. Call **TileEngine.Update** from **Game1.Update**:

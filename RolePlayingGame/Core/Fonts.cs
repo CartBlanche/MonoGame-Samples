@@ -11,6 +11,7 @@ using Microsoft.Xna.Framework.Content;
 using System.Text;
 using Microsoft.Xna.Framework;
 using System.Collections.Generic;
+using System.IO;
 
 namespace RolePlaying
 {
@@ -122,17 +123,16 @@ namespace RolePlaying
             }
 
             // load each font from the content pipeline
-            buttonNamesFont = contentManager.Load<SpriteFont>("Fonts/ButtonNamesFont");
-            captionFont = contentManager.Load<SpriteFont>("Fonts/CaptionFont");
-            damageFont = contentManager.Load<SpriteFont>("Fonts/DamageFont");
-            debugFont = contentManager.Load<SpriteFont>("Fonts/DebugFont");
-            descriptionFont = contentManager.Load<SpriteFont>("Fonts/DescriptionFont");
-            gearInfoFont = contentManager.Load<SpriteFont>("Fonts/GearInfoFont");
-            headerFont = contentManager.Load<SpriteFont>("Fonts/HeaderFont");
-            hudDetailFont = contentManager.Load<SpriteFont>("Fonts/HudDetailFont");
-            playerNameFont = contentManager.Load<SpriteFont>("Fonts/PlayerNameFont");
-            playerStatisticsFont = 
-                contentManager.Load<SpriteFont>("Fonts/PlayerStatisticsFont");
+            buttonNamesFont = contentManager.Load<SpriteFont>(Path.Combine("Fonts", "ButtonNamesFont"));
+            captionFont = contentManager.Load<SpriteFont>(Path.Combine("Fonts", "CaptionFont"));
+            damageFont = contentManager.Load<SpriteFont>(Path.Combine("Fonts", "DamageFont"));
+            debugFont = contentManager.Load<SpriteFont>(Path.Combine("Fonts", "DebugFont"));
+            descriptionFont = contentManager.Load<SpriteFont>(Path.Combine("Fonts", "DescriptionFont"));
+            gearInfoFont = contentManager.Load<SpriteFont>(Path.Combine("Fonts", "GearInfoFont"));
+            headerFont = contentManager.Load<SpriteFont>(Path.Combine("Fonts", "HeaderFont"));
+            hudDetailFont = contentManager.Load<SpriteFont>(Path.Combine("Fonts", "HudDetailFont"));
+            playerNameFont = contentManager.Load<SpriteFont>(Path.Combine("Fonts", "PlayerNameFont"));
+            playerStatisticsFont = contentManager.Load<SpriteFont>(Path.Combine("Fonts", "PlayerStatisticsFont"));
         }
 
 

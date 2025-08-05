@@ -349,8 +349,7 @@ namespace RolePlaying
             inventory.AddRange(partyData.inventory);
             foreach (ContentEntry<Gear> entry in inventory)
             {
-                entry.Content = contentManager.Load<Gear>(
-                    Path.Combine("Gear", entry.ContentName));
+                entry.Content = contentManager.Load<Gear>(Path.Combine("Gear", entry.ContentName));
             }
 
             // set the party gold

@@ -12,6 +12,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Content;
 using RolePlaying.Data;
+using System.IO;
 
 namespace RolePlaying
 {
@@ -182,25 +183,25 @@ namespace RolePlaying
 
             ContentManager content = ScreenManager.Game.Content;
             backgroundTexture =
-                content.Load<Texture2D>(@"Textures\MainMenu\MainMenu");
+                content.Load<Texture2D>(Path.Combine("Textures", "MainMenu", "MainMenu"));
             keyboardTexture =
-                content.Load<Texture2D>(@"Textures\MainMenu\KeyboardBkgd");
+                content.Load<Texture2D>(Path.Combine("Textures", "MainMenu", "KeyboardBkgd"));
             plankTexture =
-                content.Load<Texture2D>(@"Textures\MainMenu\MainMenuPlank03");
+                content.Load<Texture2D>(Path.Combine("Textures", "MainMenu", "MainMenuPlank03"));
             backTexture =
-                content.Load<Texture2D>(@"Textures\Buttons\BButton");
+                content.Load<Texture2D>(Path.Combine("Textures", "Buttons", "BButton"));
             baseBorderTexture =
-                content.Load<Texture2D>(@"Textures\GameScreens\LineBorder");
+                content.Load<Texture2D>(Path.Combine("Textures", "GameScreens", "LineBorder"));
             controlPadTexture =
-                content.Load<Texture2D>(@"Textures\MainMenu\ControlJoystick");
+                content.Load<Texture2D>(Path.Combine("Textures", "MainMenu", "ControlJoystick"));
             scrollUpTexture =
-                content.Load<Texture2D>(@"Textures\GameScreens\ScrollUp");
+                content.Load<Texture2D>(Path.Combine("Textures", "GameScreens", "ScrollUp"));
             scrollDownTexture =
-                content.Load<Texture2D>(@"Textures\GameScreens\ScrollDown");
+                content.Load<Texture2D>(Path.Combine("Textures", "GameScreens", "ScrollDown"));
             rightTriggerButton =
-                content.Load<Texture2D>(@"Textures\Buttons\RightTriggerButton");
+                content.Load<Texture2D>(Path.Combine("Textures", "Buttons", "RightTriggerButton"));
             leftTriggerButton =
-                content.Load<Texture2D>(@"Textures\Buttons\LeftTriggerButton");
+                content.Load<Texture2D>(Path.Combine("Textures", "Buttons", "LeftTriggerButton"));
 
             plankPosition.X = backgroundTexture.Width / 2 - plankTexture.Width / 2;
             plankPosition.Y = 60;

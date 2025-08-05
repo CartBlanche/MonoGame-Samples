@@ -7,6 +7,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.IO;
 using Microsoft.Xna.Framework.Content;
 
 namespace RolePlaying.Data
@@ -682,16 +683,13 @@ namespace RolePlaying.Data
 
                 // load the character class
                 fightingCharacter.CharacterClass =
-                    input.ContentManager.Load<CharacterClass>(
-                        System.IO.Path.Combine("CharacterClasses",
-                            fightingCharacter.CharacterClassContentName));
+                    input.ContentManager.Load<CharacterClass>(Path.Combine("CharacterClasses",fightingCharacter.CharacterClassContentName));
 
                 // populate the equipment list
                 foreach (string gearName in
                     fightingCharacter.InitialEquipmentContentNames)
                 {
-                    fightingCharacter.Equip(input.ContentManager.Load<Equipment>(
-                        System.IO.Path.Combine("Gear", gearName)));
+                    fightingCharacter.Equip(input.ContentManager.Load<Equipment>(Path.Combine("Gear", gearName)));
                 }
                 fightingCharacter.RecalculateEquipmentStatistics();
                 fightingCharacter.RecalculateTotalTargetDamageRange();
@@ -701,8 +699,7 @@ namespace RolePlaying.Data
                 foreach (ContentEntry<Gear> inventoryEntry in
                     fightingCharacter.Inventory)
                 {
-                    inventoryEntry.Content = input.ContentManager.Load<Gear>(
-                        System.IO.Path.Combine("Gear", inventoryEntry.ContentName));
+                    inventoryEntry.Content = input.ContentManager.Load<Gear>(Path.Combine("Gear", inventoryEntry.ContentName));
                 }
 
                 return fightingCharacter;

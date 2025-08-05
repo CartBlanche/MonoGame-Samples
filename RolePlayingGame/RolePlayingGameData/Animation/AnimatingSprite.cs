@@ -433,9 +433,7 @@ namespace RolePlaying.Data
 
                 animatingSprite.TextureName = input.ReadString();
                 animatingSprite.Texture =
-                    input.ContentManager.Load<Texture2D>(
-                        System.IO.Path.Combine(@"Textures",
-                        animatingSprite.TextureName));
+                    input.ContentManager.Load<Texture2D>(Path.Combine("Textures", animatingSprite.TextureName));
                 animatingSprite.FrameDimensions = input.ReadObject<Point>();
                 animatingSprite.FramesPerRow = input.ReadInt32();
                 animatingSprite.SourceOffset = input.ReadObject<Vector2>();
@@ -479,8 +477,7 @@ namespace RolePlaying.Data
             var animatingSprite = new AnimatingSprite
             {
                 TextureName = (string)xElement.Element("TextureName"),
-                Texture = contentManager.Load<Texture2D>(
-                    Path.Combine(@"Textures", (string)xElement.Element("TextureName"))),
+                Texture = contentManager.Load<Texture2D>(Path.Combine("Textures", (string)xElement.Element("TextureName"))),
                 FrameDimensions = new Point(
                     int.Parse(xElement.Element("FrameDimensions").Value.Split(' ')[0]),
                     int.Parse(xElement.Element("FrameDimensions").Value.Split(' ')[1])),

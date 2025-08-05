@@ -55,13 +55,11 @@ namespace RolePlaying.Data
                 input.ReadRawObject<ContentEntry<T>>(requirement as ContentEntry<T>);
                 if (typeof(T) == typeof(Gear))
                 {
-                    requirement.Content = input.ContentManager.Load<T>(
-                        Path.Combine("Gear", requirement.ContentName));
+                    requirement.Content = input.ContentManager.Load<T>(Path.Combine("Gear", requirement.ContentName));
                 }
                 else if (typeof(T) == typeof(Monster))
                 {
-                    requirement.Content = input.ContentManager.Load<T>(
-                        Path.Combine("Characters", "Monsters", requirement.ContentName));
+                    requirement.Content = input.ContentManager.Load<T>(Path.Combine("Characters", "Monsters", requirement.ContentName));
                 }
 
                 return requirement;

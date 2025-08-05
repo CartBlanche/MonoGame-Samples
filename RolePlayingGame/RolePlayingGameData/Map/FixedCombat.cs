@@ -87,9 +87,7 @@ namespace RolePlaying.Data
                     input.ReadObject<List<ContentEntry<Monster>>>());
                 foreach (ContentEntry<Monster> fixedCombatEntry in fixedCombat.Entries)
                 {
-                    fixedCombatEntry.Content = input.ContentManager.Load<Monster>(
-                        Path.Combine(@"Characters\Monsters", 
-                            fixedCombatEntry.ContentName));
+                    fixedCombatEntry.Content = input.ContentManager.Load<Monster>(Path.Combine("Characters", "Monsters", fixedCombatEntry.ContentName));
                 }
 
                 return fixedCombat;

@@ -616,11 +616,9 @@ namespace RolePlaying.Data
                     int.Parse(asset.Element("SpawnMapPosition").Value.Split(' ')[0]),
                     int.Parse(asset.Element("SpawnMapPosition").Value.Split(' ')[1])), // e.g. [9, 7]
                 TextureName = (string)asset.Element("TextureName"),
-                Texture = contentManager.Load<Texture2D>(
-                    Path.Combine("Textures", "Maps", "NonCombat", (string)asset.Element("TextureName"))),
+                Texture = contentManager.Load<Texture2D>(Path.Combine("Textures", "Maps", "NonCombat", (string)asset.Element("TextureName"))),
                 CombatTextureName = (string)asset.Element("CombatTextureName"),
-                CombatTexture = contentManager.Load<Texture2D>(
-                    Path.Combine("Textures", "Maps", "Combat", (string)asset.Element("CombatTextureName"))),
+                CombatTexture = contentManager.Load<Texture2D>(Path.Combine("Textures", "Maps", "Combat", (string)asset.Element("CombatTextureName"))),
                 MusicCueName = (string)asset.Element("MusicCueName"),
                 CombatMusicCueName = (string)asset.Element("CombatMusicCueName"),
                 BaseLayer = asset.Element("BaseLayer").Value
@@ -858,15 +856,11 @@ namespace RolePlaying.Data
                 map.SpawnMapPosition = input.ReadObject<Point>();
 
                 map.TextureName = input.ReadString();
-                map.texture = input.ContentManager.Load<Texture2D>(
-                    System.IO.Path.Combine(@"Textures\Maps\NonCombat",
-                    map.TextureName));
+                map.texture = input.ContentManager.Load<Texture2D>(Path.Combine("Textures", "Maps", "NonCombat", map.TextureName));
                 map.tilesPerRow = map.texture.Width / map.TileSize.X;
 
                 map.CombatTextureName = input.ReadString();
-                map.combatTexture = input.ContentManager.Load<Texture2D>(
-                    System.IO.Path.Combine(@"Textures\Maps\Combat",
-                    map.CombatTextureName));
+                map.combatTexture = input.ContentManager.Load<Texture2D>(Path.Combine("Textures", "Maps", "Combat", map.CombatTextureName));
 
                 map.MusicCueName = input.ReadString();
                 map.CombatMusicCueName = input.ReadString();
@@ -886,13 +880,10 @@ namespace RolePlaying.Data
                         });
                 }
 
-                map.ChestEntries.AddRange(
-                    input.ReadObject<List<MapEntry<Chest>>>());
+                map.ChestEntries.AddRange(input.ReadObject<List<MapEntry<Chest>>>());
                 foreach (MapEntry<Chest> chestEntry in map.chestEntries)
                 {
-                    chestEntry.Content = input.ContentManager.Load<Chest>(
-                        System.IO.Path.Combine(@"Maps\Chests",
-                        chestEntry.ContentName)).Clone() as Chest;
+                    chestEntry.Content = input.ContentManager.Load<Chest>(Path.Combine("Maps", "Chests", chestEntry.ContentName)).Clone() as Chest;
                 }
 
                 // load the fixed combat entries
@@ -903,9 +894,7 @@ namespace RolePlaying.Data
                     map.fixedCombatEntries)
                 {
                     fixedCombatEntry.Content =
-                        input.ContentManager.Load<FixedCombat>(
-                        System.IO.Path.Combine(@"Maps\FixedCombats",
-                        fixedCombatEntry.ContentName));
+                        input.ContentManager.Load<FixedCombat>(Path.Combine("Maps", "FixedCombats", fixedCombatEntry.ContentName));
                     // clone the map sprite in the entry, as there may be many entries
                     // per FixedCombat
                     fixedCombatEntry.MapSprite =
@@ -926,9 +915,7 @@ namespace RolePlaying.Data
                 foreach (MapEntry<QuestNpc> questNpcEntry in
                     map.questNpcEntries)
                 {
-                    questNpcEntry.Content = input.ContentManager.Load<QuestNpc>(
-                        System.IO.Path.Combine(@"Characters\QuestNpcs",
-                        questNpcEntry.ContentName));
+                    questNpcEntry.Content = input.ContentManager.Load<QuestNpc>(Path.Combine("Characters", "QuestNpcs", questNpcEntry.ContentName));
                     questNpcEntry.Content.MapPosition = questNpcEntry.MapPosition;
                     questNpcEntry.Content.Direction = questNpcEntry.Direction;
                 }
@@ -938,9 +925,7 @@ namespace RolePlaying.Data
                 foreach (MapEntry<Player> playerNpcEntry in
                     map.playerNpcEntries)
                 {
-                    playerNpcEntry.Content = input.ContentManager.Load<Player>(
-                        System.IO.Path.Combine(@"Characters\Players",
-                        playerNpcEntry.ContentName)).Clone() as Player;
+                    playerNpcEntry.Content = input.ContentManager.Load<Player>(Path.Combine("Characters", "Players", playerNpcEntry.ContentName)).Clone() as Player;
                     playerNpcEntry.Content.MapPosition = playerNpcEntry.MapPosition;
                     playerNpcEntry.Content.Direction = playerNpcEntry.Direction;
                 }
@@ -950,9 +935,7 @@ namespace RolePlaying.Data
                 foreach (MapEntry<Inn> innEntry in
                     map.innEntries)
                 {
-                    innEntry.Content = input.ContentManager.Load<Inn>(
-                        System.IO.Path.Combine(@"Maps\Inns",
-                        innEntry.ContentName));
+                    innEntry.Content = input.ContentManager.Load<Inn>(Path.Combine("Maps", "Inns", innEntry.ContentName));
                 }
 
                 map.StoreEntries.AddRange(
@@ -960,9 +943,7 @@ namespace RolePlaying.Data
                 foreach (MapEntry<Store> storeEntry in
                     map.storeEntries)
                 {
-                    storeEntry.Content = input.ContentManager.Load<Store>(
-                        System.IO.Path.Combine(@"Maps\Stores",
-                        storeEntry.ContentName));
+                    storeEntry.Content = input.ContentManager.Load<Store>(Path.Combine("Maps", "Stores", storeEntry.ContentName));
                 }
 
                 return map;

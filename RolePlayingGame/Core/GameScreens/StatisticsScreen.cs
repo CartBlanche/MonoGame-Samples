@@ -5,6 +5,7 @@
 // Copyright (C) Microsoft Corporation. All rights reserved.
 //-----------------------------------------------------------------------------
 
+using System.IO;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
@@ -95,29 +96,29 @@ namespace RolePlaying
             ContentManager content = ScreenManager.Game.Content;
 
             statisticsScreen =
-                content.Load<Texture2D>(@"Textures\GameScreens\GameScreenBkgd");
+                content.Load<Texture2D>(Path.Combine("Textures", "GameScreens", "GameScreenBkgd"));
             plankTexture =
-                content.Load<Texture2D>(@"Textures\MainMenu\MainMenuPlank03");
+                content.Load<Texture2D>(Path.Combine("Textures", "MainMenu", "MainMenuPlank03"));
             scoreBoardTexture =
-                content.Load<Texture2D>(@"Textures\GameScreens\CountShieldWithArrow");
+                content.Load<Texture2D>(Path.Combine("Textures", "GameScreens", "CountShieldWithArrow"));
             leftTriggerButton =
-                content.Load<Texture2D>(@"Textures\Buttons\LeftTriggerButton");
+                content.Load<Texture2D>(Path.Combine("Textures", "Buttons", "LeftTriggerButton"));
             rightTriggerButton =
-                content.Load<Texture2D>(@"Textures\Buttons\RightTriggerButton");
+                content.Load<Texture2D>(Path.Combine("Textures", "Buttons", "RightTriggerButton"));
             backButton =
-                content.Load<Texture2D>(@"Textures\Buttons\BButton");
+                content.Load<Texture2D>(Path.Combine("Textures", "Buttons", "BButton"));
             selectButton =
-                content.Load<Texture2D>(@"Textures\Buttons\AButton");
+                content.Load<Texture2D>(Path.Combine("Textures", "Buttons", "AButton"));
             dropButton =
-                content.Load<Texture2D>(@"Textures\Buttons\YButton");
+                content.Load<Texture2D>(Path.Combine("Textures", "Buttons", "YButton"));
             statisticsBorder =
-                content.Load<Texture2D>(@"Textures\GameScreens\StatsBorderTable");
+                content.Load<Texture2D>(Path.Combine("Textures", "GameScreens", "StatsBorderTable"));
             borderLine =
-                content.Load<Texture2D>(@"Textures\GameScreens\LineBorder");
+                content.Load<Texture2D>(Path.Combine("Textures", "GameScreens", "LineBorder"));
             goldIcon =
-                content.Load<Texture2D>(@"Textures\GameScreens\GoldIcon");
+                content.Load<Texture2D>(Path.Combine("Textures", "GameScreens", "GoldIcon"));
             fadeTexture =
-                content.Load<Texture2D>(@"Textures\GameScreens\FadeScreen");
+                content.Load<Texture2D>(Path.Combine("Textures", "GameScreens", "FadeScreen"));
 
             screenRectangle = new Rectangle(0, 0, Session.BACK_BUFFER_WIDTH, Session.BACK_BUFFER_HEIGHT);
 

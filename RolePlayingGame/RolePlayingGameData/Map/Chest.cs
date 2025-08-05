@@ -119,13 +119,11 @@ namespace RolePlaying.Data
                     input.ReadObject<List<ContentEntry<Gear>>>());
                 foreach (ContentEntry<Gear> contentEntry in chest.Entries)
                 {
-                    contentEntry.Content = input.ContentManager.Load<Gear>(
-                        Path.Combine("Gear",  contentEntry.ContentName));
+                    contentEntry.Content = input.ContentManager.Load<Gear>(Path.Combine("Gear",  contentEntry.ContentName));
                 }
 
                 chest.TextureName = input.ReadString();
-                chest.Texture = input.ContentManager.Load<Texture2D>(
-                    Path.Combine("Textures", "Chests", chest.TextureName));
+                chest.Texture = input.ContentManager.Load<Texture2D>(Path.Combine("Textures", "Chests", chest.TextureName));
 
                 return chest;
             }
@@ -180,8 +178,7 @@ namespace RolePlaying.Data
                         Description = (string)gearAsset.Element("Description"),
                         GoldValue = (int?)gearAsset.Element("GoldValue") ?? 0,
                         IconTextureName = (string)gearAsset.Element("IconTextureName"),
-                        IconTexture = contentManager.Load<Texture2D>(
-                            Path.Combine("Textures", "Gear", (string)gearAsset.Element("IconTextureName"))),
+                        IconTexture = contentManager.Load<Texture2D>(Path.Combine("Textures", "Gear", (string)gearAsset.Element("IconTextureName"))),
                         IsDroppable = (bool?)gearAsset.Element("IsDroppable") ?? true,
 
                         // Add other properties as needed

@@ -7,6 +7,7 @@
 
 using System;
 using System.Diagnostics;
+using System.IO;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
@@ -309,8 +310,7 @@ namespace RolePlaying.Data
 
                 character.ResetAnimation(false);
 
-                character.shadowTexture = input.ContentManager.Load<Texture2D>(
-                    @"Textures\Characters\CharacterShadow");
+                character.shadowTexture = input.ContentManager.Load<Texture2D>(Path.Combine("Textures", "Characters", "CharacterShadow"));
 
                 return character;
             }

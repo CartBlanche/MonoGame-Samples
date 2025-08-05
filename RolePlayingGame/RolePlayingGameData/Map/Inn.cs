@@ -6,6 +6,7 @@
 //-----------------------------------------------------------------------------
 
 using System;
+using System.IO;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 
@@ -141,9 +142,7 @@ namespace RolePlaying.Data
                 inn.PaidMessage = input.ReadString();
                 inn.NotEnoughGoldMessage = input.ReadString();
                 inn.ShopkeeperTextureName = input.ReadString();
-                inn.shopkeeperTexture = input.ContentManager.Load<Texture2D>(
-                    System.IO.Path.Combine("Textures", "Characters", "Portraits", 
-                    inn.ShopkeeperTextureName));
+                inn.shopkeeperTexture = input.ContentManager.Load<Texture2D>(Path.Combine("Textures", "Characters", "Portraits", inn.ShopkeeperTextureName));
 
                 return inn;
             }

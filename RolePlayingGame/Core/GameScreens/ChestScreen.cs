@@ -12,6 +12,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Content;
 using RolePlaying.Data;
+using System.IO;
 
 namespace RolePlaying
 {
@@ -261,9 +262,9 @@ namespace RolePlaying
             ContentManager content = ScreenManager.Game.Content;
 
             leftQuantityArrow = 
-                content.Load<Texture2D>(@"Textures\Buttons\QuantityArrowLeft");
+                content.Load<Texture2D>(Path.Combine("Textures", "Buttons", "QuantityArrowLeft"));
             rightQuantityArrow = 
-                content.Load<Texture2D>(@"Textures\Buttons\QuantityArrowRight");
+                content.Load<Texture2D>(Path.Combine("Textures", "Buttons", "QuantityArrowRight"));
         }
 
 

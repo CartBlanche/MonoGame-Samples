@@ -913,9 +913,9 @@ namespace RolePlaying
             ContentManager content = Session.ScreenManager.Game.Content;
 
             damageCombatEffectTexture =
-                content.Load<Texture2D>(@"Textures\Combat\DamageIcon");
+                content.Load<Texture2D>(Path.Combine("Textures", "Combat", "DamageIcon"));
             healingCombatEffectTexture =
-                content.Load<Texture2D>(@"Textures\Combat\HealingIcon");
+                content.Load<Texture2D>(Path.Combine("Textures", "Combat", "HealingIcon"));
         }
 
 
@@ -1007,7 +1007,7 @@ namespace RolePlaying
             highlightForegroundSprite.SourceOffset =
                 new Vector2(frameDimensions.X / 2f, 40f);
             highlightForegroundSprite.Texture =
-                content.Load<Texture2D>(@"Textures\Combat\TilesheetSprangles");
+                content.Load<Texture2D>(Path.Combine("Textures", "Combat", "TilesheetSprangles"));
 
             frameDimensions = new Point(102, 54);
             highlightBackgroundSprite.FramesPerRow = 4;
@@ -1018,7 +1018,7 @@ namespace RolePlaying
             highlightBackgroundSprite.SourceOffset =
                 new Vector2(frameDimensions.X / 2f, frameDimensions.Y / 2f);
             highlightBackgroundSprite.Texture =
-                content.Load<Texture2D>(@"Textures\Combat\CharSelectionRing");
+                content.Load<Texture2D>(Path.Combine("Textures", "Combat", "CharSelectionRing"));
 
             primaryTargetSprite.FramesPerRow = 4;
             primaryTargetSprite.FrameDimensions = frameDimensions;
@@ -1028,7 +1028,7 @@ namespace RolePlaying
             primaryTargetSprite.SourceOffset =
                 new Vector2(frameDimensions.X / 2f, frameDimensions.Y / 2f);
             primaryTargetSprite.Texture =
-                content.Load<Texture2D>(@"Textures\Combat\Target1SelectionRing");
+                content.Load<Texture2D>(Path.Combine("Textures", "Combat", "Target1SelectionRing"));
 
             secondaryTargetSprite.FramesPerRow = 4;
             secondaryTargetSprite.FrameDimensions = frameDimensions;
@@ -1038,7 +1038,7 @@ namespace RolePlaying
             secondaryTargetSprite.SourceOffset =
                 new Vector2(frameDimensions.X / 2f, frameDimensions.Y / 2f);
             secondaryTargetSprite.Texture =
-                content.Load<Texture2D>(@"Textures\Combat\Target2SelectionRing");
+                content.Load<Texture2D>(Path.Combine("Textures", "Combat", "Target2SelectionRing"));
         }
 
 
@@ -1081,10 +1081,10 @@ namespace RolePlaying
                     primaryTargetedCombatant.Statistics.HealthPoints + "/" +
                     primaryTargetedCombatant.Character.CharacterStatistics.HealthPoints,
 #else
-                        primaryTargetedCombatant.Character.Name,
+                    primaryTargetedCombatant.Character.Name,
 #endif
-                        primaryTargetedCombatant.Position + new Vector2(0f, 42f),
-                        Color.White);
+                    primaryTargetedCombatant.Position + new Vector2(0f, 42f),
+                    Color.White);
                 }
             }
 

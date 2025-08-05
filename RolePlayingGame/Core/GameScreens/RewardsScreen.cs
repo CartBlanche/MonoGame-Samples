@@ -11,6 +11,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Content;
 using RolePlaying.Data;
+using System.IO;
 
 namespace RolePlaying
 {
@@ -157,16 +158,16 @@ namespace RolePlaying
         {
             ContentManager content = ScreenManager.Game.Content;
             backTexture =
-                content.Load<Texture2D>(@"Textures\GameScreens\PopupScreen");
+                content.Load<Texture2D>(Path.Combine("Textures", "GameScreens", "PopupScreen"));
             selectIconTexture =
-                content.Load<Texture2D>(@"Textures\Buttons\AButton");
+                content.Load<Texture2D>(Path.Combine("Textures", "Buttons", "AButton"));
             scrollUpTexture =
-                content.Load<Texture2D>(@"Textures\GameScreens\ScrollUp");
+                content.Load<Texture2D>(Path.Combine("Textures", "GameScreens", "ScrollUp"));
             scrollDownTexture =
-                content.Load<Texture2D>(@"Textures\GameScreens\ScrollDown");
+                content.Load<Texture2D>(Path.Combine("Textures", "GameScreens", "ScrollDown"));
             lineTexture =
-                content.Load<Texture2D>(@"Textures\GameScreens\SeparationLine");
-            fadeTexture = content.Load<Texture2D>(@"Textures\GameScreens\FadeScreen");
+                content.Load<Texture2D>(Path.Combine("Textures", "GameScreens", "SeparationLine"));
+            fadeTexture = content.Load<Texture2D>(Path.Combine("Textures", "GameScreens", "FadeScreen"));
 
             fadeDest = new Rectangle(0, 0, Session.BACK_BUFFER_WIDTH, Session.BACK_BUFFER_HEIGHT);
             backgroundPosition.X = (Session.BACK_BUFFER_WIDTH - backTexture.Width) / 2;

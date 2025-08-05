@@ -9,6 +9,7 @@ using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Xml.Linq;
 
@@ -91,8 +92,7 @@ namespace RolePlaying.Data
                 // populate the gear list based on the content names
                 foreach (string gearName in storeCategory.AvailableContentNames)
                 {
-                    storeCategory.AvailableGear.Add(input.ContentManager.Load<Gear>(
-                        System.IO.Path.Combine("Gear", gearName)));
+                    storeCategory.AvailableGear.Add(input.ContentManager.Load<Gear>(Path.Combine("Gear", gearName)));
                 }
 
                 return storeCategory;
@@ -124,8 +124,7 @@ namespace RolePlaying.Data
 					IsOffensive = bool.Parse(gearAsset.Element("IsOffensive").Value),
 					MinimumCharacterLevel = int.Parse(gearAsset.Element("MinimumCharacterLevel").Value),
 					IconTextureName = gearAsset.Element("IconTextureName").Value,
-					IconTexture = contentManager.Load<Texture2D>(
-                        System.IO.Path.Combine("Textures", "Gear", gearAsset.Element("IconTextureName").Value)),
+					IconTexture = contentManager.Load<Texture2D>(Path.Combine("Textures", "Gear", gearAsset.Element("IconTextureName").Value)),
 					TargetDuration = int.Parse(gearAsset.Element("TargetDuration").Value),
 					AdjacentTargets = int.Parse(gearAsset.Element("AdjacentTargets").Value),
 					UsingCueName = gearAsset.Element("UsingCueName").Value,

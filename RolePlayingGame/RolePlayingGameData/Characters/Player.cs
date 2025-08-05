@@ -238,16 +238,13 @@ namespace RolePlaying.Data
                 player.JoinRejectedDialogue = input.ReadString();
                 player.ActivePortraitTextureName = input.ReadString();
                 player.activePortraitTexture =
-                    input.ContentManager.Load<Texture2D>(
-                        Path.Combine("Textures", "Characters", "Portraits", player.ActivePortraitTextureName));
+                    input.ContentManager.Load<Texture2D>(Path.Combine("Textures", "Characters", "Portraits", player.ActivePortraitTextureName));
                 player.InactivePortraitTextureName = input.ReadString();
                 player.inactivePortraitTexture =
-                    input.ContentManager.Load<Texture2D>(
-                        Path.Combine("Textures", "Characters", "Portraits", player.InactivePortraitTextureName));
+                    input.ContentManager.Load<Texture2D>(Path.Combine("Textures", "Characters", "Portraits", player.InactivePortraitTextureName));
                 player.UnselectablePortraitTextureName = input.ReadString();
                 player.unselectablePortraitTexture =
-                    input.ContentManager.Load<Texture2D>(
-                        Path.Combine("Textures", "Characters", "Portraits", player.UnselectablePortraitTextureName));
+                    input.ContentManager.Load<Texture2D>(Path.Combine("Textures", "Characters", "Portraits", player.UnselectablePortraitTextureName));
 
                 return player;
             }
@@ -327,14 +324,11 @@ namespace RolePlaying.Data
                 JoinAcceptedDialogue = (string)asset.Element("JoinAcceptedDialogue"),
                 JoinRejectedDialogue = (string)asset.Element("JoinRejectedDialogue"),
                 ActivePortraitTextureName = (string)asset.Element("ActivePortraitTextureName"),
-                ActivePortraitTexture = contentManager.Load<Texture2D>(
-                    Path.Combine("Textures", "Characters", "Portraits", (string)asset.Element("ActivePortraitTextureName"))),
+                ActivePortraitTexture = contentManager.Load<Texture2D>( Path.Combine("Textures", "Characters", "Portraits", (string)asset.Element("ActivePortraitTextureName"))),
                 InactivePortraitTextureName = (string)asset.Element("InactivePortraitTextureName"),
-                InactivePortraitTexture = contentManager.Load<Texture2D>(
-                    Path.Combine("Textures", "Characters", "Portraits", (string)asset.Element("InactivePortraitTextureName"))),
+                InactivePortraitTexture = contentManager.Load<Texture2D>(Path.Combine("Textures", "Characters", "Portraits", (string)asset.Element("InactivePortraitTextureName"))),
                 UnselectablePortraitTextureName = (string)asset.Element("UnselectablePortraitTextureName"),
-                UnselectablePortraitTexture = contentManager.Load<Texture2D>(
-                    Path.Combine("Textures", "Characters", "Portraits", (string)asset.Element("UnselectablePortraitTextureName"))),
+                UnselectablePortraitTexture = contentManager.Load<Texture2D>(Path.Combine("Textures", "Characters", "Portraits", (string)asset.Element("UnselectablePortraitTextureName"))),
                 Inventory = asset.Element("Inventory")?.Elements("Item")
                     .Select(x => new ContentEntry<Gear>
                     {
@@ -358,7 +352,7 @@ namespace RolePlaying.Data
 
             player.ResetAnimation(false);
 
-            player.ShadowTexture = contentManager.Load<Texture2D>(@"Textures\Characters\CharacterShadow");
+            player.ShadowTexture = contentManager.Load<Texture2D>(Path.Combine("Textures", "Characters", "CharacterShadow"));
 
             return player;
         }

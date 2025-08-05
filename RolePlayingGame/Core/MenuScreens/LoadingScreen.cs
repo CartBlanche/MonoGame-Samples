@@ -9,6 +9,7 @@ using System;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Content;
+using System.IO;
 
 namespace RolePlaying
 {
@@ -85,9 +86,8 @@ namespace RolePlaying
         public override void LoadContent()
         {
             ContentManager content = ScreenManager.Game.Content;
-            loadingTexture = content.Load<Texture2D>(@"Textures\MainMenu\LoadingPause");
-            loadingBlackTexture =
-                content.Load<Texture2D>(@"Textures\GameScreens\FadeScreen");
+            loadingTexture = content.Load<Texture2D>(Path.Combine("Textures", "MainMenu", "LoadingPause"));
+            loadingBlackTexture = content.Load<Texture2D>(Path.Combine("Textures", "GameScreens", "FadeScreen"));
 
             loadingBlackTextureDestination = new Rectangle(0, 0, 
                 Session.BACK_BUFFER_WIDTH, Session.BACK_BUFFER_HEIGHT);

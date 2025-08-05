@@ -130,9 +130,7 @@ namespace RolePlaying.Data
                 SellMultiplier = float.Parse(asset.Element("SellMultiplier").Value),
                 WelcomeMessage = asset.Element("WelcomeMessage").Value,
                 ShopkeeperTextureName = asset.Element("ShopkeeperTextureName").Value,
-                ShopkeeperTexture = contentManager.Load<Texture2D>(
-                    Path.Combine("Textures", "Characters", "Portraits",
-                    asset.Element("ShopkeeperTextureName").Value)),
+                ShopkeeperTexture = contentManager.Load<Texture2D>(Path.Combine("Textures", "Characters", "Portraits", asset.Element("ShopkeeperTextureName").Value)),
                 StoreCategories = asset.Element("StoreCategories")
                     .Elements("Item")
                     .Select(storeCategory => StoreCategory.Load(storeCategory, contentManager)).ToList(),
@@ -161,9 +159,7 @@ namespace RolePlaying.Data
                 store.StoreCategories.AddRange(input.ReadObject<List<StoreCategory>>());
                 store.WelcomeMessage = input.ReadString();
                 store.ShopkeeperTextureName = input.ReadString();
-                store.shopkeeperTexture = input.ContentManager.Load<Texture2D>(
-                    Path.Combine("Textures", "Characters", "Portraits",
-                    store.ShopkeeperTextureName));
+                store.shopkeeperTexture = input.ContentManager.Load<Texture2D>(Path.Combine("Textures", "Characters", "Portraits", store.ShopkeeperTextureName));
 
                 return store;
             }

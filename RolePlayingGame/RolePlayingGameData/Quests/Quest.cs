@@ -333,9 +333,7 @@ namespace RolePlaying.Data
                     quest.FixedCombatEntries)
                 {
                     fixedCombatEntry.Content =
-                        input.ContentManager.Load<FixedCombat>(
-                        Path.Combine("Maps", "FixedCombats",
-                        fixedCombatEntry.ContentName));
+                        input.ContentManager.Load<FixedCombat>(Path.Combine("Maps", "FixedCombats", fixedCombatEntry.ContentName));
                     // clone the map sprite in the entry, as there may be many entries
                     // per FixedCombat
                     fixedCombatEntry.MapSprite =
@@ -353,8 +351,7 @@ namespace RolePlaying.Data
                     input.ReadObject<List<WorldEntry<Chest>>>());
                 foreach (WorldEntry<Chest> chestEntry in quest.ChestEntries)
                 {
-                    chestEntry.Content = input.ContentManager.Load<Chest>(
-                        Path.Combine("Maps", "Chests", chestEntry.ContentName)).Clone() as Chest;
+                    chestEntry.Content = input.ContentManager.Load<Chest>(Path.Combine("Maps", "Chests", chestEntry.ContentName)).Clone() as Chest;
                 }
 
                 quest.DestinationMapContentName = input.ReadString();
@@ -368,8 +365,7 @@ namespace RolePlaying.Data
                     input.ReadObject<List<string>>());
                 foreach (string contentName in quest.GearRewardContentNames)
                 {
-                    quest.GearRewards.Add(input.ContentManager.Load<Gear>(
-                        Path.Combine("Gear", contentName)));
+                    quest.GearRewards.Add(input.ContentManager.Load<Gear>(Path.Combine("Gear", contentName)));
                 }
 
                 return quest;

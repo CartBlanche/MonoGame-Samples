@@ -13,6 +13,7 @@ using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using System.Text;
 using Microsoft.Xna.Framework.Input.Touch;
+using System.IO;
 
 namespace RolePlaying
 {
@@ -102,7 +103,7 @@ namespace RolePlaying
 
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
-            blankTexture = content.Load<Texture2D>("Textures/GameScreens/blank");
+            blankTexture = content.Load<Texture2D>(Path.Combine("Textures", "GameScreens", "blank"));
 
             // Tell each of the screens to load their content.
             foreach (GameScreen screen in screens)

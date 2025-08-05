@@ -11,6 +11,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Content;
 using RolePlaying.Data;
+using System.IO;
 
 namespace RolePlaying
 {
@@ -80,14 +81,14 @@ namespace RolePlaying
             ContentManager content = ScreenManager.Game.Content;
 
             backgroundTexture =
-                content.Load<Texture2D>(@"Textures\GameScreens\PopupScreen");
+                content.Load<Texture2D>(Path.Combine("Textures", "GameScreens", "PopupScreen"));
             backIconTexture =
-                content.Load<Texture2D>(@"Textures\Buttons\BButton");
+                content.Load<Texture2D>(Path.Combine("Textures", "Buttons", "BButton"));
             scrollTexture =
-                content.Load<Texture2D>(@"Textures\GameScreens\ScrollButtons");
+                content.Load<Texture2D>(Path.Combine("Textures", "GameScreens", "ScrollButtons"));
             lineTexture =
-                content.Load<Texture2D>(@"Textures\GameScreens\SeparationLine");
-            fadeTexture = content.Load<Texture2D>(@"Textures\GameScreens\FadeScreen");
+                content.Load<Texture2D>(Path.Combine("Textures", "GameScreens", "SeparationLine"));
+            fadeTexture = content.Load<Texture2D>(Path.Combine("Textures", "GameScreens", "FadeScreen"));
 
             // Get the screen positions
             screenSize = new Vector2(Session.BACK_BUFFER_WIDTH, Session.BACK_BUFFER_HEIGHT);
