@@ -1363,7 +1363,7 @@
 /processorParam:TextureFormat=Color
 /build:Textures/Characters/GoblinWalkLeft.png
 
-#begin Textures/Characters/ORC1AttackLeft.png
+#begin Textures/Characters/Orc1AttackLeft.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -1373,9 +1373,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Textures/Characters/ORC1AttackLeft.png
+/build:Textures/Characters/Orc1AttackLeft.png
 
-#begin Textures/Characters/ORC1IdleLeft.png
+#begin Textures/Characters/Orc1IdleLeft.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -1385,9 +1385,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Textures/Characters/ORC1IdleLeft.png
+/build:Textures/Characters/Orc1IdleLeft.png
 
-#begin Textures/Characters/ORC2AttackLeft.png
+#begin Textures/Characters/Orc2AttackLeft.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -1397,9 +1397,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Textures/Characters/ORC2AttackLeft.png
+/build:Textures/Characters/Orc2AttackLeft.png
 
-#begin Textures/Characters/ORC2IdleLeft.png
+#begin Textures/Characters/Orc2IdleLeft.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -1409,9 +1409,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Textures/Characters/ORC2IdleLeft.png
+/build:Textures/Characters/Orc2IdleLeft.png
 
-#begin Textures/Characters/ORC3AttackLeft.png
+#begin Textures/Characters/Orc3AttackLeft.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -1421,9 +1421,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Textures/Characters/ORC3AttackLeft.png
+/build:Textures/Characters/Orc3AttackLeft.png
 
-#begin Textures/Characters/ORC3IdleLeft.png
+#begin Textures/Characters/Orc3IdleLeft.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -1433,9 +1433,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Textures/Characters/ORC3IdleLeft.png
+/build:Textures/Characters/Orc3IdleLeft.png
 
-#begin Textures/Characters/ORCAttackLeft.png
+#begin Textures/Characters/OrcAttackLeft.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -1445,7 +1445,7 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Textures/Characters/ORCAttackLeft.png
+/build:Textures/Characters/OrcAttackLeft.png
 
 #begin Textures/Characters/OrcIdle1Right.png
 /importer:TextureImporter
@@ -1483,7 +1483,7 @@
 /processorParam:TextureFormat=Color
 /build:Textures/Characters/OrcIdle3Right.png
 
-#begin Textures/Characters/ORCIdleLeft.png
+#begin Textures/Characters/OrcdleLeft.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -1493,7 +1493,7 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Textures/Characters/ORCIdleLeft.png
+/build:Textures/Characters/OrcIdleLeft.png
 
 #begin Textures/Characters/OrcWalk1Right.png
 /importer:TextureImporter
@@ -7663,7 +7663,7 @@
 /processorParam:TextureFormat=Color
 /build:Textures/Gear/Sword08h.png
 
-#begin Textures/Gear/torso01a.png
+#begin Textures/Gear/Torso01a.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -7673,9 +7673,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Textures/Gear/torso01a.png
+/build:Textures/Gear/Torso01a.png
 
-#begin Textures/Gear/torso01b.png
+#begin Textures/Gear/Torso01b.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -7685,9 +7685,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Textures/Gear/torso01b.png
+/build:Textures/Gear/Torso01b.png
 
-#begin Textures/Gear/torso01c.png
+#begin Textures/Gear/Torso01c.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -7697,9 +7697,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Textures/Gear/torso01c.png
+/build:Textures/Gear/Torso01c.png
 
-#begin Textures/Gear/torso01d.png
+#begin Textures/Gear/Torso01d.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -7709,9 +7709,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Textures/Gear/torso01d.png
+/build:Textures/Gear/Torso01d.png
 
-#begin Textures/Gear/torso01e.png
+#begin Textures/Gear/Torso01e.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -7721,9 +7721,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Textures/Gear/torso01e.png
+/build:Textures/Gear/Torso01e.png
 
-#begin Textures/Gear/torso01f.png
+#begin Textures/Gear/Torso01f.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -7733,9 +7733,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Textures/Gear/torso01f.png
+/build:Textures/Gear/Torso01f.png
 
-#begin Textures/Gear/torso01g.png
+#begin Textures/Gear/Torso01g.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -7745,9 +7745,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Textures/Gear/torso01g.png
+/build:Textures/Gear/Torso01g.png
 
-#begin Textures/Gear/torso01h.png
+#begin Textures/Gear/Torso01h.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -7757,9 +7757,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Textures/Gear/torso01h.png
+/build:Textures/Gear/Torso01h.png
 
-#begin Textures/Gear/torso02a.png
+#begin Textures/Gear/Torso02a.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -7769,9 +7769,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Textures/Gear/torso02a.png
+/build:Textures/Gear/Torso02a.png
 
-#begin Textures/Gear/torso02b.png
+#begin Textures/Gear/Torso02b.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -7781,9 +7781,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Textures/Gear/torso02b.png
+/build:Textures/Gear/Torso02b.png
 
-#begin Textures/Gear/torso02c.png
+#begin Textures/Gear/Torso02c.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -7793,9 +7793,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Textures/Gear/torso02c.png
+/build:Textures/Gear/Torso02c.png
 
-#begin Textures/Gear/torso02d.png
+#begin Textures/Gear/Torso02d.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -7805,9 +7805,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Textures/Gear/torso02d.png
+/build:Textures/Gear/Torso02d.png
 
-#begin Textures/Gear/torso02e.png
+#begin Textures/Gear/Torso02e.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -7817,9 +7817,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Textures/Gear/torso02e.png
+/build:Textures/Gear/Torso02e.png
 
-#begin Textures/Gear/torso02f.png
+#begin Textures/Gear/Torso02f.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -7829,9 +7829,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Textures/Gear/torso02f.png
+/build:Textures/Gear/Torso02f.png
 
-#begin Textures/Gear/torso02g.png
+#begin Textures/Gear/Torso02g.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -7841,9 +7841,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Textures/Gear/torso02g.png
+/build:Textures/Gear/Torso02g.png
 
-#begin Textures/Gear/torso02h.png
+#begin Textures/Gear/Torso02h.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -7853,9 +7853,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Textures/Gear/torso02h.png
+/build:Textures/Gear/Torso02h.png
 
-#begin Textures/Gear/torso03a.png
+#begin Textures/Gear/Torso03a.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -7865,9 +7865,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Textures/Gear/torso03a.png
+/build:Textures/Gear/Torso03a.png
 
-#begin Textures/Gear/torso03b.png
+#begin Textures/Gear/Torso03b.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -7877,9 +7877,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Textures/Gear/torso03b.png
+/build:Textures/Gear/Torso03b.png
 
-#begin Textures/Gear/torso03c.png
+#begin Textures/Gear/Torso03c.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -7889,9 +7889,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Textures/Gear/torso03c.png
+/build:Textures/Gear/Torso03c.png
 
-#begin Textures/Gear/torso03d.png
+#begin Textures/Gear/Torso03d.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -7901,9 +7901,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Textures/Gear/torso03d.png
+/build:Textures/Gear/Torso03d.png
 
-#begin Textures/Gear/torso03e.png
+#begin Textures/Gear/Torso03e.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -7913,9 +7913,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Textures/Gear/torso03e.png
+/build:Textures/Gear/Torso03e.png
 
-#begin Textures/Gear/torso03f.png
+#begin Textures/Gear/Torso03f.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -7925,9 +7925,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Textures/Gear/torso03f.png
+/build:Textures/Gear/Torso03f.png
 
-#begin Textures/Gear/torso03g.png
+#begin Textures/Gear/Torso03g.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -7937,9 +7937,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Textures/Gear/torso03g.png
+/build:Textures/Gear/Torso03g.png
 
-#begin Textures/Gear/torso03h.png
+#begin Textures/Gear/Torso03h.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -7949,9 +7949,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Textures/Gear/torso03h.png
+/build:Textures/Gear/Torso03h.png
 
-#begin Textures/Gear/torso04a.png
+#begin Textures/Gear/Torso04a.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -7961,9 +7961,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Textures/Gear/torso04a.png
+/build:Textures/Gear/Torso04a.png
 
-#begin Textures/Gear/torso04b.png
+#begin Textures/Gear/Torso04b.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -7973,9 +7973,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Textures/Gear/torso04b.png
+/build:Textures/Gear/Torso04b.png
 
-#begin Textures/Gear/torso04c.png
+#begin Textures/Gear/Torso04c.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -7985,9 +7985,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Textures/Gear/torso04c.png
+/build:Textures/Gear/Torso04c.png
 
-#begin Textures/Gear/torso04d.png
+#begin Textures/Gear/Torso04d.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -7997,9 +7997,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Textures/Gear/torso04d.png
+/build:Textures/Gear/Torso04d.png
 
-#begin Textures/Gear/torso04e.png
+#begin Textures/Gear/Torso04e.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -8009,9 +8009,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Textures/Gear/torso04e.png
+/build:Textures/Gear/Torso04e.png
 
-#begin Textures/Gear/torso04f.png
+#begin Textures/Gear/Torso04f.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -8021,9 +8021,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Textures/Gear/torso04f.png
+/build:Textures/Gear/Torso04f.png
 
-#begin Textures/Gear/torso04g.png
+#begin Textures/Gear/Torso04g.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -8033,9 +8033,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Textures/Gear/torso04g.png
+/build:Textures/Gear/Torso04g.png
 
-#begin Textures/Gear/torso04h.png
+#begin Textures/Gear/Torso04h.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -8045,9 +8045,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Textures/Gear/torso04h.png
+/build:Textures/Gear/Torso04h.png
 
-#begin Textures/Gear/torso05a.png
+#begin Textures/Gear/Torso05a.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -8057,9 +8057,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Textures/Gear/torso05a.png
+/build:Textures/Gear/Torso05a.png
 
-#begin Textures/Gear/torso05b.png
+#begin Textures/Gear/Torso05b.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -8069,9 +8069,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Textures/Gear/torso05b.png
+/build:Textures/Gear/Torso05b.png
 
-#begin Textures/Gear/torso05c.png
+#begin Textures/Gear/Torso05c.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -8081,9 +8081,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Textures/Gear/torso05c.png
+/build:Textures/Gear/Torso05c.png
 
-#begin Textures/Gear/torso05d.png
+#begin Textures/Gear/Torso05d.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -8093,9 +8093,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Textures/Gear/torso05d.png
+/build:Textures/Gear/Torso05d.png
 
-#begin Textures/Gear/torso05e.png
+#begin Textures/Gear/Torso05e.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -8105,9 +8105,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Textures/Gear/torso05e.png
+/build:Textures/Gear/Torso05e.png
 
-#begin Textures/Gear/torso05f.png
+#begin Textures/Gear/Torso05f.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -8117,9 +8117,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Textures/Gear/torso05f.png
+/build:Textures/Gear/Torso05f.png
 
-#begin Textures/Gear/torso05g.png
+#begin Textures/Gear/Torso05g.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -8129,9 +8129,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Textures/Gear/torso05g.png
+/build:Textures/Gear/Torso05g.png
 
-#begin Textures/Gear/torso05h.png
+#begin Textures/Gear/Torso05h.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -8141,9 +8141,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Textures/Gear/torso05h.png
+/build:Textures/Gear/Torso05h.png
 
-#begin Textures/Gear/torso06a.png
+#begin Textures/Gear/Torso06a.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -8153,9 +8153,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Textures/Gear/torso06a.png
+/build:Textures/Gear/Torso06a.png
 
-#begin Textures/Gear/torso06b.png
+#begin Textures/Gear/Torso06b.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -8165,9 +8165,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Textures/Gear/torso06b.png
+/build:Textures/Gear/Torso06b.png
 
-#begin Textures/Gear/torso06c.png
+#begin Textures/Gear/Torso06c.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -8177,9 +8177,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Textures/Gear/torso06c.png
+/build:Textures/Gear/Torso06c.png
 
-#begin Textures/Gear/torso06d.png
+#begin Textures/Gear/Torso06d.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -8189,9 +8189,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Textures/Gear/torso06d.png
+/build:Textures/Gear/Torso06d.png
 
-#begin Textures/Gear/torso06e.png
+#begin Textures/Gear/Torso06e.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -8201,9 +8201,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Textures/Gear/torso06e.png
+/build:Textures/Gear/Torso06e.png
 
-#begin Textures/Gear/torso06f.png
+#begin Textures/Gear/Torso06f.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -8213,9 +8213,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Textures/Gear/torso06f.png
+/build:Textures/Gear/Torso06f.png
 
-#begin Textures/Gear/torso06g.png
+#begin Textures/Gear/Torso06g.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -8225,9 +8225,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Textures/Gear/torso06g.png
+/build:Textures/Gear/Torso06g.png
 
-#begin Textures/Gear/torso06h.png
+#begin Textures/Gear/Torso06h.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -8237,9 +8237,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Textures/Gear/torso06h.png
+/build:Textures/Gear/Torso06h.png
 
-#begin Textures/Gear/torso07a.png
+#begin Textures/Gear/Torso07a.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -8249,9 +8249,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Textures/Gear/torso07a.png
+/build:Textures/Gear/Torso07a.png
 
-#begin Textures/Gear/torso07b.png
+#begin Textures/Gear/Torso07b.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -8261,9 +8261,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Textures/Gear/torso07b.png
+/build:Textures/Gear/Torso07b.png
 
-#begin Textures/Gear/torso07c.png
+#begin Textures/Gear/Torso07c.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -8273,9 +8273,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Textures/Gear/torso07c.png
+/build:Textures/Gear/Torso07c.png
 
-#begin Textures/Gear/torso07d.png
+#begin Textures/Gear/Torso07d.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -8285,9 +8285,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Textures/Gear/torso07d.png
+/build:Textures/Gear/Torso07d.png
 
-#begin Textures/Gear/torso07e.png
+#begin Textures/Gear/Torso07e.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -8297,9 +8297,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Textures/Gear/torso07e.png
+/build:Textures/Gear/Torso07e.png
 
-#begin Textures/Gear/torso07f.png
+#begin Textures/Gear/Torso07f.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -8309,9 +8309,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Textures/Gear/torso07f.png
+/build:Textures/Gear/Torso07f.png
 
-#begin Textures/Gear/torso07g.png
+#begin Textures/Gear/Torso07g.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -8321,9 +8321,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Textures/Gear/torso07g.png
+/build:Textures/Gear/Torso07g.png
 
-#begin Textures/Gear/torso07h.png
+#begin Textures/Gear/Torso07h.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -8333,9 +8333,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Textures/Gear/torso07h.png
+/build:Textures/Gear/Torso07h.png
 
-#begin Textures/Gear/torso08a.png
+#begin Textures/Gear/Torso08a.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -8345,9 +8345,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Textures/Gear/torso08a.png
+/build:Textures/Gear/Torso08a.png
 
-#begin Textures/Gear/torso08b.png
+#begin Textures/Gear/Torso08b.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -8357,9 +8357,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Textures/Gear/torso08b.png
+/build:Textures/Gear/Torso08b.png
 
-#begin Textures/Gear/torso08c.png
+#begin Textures/Gear/Torso08c.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -8369,9 +8369,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Textures/Gear/torso08c.png
+/build:Textures/Gear/Torso08c.png
 
-#begin Textures/Gear/torso08d.png
+#begin Textures/Gear/Torso08d.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -8381,9 +8381,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Textures/Gear/torso08d.png
+/build:Textures/Gear/Torso08d.png
 
-#begin Textures/Gear/torso08e.png
+#begin Textures/Gear/Torso08e.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -8393,9 +8393,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Textures/Gear/torso08e.png
+/build:Textures/Gear/Torso08e.png
 
-#begin Textures/Gear/torso08f.png
+#begin Textures/Gear/Torso08f.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -8405,9 +8405,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Textures/Gear/torso08f.png
+/build:Textures/Gear/Torso08f.png
 
-#begin Textures/Gear/torso08g.png
+#begin Textures/Gear/Torso08g.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -8417,9 +8417,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Textures/Gear/torso08g.png
+/build:Textures/Gear/Torso08g.png
 
-#begin Textures/Gear/torso08h.png
+#begin Textures/Gear/Torso08h.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -8429,9 +8429,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Textures/Gear/torso08h.png
+/build:Textures/Gear/Torso08h.png
 
-#begin Textures/Gear/torso09a.png
+#begin Textures/Gear/Torso09a.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -8441,9 +8441,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Textures/Gear/torso09a.png
+/build:Textures/Gear/Torso09a.png
 
-#begin Textures/Gear/torso09b.png
+#begin Textures/Gear/Torso09b.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -8453,9 +8453,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Textures/Gear/torso09b.png
+/build:Textures/Gear/Torso09b.png
 
-#begin Textures/Gear/torso09c.png
+#begin Textures/Gear/Torso09c.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -8465,9 +8465,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Textures/Gear/torso09c.png
+/build:Textures/Gear/Torso09c.png
 
-#begin Textures/Gear/torso09d.png
+#begin Textures/Gear/Torso09d.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -8477,9 +8477,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Textures/Gear/torso09d.png
+/build:Textures/Gear/Torso09d.png
 
-#begin Textures/Gear/torso09e.png
+#begin Textures/Gear/Torso09e.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -8489,9 +8489,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Textures/Gear/torso09e.png
+/build:Textures/Gear/Torso09e.png
 
-#begin Textures/Gear/torso09f.png
+#begin Textures/Gear/Torso09f.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -8501,9 +8501,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Textures/Gear/torso09f.png
+/build:Textures/Gear/Torso09f.png
 
-#begin Textures/Gear/torso09g.png
+#begin Textures/Gear/Torso09g.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -8513,9 +8513,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Textures/Gear/torso09g.png
+/build:Textures/Gear/Torso09g.png
 
-#begin Textures/Gear/torso09h.png
+#begin Textures/Gear/Torso09h.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -8525,7 +8525,7 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Textures/Gear/torso09h.png
+/build:Textures/Gear/Torso09h.png
 
 #begin Textures/Gear/Torso10a.png
 /importer:TextureImporter
@@ -8707,7 +8707,7 @@
 /processorParam:TextureFormat=Color
 /build:Textures/HUD/PlankCantUse.png
 
-#begin Textures/HUD/PlankInActive.png
+#begin Textures/HUD/PlankInactive.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -8717,7 +8717,7 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Textures/HUD/PlankInActive.png
+/build:Textures/HUD/PlankInactive.png
 
 #begin Textures/HUD/SelectionBrackets.png
 /importer:TextureImporter

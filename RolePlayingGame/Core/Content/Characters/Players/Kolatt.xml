@@ -36,7 +36,7 @@
       <JoinAcceptedDialogue>You won't be disappointed!</JoinAcceptedDialogue>
       <JoinRejectedDialogue>Let me know if you change your mind.  I'll be twiddling my thumbs over here in the meantime.</JoinRejectedDialogue>
       <ActivePortraitTextureName>Warrior1Active</ActivePortraitTextureName>
-      <InactivePortraitTextureName>Warrior1InActive</InactivePortraitTextureName>
+      <InactivePortraitTextureName>Warrior1Inactive</InactivePortraitTextureName>
       <UnselectablePortraitTextureName>Warrior1Unselectable</UnselectablePortraitTextureName>
   </Asset>
 </XnaContent>

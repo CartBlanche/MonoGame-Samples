@@ -42,7 +42,7 @@
       <JoinAcceptedDialogue>Wonderful!  You know, my boots do need a bit of polishing.  Oh, my robe could use some dry cleaning. And don't forget to...</JoinAcceptedDialogue>
       <JoinRejectedDialogue>Fools you are!</JoinRejectedDialogue>
       <ActivePortraitTextureName>WizardActive</ActivePortraitTextureName>
-      <InactivePortraitTextureName>WizardInActive</InactivePortraitTextureName>
+      <InactivePortraitTextureName>WizardInactive</InactivePortraitTextureName>
       <UnselectablePortraitTextureName>WizardUnselectable</UnselectablePortraitTextureName>
   </Asset>
 </XnaContent>

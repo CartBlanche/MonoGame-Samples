@@ -117,7 +117,7 @@ namespace RolePlaying
             activeCharInfoTexture =
                 content.Load<Texture2D>(Path.Combine("Textures", "HUD", "PlankActive"));
             inActiveCharInfoTexture =
-                content.Load<Texture2D>(Path.Combine("Textures", "HUD", "PlankInActive"));
+                content.Load<Texture2D>(Path.Combine("Textures", "HUD", "PlankInactive"));
             cantUseCharInfoTexture = 
                 content.Load<Texture2D>(Path.Combine("Textures", "HUD", "PlankCantUse"));
             selectionBracketTexture = 
@@ -263,7 +263,7 @@ namespace RolePlaying
         enum PlankState
         {
             Active,
-            InActive,
+            Inactive,
             CantUse,
         }
 
@@ -305,7 +305,7 @@ namespace RolePlaying
             }
             else
             {
-                plankState = PlankState.InActive;
+                plankState = PlankState.Inactive;
 
                 isPortraitActive = true;
             }
@@ -349,7 +349,7 @@ namespace RolePlaying
                     DrawActionsMenu(position);
                 }
             }
-            else if (plankState == PlankState.InActive)
+            else if (plankState == PlankState.Inactive)
             {
                 color = inActiveNameColor;
                 spriteBatch.Draw(inActiveCharInfoTexture, position, Color.White);
@@ -431,7 +431,7 @@ namespace RolePlaying
 
                 spriteBatch.Draw(activeCharInfoTexture, position, Color.White);
             }
-            else if (plankState == PlankState.InActive)
+            else if (plankState == PlankState.Inactive)
             {
                 color = inActiveNameColor;
                 spriteBatch.Draw(inActiveCharInfoTexture, position, Color.White);
@@ -488,7 +488,7 @@ namespace RolePlaying
                     screenManager.SpriteBatch.Draw(player.ActivePortraitTexture, 
                         position, Color.White);
                     break;
-                case PlankState.InActive:
+                case PlankState.Inactive:
                     screenManager.SpriteBatch.Draw(player.InactivePortraitTexture, 
                         position, Color.White);
                     break;

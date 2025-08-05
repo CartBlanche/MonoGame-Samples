@@ -71,7 +71,7 @@ namespace RolePlaying
 
             // add the audio manager
             AudioManager.Initialize(this,
-                Path.Combine("Content", "Audio", "RpgAudio.xgs"),
+                Path.Combine("Content", "Audio", "RPGAudio.xgs"),
                 Path.Combine("Content", "Audio", "Wave Bank.xwb"),
                 Path.Combine("Content", "Audio", "Sound Bank.xsb"));
 
@@ -92,7 +92,7 @@ namespace RolePlaying
 
             base.Initialize();
 
-            TileEngine.Viewport = screenManager.GraphicsDevice.Viewport;
+            TileEngine.Viewport = new Viewport(0, 0, Session.BACK_BUFFER_WIDTH, Session.BACK_BUFFER_HEIGHT);
 
             screenManager.AddScreen(new MainMenuScreen());
         }

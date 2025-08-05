@@ -47,7 +47,7 @@
       <JoinAcceptedDialogue>I am grateful.</JoinAcceptedDialogue>
       <JoinRejectedDialogue>Perhaps another time, then.</JoinRejectedDialogue>
       <ActivePortraitTextureName>Goblin2Active</ActivePortraitTextureName>
-      <InactivePortraitTextureName>Goblin2InActive</InactivePortraitTextureName>
+      <InactivePortraitTextureName>Goblin2Inactive</InactivePortraitTextureName>
       <UnselectablePortraitTextureName>Goblin2Unselectable</UnselectablePortraitTextureName>
   </Asset>
 </XnaContent>

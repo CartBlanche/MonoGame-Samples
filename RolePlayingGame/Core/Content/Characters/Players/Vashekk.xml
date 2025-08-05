@@ -56,7 +56,7 @@
       <JoinAcceptedDialogue>Thank you, my brave comrade.  I shall be your shield!</JoinAcceptedDialogue>
       <JoinRejectedDialogue>I shall remain here until you have changed your mind.</JoinRejectedDialogue>
       <ActivePortraitTextureName>WarriorActive</ActivePortraitTextureName>
-      <InactivePortraitTextureName>WarriorInActive</InactivePortraitTextureName>
+      <InactivePortraitTextureName>WarriorInactive</InactivePortraitTextureName>
       <UnselectablePortraitTextureName>WarriorUnselectable</UnselectablePortraitTextureName>
   </Asset>
 </XnaContent>

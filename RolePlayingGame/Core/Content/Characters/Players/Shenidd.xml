@@ -57,7 +57,7 @@
       <JoinAcceptedDialogue>Good!  Now, get Shenidd MEAT!</JoinAcceptedDialogue>
       <JoinRejectedDialogue>Shenidd should kill you!  Next time, Shenidd not be so nice...</JoinRejectedDialogue>
       <ActivePortraitTextureName>BossActive</ActivePortraitTextureName>
-      <InactivePortraitTextureName>BossInActive</InactivePortraitTextureName>
+      <InactivePortraitTextureName>BossInactive</InactivePortraitTextureName>
       <UnselectablePortraitTextureName>BossUnselectable</UnselectablePortraitTextureName>
   </Asset>
 </XnaContent>
