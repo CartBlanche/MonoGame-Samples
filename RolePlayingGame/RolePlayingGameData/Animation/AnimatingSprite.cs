@@ -480,7 +480,7 @@ namespace RolePlaying.Data
             {
                 TextureName = (string)xElement.Element("TextureName"),
                 Texture = contentManager.Load<Texture2D>(
-                    Path.Combine(@"Textures\", (string)xElement.Element("TextureName"))),
+                    Path.Combine(@"Textures", (string)xElement.Element("TextureName"))),
                 FrameDimensions = new Point(
                     int.Parse(xElement.Element("FrameDimensions").Value.Split(' ')[0]),
                     int.Parse(xElement.Element("FrameDimensions").Value.Split(' ')[1])),

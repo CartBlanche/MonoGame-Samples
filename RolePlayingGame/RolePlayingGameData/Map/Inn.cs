@@ -142,7 +142,7 @@ namespace RolePlaying.Data
                 inn.NotEnoughGoldMessage = input.ReadString();
                 inn.ShopkeeperTextureName = input.ReadString();
                 inn.shopkeeperTexture = input.ContentManager.Load<Texture2D>(
-                    System.IO.Path.Combine(@"Textures\Characters\Portraits", 
+                    System.IO.Path.Combine("Textures", "Characters", "Portraits", 
                     inn.ShopkeeperTextureName));
 
                 return inn;
@@ -162,7 +162,7 @@ namespace RolePlaying.Data
                 NotEnoughGoldMessage = asset.Element("NotEnoughGoldMessage").Value,
                 ShopkeeperTextureName = asset.Element("ShopkeeperTextureName").Value,
                 ShopkeeperTexture = contentManager.Load<Texture2D>(
-                    System.IO.Path.Combine(@"Textures\Characters\Portraits",
+                    System.IO.Path.Combine("Textures", "Characters", "Portraits",
                     asset.Element("ShopkeeperTextureName").Value)),
             };
             return inn;

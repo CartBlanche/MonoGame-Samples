@@ -11,6 +11,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Content;
 using RolePlaying.Data;
+using System.IO;
 
 namespace RolePlaying
 {
@@ -110,39 +111,39 @@ namespace RolePlaying
             ContentManager content = screenManager.Game.Content;
 
             backgroundHudTexture = 
-                content.Load<Texture2D>(@"Textures\HUD\HudBkgd");
+                content.Load<Texture2D>(Path.Combine("Textures", "HUD", "HudBkgd"));
             topHudTexture = 
-                content.Load<Texture2D>(@"Textures\HUD\CombatStateInfoStrip");
+                content.Load<Texture2D>(Path.Combine("Textures", "HUD", "CombatStateInfoStrip"));
             activeCharInfoTexture =
-                content.Load<Texture2D>(@"Textures\HUD\PlankActive");
+                content.Load<Texture2D>(Path.Combine("Textures", "HUD", "PlankActive"));
             inActiveCharInfoTexture =
-                content.Load<Texture2D>(@"Textures\HUD\PlankInActive");
+                content.Load<Texture2D>(Path.Combine("Textures", "HUD", "PlankInActive"));
             cantUseCharInfoTexture = 
-                content.Load<Texture2D>(@"Textures\HUD\PlankCantUse");
+                content.Load<Texture2D>(Path.Combine("Textures", "HUD", "PlankCantUse"));
             selectionBracketTexture = 
-                content.Load<Texture2D>(@"Textures\HUD\SelectionBrackets");
+                content.Load<Texture2D>(Path.Combine("Textures", "HUD", "SelectionBrackets"));
             deadPortraitTexture = 
-                content.Load<Texture2D>(@"Textures\Characters\Portraits\Tombstone");
+                content.Load<Texture2D>(Path.Combine("Textures", "Characters", "Portraits", "Tombstone"));
             combatPopupTexture = 
-                content.Load<Texture2D>(@"Textures\HUD\CombatPopup");
+                content.Load<Texture2D>(Path.Combine("Textures", "HUD", "CombatPopup"));
             charSelFadeLeftTexture =
-                content.Load<Texture2D>(@"Textures\Buttons\CharSelectFadeLeft");
+                content.Load<Texture2D>(Path.Combine("Textures", "Buttons", "CharSelectFadeLeft"));
             charSelFadeRightTexture = 
-                content.Load<Texture2D>(@"Textures\Buttons\CharSelectFadeRight");
+                content.Load<Texture2D>(Path.Combine("Textures", "Buttons", "CharSelectFadeRight"));
             charSelArrowLeftTexture =
-                content.Load<Texture2D>(@"Textures\Buttons\CharSelectHlLeft");
+                content.Load<Texture2D>(Path.Combine("Textures", "Buttons", "CharSelectHlLeft"));
             charSelArrowRightTexture = 
-                content.Load<Texture2D>(@"Textures\Buttons\CharSelectHlRight");
+                content.Load<Texture2D>(Path.Combine("Textures", "Buttons", "CharSelectHlRight"));
             actionTexture = 
-                content.Load<Texture2D>(@"Textures\HUD\HudSelectButton");
+                content.Load<Texture2D>(Path.Combine("Textures", "HUD", "HudSelectButton"));
             yButtonTexture =
-                content.Load<Texture2D>(@"Textures\Buttons\YButton");
+                content.Load<Texture2D>(Path.Combine("Textures", "Buttons", "YButton"));
             startButtonTexture = 
-                content.Load<Texture2D>(@"Textures\Buttons\StartButton");
+                content.Load<Texture2D>(Path.Combine("Textures", "Buttons", "StartButton"));
             menuTexture = 
-                content.Load<Texture2D>(@"Textures\HUD\Menu");
+                content.Load<Texture2D>(Path.Combine("Textures", "HUD", "Menu"));
             statsTexture =
-                content.Load<Texture2D>(@"Textures\HUD\Stats");
+                content.Load<Texture2D>(Path.Combine("Textures", "HUD", "Stats"));
         }
 
 
