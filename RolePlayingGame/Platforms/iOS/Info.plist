@@ -12,5 +12,7 @@
 	<string>10.6</string>
 	<key>NSPrincipalClass</key>
 	<string>NSApplication</string>
+	<key>CFBundleIconFile</key>
+	<string>RolePlayingGame.icns</string>
 </dict>
 </plist>

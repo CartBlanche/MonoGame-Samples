@@ -4,7 +4,7 @@ using UIKit;
 namespace RolePlaying.iOS
 {
     [Register("AppDelegate")]
-    internal class Program : UIApplicationDelegate
+    internal class AppDelegate : UIApplicationDelegate
     {
         private static RolePlayingGame _game;
 
@@ -36,7 +36,7 @@ namespace RolePlaying.iOS
         /// <param name="args">Command-line arguments passed to the application.</param>
         static void Main(string[] args)
         {
-            UIApplication.Main(args, null, typeof(Program));
+            UIApplication.Main(args, null, typeof(AppDelegate));
         }
     }
 }

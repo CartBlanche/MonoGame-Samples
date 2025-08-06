@@ -7,6 +7,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Input.Touch;
@@ -666,13 +667,21 @@ namespace RolePlaying
 
         public static void HandleMouseDown(Point playerPosition)
         {
-            if (IsMouseButtonPressed(MouseButtons.LeftButton))
+            var mouseDown = IsMouseButtonPressed(MouseButtons.LeftButton);
+            var touchDown = IsTouchPressed();
+            if (mouseDown
+            || touchDown)
             {
-                Point mouseDownPosition = new Point(currentMouseState.X, currentMouseState.Y);
+                // Get the current mouse/touch position
+                Point mouseDownPosition = mouseDown
+                    ? new Point(currentMouseState.X, currentMouseState.Y)
+                    : currentTouchPanelState.Count > 0 ? new Point((int)currentTouchPanelState[0].Position.X, (int)currentTouchPanelState[0].Position.Y) : Point.Zero;
+
+                // Determine which keys to press based on the mouse down position relative to the player position
                 Keys[] keysToPress = GetKeysForQuadrant(playerPosition, mouseDownPosition);
 
                 // Combine existing pressed keys with new keys
-                List<Keys> pressedKeys = new List<Keys>(currentKeyboardState.GetPressedKeys());
+                var pressedKeys = new HashSet<Keys>(currentKeyboardState.GetPressedKeys());
                 foreach (Keys key in keysToPress)
                 {
                     pressedKeys.Add(key);
@@ -687,12 +696,12 @@ namespace RolePlaying
         /// <summary>
         /// The state of the keyboard as of the last update.
         /// </summary>
-        private static TouchPanelState currentTouchPanelState;
+        private static TouchCollection currentTouchPanelState;
 
         /// <summary>
         /// The state of the mouse as of the last update.
         /// </summary>
-        public static TouchPanelState CurrentTouchPanelState
+        public static TouchCollection CurrentTouchPanelState
         {
             get { return currentTouchPanelState; }
         }
@@ -700,12 +709,12 @@ namespace RolePlaying
         /// <summary>
         /// The state of the mouse as of the previous update.
         /// </summary>
-        private static TouchPanelState previousTouchPanelState;
+        private static TouchCollection previousTouchPanelState;
 
+        // Update methods to work with TouchCollection
         public static bool IsTouchPressed()
         {
-            var touchCollection = currentTouchPanelState.GetState();
-            foreach (var touch in touchCollection)
+            foreach (var touch in currentTouchPanelState)
             {
                 if (touch.State == TouchLocationState.Pressed)
                 {
@@ -717,8 +726,7 @@ namespace RolePlaying
 
         public static bool IsTouchReleased()
         {
-            var touchCollection = currentTouchPanelState.GetState();
-            foreach (var touch in touchCollection)
+            foreach (var touch in currentTouchPanelState)
             {
                 if (touch.State == TouchLocationState.Released)
                 {
@@ -730,8 +738,7 @@ namespace RolePlaying
 
         public static bool IsTouchMoved()
         {
-            var touchCollection = currentTouchPanelState.GetState();
-            foreach (var touch in touchCollection)
+            foreach (var touch in currentTouchPanelState)
             {
                 if (touch.State == TouchLocationState.Moved)
                 {
@@ -743,14 +750,7 @@ namespace RolePlaying
 
         public static bool IsGestureDetected(GestureType gestureType)
         {
-            while (currentTouchPanelState.IsGestureAvailable)
-            {
-                var gesture = currentTouchPanelState.ReadGesture();
-                if (gesture.GestureType == gestureType)
-                {
-                    return true;
-                }
-            }
+            // Gesture detection is not supported directly by TouchCollection
             return false;
         }
 
@@ -991,7 +991,7 @@ namespace RolePlaying
 
             // update the touch panel state
             previousTouchPanelState = currentTouchPanelState;
-            //currentTouchPanelState = TouchPanelState.GetState();
+            currentTouchPanelState = TouchPanel.GetState();
         }
     }
 }
