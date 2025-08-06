@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net8.0-ios</TargetFramework>
+    <OutputType>Exe</OutputType>
+    <RootNamespace>Blackjack.iOS</RootNamespace>
+    <AssemblyName>Blackjack</AssemblyName>
+    <AssemblyTitle>Blackjack</AssemblyTitle>
+    <Description>iOS platform for Blackjack Game.</Description>
+    <Authors>CartBlanche</Authors>
+    <Company>MonoGame Foundation</Company>
+    <GenerateAssemblyInfo>true</GenerateAssemblyInfo>
+  </PropertyGroup>
+  
+  <ItemGroup>
+    <ProjectReference Include="..\..\Core\Game\BlackJack.Core.csproj" />
+    <PackageReference Include="MonoGame.Framework.iOS" Version="3.8.*" />
+    <PackageReference Include="MonoGame.Content.Builder.Task" Version="3.8.*" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <MonoGameContentReference Include="..\..\Core\Content\Content.mgcb" />
+  </ItemGroup>
+  
+</Project>

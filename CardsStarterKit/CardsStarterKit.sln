@@ -1,0 +1,56 @@
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.5.2.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cards.Framework", "Framework\Cards.Framework.csproj", "{89781445-5440-49D1-AB1B-67C6667D43DC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Blackjack.Core", "Core\Game\Blackjack.Core.csproj", "{80C61169-FFE2-4335-BCE6-F0A4722FA419}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlackJack.Windows", "Platforms\Windows\BlackJack.Windows.csproj", "{92B782FF-2679-431D-B095-9BB86D09ED59}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlackJack.iOS", "Platforms\iOS\BlackJack.iOS.csproj", "{02C6C7B5-5F17-4E12-9278-A9AC14358525}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlackJack.DesktopGL", "Platforms\Desktop\BlackJack.DesktopGL.csproj", "{E23472DC-9347-4327-9292-732B80959226}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlackJack.Android", "Platforms\Android\BlackJack.Android.csproj", "{B767C86E-EAB0-4ACF-B2DE-687828BB949B}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{89781445-5440-49D1-AB1B-67C6667D43DC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{89781445-5440-49D1-AB1B-67C6667D43DC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{89781445-5440-49D1-AB1B-67C6667D43DC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{89781445-5440-49D1-AB1B-67C6667D43DC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{80C61169-FFE2-4335-BCE6-F0A4722FA419}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{80C61169-FFE2-4335-BCE6-F0A4722FA419}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{80C61169-FFE2-4335-BCE6-F0A4722FA419}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{80C61169-FFE2-4335-BCE6-F0A4722FA419}.Release|Any CPU.Build.0 = Release|Any CPU
+		{92B782FF-2679-431D-B095-9BB86D09ED59}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{92B782FF-2679-431D-B095-9BB86D09ED59}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{92B782FF-2679-431D-B095-9BB86D09ED59}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{92B782FF-2679-431D-B095-9BB86D09ED59}.Release|Any CPU.Build.0 = Release|Any CPU
+		{02C6C7B5-5F17-4E12-9278-A9AC14358525}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{02C6C7B5-5F17-4E12-9278-A9AC14358525}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{02C6C7B5-5F17-4E12-9278-A9AC14358525}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{02C6C7B5-5F17-4E12-9278-A9AC14358525}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E23472DC-9347-4327-9292-732B80959226}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E23472DC-9347-4327-9292-732B80959226}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E23472DC-9347-4327-9292-732B80959226}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E23472DC-9347-4327-9292-732B80959226}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B767C86E-EAB0-4ACF-B2DE-687828BB949B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B767C86E-EAB0-4ACF-B2DE-687828BB949B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B767C86E-EAB0-4ACF-B2DE-687828BB949B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B767C86E-EAB0-4ACF-B2DE-687828BB949B}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {4FA51D01-9782-46F8-AD43-7AD6134607E6}
+	EndGlobalSection
+EndGlobal

@@ -1,0 +1,460 @@
+
+#----------------------------- Global Properties ----------------------------#
+
+/outputDir:bin/$(Platform)
+/intermediateDir:obj/$(Platform)
+/platform:DesktopGL
+/config:$(Configuration)
+/profile:HiDef
+/compress:False
+
+#-------------------------------- References --------------------------------#
+
+
+
+#---------------------------------- Content ---------------------------------#
+
+#begin Fonts/Bold.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/build:Fonts/Bold.spritefont
+
+#begin Fonts/MenuFont.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/build:Fonts/MenuFont.spritefont
+
+#begin Fonts/Regular.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/build:Fonts/Regular.spritefont
+
+#begin Images/blank.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/build:Images/blank.png
+
+#begin Images/Button.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/build:Images/Button.png
+
+#begin Images/ButtonPressed.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/build:Images/ButtonPressed.png
+
+#begin Images/ButtonRegular.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/build:Images/ButtonRegular.png
+
+#begin Images/Cards/CardBack_Blue.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/build:Images/Cards/CardBack_Blue.png
+
+#begin Images/Cards/CardBack_Red.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/build:Images/Cards/CardBack_Red.png
+
+#begin Images/Cards/ClubAce.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/build:Images/Cards/ClubAce.png
+
+#begin Images/Cards/ClubEight.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/build:Images/Cards/ClubEight.png
+
+#begin Images/Cards/ClubFive.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/build:Images/Cards/ClubFive.png
+
+#begin Images/Cards/ClubFour.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/build:Images/Cards/ClubFour.png
+
+#begin Images/Cards/ClubJack.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/build:Images/Cards/ClubJack.png
+
+#begin Images/Cards/ClubKing.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/build:Images/Cards/ClubKing.png
+
+#begin Images/Cards/ClubNine.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/build:Images/Cards/ClubNine.png
+
+#begin Images/Cards/ClubQueen.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/build:Images/Cards/ClubQueen.png
+
+#begin Images/Cards/ClubSeven.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/build:Images/Cards/ClubSeven.png
+
+#begin Images/Cards/ClubSix.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/build:Images/Cards/ClubSix.png
+
+#begin Images/Cards/ClubTen.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/build:Images/Cards/ClubTen.png
+
+#begin Images/Cards/ClubThree.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/build:Images/Cards/ClubThree.png
+
+#begin Images/Cards/ClubTwo.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/build:Images/Cards/ClubTwo.png
+
+#begin Images/Cards/DiamondAce.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/build:Images/Cards/DiamondAce.png
+
+#begin Images/Cards/DiamondEight.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/build:Images/Cards/DiamondEight.png
+
+#begin Images/Cards/DiamondFive.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/build:Images/Cards/DiamondFive.png
+
+#begin Images/Cards/DiamondFour.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/build:Images/Cards/DiamondFour.png
+
+#begin Images/Cards/DiamondJack.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/build:Images/Cards/DiamondJack.png
+
+#begin Images/Cards/DiamondKing.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/build:Images/Cards/DiamondKing.png
+
+#begin Images/Cards/DiamondNine.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/build:Images/Cards/DiamondNine.png
+
+#begin Images/Cards/DiamondQueen.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/build:Images/Cards/DiamondQueen.png
+
+#begin Images/Cards/DiamondSeven.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/build:Images/Cards/DiamondSeven.png
+
+#begin Images/Cards/DiamondSix.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/build:Images/Cards/DiamondSix.png
+
+#begin Images/Cards/DiamondTen.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/build:Images/Cards/DiamondTen.png
+
+#begin Images/Cards/DiamondThree.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/build:Images/Cards/DiamondThree.png
+
+#begin Images/Cards/DiamondTwo.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/build:Images/Cards/DiamondTwo.png
+
+#begin Images/Cards/FirstJoker.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/build:Images/Cards/FirstJoker.png
+
+#begin Images/Cards/HeartAce.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/build:Images/Cards/HeartAce.png
+
+#begin Images/Cards/HeartEight.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/build:Images/Cards/HeartEight.png
+
+#begin Images/Cards/HeartFive.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/build:Images/Cards/HeartFive.png
+
+#begin Images/Cards/HeartFour.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/build:Images/Cards/HeartFour.png
+
+#begin Images/Cards/HeartJack.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/build:Images/Cards/HeartJack.png
+
+#begin Images/Cards/HeartKing.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/build:Images/Cards/HeartKing.png
+
+#begin Images/Cards/HeartNine.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/build:Images/Cards/HeartNine.png
+
+#begin Images/Cards/HeartQueen.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/build:Images/Cards/HeartQueen.png
+
+#begin Images/Cards/HeartSeven.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/build:Images/Cards/HeartSeven.png
+
+#begin Images/Cards/HeartSix.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/build:Images/Cards/HeartSix.png
+
+#begin Images/Cards/HeartTen.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/build:Images/Cards/HeartTen.png
+
+#begin Images/Cards/HeartThree.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/build:Images/Cards/HeartThree.png
+
+#begin Images/Cards/HeartTwo.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/build:Images/Cards/HeartTwo.png
+
+#begin Images/Cards/SecondJoker.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/build:Images/Cards/SecondJoker.png
+
+#begin Images/Cards/SpadeAce.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/build:Images/Cards/SpadeAce.png
+
+#begin Images/Cards/SpadeEight.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/build:Images/Cards/SpadeEight.png
+
+#begin Images/Cards/SpadeFive.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/build:Images/Cards/SpadeFive.png
+
+#begin Images/Cards/SpadeFour.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/build:Images/Cards/SpadeFour.png
+
+#begin Images/Cards/SpadeJack.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/build:Images/Cards/SpadeJack.png
+
+#begin Images/Cards/SpadeKing.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/build:Images/Cards/SpadeKing.png
+
+#begin Images/Cards/SpadeNine.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/build:Images/Cards/SpadeNine.png
+
+#begin Images/Cards/SpadeQueen.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/build:Images/Cards/SpadeQueen.png
+
+#begin Images/Cards/SpadeSeven.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/build:Images/Cards/SpadeSeven.png
+
+#begin Images/Cards/SpadeSix.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/build:Images/Cards/SpadeSix.png
+
+#begin Images/Cards/SpadeTen.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/build:Images/Cards/SpadeTen.png
+
+#begin Images/Cards/SpadeThree.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/build:Images/Cards/SpadeThree.png
+
+#begin Images/Cards/SpadeTwo.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/build:Images/Cards/SpadeTwo.png
+
+#begin Images/Chips/chip100.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/build:Images/Chips/chip100.png
+
+#begin Images/Chips/chip25.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/build:Images/Chips/chip25.png
+
+#begin Images/Chips/chip5.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/build:Images/Chips/chip5.png
+
+#begin Images/Chips/chip500.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/build:Images/Chips/chip500.png
+
+#begin Images/Chips/chipBlack.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/build:Images/Chips/chipBlack.png
+
+#begin Images/Chips/chipRed.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/build:Images/Chips/chipRed.png
+
+#begin Images/Chips/chipWhite.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/build:Images/Chips/chipWhite.png
+
+#begin Images/Chips/chipYellow.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/build:Images/Chips/chipYellow.png
+
+#begin Images/GamePadCursor.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/build:Images/GamePadCursor.png
+
+#begin Images/titlescreen.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/build:Images/titlescreen.png
+
+#begin Images/UI/blackjack.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/build:Images/UI/blackjack.png
+
+#begin Images/UI/bust.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/build:Images/UI/bust.png
+
+#begin Images/UI/lose.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/build:Images/UI/lose.png
+
+#begin Images/UI/pass.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/build:Images/UI/pass.png
+
+#begin Images/UI/push.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/build:Images/UI/push.png
+
+#begin Images/UI/ring.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/build:Images/UI/ring.png
+
+#begin Images/UI/Shuffle_Blue.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/build:Images/UI/Shuffle_Blue.png
+
+#begin Images/UI/Shuffle_Red.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/build:Images/UI/Shuffle_Red.png
+
+#begin Images/UI/table.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/build:Images/UI/table.png
+
+#begin Images/UI/win.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/build:Images/UI/win.png
+
+#begin Images/youLose.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/build:Images/youLose.png
+
+#begin Images/instructions.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/build:Images/instructions.png
+
+#begin Sounds/Bet.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/build:Sounds/Bet.wav
+
+#begin Sounds/CardFlip.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/build:Sounds/CardFlip.wav
+
+#begin Sounds/CardsShuffle.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/build:Sounds/CardsShuffle.wav
+
+#begin Sounds/Deal.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/build:Sounds/Deal.wav
