@@ -11,6 +11,7 @@ This repository contains a collection of cross-platform MonoGame samples and gam
 | [2DShaderSample](2DShaderSample/README.md) | Custom 2D shader effects in MonoGame. |
 | [Aiming](Aiming/README.md) | Aiming mechanics and input handling. |
 | [BouncingBox](BouncingBox/README.md) | Simple physics sample with bouncing boxes. |
+| [Cards Starter Kit](CardsStarterKit/README.md) | Card framework showing how to implement a Blackjack game. |
 | [CatapultWars](CatapultWars/README.md) | Classic catapult game mechanics. |
 | [ChaseAndEvade](ChaseAndEvade/README.md) | AI sample showing chase and evade behaviors. |
 | [CollisionSample](CollisionSample/README.md) | Collision detection techniques. |
