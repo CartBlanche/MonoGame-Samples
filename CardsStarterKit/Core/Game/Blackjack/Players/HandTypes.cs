@@ -15,4 +15,4 @@ namespace Blackjack
         First,
         Second
     }
-}}
+}
