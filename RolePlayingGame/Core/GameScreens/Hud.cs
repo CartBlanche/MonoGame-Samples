@@ -529,7 +529,7 @@ namespace RolePlaying
         public void UpdateActionsMenu()
         {
             // cursor up
-            if (InputManager.IsActionTriggered(InputManager.Action.CursorUp))
+            if (InputManager.IsActionTriggered(InputManager.InputAction.CursorUp))
             {
                 if (highlightedAction > 0)
                 {
@@ -538,7 +538,7 @@ namespace RolePlaying
                 return;
             }
             // cursor down
-            if (InputManager.IsActionTriggered(InputManager.Action.CursorDown))
+            if (InputManager.IsActionTriggered(InputManager.InputAction.CursorDown))
             {
                 if (highlightedAction < actionList.Length - 1)
                 {
@@ -547,7 +547,7 @@ namespace RolePlaying
                 return;
             }
             // select an action
-            if (InputManager.IsActionTriggered(InputManager.Action.Ok))
+            if (InputManager.IsActionTriggered(InputManager.InputAction.Ok))
             {
                 switch (actionList[highlightedAction])
                 {

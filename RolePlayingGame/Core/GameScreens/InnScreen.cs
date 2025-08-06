@@ -179,13 +179,13 @@ namespace RolePlaying
         public override void HandleInput()
         {
             // exit the screen
-            if (InputManager.IsActionTriggered(InputManager.Action.Back))
+            if (InputManager.IsActionTriggered(InputManager.InputAction.Back))
             {
                 ExitScreen();
                 return;
             }
             // move the cursor up
-            else if (InputManager.IsActionTriggered(InputManager.Action.CursorUp))
+            else if (InputManager.IsActionTriggered(InputManager.InputAction.CursorUp))
             {
                 if (selectionMark == 2)
                 {
@@ -193,7 +193,7 @@ namespace RolePlaying
                 }
             }
             // move the cursor down
-            else if (InputManager.IsActionTriggered(InputManager.Action.CursorDown))
+            else if (InputManager.IsActionTriggered(InputManager.InputAction.CursorDown))
             {
                 if (selectionMark == 1)
                 {
@@ -201,7 +201,7 @@ namespace RolePlaying
                 }
             }
             // select an option
-            else if (InputManager.IsActionTriggered(InputManager.Action.Ok))
+            else if (InputManager.IsActionTriggered(InputManager.InputAction.Ok))
             {
                 if (selectionMark == 1)
                 {

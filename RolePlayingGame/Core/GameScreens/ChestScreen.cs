@@ -284,29 +284,29 @@ namespace RolePlaying
                 return;
             }
 
-            if (InputManager.IsActionTriggered(InputManager.Action.CursorUp))
+            if (InputManager.IsActionTriggered(InputManager.InputAction.CursorUp))
             {
                 MoveCursorUp();
             }
-            else if (InputManager.IsActionTriggered(InputManager.Action.CursorDown))
+            else if (InputManager.IsActionTriggered(InputManager.InputAction.CursorDown))
             {
                 MoveCursorDown();
             }
-            else if (InputManager.IsActionTriggered(InputManager.Action.IncreaseAmount))
+            else if (InputManager.IsActionTriggered(InputManager.InputAction.IncreaseAmount))
             {
                 MoveCursorRight();
             }
-            else if (InputManager.IsActionTriggered(InputManager.Action.DecreaseAmount))
+            else if (InputManager.IsActionTriggered(InputManager.InputAction.DecreaseAmount))
             {
                 MoveCursorLeft();
             }
             // Close is pressed
-            else if (InputManager.IsActionTriggered(InputManager.Action.Back))
+            else if (InputManager.IsActionTriggered(InputManager.InputAction.Back))
             {
                 BackTriggered();
             }
             // Take is pressed
-            else if (InputManager.IsActionTriggered(InputManager.Action.Ok))
+            else if (InputManager.IsActionTriggered(InputManager.InputAction.Ok))
             {
                 if (IsGoldSelected)
                 {
@@ -319,7 +319,7 @@ namespace RolePlaying
                 }
             }
             // Take All is pressed
-            else if (InputManager.IsActionTriggered(InputManager.Action.TakeView))
+            else if (InputManager.IsActionTriggered(InputManager.InputAction.TakeView))
             {
                 ButtonYPressed(null); // take-all doesn't need an entry
             }

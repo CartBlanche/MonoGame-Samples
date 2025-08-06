@@ -146,14 +146,14 @@ namespace RolePlaying
         public override void HandleInput()
         {
             // handle exiting the screen
-            if (InputManager.IsActionTriggered(InputManager.Action.Back))
+            if (InputManager.IsActionTriggered(InputManager.InputAction.Back))
             {
                 ExitScreen();
                 return;
             }
             
             // handle selecting a save game
-            if (InputManager.IsActionTriggered(InputManager.Action.Ok) &&
+            if (InputManager.IsActionTriggered(InputManager.InputAction.Ok) &&
                 (Session.SaveGameDescriptions != null))
             {
                 switch (mode)
@@ -200,7 +200,7 @@ namespace RolePlaying
 
             }
             // handle deletion
-            else if (InputManager.IsActionTriggered(InputManager.Action.DropUnEquip) &&
+            else if (InputManager.IsActionTriggered(InputManager.InputAction.DropUnEquip) &&
                 (Session.SaveGameDescriptions != null))
             {
                 if ((currentSlot >= 0) &&
@@ -214,7 +214,7 @@ namespace RolePlaying
                 }
             }
             // handle cursor-down
-            else if (InputManager.IsActionTriggered(InputManager.Action.CursorDown) &&
+            else if (InputManager.IsActionTriggered(InputManager.InputAction.CursorDown) &&
                 (Session.SaveGameDescriptions != null))
             {
                 int maximumSlot = Session.SaveGameDescriptions.Count;
@@ -229,7 +229,7 @@ namespace RolePlaying
                 }
             }
             // handle cursor-up
-            else if (InputManager.IsActionTriggered(InputManager.Action.CursorUp) &&
+            else if (InputManager.IsActionTriggered(InputManager.InputAction.CursorUp) &&
                 (Session.SaveGameDescriptions != null))
             {
                 if (currentSlot >= 1)

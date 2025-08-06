@@ -195,12 +195,12 @@ namespace RolePlaying
         public override void HandleInput()
         {
             // exit without bothering to see the rest
-            if (InputManager.IsActionTriggered(InputManager.Action.Back))
+            if (InputManager.IsActionTriggered(InputManager.InputAction.Back))
             {
                 ExitScreen();
             }
             // advance to the next player to have leveled up
-            else if (InputManager.IsActionTriggered(InputManager.Action.Ok))
+            else if (InputManager.IsActionTriggered(InputManager.InputAction.Ok))
             {
                 if (leveledUpPlayers.Count <= 0)
                 {
@@ -222,7 +222,7 @@ namespace RolePlaying
                 }
             }
             // Scroll up
-            else if (InputManager.IsActionTriggered(InputManager.Action.CursorUp))
+            else if (InputManager.IsActionTriggered(InputManager.InputAction.CursorUp))
             {
                 if (startIndex > 0)
                 {
@@ -231,7 +231,7 @@ namespace RolePlaying
                 }
             }
             // Scroll down
-            else if (InputManager.IsActionTriggered(InputManager.Action.CursorDown))
+            else if (InputManager.IsActionTriggered(InputManager.InputAction.CursorDown))
             {
                 if (startIndex < spellList.Count - maxLines)
                 {

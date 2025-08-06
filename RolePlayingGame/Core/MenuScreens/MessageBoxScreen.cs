@@ -112,7 +112,7 @@ namespace RolePlaying
         /// </summary>
         public override void HandleInput()
         {
-            if (InputManager.IsActionTriggered(InputManager.Action.Ok))
+            if (InputManager.IsActionTriggered(InputManager.InputAction.Ok))
             {
                 // Raise the accepted event, then exit the message box.
                 if (Accepted != null)
@@ -120,7 +120,7 @@ namespace RolePlaying
 
                 ExitScreen();
             }
-            else if (InputManager.IsActionTriggered(InputManager.Action.Back))
+            else if (InputManager.IsActionTriggered(InputManager.InputAction.Back))
             {
                 // Raise the cancelled event, then exit the message box.
                 if (Cancelled != null)

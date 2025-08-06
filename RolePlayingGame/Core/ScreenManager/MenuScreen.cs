@@ -80,7 +80,7 @@ namespace RolePlaying
             int oldSelectedEntry = selectedEntry;
 
             // Move to the previous menu entry?
-            if (InputManager.IsActionTriggered(InputManager.Action.CursorUp))
+            if (InputManager.IsActionTriggered(InputManager.InputAction.CursorUp))
             {
                 selectedEntry--;
                 if (selectedEntry < 0)
@@ -88,7 +88,7 @@ namespace RolePlaying
             }
 
             // Move to the next menu entry?
-            if (InputManager.IsActionTriggered(InputManager.Action.CursorDown))
+            if (InputManager.IsActionTriggered(InputManager.InputAction.CursorDown))
             {
                 selectedEntry++;
                 if (selectedEntry >= menuEntries.Count)
@@ -96,13 +96,13 @@ namespace RolePlaying
             }
 
             // Accept or cancel the menu?
-            if (InputManager.IsActionTriggered(InputManager.Action.Ok))
+            if (InputManager.IsActionTriggered(InputManager.InputAction.Ok))
             {
                 AudioManager.PlayCue("Continue");
                 OnSelectEntry(selectedEntry);
             }
-            else if (InputManager.IsActionTriggered(InputManager.Action.Back) ||
-                InputManager.IsActionTriggered(InputManager.Action.ExitGame))
+            else if (InputManager.IsActionTriggered(InputManager.InputAction.Back) ||
+                InputManager.IsActionTriggered(InputManager.InputAction.ExitGame))
             {
                 OnCancel();
             }

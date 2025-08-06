@@ -136,19 +136,19 @@ namespace RolePlaying
         public override void HandleInput()
         {
             // exit the screen
-            if (InputManager.IsActionTriggered(InputManager.Action.Back))
+            if (InputManager.IsActionTriggered(InputManager.InputAction.Back))
             {
                 ExitScreen();
                 return;
             }
             // shows the spells for this player
-            else if (InputManager.IsActionTriggered(InputManager.Action.Ok))
+            else if (InputManager.IsActionTriggered(InputManager.InputAction.Ok))
             {
                 ScreenManager.AddScreen(new SpellbookScreen(player, player.CharacterStatistics));
                 return;
             }
             // show the equipment for this player, allowing the user to unequip
-            else if (InputManager.IsActionTriggered(InputManager.Action.TakeView))
+            else if (InputManager.IsActionTriggered(InputManager.InputAction.TakeView))
             {
                 ScreenManager.AddScreen(new EquipmentScreen(player));
                 return;
@@ -156,21 +156,21 @@ namespace RolePlaying
             else if (Session.Party.Players.Contains(player)) // player is in the party
             {
                 // move to the previous screen
-                if (InputManager.IsActionTriggered(InputManager.Action.PageLeft))
+                if (InputManager.IsActionTriggered(InputManager.InputAction.PageLeft))
                 {
                     ExitScreen();
                     ScreenManager.AddScreen(new QuestLogScreen(null));
                     return;
                 }
                 // move to the next screen
-                else if (InputManager.IsActionTriggered(InputManager.Action.PageRight))
+                else if (InputManager.IsActionTriggered(InputManager.InputAction.PageRight))
                 {
                     ExitScreen();
                     ScreenManager.AddScreen(new InventoryScreen(true));
                     return;
                 }
                 // move to the previous party member
-                else if (InputManager.IsActionTriggered(InputManager.Action.CursorUp))
+                else if (InputManager.IsActionTriggered(InputManager.InputAction.CursorUp))
                 {
                     playerIndex--;
                     if (playerIndex < 0)
@@ -191,7 +191,7 @@ namespace RolePlaying
                     }
                 }
                 // move to the next party member
-                else if (InputManager.IsActionTriggered(InputManager.Action.CursorDown))
+                else if (InputManager.IsActionTriggered(InputManager.InputAction.CursorDown))
                 {
                     playerIndex++;
                     if (playerIndex >= Session.Party.Players.Count)

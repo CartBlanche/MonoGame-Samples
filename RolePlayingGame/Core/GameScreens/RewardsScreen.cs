@@ -204,8 +204,8 @@ namespace RolePlaying
         public override void HandleInput()
         {
             // exit the screen
-            if (InputManager.IsActionTriggered(InputManager.Action.Ok) ||
-                InputManager.IsActionTriggered(InputManager.Action.Back))
+            if (InputManager.IsActionTriggered(InputManager.InputAction.Ok) ||
+                InputManager.IsActionTriggered(InputManager.InputAction.Back))
             {
                 ExitScreen();
                 // give the rewards to the party
@@ -217,7 +217,7 @@ namespace RolePlaying
                 Session.Party.GiveExperience(experienceReward);
             }
             // Scroll up
-            else if (InputManager.IsActionTriggered(InputManager.Action.CursorUp))
+            else if (InputManager.IsActionTriggered(InputManager.InputAction.CursorUp))
             {
                 if (startIndex > 0)
                 {
@@ -226,7 +226,7 @@ namespace RolePlaying
                 }
             }
             // Scroll down
-            else if (InputManager.IsActionTriggered(InputManager.Action.CursorDown))
+            else if (InputManager.IsActionTriggered(InputManager.InputAction.CursorDown))
             {
                 if (startIndex < gearReward.Count - maxLines)
                 {

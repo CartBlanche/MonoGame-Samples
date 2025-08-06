@@ -180,7 +180,7 @@ namespace RolePlaying
         /// </summary>
         public override void HandleInput()
         {
-            if (InputManager.IsActionTriggered(InputManager.Action.Back) &&
+            if (InputManager.IsActionTriggered(InputManager.InputAction.Back) &&
                 Session.IsActive)
             {
                 AudioManager.PopMusic();

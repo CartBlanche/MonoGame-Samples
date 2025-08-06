@@ -232,15 +232,15 @@ namespace RolePlaying
         public override void HandleInput()
         {
             // Press Select or Bback
-            if (InputManager.IsActionTriggered(InputManager.Action.Ok) ||
-                InputManager.IsActionTriggered(InputManager.Action.Back))
+            if (InputManager.IsActionTriggered(InputManager.InputAction.Ok) ||
+                InputManager.IsActionTriggered(InputManager.InputAction.Back))
             {
                 ExitScreen();
                 return;
             }
 
             // Scroll up
-            if (InputManager.IsActionTriggered(InputManager.Action.CursorUp))
+            if (InputManager.IsActionTriggered(InputManager.InputAction.CursorUp))
             {
                 if (startIndex > 0)
                 {
@@ -249,7 +249,7 @@ namespace RolePlaying
                 }
             }
             // Scroll down
-            else if (InputManager.IsActionTriggered(InputManager.Action.CursorDown))
+            else if (InputManager.IsActionTriggered(InputManager.InputAction.CursorDown))
             {
                 if (startIndex < dialogueList.Count - drawMaxLines)
                 {

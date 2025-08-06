@@ -1750,7 +1750,7 @@ namespace RolePlaying
                 }
 
                 // back out of the action
-                if (InputManager.IsActionTriggered(InputManager.Action.Back))
+                if (InputManager.IsActionTriggered(InputManager.InputAction.Back))
                 {
                     highlightedCombatant.CombatAction = null;
                     SetTargets(null, 0);
@@ -1758,14 +1758,14 @@ namespace RolePlaying
                 }
 
                 // start the action
-                if (InputManager.IsActionTriggered(InputManager.Action.Ok))
+                if (InputManager.IsActionTriggered(InputManager.InputAction.Ok))
                 {
                     highlightedCombatant.CombatAction.Start();
                     return;
                 }
 
                 // go to the next target
-                if (InputManager.IsActionTriggered(InputManager.Action.TargetUp))
+                if (InputManager.IsActionTriggered(InputManager.InputAction.TargetUp))
                 {
                     // cycle through monsters or party members
                     if (highlightedCombatant.CombatAction.IsOffensive)
@@ -1805,7 +1805,7 @@ namespace RolePlaying
                     return;
                 }
                 // go to the previous target
-                else if (InputManager.IsActionTriggered(InputManager.Action.TargetDown))
+                else if (InputManager.IsActionTriggered(InputManager.InputAction.TargetDown))
                 {
                     // cycle through monsters or party members
                     if (highlightedCombatant.CombatAction.IsOffensive)
@@ -1857,7 +1857,7 @@ namespace RolePlaying
             {
                 // move to the previous living character
                 if (InputManager.IsActionTriggered(
-                    InputManager.Action.ActiveCharacterLeft))
+                    InputManager.InputAction.ActiveCharacterLeft))
                 {
                     int newHighlightedPlayer = highlightedPlayer;
                     do
@@ -1879,7 +1879,7 @@ namespace RolePlaying
                 }
                 // move to the next living character
                 else if (InputManager.IsActionTriggered(
-                    InputManager.Action.ActiveCharacterRight))
+                    InputManager.InputAction.ActiveCharacterRight))
                 {
                     int newHighlightedPlayer = highlightedPlayer;
                     do

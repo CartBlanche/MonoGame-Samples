@@ -122,13 +122,13 @@ namespace RolePlaying
         /// </summary>
         public override void HandleInput()
         {
-            if (InputManager.IsActionTriggered(InputManager.Action.MainMenu))
+            if (InputManager.IsActionTriggered(InputManager.InputAction.MainMenu))
             {
                 ScreenManager.AddScreen(new MainMenuScreen());
                 return;
             }
 
-            if (InputManager.IsActionTriggered(InputManager.Action.ExitGame))
+            if (InputManager.IsActionTriggered(InputManager.InputAction.ExitGame))
             {
                 // add a confirmation message box
                 const string message = 
@@ -140,7 +140,7 @@ namespace RolePlaying
             }
 
             if (!CombatEngine.IsActive &&
-                InputManager.IsActionTriggered(InputManager.Action.CharacterManagement))
+                InputManager.IsActionTriggered(InputManager.InputAction.CharacterManagement))
             {
                 ScreenManager.AddScreen(new StatisticsScreen(Session.Party.Players[0]));
                 return;

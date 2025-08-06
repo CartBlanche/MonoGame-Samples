@@ -184,14 +184,14 @@ namespace RolePlaying
         public override void HandleInput()
         {
             // exit the screen
-            if (InputManager.IsActionTriggered(InputManager.Action.Back))
+            if (InputManager.IsActionTriggered(InputManager.InputAction.Back))
             {
                 ExitScreen();
                 return;
             }
             // use the item or close the screen
             else if (isUseAllowed &&
-                InputManager.IsActionTriggered(InputManager.Action.Ok))
+                InputManager.IsActionTriggered(InputManager.InputAction.Ok))
             {
                 if (isGearUsed)
                 {
@@ -241,7 +241,7 @@ namespace RolePlaying
             }
             // cursor up
             else if (!isGearUsed &&
-                InputManager.IsActionTriggered(InputManager.Action.CursorUp))
+                InputManager.IsActionTriggered(InputManager.InputAction.CursorUp))
             {
                 if (selectionMark > 0)
                 {
@@ -266,7 +266,7 @@ namespace RolePlaying
             }
             // cursor down
             else if (!isGearUsed &&
-                InputManager.IsActionTriggered(InputManager.Action.CursorDown))
+                InputManager.IsActionTriggered(InputManager.InputAction.CursorDown))
             {
                 isGearUsed = false;
                 if (selectionMark < Session.Party.Players.Count - 1)

@@ -287,35 +287,35 @@ namespace RolePlaying
         /// </summary>
         public override void HandleInput()
         {
-            if (InputManager.IsActionTriggered(InputManager.Action.PageLeft))
+            if (InputManager.IsActionTriggered(InputManager.InputAction.PageLeft))
             {
                 PageScreenLeft();
             }
-            else if (InputManager.IsActionTriggered(InputManager.Action.PageRight))
+            else if (InputManager.IsActionTriggered(InputManager.InputAction.PageRight))
             {
                 PageScreenRight();
             }
-            else if (InputManager.IsActionTriggered(InputManager.Action.CursorUp))
+            else if (InputManager.IsActionTriggered(InputManager.InputAction.CursorUp))
             {
                 MoveCursorUp();
             }
-            else if (InputManager.IsActionTriggered(InputManager.Action.CursorDown))
+            else if (InputManager.IsActionTriggered(InputManager.InputAction.CursorDown))
             {
                 MoveCursorDown();
             }
-            else if (InputManager.IsActionTriggered(InputManager.Action.IncreaseAmount))
+            else if (InputManager.IsActionTriggered(InputManager.InputAction.IncreaseAmount))
             {
                 MoveCursorRight();
             }
-            else if (InputManager.IsActionTriggered(InputManager.Action.DecreaseAmount))
+            else if (InputManager.IsActionTriggered(InputManager.InputAction.DecreaseAmount))
             {
                 MoveCursorLeft();
             }
-            else if (InputManager.IsActionTriggered(InputManager.Action.Back))
+            else if (InputManager.IsActionTriggered(InputManager.InputAction.Back))
             {
                 BackTriggered();
             }
-            else if (InputManager.IsActionTriggered(InputManager.Action.Ok))
+            else if (InputManager.IsActionTriggered(InputManager.InputAction.Ok))
             {
                 ReadOnlyCollection<T> dataList = GetDataList();
                 if ((selectedIndex >= 0) && (selectedIndex < dataList.Count))
@@ -323,7 +323,7 @@ namespace RolePlaying
                     SelectTriggered(dataList[selectedIndex]);
                 }
             }
-            else if (InputManager.IsActionTriggered(InputManager.Action.DropUnEquip))
+            else if (InputManager.IsActionTriggered(InputManager.InputAction.DropUnEquip))
             {
                 ReadOnlyCollection<T> dataList = GetDataList();
                 if ((selectedIndex >= 0) && (selectedIndex < dataList.Count))
@@ -331,7 +331,7 @@ namespace RolePlaying
                     ButtonXPressed(dataList[selectedIndex]);
                 }
             }
-            else if (InputManager.IsActionTriggered(InputManager.Action.TakeView))
+            else if (InputManager.IsActionTriggered(InputManager.InputAction.TakeView))
             {
                 ReadOnlyCollection<T> dataList = GetDataList();
                 if ((selectedIndex >= 0) && (selectedIndex < dataList.Count))

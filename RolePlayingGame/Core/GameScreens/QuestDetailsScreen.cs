@@ -288,14 +288,14 @@ namespace RolePlaying
         public override void HandleInput()
         {
             // exit the screen
-            if (InputManager.IsActionTriggered(InputManager.Action.Back) ||
-                InputManager.IsActionTriggered(InputManager.Action.Ok))
+            if (InputManager.IsActionTriggered(InputManager.InputAction.Back) ||
+                InputManager.IsActionTriggered(InputManager.InputAction.Ok))
             {
                 ExitScreen();
                 return;
             }
             // scroll up
-            else if (InputManager.IsActionTriggered(InputManager.Action.CursorUp))
+            else if (InputManager.IsActionTriggered(InputManager.InputAction.CursorUp))
             {
                 if (startIndex > 0)
                 {
@@ -304,7 +304,7 @@ namespace RolePlaying
                 }
             }
             // scroll Down
-            else if (InputManager.IsActionTriggered(InputManager.Action.CursorDown))
+            else if (InputManager.IsActionTriggered(InputManager.InputAction.CursorDown))
             {
                 if (endIndex < currentDialogue.Count)
                 {

@@ -198,31 +198,34 @@ namespace RolePlaying
         /// <returns>The controlled movement for this update.</returns>
         private static Vector2 UpdateUserMovement(GameTime gameTime)
         {
+            // Process mouse input for actions
+            InputManager.HandleMouseDown(PartyLeaderPosition.ScreenPosition.ToPoint());
+
             Vector2 desiredMovement = Vector2.Zero;
 
             // accumulate the desired direction from user input
-            if (InputManager.IsActionPressed(InputManager.Action.MoveCharacterUp))
+            if (InputManager.IsActionPressed(InputManager.InputAction.MoveCharacterUp))
             {
                 if (CanPartyLeaderMoveUp())
                 {
                     desiredMovement.Y -= partyLeaderMovementSpeed;
                 }
             }
-            if (InputManager.IsActionPressed(InputManager.Action.MoveCharacterDown))
+            if (InputManager.IsActionPressed(InputManager.InputAction.MoveCharacterDown))
             {
                 if (CanPartyLeaderMoveDown())
                 {
                     desiredMovement.Y += partyLeaderMovementSpeed;
                 }
             }
-            if (InputManager.IsActionPressed(InputManager.Action.MoveCharacterLeft))
+            if (InputManager.IsActionPressed(InputManager.InputAction.MoveCharacterLeft))
             {
                 if (CanPartyLeaderMoveLeft())
                 {
                     desiredMovement.X -= partyLeaderMovementSpeed;
                 }
             }
-            if (InputManager.IsActionPressed(InputManager.Action.MoveCharacterRight))
+            if (InputManager.IsActionPressed(InputManager.InputAction.MoveCharacterRight))
             {
                 if (CanPartyLeaderMoveRight())
                 {

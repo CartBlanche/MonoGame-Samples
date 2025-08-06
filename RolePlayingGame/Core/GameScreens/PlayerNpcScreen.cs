@@ -50,7 +50,7 @@ namespace RolePlaying
         public override void HandleInput()
         {
             // view the player's statistics
-            if (InputManager.IsActionTriggered(InputManager.Action.TakeView))
+            if (InputManager.IsActionTriggered(InputManager.InputAction.TakeView))
             {
                 ScreenManager.AddScreen(new StatisticsScreen(character as Player));
                 return;
@@ -59,7 +59,7 @@ namespace RolePlaying
             if (isIntroduction)
             {
                 // accept the invitation
-                if (InputManager.IsActionTriggered(InputManager.Action.Ok))
+                if (InputManager.IsActionTriggered(InputManager.InputAction.Ok))
                 {
                     isIntroduction = false;
                     Player player = character as Player;
@@ -70,7 +70,7 @@ namespace RolePlaying
                     this.SelectText = "Back";
                 }
                 // reject the invitation
-                if (InputManager.IsActionTriggered(InputManager.Action.Back))
+                if (InputManager.IsActionTriggered(InputManager.InputAction.Back))
                 {
                     isIntroduction = false;
                     Player player = character as Player;
@@ -82,8 +82,8 @@ namespace RolePlaying
             else
             {
                 // exit the screen
-                if (InputManager.IsActionTriggered(InputManager.Action.Ok) ||
-                    InputManager.IsActionTriggered(InputManager.Action.Back))
+                if (InputManager.IsActionTriggered(InputManager.InputAction.Ok) ||
+                    InputManager.IsActionTriggered(InputManager.InputAction.Back))
                 {
                     ExitScreen();
                     return;

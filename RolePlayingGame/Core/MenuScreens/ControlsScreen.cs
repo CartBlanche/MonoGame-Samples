@@ -226,21 +226,21 @@ namespace RolePlaying
         public override void HandleInput()
         {
             // exit the screen
-            if (InputManager.IsActionTriggered(InputManager.Action.Back))
+            if (InputManager.IsActionTriggered(InputManager.InputAction.Back))
             {
                 ExitScreen();
             }
 #if !XBOX
             // toggle between keyboard and gamepad controls
-            else if (InputManager.IsActionTriggered(InputManager.Action.PageLeft) ||
-                InputManager.IsActionTriggered(InputManager.Action.PageRight))
+            else if (InputManager.IsActionTriggered(InputManager.InputAction.PageLeft) ||
+                InputManager.IsActionTriggered(InputManager.InputAction.PageRight))
             {
                 isShowControlPad = !isShowControlPad;
             }
             // scroll through the keyboard controls
             if (isShowControlPad == false)
             {
-                if (InputManager.IsActionTriggered(InputManager.Action.CursorDown))
+                if (InputManager.IsActionTriggered(InputManager.InputAction.CursorDown))
                 {
                     if (startIndex < keyboardInfo.totalActionList.Length -
                         maxActionDisplay)
@@ -249,7 +249,7 @@ namespace RolePlaying
                         keyboardInfo.selectedIndex++;
                     }
                 }
-                if (InputManager.IsActionTriggered(InputManager.Action.CursorUp))
+                if (InputManager.IsActionTriggered(InputManager.InputAction.CursorUp))
                 {
                     if (startIndex > 0)
                     {
@@ -345,7 +345,7 @@ namespace RolePlaying
                 for (int j = 0, i = startIndex; i < startIndex + maxActionDisplay;
                     i++, j++)
                 {
-                    keyboardString = InputManager.GetActionName((InputManager.Action)i);
+                    keyboardString = InputManager.GetActionName((InputManager.InputAction)i);
                     textPosition.X = chartLine1Position +
                         ((chartLine2Position - chartLine1Position) -
                         Fonts.DescriptionFont.MeasureString(keyboardString).X) / 2;

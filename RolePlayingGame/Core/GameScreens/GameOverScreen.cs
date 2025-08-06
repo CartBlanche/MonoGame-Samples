@@ -95,8 +95,8 @@ namespace RolePlaying
         /// </summary>
         public override void HandleInput()
         {
-            if (InputManager.IsActionTriggered(InputManager.Action.Ok) ||
-                InputManager.IsActionTriggered(InputManager.Action.Back))
+            if (InputManager.IsActionTriggered(InputManager.InputAction.Ok) ||
+                InputManager.IsActionTriggered(InputManager.InputAction.Back))
             {
                 ExitScreen();
                 ScreenManager.AddScreen(new MainMenuScreen());

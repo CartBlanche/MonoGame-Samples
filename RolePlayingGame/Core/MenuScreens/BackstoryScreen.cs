@@ -100,13 +100,13 @@ namespace RolePlaying
         public override void HandleInput()
         {
             // exits the screen
-            if (InputManager.IsActionTriggered(InputManager.Action.Back))
+            if (InputManager.IsActionTriggered(InputManager.InputAction.Back))
             {
                 ExitScreen();
                 return;
             }
             // scroll down
-            else if (InputManager.IsActionTriggered(InputManager.Action.CursorDown))
+            else if (InputManager.IsActionTriggered(InputManager.InputAction.CursorDown))
             {
                 // Traverse down the help text
                 if (startIndex + maxLineDisplay < textLines.Count)
@@ -115,7 +115,7 @@ namespace RolePlaying
                 }
             }
             // scroll up
-            else if (InputManager.IsActionTriggered(InputManager.Action.CursorUp))
+            else if (InputManager.IsActionTriggered(InputManager.InputAction.CursorUp))
             {
                 // Traverse up the help text
                 if (startIndex > 0)
