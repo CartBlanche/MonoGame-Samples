@@ -8,9 +8,6 @@
 using System;
 using CardsFramework;
 
-
-
-
 namespace Blackjack
 {
     public class BlackjackGameEventArgs : EventArgs

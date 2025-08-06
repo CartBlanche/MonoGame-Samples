@@ -10,9 +10,6 @@ using System.Collections.Generic;
 using System.Text;
 using CardsFramework;
 
-
-
-
 namespace Blackjack
 {
     /// <summary>

@@ -10,20 +10,8 @@ using System.Collections.Generic;
 using System.Text;
 using CardsFramework;
 
-
-
-
 namespace Blackjack
 {
-    /// <summary>
-    /// Depicts hands the player can interact with.
-    /// </summary>
-    public enum HandTypes
-    {
-        First,
-        Second
-    }
-
     public class BlackjackPlayer : Player
     {
         // Various fields which depict the state of the players two hands

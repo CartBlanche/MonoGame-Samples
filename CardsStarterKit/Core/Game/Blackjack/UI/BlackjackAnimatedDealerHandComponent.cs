@@ -11,9 +11,6 @@ using System.Text;
 using CardsFramework;
 using Microsoft.Xna.Framework;
 
-
-
-
 namespace Blackjack
 {
     public class BlackjackAnimatedDealerHandComponent : AnimatedHandGameComponent

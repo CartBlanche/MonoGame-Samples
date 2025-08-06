@@ -18,18 +18,6 @@ using System.Reflection;
 
 namespace Blackjack
 {
-    /// <summary>
-    /// The various possible game states.
-    /// </summary>
-    public enum BlackjackGameState
-    {
-        Shuffling,
-        Betting,
-        Playing,
-        Dealing,
-        RoundEnd,
-        GameOver,
-    }
 
     class BlackjackCardGame : CardsGame
     {
