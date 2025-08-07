@@ -16,9 +16,6 @@ using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Input.Touch;
 using System.IO;
 
-
-
-
 namespace Blackjack
 {
     class InstructionScreen : GameplayScreen
@@ -121,8 +118,7 @@ namespace Blackjack
             spriteBatch.Begin(SpriteSortMode.Deferred, null, null, null, null, null, ScreenManager.GlobalTransformation);
 
             // Draw Background
-            spriteBatch.Draw(background, ScreenManager.GraphicsDevice.Viewport.Bounds,
-                 Color.White * TransitionAlpha);
+            spriteBatch.Draw(background, ScreenManager.SafeArea, Color.White * TransitionAlpha);
 
             if (isExit)
             {

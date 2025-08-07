@@ -35,7 +35,7 @@ namespace Blackjack
         public override void LoadContent()
         {
             background = ScreenManager.Game.Content.Load<Texture2D>(Path.Combine("Images", "titlescreen"));
-            safeArea = ScreenManager.Game.GraphicsDevice.Viewport.TitleSafeArea;
+            safeArea = new Rectangle(0, 0, ScreenManager.BACK_BUFFER_WIDTH, ScreenManager.BACK_BUFFER_HEIGHT);
             base.LoadContent();
         }
 
@@ -61,8 +61,7 @@ namespace Blackjack
         {
             ScreenManager.SpriteBatch.Begin(SpriteSortMode.Deferred, null, null, null, null, null, ScreenManager.GlobalTransformation);
 
-            ScreenManager.SpriteBatch.Draw(background, ScreenManager.GraphicsDevice.Viewport.Bounds,
-                Color.White * TransitionAlpha);
+            ScreenManager.SpriteBatch.Draw(background, safeArea, Color.White * TransitionAlpha);
 
             ScreenManager.SpriteBatch.End();
 

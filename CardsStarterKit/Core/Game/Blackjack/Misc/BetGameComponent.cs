@@ -96,7 +96,7 @@ namespace Blackjack
             // Calculate chips position for the chip buttons which allow placing the bet
             Rectangle size = chipsAssets[assetNames[0]].Bounds;
 
-            Rectangle bounds = spriteBatch.GraphicsDevice.Viewport.TitleSafeArea;
+            Rectangle bounds = new Rectangle(0, 0, ScreenManager.BACK_BUFFER_WIDTH, ScreenManager.BACK_BUFFER_HEIGHT);
 
             positions[chipsAssets.Count - 1] = new Vector2(bounds.Left + 10,
                 bounds.Bottom - size.Height - 80);
@@ -547,7 +547,7 @@ namespace Blackjack
 
             // Add transition animation
             chipComponent.AddAnimation(new TransitionGameComponentAnimation(positions[0],
-                new Vector2(GraphicsDevice.Viewport.Width / 2, insuranceYPosition))
+                new Vector2(ScreenManager.BACK_BUFFER_WIDTH / 2, insuranceYPosition))
             {
                 PerformBeforeStart = ShowComponent,
                 PerformBeforSartArgs = chipComponent,

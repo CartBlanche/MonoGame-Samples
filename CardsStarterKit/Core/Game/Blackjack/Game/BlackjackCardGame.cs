@@ -1071,6 +1071,8 @@ namespace Blackjack
                         animationComponent.EstimatedTimeForAnimationsCompletion().Ticks);
                 }
             }
+            var widthCenter = screenManager.BackbufferWidth / 2;
+            var heightCenter = screenManager.BackbufferHeight / 2;
 
             // Add a component for an empty stalling animation. This actually acts
             // as a timer.
@@ -1078,15 +1080,14 @@ namespace Blackjack
             animationComponent = new AnimatedGameComponent(this, texture, screenManager.SpriteBatch, screenManager.GlobalTransformation)
             {
                 CurrentPosition = new Vector2(
-                    this.Game.GraphicsDevice.Viewport.Bounds.Center.X - texture.Width / 2,
-                    this.Game.GraphicsDevice.Viewport.Bounds.Center.Y - texture.Height / 2),
+                    widthCenter - texture.Width / 2,
+                    heightCenter - texture.Height / 2),
                 Visible = false
             };
             this.Game.Components.Add(animationComponent);
 
             // Add a button to return to the main menu
-            Rectangle bounds = this.Game.GraphicsDevice.Viewport.Bounds;
-            Vector2 center = new Vector2(bounds.Center.X, bounds.Center.Y);
+            Vector2 center = new Vector2(widthCenter, heightCenter);
             Button backButton = new Button("ButtonRegular", "ButtonPressed",
                 screenManager.input, this, screenManager.SpriteBatch, screenManager.GlobalTransformation)
             {
@@ -1157,7 +1158,7 @@ namespace Blackjack
                             (Game.Components[componentIndex] as AnimatedCardsGameComponent);
                         animatedCard.AddAnimation(
                             new TransitionGameComponentAnimation(animatedCard.CurrentPosition,
-                            new Vector2(animatedCard.CurrentPosition.X, this.Game.GraphicsDevice.Viewport.Height))
+                            new Vector2(animatedCard.CurrentPosition.X, ScreenManager.BACK_BUFFER_HEIGHT))
                             {
                                 Duration = TimeSpan.FromSeconds(0.40),
                                 PerformWhenDone = RemoveComponent,

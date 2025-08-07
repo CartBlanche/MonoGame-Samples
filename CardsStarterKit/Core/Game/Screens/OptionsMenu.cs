@@ -111,8 +111,7 @@ namespace Blackjack
             ScreenManager.SpriteBatch.Begin(SpriteSortMode.Deferred, null, null, null, null, null, ScreenManager.GlobalTransformation);
 
             // Draw the card back
-            ScreenManager.SpriteBatch.Draw(background, ScreenManager.GraphicsDevice.Viewport.Bounds,
-                Color.White * TransitionAlpha);
+            ScreenManager.SpriteBatch.Draw(background, ScreenManager.SafeArea, Color.White * TransitionAlpha);
 
             ScreenManager.SpriteBatch.End();
             base.Draw(gameTime);

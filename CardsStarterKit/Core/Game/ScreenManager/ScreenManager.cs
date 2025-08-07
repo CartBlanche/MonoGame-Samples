@@ -97,6 +97,7 @@ namespace GameStateManagement
             set { traceEnabled = value; }
         }
 
+        Rectangle safeArea = new Rectangle(0, 0, BACK_BUFFER_WIDTH, BACK_BUFFER_HEIGHT);
         /// <summary>
         /// Returns the portion of the screen where drawing is safely allowed.
         /// </summary>
@@ -104,7 +105,7 @@ namespace GameStateManagement
         {
             get
             {
-                return Game.GraphicsDevice.Viewport.TitleSafeArea;
+                return safeArea;
             }
         }
 
@@ -304,12 +305,10 @@ namespace GameStateManagement
         /// </summary>
         public void FadeBackBufferToBlack(float alpha)
         {
-            Viewport viewport = GraphicsDevice.Viewport;
-
             spriteBatch.Begin(SpriteSortMode.Deferred, null, null, null, null, null, GlobalTransformation);
 
             spriteBatch.Draw(blankTexture,
-                             new Rectangle(0, 0, viewport.Width, viewport.Height),
+                             new Rectangle(0, 0, BACK_BUFFER_WIDTH, BACK_BUFFER_HEIGHT),
                              Color.Black * alpha);
 
             spriteBatch.End();

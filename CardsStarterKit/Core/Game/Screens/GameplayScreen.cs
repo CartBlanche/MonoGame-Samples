@@ -64,8 +64,7 @@ namespace Blackjack
             inputHelper.Enabled = false;
 #endif
 
-            blackJackGame = new BlackjackCardGame(ScreenManager.GraphicsDevice.Viewport.Bounds,
-                new Vector2(safeArea.Left + safeArea.Width / 2 - 50, safeArea.Top + 20),
+            blackJackGame = new BlackjackCardGame(safeArea, new Vector2(safeArea.Left + safeArea.Width / 2 - 50, safeArea.Top + 20),
                 GetPlayerCardPosition, ScreenManager, theme);
 
 

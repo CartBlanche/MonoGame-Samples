@@ -84,9 +84,9 @@ namespace Blackjack
             graphicsDeviceManager.PreferredBackBufferHeight = ScreenManager.BACK_BUFFER_HEIGHT;
             graphicsDeviceManager.ApplyChanges();
 
-            Rectangle bounds = graphicsDeviceManager.GraphicsDevice.Viewport.TitleSafeArea;
-            HeightScale = bounds.Height / ScreenManager.BACK_BUFFER_HEIGHT;
-            WidthScale = bounds.Width / ScreenManager.BACK_BUFFER_WIDTH;
+            float scale = screenManager.GlobalTransformation.M11; // uniform scale
+            HeightScale = scale;
+            WidthScale = scale;
         }
 
         /// <summary>
