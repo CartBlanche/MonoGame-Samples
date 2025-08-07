@@ -40,27 +40,8 @@ namespace CardsFramework
 
         public CardsGame CardGame { get; private set; }
 
-        /// <summary>
-        /// Initializes a new instance of the class, using black text color.
-        /// </summary>
-        /// <param name="game">The associated game class.</param>
-        public AnimatedGameComponent(Game game)
-            : base(game)
-        {
-            TextColor = Color.Black;
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the class, using black text color.
-        /// </summary>
-        /// <param name="game">The associated game class.</param>
-        /// <param name="currentFrame">The texture serving as the current frame
-        /// to display as the component.</param>
-        public AnimatedGameComponent(Game game, Texture2D currentFrame)
-            : this(game)
-        {
-            CurrentFrame = currentFrame;
-        }
+        private SpriteBatch spriteBatch;
+        private Matrix globalTransformation;
 
         /// <summary>
         /// Initializes a new instance of the class, using black text color.
@@ -68,11 +49,16 @@ namespace CardsFramework
         /// <param name="cardGame">The associated card game.</param>
         /// <param name="currentFrame">The texture serving as the current frame
         /// to display as the component.</param>
-        public AnimatedGameComponent(CardsGame cardGame, Texture2D currentFrame)
-            : this(cardGame.Game)
+        public AnimatedGameComponent(CardsGame cardGame, Texture2D? currentFrame, SpriteBatch sharedSpriteBatch, Matrix? globalTransformation = null)
+            : base(cardGame.Game)
         {
+            if (sharedSpriteBatch == null)
+                throw new ArgumentNullException(nameof(sharedSpriteBatch), "AnimatedGameComponent requires a valid SpriteBatch.");
             CardGame = cardGame;
             CurrentFrame = currentFrame;
+            TextColor = Color.Black;
+            this.spriteBatch = sharedSpriteBatch;
+            this.globalTransformation = globalTransformation ?? Matrix.Identity;
         }
 
         /// <summary>
@@ -106,20 +92,7 @@ namespace CardsFramework
         /// to this method.</param>
         public override void Draw(GameTime gameTime)
         {
-            base.Draw(gameTime);
-
-            SpriteBatch spriteBatch;
-
-            if (CardGame != null)
-            {
-                spriteBatch = CardGame.SpriteBatch;
-            }
-            else
-            {
-                spriteBatch = new SpriteBatch(Game.GraphicsDevice);
-            }
-
-            spriteBatch.Begin();
+            spriteBatch.Begin(SpriteSortMode.Deferred, null, null, null, null, null, globalTransformation);
 
             // Draw at the destination if one is set
             if (CurrentDestination.HasValue)
@@ -157,6 +130,8 @@ namespace CardsFramework
             }
 
             spriteBatch.End();
+
+            base.Draw(gameTime);
         }
 
         /// <summary>

@@ -22,15 +22,20 @@ namespace CardsFramework
     {
         public TraditionalCard Card { get; private set; }
 
+        private SpriteBatch spriteBatch;
+        private Matrix globalTransformation;
+
         /// <summary>
         /// Initializes a new instance of the class.
         /// </summary>
         /// <param name="card">The card associated with the animation component.</param>
         /// <param name="cardGame">The associated game.</param>
-        public AnimatedCardsGameComponent(TraditionalCard card, CardsGame cardGame)
-            : base(cardGame, null)
+        public AnimatedCardsGameComponent(TraditionalCard card, CardsGame cardGame, SpriteBatch? sharedSpriteBatch = null, Matrix? globalTransformation = null)
+            : base(cardGame, null, sharedSpriteBatch, globalTransformation)
         {
             Card = card;
+            this.spriteBatch = sharedSpriteBatch;
+            this.globalTransformation = globalTransformation ?? Matrix.Identity;
         }
 
         /// <summary>
@@ -52,9 +57,7 @@ namespace CardsFramework
         /// <param name="gameTime">The game time.</param>
         public override void Draw(GameTime gameTime)
         {
-            base.Draw(gameTime);
-
-            CardGame.SpriteBatch.Begin();
+            spriteBatch.Begin(SpriteSortMode.Deferred, null, null, null, null, null, globalTransformation);
 
             // Draw the current at the designated destination, or at the initial 
             // position if a destination has not been set
@@ -62,17 +65,19 @@ namespace CardsFramework
             {
                 if (CurrentDestination.HasValue)
                 {
-                    CardGame.SpriteBatch.Draw(CurrentFrame,
+                    spriteBatch.Draw(CurrentFrame,
                         CurrentDestination.Value, Color.White);
                 }
                 else
                 {
-                    CardGame.SpriteBatch.Draw(CurrentFrame,
+                    spriteBatch.Draw(CurrentFrame,
                         CurrentPosition, Color.White);
                 }
             }
 
-            CardGame.SpriteBatch.End();
+            spriteBatch.End();
+
+            base.Draw(gameTime);
         }
     }
 }

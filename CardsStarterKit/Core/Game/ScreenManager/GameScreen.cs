@@ -146,7 +146,6 @@ namespace GameStateManagement
 
         bool otherScreenHasFocus;
 
-
         /// <summary>
         /// Gets the manager that this screen belongs to.
         /// </summary>
@@ -200,7 +199,7 @@ namespace GameStateManagement
         }
 
         GestureType enabledGestures = GestureType.None;
-        
+
         /// <summary>
         /// Gets whether or not this screen is serializable. If this is true,
         /// the screen will be recorded into the screen manager's state and
@@ -223,8 +222,10 @@ namespace GameStateManagement
         /// <summary>
         /// Load graphics content for the screen.
         /// </summary>
-        public virtual void LoadContent() { }
-
+        public virtual void LoadContent()
+        {
+            ScreenManager.ScalePresentationArea();
+        }
 
         /// <summary>
         /// Unload content for the screen.
@@ -283,6 +284,14 @@ namespace GameStateManagement
                     // Transition finished!
                     screenState = ScreenState.Active;
                 }
+            }
+
+            // Check if the back buffer size has changed (e.g., window resize).
+            if (ScreenManager.BackbufferHeight != ScreenManager.GraphicsDevice.PresentationParameters.BackBufferHeight
+                || ScreenManager.BackbufferWidth != ScreenManager.GraphicsDevice.PresentationParameters.BackBufferWidth)
+            {
+                // Adjust the presentation area to match the new back buffer size.
+                ScreenManager.ScalePresentationArea();
             }
         }
 

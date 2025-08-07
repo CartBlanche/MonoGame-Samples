@@ -7,6 +7,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Text;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -22,6 +23,9 @@ namespace CardsFramework
         public Texture2D TableTexture { get; private set; }
         public Vector2 DealerPosition { get; private set; }
         public SpriteBatch SpriteBatch { get; private set; }
+
+        protected Matrix globalTransformation;
+
         public Func<int, Vector2> PlaceOrder { get; private set; }
         public Rectangle TableBounds { get; private set; }
         public int Places { get; private set; }
@@ -54,7 +58,7 @@ namespace CardsFramework
         /// <param name="theme">The theme used to display UI elements.</param>
         /// <param name="game">The associated game object.</param>
         public GameTable(Rectangle tableBounds, Vector2 dealerPosition, int places,
-            Func<int, Vector2> placeOrder, string theme, Game game)
+            Func<int, Vector2> placeOrder, string theme, Game game, SpriteBatch sharedSpriteBatch, Matrix? globalTransformation = null)
             : base(game)
         {
             TableBounds = tableBounds;
@@ -63,7 +67,8 @@ namespace CardsFramework
             Places = places;
             PlaceOrder = placeOrder;
             Theme = theme;
-            SpriteBatch = new SpriteBatch(game.GraphicsDevice);
+            this.SpriteBatch = sharedSpriteBatch;
+            this.globalTransformation = globalTransformation ?? Matrix.Identity;
         }
 
         /// <summary>
@@ -71,7 +76,7 @@ namespace CardsFramework
         /// </summary>
         protected override void LoadContent()
         {
-            string assetName = string.Format(@"Images\UI\table");
+            string assetName = Path.Combine("Images", "UI", "table");
             TableTexture = Game.Content.Load<Texture2D>(assetName);
 
             base.LoadContent();
@@ -84,7 +89,7 @@ namespace CardsFramework
         /// this method.</param>
         public override void Draw(GameTime gameTime)
         {
-            SpriteBatch.Begin();
+            SpriteBatch.Begin(SpriteSortMode.Deferred, null, null, null, null, null, globalTransformation);
 
             // Draw the table texture
             SpriteBatch.Draw(TableTexture, TableBounds, Color.White);

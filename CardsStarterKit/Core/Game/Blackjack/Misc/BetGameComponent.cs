@@ -15,6 +15,7 @@ using Microsoft.Xna.Framework.Input;
 using CardsFramework;
 using GameStateManagement;
 using Microsoft.Xna.Framework.Input.Touch;
+using System.IO;
 
 namespace Blackjack
 {
@@ -28,6 +29,7 @@ namespace Blackjack
         Vector2[] positions;
         CardsFramework.CardsGame cardGame;
         SpriteBatch spriteBatch;
+        Matrix globalTransformation;
 
         bool isKeyDown = false;
 
@@ -55,13 +57,15 @@ namespace Blackjack
         /// <param name="cardGame">An instance of <see cref="CardsGame"/> which
         /// is the current game.</param>
         public BetGameComponent(List<Player> players, InputState input,
-            string theme, CardsGame cardGame)
+            string theme, CardsGame cardGame, SpriteBatch spriteBatch, Matrix globalTransformation)
             : base(cardGame.Game)
         {
             this.players = players;
             this.theme = theme;
             this.cardGame = cardGame;
             this.input = input;
+            this.spriteBatch = spriteBatch;
+            this.globalTransformation = globalTransformation;
             chipsAssets = new Dictionary<int, Texture2D>();
         }
 
@@ -89,8 +93,6 @@ namespace Blackjack
             Game.IsMouseVisible = true;
             base.Initialize();
 
-            spriteBatch = new SpriteBatch(Game.GraphicsDevice);
-
             // Calculate chips position for the chip buttons which allow placing the bet
             Rectangle size = chipsAssets[assetNames[0]].Bounds;
 
@@ -106,7 +108,7 @@ namespace Blackjack
             }
 
             // Initialize bet button
-            bet = new Button("ButtonRegular", "ButtonPressed", input, cardGame)
+            bet = new Button("ButtonRegular", "ButtonPressed", input, cardGame, spriteBatch, globalTransformation)
             {
                 Bounds = new Rectangle(bounds.Left + 10, bounds.Bottom - 60, 100, 50),
                 Font = cardGame.Font,
@@ -116,7 +118,7 @@ namespace Blackjack
             Game.Components.Add(bet);
 
             // Initialize clear button
-            clear = new Button("ButtonRegular", "ButtonPressed", input, cardGame)
+            clear = new Button("ButtonRegular", "ButtonPressed", input, cardGame, spriteBatch, globalTransformation)
             {
                 Bounds = new Rectangle(bounds.Left + 120, bounds.Bottom - 60, 100, 50),
                 Font = cardGame.Font,
@@ -133,15 +135,13 @@ namespace Blackjack
         protected override void LoadContent()
         {
             // Load blank chip texture
-            blankChip = Game.Content.Load<Texture2D>(
-                string.Format(@"Images\Chips\chip{0}", "White"));
+            blankChip = Game.Content.Load<Texture2D>(Path.Combine("Images", "Chips", "chipWhite"));
 
             // Load chip textures
             int[] assetNames = { 5, 25, 100, 500 };
             for (int chipIndex = 0; chipIndex < assetNames.Length; chipIndex++)
             {
-                chipsAssets.Add(assetNames[chipIndex], Game.Content.Load<Texture2D>(
-                    string.Format(@"Images\Chips\chip{0}", assetNames[chipIndex])));
+                chipsAssets.Add(assetNames[chipIndex], Game.Content.Load<Texture2D>(Path.Combine("Images", "Chips", $"chip{assetNames[chipIndex]}")));
             }
             positions = new Vector2[assetNames.Length];
 
@@ -302,7 +302,7 @@ namespace Blackjack
         /// this method.</param>
         public override void Draw(GameTime gameTime)
         {
-            spriteBatch.Begin();
+            spriteBatch.Begin(SpriteSortMode.Deferred, null, null, null, null, null, globalTransformation);
 
             // Draws the chips
             for (int chipIndex = 0; chipIndex < chipsAssets.Count; chipIndex++)
@@ -347,7 +347,7 @@ namespace Blackjack
                 currentBet += chipValue;
                 // Add chip component
                 AnimatedGameComponent chipComponent = new AnimatedGameComponent(cardGame,
-                    chipsAssets[chipValue])
+                    chipsAssets[chipValue], spriteBatch, globalTransformation)
                 {
                     Visible = false
                 };
@@ -536,7 +536,7 @@ namespace Blackjack
         private void AddInsuranceChipAnimation(float amount)
         {
             // Add chip component
-            AnimatedGameComponent chipComponent = new AnimatedGameComponent(cardGame, blankChip)
+            AnimatedGameComponent chipComponent = new AnimatedGameComponent(cardGame, blankChip, spriteBatch, globalTransformation)
             {
                 TextColor = Color.Black,
                 Enabled = true,

@@ -7,6 +7,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Text;
 using CardsFramework;
 using Microsoft.Xna.Framework;
@@ -21,8 +22,8 @@ namespace Blackjack
 
 
         public BlackJackTable(Vector2 ringOffset, Rectangle tableBounds, Vector2 dealerPosition, int places,
-            Func<int, Vector2> placeOrder, string theme, Game game)
-            : base(tableBounds, dealerPosition, places, placeOrder, theme, game)
+            Func<int, Vector2> placeOrder, string theme, Game game, SpriteBatch spriteBatch, Matrix? globalTransformation = null)
+            : base(tableBounds, dealerPosition, places, placeOrder, theme, game, spriteBatch, globalTransformation)
         {
             RingOffset = ringOffset;
         }
@@ -32,7 +33,7 @@ namespace Blackjack
         /// </summary>
         protected override void LoadContent()
         {
-            string assetName = string.Format(@"Images\UI\ring");
+            string assetName = string.Format(Path.Combine("Images", "UI", "ring"));
             RingTexture = Game.Content.Load<Texture2D>(assetName);
 
             base.LoadContent();
@@ -46,7 +47,7 @@ namespace Blackjack
         {
             base.Draw(gameTime);
 
-            SpriteBatch.Begin();
+            SpriteBatch.Begin(SpriteSortMode.Deferred, null, null, null, null, null, globalTransformation);
 
             for (int placeIndex = 0; placeIndex < Places; placeIndex++)
             {

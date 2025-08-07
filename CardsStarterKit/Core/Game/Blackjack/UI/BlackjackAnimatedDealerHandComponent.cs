@@ -23,8 +23,9 @@ namespace Blackjack
         /// game table.</param>
         /// <param name="hand">The dealer's hand.</param>
         /// <param name="cardGame">The associated game.</param>
-        public BlackjackAnimatedDealerHandComponent(int place, Hand hand, 
-            CardsGame cardGame) : base(place, hand, cardGame)
+        public BlackjackAnimatedDealerHandComponent(int place, Hand hand,
+            CardsGame cardGame, Microsoft.Xna.Framework.Graphics.SpriteBatch spriteBatch, Microsoft.Xna.Framework.Matrix globalTransformation)
+            : base(place, hand, cardGame, spriteBatch, globalTransformation)
         {
         }
 

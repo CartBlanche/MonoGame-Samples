@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.Text;
 using CardsFramework;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace CardsFramework
 {
@@ -20,9 +21,9 @@ namespace CardsFramework
 
         List<AnimatedCardsGameComponent> heldAnimatedCards = new List<AnimatedCardsGameComponent>();
 
-        public override bool IsAnimating 
-        { 
-            get 
+        public override bool IsAnimating
+        {
+            get
             {
                 for (int animationIndex = 0; animationIndex < heldAnimatedCards.Count; animationIndex++)
                 {
@@ -32,7 +33,7 @@ namespace CardsFramework
                     }
                 }
                 return false;
-            } 
+            }
         }
 
         /// <summary>
@@ -44,7 +45,10 @@ namespace CardsFramework
             {
                 return heldAnimatedCards.AsReadOnly();
             }
-        } 
+        }
+
+        SpriteBatch spriteBatch;
+        Matrix globalTransformation;
 
         /// <summary>
         /// Initializes a new instance of the animated hand component. This means
@@ -56,13 +60,15 @@ namespace CardsFramework
         /// <param name="place">The player's place index (-1 for the dealer).</param>
         /// <param name="hand">The hand represented by this instance.</param>
         /// <param name="cardGame">The associated card game.</param>
-        public AnimatedHandGameComponent(int place, Hand hand, CardsGame cardGame)
-            : base(cardGame, null)
+        public AnimatedHandGameComponent(int place, Hand hand, CardsGame cardGame, SpriteBatch spriteBatch, Matrix globalTransformation)
+            : base(cardGame, null, spriteBatch, globalTransformation)
         {
             Place = place;
             Hand = hand;
             hand.ReceivedCard += Hand_ReceivedCard;
             hand.LostCard += Hand_LostCard;
+            this.spriteBatch = spriteBatch;
+            this.globalTransformation = globalTransformation;
 
             // Set the component's position
             if (place == -1)
@@ -89,7 +95,7 @@ namespace CardsFramework
             }
 
             Game.Components.ComponentRemoved += Components_ComponentRemoved;
-        } 
+        }
 
         /// <summary>
         /// Updates the component.
@@ -103,7 +109,7 @@ namespace CardsFramework
             {
                 if (!heldAnimatedCards[animationIndex].IsAnimating)
                 {
-                    heldAnimatedCards[animationIndex].CurrentPosition = CurrentPosition + 
+                    heldAnimatedCards[animationIndex].CurrentPosition = CurrentPosition +
                         GetCardRelativePosition(animationIndex);
                 }
             }
@@ -167,7 +173,7 @@ namespace CardsFramework
                 return null;
 
             return heldAnimatedCards[location];
-        } 
+        }
 
         /// <summary>
         /// Handles the ComponentRemoved event of the Components control.
@@ -218,7 +224,7 @@ namespace CardsFramework
         {
             // Add the card to the screen
             AnimatedCardsGameComponent animatedCardGameComponent =
-                new AnimatedCardsGameComponent(e.Card, CardGame) { Visible = false };
+                new AnimatedCardsGameComponent(e.Card, CardGame, spriteBatch, globalTransformation) { Visible = false };
 
             heldAnimatedCards.Add(animatedCardGameComponent);
             Game.Components.Add(animatedCardGameComponent);

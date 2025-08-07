@@ -14,6 +14,7 @@ using Microsoft.Xna.Framework;
 using GameStateManagement;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Input.Touch;
+using System.IO;
 
 
 
@@ -38,7 +39,7 @@ namespace Blackjack
             this.theme = theme;
 
             EnabledGestures = GestureType.Tap;
-            
+
         }
 
         /// <summary>
@@ -46,8 +47,8 @@ namespace Blackjack
         /// </summary>
         public override void LoadContent()
         {
-            background = Load<Texture2D>(@"Images\instructions");
-            font = Load<SpriteFont>(@"Fonts\MenuFont");
+            background = Load<Texture2D>(Path.Combine("Images", "instructions"));
+            font = Load<SpriteFont>(Path.Combine("Fonts", "MenuFont"));
 
             // Create a new instance of the gameplay screen
             gameplayScreen = new GameplayScreen(theme);
@@ -117,7 +118,7 @@ namespace Blackjack
         {
             SpriteBatch spriteBatch = ScreenManager.SpriteBatch;
 
-            spriteBatch.Begin();
+            spriteBatch.Begin(SpriteSortMode.Deferred, null, null, null, null, null, ScreenManager.GlobalTransformation);
 
             // Draw Background
             spriteBatch.Draw(background, ScreenManager.GraphicsDevice.Viewport.Bounds,

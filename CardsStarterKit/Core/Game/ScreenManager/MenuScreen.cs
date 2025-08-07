@@ -231,7 +231,7 @@ namespace GameStateManagement
             bounds = ScreenManager.SafeArea;
 
             base.LoadContent();
-        } 
+        }
 
 
 
@@ -304,7 +304,7 @@ namespace GameStateManagement
             SpriteBatch spriteBatch = ScreenManager.SpriteBatch;
             SpriteFont font = ScreenManager.Font;
 
-            spriteBatch.Begin();
+            spriteBatch.Begin(SpriteSortMode.Deferred, null, null, null, null, null, ScreenManager.GlobalTransformation);
 
             // Draw each menu entry in turn.
             for (int i = 0; i < menuEntries.Count; i++)
@@ -357,7 +357,7 @@ namespace GameStateManagement
 
             for (int i = 0; i < menuEntries.Count; i++)
             {
-                menuEntries[i].Destination = 
+                menuEntries[i].Destination =
                     new Rectangle(
                         bounds.Left + (xStep - textureSize.Width) / 2 + (i + 1) * xStep,
                         bounds.Bottom - textureSize.Height * 2, maxWidth, 50);

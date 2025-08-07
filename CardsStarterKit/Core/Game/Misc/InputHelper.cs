@@ -6,6 +6,8 @@
 //-----------------------------------------------------------------------------
 
 using System;
+using System.IO;
+using GameStateManagement;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -24,24 +26,24 @@ namespace Blackjack
         public bool IsPressed;
 
         Vector2 drawPosition;
+        private ScreenManager screenManager;
         Texture2D texture;
         SpriteBatch spriteBatch;
         float maxVelocity;
 
 
-        public InputHelper(Game game)
-            : base(game)
+        public InputHelper(ScreenManager screenManager)
+            : base(screenManager.Game)
         {
-            texture = Game.Content.Load<Texture2D>(@"Images\GamePadCursor");
-            spriteBatch = new SpriteBatch(Game.GraphicsDevice);
-            maxVelocity = (float)(Game.GraphicsDevice.Viewport.Width +
-                                  Game.GraphicsDevice.Viewport.Height) / 3000f;
+            this.screenManager = screenManager;
+            texture = screenManager.Game.Content.Load<Texture2D>(Path.Combine("Images", "GamePadCursor"));
+            spriteBatch = screenManager.SpriteBatch;
+            maxVelocity = (float)(screenManager.Game.GraphicsDevice.Viewport.Width +
+                                  screenManager.Game.GraphicsDevice.Viewport.Height) / 3000f;
 
-            drawPosition = new Vector2(Game.GraphicsDevice.Viewport.Width / 2,
-                Game.GraphicsDevice.Viewport.Height / 2);
+            drawPosition = new Vector2(screenManager.Game.GraphicsDevice.Viewport.Width / 2,
+                screenManager.Game.GraphicsDevice.Viewport.Height / 2);
         }
-
-
 
         //public static InputHelper Instance
         //{
@@ -61,8 +63,6 @@ namespace Blackjack
                     texture.Height / 2f);
             }
         }
-
-
 
         /// <summary>
         /// Updates itself.
@@ -90,7 +90,7 @@ namespace Blackjack
         /// </summary>
         public override void Draw(GameTime gameTime)
         {
-            spriteBatch.Begin();
+            spriteBatch.Begin(SpriteSortMode.Deferred, null, null, null, null, null, screenManager.GlobalTransformation);
             spriteBatch.Draw(texture, drawPosition, null, Color.White, 0, Vector2.Zero, 1,
                 SpriteEffects.None, 0);
             spriteBatch.End();

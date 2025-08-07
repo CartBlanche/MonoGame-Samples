@@ -12,17 +12,17 @@ using GameStateManagement;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using CardsFramework;
+using System.IO;
 
 namespace Blackjack
 {
     class OptionsMenu : MenuScreen
     {
+        private CardsGame cardGame;
         Dictionary<string, Texture2D> themes = new Dictionary<string, Texture2D>();
         AnimatedGameComponent card;
         Texture2D background;
         Rectangle safeArea;
-
-
 
         /// <summary>
         /// Initializes a new instance of the screen.
@@ -30,7 +30,12 @@ namespace Blackjack
         public OptionsMenu()
             : base("")
         {
+        }
 
+        public OptionsMenu(CardsGame cardGame)
+            : base("")
+        {
+            this.cardGame = cardGame;
         }
 
         /// <summary>
@@ -52,14 +57,14 @@ namespace Blackjack
             MenuEntries.Add(returnMenuEntry);
 
             themes.Add("Red", ScreenManager.Game.Content.Load<Texture2D>(
-                @"Images\Cards\CardBack_Red"));
+                Path.Combine("Images", "Cards", "CardBack_Red")));
             themes.Add("Blue", ScreenManager.Game.Content.Load<Texture2D>(
-                @"Images\Cards\CardBack_Blue"));
+                Path.Combine("Images", "Cards", "CardBack_Blue")));
             background = ScreenManager.Game.Content.Load<Texture2D>(
-                @"Images\UI\table");
+                Path.Combine("Images", "UI", "table"));
 
-            card = new AnimatedGameComponent(ScreenManager.Game,
-                themes[MainMenuScreen.Theme])
+            card = new AnimatedGameComponent(cardGame,
+                themes[MainMenuScreen.Theme], ScreenManager.SpriteBatch, ScreenManager.GlobalTransformation)
             {
                 CurrentPosition = new Vector2(safeArea.Center.X, safeArea.Center.Y - 50)
             };
@@ -103,7 +108,7 @@ namespace Blackjack
         /// <param name="gameTime"></param>
         public override void Draw(GameTime gameTime)
         {
-            ScreenManager.SpriteBatch.Begin();
+            ScreenManager.SpriteBatch.Begin(SpriteSortMode.Deferred, null, null, null, null, null, ScreenManager.GlobalTransformation);
 
             // Draw the card back
             ScreenManager.SpriteBatch.Draw(background, ScreenManager.GraphicsDevice.Viewport.Bounds,

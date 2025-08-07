@@ -7,6 +7,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Text;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -152,7 +153,6 @@ namespace CardsFramework
         /// </summary>
         public void LoadContent()
         {
-            SpriteBatch = new SpriteBatch(Game.GraphicsDevice);
             // Initialize a full deck
             CardPacket fullDeck = new CardPacket(1, 2, CardSuit.AllSuits,
                 CardsFramework.CardValue.NonJokers | CardsFramework.CardValue.Jokers);
@@ -168,7 +168,7 @@ namespace CardsFramework
             LoadUITexture("Cards", "CardBack_" + Theme);
 
             // Load the game's font
-            Font = Game.Content.Load<SpriteFont>(string.Format(@"Fonts\Regular"));
+            Font = Game.Content.Load<SpriteFont>(Path.Combine("Fonts", "Regular"));
 
             GameTable.Initialize();
         }
@@ -183,9 +183,7 @@ namespace CardsFramework
         /// <param name="assetName">The name of the asset.</param>
         public void LoadUITexture(string folder, string assetName)
         {
-            cardsAssets.Add(assetName,
-                Game.Content.Load<Texture2D>(string.Format(@"Images\{0}\{1}",
-                folder, assetName)));
+            cardsAssets.Add(assetName, Game.Content.Load<Texture2D>(Path.Combine("Images", folder, assetName)));
         }
     }
 }

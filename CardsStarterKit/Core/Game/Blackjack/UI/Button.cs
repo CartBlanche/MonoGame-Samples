@@ -14,6 +14,7 @@ using Microsoft.Xna.Framework.Input;
 using GameStateManagement;
 using CardsFramework;
 using Microsoft.Xna.Framework.Input.Touch;
+using System.IO;
 
 namespace Blackjack
 {
@@ -36,6 +37,8 @@ namespace Blackjack
 
         InputHelper inputHelper;
 
+        private Matrix globalTransformation;
+
 
         /// <summary>
         /// Creates a new instance of the <see cref="Button"/> class.
@@ -46,15 +49,19 @@ namespace Blackjack
         /// <param name="input">A <see cref="GameStateManagement.InputState"/> object
         /// which can be used to retrieve user input.</param>
         /// <param name="cardGame">The associated card game.</param>
+        /// <param name="sharedSpriteBatch">The sprite batch used for drawing.</param>
+        /// <param name="globalTransformation">The global transformation matrix.</param>
         /// <remarks>Texture names are relative to the "Images" content 
         /// folder.</remarks>
         public Button(string regularTexture, string pressedTexture, InputState input,
-            CardsGame cardGame)
-            : base(cardGame, null)
+            CardsGame cardGame, SpriteBatch sharedSpriteBatch, Matrix globalTransformation)
+            : base(cardGame, null, sharedSpriteBatch, globalTransformation)
         {
             this.input = input;
             this.regularTexture = regularTexture;
             this.pressedTexture = pressedTexture;
+            this.spriteBatch = sharedSpriteBatch;
+            this.globalTransformation = globalTransformation;
         }
 
         /// <summary>
@@ -65,7 +72,7 @@ namespace Blackjack
             // Enable tab gesture
             TouchPanel.EnabledGestures = GestureType.Tap;
 
-            // Get Xbox curser
+            // Get Xbox cursor
             inputHelper = null;
             for (int componentIndex = 0; componentIndex < Game.Components.Count; componentIndex++)
             {
@@ -75,8 +82,6 @@ namespace Blackjack
                     break;
                 }
             }
-
-            spriteBatch = new SpriteBatch(Game.GraphicsDevice);
 
             base.Initialize();
         }
@@ -88,11 +93,11 @@ namespace Blackjack
         {
             if (regularTexture != null)
             {
-                RegularTexture = Game.Content.Load<Texture2D>(@"Images\" + regularTexture);
+                RegularTexture = Game.Content.Load<Texture2D>(Path.Combine("Images", regularTexture));
             }
             if (pressedTexture != null)
             {
-                PressedTexture = Game.Content.Load<Texture2D>(@"Images\" + pressedTexture);
+                PressedTexture = Game.Content.Load<Texture2D>(Path.Combine("Images", pressedTexture));
             }
 
             base.LoadContent();
@@ -150,7 +155,7 @@ namespace Blackjack
                     }
                     else
                     {
-                        
+
                         isPressed = false;
                     }
                 }
@@ -165,13 +170,13 @@ namespace Blackjack
                     if (IntersectWith(position))
                     {
                         isPressed = true;
-                        
+
                         if (BlackjackGame.IsMobile)
                         {
                             FireClick();
                             isPressed = false;
                         }
-                        
+
                     }
                     isKeyDown = true;
                 }
@@ -212,8 +217,7 @@ namespace Blackjack
         /// this method.</param>
         public override void Draw(GameTime gameTime)
         {
-            spriteBatch.Begin();
-
+            spriteBatch.Begin(SpriteSortMode.Deferred, null, null, null, null, null, globalTransformation);
 
             spriteBatch.Draw(isPressed ? PressedTexture : RegularTexture, Bounds, Color.White);
             if (Font != null)

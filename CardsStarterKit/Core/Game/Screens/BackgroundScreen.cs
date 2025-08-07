@@ -11,6 +11,7 @@ using System.Text;
 using GameStateManagement;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
+using System.IO;
 
 namespace Blackjack
 {
@@ -33,7 +34,7 @@ namespace Blackjack
         /// </summary>
         public override void LoadContent()
         {
-            background = ScreenManager.Game.Content.Load<Texture2D>(@"Images\titlescreen");
+            background = ScreenManager.Game.Content.Load<Texture2D>(Path.Combine("Images", "titlescreen"));
             safeArea = ScreenManager.Game.GraphicsDevice.Viewport.TitleSafeArea;
             base.LoadContent();
         }
@@ -58,7 +59,7 @@ namespace Blackjack
         /// <param name="gameTime"></param>
         public override void Draw(Microsoft.Xna.Framework.GameTime gameTime)
         {
-            ScreenManager.SpriteBatch.Begin();
+            ScreenManager.SpriteBatch.Begin(SpriteSortMode.Deferred, null, null, null, null, null, ScreenManager.GlobalTransformation);
 
             ScreenManager.SpriteBatch.Draw(background, ScreenManager.GraphicsDevice.Viewport.Bounds,
                 Color.White * TransitionAlpha);

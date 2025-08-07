@@ -31,9 +31,6 @@ namespace Blackjack
         public static float HeightScale = 1.0f;
         public static float WidthScale = 1.0f;
 
-        const int BUFFER_WIDTH = 800;
-        const int BUFFER_HEIGHT = 480;
-
         /// <summary>
         /// Indicates if the game is running on a mobile platform.
         /// </summary>
@@ -83,13 +80,13 @@ namespace Blackjack
         {
             base.Initialize();
 
-            graphicsDeviceManager.PreferredBackBufferWidth = BUFFER_WIDTH;
-            graphicsDeviceManager.PreferredBackBufferHeight = BUFFER_HEIGHT;
+            graphicsDeviceManager.PreferredBackBufferWidth = ScreenManager.BACK_BUFFER_WIDTH;
+            graphicsDeviceManager.PreferredBackBufferHeight = ScreenManager.BACK_BUFFER_HEIGHT;
             graphicsDeviceManager.ApplyChanges();
 
             Rectangle bounds = graphicsDeviceManager.GraphicsDevice.Viewport.TitleSafeArea;
-            HeightScale = bounds.Height / BUFFER_HEIGHT;
-            WidthScale = bounds.Width / BUFFER_WIDTH;
+            HeightScale = bounds.Height / ScreenManager.BACK_BUFFER_HEIGHT;
+            WidthScale = bounds.Width / ScreenManager.BACK_BUFFER_WIDTH;
         }
 
         /// <summary>

@@ -27,11 +27,11 @@ namespace Blackjack
         List<DrawableGameComponent> pauseVisibleComponents = new List<DrawableGameComponent>();
         Rectangle safeArea;
 
-        static Vector2[] playerCardOffset = new Vector2[] 
-        { 
+        static Vector2[] playerCardOffset = new Vector2[]
+        {
             new Vector2(100f * BlackjackGame.WidthScale, 190f * BlackjackGame.HeightScale),
             new Vector2(336f * BlackjackGame.WidthScale, 210f * BlackjackGame.HeightScale),
-            new Vector2(570f * BlackjackGame.WidthScale, 190f * BlackjackGame.HeightScale) 
+            new Vector2(570f * BlackjackGame.WidthScale, 190f * BlackjackGame.HeightScale)
         };
 
         /// <summary>
@@ -43,7 +43,7 @@ namespace Blackjack
             TransitionOffTime = TimeSpan.FromSeconds(0.5);
 
             EnabledGestures = GestureType.Tap;
-            
+
             this.theme = theme;
         }
 
@@ -55,7 +55,7 @@ namespace Blackjack
             safeArea = ScreenManager.SafeArea;
 
             // Initialize virtual cursor
-            inputHelper = new InputHelper(ScreenManager.Game);
+            inputHelper = new InputHelper(ScreenManager);
             inputHelper.DrawOrder = 1000;
             ScreenManager.Game.Components.Add(inputHelper);
             // Ignore the curser when not run in Xbox
