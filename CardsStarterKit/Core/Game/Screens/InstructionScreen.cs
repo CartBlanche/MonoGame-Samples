@@ -15,6 +15,7 @@ using GameStateManagement;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Input.Touch;
 using System.IO;
+using CardsFramework;
 
 namespace Blackjack
 {
@@ -55,14 +56,14 @@ namespace Blackjack
         /// Exit the screen after a tap or click
         /// </summary>
         /// <param name="input"></param>
-        private void HandleInput(MouseState mouseState, GamePadState padState)
+        private void HandleInput()
         {
             if (!isExit)
             {
-                if (BlackjackGame.IsMobile)
+                if (UIUtilty.IsMobile)
                 {
-                    if (ScreenManager.input.Gestures.Count > 0 &&
-                        ScreenManager.input.Gestures[0].GestureType == GestureType.Tap)
+                    if (ScreenManager.InputState.Gestures.Count > 0 &&
+                        ScreenManager.InputState.Gestures[0].GestureType == GestureType.Tap)
                     {
                         isExit = true;
                     }
@@ -70,12 +71,12 @@ namespace Blackjack
                 else
                 {
                     PlayerIndex result;
-                    if (mouseState.LeftButton == ButtonState.Pressed)
+                    if (ScreenManager.InputState.CurrentMouseState.LeftButton == ButtonState.Pressed)
                     {
                         isExit = true;
                     }
-                    else if (ScreenManager.input.IsNewButtonPress(Buttons.A, null, out result) ||
-                        ScreenManager.input.IsNewButtonPress(Buttons.Start, null, out result))
+                    else if (ScreenManager.InputState.IsNewButtonPress(Buttons.A, null, out result) ||
+                             ScreenManager.InputState.IsNewButtonPress(Buttons.Start, null, out result))
                     {
                         isExit = true;
                     }
@@ -102,7 +103,7 @@ namespace Blackjack
                 isExited = true;
             }
 
-            HandleInput(Mouse.GetState(), GamePad.GetState(PlayerIndex.One));
+            HandleInput();
 
             base.Update(gameTime, otherScreenHasFocus, coveredByOtherScreen);
         }

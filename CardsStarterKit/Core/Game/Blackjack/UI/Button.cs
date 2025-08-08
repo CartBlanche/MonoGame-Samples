@@ -112,7 +112,7 @@ namespace Blackjack
         {
             if (RegularTexture != null)
             {
-                HandleInput(Mouse.GetState());
+                HandleInput();
             }
 
             base.Update(gameTime);
@@ -123,66 +123,50 @@ namespace Blackjack
         /// </summary>
         /// <param name="mouseState">Mouse input information.</param>
         /// <param name="inputHelper">Input of Xbox simulated cursor.</param>
-        private void HandleInput(MouseState mouseState)
+        private void HandleInput()
         {
             bool pressed = false;
             Vector2 position = Vector2.Zero;
 
-            if ((input.Gestures.Count > 0) && input.Gestures[0].GestureType == GestureType.Tap)
+            // Check for tap gestures
+            if (input.Gestures.Count > 0 && input.Gestures[0].GestureType == GestureType.Tap)
             {
                 pressed = true;
                 position = input.Gestures[0].Position;
             }
-            if (mouseState.LeftButton == ButtonState.Pressed)
+
+            // Check for mouse input
+            if (input.CurrentMouseState.LeftButton == ButtonState.Pressed)
             {
                 pressed = true;
-                position = new Vector2(mouseState.X, mouseState.Y);
+                position = new Vector2(input.CurrentMouseState.X, input.CurrentMouseState.Y);
             }
-            else if (inputHelper.IsPressed)
+
+            // Handle button press logic
+            if (pressed)
             {
-                pressed = true;
-                position = inputHelper.PointPosition;
-            }
-            else
-            {
-                if (isPressed)
+                if (!isKeyDown && IntersectWith(position))
                 {
-                    if (IntersectWith(new Vector2(mouseState.X, mouseState.Y)) ||
-                        IntersectWith(inputHelper.PointPosition))
+                    isPressed = true;
+
+                    if (UIUtilty.IsMobile)
                     {
                         FireClick();
                         isPressed = false;
                     }
-                    else
-                    {
 
-                        isPressed = false;
-                    }
-                }
-
-                isKeyDown = false;
-            }
-
-            if (pressed)
-            {
-                if (!isKeyDown)
-                {
-                    if (IntersectWith(position))
-                    {
-                        isPressed = true;
-
-                        if (BlackjackGame.IsMobile)
-                        {
-                            FireClick();
-                            isPressed = false;
-                        }
-
-                    }
                     isKeyDown = true;
                 }
             }
             else
             {
+                if (isPressed && (IntersectWith(new Vector2(input.CurrentMouseState.X, input.CurrentMouseState.Y)) ||
+                                  IntersectWith(inputHelper?.PointPosition ?? Vector2.Zero)))
+                {
+                    FireClick();
+                }
+
+                isPressed = false;
                 isKeyDown = false;
             }
         }

@@ -9,6 +9,7 @@ using System;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Blackjack;
+using CardsFramework;
 
 namespace GameStateManagement
 {
@@ -91,7 +92,7 @@ namespace GameStateManagement
         {
             // there is no such thing as a selected item on Windows Phone, so we always
             // force isSelected to be false
-            if (BlackjackGame.IsMobile)
+            if (UIUtilty.IsMobile)
             {
                 isSelected = false;
             }
@@ -116,7 +117,7 @@ namespace GameStateManagement
             Color textColor = isSelected ? Color.White : Color.Black;
             Color tintColor = isSelected ? Color.White : Color.Gray;
 
-            if (BlackjackGame.IsMobile)
+            if (UIUtilty.IsMobile)
             {
                 // there is no such thing as a selected item on Windows Phone, so we always
                 // force isSelected to be false

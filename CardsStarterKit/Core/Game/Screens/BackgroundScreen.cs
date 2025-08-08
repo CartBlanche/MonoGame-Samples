@@ -35,7 +35,7 @@ namespace Blackjack
         public override void LoadContent()
         {
             background = ScreenManager.Game.Content.Load<Texture2D>(Path.Combine("Images", "titlescreen"));
-            safeArea = new Rectangle(0, 0, ScreenManager.BACK_BUFFER_WIDTH, ScreenManager.BACK_BUFFER_HEIGHT);
+            safeArea = new Rectangle(0, 0, ScreenManager.BASE_BUFFER_WIDTH, ScreenManager.BASE_BUFFER_HEIGHT);
             base.LoadContent();
         }
 

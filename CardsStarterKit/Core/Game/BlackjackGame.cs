@@ -32,16 +32,6 @@ namespace Blackjack
         public static float WidthScale = 1.0f;
 
         /// <summary>
-        /// Indicates if the game is running on a mobile platform.
-        /// </summary>
-        public readonly static bool IsMobile = OperatingSystem.IsAndroid() || OperatingSystem.IsIOS();
-
-        /// <summary>
-        /// Indicates if the game is running on a desktop platform.
-        /// </summary>
-        public readonly static bool IsDesktop = OperatingSystem.IsMacOS() || OperatingSystem.IsLinux() || OperatingSystem.IsWindows();
-
-        /// <summary>
         /// Initializes a new instance of the game.
         /// </summary>
         public BlackjackGame()
@@ -50,12 +40,12 @@ namespace Blackjack
 
             Content.RootDirectory = "Content";
 
-            if (IsMobile)
+            if (UIUtilty.IsMobile)
             {
                 graphicsDeviceManager.IsFullScreen = true;
                 IsMouseVisible = false;
             }
-            else if (IsDesktop)
+            else if (UIUtilty.IsDesktop)
             {
                 graphicsDeviceManager.IsFullScreen = false;
                 IsMouseVisible = true;
@@ -80,8 +70,8 @@ namespace Blackjack
         {
             base.Initialize();
 
-            graphicsDeviceManager.PreferredBackBufferWidth = ScreenManager.BACK_BUFFER_WIDTH;
-            graphicsDeviceManager.PreferredBackBufferHeight = ScreenManager.BACK_BUFFER_HEIGHT;
+            graphicsDeviceManager.PreferredBackBufferWidth = ScreenManager.BASE_BUFFER_WIDTH;
+            graphicsDeviceManager.PreferredBackBufferHeight = ScreenManager.BASE_BUFFER_HEIGHT;
             graphicsDeviceManager.ApplyChanges();
 
             float scale = screenManager.GlobalTransformation.M11; // uniform scale

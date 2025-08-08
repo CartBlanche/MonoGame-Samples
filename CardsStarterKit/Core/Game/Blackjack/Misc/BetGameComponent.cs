@@ -96,7 +96,7 @@ namespace Blackjack
             // Calculate chips position for the chip buttons which allow placing the bet
             Rectangle size = chipsAssets[assetNames[0]].Bounds;
 
-            Rectangle bounds = new Rectangle(0, 0, ScreenManager.BACK_BUFFER_WIDTH, ScreenManager.BACK_BUFFER_HEIGHT);
+            Rectangle bounds = new Rectangle(0, 0, ScreenManager.BASE_BUFFER_WIDTH, ScreenManager.BASE_BUFFER_HEIGHT);
 
             positions[chipsAssets.Count - 1] = new Vector2(bounds.Left + 10,
                 bounds.Bottom - size.Height - 80);
@@ -186,7 +186,7 @@ namespace Blackjack
                         // for input on the chip buttons
                         ShowAndEnableButtons(true);
 
-                        HandleInput(Mouse.GetState());
+                        HandleInput();
                     }
                 }
 
@@ -229,27 +229,26 @@ namespace Blackjack
         /// Handle the input of adding chip on all platform
         /// </summary>
         /// <param name="mouseState">Mouse input information.</param>
-        private void HandleInput(MouseState mouseState)
+        private void HandleInput()
         {
             bool isPressed = false;
             Vector2 position = Vector2.Zero;
 
-            if (mouseState.LeftButton == ButtonState.Pressed)
-            {
-                isPressed = true;
-                position = new Vector2(mouseState.X, mouseState.Y);
-            }
-            else if (inputHelper.IsPressed)
-            {
-                isPressed = true;
-                position = inputHelper.PointPosition;
-            }
-            else if ((input.Gestures.Count > 0) && input.Gestures[0].GestureType == GestureType.Tap)
+            // Check for tap gestures
+            if (input.Gestures.Count > 0 && input.Gestures[0].GestureType == GestureType.Tap)
             {
                 isPressed = true;
                 position = input.Gestures[0].Position;
             }
 
+            // Check for mouse input
+            if (input.CurrentMouseState.LeftButton == ButtonState.Pressed)
+            {
+                isPressed = true;
+                position = new Vector2(input.CurrentMouseState.X, input.CurrentMouseState.Y);
+            }
+
+            // Handle chip interaction logic
             if (isPressed)
             {
                 if (!isKeyDown)
@@ -547,7 +546,7 @@ namespace Blackjack
 
             // Add transition animation
             chipComponent.AddAnimation(new TransitionGameComponentAnimation(positions[0],
-                new Vector2(ScreenManager.BACK_BUFFER_WIDTH / 2, insuranceYPosition))
+                new Vector2(ScreenManager.BASE_BUFFER_WIDTH / 2, insuranceYPosition))
             {
                 PerformBeforeStart = ShowComponent,
                 PerformBeforSartArgs = chipComponent,

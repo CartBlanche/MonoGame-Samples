@@ -46,7 +46,7 @@ namespace Blackjack
             new Vector2(100 * BlackjackGame.WidthScale, 25 * BlackjackGame.HeightScale);
         static Vector2 ringOffset = new Vector2(0, 110);
 
-        Vector2 frameSize = BlackjackGame.IsMobile ? new Vector2(162, 162) : new Vector2(180, 180);
+        Vector2 frameSize = UIUtilty.IsMobile ? new Vector2(162, 162) : new Vector2(180, 180);
 
         public BlackjackGameState State { get; set; }
         ScreenManager screenManager;
@@ -93,7 +93,7 @@ namespace Blackjack
             base.LoadContent();
             // Initialize a new bet component
             // You may need to pass input state from elsewhere
-            betGameComponent = new BetGameComponent(players, screenManager.input, Theme, this, screenManager.SpriteBatch, screenManager.GlobalTransformation);
+            betGameComponent = new BetGameComponent(players, screenManager.InputState, Theme, this, screenManager.SpriteBatch, screenManager.GlobalTransformation);
             Game.Components.Add(betGameComponent);
 
             // Initialize the game buttons
@@ -101,7 +101,7 @@ namespace Blackjack
             for (int buttonIndex = 0; buttonIndex < buttonsText.Length; buttonIndex++)
             {
                 Button button = new Button("ButtonRegular", "ButtonPressed",
-                    screenManager.input, this, screenManager.SpriteBatch, screenManager.GlobalTransformation)
+                    screenManager.InputState, this, screenManager.SpriteBatch, screenManager.GlobalTransformation)
                 {
                     Text = buttonsText[buttonIndex],
                     Bounds = new Rectangle(screenManager.SafeArea.Left + 10 + buttonIndex * 110,
@@ -116,7 +116,7 @@ namespace Blackjack
             }
 
             newGame = new Button("ButtonRegular", "ButtonPressed",
-                    screenManager.input, this, screenManager.SpriteBatch, screenManager.GlobalTransformation)
+                    screenManager.InputState, this, screenManager.SpriteBatch, screenManager.GlobalTransformation)
             {
                 Text = "New Hand",
 
@@ -1089,7 +1089,7 @@ namespace Blackjack
             // Add a button to return to the main menu
             Vector2 center = new Vector2(widthCenter, heightCenter);
             Button backButton = new Button("ButtonRegular", "ButtonPressed",
-                screenManager.input, this, screenManager.SpriteBatch, screenManager.GlobalTransformation)
+                screenManager.InputState, this, screenManager.SpriteBatch, screenManager.GlobalTransformation)
             {
                 Bounds = new Rectangle((int)center.X - 100, (int)center.Y + 80, 200, 50),
                 Font = this.Font,
@@ -1158,7 +1158,7 @@ namespace Blackjack
                             (Game.Components[componentIndex] as AnimatedCardsGameComponent);
                         animatedCard.AddAnimation(
                             new TransitionGameComponentAnimation(animatedCard.CurrentPosition,
-                            new Vector2(animatedCard.CurrentPosition.X, ScreenManager.BACK_BUFFER_HEIGHT))
+                            new Vector2(animatedCard.CurrentPosition.X, ScreenManager.BASE_BUFFER_HEIGHT))
                             {
                                 Duration = TimeSpan.FromSeconds(0.40),
                                 PerformWhenDone = RemoveComponent,

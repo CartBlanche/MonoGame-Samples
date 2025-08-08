@@ -38,11 +38,11 @@ namespace Blackjack
             this.screenManager = screenManager;
             texture = screenManager.Game.Content.Load<Texture2D>(Path.Combine("Images", "GamePadCursor"));
             spriteBatch = screenManager.SpriteBatch;
-            maxVelocity = (float)(ScreenManager.BACK_BUFFER_WIDTH +
-                                  ScreenManager.BACK_BUFFER_HEIGHT) / 3000f;
+            maxVelocity = (float)(ScreenManager.BASE_BUFFER_WIDTH +
+                                  ScreenManager.BASE_BUFFER_HEIGHT) / 3000f;
 
-            drawPosition = new Vector2(ScreenManager.BACK_BUFFER_WIDTH / 2,
-                ScreenManager.BACK_BUFFER_HEIGHT / 2);
+            drawPosition = new Vector2(ScreenManager.BASE_BUFFER_WIDTH / 2,
+                ScreenManager.BASE_BUFFER_HEIGHT / 2);
         }
 
         //public static InputHelper Instance
@@ -81,7 +81,7 @@ namespace Blackjack
                 * gameTime.ElapsedGameTime.Milliseconds
                 * maxVelocity;
             drawPosition = Vector2.Clamp(drawPosition, Vector2.Zero,
-                new Vector2(ScreenManager.BACK_BUFFER_WIDTH, ScreenManager.BACK_BUFFER_HEIGHT)
+                new Vector2(ScreenManager.BASE_BUFFER_WIDTH, ScreenManager.BASE_BUFFER_HEIGHT)
                 - new Vector2(texture.Bounds.Width, texture.Bounds.Height));
         }
 

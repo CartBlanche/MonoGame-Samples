@@ -14,6 +14,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input.Touch;
 using System.IO;
 using System.IO.IsolatedStorage;
+using CardsFramework;
 
 namespace GameStateManagement
 {
@@ -28,7 +29,9 @@ namespace GameStateManagement
         List<GameScreen> screens = new List<GameScreen>();
         List<GameScreen> screensToUpdate = new List<GameScreen>();
 
-        public InputState input = new InputState();
+        InputState inputState = new InputState(BASE_BUFFER_WIDTH, BASE_BUFFER_HEIGHT);
+
+        public InputState InputState => inputState;
 
         SpriteBatch spriteBatch;
         SpriteFont font;
@@ -39,8 +42,8 @@ namespace GameStateManagement
 
         bool traceEnabled;
 
-        internal const int BACK_BUFFER_WIDTH = 800;
-        internal const int BACK_BUFFER_HEIGHT = 480;
+        internal const int BASE_BUFFER_WIDTH = 800;
+        internal const int BASE_BUFFER_HEIGHT = 480;
 
         private int backbufferWidth;
         /// <summary>Gets or sets the current backbuffer width.</summary>
@@ -50,7 +53,7 @@ namespace GameStateManagement
         /// <summary>Gets or sets the current backbuffer height.</summary>
         public int BackbufferHeight { get => backbufferHeight; set => backbufferHeight = value; }
 
-        private Vector2 baseScreenSize = new Vector2(BACK_BUFFER_WIDTH, BACK_BUFFER_HEIGHT);
+        private Vector2 baseScreenSize = new Vector2(BASE_BUFFER_WIDTH, BASE_BUFFER_HEIGHT);
         /// <summary>Gets or sets the base screen size used for scaling calculations.</summary>
         public Vector2 BaseScreenSize { get => baseScreenSize; set => baseScreenSize = value; }
 
@@ -97,7 +100,7 @@ namespace GameStateManagement
             set { traceEnabled = value; }
         }
 
-        Rectangle safeArea = new Rectangle(0, 0, BACK_BUFFER_WIDTH, BACK_BUFFER_HEIGHT);
+        Rectangle safeArea = new Rectangle(0, 0, BASE_BUFFER_WIDTH, BASE_BUFFER_HEIGHT);
         /// <summary>
         /// Returns the portion of the screen where drawing is safely allowed.
         /// </summary>
@@ -169,7 +172,7 @@ namespace GameStateManagement
         public override void Update(GameTime gameTime)
         {
             // Read the keyboard and gamepad.
-            input.Update();
+            inputState.Update(gameTime);
 
             // Make a copy of the master screen list, to avoid confusion if
             // the process of updating one screen adds or removes others.
@@ -199,7 +202,7 @@ namespace GameStateManagement
                     // give it a chance to handle input.
                     if (!otherScreenHasFocus)
                     {
-                        screen.HandleInput(input);
+                        screen.HandleInput(inputState);
 
                         otherScreenHasFocus = true;
                     }
@@ -308,7 +311,7 @@ namespace GameStateManagement
             spriteBatch.Begin(SpriteSortMode.Deferred, null, null, null, null, null, GlobalTransformation);
 
             spriteBatch.Draw(blankTexture,
-                             new Rectangle(0, 0, BACK_BUFFER_WIDTH, BACK_BUFFER_HEIGHT),
+                             new Rectangle(0, 0, BASE_BUFFER_WIDTH, BASE_BUFFER_HEIGHT),
                              Color.Black * alpha);
 
             spriteBatch.End();
@@ -366,7 +369,7 @@ namespace GameStateManagement
                                    Matrix.CreateTranslation(horizontalOffset, verticalOffset, 0);
 
             // Update the inputTransformation with the Inverted globalTransformation
-            // TODO inputState.UpdateInputTransformation(Matrix.Invert(globalTransformation));
+            inputState.UpdateInputTransformation(Matrix.Invert(globalTransformation));
 
             // Debug info
             Debug.WriteLine($"Screen Size - Width[{backbufferWidth}] Height[{backbufferHeight}] ScalingFactor[{scalingFactor}]");

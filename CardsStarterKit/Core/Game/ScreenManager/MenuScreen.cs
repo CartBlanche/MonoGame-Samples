@@ -12,6 +12,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input.Touch;
 using Microsoft.Xna.Framework.Input;
 using Blackjack;
+using CardsFramework;
 
 namespace GameStateManagement
 {
@@ -76,99 +77,79 @@ namespace GameStateManagement
         /// </summary>
         public override void HandleInput(InputState input)
         {
-            // we cancel the current menu screen if the user presses the back button
+            // Cancel the current menu screen if the user presses the back button
             PlayerIndex player;
             if (input.IsNewButtonPress(Buttons.Back, ControllingPlayer, out player))
             {
                 OnCancel(player);
             }
 
-            if (BlackjackGame.IsDesktop)
+            if (UIUtilty.IsDesktop)
             {
-                // Take care of Keyboard input
+                // Handle keyboard input
                 if (input.IsMenuUp(ControllingPlayer))
                 {
                     selectedEntry--;
-
                     if (selectedEntry < 0)
                         selectedEntry = menuEntries.Count - 1;
                 }
                 else if (input.IsMenuDown(ControllingPlayer))
                 {
                     selectedEntry++;
-
                     if (selectedEntry >= menuEntries.Count)
                         selectedEntry = 0;
                 }
                 else if (input.IsNewKeyPress(Keys.Enter, ControllingPlayer, out player) ||
-                    input.IsNewKeyPress(Keys.Space, ControllingPlayer, out player))
+                         input.IsNewKeyPress(Keys.Space, ControllingPlayer, out player))
                 {
                     OnSelectEntry(selectedEntry, player);
                 }
 
-
-                MouseState state = Mouse.GetState();
-                if (state.LeftButton == ButtonState.Released)
+                // Handle mouse input using InputState
+                if (input.CurrentMouseState.LeftButton == ButtonState.Released)
                 {
                     if (isMouseDown)
                     {
                         isMouseDown = false;
-                        // convert the position to a Point that we can test against a Rectangle
-                        Point clickLocation = new Point(state.X, state.Y);
+                        Point clickLocation = new Point(input.CurrentMouseState.X, input.CurrentMouseState.Y);
 
-                        // iterate the entries to see if any were tapped
                         for (int i = 0; i < menuEntries.Count; i++)
                         {
                             MenuEntry menuEntry = menuEntries[i];
-
                             if (menuEntry.Destination.Contains(clickLocation))
                             {
-                                // Select the entry. since gestures are only available on Windows Phone,
-                                // we can safely pass PlayerIndex.One to all entries since there is only
-
-                                // one player on Windows Phone.
                                 OnSelectEntry(i, PlayerIndex.One);
                             }
                         }
                     }
                 }
-                else if (state.LeftButton == ButtonState.Pressed)
+                else if (input.CurrentMouseState.LeftButton == ButtonState.Pressed)
                 {
                     isMouseDown = true;
+                    Point clickLocation = new Point(input.CurrentMouseState.X, input.CurrentMouseState.Y);
 
-                    // convert the position to a Point that we can test against a Rectangle
-                    Point clickLocation = new Point(state.X, state.Y);
-
-                    // iterate the entries to see if any were tapped
                     for (int i = 0; i < menuEntries.Count; i++)
                     {
                         MenuEntry menuEntry = menuEntries[i];
-
                         if (menuEntry.Destination.Contains(clickLocation))
                             selectedEntry = i;
                     }
                 }
             }
-            else if (BlackjackGame.IsMobile)
+            else if (UIUtilty.IsMobile)
             {
-                // look for any taps that occurred and select any entries that were tapped
+                // Handle touch input
                 foreach (GestureSample gesture in input.Gestures)
                 {
                     if (gesture.GestureType == GestureType.Tap)
                     {
-                        // convert the position to a Point that we can test against a Rectangle
                         Point tapLocation = new Point((int)gesture.Position.X, (int)gesture.Position.Y);
 
-                        // iterate the entries to see if any were tapped
                         for (int i = 0; i < menuEntries.Count; i++)
                         {
                             MenuEntry menuEntry = menuEntries[i];
-
                             if (menuEntry.Destination.Contains(tapLocation))
                             {
-                                // Select the entry. since gestures are only available on Windows Phone,
-                                // we can safely pass PlayerIndex.One to all entries since there is only
-                                // one player on Windows Phone.
                                 OnSelectEntry(i, PlayerIndex.One);
                             }
                         }
@@ -177,23 +158,23 @@ namespace GameStateManagement
             }
             else
             {
-                // Take care of Gamepad input
+                // Handle gamepad input
                 if (input.IsMenuUp(ControllingPlayer))
                 {
                     selectedEntry--;
-
                     if (selectedEntry < 0)
                         selectedEntry = menuEntries.Count - 1;
                 }
                 else if (input.IsMenuDown(ControllingPlayer))
                 {
                     selectedEntry++;
-
                     if (selectedEntry >= menuEntries.Count)
                         selectedEntry = 0;
                 }
                 else if (input.IsNewButtonPress(Buttons.A, ControllingPlayer, out player))
+                {
                     OnSelectEntry(selectedEntry, player);
+                }
             }
         }
 
@@ -233,8 +214,6 @@ namespace GameStateManagement
             base.LoadContent();
         }
 
-
-
         /// <summary>
         /// Allows the screen the chance to position the menu entries. By default
         /// all menu entries are lined up in a vertical list, centered on the screen.
@@ -257,7 +236,7 @@ namespace GameStateManagement
                 MenuEntry menuEntry = menuEntries[i];
 
                 // each entry is to be centered horizontally
-                position.X = ScreenManager.BACK_BUFFER_WIDTH / 2 - menuEntry.GetWidth(this) / 2;
+                position.X = ScreenManager.BASE_BUFFER_WIDTH / 2 - menuEntry.GetWidth(this) / 2;
 
                 if (ScreenState == ScreenState.TransitionOn)
                     position.X -= transitionOffset * 256;
@@ -290,7 +269,6 @@ namespace GameStateManagement
                 menuEntries[i].Update(this, isSelected, gameTime);
             }
         }
-
 
         /// <summary>
         /// Draws the menu.
@@ -334,8 +312,6 @@ namespace GameStateManagement
 
             spriteBatch.End();
         }
-
-
 
         public void UpdateMenuEntryDestination()
         {

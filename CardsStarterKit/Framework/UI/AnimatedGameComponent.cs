@@ -54,6 +54,7 @@ namespace CardsFramework
         {
             if (sharedSpriteBatch == null)
                 throw new ArgumentNullException(nameof(sharedSpriteBatch), "AnimatedGameComponent requires a valid SpriteBatch.");
+                
             CardGame = cardGame;
             CurrentFrame = currentFrame;
             TextColor = Color.Black;

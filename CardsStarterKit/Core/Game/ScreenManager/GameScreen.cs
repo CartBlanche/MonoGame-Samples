@@ -10,6 +10,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input.Touch;
 using System.IO;
 using Microsoft.Xna.Framework.Graphics;
+using CardsFramework;
 
 namespace GameStateManagement
 {
@@ -34,8 +35,6 @@ namespace GameStateManagement
     /// </summary>
     public abstract class GameScreen
     {
-
-
         /// <summary>
         /// Normally when one screen is brought up over the top of another,
         /// the first screen will transition off to make room for the new
@@ -63,7 +62,6 @@ namespace GameStateManagement
 
         TimeSpan transitionOnTime = TimeSpan.Zero;
 
-
         /// <summary>
         /// Indicates how long the screen takes to
         /// transition off when it is deactivated.
@@ -75,7 +73,6 @@ namespace GameStateManagement
         }
 
         TimeSpan transitionOffTime = TimeSpan.Zero;
-
 
         /// <summary>
         /// Gets the current position of the screen transition, ranging
@@ -90,7 +87,6 @@ namespace GameStateManagement
 
         float transitionPosition = 1;
 
-
         /// <summary>
         /// Gets the current alpha of the screen transition, ranging
         /// from 1 (fully active, no transition) to 0 (transitioned
@@ -100,7 +96,6 @@ namespace GameStateManagement
         {
             get { return 1f - TransitionPosition; }
         }
-
 
         /// <summary>
         /// Gets the current screen transition state.
@@ -112,7 +107,6 @@ namespace GameStateManagement
         }
 
         ScreenState screenState = ScreenState.TransitionOn;
-
 
         /// <summary>
         /// There are two possible reasons why a screen might be transitioning
@@ -127,9 +121,7 @@ namespace GameStateManagement
             get { return isExiting; }
             protected internal set { isExiting = value; }
         }
-
         bool isExiting = false;
-
 
         /// <summary>
         /// Checks whether this screen is active and can respond to user input.
@@ -156,7 +148,6 @@ namespace GameStateManagement
         }
 
         ScreenManager screenManager;
-
 
         /// <summary>
         /// Gets the index of the player who is currently controlling this screen,
@@ -215,10 +206,6 @@ namespace GameStateManagement
 
         bool isSerializable = true;
 
-
-
-
-
         /// <summary>
         /// Load graphics content for the screen.
         /// </summary>
@@ -231,10 +218,6 @@ namespace GameStateManagement
         /// Unload content for the screen.
         /// </summary>
         public virtual void UnloadContent() { }
-
-
-
-
 
         /// <summary>
         /// Allows the screen to run logic, such as updating the transition position.
