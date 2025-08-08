@@ -1,7 +1,7 @@
 using Foundation;
 using UIKit;
 
-namespace BlackJack.iOS
+namespace Blackjack.iOS
 {
     [Register("AppDelegate")]
     class AppDelegate : UIApplicationDelegate

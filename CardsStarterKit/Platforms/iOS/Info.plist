@@ -3,9 +3,9 @@
 <plist version="1.0">
 <dict>
     <key>CFBundleDisplayName</key>
-    <string>Audio3D</string>
+    <string>Blackjack</string>
     <key>CFBundleIdentifier</key>
-    <string>com.cartblanche.audio3d</string>
+    <string>com.cartblanche.blackjack</string>
     <key>CFBundleVersion</key>
     <string>1.0</string>
     <key>CFBundleShortVersionString</key>
@@ -23,5 +23,7 @@
     </array>
     <key>LSRequiresIPhoneOS</key>
     <true/>
+    <key>XSAppIconAssets</key>
+	<string>AppIcon.xcassets/AppIcon.appiconset</string>
 </dict>
 </plist>

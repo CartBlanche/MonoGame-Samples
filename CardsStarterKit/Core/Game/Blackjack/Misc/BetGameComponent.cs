@@ -75,9 +75,6 @@ namespace Blackjack
         /// </summary>
         public override void Initialize()
         {
-            // Enable tap gesture
-            TouchPanel.EnabledGestures = GestureType.Tap;
-
             // Get xbox cursor
             inputHelper = null;
             for (int componentIndex = 0; componentIndex < Game.Components.Count; componentIndex++)
