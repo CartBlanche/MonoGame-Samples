@@ -250,7 +250,7 @@ namespace Blackjack
             Game.Components.Add(animationComponent);
 
             animationComponent.AddAnimation(
-                new FramesetGameComponentAnimation(cardsAssets["shuffle_" + Theme], 32, 11, frameSize)
+                new FramesetGameComponentAnimation(cardsAssets["Shuffle_" + Theme], 32, 11, frameSize)
                 {
                     Duration = TimeSpan.FromSeconds(1.5f),
                     PerformBeforeStart = ShowComponent,
