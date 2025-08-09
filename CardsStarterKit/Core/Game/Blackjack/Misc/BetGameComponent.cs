@@ -37,9 +37,8 @@ namespace Blackjack
         Button clear;
 
         Vector2 ChipOffset { get; set; }
-        static float insuranceYPosition = 120 * BlackjackGame.HeightScale;
-        static Vector2 secondHandOffset = new Vector2(25 * BlackjackGame.WidthScale,
-            30 * BlackjackGame.HeightScale);
+        static float insuranceYPosition = 120;
+        static Vector2 secondHandOffset = new Vector2(25, 30);
 
         List<AnimatedGameComponent> currentChipComponent = new List<AnimatedGameComponent>();
         int currentBet = 0;

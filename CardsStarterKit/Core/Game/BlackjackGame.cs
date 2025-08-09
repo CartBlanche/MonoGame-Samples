@@ -28,9 +28,6 @@ namespace Blackjack
         GraphicsDeviceManager graphicsDeviceManager;
         ScreenManager screenManager;
 
-        public static float HeightScale = 1.0f;
-        public static float WidthScale = 1.0f;
-
         /// <summary>
         /// Initializes a new instance of the game.
         /// </summary>
@@ -73,10 +70,6 @@ namespace Blackjack
             graphicsDeviceManager.PreferredBackBufferWidth = ScreenManager.BASE_BUFFER_WIDTH;
             graphicsDeviceManager.PreferredBackBufferHeight = ScreenManager.BASE_BUFFER_HEIGHT;
             graphicsDeviceManager.ApplyChanges();
-
-            float scale = screenManager.GlobalTransformation.M11; // uniform scale
-            HeightScale = scale;
-            WidthScale = scale;
         }
 
         /// <summary>

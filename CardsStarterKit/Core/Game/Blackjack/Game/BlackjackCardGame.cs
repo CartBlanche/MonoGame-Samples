@@ -42,8 +42,7 @@ namespace Blackjack
 
         // An offset used for drawing the second hand which appears after a split in
         // the correct location.
-        Vector2 secondHandOffset =
-            new Vector2(100 * BlackjackGame.WidthScale, 25 * BlackjackGame.HeightScale);
+        Vector2 secondHandOffset = new Vector2(100, 25);
         static Vector2 ringOffset = new Vector2(0, 110);
 
         Vector2 frameSize = new Vector2(180, 180);

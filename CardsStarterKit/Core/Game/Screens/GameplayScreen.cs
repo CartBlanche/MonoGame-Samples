@@ -29,9 +29,9 @@ namespace Blackjack
 
         static Vector2[] playerCardOffset = new Vector2[]
         {
-            new Vector2(100f * BlackjackGame.WidthScale, 190f * BlackjackGame.HeightScale),
-            new Vector2(336f * BlackjackGame.WidthScale, 210f * BlackjackGame.HeightScale),
-            new Vector2(570f * BlackjackGame.WidthScale, 190f * BlackjackGame.HeightScale)
+            new Vector2(100f, 190f),
+            new Vector2(336f, 210f),
+            new Vector2(570f, 190f)
         };
 
         /// <summary>
@@ -181,9 +181,7 @@ namespace Blackjack
                 case 0:
                 case 1:
                 case 2:
-                    return new Vector2(ScreenManager.SafeArea.Left,
-                        ScreenManager.SafeArea.Top + 200 * (BlackjackGame.HeightScale - 1)) +
-                        playerCardOffset[player];
+                    return playerCardOffset[player];
                 default:
                     throw new ArgumentException(
                         "Player index should be between 0 and 2", "player");
