@@ -46,7 +46,7 @@ namespace Blackjack
             new Vector2(100 * BlackjackGame.WidthScale, 25 * BlackjackGame.HeightScale);
         static Vector2 ringOffset = new Vector2(0, 110);
 
-        Vector2 frameSize = UIUtilty.IsMobile ? new Vector2(162, 162) : new Vector2(180, 180);
+        Vector2 frameSize = new Vector2(180, 180);
 
         public BlackjackGameState State { get; set; }
         ScreenManager screenManager;
