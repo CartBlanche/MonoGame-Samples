@@ -178,7 +178,12 @@ namespace ShatterEffectProcessor
                                                             material.Textures.Values)
             {
                 // Add the textures in the source Material to our effect.
-                effect.Textures.Add("modelTexture", texture);
+                if (!effect.Textures.ContainsKey("modelTexture"))
+                {
+                    context.Logger.LogMessage("Adding texture: " + texture.Name);
+                    effect.Textures.Add("modelTexture", texture);
+                }
+
             }
             return base.ConvertMaterial(effect, context);
         }

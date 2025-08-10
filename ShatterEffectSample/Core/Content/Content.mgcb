@@ -21,6 +21,25 @@
 /processorParam:TextureFormat=Compressed
 /build:font.spritefont
 
+#begin model\ship1.fbx
+/importer:FbxImporter
+/processor:ShatterProcessor
+/processorParam:ColorKeyColor=0,0,0,0
+/processorParam:ColorKeyEnabled=True
+/processorParam:DefaultEffect=BasicEffect
+/processorParam:GenerateMipmaps=True
+/processorParam:GenerateTangentFrames=False
+/processorParam:PremultiplyTextureAlpha=True
+/processorParam:PremultiplyVertexColors=True
+/processorParam:ResizeTexturesToPowerOfTwo=False
+/processorParam:RotationX=0
+/processorParam:RotationY=0
+/processorParam:RotationZ=0
+/processorParam:Scale=10
+/processorParam:SwapWindingOrder=False
+/processorParam:TextureFormat=Compressed
+/build:model\ship1.fbx
+
 #begin ShatterEffect.fx
 /importer:EffectImporter
 /processor:EffectProcessor
@@ -39,22 +58,3 @@
 /processorParam:TextureFormat=Color
 /build:ShatterEffect.png
 
-#begin model\ship1.fbx
-/importer:FbxImporter
-/processor:ShatterProcessor
-/processorParam:ColorKeyColor=0,0,0,0
-/processorParam:ColorKeyEnabled=True
-/processorParam:DefaultEffect=BasicEffect
-/processorParam:GenerateMipmaps=True
-/processorParam:GenerateTangentFrames=False
-/processorParam:PremultiplyTextureAlpha=True
-/processorParam:PremultiplyVertexColors=True
-/processorParam:ResizeTexturesToPowerOfTwo=False
-/processorParam:RotationX=0
-/processorParam:RotationY=0
-/processorParam:RotationZ=0
-/processorParam:Scale=0.1
-/processorParam:SwapWindingOrder=False
-/processorParam:TextureFormat=Compressed
-/processorParam:MeshCollisionEnabled=true
-/build:model\ship1.fbx
