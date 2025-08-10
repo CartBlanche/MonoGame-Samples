@@ -19,14 +19,14 @@ namespace ShatterEffect
     public class ShatterEffectGame : Game
     {
         GraphicsDeviceManager graphics;
-        
+
         Vector3 lightPosition = Vector3.UnitY;
         Vector4 ambientColor = Color.DarkGray.ToVector4();
         Vector4 diffuseColor = Color.White.ToVector4();
-        Vector4 specularColor = Color.White.ToVector4();        
-        float specularPower = 50;        
+        Vector4 specularColor = Color.White.ToVector4();
+        float specularPower = 50;
 
-        float time;        
+        float time;
 
         const float translationRate = 50;
         const float rotationRate = MathHelper.Pi * 3;
@@ -38,8 +38,12 @@ namespace ShatterEffect
 
         Matrix view;
         Matrix projection;
-        Vector3 cameraPosition = new Vector3(-696,429, 835);
-        Vector3 targetPosition = new Vector3(0, 60, 0); 
+        Vector3 cameraPosition = new Vector3(-696, 429, 835);
+        Vector3 targetPosition = new Vector3(0, 60, 0);
+
+        int shatterEffectIndex = 0; // 0 for default shatter, 1 for explosion
+        bool autoShatter = false;
+        bool autoShatterReversing = false;
 
         public ShatterEffectGame()
         {
@@ -53,7 +57,7 @@ namespace ShatterEffect
         protected override void LoadContent()
         {
             spriteBatch = new SpriteBatch(this.graphics.GraphicsDevice);
-            
+
             font = Content.Load<SpriteFont>("font");
             model = Content.Load<Model>("model/ship1");
 
@@ -70,35 +74,60 @@ namespace ShatterEffect
         /// </summary>
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
-        {               
+        {
             // Handle input
             float elapsedTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
             KeyboardState keyboardState = Keyboard.GetState();
             GamePadState gamePadState = GamePad.GetState(PlayerIndex.One);
 
-            // Allows the default game to exit on Xbox 360 and Windows
-            if (gamePadState.Buttons.Back == ButtonState.Pressed 
-                || keyboardState.IsKeyDown(Keys.Escape))
-                this.Exit();
-
-            // Pressing the Up arrow or the A button on controller will Shatter the 
-            // model
-            if (keyboardState.IsKeyDown(Keys.Up) ||
-                gamePadState.Buttons.A == ButtonState.Pressed)
+            // Toggle between shatter effects with Tab
+            if (keyboardState.IsKeyDown(Keys.Tab))
             {
-                time = Math.Min(duration, time + elapsedTime);
-            }
-            
-
-            // Pressing the Down arrow or the B button on controller will reverse the 
-            // Shatter effect 
-            if (keyboardState.IsKeyDown(Keys.Down) || 
-                gamePadState.Buttons.B == ButtonState.Pressed)
-            {
-                time = Math.Max(0.0f, time - elapsedTime);
+                shatterEffectIndex = (shatterEffectIndex + 1) % 2; // Toggle between 0 and 1
             }
 
-           
+            // Toggle auto-shatter with Enter
+            if (keyboardState.IsKeyDown(Keys.Enter))
+            {
+                autoShatter = !autoShatter;
+                autoShatterReversing = false; // Reset reversing state
+            }
+
+            if (autoShatter)
+            {
+                if (!autoShatterReversing)
+                {
+                    time += elapsedTime;
+                    if (time >= duration)
+                    {
+                        time = duration;
+                        autoShatterReversing = true;
+                    }
+                }
+                else
+                {
+                    time -= elapsedTime;
+                    if (time <= 0.0f)
+                    {
+                        time = 0.0f;
+                        autoShatterReversing = false;
+                    }
+                }
+            }
+            else
+            {
+                // Manual control for shatter effects
+                if (keyboardState.IsKeyDown(Keys.Up) || gamePadState.Buttons.A == ButtonState.Pressed)
+                {
+                    time = Math.Min(duration, time + elapsedTime);
+                }
+
+                if (keyboardState.IsKeyDown(Keys.Down) || gamePadState.Buttons.B == ButtonState.Pressed)
+                {
+                    time = Math.Max(0.0f, time - elapsedTime);
+                }
+            }
+
             base.Update(gameTime);
         }
 
@@ -118,7 +147,7 @@ namespace ShatterEffect
             Matrix[] transforms = new Matrix[model.Bones.Count];
             model.CopyAbsoluteBoneTransformsTo(transforms);
             foreach (ModelMesh mesh in model.Meshes)
-            {                
+            {
                 foreach (ModelMeshPart part in mesh.MeshParts)
                 {
                     SetupEffect(transforms, mesh, part);
@@ -126,27 +155,33 @@ namespace ShatterEffect
                 mesh.Draw();
             }
 
-            GraphicsDevice.RasterizerState = RasterizerState.CullCounterClockwise;
-
-            // Draw instructions
-            spriteBatch.Begin(); 
-            spriteBatch.DrawString(font, 
-                @"Shatter Model: Hold Arrow Up or A button."+
-                "\nReverse Shatter: Hold Arrow Down or B button.", new Vector2(50, 380), 
-                 Color.White);
+            // Draw the UI
+            spriteBatch.Begin();
+            spriteBatch.DrawString(font, "Shatter Effect Demo", new Vector2(10, 10), Color.White);
+            spriteBatch.DrawString(font, "Press Tab to toggle shatter effects", new Vector2(10, 30), Color.White);
+            spriteBatch.DrawString(font, "Press Enter to toggle auto-shatter", new Vector2(10, 50), Color.White);
+            spriteBatch.DrawString(font, "Use Up/Down arrows or GamePad A/B to control shatter amount", new Vector2(10, 70), Color.White);
             spriteBatch.End();
 
             base.Draw(gameTime);
         }
-        
-        // Set the required values in the shader.
-        private void SetupEffect(Matrix[] transforms, ModelMesh mesh, 
-                                ModelMeshPart part)
+
+        void SetupEffect(Matrix[] transforms, ModelMesh mesh, ModelMeshPart part)
         {
             Effect effect = part.Effect;
-            effect.Parameters["TranslationAmount"].SetValue(translationRate * time);
-            effect.Parameters["RotationAmount"].SetValue(rotationRate * time);
-            effect.Parameters["time"].SetValue(time);            
+
+            if (shatterEffectIndex == 0) // Default shatter effect
+            {
+                effect.Parameters["TranslationAmount"].SetValue(translationRate * time);
+                effect.Parameters["RotationAmount"].SetValue(rotationRate * time);
+            }
+            else if (shatterEffectIndex == 1) // Explosion effect
+            {
+                effect.Parameters["TranslationAmount"].SetValue(translationRate * time * 2); // Expand outward
+                effect.Parameters["RotationAmount"].SetValue(0); // No rotation for explosion
+            }
+
+            effect.Parameters["time"].SetValue(time);
             effect.Parameters["WorldViewProjection"].SetValue(
                 transforms[mesh.ParentBone.Index] * view * projection);
             effect.Parameters["World"].SetValue(transforms[mesh.ParentBone.Index]);
@@ -154,8 +189,8 @@ namespace ShatterEffect
             effect.Parameters["lightPosition"].SetValue(lightPosition);
             effect.Parameters["ambientColor"].SetValue(ambientColor);
             effect.Parameters["diffuseColor"].SetValue(diffuseColor);
-            effect.Parameters["specularColor"].SetValue(specularColor);            
-            effect.Parameters["specularPower"].SetValue(specularPower);            
+            effect.Parameters["specularColor"].SetValue(specularColor);
+            effect.Parameters["specularPower"].SetValue(specularPower);
         }
     }
 }
