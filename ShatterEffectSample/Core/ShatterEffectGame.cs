@@ -45,6 +45,8 @@ namespace ShatterEffect
         bool autoShatter = false;
         bool autoShatterReversing = false;
         float autoShatterSpeed = 0.5f; // Slow-motion multiplier for auto-shatter
+        float autoShatterPauseDuration = 1.0f; // Pause duration in seconds before changing direction
+        float autoShatterPauseTimer = 0.0f; // Timer to track pause duration
         KeyboardState previousKeyboardState;
 
         public ShatterEffectGame()
@@ -99,13 +101,18 @@ namespace ShatterEffect
             {
                 float adjustedElapsedTime = elapsedTime * autoShatterSpeed; // Apply slow-motion multiplier
 
-                if (!autoShatterReversing)
+                if (autoShatterPauseTimer > 0.0f)
+                {
+                    autoShatterPauseTimer -= elapsedTime; // Decrease pause timer
+                }
+                else if (!autoShatterReversing)
                 {
                     time += adjustedElapsedTime;
                     if (time >= duration)
                     {
                         time = duration;
                         autoShatterReversing = true;
+                        autoShatterPauseTimer = autoShatterPauseDuration; // Start pause timer
                     }
                 }
                 else
@@ -115,6 +122,7 @@ namespace ShatterEffect
                     {
                         time = 0.0f;
                         autoShatterReversing = false;
+                        autoShatterPauseTimer = autoShatterPauseDuration; // Start pause timer
                     }
                 }
             }
