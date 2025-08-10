@@ -14,18 +14,6 @@
 
 #---------------------------------- Content ---------------------------------#
 
-#begin engine_diff_tex.tga
-/importer:TextureImporter
-/processor:TextureProcessor
-/processorParam:ColorKeyColor=255,0,255,255
-/processorParam:ColorKeyEnabled=True
-/processorParam:GenerateMipmaps=False
-/processorParam:PremultiplyAlpha=True
-/processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
-/processorParam:TextureFormat=Color
-/build:engine_diff_tex.tga
-
 #begin font.spritefont
 /importer:FontDescriptionImporter
 /processor:FontDescriptionProcessor
@@ -51,7 +39,7 @@
 /processorParam:TextureFormat=Color
 /build:ShatterEffect.png
 
-#begin model\tank.fbx
+#begin model\ship1.fbx
 /importer:FbxImporter
 /processor:ShatterProcessor
 /processorParam:ColorKeyColor=0,0,0,0
@@ -69,16 +57,4 @@
 /processorParam:SwapWindingOrder=False
 /processorParam:TextureFormat=Compressed
 /processorParam:MeshCollisionEnabled=true
-/build:model\tank.fbx
-
-#begin turret_alt_diff_tex.tga
-/importer:TextureImporter
-/processor:TextureProcessor
-/processorParam:ColorKeyColor=255,0,255,255
-/processorParam:ColorKeyEnabled=True
-/processorParam:GenerateMipmaps=False
-/processorParam:PremultiplyAlpha=True
-/processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
-/processorParam:TextureFormat=Color
-/build:turret_alt_diff_tex.tga
+/build:model\ship1.fbx
