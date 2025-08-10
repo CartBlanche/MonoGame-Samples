@@ -1,16 +1,25 @@
-// MonoGame - Copyright (C) The MonoGame Team
-// This file is subject to the terms and conditions defined in
-// file 'LICENSE.txt', which is part of this source code package.
+//-----------------------------------------------------------------------------
+// ShatterEffect.fx
+//
+// Microsoft XNA Community Game Platform
+// Copyright (C) Microsoft Corporation. All rights reserved.
+//-----------------------------------------------------------------------------
 
-#include "Macros.hlsl"
+#if OPENGL
+	#define SV_POSITION POSITION
+	#define VS_SHADERMODEL vs_3_0
+	#define PS_SHADERMODEL ps_3_0
+#else
+	#define VS_SHADERMODEL vs_4_0_level_9_1
+	#define PS_SHADERMODEL ps_4_0_level_9_1
+#endif
 
 float4x4 WorldViewProjection;
 float4x4 World : World;
 float RotationAmount;
 float TranslationAmount;
+texture modelTexture;
 float time;
-Texture2D modelTexture : register(t0);
-SamplerState TextureSampler : register(s0);
 
 // Lighting Data
 float3 eyePosition;
@@ -19,6 +28,18 @@ float4 ambientColor;
 float4 diffuseColor;
 float4 specularColor;
 float specularPower;
+
+
+sampler TextureSampler = sampler_state
+{
+    Texture = <modelTexture>;
+    MinFilter = Anisotropic;
+    MagFilter = LINEAR;
+    MipFilter = LINEAR;
+    MaxAnisotropy = 8;
+    AddressU  = WRAP;
+    AddressV  = WRAP;
+};
 
 struct VertexShaderOutput
 {
@@ -34,12 +55,12 @@ struct PixelShaderInput
      float3 WorldNormal : TEXCOORD0;
      float3 WorldPosition : TEXCOORD1;
      float2 TexCoords : TEXCOORD2;
-     float4 Color: TEXCOORD3;
+     float4 Color: COLOR0;
 };
 
 struct InputVS
 {
-    float3 Position : POSITION;
+    float3 Position : SV_POSITION;
     float3 Normal : NORMAL;
     float2 TexCoords : TEXCOORD0;
     float3 TriangleCenter : TEXCOORD1;
@@ -96,8 +117,13 @@ VertexShaderOutput ShatterVS(InputVS input)
                                                   input.RotationalVelocity.y, 
                                                   input.RotationalVelocity.z);
     
-    // Rotate the vertex around its triangle's center
-    float3 position = input.TriangleCenter + mul(input.Position - input.TriangleCenter, rotMatrix);
+    // Build 3x3 rotation matrix explicitly (avoid cast issues on some translators)
+    float3x3 rot3 = float3x3(
+        rotMatrix[0][0], rotMatrix[0][1], rotMatrix[0][2],
+        rotMatrix[1][0], rotMatrix[1][1], rotMatrix[1][2],
+        rotMatrix[2][0], rotMatrix[2][1], rotMatrix[2][2]);
+    // Rotate the vertex around its triangle's center using 3x3 matrix math
+    float3 position = input.TriangleCenter + mul((input.Position - input.TriangleCenter), rot3);
     
     // Displace the vertex along its normal
     position += input.Normal * TranslationAmount;    
@@ -111,9 +137,15 @@ VertexShaderOutput ShatterVS(InputVS input)
     output.Position = mul(float4(position,1.0),WorldViewProjection);
     
     // We must rotate the Normal as well for accurate lighting calculations.
-    output.WorldNormal = mul(mul(input.Normal, rotMatrix), World); 
+    // Transform normal using 3x3 rotation then world 3x3; normalize result
+    float3x3 world3 = float3x3(
+        World[0][0], World[0][1], World[0][2],
+        World[1][0], World[1][1], World[1][2],
+        World[2][0], World[2][1], World[2][2]);
+    output.WorldNormal = normalize(mul(mul(input.Normal, rot3), world3));
     float4 worldPosition = mul(float4(position,1.0),World);
-    output.WorldPosition = worldPosition / worldPosition.w;
+    // Divide perspective-correct and keep as float3
+    output.WorldPosition = worldPosition.xyz / worldPosition.w;
     output.texCoords = input.TexCoords;
     
     //calculate diffuse component
@@ -126,26 +158,28 @@ VertexShaderOutput ShatterVS(InputVS input)
     return output;
 }
 
-float4 PhongPS(PixelShaderInput input) : SV_Target
+float4 PhongPS(PixelShaderInput input) : COLOR
 {
-    float3 directionToLight = normalize(lightPosition - input.WorldPosition);
-    float3 reflectionVector = normalize(reflect(-directionToLight, input.WorldNormal));
-    float3 directionToCamera = normalize(eyePosition - input.WorldPosition);
-
-    float4 specular = specularColor *  
-                      pow(saturate(dot(reflectionVector, directionToCamera)), specularPower);
-
-    float4 TextureColor = modelTexture.Sample(TextureSampler, input.TexCoords);
-
-    float4 color = TextureColor * input.Color + specular;
-    color.a = 1.0;
-
-    return color;
+     float3 directionToLight = normalize(lightPosition - input.WorldPosition);
+     float3 reflectionVector = normalize(reflect(-directionToLight, input.WorldNormal));
+     float3 directionToCamera = normalize(eyePosition - input.WorldPosition);
+     
+     //calculate specular component
+     float4 specular = specularColor *  
+                       pow( saturate(dot(reflectionVector, directionToCamera)), 
+                       specularPower);
+     
+     float4 TextureColor   = tex2D(TextureSampler, input.TexCoords);
+     
+     float4 color = TextureColor * input.Color + specular;
+     color.a = 1.0;                   
+          
+     return color;
 }
 
-technique
+technique ShatterEffect
 {
-    pass
+    pass Pass0
     {        
         VertexShader = compile VS_SHADERMODEL ShatterVS();
         PixelShader = compile PS_SHADERMODEL PhongPS();
