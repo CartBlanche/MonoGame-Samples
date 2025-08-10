@@ -53,8 +53,7 @@
 /processorParam:RotationX=0
 /processorParam:RotationY=0
 /processorParam:RotationZ=0
-/processorParam:Scale=0.1
+/processorParam:Scale=15
 /processorParam:SwapWindingOrder=False
 /processorParam:TextureFormat=Compressed
-/processorParam:MeshCollisionEnabled=true
 /build:model\ship1.fbx

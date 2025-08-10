@@ -171,14 +171,17 @@ namespace ShatterEffectProcessor
         {
             EffectMaterialContent effect = new EffectMaterialContent();
             // Use our own ShatterEffect.fx instead of BasicEffect.
-            effect.Effect =
-                new ExternalReference<EffectContent>("shatterEffect.fx");
+            effect.Effect = new ExternalReference<EffectContent>("shatterEffect.fx");
 
             foreach (ExternalReference<TextureContent> texture in
                                                             material.Textures.Values)
             {
                 // Add the textures in the source Material to our effect.
-                effect.Textures.Add("modelTexture", texture);
+                if (!effect.Textures.ContainsKey("modelTexture"))
+                {
+                    context.Logger.LogMessage("Adding texture: " + texture.Name);
+                    effect.Textures.Add("modelTexture", texture);
+                }
             }
             return base.ConvertMaterial(effect, context);
         }
