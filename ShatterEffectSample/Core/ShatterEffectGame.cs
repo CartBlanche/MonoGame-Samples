@@ -44,6 +44,8 @@ namespace ShatterEffect
         int shatterEffectIndex = 0; // 0 for default shatter, 1 for explosion
         bool autoShatter = false;
         bool autoShatterReversing = false;
+        float autoShatterSpeed = 0.5f; // Slow-motion multiplier for auto-shatter
+        KeyboardState previousKeyboardState;
 
         public ShatterEffectGame()
         {
@@ -80,14 +82,14 @@ namespace ShatterEffect
             KeyboardState keyboardState = Keyboard.GetState();
             GamePadState gamePadState = GamePad.GetState(PlayerIndex.One);
 
-            // Toggle between shatter effects with Tab
-            if (keyboardState.IsKeyDown(Keys.Tab))
+            // Toggle between shatter effects with Tab (on key release)
+            if (keyboardState.IsKeyUp(Keys.Tab) && previousKeyboardState.IsKeyDown(Keys.Tab))
             {
                 shatterEffectIndex = (shatterEffectIndex + 1) % 2; // Toggle between 0 and 1
             }
 
-            // Toggle auto-shatter with Enter
-            if (keyboardState.IsKeyDown(Keys.Enter))
+            // Toggle auto-shatter with Enter (on key release)
+            if (keyboardState.IsKeyUp(Keys.Enter) && previousKeyboardState.IsKeyDown(Keys.Enter))
             {
                 autoShatter = !autoShatter;
                 autoShatterReversing = false; // Reset reversing state
@@ -95,9 +97,11 @@ namespace ShatterEffect
 
             if (autoShatter)
             {
+                float adjustedElapsedTime = elapsedTime * autoShatterSpeed; // Apply slow-motion multiplier
+
                 if (!autoShatterReversing)
                 {
-                    time += elapsedTime;
+                    time += adjustedElapsedTime;
                     if (time >= duration)
                     {
                         time = duration;
@@ -106,7 +110,7 @@ namespace ShatterEffect
                 }
                 else
                 {
-                    time -= elapsedTime;
+                    time -= adjustedElapsedTime;
                     if (time <= 0.0f)
                     {
                         time = 0.0f;
@@ -127,6 +131,8 @@ namespace ShatterEffect
                     time = Math.Max(0.0f, time - elapsedTime);
                 }
             }
+
+            previousKeyboardState = keyboardState; // Update previous keyboard state
 
             base.Update(gameTime);
         }
