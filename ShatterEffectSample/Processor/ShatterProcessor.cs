@@ -179,7 +179,7 @@ namespace ShatterEffectProcessor
                 // Add the textures in the source Material to our effect.
                 if (!effect.Textures.ContainsKey("modelTexture"))
                 {
-                    context.Logger.LogMessage("Adding texture: " + texture.Name);
+                    context.Logger.Log("Adding texture: " + texture.Name);
                     effect.Textures.Add("modelTexture", texture);
                 }
             }
