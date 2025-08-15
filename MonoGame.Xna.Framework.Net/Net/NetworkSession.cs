@@ -336,13 +336,17 @@ namespace Microsoft.Xna.Framework.Net
                     var localSession = LocalSessionRegistry.GetSessionById(availableSession.SessionId);
                     if (localSession == null)
                         throw new NetworkSessionJoinException(NetworkSessionJoinError.SessionNotFound);
+
                     // Add local gamer
-                    var newGamer = new LocalNetworkGamer(localSession, Guid.NewGuid().ToString(), false, SignedInGamer.Current?.Gamertag ?? "Player");
-                    localSession.AddGamer(newGamer);
+                    var localGamer = new LocalNetworkGamer(localSession, Guid.NewGuid().ToString(), false, SignedInGamer.Current?.Gamertag ?? "Player");
+                    localSession.AddGamer(localGamer);
                     return localSession;
                 case NetworkSessionType.SystemLink:
                     // Connect to host via network
                     var joinedSession = await SystemLinkSessionManager.JoinSessionAsync(availableSession, cancellationToken);
+                    if (joinedSession == null)
+                        throw new NetworkSessionJoinException(NetworkSessionJoinError.SessionNotFound);
+
                     return joinedSession;
                 default:
                     throw new NotSupportedException($"SessionType {availableSession.SessionType} not supported yet.");
