@@ -11,7 +11,7 @@ I welcome contributions to the MonoGame Samples repository! Here's how you can g
 1. **Report Issues**: If you find a bug or have a suggestion, please open an issue in the repository.
 2. **Submit Pull Requests**: Fork the repository, fix bugs and modernise the samples, and submit a pull request. Be sure to follow the coding standards and include detailed descriptions of your changes or enhancements.
 3. **Improve Documentation**: Help me improve the documentation by editing or adding to the README files.
-4. **Share Your Samples**: If you have a MonoGame sample you'd like to share, feel free to contribute it to the repository. Alternatively help port the older XNA samples, so we have a centrlised resource for all MonoGame game developers.
+4. **Share Your Samples**: If you have a MonoGame sample you'd like to share, feel free to contribute it to the repository. Alternatively help port the older XNA samples, so we have a centralised resource for all MonoGame game developers.
 5. **Donate to the MonoGame Foundation**: If these samples have helped you create your game, release it and your made some money off it it, conside [donating to the MonoGame Foundation](https://monogame.net/donate/), so we can continue to keep it FREE for everyone else to have a hit game with :) 
 
 
