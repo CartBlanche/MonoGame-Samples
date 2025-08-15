@@ -1,4 +1,3 @@
-// ...existing code from Activity1.cs will be moved here...
 using Android.App;
 using Android.Content.PM;
 using Android.OS;
@@ -16,7 +15,7 @@ namespace Microsoft.Xna.Samples.MultiTouch
         LaunchMode = LaunchMode.SingleInstance,
         ScreenOrientation = ScreenOrientation.FullUser,
         ConfigurationChanges = ConfigChanges.Orientation | ConfigChanges.Keyboard | ConfigChanges.KeyboardHidden | ConfigChanges.ScreenSize | ConfigChanges.ScreenLayout)]
-    public class Activity1 : AndroidGameActivity
+    public class MainActivity : AndroidGameActivity
     {
         private Game1 _game;
 

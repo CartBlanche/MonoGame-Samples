@@ -104,7 +104,7 @@ No Content.mgcb file is needed as the project uses the existing compiled content
 ```
 ├── PeerToPeerGame.cs          # Main game class
 ├── Program.cs                 # Platform-specific entry points
-├── Activity1.cs               # Android activity
+├── MainActivity.cs            # Android activity
 ├── Tank.cs                    # Tank game object
 ├── Content/                   # Game assets (.xnb files)
 ├── Properties/                # Platform manifests

@@ -72,7 +72,7 @@ dotnet build RenderTarget2D.iOS.csproj
 
 - `Game1.cs` - Main game class with render target logic
 - `Program.cs` - Entry points for different platforms
-- `Activity1.cs` - Android-specific activity
+- `MainActivity.cs` - Android-specific activity
 - `Content/` - Game assets (.xnb files)
 - `Properties/` - Platform-specific manifests and settings
 - `Resources/` - Android-specific resources

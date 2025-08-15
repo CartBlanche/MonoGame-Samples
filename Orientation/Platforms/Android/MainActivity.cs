@@ -16,7 +16,7 @@ namespace OrientationSample.Android
 	           Theme = "@style/Theme.Splash",
 	           ConfigurationChanges = ConfigChanges.Orientation | ConfigChanges.Keyboard | ConfigChanges.KeyboardHidden,
 	           ScreenOrientation = ScreenOrientation.Landscape)]
-	public class Activity1 : AndroidGameActivity
+	public class MainActivity : AndroidGameActivity
 	{
 	protected override void OnCreate (Bundle bundle)
 	{

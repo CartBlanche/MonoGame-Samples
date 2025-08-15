@@ -63,7 +63,7 @@ dotnet build Platforms/iOS/CatapultWars.iOS.csproj
 ## Supported Platforms
 - Windows (DirectX)
 - DesktopGL (cross-platform)
-- Android (entry point: `Activity1.cs`)
+- Android (entry point: `MainActivity.cs`)
 - iOS (Info.plist included, not tested)
 
 ---

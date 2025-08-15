@@ -15,7 +15,7 @@ namespace Flocking.Android
         ScreenOrientation = ScreenOrientation.Landscape,
         ConfigurationChanges = ConfigChanges.Orientation | ConfigChanges.Keyboard | ConfigChanges.KeyboardHidden | ConfigChanges.ScreenSize
     )]
-    public class Activity1 : AndroidGameActivity
+    public class MainActivity : AndroidGameActivity
     {
         private FlockingSample _game;
         private View _view;

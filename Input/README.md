@@ -84,7 +84,7 @@ dotnet run --project Input.DesktopGL.csproj
 - `Program.Windows.cs` - Windows platform entry point
 - `Program.DesktopGL.cs` - DesktopGL platform entry point
 - `Program.iOS.cs` - iOS platform entry point
-- `Activity1.cs` - Android activity
+- `MainActivity.cs` - Android activity
 - `Content/` - Game assets (sprite fonts, textures)
 - `Properties/AndroidManifest.xml` - Android app configuration
 - `Info.iOS.plist` - iOS app configuration

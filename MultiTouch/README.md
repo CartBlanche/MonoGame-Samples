@@ -95,7 +95,7 @@ Or use the launch configurations in `.vscode/launch.json` for debugging.
         Program.cs
     /Android
         MultiTouch.Android.csproj
-        Activity1.cs
+        MainActivity.cs
     /iOS
         MultiTouch.iOS.csproj
         Program.cs

@@ -8,7 +8,7 @@ namespace GemstoneHunter.Android
 {
     [Activity(Label = "Gemstone Hunter", MainLauncher = true, Icon = "@drawable/icon", 
               ConfigurationChanges = ConfigChanges.Orientation | ConfigChanges.ScreenSize | ConfigChanges.Keyboard | ConfigChanges.KeyboardHidden)]
-    public class Activity1 : AndroidGameActivity
+    public class MainActivity : AndroidGameActivity
     {
         private GemstoneHunterGame _game;
 
