@@ -1,6 +1,45 @@
 # MonoGame Samples
 
-This repository contains a collection of cross-platform MonoGame samples and game projects. Each sample demonstrates different game development concepts, features, or genres. For detailed information about each sample, see the linked README in each sub-directory.
+This repository contains a collection of cross-platform MonoGame samples and game projects that should compile on Windows, macOS, Linux, iOS and Android.  Each sample demonstrates different game development concepts, features, or genres. For detailed information about each sample, see the linked README in each sub-directory.
+
+---
+
+## How to Contribute
+
+I welcome contributions to the MonoGame Samples repository! Here's how you can get involved:
+
+1. **Report Issues**: If you find a bug or have a suggestion, please open an issue in the repository.
+2. **Submit Pull Requests**: Fork the repository, fix bugs and modernise the samples, and submit a pull request. Be sure to follow the coding standards and include detailed descriptions of your changes or enhancements.
+3. **Improve Documentation**: Help me improve the documentation by editing or adding to the README files.
+4. **Share Your Samples**: If you have a MonoGame sample you'd like to share, feel free to contribute it to the repository. Alternatively help port the older XNA samples, so we have a centrlised resource for all MonoGame game developers.
+5. **Donate to the MonoGame Foundation**: If these samples have helped you create your game, release it and your made some money off it it, conside [donating to the MonoGame Foundation](https://monogame.net/donate/), so we can continue to keep it FREE for everyone else to have a hit game with :) 
+
+
+---
+
+## Quick Links
+
+- [Game Samples](#game-samples)
+- [2D Samples](#2d-samples)
+- [3D Samples](#3d-samples)
+- [Networking Samples](#networking-samples)
+- [Miscellaneous Samples](#miscellaneous-samples)
+
+---
+
+## Game Samples
+
+| Project | Description |
+|--------|-------------|
+| [AsteroidBeltAssault](GameDevelopmentbyExample/AsteroidBeltAssault/README.md) | | 
+| [Cards Starter Kit](CardsStarterKit/README.md) | Card framework showing how to implement a Blackjack game. |
+|  [FloodControl](GameDevelopmentbyExample/FloodControl/README.md) | |
+| [HoneycombRush](HoneycombRush/README.md) | Arcade-style honeycomb collection game. |
+| [PacMan](PacMan/README.md) | Cross-platform Pac-Man clone. |
+|  [RobotRampage](GameDevelopmentbyExample/RobotRampage/README.md) |  | 
+| [RockRain](RockRain/README.md) | Arcade-style falling rocks game. |
+| [RolePlayingGame](RolePlayingGame/README.md) | RPG sample with tile engine and menus. |
+| [StarWarrior](StarWarrior/README.md) | Classic space shooter sample. |
 
 ---
 
@@ -78,5 +117,6 @@ This repository contains a collection of cross-platform MonoGame samples and gam
 | [Sound](Sound/README.md) | Cross-platform sound playback. |
 
 ---
+
 
 For platform-specific details, build instructions, and troubleshooting, see each sample's README.
