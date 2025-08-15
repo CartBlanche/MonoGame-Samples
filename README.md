@@ -92,7 +92,7 @@ I welcome contributions to the MonoGame Samples repository! Here's how you can g
 
 ---
 
-## Networking Samples
+## Networking Samples (NOT WORKING until MonoGame.Xna.Framework.Net is fully implemented)
 
 | Project | Description |
 |--------|-------------|
