@@ -250,16 +250,19 @@ namespace PeerToPeer
 		/// <summary>
 		/// Helper for updating a locally controlled gamer.
 		/// </summary>
-		void UpdateLocalGamer(LocalNetworkGamer gamer)
+		void UpdateLocalGamer(LocalNetworkGamer localNetworkGamer)
 		{
 			// Look up what tank is associated with this local player.
-			if (gamer.Tag is Tank localTank)
+			if (localNetworkGamer.Tag is Tank localTank)
 			{
 
 				// Update the tank.
-				ReadTankInputs(localTank, (PlayerIndex)gamer.SignedInGamer.PlayerIndex);
+				ReadTankInputs(localTank, (PlayerIndex)localNetworkGamer.SignedInGamer.PlayerIndex);
 
 				localTank.Update();
+
+				// Reset the writer so we don't append across frames
+				packetWriter.Position = 0; // or: packetWriter.Reset();
 
 				// Write the tank state into a network packet.
 				packetWriter.Write(localTank.Position);
@@ -267,7 +270,10 @@ namespace PeerToPeer
 				packetWriter.Write(localTank.TurretRotation);
 
 				// Send the data to everyone in the session.
-				gamer.SendData(packetWriter, SendDataOptions.InOrder);
+				localNetworkGamer.SendData(packetWriter, SendDataOptions.InOrder);
+
+				// Reset after send, to be extra safe
+				packetWriter.Position = 0; // or: packetWriter.Reset();
 			}
 		}
 
