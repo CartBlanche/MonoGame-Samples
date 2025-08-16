@@ -18,6 +18,7 @@ namespace Microsoft.Xna.Framework.Net
 
         public void Deserialize(PacketReader reader)
         {
+            // Reader is positioned after the type byte
             GamerId = reader.ReadString();
             Gamertag = reader.ReadString();
         }

@@ -1,6 +1,6 @@
 namespace Microsoft.Xna.Framework.Net
 {
-	public class PlayerMoveMessage : INetworkMessage
+    public class PlayerMoveMessage : INetworkMessage
     {
         public byte MessageType => 1;
         public int PlayerId { get; set; }
@@ -19,6 +19,7 @@ namespace Microsoft.Xna.Framework.Net
 
         public void Deserialize(PacketReader reader)
         {
+            // Reader is positioned after the type byte
             PlayerId = reader.ReadInt32();
             X = reader.ReadSingle();
             Y = reader.ReadSingle();

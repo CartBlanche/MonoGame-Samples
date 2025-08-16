@@ -436,8 +436,9 @@ namespace Microsoft.Xna.Framework.Net
             if (disposed)
                 return;
 
-            // Process any pending network messages
-            ProcessIncomingMessages();
+            // Process any pending in-memory messages only for Local sessions
+            if (sessionType == NetworkSessionType.Local)
+                ProcessIncomingMessages();
         }
 
         /// <summary>
@@ -551,7 +552,7 @@ namespace Microsoft.Xna.Framework.Net
         }
 
 
-    private void AddGamer(NetworkGamer gamer)
+        private void AddGamer(NetworkGamer gamer)
         {
             lock (lockObject)
             {
@@ -584,7 +585,7 @@ namespace Microsoft.Xna.Framework.Net
                     }
 
                     var (data, senderEndpoint) = await networkTransport.ReceiveAsync();
-                    if (data.Length > 1)
+                    if (data.Length > 0)
                     {
                         NetworkGamer senderGamer = null;
                         lock (lockObject)
@@ -594,11 +595,13 @@ namespace Microsoft.Xna.Framework.Net
 
                         if (senderGamer != null)
                         {
-                            senderGamer.EnqueueIncomingPacket(data, senderGamer);
+                            // Deliver to the local gamer’s inbox with correct sender, matching XNA ReceiveData semantics
+                            NetworkGamer.LocalGamer?.EnqueueIncomingPacket(data, senderGamer);
                         }
 
-                        var typeId = data[0];
-                        var reader = new PacketReader(data); // Use only the byte array
+                        // Parse message: first byte is the type id, advance reader before Deserialize
+                        var reader = new PacketReader(data);
+                        var typeId = reader.ReadByte();
                         var message = NetworkMessageRegistry.CreateMessage(typeId);
                         message?.Deserialize(reader);
                         OnMessageReceived(new MessageReceivedEventArgs(message, senderEndpoint));
@@ -632,19 +635,47 @@ namespace Microsoft.Xna.Framework.Net
                 joinAccepted.Serialize(writer);
                 networkTransport.Send(writer.GetData(), e.RemoteEndPoint);
             }
+            else if (e.Message is JoinAcceptedMessage joinAccepted)
+            {
+                // Client receives confirmation from host; ensure host is present and mapped
+                if (!IsHost)
+                {
+                    var existingHost = gamers.FirstOrDefault(g => g.IsHost);
+                    if (existingHost != null && existingHost.Id != joinAccepted.HostGamerId)
+                    {
+                        // Remove synthetic host
+                        RemoveGamer(existingHost);
+                        existingHost = null;
+                    }
+
+                    var host = existingHost ?? new NetworkGamer(this, joinAccepted.HostGamerId, isLocal: false, isHost: true, gamertag: joinAccepted.HostGamertag);
+                    if (existingHost == null)
+                        AddGamer(host);
+                    RegisterGamerEndpoint(host, e.RemoteEndPoint);
+                }
+            }
             else if (e.Message is PlayerMoveMessage moveMessage)
             {
-                // Handle player movement
-                var gamer = gamers.FirstOrDefault(g => g.Id == moveMessage.PlayerId.ToString());
-                if (gamer != null)
+                // Identify sender by endpoint mapping
+                NetworkGamer sourceGamer = null;
+                lock (lockObject)
                 {
-                    // Update gamer position (mock implementation)
-                    Debug.WriteLine($"Player {gamer.Gamertag} moved to ({moveMessage.X}, {moveMessage.Y}, {moveMessage.Z})");
+                    if (e.RemoteEndPoint != null)
+                        sourceGamer = gamers.FirstOrDefault(g => gamerEndpoints.TryGetValue(g.Id, out var ep) && ep.Equals(e.RemoteEndPoint));
+                }
 
-                    // Broadcast movement to all other gamers
-                    var writer = new PacketWriter();
-                    moveMessage.Serialize(writer);
-                    SendToAll(writer, SendDataOptions.Reliable, gamer);
+                if (sourceGamer != null)
+                {
+                    // Update position (mock) and broadcast to others
+                    Debug.WriteLine($"Player {sourceGamer.Gamertag} moved to ({moveMessage.X}, {moveMessage.Y}, {moveMessage.Z})");
+
+                    // Only the host rebroadcasts to others
+                    if (IsHost)
+                    {
+                        var writer = new PacketWriter();
+                        moveMessage.Serialize(writer);
+                        SendToAll(writer, SendDataOptions.Reliable, sourceGamer);
+                    }
                 }
             }
 
@@ -688,8 +719,9 @@ namespace Microsoft.Xna.Framework.Net
             if (!disposed)
             {
                 cancellationTokenSource?.Cancel();
-                receiveTask?.Wait(1000); // Wait up to 1 second
+                // Dispose transport first to unblock ReceiveAsync
                 networkTransport?.Dispose();
+                try { receiveTask?.Wait(1000); } catch { /* ignore */ }
                 cancellationTokenSource?.Dispose();
                 OnSessionEnded(NetworkSessionEndReason.ClientSignedOut);
                 disposed = true;
@@ -701,12 +733,15 @@ namespace Microsoft.Xna.Framework.Net
             if (!disposed)
             {
                 cancellationTokenSource?.Cancel();
-                if (receiveTask != null)
-                    await receiveTask;
+                // Dispose transport first to unblock any pending ReceiveAsync
                 if (networkTransport is IAsyncDisposable asyncTransport)
                     await asyncTransport.DisposeAsync();
                 else
                     networkTransport?.Dispose();
+                if (receiveTask != null)
+                {
+                    await Task.WhenAny(receiveTask, Task.Delay(1000));
+                }
                 cancellationTokenSource?.Dispose();
                 OnSessionEnded(NetworkSessionEndReason.ClientSignedOut);
                 disposed = true;
@@ -775,10 +810,13 @@ namespace Microsoft.Xna.Framework.Net
 
         private void BroadcastSessionProperties()
         {
-            var writer = new PacketWriter();
-            writer.Write("SessionPropertiesUpdate");
-            writer.Write(SerializeSessionPropertiesBinary());
-            SendToAll(writer, SendDataOptions.Reliable);
+            if (sessionType == NetworkSessionType.Local)
+            {
+                var writer = new PacketWriter();
+                writer.Write("SessionPropertiesUpdate");
+                writer.Write(SerializeSessionPropertiesBinary());
+                SendToAll(writer, SendDataOptions.Reliable);
+            }
         }
 
         private void ProcessIncomingMessages()
@@ -808,7 +846,7 @@ namespace Microsoft.Xna.Framework.Net
                 {
                     gamerJoined?.Invoke(this, new GamerJoinedEventArgs(gamer));
                 }
-			}
-		}
+            }
+        }
     }
 }

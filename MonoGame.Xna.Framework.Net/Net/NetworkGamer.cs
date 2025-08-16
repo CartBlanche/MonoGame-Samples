@@ -142,7 +142,7 @@ namespace Microsoft.Xna.Framework.Net
             return length;
         }
 
-		public int ReceiveData(byte[] data, int offset, out NetworkGamer sender)
+        public int ReceiveData(byte[] data, int offset, out NetworkGamer sender)
         {
             if (data == null)
                 throw new ArgumentNullException(nameof(data));
@@ -161,21 +161,22 @@ namespace Microsoft.Xna.Framework.Net
             int length = Math.Min(data.Length - offset, packet.Data.Length);
             Array.Copy(packet.Data, 0, data, offset, length);
             return length;
-		}
+        }
 
-		/// <summary>
-		/// Receives data from this gamer using PacketReader.
-		/// </summary>
-		/// <param name="data">Array to receive the data into.</param>
-		/// <param name="sender">The gamer who sent the data.</param>
-		/// <returns>The number of bytes received.</returns>
-		public int ReceiveData(PacketReader reader, out NetworkGamer sender)
+        /// <summary>
+        /// Receives data from this gamer using PacketReader.
+        /// </summary>
+        /// <param name="data">Array to receive the data into.</param>
+        /// <param name="sender">The gamer who sent the data.</param>
+        /// <returns>The number of bytes received.</returns>
+        public int ReceiveData(PacketReader reader, out NetworkGamer sender)
         {
             // Ensure the session is valid
             if (session == null)
                 throw new InvalidOperationException("Network session is not initialized.");
 
-            reader = null;
+            if (reader == null)
+                throw new ArgumentNullException(nameof(reader));
             sender = null;
 
             // Check if data is available
@@ -184,7 +185,7 @@ namespace Microsoft.Xna.Framework.Net
 
             var packet = incomingPackets.Dequeue();
             sender = packet.Sender;
-            reader = new PacketReader(packet.Data);
+            reader.Reset(packet.Data);
             return packet.Data.Length;
         }
 

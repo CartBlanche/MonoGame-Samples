@@ -20,6 +20,7 @@ namespace Microsoft.Xna.Framework.Net
 
         public void Deserialize(PacketReader reader)
         {
+            // Reader is positioned after the type byte
             SessionId = reader.ReadString();
             HostGamerId = reader.ReadString();
             HostGamertag = reader.ReadString();
