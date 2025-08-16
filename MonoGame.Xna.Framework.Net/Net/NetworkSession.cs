@@ -108,6 +108,19 @@ namespace Microsoft.Xna.Framework.Net
             // Start receive loop for SystemLink sessions
             if (sessionType == NetworkSessionType.SystemLink)
             {
+                // Bind immediately so our endpoint is stable and reachable
+                if (!networkTransport.IsBound)
+                {
+                    try
+                    {
+                        // Try binding to the well-known game port; fall back to ephemeral if taken
+                        (networkTransport as UdpTransport)?.Bind(31338);
+                    }
+                    catch
+                    {
+                        try { networkTransport.Bind(); } catch { }
+                    }
+                }
                 receiveTask = Task.Run(() => ReceiveLoopAsync(cancellationTokenSource.Token));
             }
         }
@@ -520,13 +533,25 @@ namespace Microsoft.Xna.Framework.Net
             }
         }
 
+        /// <summary>
+        /// Internally associates a remote gamer with an endpoint (used by SystemLink join/handshake).
+        /// </summary>
+        internal void RegisterGamerEndpoint(NetworkGamer gamer, IPEndPoint endpoint)
+        {
+            if (gamer == null || endpoint == null) return;
+            lock (lockObject)
+            {
+                gamerEndpoints[gamer.Id] = endpoint;
+            }
+        }
+
         public void AddLocalGamer(SignedInGamer gamer)
         {
             throw new NotImplementedException();
         }
 
 
-        private void AddGamer(NetworkGamer gamer)
+    private void AddGamer(NetworkGamer gamer)
         {
             lock (lockObject)
             {
@@ -589,6 +614,40 @@ namespace Microsoft.Xna.Framework.Net
 
         private void OnMessageReceived(MessageReceivedEventArgs e)
         {
+            if (e.Message is JoinRequestMessage joinRequest)
+            {
+                // Handle join request
+                var newGamer = new NetworkGamer(this, joinRequest.GamerId, isLocal: false, isHost: false, gamertag: joinRequest.Gamertag);
+                AddGamer(newGamer);
+                RegisterGamerEndpoint(newGamer, e.RemoteEndPoint);
+
+                // Send JoinAcceptedMessage back to the sender
+                var joinAccepted = new JoinAcceptedMessage
+                {
+                    SessionId = sessionId,
+                    HostGamerId = Host.Id,
+                    HostGamertag = Host.Gamertag
+                };
+                var writer = new PacketWriter();
+                joinAccepted.Serialize(writer);
+                networkTransport.Send(writer.GetData(), e.RemoteEndPoint);
+            }
+            else if (e.Message is PlayerMoveMessage moveMessage)
+            {
+                // Handle player movement
+                var gamer = gamers.FirstOrDefault(g => g.Id == moveMessage.PlayerId.ToString());
+                if (gamer != null)
+                {
+                    // Update gamer position (mock implementation)
+                    Debug.WriteLine($"Player {gamer.Gamertag} moved to ({moveMessage.X}, {moveMessage.Y}, {moveMessage.Z})");
+
+                    // Broadcast movement to all other gamers
+                    var writer = new PacketWriter();
+                    moveMessage.Serialize(writer);
+                    SendToAll(writer, SendDataOptions.Reliable, gamer);
+                }
+            }
+
             // Raise the MessageReceived event
             var handler = MessageReceived;
             if (handler != null)

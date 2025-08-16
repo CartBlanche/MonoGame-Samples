@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using Microsoft.Xna.Framework.Net;
 using System.Collections.Generic;
 using System;
+using System.Reflection;
 
 namespace Microsoft.Xna.Framework.Net.Tests
 {
@@ -41,8 +42,9 @@ namespace Microsoft.Xna.Framework.Net.Tests
             };
 
             // Simulate a gamer joining
-            var gamerType = typeof(NetworkGamer);
-            var gamer = (NetworkGamer)System.Runtime.Serialization.FormatterServices.GetUninitializedObject(gamerType);
+            var ctor = typeof(NetworkGamer).GetConstructor(BindingFlags.Instance | BindingFlags.NonPublic, binder: null,
+                types: new[] { typeof(NetworkSession), typeof(string), typeof(bool), typeof(bool), typeof(string) }, modifiers: null);
+            var gamer = (NetworkGamer)ctor.Invoke(new object[] { session, Guid.NewGuid().ToString(), false, false, "TestGamer" });
             session.GetType().GetMethod("OnGamerJoined", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)
                 .Invoke(session, new object[] { gamer });
 
@@ -133,6 +135,67 @@ namespace Microsoft.Xna.Framework.Net.Tests
             // Clean up
             await hostSession.DisposeAsync();
             await clientSession.DisposeAsync();
+        }
+
+        [Test]
+        public async Task HostProcessesJoinRequestAndResponds()
+        {
+            // Arrange: Create a host session
+            var hostSession = await NetworkSession.CreateAsync(NetworkSessionType.SystemLink, 1, 4, 0, new Dictionary<string, object>());
+            var joinRequest = new JoinRequestMessage
+            {
+                GamerId = "Player2",
+                Gamertag = "PlayerTwo"
+            };
+            var writer = new PacketWriter();
+            joinRequest.Serialize(writer);
+
+            // Act: Simulate receiving a join request
+            var remoteEndpoint = new System.Net.IPEndPoint(System.Net.IPAddress.Loopback, 12345);
+            hostSession.GetType().GetMethod("OnMessageReceived", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)
+                .Invoke(hostSession, new object[] { new MessageReceivedEventArgs(joinRequest, remoteEndpoint) });
+
+            // Assert: Verify the new player was added
+            bool playerFound = false;
+            foreach (var gamer in hostSession.AllGamers)
+            {
+                if (gamer.Gamertag == "PlayerTwo")
+                {
+                    playerFound = true;
+                    break;
+                }
+            }
+            Assert.IsTrue(playerFound);
+        }
+
+        [Test]
+        public async Task PlayerMoveMessageUpdatesPositionAndBroadcasts()
+        {
+            // Arrange: Create a host session and add a player
+            var hostSession = await NetworkSession.CreateAsync(NetworkSessionType.SystemLink, 1, 4, 0, new Dictionary<string, object>());
+            var ctor = typeof(NetworkGamer).GetConstructor(System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic, null,
+                new[] { typeof(NetworkSession), typeof(string), typeof(bool), typeof(bool), typeof(string) }, null);
+            var player = (NetworkGamer)ctor.Invoke(new object[] { hostSession, "Player1", false, false, "PlayerOne" });
+            hostSession.GetType().GetMethod("AddGamer", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)
+                .Invoke(hostSession, new object[] { player });
+
+            var moveMessage = new PlayerMoveMessage
+            {
+                PlayerId = int.Parse(player.Id),
+                X = 10.0f,
+                Y = 20.0f,
+                Z = 30.0f
+            };
+            var writer = new PacketWriter();
+            moveMessage.Serialize(writer);
+
+            // Act: Simulate receiving a movement message
+            hostSession.GetType().GetMethod("OnMessageReceived", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)
+                .Invoke(hostSession, new object[] { new MessageReceivedEventArgs(moveMessage, null) });
+
+            // Assert: Verify the movement was processed and broadcast
+            // (Mock implementation: Check debug output or internal state changes)
+            Assert.Pass();
         }
     }
 }

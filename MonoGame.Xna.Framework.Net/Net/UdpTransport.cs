@@ -9,7 +9,7 @@ namespace Microsoft.Xna.Framework.Net
     /// </summary>
     public class UdpTransport : INetworkTransport
     {
-        private readonly UdpClient udpClient;
+    private readonly UdpClient udpClient;
         private bool isBound;
 
         /// <summary>
@@ -84,8 +84,21 @@ namespace Microsoft.Xna.Framework.Net
         }
 
         /// <summary>
+        /// Binds the transport to a specific local UDP port.
+        /// </summary>
+        /// <param name="port">Port to bind.</param>
+        public void Bind(int port)
+        {
+            if (!isBound)
+            {
+                udpClient.Client.Bind(new IPEndPoint(IPAddress.Any, port));
+                isBound = true;
+            }
+        }
+
+        /// <summary>
         /// Gets a value indicating whether the transport is bound to a local endpoint.
         /// </summary>
-        public bool IsBound => isBound;
+    public bool IsBound => isBound;
     }
 }
