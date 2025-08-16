@@ -17,7 +17,7 @@
             "type": "coreclr",
             "request": "launch",
             "preLaunchTask": "build-desktopgl",
-            "program": "${workspaceFolder}/Platforms/Desktop/bin/Debug/net8.0/Peer2PeerSample.exe",
+            "program": "${workspaceFolder}/Platforms/Desktop/bin/Debug/net8.0/Peer2PeerSample",
             "args": [],
             "cwd": "${workspaceFolder}/Platforms/Desktop",
             "console": "internalConsole",

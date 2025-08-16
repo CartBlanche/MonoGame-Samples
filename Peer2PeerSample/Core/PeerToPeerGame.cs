@@ -40,9 +40,6 @@ namespace PeerToPeer
 		string errorMessage;
 		Texture2D gamePadTexture;
 
-
-
-
 		public PeerToPeerGame()
 		{
 			graphics = new GraphicsDeviceManager(this);
@@ -58,7 +55,6 @@ namespace PeerToPeer
 			Components.Add(new GamerServicesComponent(this));
 		}
 
-
 		/// <summary>
 		/// Load your content.
 		/// </summary>
@@ -68,7 +64,7 @@ namespace PeerToPeer
 
 			font = Content.Load<SpriteFont>("Font");
 
-#if ANDROID || IPHONE
+#if MOBILE
 			gamePadTexture = Content.Load<Texture2D>("gamepad.png");
 			
 			ThumbStickDefinition thumbStickLeft = new ThumbStickDefinition();
@@ -86,10 +82,6 @@ namespace PeerToPeer
 			GamePad.RightThumbStickDefinition = thumbStickRight;
 #endif
 		}
-
-
-
-
 
 		/// <summary>
 		/// Allows the game to run logic.
@@ -113,7 +105,6 @@ namespace PeerToPeer
 			base.Update(gameTime);
 		}
 
-
 		/// <summary>
 		/// Menu screen provides options to create or join network sessions.
 		/// </summary>
@@ -130,11 +121,11 @@ namespace PeerToPeer
 				else if (IsPressed(Keys.A, Buttons.A))
 				{
 					// Create a new session?
-					CreateSession();
+					CreateSession(NetworkSessionType.SystemLink);
 				}
 				else if (IsPressed(Keys.X, Buttons.X))
 				{
-					CreateLiveSession();
+					CreateSession(NetworkSessionType.PlayerMatch);
 				}
 				else if (IsPressed(Keys.Y, Buttons.Y))
 				{
@@ -148,65 +139,36 @@ namespace PeerToPeer
 			}
 		}
 
-		private void JoinLiveSession()
-		{
-			throw new NotImplementedException();
-		}
-
-		private void CreateLiveSession()
-		{
-			DrawMessage("Creating Live session...");
-
-			try
-			{
-				networkSession = NetworkSession.Create(NetworkSessionType.PlayerMatch,
-							maxLocalGamers, maxGamers);
-
-				HookSessionEvents();
-				//networkSession.AddLocalGamer();
-			}
-			catch (Exception e)
-			{
-				errorMessage = e.Message;
-			}
-		}
-
-
 		/// <summary>
 		/// Starts hosting a new network session.
 		/// </summary>
-		void CreateSession()
+		void CreateSession(NetworkSessionType type)
 		{
-			DrawMessage("Creating session...");
+			DrawMessage($"Creating {type} session...");
 
 			try
 			{
-				networkSession = NetworkSession.Create(NetworkSessionType.SystemLink, maxLocalGamers, maxGamers);
+				networkSession = NetworkSession.Create(type, maxLocalGamers, maxGamers);
 
 				HookSessionEvents();
-				
-				//networkSession.AddLocalGamer();
 			}
 			catch (Exception e)
 			{
 				errorMessage = e.Message;
 			}
 		}
-
 
 		/// <summary>
 		/// Joins an existing network session.
 		/// </summary>
 		void JoinSession(NetworkSessionType type)
 		{
-			DrawMessage("Joining session...");
+			DrawMessage($"Joining {type} session...");
 
 			try
 			{
 				// Search for sessions.
-				using (AvailableNetworkSessionCollection availableSessions =
-				NetworkSession.Find(type,
-						maxLocalGamers, null))
+				using (AvailableNetworkSessionCollection availableSessions = NetworkSession.Find(type, maxLocalGamers, null))
 				{
 					if (availableSessions.Count == 0)
 					{
@@ -226,7 +188,6 @@ namespace PeerToPeer
 			}
 		}
 
-
 		/// <summary>
 		/// After creating or joining a network session, we must subscribe to
 		/// some events so we will be notified when the session changes state.
@@ -236,7 +197,6 @@ namespace PeerToPeer
 			networkSession.GamerJoined += GamerJoinedEventHandler;
 			networkSession.SessionEnded += SessionEndedEventHandler;
 		}
-
 
 		/// <summary>
 		/// This event handler will be called whenever a new gamer joins the session.
@@ -249,7 +209,6 @@ namespace PeerToPeer
 			e.Gamer.Tag = new Tank(gamerIndex, Content, screenWidth, screenHeight);
 		}
 
-
 		/// <summary>
 		/// Event handler notifies us when the network session has ended.
 		/// </summary>
@@ -260,7 +219,6 @@ namespace PeerToPeer
 			networkSession.Dispose();
 			networkSession = null;
 		}
-
 
 		/// <summary>
 		/// Updates the state of the network session, moving the tanks
@@ -289,16 +247,13 @@ namespace PeerToPeer
 			}
 		}
 
-
 		/// <summary>
 		/// Helper for updating a locally controlled gamer.
 		/// </summary>
 		void UpdateLocalGamer(LocalNetworkGamer gamer)
 		{
 			// Look up what tank is associated with this local player.
-			Tank localTank = gamer.Tag as Tank;
-
-			if (localTank != null)
+			if (gamer.Tag is Tank localTank)
 			{
 
 				// Update the tank.
@@ -316,41 +271,33 @@ namespace PeerToPeer
 			}
 		}
 
-
 		/// <summary>
 		/// Helper for reading incoming network packets.
 		/// </summary>
-		void ReadIncomingPackets(LocalNetworkGamer gamer)
+		void ReadIncomingPackets(LocalNetworkGamer localNetworkGamer)
 		{
 			// Keep reading as long as incoming packets are available.
-			while (gamer.IsDataAvailable)
+			while (localNetworkGamer.IsDataAvailable)
 			{
 				NetworkGamer sender;
 
 				// Read a single packet from the network.
-				gamer.ReceiveData(packetReader, out sender);
+				localNetworkGamer.ReceiveData(packetReader, out sender);
 
 				// Discard packets sent by local gamers: we already know their state!
 				if (sender.IsLocal)
 					continue;
 
 				// Look up the tank associated with whoever sent this packet.
-				Tank remoteTank = sender.Tag as Tank;
-				if (remoteTank != null)
+				if (sender.Tag is Tank remoteTank)
 				{
-
 					// Read the state of this tank from the network packet.
 					remoteTank.Position = packetReader.ReadVector2();
 					remoteTank.TankRotation = packetReader.ReadSingle();
 					remoteTank.TurretRotation = packetReader.ReadSingle();
-
 				}
 			}
 		}
-
-
-
-
 
 		/// <summary>
 		/// This is called when the game should draw itself.
@@ -374,7 +321,6 @@ namespace PeerToPeer
 			base.Draw(gameTime);
 		}
 
-
 		/// <summary>
 		/// Draws the startup screen used to create and join network sessions.
 		/// </summary>
@@ -397,7 +343,6 @@ namespace PeerToPeer
 
 			spriteBatch.End();
 		}
-
 
 		/// <summary>
 		/// Draws the state of an active network session.
@@ -434,7 +379,7 @@ namespace PeerToPeer
 				}
 			}
 
-#if ANDROID || IPHONE
+#if MOBILE
 			GamePad.Draw(gameTime, spriteBatch);
 #endif
 
@@ -462,10 +407,6 @@ namespace PeerToPeer
 			EndDraw();
 		}
 
-
-
-
-
 		/// <summary>
 		/// Handles input.
 		/// </summary>
@@ -491,13 +432,13 @@ namespace PeerToPeer
 					if ((currentTouchState[0].Position.X > 60) && (currentTouchState[0].Position.Y > 160)
 					&& (currentTouchState[0].Position.X < 220) && (currentTouchState[0].Position.Y < 190))
 					{
-						CreateSession();
+						CreateSession(NetworkSessionType.SystemLink);
 					}
 
 					if ((currentTouchState[0].Position.X > 60) && (currentTouchState[0].Position.Y > 200)
 					&& (currentTouchState[0].Position.X < 220) && (currentTouchState[0].Position.Y < 230))
 					{
-						CreateLiveSession();
+						CreateSession(NetworkSessionType.PlayerMatch);
 					}
 
 					if ((currentTouchState[0].Position.X > 60) && (currentTouchState[0].Position.Y > 240)
@@ -515,7 +456,6 @@ namespace PeerToPeer
 			}
 
 		}
-
 
 		/// <summary>
 		/// Checks if the specified button is pressed on either keyboard or gamepad.
