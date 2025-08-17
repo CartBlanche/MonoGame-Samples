@@ -7,6 +7,7 @@ using System.Net.Sockets;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework.GamerServices;
+using System.IO;
 
 namespace Microsoft.Xna.Framework.Net
 {
@@ -480,6 +481,15 @@ namespace Microsoft.Xna.Framework.Net
             {
                 sessionState = NetworkSessionState.Playing;
                 OnGameStarted();
+
+                // Host should notify others that the game started
+                if (IsHost)
+                {
+                    var msg = new GameStateChangeMessage { Kind = GameStateChangeKind.Started };
+                    var writer = new PacketWriter();
+                    msg.Serialize(writer);
+                    SendToAll(writer, SendDataOptions.Reliable);
+                }
             }
         }
 
@@ -492,6 +502,14 @@ namespace Microsoft.Xna.Framework.Net
             {
                 sessionState = NetworkSessionState.Lobby;
                 OnGameEnded();
+
+                if (IsHost)
+                {
+                    var msg = new GameStateChangeMessage { Kind = GameStateChangeKind.Ended };
+                    var writer = new PacketWriter();
+                    msg.Serialize(writer);
+                    SendToAll(writer, SendDataOptions.Reliable);
+                }
             }
         }
 
@@ -500,118 +518,38 @@ namespace Microsoft.Xna.Framework.Net
         /// </summary>
         internal void NotifyReadinessChanged(NetworkGamer gamer)
         {
-            // Send readiness update to other players
+            if (gamer == null) return;
+
+            // Build message once
+            var msg = new ReadinessUpdateMessage { GamerId = gamer.Id, IsReady = gamer.IsReady };
+            var writer = new PacketWriter();
+            msg.Serialize(writer);
+
             if (IsHost)
             {
-                var writer = new PacketWriter();
-                writer.Write("ReadinessUpdate");
-                writer.Write(gamer.Id);
-                writer.Write(gamer.IsReady);
+                // Host applies locally and broadcasts to all others
+                ApplyReadinessUpdate(msg);
                 SendToAll(writer, SendDataOptions.Reliable, gamer);
             }
-        }
-
-        /// <summary>
-        /// Sends data to a specific gamer.
-        /// </summary>
-        internal void SendDataToGamer(NetworkGamer gamer, PacketWriter writer, SendDataOptions options)
-        {
-            SendDataToGamer(gamer, writer.GetData(), options);
-        }
-
-        internal void SendDataToGamer(NetworkGamer gamer, byte[] data, SendDataOptions options)
-        {
-            if (gamerEndpoints.TryGetValue(gamer.Id, out IPEndPoint endpoint))
+            else
             {
-                try
+                // Client sends to host only
+                var host = gamers.FirstOrDefault(g => g.IsHost);
+                if (host != null)
                 {
-                    networkTransport.Send(data, endpoint);
-                }
-                catch (Exception ex)
-                {
-                    Debug.WriteLine($"Failed to send data to {gamer.Gamertag}: {ex.Message}");
+                    SendDataToGamer(host, writer.GetData(), SendDataOptions.Reliable);
                 }
             }
         }
 
-        /// <summary>
-        /// Internally associates a remote gamer with an endpoint (used by SystemLink join/handshake).
-        /// </summary>
-        internal void RegisterGamerEndpoint(NetworkGamer gamer, IPEndPoint endpoint)
+        private void ApplyReadinessUpdate(ReadinessUpdateMessage update)
         {
-            if (gamer == null || endpoint == null) return;
-            lock (lockObject)
+            if (update == null) return;
+            var target = gamers.FirstOrDefault(g => g.Id == update.GamerId);
+            if (target != null)
             {
-                gamerEndpoints[gamer.Id] = endpoint;
-            }
-        }
-
-        public void AddLocalGamer(SignedInGamer gamer)
-        {
-            throw new NotImplementedException();
-        }
-
-
-        private void AddGamer(NetworkGamer gamer)
-        {
-            lock (lockObject)
-            {
-                gamers.Add(gamer);
-            }
-            OnGamerJoined(gamer);
-        }
-
-        private void RemoveGamer(NetworkGamer gamer)
-        {
-            lock (lockObject)
-            {
-                gamers.Remove(gamer);
-                gamerEndpoints.Remove(gamer.Id);
-            }
-            OnGamerLeft(gamer);
-        }
-
-        // Modern async receive loop for SystemLink
-        private async Task ReceiveLoopAsync(CancellationToken cancellationToken)
-        {
-            while (!cancellationToken.IsCancellationRequested)
-            {
-                try
-                {
-                    // Ensure the network transport is bound before receiving data
-                    if (!networkTransport.IsBound)
-                    {
-                        networkTransport.Bind();
-                    }
-
-                    var (data, senderEndpoint) = await networkTransport.ReceiveAsync();
-                    if (data.Length > 0)
-                    {
-                        NetworkGamer senderGamer = null;
-                        lock (lockObject)
-                        {
-                            senderGamer = gamers.FirstOrDefault(g => gamerEndpoints.TryGetValue(g.Id, out var ep) && ep.Equals(senderEndpoint));
-                        }
-
-                        if (senderGamer != null)
-                        {
-                            // Deliver to the local gamer’s inbox with correct sender, matching XNA ReceiveData semantics
-                            NetworkGamer.LocalGamer?.EnqueueIncomingPacket(data, senderGamer);
-                        }
-
-                        // Parse message: first byte is the type id, advance reader before Deserialize
-                        var reader = new PacketReader(data);
-                        var typeId = reader.ReadByte();
-                        var message = NetworkMessageRegistry.CreateMessage(typeId);
-                        message?.Deserialize(reader);
-                        OnMessageReceived(new MessageReceivedEventArgs(message, senderEndpoint));
-                    }
-                }
-                catch (ObjectDisposedException) { break; }
-                catch (Exception ex)
-                {
-                    Debug.WriteLine($"ReceiveLoop error: {ex.Message}");
-                }
+                // Set without re-notifying session for remote gamers
+                target.IsReady = update.IsReady;
             }
         }
 
@@ -676,6 +614,38 @@ namespace Microsoft.Xna.Framework.Net
                         moveMessage.Serialize(writer);
                         SendToAll(writer, SendDataOptions.Reliable, sourceGamer);
                     }
+                }
+            }
+            else if (e.Message is ReadinessUpdateMessage readiness)
+            {
+                // Apply update and, if host, rebroadcast to others
+                ApplyReadinessUpdate(readiness);
+                if (IsHost)
+                {
+                    var writer = new PacketWriter();
+                    readiness.Serialize(writer);
+
+                    // Determine sender gamer from endpoint mapping (if available)
+                    NetworkGamer sourceGamer = null;
+                    lock (lockObject)
+                    {
+                        if (e.RemoteEndPoint != null)
+                            sourceGamer = gamers.FirstOrDefault(g => gamerEndpoints.TryGetValue(g.Id, out var ep) && ep.Equals(e.RemoteEndPoint));
+                    }
+                    SendToAll(writer, SendDataOptions.Reliable, sourceGamer);
+                }
+            }
+            else if (e.Message is GameStateChangeMessage stateChange)
+            {
+                if (stateChange.Kind == GameStateChangeKind.Started)
+                {
+                    sessionState = NetworkSessionState.Playing;
+                    OnGameStarted();
+                }
+                else if (stateChange.Kind == GameStateChangeKind.Ended)
+                {
+                    sessionState = NetworkSessionState.Lobby;
+                    OnGameEnded();
                 }
             }
 
@@ -845,6 +815,108 @@ namespace Microsoft.Xna.Framework.Net
                 foreach (var gamer in gamers/*.Where(g => !g.IsLocal && !g.IsReady)*/)
                 {
                     gamerJoined?.Invoke(this, new GamerJoinedEventArgs(gamer));
+                }
+            }
+        }
+
+        private void AddGamer(NetworkGamer gamer)
+        {
+            if (gamer == null) return;
+            lock (lockObject)
+            {
+                gamers.Add(gamer);
+            }
+            OnGamerJoined(gamer);
+        }
+
+        private void RemoveGamer(NetworkGamer gamer)
+        {
+            if (gamer == null) return;
+            lock (lockObject)
+            {
+                gamers.Remove(gamer);
+                gamerEndpoints.Remove(gamer.Id);
+            }
+            OnGamerLeft(gamer);
+        }
+
+        /// <summary>
+        /// Sends data to a specific gamer.
+        /// </summary>
+        internal void SendDataToGamer(NetworkGamer gamer, PacketWriter writer, SendDataOptions options)
+        {
+            if (gamer == null || writer == null) return;
+            SendDataToGamer(gamer, writer.GetData(), options);
+        }
+
+        internal void SendDataToGamer(NetworkGamer gamer, byte[] data, SendDataOptions options)
+        {
+            if (gamer == null || data == null) return;
+            if (gamerEndpoints.TryGetValue(gamer.Id, out IPEndPoint endpoint))
+            {
+                try
+                {
+                    networkTransport.Send(data, endpoint);
+                }
+                catch (Exception ex)
+                {
+                    Debug.WriteLine($"Failed to send data to {gamer.Gamertag}: {ex.Message}");
+                }
+            }
+        }
+
+        /// <summary>
+        /// Internally associates a remote gamer with an endpoint (used by SystemLink join/handshake).
+        /// </summary>
+        internal void RegisterGamerEndpoint(NetworkGamer gamer, IPEndPoint endpoint)
+        {
+            if (gamer == null || endpoint == null) return;
+            lock (lockObject)
+            {
+                gamerEndpoints[gamer.Id] = endpoint;
+            }
+        }
+
+        // Modern async receive loop for SystemLink
+        private async Task ReceiveLoopAsync(CancellationToken cancellationToken)
+        {
+            while (!cancellationToken.IsCancellationRequested)
+            {
+                try
+                {
+                    // Ensure the network transport is bound before receiving data
+                    if (!networkTransport.IsBound)
+                    {
+                        networkTransport.Bind();
+                    }
+
+                    var (data, senderEndpoint) = await networkTransport.ReceiveAsync();
+                    if (data.Length > 0)
+                    {
+                        NetworkGamer senderGamer = null;
+                        lock (lockObject)
+                        {
+                            senderGamer = gamers.FirstOrDefault(g => gamerEndpoints.TryGetValue(g.Id, out var ep) && ep.Equals(senderEndpoint));
+                        }
+
+                        if (senderGamer != null)
+                        {
+                            // Deliver to the local gamer’s inbox with correct sender, matching XNA ReceiveData semantics
+                            NetworkGamer.LocalGamer?.EnqueueIncomingPacket(data, senderGamer);
+                        }
+
+                        // Parse message: first byte is the type id
+                        var reader = new PacketReader(data);
+                        var typeId = reader.ReadByte();
+                        var message = NetworkMessageRegistry.CreateMessage(typeId);
+                        message?.Deserialize(reader);
+                        OnMessageReceived(new MessageReceivedEventArgs(message, senderEndpoint));
+                    }
+                }
+                catch (ObjectDisposedException) { break; }
+                catch (Exception ex)
+                {
+                    Debug.WriteLine($"ReceiveLoop error: {ex.Message}");
                 }
             }
         }

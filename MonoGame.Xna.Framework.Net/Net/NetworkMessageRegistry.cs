@@ -34,6 +34,8 @@ namespace Microsoft.Xna.Framework.Net
         {
             Register<JoinRequestMessage>(2);
             Register<JoinAcceptedMessage>(3);
+            Register<ReadinessUpdateMessage>(4);
+            Register<GameStateChangeMessage>(5);
         }
     }
 }
