@@ -34,10 +34,7 @@ namespace NetworkStateManagement
         Random random = new Random();
 
         float pauseAlpha;
-
-
-
-
+        
         /// <summary>
         /// The logic for deciding whether the game is paused depends on whether
         /// this is a networked or single player game. If we are in a network session,
@@ -63,10 +60,6 @@ namespace NetworkStateManagement
             }
         }
 
-
-
-
-
         /// <summary>
         /// Constructor.
         /// </summary>
@@ -77,7 +70,6 @@ namespace NetworkStateManagement
             TransitionOnTime = TimeSpan.FromSeconds(1.5);
             TransitionOffTime = TimeSpan.FromSeconds(0.5);
         }
-
 
         /// <summary>
         /// Load graphics content for the game.
@@ -100,7 +92,6 @@ namespace NetworkStateManagement
             ScreenManager.Game.ResetElapsedTime();
         }
 
-
         /// <summary>
         /// Unload graphics content used by the game.
         /// </summary>
@@ -108,10 +99,6 @@ namespace NetworkStateManagement
         {
             content.Unload();
         }
-
-
-
-
 
         /// <summary>
         /// Updates the state of the game.
@@ -156,7 +143,6 @@ namespace NetworkStateManagement
             }
         }
 
-
         /// <summary>
         /// Lets the game respond to player input. Unlike the Update method,
         /// this will only be called when the gameplay screen is active.
@@ -184,7 +170,6 @@ namespace NetworkStateManagement
                 }
             }
         }
-
 
         /// <summary>
         /// Handles input for the specified player. In local game modes, this is called
@@ -240,7 +225,6 @@ namespace NetworkStateManagement
             return true;
         }
 
-
         /// <summary>
         /// Draws the gameplay screen.
         /// </summary>
@@ -277,7 +261,5 @@ namespace NetworkStateManagement
                 ScreenManager.FadeBackBufferToBlack(alpha);
             }
         }
-
-
     }
 }

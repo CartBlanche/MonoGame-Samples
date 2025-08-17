@@ -30,9 +30,6 @@ namespace NetworkStateManagement
 		Texture2D isTalkingTexture;
 		Texture2D voiceMutedTexture;
 
-
-
-
 		/// <summary>
 		/// Constructs a new lobby screen.
 		/// </summary>
@@ -44,7 +41,6 @@ namespace NetworkStateManagement
 			TransitionOffTime = TimeSpan.FromSeconds(0.5);
 
 		}
-
 
 		/// <summary>
 		/// Loads graphics content used by the lobby screen.
@@ -58,10 +54,6 @@ namespace NetworkStateManagement
 			isTalkingTexture = content.Load<Texture2D>("chat_talking");
 			voiceMutedTexture = content.Load<Texture2D>("chat_mute");
 		}
-
-
-
-
 
 		/// <summary>
 		/// Updates the lobby screen.
@@ -91,7 +83,6 @@ namespace NetworkStateManagement
 			}
 		}
 
-
 		/// <summary>
 		/// Handles user input for all the local gamers in the session. Unlike most
 		/// screens, which use the InputState class to combine input data from all
@@ -117,7 +108,6 @@ namespace NetworkStateManagement
 			}
 		}
 
-
 		/// <summary>
 		/// Handle MenuSelect inputs by marking ourselves as ready.
 		/// </summary>
@@ -142,7 +132,6 @@ namespace NetworkStateManagement
 			}
 		}
 
-
 		/// <summary>
 		/// Event handler for when the host selects ok on the "are you sure
 		/// you want to start even though not everyone is ready" message box.
@@ -154,7 +143,6 @@ namespace NetworkStateManagement
 				networkSession.StartGame();
 			}
 		}
-
 
 		/// <summary>
 		/// Handle MenuCancel inputs by clearing our ready status, or if it is
@@ -174,10 +162,6 @@ namespace NetworkStateManagement
 			}
 		}
 
-
-
-
-
 		/// <summary>
 		/// Draws the lobby screen.
 		/// </summary>
@@ -186,7 +170,7 @@ namespace NetworkStateManagement
 			SpriteBatch spriteBatch = ScreenManager.SpriteBatch;
 			SpriteFont font = ScreenManager.Font;
 
-			Vector2 position = new Vector2(100, 150);
+			Vector2 position = new Vector2(50, 100);
 
 			// Make the lobby slide into place during transitions.
 			float transitionOffset = (float)Math.Pow(TransitionPosition, 2);
@@ -219,7 +203,7 @@ namespace NetworkStateManagement
 			// Draw the screen title.
 			string title = Resources.Lobby;
 
-			Vector2 titlePosition = new Vector2(533, 80);
+			Vector2 titlePosition = new Vector2(100, 80);
 			Vector2 titleOrigin = font.MeasureString(title) / 2;
 			Color titleColor = new Color(192, 192, 192) * TransitionAlpha;
 			float titleScale = 1.25f;
@@ -231,7 +215,6 @@ namespace NetworkStateManagement
 
 			spriteBatch.End();
 		}
-
 
 		/// <summary>
 		/// Helper draws the gamertag and status icons for a single NetworkGamer.
@@ -283,7 +266,5 @@ namespace NetworkStateManagement
 			spriteBatch.DrawString(font, text, position + iconWidth * 2,
 				color * TransitionAlpha);
 		}
-
-
 	}
 }

@@ -22,6 +22,8 @@ namespace NetworkStateManagement
 	/// </summary>
 	public class NetworkStateManagementGame : Game
 	{
+		const int screenWidth = 480;
+		const int screenHeight = 540;
 
 		GraphicsDeviceManager graphics;
 		ScreenManager screenManager;
@@ -30,17 +32,14 @@ namespace NetworkStateManagement
 		// By preloading any assets used by UI rendering, we avoid framerate glitches
 		// when they suddenly need to be loaded in the middle of a menu transition.
 		static readonly string[] preloadAssets =
-	{
-		"gradient",
-		"cat",
-		"chat_ready",
-		"chat_able",
-		"chat_talking",
-		"chat_mute",
-	};
-
-
-
+		{
+			"gradient",
+			"cat",
+			"chat_ready",
+			"chat_able",
+			"chat_talking",
+			"chat_mute",
+		};
 
 		/// <summary>
 		/// The main game constructor.
@@ -53,8 +52,8 @@ namespace NetworkStateManagement
 #if MOBILE
 			graphics.IsFullScreen = true;
 #endif
-			graphics.PreferredBackBufferWidth = 1067;
-			graphics.PreferredBackBufferHeight = 600;
+			graphics.PreferredBackBufferWidth = screenWidth;
+			graphics.PreferredBackBufferHeight = screenHeight;
 
 			// Create components.
 			screenManager = new ScreenManager(this);
@@ -76,7 +75,6 @@ namespace NetworkStateManagement
 			// Guide.SimulateTrialMode = true;
 		}
 
-
 		/// <summary>
 		/// Loads graphics content.
 		/// </summary>
@@ -87,10 +85,6 @@ namespace NetworkStateManagement
 				Content.Load<object>(asset);
 			}
 		}
-
-
-
-
 
 		/// <summary>
 		/// This is called when the game should draw itself.
@@ -105,5 +99,4 @@ namespace NetworkStateManagement
 
 
 	}
-
 }
