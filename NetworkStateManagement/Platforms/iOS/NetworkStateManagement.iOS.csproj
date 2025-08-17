@@ -3,7 +3,7 @@
     <OutputType>Exe</OutputType>
     <TargetFramework>net8.0-ios</TargetFramework>
     <RootNamespace>NetworkStateManagement</RootNamespace>
-    <AssemblyName>NetworkStateManagement.iOS</AssemblyName>
+    <AssemblyName>NetworkStateManagement</AssemblyName>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <AssemblyTitle>NetworkStateManagement</AssemblyTitle>
     <AssemblyDescription></AssemblyDescription>

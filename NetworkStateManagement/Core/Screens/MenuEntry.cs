@@ -103,7 +103,7 @@ namespace NetworkStateManagement
         {
             // there is no such thing as a selected item on Windows Phone, so we always
             // force isSelected to be false
-#if WINDOWS_PHONE
+#if MOBILE
             isSelected = false;
 #endif
 
@@ -126,7 +126,7 @@ namespace NetworkStateManagement
         {
             // there is no such thing as a selected item on Windows Phone, so we always
             // force isSelected to be false
-#if WINDOWS_PHONE
+#if MOBILE
             isSelected = false;
 #endif
 

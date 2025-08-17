@@ -90,7 +90,7 @@ namespace NetworkStateManagement
 
 				// Activate the network busy screen, which will display
 				// an animation until this operation has completed.
-				NetworkBusyScreen busyScreen = new NetworkBusyScreen(networkSession);
+				NetworkBusyScreen<NetworkSession> busyScreen = new NetworkBusyScreen<NetworkSession>(networkSession);
 
 				busyScreen.OperationCompleted += CreateSessionOperationCompleted;
 
@@ -158,7 +158,7 @@ namespace NetworkStateManagement
 
 				// Activate the network busy screen, which will display
 				// an animation until this operation has completed.
-				NetworkBusyScreen busyScreen = new NetworkBusyScreen(availableNetworkSessions);
+				NetworkBusyScreen<AvailableNetworkSessionCollection> busyScreen = new NetworkBusyScreen<AvailableNetworkSessionCollection>(availableNetworkSessions);
 
 				busyScreen.OperationCompleted += FindSessionsOperationCompleted;
 
@@ -177,8 +177,7 @@ namespace NetworkStateManagement
 		/// Event handler for when the asynchronous find network sessions
 		/// operation has completed.
 		/// </summary>
-		void FindSessionsOperationCompleted(object sender,
-					OperationCompletedEventArgs e)
+		void FindSessionsOperationCompleted(object sender, OperationCompletedEventArgs e)
 		{
 			GameScreen nextScreen;
 

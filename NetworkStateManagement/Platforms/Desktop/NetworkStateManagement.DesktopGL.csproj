@@ -3,7 +3,7 @@
     <OutputType>Exe</OutputType>
     <TargetFramework>net8.0</TargetFramework>
     <RootNamespace>NetworkStateManagement</RootNamespace>
-    <AssemblyName>NetworkStateManagement.DesktopGL</AssemblyName>
+    <AssemblyName>NetworkStateManagement</AssemblyName>
     <GenerateAssemblyInfo>true</GenerateAssemblyInfo>
     <AssemblyTitle>NetworkStateManagement</AssemblyTitle>
     <AssemblyDescription></AssemblyDescription>

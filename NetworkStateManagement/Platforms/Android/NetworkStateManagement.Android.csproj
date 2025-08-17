@@ -3,7 +3,7 @@
     <OutputType>Exe</OutputType>
     <TargetFramework>net8.0-android</TargetFramework>
     <RootNamespace>NetworkStateManagement</RootNamespace>
-    <AssemblyName>NetworkStateManagement.Android</AssemblyName>
+    <AssemblyName>NetworkStateManagement</AssemblyName>
     <GenerateAssemblyInfo>true</GenerateAssemblyInfo>
     <AssemblyTitle>NetworkStateManagement</AssemblyTitle>
     <AssemblyDescription></AssemblyDescription>
@@ -16,7 +16,7 @@
     <FileVersion>1.0.0.0</FileVersion>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="MonoGame.Framework.Android" Version="3.8.*" />
+    <PackageReference Include="MonoGame.Framework.Android" Version="3.8.*"/>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Core\NetworkStateManagement.Core.csproj" />

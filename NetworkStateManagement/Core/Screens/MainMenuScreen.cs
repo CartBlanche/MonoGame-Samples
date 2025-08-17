@@ -26,20 +26,20 @@ namespace NetworkStateManagement
 		{
 			// Create our menu entries.
 			MenuEntry singlePlayerMenuEntry = new MenuEntry(Resources.SinglePlayer);
-			MenuEntry liveMenuEntry = new MenuEntry(Resources.PlayerMatch);
+			// TODO MenuEntry liveMenuEntry = new MenuEntry(Resources.PlayerMatch);
 			MenuEntry systemLinkMenuEntry = new MenuEntry(Resources.SystemLink);
 			MenuEntry exitMenuEntry = new MenuEntry(Resources.Exit);
 
 			// Hook up menu event handlers.
 			singlePlayerMenuEntry.Selected += SinglePlayerMenuEntrySelected;
-			liveMenuEntry.Selected += LiveMenuEntrySelected;
+			// TODO liveMenuEntry.Selected += LiveMenuEntrySelected;
 			systemLinkMenuEntry.Selected += SystemLinkMenuEntrySelected;
 			exitMenuEntry.Selected += OnCancel;
 
 			// Add entries to the menu.
-			MenuEntries.Add(singlePlayerMenuEntry);
-			MenuEntries.Add(liveMenuEntry);
+			// TODO MenuEntries.Add(liveMenuEntry);
 			MenuEntries.Add(systemLinkMenuEntry);
+			MenuEntries.Add(singlePlayerMenuEntry);
 			MenuEntries.Add(exitMenuEntry);
 		}
 

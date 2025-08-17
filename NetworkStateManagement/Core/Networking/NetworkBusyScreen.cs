@@ -9,39 +9,45 @@ using System;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
+using System.Threading.Tasks;
+using Microsoft.Xna.Framework.Input;
 
 
 namespace NetworkStateManagement
 {
 	/// <summary>
 	/// When an asynchronous network operation (for instance searching for or joining a
-	/// session) is in progress, we want to display some sort of busy indicator to let
-	/// the user know the game hasn't just locked up. We also want to make sure they
-	/// can't pick some other menu option before the current operation has finished.
-	/// This screen takes care of both requirements in a single stroke. It monitors
-	/// the IAsyncResult returned by an asynchronous network call, displaying a busy
-	/// indicator for as long as the call is still in progress. When it notices the
-	/// IAsyncResult has completed, it raises an event to let the game know it should
-	/// proceed to the next step, after which the busy screen automatically goes away.
-	/// Because this screen is on top of all others for as long as the asynchronous
-	/// operation is in progress, it automatically takes over all user input,
-	/// preventing any other menu entries being selected until the operation completes.
+	/// session) is in progress, this screen displays a busy indicator and blocks input.
+	/// It monitors a Task&lt;T&gt; returned by the async call, showing the indicator while
+	/// the task is running. When the task completes, it raises an event with the
+	/// operation result (or null on failure), then automatically dismisses itself.
+	/// Because this screen sits on top while the async operation is in progress, it
+	/// captures all user input to prevent interaction with underlying screens until
+	/// the operation completes.
 	/// </summary>
-	class NetworkBusyScreen : GameScreen
+	class NetworkBusyScreen<T> : GameScreen
 	{
-
-		IAsyncResult asyncResult;
+		readonly Task<T> task;
+		readonly System.Threading.CancellationTokenSource cts;
+		bool completionRaised;
 		Texture2D gradientTexture;
 		Texture2D catTexture;
 
-		public event EventHandler<OperationCompletedEventArgs> OperationCompleted;
+		event EventHandler<OperationCompletedEventArgs> operationCompleted;
+		public event EventHandler<OperationCompletedEventArgs> OperationCompleted
+		{
+			add { operationCompleted += value; }
+			remove { operationCompleted -= value; }
+		}
 
 		/// <summary>
 		/// Constructs a network busy screen for the specified asynchronous operation.
+		/// Accepts a Task&lt;T&gt; representing the in-flight operation.
 		/// </summary>
-		public NetworkBusyScreen(IAsyncResult asyncResult)
+		public NetworkBusyScreen(Task<T> task)
 		{
-			this.asyncResult = asyncResult;
+			this.task = task;
+			this.cts = null;
 
 			IsPopup = true;
 
@@ -49,6 +55,19 @@ namespace NetworkStateManagement
 			TransitionOffTime = TimeSpan.FromSeconds(0.2);
 		}
 
+		/// <summary>
+		/// Overload that accepts a CancellationTokenSource to allow user cancellation.
+		/// </summary>
+		public NetworkBusyScreen(Task<T> task, System.Threading.CancellationTokenSource cts)
+		{
+			this.task = task;
+			this.cts = cts;
+
+			IsPopup = true;
+
+			TransitionOnTime = TimeSpan.FromSeconds(0.1);
+			TransitionOffTime = TimeSpan.FromSeconds(0.2);
+		}
 
 		/// <summary>
 		/// Loads graphics content for this screen. This uses the shared ContentManager
@@ -64,34 +83,59 @@ namespace NetworkStateManagement
 			catTexture = content.Load<Texture2D>("cat");
 		}
 
-
-
-
-
 		/// <summary>
-		/// Updates the NetworkBusyScreen.
+		/// Updates the NetworkBusyScreen, checking whether the underlying Task has
+		/// completed and raising OperationCompleted when it does.
 		/// </summary>
 		public override void Update(GameTime gameTime, bool otherScreenHasFocus,
 							bool coveredByOtherScreen)
 		{
 			base.Update(gameTime, otherScreenHasFocus, coveredByOtherScreen);
 
-			// Has our asynchronous operation completed?
-			if ((asyncResult != null) && asyncResult.IsCompleted)
+			// Optional: allow user to cancel (Esc or B)
+			if (!completionRaised && cts != null)
 			{
-				// If so, raise the OperationCompleted event.
-				if (OperationCompleted != null)
+				var kb = Keyboard.GetState();
+				if (kb.IsKeyDown(Keys.Escape))
 				{
-					OperationCompleted(this,
-					new OperationCompletedEventArgs(asyncResult));
+					cts.Cancel();
+				}
+				var gp = GamePad.GetState(PlayerIndex.One);
+				if (gp.IsConnected && gp.IsButtonDown(Buttons.B))
+				{
+					cts.Cancel();
+				}
+			}
+
+			// Has our asynchronous operation completed?
+			if (!completionRaised && task != null && task.IsCompleted)
+			{
+				object resultObject = default(T);
+				Exception error = null;
+				try
+				{
+					// Accessing Result will throw if the task faulted/canceled.
+					// We catch here and allow handlers to present error UI.
+					resultObject = task.Result;
+				}
+				catch (Exception ex)
+				{
+					// Leave result as default (usually null) to signal failure to handlers.
+					error = (task?.Exception?.GetBaseException()) ?? ex;
 				}
 
-				ExitScreen();
+				var handler = operationCompleted;
+				if (handler != null)
+				{
+					handler(this, new OperationCompletedEventArgs(resultObject, error));
+				}
 
-				asyncResult = null;
+				completionRaised = true;
+				// Clear handlers to avoid reentry if this screen lingers during transition off
+				operationCompleted = null;
+				ExitScreen();
 			}
 		}
-
 
 		/// <summary>
 		/// Draws the NetworkBusyScreen.
@@ -148,7 +192,5 @@ namespace NetworkStateManagement
 
 			spriteBatch.End();
 		}
-
-
 	}
 }

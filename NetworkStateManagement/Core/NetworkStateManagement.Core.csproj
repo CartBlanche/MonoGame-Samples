@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
-    <RootNamespace>NetworkStateManagement.Core</RootNamespace>
+    <RootNamespace>NetworkStateManagement</RootNamespace>
     <AssemblyName>NetworkStateManagement.Core</AssemblyName>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
   </PropertyGroup>

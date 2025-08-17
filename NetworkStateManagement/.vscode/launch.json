@@ -16,7 +16,7 @@
       "type": "coreclr",
       "request": "launch",
       "preLaunchTask": "build-desktopgl",
-      "program": "${workspaceFolder}/Platforms/Desktop/bin/Debug/net8.0/NetworkStateManagement.exe",
+      "program": "${workspaceFolder}/Platforms/Desktop/bin/Debug/net8.0/NetworkStateManagement",
       "args": [],
       "cwd": "${workspaceFolder}/Platforms/Desktop",
       "stopAtEntry": false
@@ -26,7 +26,7 @@
       "type": "coreclr",
       "request": "launch",
       "preLaunchTask": "build-android",
-      "program": "${workspaceFolder}/Platforms/Android/bin/Debug/net8.0-android/NetworkStateManagement.Android.dll",
+      "program": "${workspaceFolder}/Platforms/Android/bin/Debug/net8.0-android/NetworkStateManagement.dll",
       "args": [],
       "cwd": "${workspaceFolder}/Platforms/Android",
       "stopAtEntry": false
@@ -36,7 +36,7 @@
       "type": "coreclr",
       "request": "launch",
       "preLaunchTask": "build-ios",
-      "program": "${workspaceFolder}/Platforms/iOS/bin/Debug/net8.0-ios/NetworkStateManagement.iOS.dll",
+      "program": "${workspaceFolder}/Platforms/iOS/bin/Debug/net8.0-ios/NetworkStateManagement.dll",
       "args": [],
       "cwd": "${workspaceFolder}/Platforms/iOS",
       "stopAtEntry": false

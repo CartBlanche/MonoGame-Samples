@@ -45,11 +45,7 @@ namespace NetworkStateManagement
 		/// <summary>
 		/// The main game constructor.
 		/// </summary>		
-#if ANDROID
-		public NetworkStateManagementGame  (Activity activity) : base (activity)
-#else
 		public NetworkStateManagementGame()
-#endif
 		{
 			Content.RootDirectory = "Content";
 
