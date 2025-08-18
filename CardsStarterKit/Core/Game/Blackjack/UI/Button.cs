@@ -146,7 +146,7 @@ namespace Blackjack
                 {
                     isPressed = true;
 
-                    if (UIUtilty.IsMobile)
+                    if (UIUtility.IsMobile)
                     {
                         FireClick();
                         isPressed = false;

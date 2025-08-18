@@ -37,12 +37,12 @@ namespace Blackjack
 
             Content.RootDirectory = "Content";
 
-            if (UIUtilty.IsMobile)
+            if (UIUtility.IsMobile)
             {
                 graphicsDeviceManager.IsFullScreen = true;
                 IsMouseVisible = false;
             }
-            else if (UIUtilty.IsDesktop)
+            else if (UIUtility.IsDesktop)
             {
                 graphicsDeviceManager.IsFullScreen = false;
                 IsMouseVisible = true;
