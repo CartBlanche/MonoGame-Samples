@@ -115,7 +115,7 @@ namespace CatapultGame
 
             computer = new AI(ScreenManager.Game, ScreenManager.SpriteBatch);
             computer.Initialize();
-            computer.Name = "Phone";
+            computer.Name = "AI";
 
             // Identify enemies
             player.Enemy = computer;
