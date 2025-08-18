@@ -9,10 +9,8 @@ using System;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
-using CatapultGame;
-using Microsoft.Xna.Framework.Input.Touch;
 
-namespace GameStateManagement
+namespace CatapultGame
 {
     /// <summary>
     /// A popup message box screen, used to display "are you sure?"
@@ -47,8 +45,6 @@ namespace GameStateManagement
         /// </summary>
         public MessageBoxScreen(string message, bool includeUsageText)
         {
-			EnabledGestures = GestureType.Tap;
-			
             if (includeUsageText)
                 this.message = message + Resources.MessageBoxUsage;
             else
@@ -106,19 +102,6 @@ namespace GameStateManagement
 
                 ExitScreen();
             }
-			if (input.Gestures.Count > 0)
-			{
-				foreach(var g in input.Gestures)
-				{
-					if (g.GestureType == Microsoft.Xna.Framework.Input.Touch.GestureType.Tap)
-					{
-						if (Accepted != null)
-                           Accepted(this, new PlayerIndexEventArgs(playerIndex));
-
-                        ExitScreen();
-					}
-				}
-			}
         }
 
 

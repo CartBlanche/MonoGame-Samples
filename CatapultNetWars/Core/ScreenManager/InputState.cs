@@ -11,7 +11,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Input.Touch;
 
-namespace GameStateManagement
+namespace CatapultGame
 {
 	/// <summary>
 	/// Helper for reading input from keyboard, gamepad, and touch input. This class 
@@ -63,7 +63,7 @@ namespace GameStateManagement
 				LastKeyboardStates [i] = CurrentKeyboardStates [i];
 				LastGamePadStates [i] = CurrentGamePadStates [i];
 
-				CurrentKeyboardStates [i] = Keyboard.GetState ((PlayerIndex)i);
+				CurrentKeyboardStates [i] = Keyboard.GetState ();
 				CurrentGamePadStates [i] = GamePad.GetState ((PlayerIndex)i);
 
 				// Keep track of whether a gamepad has ever been

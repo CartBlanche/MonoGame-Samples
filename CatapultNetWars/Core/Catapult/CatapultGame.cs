@@ -16,8 +16,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Input.Touch;
 using Microsoft.Xna.Framework.Media;
-//using Microsoft.Xna.Framework.Net; // Not available in MonoGame 3.8
-using GameStateManagement;
+using Microsoft.Xna.Framework.Net;
 
 namespace CatapultGame
 {
@@ -26,7 +25,7 @@ namespace CatapultGame
 	/// </summary>
 	public class CatapultGame : Game
 	{
-		GraphicsDeviceManager graphics;
+		GraphicsDeviceManager graphicsDeviceManager;
 		ScreenManager screenManager;
 
 		// By preloading any assets used by UI rendering, we avoid framerate glitches
@@ -41,37 +40,49 @@ namespace CatapultGame
 			"chat_mute",
 		};
 
-		public CatapultGame ()
+		public CatapultGame()
 		{
-			graphics = new GraphicsDeviceManager (this);
+			graphicsDeviceManager = new GraphicsDeviceManager(this);
 			//graphics.SynchronizeWithVerticalRetrace = false;
+
+			graphicsDeviceManager.PreferredBackBufferHeight = 480;
+			graphicsDeviceManager.PreferredBackBufferWidth = 800;
+
+			if (UIUtility.IsMobile)
+			{
+				graphicsDeviceManager.IsFullScreen = true;
+				IsMouseVisible = false;
+			}
+			else if (UIUtility.IsDesktop)
+			{
+				graphicsDeviceManager.IsFullScreen = false;
+				IsMouseVisible = true;
+			}
+			else
+			{
+				throw new PlatformNotSupportedException();
+			}
+
 			Content.RootDirectory = "Content";
 
 			// Frame rate is 30 fps by default for Windows Phone.
-			TargetElapsedTime = TimeSpan.FromTicks (333333);
+			TargetElapsedTime = TimeSpan.FromTicks(333333);
 
 			//Create a new instance of the Screen Manager
-			screenManager = new ScreenManager (this);
-					Components.Add (screenManager);
-			
-			Components.Add (new MessageDisplayComponent (this));
+			screenManager = new ScreenManager(this);
+			Components.Add(screenManager);
+
+			Components.Add(new MessageDisplayComponent(this));
 			// Components.Add (new GamerServicesComponent (this)); // Not available in MonoGame 3.8
-			
+
 			//Add two new screens
-			screenManager.AddScreen (new BackgroundScreen (), null);
-			screenManager.AddScreen (new MainMenuScreen (), null);
+			screenManager.AddScreen(new BackgroundScreen(), null);
+			screenManager.AddScreen(new MainMenuScreen(), null);
 
 			// Listen for invite notification events.
-			// NetworkSession.InviteAccepted += (sender, e) => NetworkSessionComponent.InviteAccepted (screenManager, e); // Not available in MonoGame 3.8
+			NetworkSession.InviteAccepted += (sender, e) => NetworkSessionComponent.InviteAccepted(screenManager, e);
 
-			IsMouseVisible = true;
-#if ___MOBILE___
-			graphics.IsFullScreen = true;
-#endif
-			graphics.PreferredBackBufferHeight = 480;
-			graphics.PreferredBackBufferWidth = 800;
-
-			AudioManager.Initialize (this);
+			AudioManager.Initialize(this);
 		}
 
 		/// <summary>
@@ -80,15 +91,15 @@ namespace CatapultGame
 		/// related content.  Calling base.Initialize will enumerate through any components
 		/// and initialize them as well.
 		/// </summary>
-		protected override void Initialize ()
+		protected override void Initialize()
 		{
-			base.Initialize ();
+			base.Initialize();
 		}
 
-		protected override void LoadContent ()
+		protected override void LoadContent()
 		{
-			AudioManager.LoadSounds ();
-			base.LoadContent ();
+			AudioManager.LoadSounds();
+			base.LoadContent();
 		}
 	}
 }

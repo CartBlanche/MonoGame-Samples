@@ -9,9 +9,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using GameStateManagement;
+
 using Microsoft.Xna.Framework;
-//using Microsoft.Xna.Framework.Net; // Not available in MonoGame 3.8
+using Microsoft.Xna.Framework.Net;
 
 namespace CatapultGame
 {
@@ -60,9 +60,9 @@ namespace CatapultGame
         /// <param name="e"></param>
         void StartGameMenuEntrySelected(object sender, EventArgs e)
         {
-		// Lets make sure we get rid of our network session
-		// so we can start up clean
-		// ScreenManager.Game.Services.RemoveService(typeof(NetworkSession)); // Not available in MonoGame 3.8
+            // Lets make sure we get rid of our network session
+            // so we can start up clean
+            ScreenManager.Game.Services.RemoveService(typeof(NetworkSession));
             ScreenManager.AddScreen(new InstructionsScreen(), null);
         }
 
@@ -75,38 +75,31 @@ namespace CatapultGame
             ScreenManager.Game.Exit();
         }
 
-        void StartMultiPlayerGameMenuEntrySelected (object sender, PlayerIndexEventArgs e)
+        void StartMultiPlayerGameMenuEntrySelected(object sender, PlayerIndexEventArgs e)
         {
-		// Networking disabled in MonoGame 3.8 - start single player game instead
-		LoadingScreen.Load (ScreenManager, true, e.PlayerIndex, new GameplayScreen ());
+            CreateOrFindSession(NetworkSessionType.SystemLink, e.PlayerIndex);
         }
 
-		/// <summary>
-		/// Helper method shared by the Live and System Link menu event handlers.
-		/// </summary>
-		/*
-		// Networking methods disabled in MonoGame 3.8
-		void CreateOrFindSession (NetworkSessionType sessionType,
-				PlayerIndex playerIndex)
-		{
+        /// <summary>
+        /// Helper method shared by the Live and System Link menu event handlers.
+        /// </summary>
+        void CreateOrFindSession(NetworkSessionType sessionType, PlayerIndex playerIndex)
+        {
 
-			// First, we need to make sure a suitable gamer profile is signed in.
-			ProfileSignInScreen profileSignIn = new ProfileSignInScreen (sessionType);
+            // First, we need to make sure a suitable gamer profile is signed in.
+            ProfileSignInScreen profileSignIn = new ProfileSignInScreen(sessionType);
 
-			// Hook up an event so once the ProfileSignInScreen is happy,
-			// it will activate the CreateOrFindSessionScreen.
-			profileSignIn.ProfileSignedIn += delegate
-				{
-					GameScreen createOrFind = new CreateOrFindSessionScreen (sessionType);
+            // Hook up an event so once the ProfileSignInScreen is happy,
+            // it will activate the CreateOrFindSessionScreen.
+            profileSignIn.ProfileSignedIn += delegate
+                {
+                    GameScreen createOrFind = new CreateOrFindSessionScreen(sessionType);
 
-					ScreenManager.AddScreen (createOrFind, playerIndex);
-				};
+                    ScreenManager.AddScreen(createOrFind, playerIndex);
+                };
 
-			// Activate the ProfileSignInScreen.
-			ScreenManager.AddScreen (profileSignIn, playerIndex);
-		}
-		*/
-
-
+            // Activate the ProfileSignInScreen.
+            ScreenManager.AddScreen(profileSignIn, playerIndex);
+        }
     }
 }

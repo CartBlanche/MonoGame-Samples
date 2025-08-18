@@ -10,7 +10,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
-namespace GameStateManagement
+namespace CatapultGame
 {
     /// <summary>
     /// Helper class represents a single entry in a MenuScreen. By default this
@@ -91,9 +91,11 @@ namespace GameStateManagement
         {
             // there is no such thing as a selected item on Windows Phone, so we always
             // force isSelected to be false
-#if WINDOWS_PHONE
-            isSelected = false;
-#endif
+            if (UIUtility.IsMobile)
+            {
+                isSelected = false;
+            }
+
             // When the menu selection changes, entries gradually fade between
             // their selected and deselected appearance, rather than instantly
             // popping to the new state.
@@ -113,9 +115,10 @@ namespace GameStateManagement
         {
             // there is no such thing as a selected item on Windows Phone, so we always
             // force isSelected to be false
-#if WINDOWS_PHONE
-            isSelected = false;
-#endif
+            if (UIUtility.IsMobile)
+            {
+                isSelected = false;
+            }
 
             // Draw the selected entry in yellow, otherwise white.
             Color color = isSelected ? Color.Yellow : Color.White;

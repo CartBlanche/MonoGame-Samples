@@ -9,7 +9,6 @@ using System;
 using System.Diagnostics;
 using Microsoft.Xna.Framework.GamerServices;
 using Microsoft.Xna.Framework.Net;
-using GameStateManagement;
 
 namespace CatapultGame
 {

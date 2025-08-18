@@ -8,10 +8,11 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace CatapultGame {
+namespace CatapultGame
+{
     using System;
-    
-    
+
+
     /// <summary>
     ///   A strongly-typed resource class, for looking up localized strings, etc.
     /// </summary>
@@ -22,572 +23,499 @@ namespace CatapultGame {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    internal class Resources {
-        
+    internal class Resources
+    {
+
         private static global::System.Resources.ResourceManager resourceMan;
-        
+
         private static global::System.Globalization.CultureInfo resourceCulture;
-        
+
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        internal Resources() {
+        internal Resources()
+        {
         }
-        
+
         /// <summary>
         ///   Returns the cached ResourceManager instance used by this class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Resources.ResourceManager ResourceManager {
-            get {
-                if (object.ReferenceEquals(resourceMan, null)) {
+        internal static global::System.Resources.ResourceManager ResourceManager
+        {
+            get
+            {
+                if (object.ReferenceEquals(resourceMan, null))
+                {
                     global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("CatapultGame.Resources", typeof(Resources).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
             }
         }
-        
+
         /// <summary>
         ///   Overrides the current thread's CurrentUICulture property for all
         ///   resource lookups using this strongly typed resource class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Globalization.CultureInfo Culture {
-            get {
+        internal static global::System.Globalization.CultureInfo Culture
+        {
+            get
+            {
                 return resourceCulture;
             }
-            set {
+            set
+            {
                 resourceCulture = value;
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Back.
         /// </summary>
-        internal static string Back {
-            get {
-#if ANDROID				
-				return  Android.App.Application.Context.Resources.GetString(CatapultWarsNet.Resource.String.Back);
-#else				
+        internal static string Back
+        {
+            get
+            {
                 return ResourceManager.GetString("Back", resourceCulture);
-#endif				
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Are you sure you want to end this session?.
         /// </summary>
-        internal static string ConfirmEndSession {
-            get {
-#if ANDROID				
-				return  Android.App.Application.Context.Resources.GetString(CatapultWarsNet.Resource.String.ConfirmEndSession);
-#else				
-				
+        internal static string ConfirmEndSession
+        {
+            get
+            {
                 return ResourceManager.GetString("ConfirmEndSession", resourceCulture);
-#endif				
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Are you sure you want to exit this sample?.
         /// </summary>
-        internal static string ConfirmExitSample {
-            get {
-#if ANDROID				
-				return  Android.App.Application.Context.Resources.GetString(CatapultWarsNet.Resource.String.ConfirmExitSample);
-#else								
+        internal static string ConfirmExitSample
+        {
+            get
+            {
                 return ResourceManager.GetString("ConfirmExitSample", resourceCulture);
-#endif				
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Are you sure you want to start the game,
         ///even though not all players are ready?.
         /// </summary>
-        internal static string ConfirmForceStartGame {
-            get {
-#if ANDROID				
-				return  Android.App.Application.Context.Resources.GetString(CatapultWarsNet.Resource.String.ConfirmForceStartGame);
-#else								
+        internal static string ConfirmForceStartGame
+        {
+            get
+            {
                 return ResourceManager.GetString("ConfirmForceStartGame", resourceCulture);
-#endif				
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Are you sure you want to leave this session?.
         /// </summary>
-        internal static string ConfirmLeaveSession {
-            get {
-#if ANDROID				
-				return  Android.App.Application.Context.Resources.GetString(CatapultWarsNet.Resource.String.ConfirmLeaveSession);
-#else								
+        internal static string ConfirmLeaveSession
+        {
+            get
+            {
                 return ResourceManager.GetString("ConfirmLeaveSession", resourceCulture);
-#endif				
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Online gameplay is not available in trial mode.
         ///Would you like to purchase this game?.
         /// </summary>
-        internal static string ConfirmMarketplace {
-            get {
-#if ANDROID				
-				return  Android.App.Application.Context.Resources.GetString(CatapultWarsNet.Resource.String.ConfirmMarketplace);
-#else								
+        internal static string ConfirmMarketplace
+        {
+            get
+            {
                 return ResourceManager.GetString("ConfirmMarketplace", resourceCulture);
-#endif				
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Are you sure you want to quit this game?.
         /// </summary>
-        internal static string ConfirmQuitGame {
-            get {
-#if ANDROID				
-				return  Android.App.Application.Context.Resources.GetString(CatapultWarsNet.Resource.String.ConfirmQuitGame);
-#else								
+        internal static string ConfirmQuitGame
+        {
+            get
+            {
                 return ResourceManager.GetString("ConfirmQuitGame", resourceCulture);
-#endif				
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Create Session.
         /// </summary>
-        internal static string CreateSession {
-            get {
-#if ANDROID				
-				return  Android.App.Application.Context.Resources.GetString(CatapultWarsNet.Resource.String.CreateSession);
-#else								
+        internal static string CreateSession
+        {
+            get
+            {
                 return ResourceManager.GetString("CreateSession", resourceCulture);
-#endif				
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to End Session.
         /// </summary>
-        internal static string EndSession {
-            get {
-#if ANDROID				
-				return  Android.App.Application.Context.Resources.GetString(CatapultWarsNet.Resource.String.EndSession);
-#else								
+        internal static string EndSession
+        {
+            get
+            {
                 return ResourceManager.GetString("EndSession", resourceCulture);
-#endif				
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Lost connection to the network session.
         /// </summary>
-        internal static string ErrorDisconnected {
-            get {
-#if ANDROID				
-				return  Android.App.Application.Context.Resources.GetString(CatapultWarsNet.Resource.String.ErrorDisconnected);
-#else								
+        internal static string ErrorDisconnected
+        {
+            get
+            {
                 return ResourceManager.GetString("ErrorDisconnected", resourceCulture);
-#endif				
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to You must sign in a suitable gamer profile
         ///in order to access this functionality.
         /// </summary>
-        internal static string ErrorGamerPrivilege {
-            get {
-#if ANDROID				
-				return  Android.App.Application.Context.Resources.GetString(CatapultWarsNet.Resource.String.ErrorGamerPrivilege);
-#else				
+        internal static string ErrorGamerPrivilege
+        {
+            get
+            {
                 return ResourceManager.GetString("ErrorGamerPrivilege", resourceCulture);
-#endif				
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Host ended the session.
         /// </summary>
-        internal static string ErrorHostEndedSession {
-            get {
-#if ANDROID				
-				return  Android.App.Application.Context.Resources.GetString(CatapultWarsNet.Resource.String.ErrorHostEndedSession);
-#else								
+        internal static string ErrorHostEndedSession
+        {
+            get
+            {
                 return ResourceManager.GetString("ErrorHostEndedSession", resourceCulture);
-#endif				
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to There was an error while
         ///accessing the network.
         /// </summary>
-        internal static string ErrorNetwork {
-            get {
-#if ANDROID				
-				return  Android.App.Application.Context.Resources.GetString(CatapultWarsNet.Resource.String.ErrorNetwork);
-#else								
+        internal static string ErrorNetwork
+        {
+            get
+            {
                 return ResourceManager.GetString("ErrorNetwork", resourceCulture);
-#endif				
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Networking is turned
         ///off or not connected.
         /// </summary>
-        internal static string ErrorNetworkNotAvailable {
-            get {
-#if ANDROID				
-				return  Android.App.Application.Context.Resources.GetString(CatapultWarsNet.Resource.String.ErrorNetworkNotAvailable);
-#else								
+        internal static string ErrorNetworkNotAvailable
+        {
+            get
+            {
                 return ResourceManager.GetString("ErrorNetworkNotAvailable", resourceCulture);
-#endif				
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Host kicked you out of the session.
         /// </summary>
-        internal static string ErrorRemovedByHost {
-            get {
-#if ANDROID				
-				return  Android.App.Application.Context.Resources.GetString(CatapultWarsNet.Resource.String.ErrorRemovedByHost);
-#else								
+        internal static string ErrorRemovedByHost
+        {
+            get
+            {
                 return ResourceManager.GetString("ErrorRemovedByHost", resourceCulture);
-#endif				
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to This session is already full.
         /// </summary>
-        internal static string ErrorSessionFull {
-            get {
-#if ANDROID				
-				return  Android.App.Application.Context.Resources.GetString(CatapultWarsNet.Resource.String.ErrorSessionFull);
-#else								
+        internal static string ErrorSessionFull
+        {
+            get
+            {
                 return ResourceManager.GetString("ErrorSessionFull", resourceCulture);
-#endif				
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Session not found. It may have ended,
         ///or there may be no network connectivity
         ///between the local machine and session host.
         /// </summary>
-        internal static string ErrorSessionNotFound {
-            get {
-#if ANDROID				
-				return  Android.App.Application.Context.Resources.GetString(CatapultWarsNet.Resource.String.ErrorSessionNotFound);
-#else								
+        internal static string ErrorSessionNotFound
+        {
+            get
+            {
                 return ResourceManager.GetString("ErrorSessionNotFound", resourceCulture);
-#endif				
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to You must wait for the host to return to
         ///the lobby before you can join this session.
         /// </summary>
-        internal static string ErrorSessionNotJoinable {
-            get {
-#if ANDROID				
-				return  Android.App.Application.Context.Resources.GetString(CatapultWarsNet.Resource.String.ErrorSessionNotJoinable);
-#else								
+        internal static string ErrorSessionNotJoinable
+        {
+            get
+            {
                 return ResourceManager.GetString("ErrorSessionNotJoinable", resourceCulture);
-#endif				
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to This functionality is not available in trial mode.
         /// </summary>
-        internal static string ErrorTrialMode {
-            get {
-#if ANDROID				
-				return  Android.App.Application.Context.Resources.GetString(CatapultWarsNet.Resource.String.ErrorTrialMode);
-#else								
+        internal static string ErrorTrialMode
+        {
+            get
+            {
                 return ResourceManager.GetString("ErrorTrialMode", resourceCulture);
-#endif				
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to An unknown error occurred.
         /// </summary>
-        internal static string ErrorUnknown {
-            get {
-#if ANDROID				
-				return  Android.App.Application.Context.Resources.GetString(CatapultWarsNet.Resource.String.ErrorUnknown);
-#else								
+        internal static string ErrorUnknown
+        {
+            get
+            {
                 return ResourceManager.GetString("ErrorUnknown", resourceCulture);
-#endif				
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Exit.
         /// </summary>
-        internal static string Exit {
-            get {
-#if ANDROID				
-				return  Android.App.Application.Context.Resources.GetString(CatapultWarsNet.Resource.String.Exit);
-#else								
+        internal static string Exit
+        {
+            get
+            {
                 return ResourceManager.GetString("Exit", resourceCulture);
-#endif				
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Find Sessions.
         /// </summary>
-        internal static string FindSessions {
-            get {
-#if ANDROID				
-				return  Android.App.Application.Context.Resources.GetString(CatapultWarsNet.Resource.String.FindSessions);
-#else								
+        internal static string FindSessions
+        {
+            get
+            {
                 return ResourceManager.GetString("FindSessions", resourceCulture);
-#endif				
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to  (host).
         /// </summary>
-        internal static string HostSuffix {
-            get {
-#if ANDROID				
-				return  Android.App.Application.Context.Resources.GetString(CatapultWarsNet.Resource.String.HostSuffix);
-#else								
+        internal static string HostSuffix
+        {
+            get
+            {
                 return ResourceManager.GetString("HostSuffix", resourceCulture);
-#endif				
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Join Session.
         /// </summary>
-        internal static string JoinSession {
-            get {
-#if ANDROID				
-				return  Android.App.Application.Context.Resources.GetString(CatapultWarsNet.Resource.String.JoinSession);
-#else								
+        internal static string JoinSession
+        {
+            get
+            {
                 return ResourceManager.GetString("JoinSession", resourceCulture);
-#endif				
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Leave Session.
         /// </summary>
-        internal static string LeaveSession {
-            get {
-#if ANDROID				
-				return  Android.App.Application.Context.Resources.GetString(CatapultWarsNet.Resource.String.LeaveSession);
-#else								
+        internal static string LeaveSession
+        {
+            get
+            {
                 return ResourceManager.GetString("LeaveSession", resourceCulture);
-#endif				
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Loading.
         /// </summary>
-        internal static string Loading {
-            get {
-#if ANDROID				
-				return  Android.App.Application.Context.Resources.GetString(CatapultWarsNet.Resource.String.Loading);
-#else								
+        internal static string Loading
+        {
+            get
+            {
                 return ResourceManager.GetString("Loading", resourceCulture);
-#endif				
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Lobby.
         /// </summary>
-        internal static string Lobby {
-            get {
-#if ANDROID				
-				return  Android.App.Application.Context.Resources.GetString(CatapultWarsNet.Resource.String.Lobby);
-#else								
+        internal static string Lobby
+        {
+            get
+            {
                 return ResourceManager.GetString("Lobby", resourceCulture);
-#endif				
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Main Menu.
         /// </summary>
-        internal static string MainMenu {
-            get {
-#if ANDROID				
-				return  Android.App.Application.Context.Resources.GetString(CatapultWarsNet.Resource.String.MainMenu);
-#else								
+        internal static string MainMenu
+        {
+            get
+            {
                 return ResourceManager.GetString("MainMenu", resourceCulture);
-#endif				
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to 
         ///A button, Space, Enter = ok
         ///B button, Esc = cancel.
         /// </summary>
-        internal static string MessageBoxUsage {
-            get {
-#if ANDROID				
-				return  Android.App.Application.Context.Resources.GetString(CatapultWarsNet.Resource.String.MessageBoxUsage);
-#else								
+        internal static string MessageBoxUsage
+        {
+            get
+            {
                 return ResourceManager.GetString("MessageBoxUsage", resourceCulture);
-#endif				
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to {0} joined.
         /// </summary>
-        internal static string MessageGamerJoined {
-            get {
-#if ANDROID				
-				return  Android.App.Application.Context.Resources.GetString(CatapultWarsNet.Resource.String.MessageGamerJoined);
-#else								
+        internal static string MessageGamerJoined
+        {
+            get
+            {
                 return ResourceManager.GetString("MessageGamerJoined", resourceCulture);
-#endif				
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to {0} left.
         /// </summary>
-        internal static string MessageGamerLeft {
-            get {
-#if ANDROID				
-				return  Android.App.Application.Context.Resources.GetString(CatapultWarsNet.Resource.String.MessageGamerLeft);
-#else								
+        internal static string MessageGamerLeft
+        {
+            get
+            {
                 return ResourceManager.GetString("MessageGamerLeft", resourceCulture);
-#endif
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Networking....
         /// </summary>
-        internal static string NetworkBusy {
-            get {
-#if ANDROID				
-				return  Android.App.Application.Context.Resources.GetString(CatapultWarsNet.Resource.String.NetworkBusy);
-#else								
+        internal static string NetworkBusy
+        {
+            get
+            {
                 return ResourceManager.GetString("NetworkBusy", resourceCulture);
-#endif
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to No sessions found.
         /// </summary>
-        internal static string NoSessionsFound {
-            get {
-#if ANDROID				
-				return  Android.App.Application.Context.Resources.GetString(CatapultWarsNet.Resource.String.NoSessionsFound);
-#else								
+        internal static string NoSessionsFound
+        {
+            get
+            {
                 return ResourceManager.GetString("NoSessionsFound", resourceCulture);
-#endif
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Paused.
         /// </summary>
-        internal static string Paused {
-            get {
-#if ANDROID				
-				return  Android.App.Application.Context.Resources.GetString(CatapultWarsNet.Resource.String.Paused);
-#else								
+        internal static string Paused
+        {
+            get
+            {
                 return ResourceManager.GetString("Paused", resourceCulture);
-#endif
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to LIVE.
         /// </summary>
-        internal static string PlayerMatch {
-            get {
-#if ANDROID				
-				return  Android.App.Application.Context.Resources.GetString(CatapultWarsNet.Resource.String.PlayerMatch);
-#else								
+        internal static string PlayerMatch
+        {
+            get
+            {
                 return ResourceManager.GetString("PlayerMatch", resourceCulture);
-#endif
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Quit Game.
         /// </summary>
-        internal static string QuitGame {
-            get {
-#if ANDROID				
-				return  Android.App.Application.Context.Resources.GetString(CatapultWarsNet.Resource.String.QuitGame);
-#else								
+        internal static string QuitGame
+        {
+            get
+            {
                 return ResourceManager.GetString("QuitGame", resourceCulture);
-#endif
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Resume Game.
         /// </summary>
-        internal static string ResumeGame {
-            get {
-#if ANDROID				
-				return  Android.App.Application.Context.Resources.GetString(CatapultWarsNet.Resource.String.ResumeGame);
-#else								
+        internal static string ResumeGame
+        {
+            get
+            {
                 return ResourceManager.GetString("ResumeGame", resourceCulture);
-#endif
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Return to Lobby.
         /// </summary>
-        internal static string ReturnToLobby {
-            get {
-#if ANDROID				
-				return  Android.App.Application.Context.Resources.GetString(CatapultWarsNet.Resource.String.ReturnToLobby);
-#else								
+        internal static string ReturnToLobby
+        {
+            get
+            {
                 return ResourceManager.GetString("ReturnToLobby", resourceCulture);
-#endif
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Single Player.
         /// </summary>
-        internal static string SinglePlayer {
-            get {
-#if ANDROID				
-				return  Android.App.Application.Context.Resources.GetString(CatapultWarsNet.Resource.String.SinglePlayer);
-#else								
+        internal static string SinglePlayer
+        {
+            get
+            {
                 return ResourceManager.GetString("SinglePlayer", resourceCulture);
-#endif
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to System Link.
         /// </summary>
-        internal static string SystemLink {
-            get {
-#if ANDROID				
-				return  Android.App.Application.Context.Resources.GetString(CatapultWarsNet.Resource.String.SystemLink);
-#else								
+        internal static string SystemLink
+        {
+            get
+            {
                 return ResourceManager.GetString("SystemLink", resourceCulture);
-#endif
             }
         }
     }

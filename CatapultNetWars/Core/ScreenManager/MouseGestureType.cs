@@ -37,7 +37,7 @@
 // */
 using System;
 
-namespace GameStateManagement
+namespace CatapultGame
 {
 	[Flags]
 	public enum MouseGestureType

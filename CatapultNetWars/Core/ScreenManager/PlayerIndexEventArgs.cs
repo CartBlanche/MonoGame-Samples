@@ -8,7 +8,7 @@
 using System;
 using Microsoft.Xna.Framework;
 
-namespace GameStateManagement
+namespace CatapultGame
 {
     /// <summary>
     /// Custom event argument which includes the index of the player who

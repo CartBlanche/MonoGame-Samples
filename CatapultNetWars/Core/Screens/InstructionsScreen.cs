@@ -13,19 +13,8 @@ using System.Threading;
 
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
-using GameStateManagement;
 using Microsoft.Xna.Framework.Input.Touch;
-
-#if MONOMAC
-using MonoMac.AppKit;
-using MonoMac.Foundation;
-#endif
-
-#if IPHONE
-using MonoTouch.UIKit;
-using MonoTouch.Foundation;
-#endif
-
+using Microsoft.Xna.Framework.Input;
 
 namespace CatapultGame
 {
@@ -73,38 +62,29 @@ namespace CatapultGame
 		{
 			if (isLoading == true)
             {
-#if ANDROID || IPHONE || LINUX || WINDOWS
                 // Exit the screen and show the gameplay screen 
 					// with pre-loaded assets
 				ExitScreen ();
 				ScreenManager.AddScreen (gameplayScreen, null);
-#endif						
+					
 				base.HandleInput (input);
 				return;
 			}
+
 			PlayerIndex player;
-			if (input.IsNewKeyPress (Microsoft.Xna.Framework.Input.Keys.Space, ControllingPlayer, out player) ||
-			    input.IsNewKeyPress (Microsoft.Xna.Framework.Input.Keys.Enter, ControllingPlayer, out player) ||
+			if (input.IsNewKeyPress (Keys.Space, ControllingPlayer, out player) ||
+			    input.IsNewKeyPress (Keys.Enter, ControllingPlayer, out player) ||
 			    input.MouseGesture.HasFlag(MouseGestureType.LeftClick) ||
-			    input.IsNewButtonPress (Microsoft.Xna.Framework.Input.Buttons.Start, ControllingPlayer, out player)) {
+			    input.IsNewButtonPress (Buttons.Start, ControllingPlayer, out player)) {
 				// Create a new instance of the gameplay screen
 				gameplayScreen = new GameplayScreen ();
 				gameplayScreen.ScreenManager = ScreenManager;
 
-                // Start loading the resources in additional thread
-#if !LINUX && !WINDOWS
-#if MONOMAC
-				// create a new thread using BackgroundWorkerThread as method to execute
-				thread = new Thread (LoadAssetsWorkerThread as ThreadStart);
-#else     
-				thread = new System.Threading.Thread (new System.Threading.ThreadStart (gameplayScreen.LoadAssets));    
-#endif
+                // Start loading the resources in additional thread    
+				thread = new System.Threading.Thread (new System.Threading.ThreadStart (gameplayScreen.LoadAssets));
 				isLoading = true;
 				// start it
 				thread.Start ();
-#else
-                isLoading = true;
-#endif
 			}
 
 			foreach (var gesture in input.Gestures) {
@@ -112,46 +92,15 @@ namespace CatapultGame
 					// Create a new instance of the gameplay screen
 					gameplayScreen = new GameplayScreen ();
 					gameplayScreen.ScreenManager = ScreenManager;
-
-#if ANDROID || IPHONE	|| LINUX || WINDOWS
-                    isLoading = true;									
-#else						
+						
 					// Start loading the resources in additional thread
 					thread = new System.Threading.Thread (new System.Threading.ThreadStart (gameplayScreen.LoadAssets));
 					isLoading = true;
-					thread.Start ();
-#endif					
+					thread.Start ();				
 				}
 			}
 
 			base.HandleInput (input);
-		}
-
-		void LoadAssetsWorkerThread ()
-		{
-
-
-#if MONOMAC || IPHONE			
-			// Create an Autorelease Pool or we will leak objects.
-			using (var pool = new NSAutoreleasePool()) {
-#else				
-				
-#endif
-				// Make sure we invoke this on the Main Thread or OpenGL will throw an error
-#if MONOMAC
-				MonoMac.AppKit.NSApplication.SharedApplication.BeginInvokeOnMainThread (delegate {
-#endif
-#if IPHONE
-				var invokeOnMainThredObj = new NSObject();
-				invokeOnMainThredObj.InvokeOnMainThread(delegate {
-#endif
-					gameplayScreen.LoadAssets ();
-#if MONOMAC || IPHONE						
-				});
-					
-			}				
-#endif	
-
 		}
 
 		public override void Draw (GameTime gameTime)

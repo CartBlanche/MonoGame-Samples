@@ -8,7 +8,6 @@
 using System;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Net;
-using GameStateManagement;
 
 namespace CatapultGame
 {

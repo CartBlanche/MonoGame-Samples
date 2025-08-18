@@ -1,0 +1,14 @@
+{
+	"folders": [
+		{
+			"path": "../.."
+		},
+		{
+			"path": "../../../MonoGame.Xna.Framework.Net"
+		},
+		{
+			"path": "../../../NetworkStateManagement"
+		}
+	],
+	"settings": {}
+}

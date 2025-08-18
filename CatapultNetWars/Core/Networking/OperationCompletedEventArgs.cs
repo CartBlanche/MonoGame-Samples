@@ -14,32 +14,31 @@ namespace CatapultGame
     /// </summary>
     class OperationCompletedEventArgs : EventArgs
     {
-
+        /// <summary>
+        /// Gets or sets the result of the network operation that has just completed.
+        /// </summary>
+        public object Result { get; set; }
 
         /// <summary>
-        /// Gets or sets the IAsyncResult associated with
-        /// the network operation that has just completed.
+        /// Gets or sets the exception that caused the operation to fail, if any.
         /// </summary>
-        public IAsyncResult AsyncResult
-        {
-            get { return asyncResult; }
-            set { asyncResult = value; }
-        }
-
-        IAsyncResult asyncResult;
-
-
-
-
+        public Exception Exception { get; set; }
 
         /// <summary>
         /// Constructs a new event arguments class.
         /// </summary>
-        public OperationCompletedEventArgs(IAsyncResult asyncResult)
+        public OperationCompletedEventArgs(object result)
         {
-            this.asyncResult = asyncResult;
+            this.Result = result;
         }
 
-
+        /// <summary>
+        /// Constructs a new event arguments class with an optional exception.
+        /// </summary>
+        public OperationCompletedEventArgs(object result, Exception exception)
+        {
+            this.Result = result;
+            this.Exception = exception;
+        }
     }
 }

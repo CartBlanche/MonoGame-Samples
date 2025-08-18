@@ -15,7 +15,7 @@ using Microsoft.Xna.Framework.Input.Touch;
 using System.IO;
 using System.IO.IsolatedStorage;
 
-namespace GameStateManagement
+namespace CatapultGame
 {
     /// <summary>
     /// The screen manager is a component which manages one or more GameScreen

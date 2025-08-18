@@ -9,7 +9,6 @@ using System;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Net;
 using Microsoft.Xna.Framework.GamerServices;
-using GameStateManagement;
 
 namespace CatapultGame
 {
@@ -72,12 +71,11 @@ namespace CatapultGame
             try
             {
                 // Begin an asynchronous join network session operation.
-                IAsyncResult asyncResult = NetworkSession.BeginJoin(availableSession,
-                                                                    null, null);
+                var joinedSession = NetworkSession.JoinAsync(availableSession);
 
                 // Activate the network busy screen, which will display
                 // an animation until this operation has completed.
-                NetworkBusyScreen busyScreen = new NetworkBusyScreen(asyncResult);
+                var busyScreen = new NetworkBusyScreen<NetworkSession>(joinedSession);
 
                 busyScreen.OperationCompleted += JoinSessionOperationCompleted;
 
@@ -100,17 +98,19 @@ namespace CatapultGame
         {
             try
             {
-                // End the asynchronous join network session operation.
-                NetworkSession networkSession = NetworkSession.EndJoin(e.AsyncResult);
+                // Use the result directly from the event args.
+				NetworkSession networkSession = e.Result as NetworkSession;
+				if (networkSession == null)
+					throw new InvalidOperationException("NetworkSession result was null or invalid.");
 
-                // Create a component that will manage the session we just joined.
-                NetworkSessionComponent.Create(ScreenManager, networkSession);
+				// Create a component that will manage the session we just joined.
+				NetworkSessionComponent.Create(ScreenManager, networkSession);
 
-                // Go to the lobby screen. We pass null as the controlling player,
-                // because the lobby screen accepts input from all local players
-                // who are in the session, not just a single controlling player.
-                ScreenManager.AddScreen(new LobbyScreen(networkSession), null);
-
+				// Go to the lobby screen. We pass null as the controlling player,
+				// because the lobby screen accepts input from all local players
+				// who are in the session, not just a single controlling player.
+				ScreenManager.AddScreen(new LobbyScreen(networkSession), null);
+                
                 availableSessions.Dispose();
             }
             catch (Exception exception)

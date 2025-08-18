@@ -10,7 +10,6 @@ using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Net;
 using Microsoft.Xna.Framework.GamerServices;
-using GameStateManagement;
 
 namespace CatapultGame
 {
@@ -22,9 +21,6 @@ namespace CatapultGame
 	{
 
 		NetworkSessionType sessionType;
-
-
-
 
 		/// <summary>
 		/// Constructor fills in the menu contents.
@@ -86,7 +82,19 @@ namespace CatapultGame
 							ControllingPlayer.Value);
 
 				// Begin an asynchronous create network session operation.
-				IAsyncResult asyncResult = NetworkSession.BeginCreate(
+				var networkSession = NetworkSession.CreateAsync(
+						sessionType,
+						NetworkSessionComponent.MaxLocalGamers,
+						NetworkSessionComponent.MaxGamers,
+						1,
+						null);
+
+				// Activate the network busy screen, which will display
+				// an animation until this operation has completed.
+				var busyScreen = new NetworkBusyScreen<NetworkSession>(networkSession);
+
+				// Begin an asynchronous create network session operation.
+				/*var createSession = NetworkSession.CreateAsync(
 						sessionType,
 						localGamers,
 						NetworkSessionComponent.MaxGamers,
@@ -97,7 +105,7 @@ namespace CatapultGame
 
 				// Activate the network busy screen, which will display
 				// an animation until this operation has completed.
-				NetworkBusyScreen busyScreen = new NetworkBusyScreen(asyncResult);
+				NetworkBusyScreen busyScreen = new NetworkBusyScreen(createSession);*/
 
 				busyScreen.OperationCompleted += CreateSessionOperationCompleted;
 
@@ -121,13 +129,14 @@ namespace CatapultGame
 		/// Event handler for when the asynchronous create network session
 		/// operation has completed.
 		/// </summary>
-		void CreateSessionOperationCompleted(object sender,
-					OperationCompletedEventArgs e)
+		void CreateSessionOperationCompleted(object sender, OperationCompletedEventArgs e)
 		{
 			try
 			{
-				// End the asynchronous create network session operation.
-				NetworkSession networkSession = NetworkSession.EndCreate(e.AsyncResult);
+				// Use the result directly from the event args.
+				NetworkSession networkSession = e.Result as NetworkSession;
+				if (networkSession == null)
+					throw new InvalidOperationException("NetworkSession result was null or invalid.");
 
 				// Create a component that will manage the session we just created.
 				NetworkSessionComponent.Create(ScreenManager, networkSession);
@@ -145,7 +154,6 @@ namespace CatapultGame
 			}
 		}
 
-
 		/// <summary>
 		/// Event handler for when the Find Sessions menu entry is selected.
 		/// </summary>
@@ -154,17 +162,16 @@ namespace CatapultGame
 			try
 			{
 				// Which local profiles should we include in this session?
-				IEnumerable<SignedInGamer> localGamers =
-			NetworkSessionComponent.ChooseGamers(sessionType,
-							ControllingPlayer.Value);
+				IEnumerable<SignedInGamer> localGamers = NetworkSessionComponent.ChooseGamers(sessionType, ControllingPlayer.Value);
 
 				// Begin an asynchronous find network sessions operation.
-				IAsyncResult asyncResult = NetworkSession.BeginFind(sessionType,
-							localGamers, null, null, null);
+				var availableNetworkSessions = NetworkSession.FindAsync(
+					sessionType,
+					NetworkSessionComponent.MaxLocalGamers, null);
 
 				// Activate the network busy screen, which will display
 				// an animation until this operation has completed.
-				NetworkBusyScreen busyScreen = new NetworkBusyScreen(asyncResult);
+				var busyScreen = new NetworkBusyScreen<AvailableNetworkSessionCollection>(availableNetworkSessions);
 
 				busyScreen.OperationCompleted += FindSessionsOperationCompleted;
 
@@ -178,7 +185,6 @@ namespace CatapultGame
 			}
 		}
 
-
 		/// <summary>
 		/// Event handler for when the asynchronous find network sessions
 		/// operation has completed.
@@ -190,9 +196,10 @@ namespace CatapultGame
 
 			try
 			{
-				// End the asynchronous find network sessions operation.
-				AvailableNetworkSessionCollection availableSessions =
-						NetworkSession.EndFind(e.AsyncResult);
+				// Use the result directly from the event args.
+				AvailableNetworkSessionCollection availableSessions = e.Result as AvailableNetworkSessionCollection;
+				if (availableSessions == null)
+					throw new InvalidOperationException("AvailableNetworkSessionCollection result was null or invalid.");
 
 				if (availableSessions.Count == 0)
 				{

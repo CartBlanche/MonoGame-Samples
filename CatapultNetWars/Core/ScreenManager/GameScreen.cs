@@ -8,10 +8,9 @@
 using System;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input.Touch;
-//using Microsoft.Xna.Framework.Net; // Not available in MonoGame 3.8
 using System.IO;
 
-namespace GameStateManagement
+namespace CatapultGame
 {
     /// <summary>
     /// Enum describes the screen transition state.

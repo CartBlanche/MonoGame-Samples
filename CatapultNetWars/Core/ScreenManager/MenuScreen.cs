@@ -12,7 +12,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input.Touch;
 using Microsoft.Xna.Framework.Input;
 
-namespace GameStateManagement
+namespace CatapultGame
 {
     /// <summary>
     /// Base class for screens that contain a menu of options. The user can

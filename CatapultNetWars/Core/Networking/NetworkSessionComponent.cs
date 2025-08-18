@@ -12,7 +12,6 @@ using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Net;
 using Microsoft.Xna.Framework.GamerServices;
-using GameStateManagement;
 
 namespace CatapultGame
 {
@@ -211,17 +210,22 @@ namespace CatapultGame
 					InviteAcceptedEventArgs e)
 		{
 			// If we are already in a network session, leave it now.
-			NetworkSessionComponent self = FindSessionComponent (screenManager.Game);
+			NetworkSessionComponent self = FindSessionComponent(screenManager.Game);
 
 			if (self != null)
-				self.Dispose ();
+				self.Dispose(true);
 
-			try			{
+			try
+			{
 				// Which local profiles should we include in this session?
-				IEnumerable<SignedInGamer> localGamers = ChooseGamers (NetworkSessionType.PlayerMatch, e.Gamer.PlayerIndex);
+				PlayerIndex defaultPlayerIndex = PlayerIndex.One;
+				IEnumerable<SignedInGamer> localGamers =
+					ChooseGamers(NetworkSessionType.PlayerMatch, defaultPlayerIndex);
 
-				// Begin an asynchronous join-from-invite operation.
-				IAsyncResult asyncResult = NetworkSession.BeginJoinInvited (localGamers, null, null);
+				// Begin an asynchronous join-from-invite operation using the modern API.
+				var joinSession = NetworkSession.JoinInvitedAsync(
+					localGamers,
+					null);
 
 				// Use the loading screen to replace whatever screens were previously
 				// active. This will completely reset the screen state, regardless of
@@ -229,11 +233,11 @@ namespace CatapultGame
 				// delivered. When the loading screen finishes, it will activate the
 				// network busy screen, which displays an animation as it waits for
 				// the join operation to complete.
-				NetworkBusyScreen busyScreen = new NetworkBusyScreen (asyncResult);
+				var busyScreen = new NetworkBusyScreen<NetworkSession>(joinSession);
 
 				busyScreen.OperationCompleted += JoinInvitedOperationCompleted;
 
-				LoadingScreen.Load (screenManager, false, null, new BackgroundScreen (), 
+				LoadingScreen.Load(screenManager, false, null, new BackgroundScreen(),
 							busyScreen);
 			} catch (Exception exception) {
 				NetworkErrorScreen errorScreen = new NetworkErrorScreen (exception);
@@ -255,15 +259,16 @@ namespace CatapultGame
 			ScreenManager screenManager = ((GameScreen)sender).ScreenManager;
 
 			try			{
-				// End the asynchronous join-from-invite operation.
-				NetworkSession networkSession = 
-					NetworkSession.EndJoinInvited (e.AsyncResult);
+				// Use the result directly from the event args.
+				NetworkSession networkSession = e.Result as NetworkSession;
+				if (networkSession == null)
+					throw new InvalidOperationException("NetworkSession result was null or invalid.");
 
 				// Create a component that will manage the session we just created.
-				NetworkSessionComponent.Create (screenManager, networkSession);
+				NetworkSessionComponent.Create(screenManager, networkSession);
 
 				// Go to the lobby screen.
-				screenManager.AddScreen (new LobbyScreen (networkSession), null);
+				screenManager.AddScreen(new LobbyScreen(networkSession), null);
 			} catch (Exception exception) {
 				screenManager.AddScreen (new MainMenuScreen (), null);
 				screenManager.AddScreen (new NetworkErrorScreen (exception), null);

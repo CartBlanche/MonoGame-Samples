@@ -9,7 +9,6 @@ using System;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Net;
 using Microsoft.Xna.Framework.GamerServices;
-using GameStateManagement;
 
 namespace CatapultGame
 {
@@ -165,7 +164,7 @@ namespace CatapultGame
 
             confirmMarketplaceMessageBox.Accepted += delegate
             {
-                Guide.ShowMarketplace(ControllingPlayer.HasValue ? (int)ControllingPlayer.Value : (int)PlayerIndex.One);
+                // TODO Guide.ShowMarketplace(ControllingPlayer.HasValue ? (int)ControllingPlayer.Value : (int)PlayerIndex.One);
             };
 
             ScreenManager.AddScreen(confirmMarketplaceMessageBox, ControllingPlayer);
