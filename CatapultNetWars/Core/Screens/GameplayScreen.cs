@@ -127,7 +127,6 @@ namespace CatapultGame
 			computerHUDPosition = new Vector2(613, 7);
 			windArrowPosition = new Vector2(345, 46);
 
-
 			// Initialize human & other players
 			if (IsMultiplayer)
 			{
@@ -138,6 +137,7 @@ namespace CatapultGame
 						playerOne = new Human(ScreenManager.Game, ScreenManager.SpriteBatch, PlayerSide.Left);
 						playerOne.Initialize();
 						playerOne.Name = NetworkSession.LocalGamers[0].Gamertag + " (host)";
+
 						playerTwo = new Human(ScreenManager.Game, ScreenManager.SpriteBatch, PlayerSide.Right);
 						playerTwo.Initialize();
 						playerTwo.Name = NetworkSession.RemoteGamers[0].Gamertag;
@@ -147,6 +147,7 @@ namespace CatapultGame
 						playerOne = new Human(ScreenManager.Game, ScreenManager.SpriteBatch, PlayerSide.Left);
 						playerOne.Initialize();
 						playerOne.Name = NetworkSession.RemoteGamers[0].Gamertag + " (host)";
+
 						playerTwo = new Human(ScreenManager.Game, ScreenManager.SpriteBatch, PlayerSide.Right);
 						playerTwo.Initialize();
 						playerTwo.Name = NetworkSession.LocalGamers[0].Gamertag;
@@ -157,9 +158,11 @@ namespace CatapultGame
 					playerOne = new Human(ScreenManager.Game, ScreenManager.SpriteBatch, PlayerSide.Left);
 					playerOne.Initialize();
 					playerOne.Name = NetworkSession.LocalGamers[0].Gamertag + " (host)";
+
 					playerTwo = new Human(ScreenManager.Game, ScreenManager.SpriteBatch, PlayerSide.Right);
 					playerTwo.Initialize();
 					playerTwo.Name = "Player 2";
+
 					IsMultiplayer = false;
 					NetworkSession.Dispose();
 					NetworkSession = null;
@@ -170,12 +173,14 @@ namespace CatapultGame
 				playerOne = new Human(ScreenManager.Game, ScreenManager.SpriteBatch, PlayerSide.Left);
 				playerOne.Initialize();
 				playerOne.Name = "Player 1";
+
 				playerTwo = new AI(ScreenManager.Game, ScreenManager.SpriteBatch);
 				playerTwo.Initialize();
-				playerTwo.Name = "Player 2";
+				playerTwo.Name = "AI";
 			}
 
-			// Identify enemies		playerOne.Enemy = playerTwo;
+			// Identify enemies
+			playerOne.Enemy = playerTwo;
 			playerTwo.Enemy = playerOne;
 		}
 
