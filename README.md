@@ -35,6 +35,7 @@ I welcome contributions to the MonoGame Samples repository! Here's how you can g
 | [Cards Starter Kit](CardsStarterKit/README.md) | Card framework showing how to implement a Blackjack game. |
 |  [FloodControl](GameDevelopmentbyExample/FloodControl/README.md) | |
 | [HoneycombRush](HoneycombRush/README.md) | Arcade-style honeycomb collection game. |
+| [CatapultNetWars](CatapultNetWars/README.md) | Networked multiplayer catapult game. Works on LAN |
 | [PacMan](PacMan/README.md) | Cross-platform Pac-Man clone. |
 |  [RobotRampage](GameDevelopmentbyExample/RobotRampage/README.md) |  | 
 | [RockRain](RockRain/README.md) | Arcade-style falling rocks game. |
@@ -92,15 +93,16 @@ I welcome contributions to the MonoGame Samples repository! Here's how you can g
 
 ---
 
-## Networking Samples (NOT WORKING until MonoGame.Xna.Framework.Net is fully implemented)
+## Networking Samples
 
 | Project | Description |
 |--------|-------------|
-| [CatapultNetWars](CatapultNetWars/README.md) | Networked multiplayer catapult game. |
-| [MonoGame.Xna.Framework.Net](MonoGame.Xna.Framework.Net/README.md) | Networking API compatibility sample. |
-| [NetRumble](NetRumble/README.md) | Networked multiplayer space shooter. |
-| [NetworkPrediction](NetworkPrediction/README.md) | Networked gameplay prediction and synchronization. |
-| [Peer2PeerSample](Peer2PeerSample/README.md) | Peer-to-peer multiplayer tank game. |
+| [CatapultNetWars](CatapultNetWars/README.md) | Networked multiplayer catapult game. Works on LAN |
+| [MonoGame.Xna.Framework.Net](MonoGame.Xna.Framework.Net/README.md) | Networking API compatibility sample. Partially implemented for Peer 2 Peer, LAN games |
+| [NetRumble](NetRumble/README.md) | Networked multiplayer space shooter. (NOT working yet) |
+| [NetworkPrediction](NetworkPrediction/README.md) | Networked gameplay prediction and synchronization. (NOT working yet) |
+| [NetworkStateManagment](NetworkStateManagment/README.md) | The project template for most of the networked games in this repo, that use a Lobby. Works on LAN |
+| [Peer2PeerSample](Peer2PeerSample/README.md) | Peer-to-peer multiplayer tank demo. Works on LAN |
 
 ---
 
