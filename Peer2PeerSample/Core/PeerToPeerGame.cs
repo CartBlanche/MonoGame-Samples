@@ -46,9 +46,10 @@ namespace PeerToPeer
 
 			graphics.PreferredBackBufferWidth = screenWidth;
 			graphics.PreferredBackBufferHeight = screenHeight;
-#if MOBILE
-			graphics.IsFullScreen = true;
-#endif
+			if (UIUtilty.IsMobile)
+			{
+				graphics.IsFullScreen = true;
+			}
 
 			Content.RootDirectory = "Content";
 
@@ -64,23 +65,24 @@ namespace PeerToPeer
 
 			font = Content.Load<SpriteFont>("Font");
 
-#if MOBILE
-			gamePadTexture = Content.Load<Texture2D>("gamepad.png");
-			
-			ThumbStickDefinition thumbStickLeft = new ThumbStickDefinition();
-			thumbStickLeft.Position = new Vector2(10,400);
-			thumbStickLeft.Texture = gamePadTexture;
-			thumbStickLeft.TextureRect = new Rectangle(2,2,68,68);
-			
-			GamePad.LeftThumbStickDefinition = thumbStickLeft;
-			
-			ThumbStickDefinition thumbStickRight = new ThumbStickDefinition();
-			thumbStickRight.Position = new Vector2(240,400);
-			thumbStickRight.Texture = gamePadTexture;
-			thumbStickRight.TextureRect = new Rectangle(2,2,68,68);
-			
-			GamePad.RightThumbStickDefinition = thumbStickRight;
-#endif
+			if (UIUtilty.IsMobile)
+			{
+				gamePadTexture = Content.Load<Texture2D>("gamepad.png");
+
+				ThumbStickDefinition thumbStickLeft = new ThumbStickDefinition();
+				thumbStickLeft.Position = new Vector2(10, 400);
+				thumbStickLeft.Texture = gamePadTexture;
+				thumbStickLeft.TextureRect = new Rectangle(2, 2, 68, 68);
+
+				GamePad.LeftThumbStickDefinition = thumbStickLeft;
+
+				ThumbStickDefinition thumbStickRight = new ThumbStickDefinition();
+				thumbStickRight.Position = new Vector2(240, 400);
+				thumbStickRight.Texture = gamePadTexture;
+				thumbStickRight.TextureRect = new Rectangle(2, 2, 68, 68);
+
+				GamePad.RightThumbStickDefinition = thumbStickRight;
+			}
 		}
 
 		/// <summary>
@@ -120,7 +122,7 @@ namespace PeerToPeer
 				}
 				else if (IsPressed(Keys.A, Buttons.A))
 				{
-					// Create a new session?
+					// Create a new LAN session?
 					CreateSession(NetworkSessionType.SystemLink);
 				}
 				else if (IsPressed(Keys.X, Buttons.X))
@@ -337,10 +339,10 @@ namespace PeerToPeer
 			if (!string.IsNullOrEmpty(errorMessage))
 				message += "Error:\n" + errorMessage.Replace(". ", ".\n") + "\n\n";
 
-			message += "A = create LAN session\n" +
-			"B = join LAN session" + "\n" +
-			"X = create live session\n" +
-			"Y = join live session\n";
+			message += "A = Create LAN session\n" +
+			"B = Join LAN session" + "\n" +
+			"X = Create live session (NOT IMPLEMENTED)\n" +
+			"Y = Join live session (NOT IMPLEMENTED)\n";
 
 			spriteBatch.Begin();
 
@@ -385,9 +387,10 @@ namespace PeerToPeer
 				}
 			}
 
-#if MOBILE
-			GamePad.Draw(gameTime, spriteBatch);
-#endif
+			if (UIUtilty.IsMobile)
+			{
+				GamePad.Draw(gameTime, spriteBatch);
+			}
 
 			spriteBatch.End();
 		}
