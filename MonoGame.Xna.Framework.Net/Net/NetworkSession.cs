@@ -893,24 +893,48 @@ namespace Microsoft.Xna.Framework.Net
                     var (data, senderEndpoint) = await networkTransport.ReceiveAsync();
                     if (data.Length > 0)
                     {
+                        // Identify sender by endpoint mapping
                         NetworkGamer senderGamer = null;
                         lock (lockObject)
                         {
                             senderGamer = gamers.FirstOrDefault(g => gamerEndpoints.TryGetValue(g.Id, out var ep) && ep.Equals(senderEndpoint));
                         }
 
-                        if (senderGamer != null)
+                        // Inspect the first byte to see if this is a registered (framework) message
+                        byte typeId = data[0];
+                        var registered = NetworkMessageRegistry.CreateMessage(typeId);
+
+                        bool handledFramework = false;
+                        if (registered != null)
                         {
-                            // Deliver to the local gamer’s inbox with correct sender, matching XNA ReceiveData semantics
-                            NetworkGamer.LocalGamer?.EnqueueIncomingPacket(data, senderGamer);
+                            // Try to deserialize as a framework message; if it doesn't fully parse,
+                            // fall back to treating as application payload.
+                            try
+                            {
+                                var reader = new PacketReader(data);
+                                reader.ReadByte(); // consume type id
+                                registered.Deserialize(reader);
+                                // Consider it framework only if we've consumed the full payload
+                                if (reader.BytesRemaining == 0)
+                                {
+                                    OnMessageReceived(new MessageReceivedEventArgs(registered, senderEndpoint));
+                                    handledFramework = true;
+                                }
+                            }
+                            catch
+                            {
+                                handledFramework = false;
+                            }
                         }
 
-                        // Parse message: first byte is the type id
-                        var reader = new PacketReader(data);
-                        var typeId = reader.ReadByte();
-                        var message = NetworkMessageRegistry.CreateMessage(typeId);
-                        message?.Deserialize(reader);
-                        OnMessageReceived(new MessageReceivedEventArgs(message, senderEndpoint));
+                        if (!handledFramework)
+                        {
+                            // Application payload. Enqueue for LocalGamer.ReceiveData
+                            if (senderGamer != null)
+                            {
+                                NetworkGamer.LocalGamer?.EnqueueIncomingPacket(data, senderGamer);
+                            }
+                        }
                     }
                 }
                 catch (ObjectDisposedException) { break; }
