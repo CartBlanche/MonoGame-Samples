@@ -103,9 +103,10 @@ namespace NetworkStateManagement
         {
             // there is no such thing as a selected item on Windows Phone, so we always
             // force isSelected to be false
-#if MOBILE
-            isSelected = false;
-#endif
+            if (UIUtility.IsMobile)
+            {
+                isSelected = false;
+            }
 
             // When the menu selection changes, entries gradually fade between
             // their selected and deselected appearance, rather than instantly
@@ -126,9 +127,10 @@ namespace NetworkStateManagement
         {
             // there is no such thing as a selected item on Windows Phone, so we always
             // force isSelected to be false
-#if MOBILE
-            isSelected = false;
-#endif
+            if (UIUtility.IsMobile)
+            {
+                isSelected = false;
+            }
 
             // Draw the selected entry in yellow, otherwise white.
             Color color = isSelected ? Color.Yellow : Color.White;

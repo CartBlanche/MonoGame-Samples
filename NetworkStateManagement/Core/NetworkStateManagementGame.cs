@@ -5,6 +5,7 @@
 // Copyright (C) Microsoft Corporation. All rights reserved.
 //-----------------------------------------------------------------------------
 
+using System;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.GamerServices;
@@ -25,7 +26,7 @@ namespace NetworkStateManagement
 		const int screenWidth = 480;
 		const int screenHeight = 540;
 
-		GraphicsDeviceManager graphics;
+		GraphicsDeviceManager graphicsDeviceManager;
 		ScreenManager screenManager;
 
 
@@ -48,12 +49,24 @@ namespace NetworkStateManagement
 		{
 			Content.RootDirectory = "Content";
 
-			graphics = new GraphicsDeviceManager(this);
-#if MOBILE
-			graphics.IsFullScreen = true;
-#endif
-			graphics.PreferredBackBufferWidth = screenWidth;
-			graphics.PreferredBackBufferHeight = screenHeight;
+			graphicsDeviceManager = new GraphicsDeviceManager(this);
+			graphicsDeviceManager.PreferredBackBufferWidth = screenWidth;
+			graphicsDeviceManager.PreferredBackBufferHeight = screenHeight;
+
+			if (UIUtility.IsMobile)
+			{
+				graphicsDeviceManager.IsFullScreen = true;
+				IsMouseVisible = false;
+			}
+			else if (UIUtility.IsDesktop)
+			{
+				graphicsDeviceManager.IsFullScreen = false;
+				IsMouseVisible = true;
+			}
+			else
+			{
+				throw new PlatformNotSupportedException();
+			}
 
 			// Create components.
 			screenManager = new ScreenManager(this);
@@ -91,7 +104,7 @@ namespace NetworkStateManagement
 		/// </summary>
 		protected override void Draw(GameTime gameTime)
 		{
-			graphics.GraphicsDevice.Clear(Color.Black);
+			graphicsDeviceManager.GraphicsDevice.Clear(Color.Black);
 
 			// The real drawing happens inside the screen manager component.
 			base.Draw(gameTime);
