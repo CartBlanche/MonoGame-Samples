@@ -4,7 +4,7 @@
     <OutputType>Exe</OutputType>
     <TargetFramework>net8.0-ios</TargetFramework>
     <RootNamespace>NetworkPrediction</RootNamespace>
-    <AssemblyName>NetworkPrediction.iOS</AssemblyName>
+    <AssemblyName>NetworkPrediction</AssemblyName>
     <SupportedOSPlatformVersion>11.0</SupportedOSPlatformVersion>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <Title>Network Prediction</Title>
