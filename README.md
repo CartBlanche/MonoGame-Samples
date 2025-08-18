@@ -100,7 +100,7 @@ I welcome contributions to the MonoGame Samples repository! Here's how you can g
 | [CatapultNetWars](CatapultNetWars/README.md) | Networked multiplayer catapult game. Works on LAN |
 | [MonoGame.Xna.Framework.Net](MonoGame.Xna.Framework.Net/README.md) | Networking API compatibility sample. Partially implemented for Peer 2 Peer, LAN games |
 | [NetRumble](NetRumble/README.md) | Networked multiplayer space shooter. (NOT working yet) |
-| [NetworkPrediction](NetworkPrediction/README.md) | Networked gameplay prediction and synchronization. (NOT working yet) |
+| [NetworkPrediction](NetworkPrediction/README.md) | Networked gameplay prediction and synchronization. Works on LAN |
 | [NetworkStateManagment](NetworkStateManagment/README.md) | The project template for most of the networked games in this repo, that use a Lobby. Works on LAN |
 | [Peer2PeerSample](Peer2PeerSample/README.md) | Peer-to-peer multiplayer tank demo. Works on LAN |
 
