@@ -180,7 +180,7 @@ namespace NetworkStateManagement
 			else
 				position.X += transitionOffset * 512;
 
-			spriteBatch.Begin();
+			spriteBatch.Begin(SpriteSortMode.Deferred, null, null, null, null, null, ScreenManager.GlobalTransformation);
 
 			// Draw all the gamers in the session.
 			int gamerCount = 0;

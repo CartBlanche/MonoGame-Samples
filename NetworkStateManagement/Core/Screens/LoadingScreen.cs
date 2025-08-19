@@ -31,7 +31,6 @@ namespace NetworkStateManagement
 	/// </summary>
 	class LoadingScreen : GameScreen
 	{
-
 		bool loadingIsSlow;
 		bool otherScreensAreGone;
 		GameScreen[] screensToLoad;
@@ -42,9 +41,6 @@ namespace NetworkStateManagement
 		IMessageDisplay messageDisplay;
 		GameTime loadStartTime;
 		TimeSpan loadAnimationTimer;
-
-
-
 
 		/// <summary>
 		/// The constructor is private: loading screens should
@@ -194,7 +190,7 @@ namespace NetworkStateManagement
 				message += new string('.', dotCount);
 
 				// Draw the text.
-				spriteBatch.Begin();
+				spriteBatch.Begin(SpriteSortMode.Deferred, null, null, null, null, null, ScreenManager.GlobalTransformation);
 				spriteBatch.DrawString(font, message, textPosition, color);
 				spriteBatch.End();
 			}

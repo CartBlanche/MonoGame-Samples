@@ -19,7 +19,6 @@ namespace NetworkStateManagement
     /// </summary>
     class MessageDisplayComponent : DrawableGameComponent, IMessageDisplay
     {
-
         SpriteBatch spriteBatch;
         SpriteFont font;
 
@@ -33,9 +32,7 @@ namespace NetworkStateManagement
         static readonly TimeSpan fadeInTime = TimeSpan.FromSeconds(0.25);
         static readonly TimeSpan showTime = TimeSpan.FromSeconds(5);
         static readonly TimeSpan fadeOutTime = TimeSpan.FromSeconds(0.5);
-
-
-
+        NetworkStateManagementGame game;
 
         /// <summary>
         /// Constructs a new message display component.
@@ -43,10 +40,10 @@ namespace NetworkStateManagement
         public MessageDisplayComponent(Game game)
             : base(game)
         {
+            this.game = game as NetworkStateManagementGame;
             // Register ourselves to implement the IMessageDisplay service.
             game.Services.AddService(typeof(IMessageDisplay), this);
         }
-
 
         /// <summary>
         /// Load graphics content for the message display.
@@ -57,10 +54,6 @@ namespace NetworkStateManagement
 
             font = Game.Content.Load<SpriteFont>("menufont");
         }
-
-
-
-
 
         /// <summary>
         /// Updates the message display component.
@@ -106,7 +99,6 @@ namespace NetworkStateManagement
             }
         }
 
-
         /// <summary>
         /// Draws the message display component.
         /// </summary>
@@ -120,7 +112,7 @@ namespace NetworkStateManagement
 
                 Vector2 position = new Vector2(GraphicsDevice.Viewport.Width - 100, 0);
 
-                spriteBatch.Begin();
+                spriteBatch.Begin(SpriteSortMode.Deferred, null, null, null, null, null, game.ScreenManager.GlobalTransformation);
 
                 // Draw each message in turn.
                 foreach (NotificationMessage message in messages)
@@ -166,10 +158,6 @@ namespace NetworkStateManagement
             }
         }
 
-
-
-
-
         /// <summary>
         /// Shows a new notification message.
         /// </summary>
@@ -185,10 +173,6 @@ namespace NetworkStateManagement
             }
         }
 
-
-
-
-
         /// <summary>
         /// Helper class stores the position and text of a single notification message.
         /// </summary>
@@ -198,7 +182,6 @@ namespace NetworkStateManagement
             public float Position;
             public TimeSpan Age;
 
-
             public NotificationMessage(string text, float position)
             {
                 Text = text;
@@ -206,7 +189,5 @@ namespace NetworkStateManagement
                 Age = TimeSpan.Zero;
             }
         }
-
-
     }
 }

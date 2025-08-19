@@ -237,7 +237,7 @@ namespace NetworkStateManagement
             // Our player and enemy are both actually just text strings.
             SpriteBatch spriteBatch = ScreenManager.SpriteBatch;
 
-            spriteBatch.Begin();
+            spriteBatch.Begin(SpriteSortMode.Deferred, null, null, null, null, null, ScreenManager.GlobalTransformation);
 
             spriteBatch.DrawString(gameFont, "// TODO", playerPosition, Color.Green);
 

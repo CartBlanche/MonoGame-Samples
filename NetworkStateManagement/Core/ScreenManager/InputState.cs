@@ -20,7 +20,6 @@ namespace NetworkStateManagement
     /// </summary>
     public class InputState
     {
-
         public const int MaxInputs = 4;
 
         public readonly KeyboardState[] CurrentKeyboardStates;
@@ -35,14 +34,18 @@ namespace NetworkStateManagement
 
         public readonly List<GestureSample> Gestures = new List<GestureSample>();
 
-
-
+        Matrix inputTransformation;
+        readonly float baseBufferWidth;
+        readonly float baseBufferHeight;
 
         /// <summary>
         /// Constructs a new input state.
         /// </summary>
-        public InputState()
+        public InputState(float baseBufferWidth, float baseBufferHeight)
         {
+            this.baseBufferWidth = baseBufferWidth;
+            this.baseBufferHeight = baseBufferHeight;
+
             CurrentKeyboardStates = new KeyboardState[MaxInputs];
             CurrentGamePadStates = new GamePadState[MaxInputs];
 
@@ -51,10 +54,6 @@ namespace NetworkStateManagement
 
             GamePadWasConnected = new bool[MaxInputs];
         }
-
-
-
-
 
         /// <summary>
         /// Reads the latest state of the keyboard and gamepad.
@@ -86,7 +85,6 @@ namespace NetworkStateManagement
             }
         }
 
-
         /// <summary>
         /// Helper for checking if a key was newly pressed during this update. The
         /// controllingPlayer parameter specifies which player to read input for.
@@ -115,7 +113,6 @@ namespace NetworkStateManagement
                         IsNewKeyPress(key, PlayerIndex.Four, out playerIndex));
             }
         }
-
 
         /// <summary>
         /// Helper for checking if a button was newly pressed during this update.
@@ -146,7 +143,6 @@ namespace NetworkStateManagement
             }
         }
 
-
         /// <summary>
         /// Checks for a "menu select" input action.
         /// The controllingPlayer parameter specifies which player to read input for.
@@ -162,7 +158,6 @@ namespace NetworkStateManagement
                    IsNewButtonPress(Buttons.Start, controllingPlayer, out playerIndex);
         }
 
-
         /// <summary>
         /// Checks for a "menu cancel" input action.
         /// The controllingPlayer parameter specifies which player to read input for.
@@ -176,7 +171,6 @@ namespace NetworkStateManagement
                    IsNewButtonPress(Buttons.B, controllingPlayer, out playerIndex) ||
                    IsNewButtonPress(Buttons.Back, controllingPlayer, out playerIndex);
         }
-
 
         /// <summary>
         /// Checks for a "menu up" input action.
@@ -192,7 +186,6 @@ namespace NetworkStateManagement
                    IsNewButtonPress(Buttons.LeftThumbstickUp, controllingPlayer, out playerIndex);
         }
 
-
         /// <summary>
         /// Checks for a "menu down" input action.
         /// The controllingPlayer parameter specifies which player to read
@@ -206,7 +199,6 @@ namespace NetworkStateManagement
                    IsNewButtonPress(Buttons.DPadDown, controllingPlayer, out playerIndex) ||
                    IsNewButtonPress(Buttons.LeftThumbstickDown, controllingPlayer, out playerIndex);
         }
-
 
         /// <summary>
         /// Checks for a "pause the game" input action.
@@ -222,6 +214,13 @@ namespace NetworkStateManagement
                    IsNewButtonPress(Buttons.Start, controllingPlayer, out playerIndex);
         }
 
-
+        /// <summary>
+        /// Updates the matrix used to transform input coordinates.
+        /// </summary>
+        /// <param name="inputTransformation">The transformation matrix to apply.</param>
+        public void UpdateInputTransformation(Matrix inputTransformation)
+        {
+            this.inputTransformation = inputTransformation;
+        }
     }
 }

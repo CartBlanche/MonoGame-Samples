@@ -23,12 +23,9 @@ namespace NetworkStateManagement
 	/// </summary>
 	public class NetworkStateManagementGame : Game
 	{
-		const int screenWidth = 480;
-		const int screenHeight = 540;
-
 		GraphicsDeviceManager graphicsDeviceManager;
 		ScreenManager screenManager;
-
+		public ScreenManager ScreenManager { get => screenManager; set => screenManager = value; }
 
 		// By preloading any assets used by UI rendering, we avoid framerate glitches
 		// when they suddenly need to be loaded in the middle of a menu transition.
@@ -42,16 +39,16 @@ namespace NetworkStateManagement
 			"chat_mute",
 		};
 
-		/// <summary>
-		/// The main game constructor.
-		/// </summary>		
-		public NetworkStateManagementGame()
+        /// <summary>
+        /// The main game constructor.
+        /// </summary>		
+        public NetworkStateManagementGame()
 		{
 			Content.RootDirectory = "Content";
 
 			graphicsDeviceManager = new GraphicsDeviceManager(this);
-			graphicsDeviceManager.PreferredBackBufferWidth = screenWidth;
-			graphicsDeviceManager.PreferredBackBufferHeight = screenHeight;
+			graphicsDeviceManager.PreferredBackBufferWidth = ScreenManager.BASE_BUFFER_WIDTH;
+			graphicsDeviceManager.PreferredBackBufferHeight = ScreenManager.BASE_BUFFER_HEIGHT;
 
 			if (UIUtility.IsMobile)
 			{
