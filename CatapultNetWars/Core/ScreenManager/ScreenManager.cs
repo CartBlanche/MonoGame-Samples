@@ -25,11 +25,11 @@ namespace CatapultGame
     /// </summary>
     public class ScreenManager : DrawableGameComponent
     {
-
         List<GameScreen> screens = new List<GameScreen>();
         List<GameScreen> screensToUpdate = new List<GameScreen>();
 
-        InputState input = new InputState();
+        InputState inputState = new InputState(BASE_BUFFER_WIDTH, BASE_BUFFER_HEIGHT);
+        public InputState InputState => inputState;
 
         SpriteBatch spriteBatch;
         SpriteFont font;
@@ -39,8 +39,24 @@ namespace CatapultGame
 
         bool traceEnabled;
 
+        internal const int BASE_BUFFER_WIDTH = 800;
+        internal const int BASE_BUFFER_HEIGHT = 480;
 
+        private int backbufferWidth;
+        /// <summary>Gets or sets the current backbuffer width.</summary>
+        public int BackbufferWidth { get => backbufferWidth; set => backbufferWidth = value; }
 
+        private int backbufferHeight;
+        /// <summary>Gets or sets the current backbuffer height.</summary>
+        public int BackbufferHeight { get => backbufferHeight; set => backbufferHeight = value; }
+
+        private Vector2 baseScreenSize = new Vector2(BASE_BUFFER_WIDTH, BASE_BUFFER_HEIGHT);
+        /// <summary>Gets or sets the base screen size used for scaling calculations.</summary>
+        public Vector2 BaseScreenSize { get => baseScreenSize; set => baseScreenSize = value; }
+
+        private Matrix globalTransformation;
+        /// <summary>Gets or sets the global transformation matrix for scaling and positioning.</summary>
+        public Matrix GlobalTransformation { get => globalTransformation; set => globalTransformation = value; }
 
         /// <summary>
         /// A default SpriteBatch shared by all the screens. This saves
@@ -51,7 +67,6 @@ namespace CatapultGame
             get { return spriteBatch; }
         }
 
-
         /// <summary>
         /// A default font shared by all the screens. This saves
         /// each screen having to bother loading their own local copy.
@@ -60,7 +75,6 @@ namespace CatapultGame
         {
             get { return font; }
         }
-
 
         /// <summary>
         /// If true, the manager prints out a list of all the screens
@@ -73,10 +87,6 @@ namespace CatapultGame
             set { traceEnabled = value; }
         }
 
-
-
-
-
         /// <summary>
         /// Constructs a new screen manager component.
         /// </summary>
@@ -88,7 +98,6 @@ namespace CatapultGame
             TouchPanel.EnabledGestures = GestureType.None;
         }
 
-
         /// <summary>
         /// Initializes the screen manager component.
         /// </summary>
@@ -98,7 +107,6 @@ namespace CatapultGame
 
             isInitialized = true;
         }
-
 
         /// <summary>
         /// Load your graphics content.
@@ -119,7 +127,6 @@ namespace CatapultGame
             }
         }
 
-
         /// <summary>
         /// Unload your graphics content.
         /// </summary>
@@ -132,17 +139,13 @@ namespace CatapultGame
             }
         }
 
-
-
-
-
         /// <summary>
         /// Allows each screen to run logic.
         /// </summary>
         public override void Update(GameTime gameTime)
         {
             // Read the keyboard and gamepad.
-            input.Update();
+            inputState.Update();
 
             // Make a copy of the master screen list, to avoid confusion if
             // the process of updating one screen adds or removes others.
@@ -172,7 +175,7 @@ namespace CatapultGame
                     // give it a chance to handle input.
                     if (!otherScreenHasFocus)
                     {
-                        screen.HandleInput(input);
+                        screen.HandleInput(inputState);
 
                         otherScreenHasFocus = true;
                     }
@@ -190,7 +193,6 @@ namespace CatapultGame
 
         }
 
-
         /// <summary>
         /// Prints a list of all the screens, for debugging.
         /// </summary>
@@ -204,7 +206,7 @@ namespace CatapultGame
             Console.WriteLine(string.Join(", ", screenNames.ToArray()));
         }
 
-		int count = 0;
+        int count = 0;
         /// <summary>
         /// Tells each screen to draw itself.
         /// </summary>
@@ -218,10 +220,6 @@ namespace CatapultGame
                 screen.Draw(gameTime);
             }
         }
-
-
-
-
 
         /// <summary>
         /// Adds a new screen to the screen manager.
@@ -243,7 +241,6 @@ namespace CatapultGame
             // update the TouchPanel to respond to gestures this screen is interested in
             TouchPanel.EnabledGestures = screen.EnabledGestures;
         }
-
 
         /// <summary>
         /// Removes a screen from the screen manager. You should normally
@@ -270,7 +267,6 @@ namespace CatapultGame
             }
         }
 
-
         /// <summary>
         /// Expose an array holding all the screens. We return a copy rather
         /// than the real master list, because screens should only ever be added
@@ -281,7 +277,6 @@ namespace CatapultGame
             return screens.ToArray();
         }
 
-
         /// <summary>
         /// Helper draws a translucent black fullscreen sprite, used for fading
         /// screens in and out, and for darkening the background behind popups.
@@ -290,7 +285,7 @@ namespace CatapultGame
         {
             Viewport viewport = GraphicsDevice.Viewport;
 
-            spriteBatch.Begin();
+            spriteBatch.Begin(SpriteSortMode.Deferred, null, null, null, null, null, GlobalTransformation);
 
             spriteBatch.Draw(blankTexture,
                              new Rectangle(0, 0, viewport.Width, viewport.Height),
@@ -372,7 +367,7 @@ namespace CatapultGame
                         if (storage.FileExists("ScreenManager\\ScreenList.dat"))
                         {
                             // load the list of screen types
-                            using (IsolatedStorageFileStream stream = 
+                            using (IsolatedStorageFileStream stream =
                                 storage.OpenFile("ScreenManager\\ScreenList.dat", FileMode.Open, FileAccess.Read))
                             {
                                 using (BinaryReader reader = new BinaryReader(stream))
@@ -398,7 +393,7 @@ namespace CatapultGame
                         for (int i = 0; i < screens.Count; i++)
                         {
                             string filename = string.Format("ScreenManager\\Screen{0}.dat", i);
-                            using (IsolatedStorageFileStream stream = 
+                            using (IsolatedStorageFileStream stream =
                                 storage.OpenFile(filename, FileMode.Open, FileAccess.Read))
                             {
                                 screens[i].Deserialize(stream);
@@ -433,5 +428,62 @@ namespace CatapultGame
             }
         }
 
+        /// <summary>
+        /// Scales the game presentation area to match the screen's aspect ratio.
+        /// </summary>
+        public void ScalePresentationArea()
+        {
+            // Validate parameters before calculation
+            if (GraphicsDevice == null || baseScreenSize.X <= 0 || baseScreenSize.Y <= 0)
+            {
+                throw new InvalidOperationException("Invalid graphics configuration");
+            }
+
+            // Fetch screen dimensions
+            backbufferWidth = GraphicsDevice.PresentationParameters.BackBufferWidth;
+            backbufferHeight = GraphicsDevice.PresentationParameters.BackBufferHeight;
+
+            // Prevent division by zero
+            if (backbufferHeight == 0 || baseScreenSize.Y == 0)
+            {
+                return;
+            }
+
+            // Calculate aspect ratios
+            float baseAspectRatio = baseScreenSize.X / baseScreenSize.Y;
+            float screenAspectRatio = backbufferWidth / (float)backbufferHeight;
+
+            // Determine uniform scaling factor
+            float scalingFactor;
+            float horizontalOffset = 0;
+            float verticalOffset = 0;
+
+            if (screenAspectRatio > baseAspectRatio)
+            {
+                // Wider screen: scale by height
+                scalingFactor = backbufferHeight / baseScreenSize.Y;
+
+                // Centre things horizontally.
+                horizontalOffset = (backbufferWidth - baseScreenSize.X * scalingFactor) / 2;
+            }
+            else
+            {
+                // Taller screen: scale by width
+                scalingFactor = backbufferWidth / baseScreenSize.X;
+
+                // Centre things vertically.
+                verticalOffset = (backbufferHeight - baseScreenSize.Y * scalingFactor) / 2;
+            }
+
+            // Update the transformation matrix
+            globalTransformation = Matrix.CreateScale(scalingFactor) *
+                                   Matrix.CreateTranslation(horizontalOffset, verticalOffset, 0);
+
+            // Update the inputTransformation with the Inverted globalTransformation
+            inputState.UpdateInputTransformation(Matrix.Invert(globalTransformation));
+
+            // Debug info
+            Debug.WriteLine($"Screen Size - Width[{backbufferWidth}] Height[{backbufferHeight}] ScalingFactor[{scalingFactor}]");
+        }
     }
 }

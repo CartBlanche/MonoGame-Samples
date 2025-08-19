@@ -20,7 +20,6 @@ namespace CatapultGame
     /// </summary>
     abstract class MenuScreen : GameScreen
     {
-
         // the number of pixels to pad above and below menu entries for touch input
         //const int menuEntryPadding = 35;
         const int menuEntryPadding = 10;
@@ -28,9 +27,6 @@ namespace CatapultGame
         List<MenuEntry> menuEntries = new List<MenuEntry>();
         int selectedEntry = 0;
         string menuTitle;
-
-
-
 
         /// <summary>
         /// Gets the list of menu entries, so derived classes can add
@@ -40,10 +36,6 @@ namespace CatapultGame
         {
             get { return menuEntries; }
         }
-
-
-
-
 
         /// <summary>
         /// Constructor.
@@ -58,9 +50,6 @@ namespace CatapultGame
             TransitionOnTime = TimeSpan.FromSeconds(0.5);
             TransitionOffTime = TimeSpan.FromSeconds(0.5);
         }
-
-
-
 
         /// <summary>
         /// Allows the screen to create the hit bounds for a particular menu entry.
@@ -89,56 +78,61 @@ namespace CatapultGame
                 OnCancel(player);
             }
 
-			if (input.IsMenuDown(ControllingPlayer)) {
-				if (selectedEntry < menuEntries.Count - 1)
-					selectedEntry += 1;
-			}
+            if (input.IsMenuDown(ControllingPlayer))
+            {
+                if (selectedEntry < menuEntries.Count - 1)
+                    selectedEntry += 1;
+            }
 
-			if (input.IsMenuUp(ControllingPlayer)) {
-				if (selectedEntry > 0)
-					selectedEntry -= 1;
-			}
+            if (input.IsMenuUp(ControllingPlayer))
+            {
+                if (selectedEntry > 0)
+                    selectedEntry -= 1;
+            }
 
-			if (input.IsMenuSelect(ControllingPlayer, out player)) {
-				menuEntries[selectedEntry].OnSelectEntry(player);
-			}
+            if (input.IsMenuSelect(ControllingPlayer, out player))
+            {
+                menuEntries[selectedEntry].OnSelectEntry(player);
+            }
 
-			if (input.MouseGesture.HasFlag(MouseGestureType.LeftClick)) {
+            if (input.MouseGesture.HasFlag(MouseGestureType.LeftClick))
+            {
 
-				Point clickLocation = new Point((int)input.CurrentMousePosition.X, (int)input.CurrentMousePosition.Y);
-				// iterate the entries to see if any were tapped
-				for (int i = 0; i < menuEntries.Count; i++)
-				{
-					MenuEntry menuEntry = menuEntries[i];
+                Point clickLocation = new Point((int)input.CurrentMousePosition.X, (int)input.CurrentMousePosition.Y);
+                // iterate the entries to see if any were tapped
+                for (int i = 0; i < menuEntries.Count; i++)
+                {
+                    MenuEntry menuEntry = menuEntries[i];
 
-					if (GetMenuEntryHitBounds(menuEntry).Contains(clickLocation))
-					{
-						// select the entry. since gestures are only available on Windows Phone,
-						// we can safely pass PlayerIndex.One to all entries since there is only
-						// one player on Windows Phone.
-						OnSelectEntry(i, PlayerIndex.One);
-					}
-				}
-			}
+                    if (GetMenuEntryHitBounds(menuEntry).Contains(clickLocation))
+                    {
+                        // select the entry. since gestures are only available on Windows Phone,
+                        // we can safely pass PlayerIndex.One to all entries since there is only
+                        // one player on Windows Phone.
+                        OnSelectEntry(i, PlayerIndex.One);
+                    }
+                }
+            }
 
-			if (input.MouseGesture.HasFlag(MouseGestureType.Move)) {
+            if (input.MouseGesture.HasFlag(MouseGestureType.Move))
+            {
 
-				Point clickLocation = new Point((int)input.CurrentMousePosition.X, (int)input.CurrentMousePosition.Y);
-				// iterate the entries to see if any were tapped
-				for (int i = 0; i < menuEntries.Count; i++)
-				{
-					MenuEntry menuEntry = menuEntries[i];
+                Point clickLocation = new Point((int)input.CurrentMousePosition.X, (int)input.CurrentMousePosition.Y);
+                // iterate the entries to see if any were tapped
+                for (int i = 0; i < menuEntries.Count; i++)
+                {
+                    MenuEntry menuEntry = menuEntries[i];
 
-					if (GetMenuEntryHitBounds(menuEntry).Contains(clickLocation))
-					{
-						// select the entry. since gestures are only available on Windows Phone,
-						// we can safely pass PlayerIndex.One to all entries since there is only
-						// one player on Windows Phone.
-						//OnSelectEntry(i, PlayerIndex.One);
-						selectedEntry = i;
-					}
-				}
-			}
+                    if (GetMenuEntryHitBounds(menuEntry).Contains(clickLocation))
+                    {
+                        // select the entry. since gestures are only available on Windows Phone,
+                        // we can safely pass PlayerIndex.One to all entries since there is only
+                        // one player on Windows Phone.
+                        //OnSelectEntry(i, PlayerIndex.One);
+                        selectedEntry = i;
+                    }
+                }
+            }
 
             // look for any taps that occurred and select any entries that were tapped
             foreach (GestureSample gesture in input.Gestures)
@@ -165,7 +159,6 @@ namespace CatapultGame
             }
         }
 
-
         /// <summary>
         /// Handler for when the user has chosen a menu entry.
         /// </summary>
@@ -173,7 +166,6 @@ namespace CatapultGame
         {
             menuEntries[entryIndex].OnSelectEntry(playerIndex);
         }
-
 
         /// <summary>
         /// Handler for when the user has cancelled the menu.
@@ -183,7 +175,6 @@ namespace CatapultGame
             ExitScreen();
         }
 
-
         /// <summary>
         /// Helper overload makes it easy to use OnCancel as a MenuEntry event handler.
         /// </summary>
@@ -191,10 +182,6 @@ namespace CatapultGame
         {
             OnCancel(e.PlayerIndex);
         }
-
-
-
-
 
         /// <summary>
         /// Allows the screen the chance to position the menu entries. By default
@@ -214,7 +201,7 @@ namespace CatapultGame
             for (int i = 0; i < menuEntries.Count; i++)
             {
                 MenuEntry menuEntry = menuEntries[i];
-                
+
                 // each entry is to be centered horizontally
                 position.X = ScreenManager.GraphicsDevice.Viewport.Width / 2 - menuEntry.GetWidth(this) / 2;
 
@@ -243,24 +230,24 @@ namespace CatapultGame
             for (int i = 0; i < menuEntries.Count; i++)
             {
                 bool isSelected = IsActive && (i == selectedEntry);
-//				if (!menuEntries[i].HasMouseEnteredAttached)
-//					menuEntries [i].MouseEntered += MouseEntered;
-//				if (!menuEntries[i].HasMouseClickedAttached)
-//					menuEntries [i].MouseClicked += MouseClicked;
+                //				if (!menuEntries[i].HasMouseEnteredAttached)
+                //					menuEntries [i].MouseEntered += MouseEntered;
+                //				if (!menuEntries[i].HasMouseClickedAttached)
+                //					menuEntries [i].MouseClicked += MouseClicked;
                 menuEntries[i].Update(this, isSelected, gameTime);
             }
         }
 
-//		void MouseClicked (object sender, MenuEntryEventArgs e)
-//		{
-//			e.MenuEntry.OnSelectEntry(PlayerIndex.One);
-//		}
-//
-//		void MouseEntered (object sender, MenuEntryEventArgs e)
-//		{
-//			//Console.WriteLine("Mouse Entered menu item " + e.MenuEntry.Text);
-//			selectedEntry = menuEntries.IndexOf(e.MenuEntry);
-//		}
+        //		void MouseClicked (object sender, MenuEntryEventArgs e)
+        //		{
+        //			e.MenuEntry.OnSelectEntry(PlayerIndex.One);
+        //		}
+        //
+        //		void MouseEntered (object sender, MenuEntryEventArgs e)
+        //		{
+        //			//Console.WriteLine("Mouse Entered menu item " + e.MenuEntry.Text);
+        //			selectedEntry = menuEntries.IndexOf(e.MenuEntry);
+        //		}
 
         /// <summary>
         /// Draws the menu.
@@ -274,7 +261,7 @@ namespace CatapultGame
             SpriteBatch spriteBatch = ScreenManager.SpriteBatch;
             SpriteFont font = ScreenManager.Font;
 
-            spriteBatch.Begin();
+            spriteBatch.Begin(SpriteSortMode.Deferred, null, null, null, null, null, ScreenManager.GlobalTransformation);
 
             // Draw each menu entry in turn.
             for (int i = 0; i < menuEntries.Count; i++)
@@ -304,7 +291,5 @@ namespace CatapultGame
 
             spriteBatch.End();
         }
-
-
     }
 }

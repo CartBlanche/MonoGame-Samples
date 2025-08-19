@@ -192,7 +192,7 @@ namespace CatapultGame
 				message += new string('.', dotCount);
 
 				// Draw the text.
-				spriteBatch.Begin();
+				spriteBatch.Begin(SpriteSortMode.Deferred, null, null, null, null, null, ScreenManager.GlobalTransformation);
 				spriteBatch.DrawString(font, message, textPosition, color);
 				spriteBatch.End();
 			}

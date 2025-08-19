@@ -222,7 +222,10 @@ namespace CatapultGame
         /// <summary>
         /// Load graphics content for the screen.
         /// </summary>
-        public virtual void LoadContent() { }
+        public virtual void LoadContent()
+        {
+            ScreenManager.ScalePresentationArea();
+        }
 
 
         /// <summary>
@@ -283,6 +286,14 @@ namespace CatapultGame
                     screenState = ScreenState.Active;
                 }
             }
+
+            // Check if the back buffer size has changed (e.g., window resize).
+			if (ScreenManager.BackbufferHeight != ScreenManager.GraphicsDevice.PresentationParameters.BackBufferHeight
+				|| ScreenManager.BackbufferWidth != ScreenManager.GraphicsDevice.PresentationParameters.BackBufferWidth)
+			{
+				// Adjust the presentation area to match the new back buffer size.
+				ScreenManager.ScalePresentationArea();
+			}
         }
 
 
@@ -360,8 +371,6 @@ namespace CatapultGame
                 isExiting = true;
             }
         }
-
-
 
         /// <summary>
         /// A helper method which loads assets using the screen manager's

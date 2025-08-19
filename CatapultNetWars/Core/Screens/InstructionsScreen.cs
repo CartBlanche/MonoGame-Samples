@@ -69,7 +69,7 @@ namespace CatapultGame
 		{
 			SpriteBatch spriteBatch = ScreenManager.SpriteBatch;
 
-			spriteBatch.Begin ();
+			spriteBatch.Begin(SpriteSortMode.Deferred, null, null, null, null, null, ScreenManager.GlobalTransformation);
 
 			// Draw Background
 			spriteBatch.Draw (background, new Vector2 (0, 0),

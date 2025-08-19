@@ -27,6 +27,7 @@ namespace CatapultGame
 	{
 		GraphicsDeviceManager graphicsDeviceManager;
 		ScreenManager screenManager;
+		public ScreenManager ScreenManager { get => screenManager; set => screenManager = value; }
 
 		// By preloading any assets used by UI rendering, we avoid framerate glitches
 		// when they suddenly need to be loaded in the middle of a menu transition.
@@ -45,8 +46,8 @@ namespace CatapultGame
 			graphicsDeviceManager = new GraphicsDeviceManager(this);
 			//graphics.SynchronizeWithVerticalRetrace = false;
 
-			graphicsDeviceManager.PreferredBackBufferHeight = 480;
-			graphicsDeviceManager.PreferredBackBufferWidth = 800;
+			graphicsDeviceManager.PreferredBackBufferWidth = ScreenManager.BASE_BUFFER_WIDTH;
+			graphicsDeviceManager.PreferredBackBufferHeight = ScreenManager.BASE_BUFFER_HEIGHT;
 
 			if (UIUtility.IsMobile)
 			{

@@ -34,8 +34,7 @@ namespace CatapultGame
         static readonly TimeSpan showTime = TimeSpan.FromSeconds(5);
         static readonly TimeSpan fadeOutTime = TimeSpan.FromSeconds(0.5);
 
-
-
+        CatapultGame game;
 
         /// <summary>
         /// Constructs a new message display component.
@@ -43,6 +42,7 @@ namespace CatapultGame
         public MessageDisplayComponent(Game game)
             : base(game)
         {
+            this.game = game as CatapultGame;
             // Register ourselves to implement the IMessageDisplay service.
             game.Services.AddService(typeof(IMessageDisplay), this);
         }
@@ -122,7 +122,7 @@ namespace CatapultGame
 
                 Vector2 position = new Vector2(GraphicsDevice.Viewport.Width - 100, 0);
 
-                spriteBatch.Begin();
+                spriteBatch.Begin(SpriteSortMode.Deferred, null, null, null, null, null, game.ScreenManager.GlobalTransformation);
 
                 // Draw each message in turn.
                 foreach (NotificationMessage message in messages)
