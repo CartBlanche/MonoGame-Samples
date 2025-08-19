@@ -26,7 +26,6 @@ namespace NetRumble
     /// </remarks>
     public class GameplayScreen : GameScreen, IDisposable
     {
-
         /// <summary>
         /// The primary gameplay object.
         /// </summary>
@@ -47,11 +46,6 @@ namespace NetRumble
         /// </summary>
         private Vector2 winnerStringPosition;
 
-
-
-
-
-
         /// <summary>
         /// The bloom component, applied to part of the game world.
         /// </summary>
@@ -61,11 +55,6 @@ namespace NetRumble
         /// The starfield, rendering behind the game.
         /// </summary>
         private Starfield starfield;
-
-
-
-
-
 
         /// <summary>
         /// The network session used in this game.
@@ -86,11 +75,6 @@ namespace NetRumble
         /// Event handler for the gamer-left event.
         /// </summary>
         EventHandler<GamerLeftEventArgs> gamerLeftHandler;
-
-
-
-
-
 
         /// <summary>
         /// Construct a new GameplayScreen object.
@@ -123,7 +107,7 @@ namespace NetRumble
             gamerLeftHandler = new EventHandler<GamerLeftEventArgs>(
                 networkSession_GamerLeft);
             networkSession.GamerLeft += gamerLeftHandler;
-                
+
 
             // cache the local player's ship object
             if (networkSession.LocalGamers.Count > 0)
@@ -140,31 +124,20 @@ namespace NetRumble
             TransitionOffTime = TimeSpan.FromSeconds(1.0);
         }
 
-
         /// <summary>
         /// Load graphics content for the game.
         /// </summary>
         public override void LoadContent()
         {
-			
-			
-		// Developers Comment or uncomment the bloomComponent to run with effects or not
-		// ***************************	
-		// Comment or uncomment from here
-		// ***************************	
             // create and add the bloom effect
-#if !BLOOM
             bloomComponent = new BloomComponent(ScreenManager.Game);
             bloomComponent.Settings = BloomSettings.PresetSettings[0];
             ScreenManager.Game.Components.Add(bloomComponent);
             bloomComponent.Initialize();
             bloomComponent.Visible = false; // we want to control when bloom component is drawn
-#endif
-		// ***************************
-		// Comment or uncomment to here
-		// ***************************	
+
             // create the starfield
-            starfield = new Starfield(Vector2.Zero, ScreenManager.GraphicsDevice, 
+            starfield = new Starfield(Vector2.Zero, ScreenManager.GraphicsDevice,
                 ScreenManager.Content);
             starfield.LoadContent();
 
@@ -173,7 +146,6 @@ namespace NetRumble
 
             base.LoadContent();
         }
-
 
         /// <summary>
         /// Release graphics data.
@@ -187,11 +159,6 @@ namespace NetRumble
 
             base.UnloadContent();
         }
-
-
-
-
-
 
         /// <summary>
         /// Updates the state of the game. This method checks the GameScreen.IsActive
@@ -241,15 +208,15 @@ namespace NetRumble
                     {
                         winnerString =
                             networkSession.AllGamers[world.WinnerIndex].Gamertag;
-                        winnerString += 
+                        winnerString +=
                             " has won the game!\nPress A to return to the lobby.";
-                        Vector2 winnerStringSize = 
+                        Vector2 winnerStringSize =
                             world.PlayerFont.MeasureString(winnerString);
                         winnerStringPosition = new Vector2(
-                            ScreenManager.GraphicsDevice.Viewport.X + 
-                                ScreenManager.GraphicsDevice.Viewport.Width / 2 - 
+                            ScreenManager.GraphicsDevice.Viewport.X +
+                                ScreenManager.GraphicsDevice.Viewport.Width / 2 -
                                 (float)Math.Floor(winnerStringSize.X / 2),
-                            ScreenManager.GraphicsDevice.Viewport.Y + 
+                            ScreenManager.GraphicsDevice.Viewport.Y +
                                 ScreenManager.GraphicsDevice.Viewport.Height / 2 -
                                 (float)Math.Floor(winnerStringSize.Y / 2));
                     }
@@ -275,7 +242,7 @@ namespace NetRumble
                     {
                         // If they pressed pause, bring up the pause menu screen.
                         const string message = "Exit the game?";
-                        MessageBoxScreen messageBox = new MessageBoxScreen(message, 
+                        MessageBoxScreen messageBox = new MessageBoxScreen(message,
                             false);
                         messageBox.Accepted += ExitMessageBoxAccepted;
                         ScreenManager.AddScreen(messageBox);
@@ -294,7 +261,6 @@ namespace NetRumble
             }
         }
 
-
         /// <summary>
         /// Event handler for when the user selects "yes" on the "are you sure
         /// you want to exit" message box.
@@ -304,7 +270,6 @@ namespace NetRumble
             world.GameExited = true;
             world = null;
         }
-
 
         /// <summary>
         /// Force the end of a network session so that a new one can be joined.
@@ -317,7 +282,6 @@ namespace NetRumble
                 networkSession = null;
             }
         }
-
 
         /// <summary>
         /// Exit this screen.
@@ -340,7 +304,6 @@ namespace NetRumble
             MediaPlayer.Stop();
             base.ExitScreen();
         }
-
 
         /// <summary>
         /// Screen-specific update to gamer rich presence.
@@ -374,10 +337,6 @@ namespace NetRumble
                 }
             }
         }
-
-
-
-
 
         /// <summary>
         /// Draws the gameplay screen.
@@ -431,7 +390,6 @@ namespace NetRumble
                 ScreenManager.FadeBackBufferToBlack(255 - TransitionAlpha);
         }
 
-
         /// <summary>
         /// Draw the user interface elements of the game (scores, etc.).
         /// </summary>
@@ -443,11 +401,11 @@ namespace NetRumble
                 ScreenManager.SpriteBatch.Begin();
                 // draw players 0 - 3 at the top of the screen
                 Vector2 position = new Vector2(
-                    ScreenManager.GraphicsDevice.Viewport.Width * 0.2f, 
+                    ScreenManager.GraphicsDevice.Viewport.Width * 0.2f,
                     ScreenManager.GraphicsDevice.Viewport.Height * 0.1f);
                 for (int i = 0; i < Math.Min(4, networkSession.AllGamers.Count); i++)
                 {
-                    world.DrawPlayerData(totalTime, networkSession.AllGamers[i], 
+                    world.DrawPlayerData(totalTime, networkSession.AllGamers[i],
                         position, ScreenManager.SpriteBatch, false);
                     position.X += ScreenManager.GraphicsDevice.Viewport.Width * 0.2f;
                 }
@@ -463,7 +421,7 @@ namespace NetRumble
                 }
                 // draw players 8 - 11 at the left of the screen
                 position = new Vector2(
-                    ScreenManager.GraphicsDevice.Viewport.Width * 0.13f, 
+                    ScreenManager.GraphicsDevice.Viewport.Width * 0.13f,
                     ScreenManager.GraphicsDevice.Viewport.Height * 0.2f);
                 for (int i = 8; i < Math.Min(12, networkSession.AllGamers.Count); i++)
                 {
@@ -473,7 +431,7 @@ namespace NetRumble
                 }
                 // draw players 12 - 15 at the right of the screen
                 position = new Vector2(
-                    ScreenManager.GraphicsDevice.Viewport.Width * 0.9f, 
+                    ScreenManager.GraphicsDevice.Viewport.Width * 0.9f,
                     ScreenManager.GraphicsDevice.Viewport.Height * 0.2f);
                 for (int i = 12; i < Math.Min(16, networkSession.AllGamers.Count); i++)
                 {
@@ -485,17 +443,12 @@ namespace NetRumble
                 if (world.GameWon && !String.IsNullOrEmpty(winnerString))
                 {
                     ScreenManager.SpriteBatch.DrawString(world.PlayerFont, winnerString,
-                        winnerStringPosition, Color.White, 0f, Vector2.Zero, 1.3f, 
+                        winnerStringPosition, Color.White, 0f, Vector2.Zero, 1.3f,
                         SpriteEffects.None, 0f);
                 }
                 ScreenManager.SpriteBatch.End();
             }
         }
-
-
-
-
-
 
         /// <summary>
         /// Handle the end of the game session.
@@ -514,7 +467,6 @@ namespace NetRumble
             }
         }
 
-
         /// <summary>
         /// Handle the end of the session.
         /// </summary>
@@ -532,7 +484,6 @@ namespace NetRumble
             networkSession = null;
         }
 
-
         /// <summary>
         /// Handle a player leaving the game.
         /// </summary>
@@ -545,11 +496,6 @@ namespace NetRumble
             }
         }
 
-
-
-
-
-
         /// <summary>
         /// Finalizes the GameplayScreen object, calls Dispose(false)
         /// </summary>
@@ -557,7 +503,6 @@ namespace NetRumble
         {
             Dispose(false);
         }
-
 
         /// <summary>
         /// Disposes the GameplayScreen object.
@@ -568,7 +513,6 @@ namespace NetRumble
             GC.SuppressFinalize(this);
         }
 
-        
         /// <summary>
         /// Disposes this object.
         /// </summary>
@@ -594,7 +538,5 @@ namespace NetRumble
                 }
             }
         }
-
-
     }
 }

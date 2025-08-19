@@ -1,0 +1,307 @@
+
+#----------------------------- Global Properties ----------------------------#
+
+/outputDir:bin/$(Platform)
+/intermediateDir:obj/$(Platform)
+/platform:DesktopGL
+/config:$(Configuration)
+/profile:HiDef
+/compress:False
+
+#-------------------------------- References --------------------------------#
+
+
+
+#---------------------------------- Content ---------------------------------#
+
+#begin Effects/BloomCombine.fx
+/importer:EffectImporter
+/processor:EffectProcessor
+/build:Effects/BloomCombine.fx
+
+#begin Effects/BloomExtract.fx
+/importer:EffectImporter
+/processor:EffectProcessor
+/build:Effects/BloomExtract.fx
+
+#begin Effects/GaussianBlur.fx
+/importer:EffectImporter
+/processor:EffectProcessor
+/build:Effects/GaussianBlur.fx
+
+#begin Effects/Clouds.fx
+/importer:EffectImporter
+/processor:EffectProcessor
+/build:Effects/Clouds.fx
+
+#begin Textures/blank.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/build:Textures/blank.png
+
+#begin Textures/title.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/build:Textures/title.png
+
+#begin Fonts/MenuFont.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/build:Fonts/MenuFont.spritefont
+
+#begin Fonts/MessageBox.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/build:Fonts/MessageBox.spritefont
+
+#begin Fonts/NetRumbleFont.png
+/importer:TextureImporter
+/processor:FontTextureProcessor
+/build:Fonts/NetRumbleFont.png
+
+#begin Textures/asteroid0.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/build:Textures/asteroid0.png
+
+#begin Textures/asteroid1.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/build:Textures/asteroid1.png
+
+#begin Textures/asteroid2.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/build:Textures/asteroid2.png
+
+#begin Textures/barrierEnd.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/build:Textures/barrierEnd.png
+
+#begin Textures/barrierPurple.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/build:Textures/barrierPurple.png
+
+#begin Textures/barrierRed.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/build:Textures/barrierRed.png
+
+#begin Textures/mine.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/build:Textures/mine.png
+
+#begin Textures/powerupDoubleLaser.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/build:Textures/powerupDoubleLaser.png
+
+#begin Textures/powerupRocket.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/build:Textures/powerupRocket.png
+
+#begin Textures/powerupTripleLaser.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/build:Textures/powerupTripleLaser.png
+
+#begin Textures/ship0.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/build:Textures/ship0.png
+
+#begin Textures/ship0Overlay.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/build:Textures/ship0Overlay.png
+
+#begin Textures/ship1.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/build:Textures/ship1.png
+
+#begin Textures/ship1Overlay.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/build:Textures/ship1Overlay.png
+
+#begin Textures/ship2.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/build:Textures/ship2.png
+
+#begin Textures/ship2Overlay.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/build:Textures/ship2Overlay.png
+
+#begin Textures/ship3.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/build:Textures/ship3.png
+
+#begin Textures/ship3Overlay.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/build:Textures/ship3Overlay.png
+
+#begin Textures/shipShields.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/build:Textures/shipShields.png
+
+#begin Textures/laser.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/build:Textures/laser.png
+
+#begin Textures/rocket.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/build:Textures/rocket.png
+
+#begin Textures/clouds.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:PremultiplyAlpha=False
+/build:Textures/clouds.png
+
+#begin Textures/chatAble.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/build:Textures/chatAble.png
+
+#begin Textures/chatMute.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/build:Textures/chatMute.png
+
+#begin Textures/chatTalking.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/build:Textures/chatTalking.png
+
+#begin Textures/ready.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/build:Textures/ready.png
+
+#begin Textures/explosion.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/build:Textures/explosion.png
+
+#begin Textures/Particles/smoke.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:PremultiplyAlpha=False
+/build:Textures/Particles/smoke.png
+
+#begin Textures/Particles/particle.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:PremultiplyAlpha=False
+/build:Textures/Particles/particle.png
+
+#begin Textures/Particles/spark.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:PremultiplyAlpha=False
+/build:Textures/Particles/spark.png
+
+#begin Textures/Particles/defaultParticle.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/build:Textures/Particles/defaultParticle.png
+
+
+/copy:Particles/laserExplosion.xml
+/copy:Particles/mineExplosion.xml
+/copy:Particles/rocketExplosion.xml
+/copy:Particles/rocketTrail.xml
+/copy:Particles/shipExplosion.xml
+/copy:Particles/shipSpawn.xml
+
+#begin Audio/wav/menu_scroll.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/build:Audio/wav/menu_scroll.wav
+
+#begin Audio/wma/One Step Beyond.wma
+#/importer:WmaImporter
+#/processor:SongProcessor
+#/build:Audio/wma/One Step Beyond.wma
+
+#begin Audio/wav/powerup_spawn.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/build:Audio/wav/powerup_spawn.wav
+
+#begin Audio/wav/powerup_touch.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/build:Audio/wav/powerup_touch.wav
+
+#begin Audio/wav/explosion_large.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/build:Audio/wav/explosion_large.wav
+
+#begin Audio/wav/rocket.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/build:Audio/wav/rocket.wav
+
+#begin Audio/wav/explosion_medium.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/build:Audio/wav/explosion_medium.wav
+
+#begin Audio/wav/fire_rocket1.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/build:Audio/wav/fire_rocket1.wav
+
+#begin Audio/wav/fire_rocket2.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/build:Audio/wav/fire_rocket2.wav
+
+#begin Audio/wav/fire_laser1.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/build:Audio/wav/fire_laser1.wav
+
+#begin Audio/wav/fire_laser2.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/build:Audio/wav/fire_laser2.wav
+
+#begin Audio/wav/fire_laser3.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/build:Audio/wav/fire_laser3.wav
+
+#begin Audio/wav/asteroid_touch.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/build:Audio/wav/asteroid_touch.wav
+
+#begin Audio/wav/player_spawn.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/build:Audio/wav/player_spawn.wav
+
+#begin Audio/wav/explosion_shockwave.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/build:Audio/wav/explosion_shockwave.wav
+
+#begin Audio/wav/menu_select.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/build:Audio/wav/menu_select.wav

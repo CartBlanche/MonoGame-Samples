@@ -59,6 +59,31 @@ namespace NetRumble
             // set the transition times
             TransitionOnTime = TimeSpan.FromSeconds(1.0);
             TransitionOffTime = TimeSpan.FromSeconds(0.0);
+
+            // Start async session search immediately
+            try
+            {
+                // You may want to adjust the parameters for your game
+                var findTask = NetworkSession.FindAsync(
+                    sessionType,
+                    1, // max local gamers
+                    null // session properties
+                );
+                var busyScreen = new NetworkBusyScreen<AvailableNetworkSessionCollection>("Searching for sessions...", findTask);
+                busyScreen.OperationCompleted += SessionsFound;
+                ScreenManager.AddScreen(busyScreen);
+            }
+            catch (Exception ex)
+            {
+                string message = ex is GamerPrivilegeException
+                    ? "You do not have permission to search for a session."
+                    : "Failed searching for the session.";
+                MessageBoxScreen messageBox = new MessageBoxScreen(message);
+                messageBox.Accepted += FailedMessageBox;
+                messageBox.Cancelled += FailedMessageBox;
+                ScreenManager.AddScreen(messageBox);
+                System.Console.WriteLine($"Failed to search for session:  {ex.Message}");
+            }
         }
 
 
@@ -114,40 +139,24 @@ namespace NetRumble
             if ((availableSessions != null) && (entryIndex >= 0) && 
                 (entryIndex < availableSessions.Count))
             {
-                // start to join
                 try
                 {
-                    IAsyncResult asyncResult = NetworkSession.BeginJoin(
-                        availableSessions[entryIndex], null, null);
-
-                    // create the busy screen
-                    NetworkBusyScreen busyScreen = new NetworkBusyScreen(
-                        "Joining the session...", asyncResult);
-                    busyScreen.OperationCompleted += LoadLobbyScreen;
+                    // Use the new async/await pattern for joining a session
+                    var joinTask = NetworkSession.JoinAsync(availableSessions[entryIndex]);
+                    var busyScreen = new NetworkBusyScreen<NetworkSession>("Joining the session...", joinTask);
+                    busyScreen.OperationCompleted += LoadLobbyScreenAsync;
                     ScreenManager.AddScreen(busyScreen);
                 }
-                catch (NetworkException ne)
+                catch (Exception ex)
                 {
-                    const string message = "Failed joining the session.";
+                    string message = ex is GamerPrivilegeException
+                        ? "You do not have permission to join a session."
+                        : "Failed joining the session.";
                     MessageBoxScreen messageBox = new MessageBoxScreen(message);
                     messageBox.Accepted += FailedMessageBox;
                     messageBox.Cancelled += FailedMessageBox;
                     ScreenManager.AddScreen(messageBox);
-
-                    System.Console.WriteLine("Failed to join session:  " +
-                        ne.Message);
-                }
-                catch (GamerPrivilegeException gpe)
-                {
-                    const string message =
-                        "You do not have permission to join a session.";
-                    MessageBoxScreen messageBox = new MessageBoxScreen(message);
-                    messageBox.Accepted += FailedMessageBox;
-                    messageBox.Cancelled += FailedMessageBox;
-                    ScreenManager.AddScreen(messageBox);
-
-                    System.Console.WriteLine(
-                        "Insufficient privilege to join session:  " + gpe.Message);
+                    System.Console.WriteLine($"Failed to join session:  {ex.Message}");
                 }
             }
         }
@@ -228,42 +237,27 @@ namespace NetRumble
 
 
         /// <summary>
-        /// Callback to receive the network-session search results.
+        /// Callback to receive the network-session search results (async/await style).
         /// </summary>
         internal void SessionsFound(object sender, OperationCompletedEventArgs e)
         {
-            try
+            // e.Result should be an AvailableNetworkSessionCollection or null
+            availableSessions = e.Result as AvailableNetworkSessionCollection;
+            if (e.Exception != null)
             {
-                availableSessions = NetworkSession.EndFind(e.AsyncResult);
-            }
-            catch (NetworkException ne)
-            {
-                const string message = "Failed searching for the session.";
+                string message = e.Exception is GamerPrivilegeException
+                    ? "You do not have permission to search for a session. " + e.Exception.Message
+                    : "Failed searching for the session.";
                 MessageBoxScreen messageBox = new MessageBoxScreen(message);
                 messageBox.Accepted += FailedMessageBox;
                 messageBox.Cancelled += FailedMessageBox;
                 ScreenManager.AddScreen(messageBox);
-
-                System.Console.WriteLine("Failed to search for session:  " +
-                    ne.Message);
+                System.Console.WriteLine($"Failed to search for session:  {e.Exception.Message}");
             }
-            catch (GamerPrivilegeException gpe)
-            {
-                const string message =
-                    "You do not have permission to search for a session. ";
-                MessageBoxScreen messageBox = new MessageBoxScreen(message + gpe.Message);
-                messageBox.Accepted += FailedMessageBox;
-                messageBox.Cancelled += FailedMessageBox;
-                ScreenManager.AddScreen(messageBox);
-
-                System.Console.WriteLine(
-                    "Insufficient privilege to search for session:  " + gpe.Message);
-            } 
             MenuEntries.Clear();
             if (availableSessions != null)
             {
-                foreach (AvailableNetworkSession availableSession in
-                    availableSessions)
+                foreach (AvailableNetworkSession availableSession in availableSessions)
                 {
                     if (availableSession.CurrentGamerCount < World.MaximumPlayers)
                     {
@@ -283,41 +277,25 @@ namespace NetRumble
         /// <summary>
         /// Callback to load the lobby screen with the new session.
         /// </summary>
-        private void LoadLobbyScreen(object sender, OperationCompletedEventArgs e)
+        // New async/await style lobby loader
+        private void LoadLobbyScreenAsync(object sender, OperationCompletedEventArgs e)
         {
-            NetworkSession networkSession = null;
-            try
+            var networkSession = e.Result as NetworkSession;
+            if (e.Exception != null || networkSession == null)
             {
-                networkSession = NetworkSession.EndJoin(e.AsyncResult);
-            }
-            catch (NetworkException ne)
-            {
-                const string message = "Failed joining session.";
+                string message = e.Exception is GamerPrivilegeException
+                    ? "You do not have permission to join a session."
+                    : "Failed joining session.";
                 MessageBoxScreen messageBox = new MessageBoxScreen(message);
                 messageBox.Accepted += FailedMessageBox;
                 messageBox.Cancelled += FailedMessageBox;
                 ScreenManager.AddScreen(messageBox);
-
-                System.Console.WriteLine("Failed joining session:  " + ne.Message);
+                System.Console.WriteLine($"Failed joining session:  {e.Exception?.Message}");
+                return;
             }
-            catch (GamerPrivilegeException gpe)
-            {
-                const string message =
-                    "You do not have permission to join a session.";
-                MessageBoxScreen messageBox = new MessageBoxScreen(message);
-                messageBox.Accepted += FailedMessageBox;
-                messageBox.Cancelled += FailedMessageBox;
-                ScreenManager.AddScreen(messageBox);
-
-                System.Console.WriteLine(
-                    "Insufficient privilege to join session:  " + gpe.Message);
-            }
-            if (networkSession != null)
-            {
-                LobbyScreen lobbyScreen = new LobbyScreen(networkSession);
-                lobbyScreen.ScreenManager = this.ScreenManager;
-                ScreenManager.AddScreen(lobbyScreen);
-            }
+            LobbyScreen lobbyScreen = new LobbyScreen(networkSession);
+            lobbyScreen.ScreenManager = this.ScreenManager;
+            ScreenManager.AddScreen(lobbyScreen);
         }
 
 

@@ -38,7 +38,7 @@ namespace NetRumble
         /// <summary>
         /// The graphics device manager used to render the game.
         /// </summary>
-        GraphicsDeviceManager graphics;
+        GraphicsDeviceManager graphicsDeviceManager;
 
 
 
@@ -61,13 +61,25 @@ namespace NetRumble
         public NetRumbleGame()
         {
             // initialize the graphics device manager
-            graphics = new GraphicsDeviceManager(this);
+            graphicsDeviceManager = new GraphicsDeviceManager(this);
 
-            graphics.PreferredBackBufferWidth = 1280;
-            graphics.PreferredBackBufferHeight = 720;
-#if MOBILE
-            graphics.IsFullScreen = true;
-#endif
+            graphicsDeviceManager.PreferredBackBufferWidth = 1280;
+            graphicsDeviceManager.PreferredBackBufferHeight = 720;
+
+            if (UIUtility.IsMobile)
+            {
+                graphicsDeviceManager.IsFullScreen = true;
+                IsMouseVisible = false;
+            }
+            else if (UIUtility.IsDesktop)
+            {
+                graphicsDeviceManager.IsFullScreen = false;
+                IsMouseVisible = true;
+            }
+            else
+            {
+                throw new PlatformNotSupportedException();
+            }
 
             // initialize the content manager
             Content.RootDirectory = "Content";
@@ -171,7 +183,7 @@ namespace NetRumble
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Draw(GameTime gameTime)
         {
-            graphics.GraphicsDevice.Clear(Color.MonoGameOrange);
+            graphicsDeviceManager.GraphicsDevice.Clear(Color.MonoGameOrange);
 
             base.Draw(gameTime);
         }

@@ -6,6 +6,7 @@
 //-----------------------------------------------------------------------------
 
 using System;
+using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.GamerServices;
 using Microsoft.Xna.Framework.Net;
@@ -80,8 +81,8 @@ namespace NetRumble
                         case MainMenuState.SignedInLocal:
                             {
                                 MenuEntries.Clear();
-                                MenuEntries.Add("Create System Link Session");
-                                MenuEntries.Add("Join System Link Session");
+                                MenuEntries.Add("Create LAN Session");
+                                MenuEntries.Add("Join LAN Session");
                                 MenuEntries.Add("Exit");
                                 break;
                             }
@@ -94,20 +95,8 @@ namespace NetRumble
                             }
                     }
                 }
-                // Simplified menu for non-networking build
-                state = value;
-                if (MenuEntries != null)
-                {
-                    MenuEntries.Clear();
-                    MenuEntries.Add("Exit");
-                }
             }
         }
-
-
-
-
-
 
         /// <summary>
         /// Constructs a new MainMenu object.
@@ -121,14 +110,7 @@ namespace NetRumble
             // capture current value of trial mode flag
             trialMode = Guide.IsTrialMode;
             updateState = false;
-            // Set up the simple menu
-            State = MainMenuState.Empty;
         }
-
-
-
-
-
 
         /// <summary>
         /// Updates the screen. This method checks the GameScreen.IsActive
@@ -149,20 +131,17 @@ namespace NetRumble
                         break;
                     }
                 }
-                State = signedIntoLive ? MainMenuState.SignedInLive : 
+                State = signedIntoLive ? MainMenuState.SignedInLive :
                     MainMenuState.SignedInLocal;
             }
             else
             {
                 State = MainMenuState.SignedOut;
             }
-            // For non-networking build, just keep it simple
-            State = MainMenuState.Empty;
-            
+
             base.Update(gameTime, otherScreenHasFocus, coveredByOtherScreen);
         }
-        
-        
+
         /// <summary>
         /// Responds to user menu selections.
         /// </summary>
@@ -245,13 +224,6 @@ namespace NetRumble
                         break;
                     }
             }
-            // Simplified menu for non-networking build
-            switch (entryIndex)
-            {
-                case 0: // Exit
-                    OnCancel();
-                    break;
-            }
         }
 
         /// <summary>
@@ -264,7 +236,6 @@ namespace NetRumble
             Guide.ShowMarketplace(Gamer.SignedInGamers[0].PlayerIndex);
         }
 
-
         /// <summary>
         /// Attempt to join a session using an invite that was received.
         /// </summary>
@@ -272,11 +243,9 @@ namespace NetRumble
         {
             try
             {
-                // begin to join the game we were invited to
-                IAsyncResult asyncResult = NetworkSession.BeginJoinInvited(1, null, null);
-
-                // create the busy screen
-                NetworkBusyScreen busyScreen = new NetworkBusyScreen("Joining the session...", asyncResult);
+                // start async join for the invited game
+                var joinTask = NetworkSession.JoinInvitedAsync(Gamer.SignedInGamers);
+                var busyScreen = new NetworkBusyScreen<NetworkSession>("Joining the session...", joinTask);
                 busyScreen.OperationCompleted += InvitedSessionJoined;
                 ScreenManager.AddScreen(busyScreen);
             }
@@ -289,7 +258,6 @@ namespace NetRumble
             updateState = true;
         }
 
-
         /// <summary>
         /// When the user cancels the main menu, ask if they want to exit the sample.
         /// </summary>
@@ -301,7 +269,6 @@ namespace NetRumble
             ScreenManager.AddScreen(messageBox);
         }
 
-
         /// <summary>
         /// Event handler for when the user selects ok on the "are you sure
         /// you want to exit" message box.
@@ -310,7 +277,6 @@ namespace NetRumble
         {
             ScreenManager.Game.Exit();
         }
-
 
         /// <summary>
         /// Screen-specific update to gamer rich presence.
@@ -326,21 +292,16 @@ namespace NetRumble
             }
         }
 
-
-
-
-
         private void QuickMatchSession()
         {
             // start the search
             try
             {
-                IAsyncResult asyncResult = NetworkSession.BeginFind(
-                    NetworkSessionType.PlayerMatch, 1, null, null, null);
+                var findTask = NetworkSession.FindAsync(
+                    NetworkSessionType.PlayerMatch, 1, new Dictionary<string, object>());
 
-                // create the busy screen
-                NetworkBusyScreen busyScreen = new NetworkBusyScreen(
-                    "Searching for a session...", asyncResult);
+                var busyScreen = new NetworkBusyScreen<AvailableNetworkSessionCollection>(
+                    "Searching for a session...", findTask);
                 busyScreen.OperationCompleted += QuickMatchSearchCompleted;
                 ScreenManager.AddScreen(busyScreen);
             }
@@ -378,12 +339,11 @@ namespace NetRumble
             // create the session
             try
             {
-                IAsyncResult asyncResult = NetworkSession.BeginCreate(sessionType, 1,
-                    World.MaximumPlayers, null, null);
+                var createTask = NetworkSession.CreateAsync(sessionType, 1,
+                    World.MaximumPlayers, 0, new Dictionary<string, object>());
 
-                // create the busy screen
-                NetworkBusyScreen busyScreen = new NetworkBusyScreen(
-                    "Creating a session...", asyncResult);
+                var busyScreen = new NetworkBusyScreen<NetworkSession>(
+                    "Creating a session...", createTask);
                 busyScreen.OperationCompleted += SessionCreated;
                 ScreenManager.AddScreen(busyScreen);
             }
@@ -412,7 +372,6 @@ namespace NetRumble
             }
         }
 
-
         /// <summary>
         /// Start searching for a session of the given type.
         /// </summary>
@@ -424,103 +383,51 @@ namespace NetRumble
                new SearchResultsScreen(sessionType);
             searchResultsScreen.ScreenManager = this.ScreenManager;
             ScreenManager.AddScreen(searchResultsScreen);
-
-            // start the search
-            try
-            {
-                IAsyncResult asyncResult = NetworkSession.BeginFind(sessionType, 1, null,
-                    null, null);
-
-                // create the busy screen
-                NetworkBusyScreen busyScreen = new NetworkBusyScreen(
-                    "Searching for a session...", asyncResult);
-                busyScreen.OperationCompleted += searchResultsScreen.SessionsFound;
-                ScreenManager.AddScreen(busyScreen);
-            }
-            catch (NetworkException ne)
-            {
-                const string message = "Failed searching for the session.";
-                MessageBoxScreen messageBox = new MessageBoxScreen(message);
-                messageBox.Accepted += FailedMessageBox;
-                messageBox.Cancelled += FailedMessageBox;
-                ScreenManager.AddScreen(messageBox);
-
-                System.Console.WriteLine("Failed to search for session:  " +
-                    ne.Message);
-            }
-            catch (GamerPrivilegeException gpe)
-            {
-                const string message =
-                    "You do not have permission to search for a session.";
-                MessageBoxScreen messageBox = new MessageBoxScreen(message);
-                messageBox.Accepted += FailedMessageBox;
-                messageBox.Cancelled += FailedMessageBox;
-                ScreenManager.AddScreen(messageBox);
-
-                System.Console.WriteLine(
-                    "Insufficient privilege to search for session:  " + gpe.Message);
-            }
         }
-
 
         /// <summary>
         /// Callback to receive the network-session search results from quick-match.
         /// </summary>
         void QuickMatchSearchCompleted(object sender, OperationCompletedEventArgs e)
         {
-            try
+            var availableSessions = e.Result as AvailableNetworkSessionCollection;
+            if (e.Exception != null)
             {
-                AvailableNetworkSessionCollection availableSessions =
-                    NetworkSession.EndFind(e.AsyncResult);
-                if ((availableSessions != null) && (availableSessions.Count > 0))
+                string message = e.Exception is GamerPrivilegeException
+                    ? "You do not have permission to search for a session."
+                    : "Failed searching for the session.";
+                MessageBoxScreen messageBox = new MessageBoxScreen(message);
+                messageBox.Accepted += FailedMessageBox;
+                messageBox.Cancelled += FailedMessageBox;
+                ScreenManager.AddScreen(messageBox);
+                System.Console.WriteLine("Failed to search for session:  " + e.Exception.Message);
+                return;
+            }
+
+            if ((availableSessions != null) && (availableSessions.Count > 0))
+            {
+                try
                 {
-                    // join the session
-                    try
-                    {
-                        IAsyncResult asyncResult = NetworkSession.BeginJoin(
-                            availableSessions[0], null, null);
-
-                        // create the busy screen
-                        NetworkBusyScreen busyScreen = new NetworkBusyScreen(
-                            "Joining the session...", asyncResult);
-                        busyScreen.OperationCompleted += QuickMatchSessionJoined;
-                        ScreenManager.AddScreen(busyScreen);
-                    }
-                    catch (NetworkException ne)
-                    {
-                        const string message = "Failed joining the session.";
-                        MessageBoxScreen messageBox = new MessageBoxScreen(message);
-                        messageBox.Accepted += FailedMessageBox;
-                        messageBox.Cancelled += FailedMessageBox;
-                        ScreenManager.AddScreen(messageBox);
-
-                        System.Console.WriteLine("Failed to join session:  " +
-                            ne.Message);
-                    }
-                    catch (GamerPrivilegeException gpe)
-                    {
-                        const string message =
-                            "You do not have permission to join a session.";
-                        MessageBoxScreen messageBox = new MessageBoxScreen(message);
-                        messageBox.Accepted += FailedMessageBox;
-                        messageBox.Cancelled += FailedMessageBox;
-                        ScreenManager.AddScreen(messageBox);
-
-                        System.Console.WriteLine(
-                            "Insufficient privilege to join session:  " + gpe.Message);
-                    }
+                    var joinTask = NetworkSession.JoinAsync(availableSessions[0]);
+                    var busyScreen = new NetworkBusyScreen<NetworkSession>(
+                        "Joining the session...", joinTask);
+                    busyScreen.OperationCompleted += QuickMatchSessionJoined;
+                    ScreenManager.AddScreen(busyScreen);
                 }
-                else
+                catch (Exception ex)
                 {
-                    const string message = "No matches were found.";
+                    const string message = "Failed joining the session.";
                     MessageBoxScreen messageBox = new MessageBoxScreen(message);
                     messageBox.Accepted += FailedMessageBox;
                     messageBox.Cancelled += FailedMessageBox;
                     ScreenManager.AddScreen(messageBox);
+                    System.Console.WriteLine("Failed to join session:  " + ex.Message);
                 }
             }
-            catch (GamerPrivilegeException gpe){
-                MessageBoxScreen messageBox = new MessageBoxScreen(gpe.Message);
+            else
+            {
+                const string message = "No matches were found.";
+                MessageBoxScreen messageBox = new MessageBoxScreen(message);
                 messageBox.Accepted += FailedMessageBox;
                 messageBox.Cancelled += FailedMessageBox;
                 ScreenManager.AddScreen(messageBox);
@@ -533,33 +440,18 @@ namespace NetRumble
         /// </summary>
         void SessionCreated(object sender, OperationCompletedEventArgs e)
         {
-            NetworkSession networkSession = null;
-            try
+            var networkSession = e.Result as NetworkSession;
+            if (e.Exception != null || networkSession == null)
             {
-                networkSession = NetworkSession.EndCreate(e.AsyncResult);
-            }
-            catch (NetworkException ne)
-            {
-                const string message = "Failed creating the session.";
+                string message = e.Exception is GamerPrivilegeException
+                    ? "You do not have permission to create a session. " + e.Exception.Message
+                    : "Failed creating the session.";
                 MessageBoxScreen messageBox = new MessageBoxScreen(message);
                 messageBox.Accepted += FailedMessageBox;
                 messageBox.Cancelled += FailedMessageBox;
                 ScreenManager.AddScreen(messageBox);
-
-                System.Console.WriteLine("Failed to create session:  " +
-                    ne.Message);
-            }
-            catch (GamerPrivilegeException gpe)
-            {
-                const string message =
-                    "You do not have permission to create a session. ";
-                MessageBoxScreen messageBox = new MessageBoxScreen(message+gpe.Message);
-                messageBox.Accepted += FailedMessageBox;
-                messageBox.Cancelled += FailedMessageBox;
-                ScreenManager.AddScreen(messageBox);
-
-                System.Console.WriteLine(
-                    "Insufficient privilege to create session:  " + gpe.Message);
+                System.Console.WriteLine("Failed to create session:  " + e.Exception?.Message);
+                return;
             }
             if (networkSession != null)
             {
@@ -569,46 +461,29 @@ namespace NetRumble
             }
         }
 
-
         /// <summary>
         /// Callback when a session is quick-matched.
         /// </summary>
         void QuickMatchSessionJoined(object sender, OperationCompletedEventArgs e)
         {
-            NetworkSession networkSession = null;
-            try
+            var networkSession = e.Result as NetworkSession;
+            if (e.Exception != null || networkSession == null)
             {
-                networkSession = NetworkSession.EndJoin(e.AsyncResult);
-            }
-            catch (NetworkException ne)
-            {
-                const string message = "Failed joining the session.";
+                string message = e.Exception is GamerPrivilegeException
+                    ? "You do not have permission to join a session."
+                    : "Failed joining the session.";
                 MessageBoxScreen messageBox = new MessageBoxScreen(message);
                 messageBox.Accepted += FailedMessageBox;
                 messageBox.Cancelled += FailedMessageBox;
                 ScreenManager.AddScreen(messageBox);
-
-                System.Console.WriteLine("Failed to join session:  " +
-                    ne.Message);
-            }
-            catch (GamerPrivilegeException gpe)
-            {
-                const string message =
-                    "You do not have permission to join a session.";
-                MessageBoxScreen messageBox = new MessageBoxScreen(message);
-                messageBox.Accepted += FailedMessageBox;
-                messageBox.Cancelled += FailedMessageBox;
-                ScreenManager.AddScreen(messageBox);
-
-                System.Console.WriteLine(
-                    "Insufficient privilege to join session:  " + gpe.Message);
+                System.Console.WriteLine("Failed to join session:  " + e.Exception?.Message);
+                return;
             }
             if (networkSession != null)
             {
                 LoadLobbyScreen(networkSession);
             }
         }
-
 
         /// <summary>
         /// Load the lobby screen with the new session.
@@ -623,57 +498,37 @@ namespace NetRumble
             }
         }
 
-
         /// <summary>
         /// Finishes the asynchronous process of joining a game from an invitation,
         /// joining the lobby of a hosted game if the join was successful.
         /// </summary>
         void InvitedSessionJoined(object sender, OperationCompletedEventArgs e)
         {
-            NetworkSession networkSession = null;
-            try
+            var networkSession = e.Result as NetworkSession;
+            if (e.Exception != null || networkSession == null)
             {
-                networkSession = NetworkSession.EndJoinInvited(e.AsyncResult);
-            }
-            catch (NetworkSessionJoinException je)
-            {
-                const string message = "Failed joining the session (";
-                MessageBoxScreen messageBox = new MessageBoxScreen(message + je.JoinError.ToString() + ").");
+                string message = e.Exception is NetworkSessionJoinException je
+                    ? "Failed joining the session (" + je.JoinError.ToString() + ")."
+                    : "Failed joining the session (" + (e.Exception?.Message ?? "Unknown error") + ").";
+                MessageBoxScreen messageBox = new MessageBoxScreen(message);
                 messageBox.Accepted += FailedMessageBox;
                 messageBox.Cancelled += FailedMessageBox;
                 ScreenManager.AddScreen(messageBox);
-
-                System.Console.WriteLine("Failed to join session:  " +
-                    je.Message);
-            }
-            catch (Exception ge)
-            {
-                const string message = "Failed joining the session (";
-                MessageBoxScreen messageBox = new MessageBoxScreen(message + ge.Message + ").");
-                messageBox.Accepted += FailedMessageBox;
-                messageBox.Cancelled += FailedMessageBox;
-                ScreenManager.AddScreen(messageBox);
-
-                System.Console.WriteLine("Failed to join session:  " +
-                    ge.Message);
+                System.Console.WriteLine("Failed to join session:  " + e.Exception?.Message);
+                return;
             }
 
             // Start the lobby if we got the session!
             // Otherwise the MainMenuScreen will be available.
-            if (networkSession != null)
-            {
-                LobbyScreen lobbyScreen = new LobbyScreen(networkSession);
-                lobbyScreen.ScreenManager = ScreenManager;
-                ScreenManager.AddScreen(lobbyScreen);
-            }
+            LobbyScreen lobbyScreen = new LobbyScreen(networkSession);
+            lobbyScreen.ScreenManager = ScreenManager;
+            ScreenManager.AddScreen(lobbyScreen);
         }
-
 
         /// <summary>
         /// Event handler for when the user selects ok on the network-operation-failed
         /// message box.
         /// </summary>
         void FailedMessageBox(object sender, EventArgs e) { }
-
     }
 }
