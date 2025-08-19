@@ -7,7 +7,7 @@
 			"path": "../../../MonoGame.Xna.Framework.Net"
 		},
 		{
-			"path": "../../../NetworkStateManagement"
+			"path": "../../../CatapultWars"
 		}
 	],
 	"settings": {}

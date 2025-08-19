@@ -9,7 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading;
+// using System.Threading;
 
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
@@ -22,9 +22,7 @@ namespace CatapultGame
 	{
 		Texture2D background;
 		SpriteFont font;
-		bool isLoading;
-		GameplayScreen gameplayScreen;
-		System.Threading.Thread thread;
+		// Background threaded loading removed; we load on the main thread.
 
 		public InstructionsScreen ()
 		{
@@ -42,61 +40,25 @@ namespace CatapultGame
 
 		public override void Update (GameTime gameTime, bool otherScreenHasFocus, bool coveredByOtherScreen)
 		{
-			// If additional thread is running, skip
-			if (null != thread) {
-				// If additional thread finished loading and the screen is not exiting
-				if (thread.ThreadState == System.Threading.ThreadState.Stopped  && !IsExiting) {
-					isLoading = false;
-
-					// Exit the screen and show the gameplay screen 
-					// with pre-loaded assets
-					ExitScreen ();
-					ScreenManager.AddScreen (gameplayScreen, null);
-				}
-			}
-
 			base.Update (gameTime, otherScreenHasFocus, coveredByOtherScreen);
 		}
 
 		public override void HandleInput (InputState input)
 		{
-			if (isLoading == true)
-            {
-                // Exit the screen and show the gameplay screen 
-					// with pre-loaded assets
-				ExitScreen ();
-				ScreenManager.AddScreen (gameplayScreen, null);
-					
-				base.HandleInput (input);
-				return;
-			}
-
 			PlayerIndex player;
 			if (input.IsNewKeyPress (Keys.Space, ControllingPlayer, out player) ||
 			    input.IsNewKeyPress (Keys.Enter, ControllingPlayer, out player) ||
 			    input.MouseGesture.HasFlag(MouseGestureType.LeftClick) ||
 			    input.IsNewButtonPress (Buttons.Start, ControllingPlayer, out player)) {
-				// Create a new instance of the gameplay screen
-				gameplayScreen = new GameplayScreen ();
-				gameplayScreen.ScreenManager = ScreenManager;
-
-                // Start loading the resources in additional thread    
-				thread = new System.Threading.Thread (new System.Threading.ThreadStart (gameplayScreen.LoadAssets));
-				isLoading = true;
-				// start it
-				thread.Start ();
+				// Start gameplay immediately on the main thread
+				ExitScreen();
+				ScreenManager.AddScreen(new GameplayScreen(), null);
 			}
 
 			foreach (var gesture in input.Gestures) {
 				if (gesture.GestureType == GestureType.Tap) {
-					// Create a new instance of the gameplay screen
-					gameplayScreen = new GameplayScreen ();
-					gameplayScreen.ScreenManager = ScreenManager;
-						
-					// Start loading the resources in additional thread
-					thread = new System.Threading.Thread (new System.Threading.ThreadStart (gameplayScreen.LoadAssets));
-					isLoading = true;
-					thread.Start ();				
+					ExitScreen();
+					ScreenManager.AddScreen(new GameplayScreen(), null);
 				}
 			}
 
@@ -113,17 +75,7 @@ namespace CatapultGame
 			spriteBatch.Draw (background, new Vector2 (0, 0),
 					new Color (255, 255, 255, TransitionAlpha));
 
-			// If loading gameplay screen resource in the 
-			// background show "Loading..." text
-			if (isLoading) {
-				string text = "Loading...";
-				Vector2 size = font.MeasureString (text);
-				Vector2 position = new Vector2 (
-							(ScreenManager.GraphicsDevice.Viewport.Width - size.X) / 2,
-							(ScreenManager.GraphicsDevice.Viewport.Height - size.Y) / 2);
-				spriteBatch.DrawString (font, text, position, Color.Black);
-				spriteBatch.DrawString (font, text, position - new Vector2 (-4, 4), new Color (255f, 150f, 0f));
-			}
+
 
 			spriteBatch.End ();
 		}
