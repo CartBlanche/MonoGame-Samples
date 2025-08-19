@@ -5,9 +5,6 @@
 		},
 		{
 			"path": "../../../MonoGame.Xna.Framework.Net"
-		},
-		{
-			"path": "../../../CatapultWars"
 		}
 	],
 	"settings": {}

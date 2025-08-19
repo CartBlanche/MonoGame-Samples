@@ -1,0 +1,188 @@
+#----------------------------- Global Properties ----------------------------#
+
+/outputDir:bin/$(Platform)
+/intermediateDir:obj/$(Platform)
+/platform:DesktopGL
+/config:$(Configuration)
+/profile:HiDef
+/compress:False
+
+#-------------------------------- References --------------------------------#
+
+
+
+#---------------------------------- Content ---------------------------------#
+
+#begin Fonts/HUDFont.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/build:Fonts/HUDFont.spritefont
+
+#begin Fonts/MenuFont.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/build:Fonts/MenuFont.spritefont
+
+#begin Sounds/BoulderHit.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Sounds/BoulderHit.wav
+
+#begin Sounds/CatapultExplosion.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Sounds/CatapultExplosion.wav
+
+#begin Sounds/CatapultFire.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Sounds/CatapultFire.wav
+
+#begin Sounds/Lose.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Sounds/Lose.wav
+
+#begin Sounds/RopeStretch.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Sounds/RopeStretch.wav
+
+#begin Sounds/Win.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Sounds/Win.wav
+
+#begin Textures/Ammo/rock_ammo.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/build:Textures/Ammo/rock_ammo.png
+
+#begin Textures/Backgrounds/blank.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/build:Textures/Backgrounds/blank.png
+
+#begin Textures/Backgrounds/cloud1.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/build:Textures/Backgrounds/cloud1.png
+
+#begin Textures/Backgrounds/cloud2.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/build:Textures/Backgrounds/cloud2.png
+
+#begin Textures/Backgrounds/defeat.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/build:Textures/Backgrounds/defeat.png
+
+#begin Textures/Backgrounds/gameplay_screen.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/build:Textures/Backgrounds/gameplay_screen.png
+
+#begin Textures/Backgrounds/instructions.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/build:Textures/Backgrounds/instructions.png
+
+#begin Textures/Backgrounds/mountain.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/build:Textures/Backgrounds/mountain.png
+
+#begin Textures/Backgrounds/sky.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/build:Textures/Backgrounds/sky.png
+
+#begin Textures/Backgrounds/title_screen.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/build:Textures/Backgrounds/title_screen.png
+
+#begin Textures/Backgrounds/victory.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/build:Textures/Backgrounds/victory.png
+
+#begin Textures/HUD/Arrow.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/build:Textures/HUD/Arrow.png
+
+#begin Textures/HUD/ammoType.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/build:Textures/HUD/ammoType.png
+
+#begin Textures/HUD/hudBackground.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/build:Textures/HUD/hudBackground.png
+
+#begin Textures/HUD/windArrow.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/build:Textures/HUD/windArrow.png
+
+#begin Textures/Catapults/Fire_Miss/fire_miss.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/build:Textures/Catapults/Fire_Miss/fire_miss.png
+
+#begin Textures/Catapults/Hit_Smoke/smoke.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/build:Textures/Catapults/Hit_Smoke/smoke.png
+
+#begin Textures/Catapults/Blue/blueDestroyed/blueCatapult_destroyed.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/build:Textures/Catapults/Blue/blueDestroyed/blueCatapult_destroyed.png
+
+#begin Textures/Catapults/Blue/blueFire/blueCatapult_fire.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/build:Textures/Catapults/Blue/blueFire/blueCatapult_fire.png
+
+#begin Textures/Catapults/Blue/blueIdle/blueIdle.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/build:Textures/Catapults/Blue/blueIdle/blueIdle.png
+
+#begin Textures/Catapults/Blue/bluePullback/blueCatapult_Pullback.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/build:Textures/Catapults/Blue/bluePullback/blueCatapult_Pullback.png
+
+#begin Textures/Catapults/Red/redDestroyed/redCatapult_destroyed.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/build:Textures/Catapults/Red/redDestroyed/redCatapult_destroyed.png
+
+#begin Textures/Catapults/Red/redFire/redCatapult_fire.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/build:Textures/Catapults/Red/redFire/redCatapult_fire.png
+
+#begin Textures/Catapults/Red/redIdle/redIdle.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/build:Textures/Catapults/Red/redIdle/redIdle.png
+
+#begin Textures/Catapults/Red/redPullback/redCatapult_Pullback.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/build:Textures/Catapults/Red/redPullback/redCatapult_Pullback.png
+
+#begin Textures/Catapults/AnimationsDef.xml
+/copy:Textures/Catapults/AnimationsDef.xml
