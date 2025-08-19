@@ -35,7 +35,7 @@ I welcome contributions to the MonoGame Samples repository! Here's how you can g
 | [Cards Starter Kit](CardsStarterKit/README.md) | Card framework showing how to implement a Blackjack game. |
 |  [FloodControl](GameDevelopmentbyExample/FloodControl/README.md) | |
 | [HoneycombRush](HoneycombRush/README.md) | Arcade-style honeycomb collection game. |
-| [CatapultNetWars](CatapultNetWars/README.md) | Networked multiplayer catapult game. Works on LAN |
+| [CatapultNetWars](CatapultNetWars/README.md) | Single Player and Networked multiplayer catapult game. Works on LAN |
 | [PacMan](PacMan/README.md) | Cross-platform Pac-Man clone. |
 |  [RobotRampage](GameDevelopmentbyExample/RobotRampage/README.md) |  | 
 | [RockRain](RockRain/README.md) | Arcade-style falling rocks game. |
@@ -52,7 +52,6 @@ I welcome contributions to the MonoGame Samples repository! Here's how you can g
 | [Aiming](Aiming/README.md) | Aiming mechanics and input handling. |
 | [BouncingBox](BouncingBox/README.md) | Simple physics sample with bouncing boxes. |
 | [Cards Starter Kit](CardsStarterKit/README.md) | Card framework showing how to implement a Blackjack game. |
-| [CatapultWars](CatapultWars/README.md) | Classic catapult game mechanics. |
 | [ChaseAndEvade](ChaseAndEvade/README.md) | AI sample showing chase and evade behaviors. |
 | [CollisionSample](CollisionSample/README.md) | Collision detection techniques. |
 | [Draw2D](Draw2D/README.md) | Basic 2D drawing and sprite rendering. |
@@ -97,7 +96,7 @@ I welcome contributions to the MonoGame Samples repository! Here's how you can g
 
 | Project | Description |
 |--------|-------------|
-| [CatapultNetWars](CatapultNetWars/README.md) | Networked multiplayer catapult game. Works on LAN |
+| [CatapultNetWars](CatapultNetWars/README.md) | Single Player and Networked multiplayer catapult game. Works on LAN |
 | [MonoGame.Xna.Framework.Net](MonoGame.Xna.Framework.Net/README.md) | Networking API compatibility sample. Partially implemented for Peer 2 Peer, LAN games |
 | [NetRumble](NetRumble/README.md) | Networked multiplayer space shooter. (NOT working yet) |
 | [NetworkPrediction](NetworkPrediction/README.md) | Networked gameplay prediction and synchronization. Works on LAN |
