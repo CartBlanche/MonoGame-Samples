@@ -16,21 +16,22 @@ DECLARE_TEXTURE(BaseSampler, 1);
 
 
 // Helper for modifying the saturation of a color.
-float4 AdjustSaturation(float4 color, float saturation)
+float3 AdjustSaturation(float3 color, float saturation)
 {
     // The constants 0.3, 0.59, and 0.11 are chosen because the
     // human eye is more sensitive to green light, and less to blue.
     float grey = dot(color, float3(0.3, 0.59, 0.11));
 
-    return lerp(grey, color, saturation);
+    return lerp(grey.xxx, color, saturation);
 }
 
 
 float4 PixelShaderF(float2 texCoord : TEXCOORD0) : COLOR0
 {
     // Look up the bloom and original base image colors.
-    float4 bloom = SAMPLE_TEXTURE(BloomSampler, texCoord);
-    float4 base = SAMPLE_TEXTURE(BaseSampler, texCoord);
+    float3 bloom = SAMPLE_TEXTURE(BloomSampler, texCoord).rgb;
+    float4 baseSample = SAMPLE_TEXTURE(BaseSampler, texCoord);
+    float3 base = baseSample.rgb;
     
     // Adjust color saturation and intensity.
     bloom = AdjustSaturation(bloom, BloomSaturation) * BloomIntensity;
@@ -41,7 +42,8 @@ float4 PixelShaderF(float2 texCoord : TEXCOORD0) : COLOR0
     base *= (1 - saturate(bloom));
     
     // Combine the two images.
-    return base + bloom;
+    float3 combined = base + bloom;
+    return float4(combined, baseSample.a);
 }
 
 
@@ -49,6 +51,6 @@ technique BloomCombine
 {
     pass Pass1
     {
-    PixelShader = compile ps_4_0_level_9_1 PixelShaderF();
+        PixelShader = compile PS_SHADERMODEL PixelShaderF();
     }
 }

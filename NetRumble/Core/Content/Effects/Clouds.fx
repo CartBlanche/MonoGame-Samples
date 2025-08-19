@@ -34,6 +34,6 @@ technique Clouds
 {
     pass P0
     {
-    PixelShader = compile ps_4_0_level_9_1 MainPS();
+        PixelShader = compile PS_SHADERMODEL MainPS();
     }
 }

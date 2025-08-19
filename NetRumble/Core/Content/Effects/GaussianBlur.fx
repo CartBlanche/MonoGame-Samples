@@ -21,7 +21,7 @@ float4 PixelShaderF(float2 texCoord : TEXCOORD0) : COLOR0
     // Combine a number of weighted image filter taps.
     for (int i = 0; i < SAMPLE_COUNT; i++)
     {
-    c += SAMPLE_TEXTURE(TextureSampler, texCoord + SampleOffsets[i]) * SampleWeights[i];
+        c += SAMPLE_TEXTURE(TextureSampler, texCoord + SampleOffsets[i]) * SampleWeights[i];
     }
     
     return c;
@@ -32,6 +32,6 @@ technique GaussianBlur
 {
     pass Pass1
     {
-    PixelShader = compile ps_4_0_level_9_1 PixelShaderF();
+        PixelShader = compile PS_SHADERMODEL PixelShaderF();
     }
 }
