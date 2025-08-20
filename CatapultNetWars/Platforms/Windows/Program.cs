@@ -1,6 +1,6 @@
 using System;
 
-namespace CatapultGame
+namespace CatapultGame.Windows
 {
     public static class Program
     {

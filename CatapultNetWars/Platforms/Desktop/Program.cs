@@ -1,6 +1,6 @@
 using System;
 
-namespace CatapultGame
+namespace CatapultGame.DesktopGL
 {
     public static class Program
     {

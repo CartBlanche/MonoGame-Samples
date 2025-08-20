@@ -558,17 +558,17 @@ namespace CatapultGame
 
 			cloud1Position += new Vector2(24.0f, 0.0f) * elapsedTime *
 				windDirection * wind.Y;
-			if (cloud1Position.X > ScreenManager.GraphicsDevice.Viewport.Width)
+			if (cloud1Position.X > ScreenManager.BASE_BUFFER_WIDTH)
 				cloud1Position.X = -cloud1Texture.Width * 2.0f;
 			else if (cloud1Position.X < -cloud1Texture.Width * 2.0f)
-				cloud1Position.X = ScreenManager.GraphicsDevice.Viewport.Width;
+				cloud1Position.X = ScreenManager.BASE_BUFFER_WIDTH;
 
 			cloud2Position += new Vector2(16.0f, 0.0f) * elapsedTime *
 				windDirection * wind.Y;
-			if (cloud2Position.X > ScreenManager.GraphicsDevice.Viewport.Width)
+			if (cloud2Position.X > ScreenManager.BASE_BUFFER_WIDTH)
 				cloud2Position.X = -cloud2Texture.Width * 2.0f;
 			else if (cloud2Position.X < -cloud2Texture.Width * 2.0f)
-				cloud2Position.X = ScreenManager.GraphicsDevice.Viewport.Width;
+				cloud2Position.X = ScreenManager.BASE_BUFFER_WIDTH;
 		}
 
 		/// <summary>
@@ -595,7 +595,7 @@ namespace CatapultGame
 		private void DrawBackground()
 		{
 			// Clear the background
-			ScreenManager.Game.GraphicsDevice.Clear(Color.White);
+			ScreenManager.Game.GraphicsDevice.Clear(Color.Black);
 
 			// Draw the Sky
 			ScreenManager.SpriteBatch.Draw(skyTexture, Vector2.Zero, Color.White);
@@ -673,8 +673,8 @@ namespace CatapultGame
 				}
 
 				ScreenManager.SpriteBatch.Draw(texture,
-												new Vector2(ScreenManager.Game.GraphicsDevice.Viewport.Width / 2 - texture.Width / 2,
-							 ScreenManager.Game.GraphicsDevice.Viewport.Height / 2 - texture.Height / 2),
+												new Vector2(ScreenManager.BASE_BUFFER_WIDTH / 2 - texture.Width / 2,
+							 ScreenManager.BASE_BUFFER_HEIGHT / 2 - texture.Height / 2),
 												Color.White);
 			}
 			else
@@ -749,8 +749,8 @@ namespace CatapultGame
 				size = hudFont.MeasureString(text);
 
 				DrawString(hudFont, text,
-							new Vector2(ScreenManager.GraphicsDevice.Viewport.Width / 2 - size.X / 2,
-							 ScreenManager.GraphicsDevice.Viewport.Height - size.Y),
+							new Vector2(ScreenManager.BASE_BUFFER_WIDTH / 2 - size.X / 2,
+							 ScreenManager.BASE_BUFFER_HEIGHT - size.Y),
 							Color.Green);
 			}
 		}

@@ -9,7 +9,7 @@ using Android.OS;
 using Microsoft.Xna.Framework;
 using Android.Content.PM;
 
-namespace CatapultGame
+namespace CatapultGame.Android
 {
     [Activity(
         Label = "@string/app_name",

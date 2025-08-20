@@ -1,13 +1,22 @@
+using Foundation;
 using UIKit;
 
-namespace CatapultGame
+namespace CatapultGame.iOS
 {
-    public class Application
+    [Register("AppDelegate")]
+    class AppDelegate : UIApplicationDelegate
     {
-        // This is the main entry point of the application.
+        private CatapultGame game;
+
+        public override void FinishedLaunching(UIApplication app)
+        {
+            game = new CatapultGame();
+            game.Run();
+        }
+
         static void Main(string[] args)
         {
-            UIApplication.Main(args, null, "AppDelegate");
+            UIApplication.Main(args, null, typeof(AppDelegate));
         }
     }
 }

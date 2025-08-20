@@ -66,9 +66,6 @@ namespace CatapultGame
 
 			Content.RootDirectory = "Content";
 
-			// Frame rate is 30 fps by default for Windows Phone.
-			TargetElapsedTime = TimeSpan.FromTicks(333333);
-
 			//Create a new instance of the Screen Manager
 			screenManager = new ScreenManager(this);
 			Components.Add(screenManager);

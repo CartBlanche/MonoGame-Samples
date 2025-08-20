@@ -61,7 +61,7 @@ namespace CatapultGame
             return new Rectangle(
                 0,
                 (int)entry.Position.Y - menuEntryPadding,
-                ScreenManager.GraphicsDevice.Viewport.Width,
+                ScreenManager.BASE_BUFFER_WIDTH,
                 entry.GetHeight(this) + (menuEntryPadding * 2));
         }
 
@@ -106,9 +106,9 @@ namespace CatapultGame
 
                     if (GetMenuEntryHitBounds(menuEntry).Contains(clickLocation))
                     {
-                        // select the entry. since gestures are only available on Windows Phone,
+                        // select the entry. since gestures are only available on Mobiles,
                         // we can safely pass PlayerIndex.One to all entries since there is only
-                        // one player on Windows Phone.
+                        // one player on Mobiles.
                         OnSelectEntry(i, PlayerIndex.One);
                     }
                 }
@@ -125,9 +125,9 @@ namespace CatapultGame
 
                     if (GetMenuEntryHitBounds(menuEntry).Contains(clickLocation))
                     {
-                        // select the entry. since gestures are only available on Windows Phone,
+                        // select the entry. since gestures are only available on Mobiles,
                         // we can safely pass PlayerIndex.One to all entries since there is only
-                        // one player on Windows Phone.
+                        // one player on Mobiles.
                         //OnSelectEntry(i, PlayerIndex.One);
                         selectedEntry = i;
                     }
@@ -149,9 +149,9 @@ namespace CatapultGame
 
                         if (GetMenuEntryHitBounds(menuEntry).Contains(tapLocation))
                         {
-                            // select the entry. since gestures are only available on Windows Phone,
+                            // select the entry. since gestures are only available on Mobiles,
                             // we can safely pass PlayerIndex.One to all entries since there is only
-                            // one player on Windows Phone.
+                            // one player on Mobiles.
                             OnSelectEntry(i, PlayerIndex.One);
                         }
                     }
@@ -203,7 +203,7 @@ namespace CatapultGame
                 MenuEntry menuEntry = menuEntries[i];
 
                 // each entry is to be centered horizontally
-                position.X = ScreenManager.GraphicsDevice.Viewport.Width / 2 - menuEntry.GetWidth(this) / 2;
+                position.X = ScreenManager.BASE_BUFFER_WIDTH / 2 - menuEntry.GetWidth(this) / 2;
 
                 if (ScreenState == ScreenState.TransitionOn)
                     position.X -= transitionOffset * 256;
@@ -279,7 +279,7 @@ namespace CatapultGame
             float transitionOffset = (float)Math.Pow(TransitionPosition, 2);
 
             // Draw the menu title centered on the screen
-            Vector2 titlePosition = new Vector2(graphics.Viewport.Width / 2, 80);
+            Vector2 titlePosition = new Vector2(ScreenManager.BASE_BUFFER_WIDTH / 2, 80);
             Vector2 titleOrigin = font.MeasureString(menuTitle) / 2;
             Color titleColor = new Color(192, 192, 192) * TransitionAlpha;
             float titleScale = 1.25f;

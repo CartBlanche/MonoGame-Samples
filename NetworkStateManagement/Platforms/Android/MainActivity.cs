@@ -5,7 +5,7 @@ using Android.Views;
 
 using Microsoft.Xna.Framework;
 
-namespace NetworkStateManagement
+namespace NetworkStateManagement.Android
 {
     [Activity(
         Label = "@string/app_name",

@@ -110,7 +110,7 @@ namespace NetworkStateManagement
                 if (messages.Count == 0)
                     return;
 
-                Vector2 position = new Vector2(GraphicsDevice.Viewport.Width - 100, 0);
+                Vector2 position = new Vector2(ScreenManager.BASE_BUFFER_WIDTH - 100, 0);
 
                 spriteBatch.Begin(SpriteSortMode.Deferred, null, null, null, null, null, game.ScreenManager.GlobalTransformation);
 

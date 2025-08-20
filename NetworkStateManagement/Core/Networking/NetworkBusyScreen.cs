@@ -152,8 +152,7 @@ namespace NetworkStateManagement
 			const int vPad = 16;
 
 			// Center the message text in the viewport.
-			Viewport viewport = ScreenManager.GraphicsDevice.Viewport;
-			Vector2 viewportSize = new Vector2(viewport.Width, viewport.Height);
+			Vector2 viewportSize = new Vector2(ScreenManager.BASE_BUFFER_WIDTH, ScreenManager.BASE_BUFFER_HEIGHT);
 			Vector2 textSize = font.MeasureString(message);
 
 			// Add enough room to spin a cat.
