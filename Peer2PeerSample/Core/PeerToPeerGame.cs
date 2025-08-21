@@ -28,7 +28,7 @@ namespace PeerToPeer
 		const int screenHeight = 540;
 		const int maxGamers = 16;
 		const int maxLocalGamers = 4;
-		GraphicsDeviceManager graphics;
+		GraphicsDeviceManager graphicsDeviceManager;
 		SpriteBatch spriteBatch;
 		SpriteFont font;
 		KeyboardState currentKeyboardState;
@@ -38,17 +38,28 @@ namespace PeerToPeer
 		PacketWriter packetWriter = new PacketWriter();
 		PacketReader packetReader = new PacketReader();
 		string errorMessage;
-		Texture2D gamePadTexture;
+		//Texture2D gamePadTexture;
 
 		public PeerToPeerGame()
 		{
-			graphics = new GraphicsDeviceManager(this);
+			graphicsDeviceManager = new GraphicsDeviceManager(this);
 
-			graphics.PreferredBackBufferWidth = screenWidth;
-			graphics.PreferredBackBufferHeight = screenHeight;
-			if (UIUtilty.IsMobile)
+			graphicsDeviceManager.PreferredBackBufferWidth = screenWidth;
+			graphicsDeviceManager.PreferredBackBufferHeight = screenHeight;
+
+			if (UIUtility.IsMobile)
 			{
-				graphics.IsFullScreen = true;
+				graphicsDeviceManager.IsFullScreen = true;
+				IsMouseVisible = false;
+			}
+			else if (UIUtility.IsDesktop)
+			{
+				graphicsDeviceManager.IsFullScreen = false;
+				IsMouseVisible = true;
+			}
+			else
+			{
+				throw new PlatformNotSupportedException();
 			}
 
 			Content.RootDirectory = "Content";
@@ -65,9 +76,9 @@ namespace PeerToPeer
 
 			font = Content.Load<SpriteFont>("Font");
 
-			if (UIUtilty.IsMobile)
+			if (UIUtility.IsMobile)
 			{
-				gamePadTexture = Content.Load<Texture2D>("gamepad.png");
+				/* gamePadTexture = Content.Load<Texture2D>("gamepad.png");
 
 				ThumbStickDefinition thumbStickLeft = new ThumbStickDefinition();
 				thumbStickLeft.Position = new Vector2(10, 400);
@@ -81,7 +92,7 @@ namespace PeerToPeer
 				thumbStickRight.Texture = gamePadTexture;
 				thumbStickRight.TextureRect = new Rectangle(2, 2, 68, 68);
 
-				GamePad.RightThumbStickDefinition = thumbStickRight;
+				GamePad.RightThumbStickDefinition = thumbStickRight; */
 			}
 		}
 
@@ -263,9 +274,6 @@ namespace PeerToPeer
 
 				localTank.Update();
 
-				// Reset the writer so we don't append across frames
-				packetWriter.Position = 0; // or: packetWriter.Reset();
-
 				// Write the tank state into a network packet.
 				packetWriter.Write(localTank.Position);
 				packetWriter.Write(localTank.TankRotation);
@@ -273,9 +281,6 @@ namespace PeerToPeer
 
 				// Send the data to everyone in the session.
 				localNetworkGamer.SendData(packetWriter, SendDataOptions.InOrder);
-
-				// Reset after send, to be extra safe
-				packetWriter.Position = 0; // or: packetWriter.Reset();
 			}
 		}
 
@@ -387,9 +392,9 @@ namespace PeerToPeer
 				}
 			}
 
-			if (UIUtilty.IsMobile)
+			if (UIUtility.IsMobile)
 			{
-				GamePad.Draw(gameTime, spriteBatch);
+				// TODO GamePad.Draw(gameTime, spriteBatch);
 			}
 
 			spriteBatch.End();

@@ -11,7 +11,7 @@ using System.Text;
 
 namespace PeerToPeer
 {
-    public static class UIUtilty
+    public static class UIUtility
     {
         /// <summary>
         /// Indicates if the game is running on a mobile platform.
