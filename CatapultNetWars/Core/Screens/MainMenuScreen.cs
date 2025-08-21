@@ -23,8 +23,8 @@ namespace CatapultGame
             IsPopup = true;
 
             // Create our menu entries.
-            MenuEntry startGameMenuEntry = new MenuEntry("Play");
-            MenuEntry startMultiPlayerGameMenuEntry = new MenuEntry("Multi-Player");
+            MenuEntry startGameMenuEntry = new MenuEntry("Single Player vs AI");
+            MenuEntry startMultiPlayerGameMenuEntry = new MenuEntry("Multi Player on LAN");
             MenuEntry exitMenuEntry = new MenuEntry("Exit");
 
             // Hook up menu event handlers.
