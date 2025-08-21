@@ -24,9 +24,6 @@ namespace NetworkStateManagement
 
 		NetworkSessionType sessionType;
 
-
-
-
 		/// <summary>
 		/// Constructor fills in the menu contents.
 		/// </summary>

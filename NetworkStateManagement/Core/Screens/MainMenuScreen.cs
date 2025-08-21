@@ -16,8 +16,6 @@ namespace NetworkStateManagement
 	/// </summary>
 	class MainMenuScreen : MenuScreen
 	{
-
-
 		/// <summary>
 		/// Constructor fills in the menu contents.
 		/// </summary>
@@ -43,10 +41,6 @@ namespace NetworkStateManagement
 			MenuEntries.Add(exitMenuEntry);
 		}
 
-
-
-
-
 		/// <summary>
 		/// Event handler for when the Single Player menu entry is selected.
 		/// </summary>
@@ -56,7 +50,6 @@ namespace NetworkStateManagement
 				new GameplayScreen(null));
 		}
 
-
 		/// <summary>
 		/// Event handler for when the Live menu entry is selected.
 		/// </summary>
@@ -65,7 +58,6 @@ namespace NetworkStateManagement
 			CreateOrFindSession(NetworkSessionType.PlayerMatch, e.PlayerIndex);
 		}
 
-
 		/// <summary>
 		/// Event handler for when the System Link menu entry is selected.
 		/// </summary>
@@ -73,7 +65,6 @@ namespace NetworkStateManagement
 		{
 			CreateOrFindSession(NetworkSessionType.SystemLink, e.PlayerIndex);
 		}
-
 
 		/// <summary>
 		/// Helper method shared by the Live and System Link menu event handlers.
@@ -87,16 +78,15 @@ namespace NetworkStateManagement
 			// Hook up an event so once the ProfileSignInScreen is happy,
 			// it will activate the CreateOrFindSessionScreen.
 			profileSignIn.ProfileSignedIn += delegate
-		{
-			GameScreen createOrFind = new CreateOrFindSessionScreen(sessionType);
+			{
+				GameScreen createOrFind = new CreateOrFindSessionScreen(sessionType);
 
-			ScreenManager.AddScreen(createOrFind, playerIndex);
-		};
+				ScreenManager.AddScreen(createOrFind, playerIndex);
+			};
 
 			// Activate the ProfileSignInScreen.
 			ScreenManager.AddScreen(profileSignIn, playerIndex);
 		}
-
 
 		/// <summary>
 		/// When the user cancels the main menu, ask if they want to exit the sample.
@@ -111,7 +101,6 @@ namespace NetworkStateManagement
 			ScreenManager.AddScreen(confirmExitMessageBox, playerIndex);
 		}
 
-
 		/// <summary>
 		/// Event handler for when the user selects ok on the "are you sure
 		/// you want to exit" message box.
@@ -120,7 +109,5 @@ namespace NetworkStateManagement
 		{
 			ScreenManager.Game.Exit();
 		}
-
-
 	}
 }
