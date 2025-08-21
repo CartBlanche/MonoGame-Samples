@@ -157,11 +157,11 @@ namespace NetRumble
                                 QuickMatchSession();
                                 break;
 
-                            case 1: // Create Xbox LIVE Session
+                            case 1: // Create Internet Session
                                 CreateSession(NetworkSessionType.PlayerMatch);
                                 break;
 
-                            case 2: // Join Xbox LIVE Session
+                            case 2: // Join Internet Session
                                 FindSession(NetworkSessionType.PlayerMatch);
                                 break;
 
@@ -378,11 +378,8 @@ namespace NetRumble
         /// <param name="sessionType">The type of session to look for.</param>
         void FindSession(NetworkSessionType sessionType)
         {
-            // create the new screen
-            SearchResultsScreen searchResultsScreen =
-               new SearchResultsScreen(sessionType);
-            searchResultsScreen.ScreenManager = this.ScreenManager;
-            ScreenManager.AddScreen(searchResultsScreen);
+            // create the Search screen
+            ScreenManager.AddScreen(new SearchResultsScreen(sessionType));
         }
 
         /// <summary>

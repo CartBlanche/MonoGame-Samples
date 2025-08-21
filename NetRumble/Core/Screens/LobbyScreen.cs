@@ -18,28 +18,16 @@ namespace NetRumble
     /// </summary>
     public class LobbyScreen : MenuScreen, IDisposable
     {
-
-
         /// <summary>
         /// The instructions shown to the player at the bottom of the lobby screen.
         /// </summary>
-        const string instructions = 
+        const string instructions =
             "Press X to mark/unmark ready, LB/RB to toggle color, LT/RT to toggle ship";
-
-
-
-
-
 
         /// <summary>
         /// The primary object for this game.
         /// </summary>
         private World world;
-
-
-
-
-
 
         /// <summary>
         /// The network session for this game.
@@ -50,7 +38,7 @@ namespace NetRumble
         /// The packet writer used to send data from this screen.
         /// </summary>
         private PacketWriter packetWriter = new PacketWriter();
-        
+
         /// <summary>
         /// Event handler for the session-ended event.
         /// </summary>
@@ -65,11 +53,6 @@ namespace NetRumble
         /// Event handler for the gamer-left event.
         /// </summary>
         EventHandler<GamerJoinedEventArgs> gamerJoinedHandler;
-
-
-
-
-
 
         /// <summary>
         /// Constructs a new LobbyScreen object.
@@ -100,7 +83,6 @@ namespace NetRumble
                 networkSession_SessionEnded);
         }
 
-
         /// <summary>
         /// Load graphics content for the game.
         /// </summary>
@@ -109,7 +91,7 @@ namespace NetRumble
             base.LoadContent();
 
             // create the world object
-            world = new World(ScreenManager.GraphicsDevice, ScreenManager.Content, 
+            world = new World(ScreenManager.GraphicsDevice, ScreenManager.Content,
                 networkSession);
 
             // set the networking events
@@ -117,11 +99,6 @@ namespace NetRumble
             networkSession.GameStarted += gameStartedHandler;
             networkSession.SessionEnded += sessionEndedHandler;
         }
-
-
-
-
-
 
         /// <summary>
         /// Updates the lobby. This method checks the GameScreen.IsActive
@@ -201,7 +178,7 @@ namespace NetRumble
             // update the menu entry text
             if (otherScreenHasFocus == false)
             {
-                if ((networkSession.LocalGamers.Count > 0) && 
+                if ((networkSession.LocalGamers.Count > 0) &&
                     (networkSession.SessionState == NetworkSessionState.Lobby))
                 {
                     if (!networkSession.LocalGamers[0].IsReady)
@@ -227,10 +204,10 @@ namespace NetRumble
                     MenuEntries[0] = "Game starting...";
                 }
                 // if the game is playing and the world is initialized, then start up
-                if ((networkSession.SessionState == NetworkSessionState.Playing) && 
+                if ((networkSession.SessionState == NetworkSessionState.Playing) &&
                     (world != null) && world.Initialized)
                 {
-                    GameplayScreen gameplayScreen = 
+                    GameplayScreen gameplayScreen =
                         new GameplayScreen(networkSession, world);
                     gameplayScreen.ScreenManager = this.ScreenManager;
                     ScreenManager.AddScreen(gameplayScreen);
@@ -239,7 +216,6 @@ namespace NetRumble
 
             base.Update(gameTime, otherScreenHasFocus, coveredByOtherScreen);
         }
-
 
         /// <summary>
         /// Lets the game respond to player input. Unlike the Update method,
@@ -258,7 +234,7 @@ namespace NetRumble
                 // update the ready state
                 if (input.MarkReady)
                 {
-                    networkSession.LocalGamers[0].IsReady = 
+                    networkSession.LocalGamers[0].IsReady =
                         !networkSession.LocalGamers[0].IsReady;
                 }
 
@@ -281,7 +257,7 @@ namespace NetRumble
                     }
                     if (input.ShipModelChangeUp)
                     {
-                        playerData.ShipVariation = 
+                        playerData.ShipVariation =
                             (byte)((playerData.ShipVariation + 1) % 4);
                         playerDataChanged = true;
                     }
@@ -302,7 +278,8 @@ namespace NetRumble
                     {
                         packetWriter.Write((int)World.PacketTypes.PlayerData);
                         playerData.Serialize(packetWriter);
-                        networkSession.LocalGamers[0].SendData(packetWriter, 
+
+                        networkSession.LocalGamers[0].SendData(packetWriter,
                             SendDataOptions.ReliableInOrder);
                     }
                 }
@@ -311,12 +288,10 @@ namespace NetRumble
             base.HandleInput(input);
         }
 
-
         /// <summary>
         /// Responds to user menu selections.
         /// </summary>
         protected override void OnSelectEntry(int entryIndex) { }
-
 
         /// <summary>
         /// Force the end of a network session so that a new one can be joined.
@@ -329,7 +304,6 @@ namespace NetRumble
                 networkSession = null;
             }
         }
-
 
         /// <summary>
         /// Exit this screen.
@@ -344,7 +318,6 @@ namespace NetRumble
             }
             base.ExitScreen();
         }
-
 
         /// <summary>
         /// Screen-specific update to gamer rich presence.
@@ -371,10 +344,6 @@ namespace NetRumble
             }
         }
 
-
-
-
-
         /// <summary>
         /// Draw the lobby screen.
         /// </summary>
@@ -384,17 +353,17 @@ namespace NetRumble
             // draw in four columns
             Vector2[] columnPositions = new Vector2[4];
             columnPositions[0] = new Vector2(
-                ScreenManager.GraphicsDevice.Viewport.Width * 0.2f, 
-                ScreenManager.GraphicsDevice.Viewport.Height * 0.70f);
+                ScreenManager.BASE_BUFFER_WIDTH * 0.2f,
+                ScreenManager.BASE_BUFFER_HEIGHT * 0.70f);
             columnPositions[1] = new Vector2(
-                ScreenManager.GraphicsDevice.Viewport.Width * 0.4f, 
-                ScreenManager.GraphicsDevice.Viewport.Height * 0.70f);
+                ScreenManager.BASE_BUFFER_WIDTH * 0.4f,
+                ScreenManager.BASE_BUFFER_HEIGHT * 0.70f);
             columnPositions[2] = new Vector2(
-                ScreenManager.GraphicsDevice.Viewport.Width * 0.6f,
-                ScreenManager.GraphicsDevice.Viewport.Height * 0.70f);
+                ScreenManager.BASE_BUFFER_WIDTH * 0.6f,
+                ScreenManager.BASE_BUFFER_HEIGHT * 0.70f);
             columnPositions[3] = new Vector2(
-                ScreenManager.GraphicsDevice.Viewport.Width * 0.8f, 
-                ScreenManager.GraphicsDevice.Viewport.Height * 0.70f);
+                ScreenManager.BASE_BUFFER_WIDTH * 0.8f,
+                ScreenManager.BASE_BUFFER_HEIGHT * 0.70f);
 
             ScreenManager.SpriteBatch.Begin();
 
@@ -403,26 +372,24 @@ namespace NetRumble
             {
                 for (int i = 0; i < networkSession.AllGamers.Count; i++)
                 {
-                    world.DrawPlayerData((float)gameTime.TotalGameTime.TotalSeconds, 
-                        networkSession.AllGamers[i], columnPositions[i % 4], 
+                    world.DrawPlayerData((float)gameTime.TotalGameTime.TotalSeconds,
+                        networkSession.AllGamers[i], columnPositions[i % 4],
                         ScreenManager.SpriteBatch, true);
-                    columnPositions[i % 4].Y += 
-                        ScreenManager.GraphicsDevice.Viewport.Height * 0.03f;
+                    columnPositions[i % 4].Y +=
+                        ScreenManager.BASE_BUFFER_HEIGHT * 0.03f;
                 }
             }
 
             // draw the instructions
-            ScreenManager.SpriteBatch.DrawString(ScreenManager.Font, instructions, 
-                new Vector2(ScreenManager.TitleSafeArea.X, 
-                ScreenManager.TitleSafeArea.Y + ScreenManager.TitleSafeArea.Height - 
+            ScreenManager.SpriteBatch.DrawString(ScreenManager.Font, instructions,
+                new Vector2(ScreenManager.TitleSafeArea.X,
+                ScreenManager.TitleSafeArea.Y + ScreenManager.TitleSafeArea.Height -
                 ScreenManager.Font.LineSpacing), Color.White);
 
             ScreenManager.SpriteBatch.End();
 
             base.Draw(gameTime);
         }
-
-
 
         /// <summary>
         /// When the user cancels the main menu, ask if they want to exit the sample.
@@ -445,11 +412,6 @@ namespace NetRumble
             }
         }
 
-
-
-
-
-
         /// <summary>
         /// Handle the end of the network session.
         /// </summary>
@@ -471,7 +433,6 @@ namespace NetRumble
             }
         }
 
-
         /// <summary>
         /// Handle the start of the game session.
         /// </summary>
@@ -483,8 +444,7 @@ namespace NetRumble
                 world.GenerateWorld();
             }
         }
-        
-        
+
         /// <summary>
         /// Handle a new player joining the session.
         /// </summary>
@@ -510,16 +470,12 @@ namespace NetRumble
                 {
                     packetWriter.Write((int)World.PacketTypes.PlayerData);
                     playerData.Serialize(packetWriter);
-                    networkSession.LocalGamers[0].SendData(packetWriter, 
+
+                    networkSession.LocalGamers[0].SendData(packetWriter,
                         SendDataOptions.ReliableInOrder, e.Gamer);
                 }
             }
         }
-
-
-
-    
-
 
         /// <summary>
         /// Finalizes the LobbyScreen object, calls Dispose(false)
@@ -528,7 +484,6 @@ namespace NetRumble
         {
             Dispose(false);
         }
-
 
         /// <summary>
         /// Disposes the LobbyScreen object.
@@ -539,7 +494,6 @@ namespace NetRumble
             GC.SuppressFinalize(this);
         }
 
-        
         /// <summary>
         /// Disposes this object.
         /// </summary>
@@ -565,7 +519,5 @@ namespace NetRumble
                 }
             }
         }
-
-
     }
 }

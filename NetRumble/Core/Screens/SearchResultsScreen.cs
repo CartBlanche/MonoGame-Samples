@@ -19,33 +19,20 @@ namespace NetRumble
     /// </summary>
     public class SearchResultsScreen : MenuScreen
     {
-
-
         /// <summary>
         /// The maximum number of session results to display.
         /// </summary>
         const int maximumSessions = 8;
-
-
-
-
-
 
         /// <summary>
         /// The type of networking session that was requested.
         /// </summary>
         private NetworkSessionType sessionType;
 
-
         /// <summary>
         /// The collection of search results.
         /// </summary>
         private AvailableNetworkSessionCollection availableSessions = null;
-
-
-
-
-
 
         /// <summary>
         /// Constructor fills in the menu contents.
@@ -59,6 +46,11 @@ namespace NetRumble
             // set the transition times
             TransitionOnTime = TimeSpan.FromSeconds(1.0);
             TransitionOffTime = TimeSpan.FromSeconds(0.0);
+        }
+
+        public override void LoadContent()
+        {
+            base.LoadContent();
 
             // Start async session search immediately
             try
@@ -85,11 +77,6 @@ namespace NetRumble
                 System.Console.WriteLine($"Failed to search for session:  {ex.Message}");
             }
         }
-
-
-
-
-
 
         /// <summary>
         /// Updates the screen. This method checks the GameScreen.IsActive
@@ -130,13 +117,12 @@ namespace NetRumble
             base.Update(gameTime, otherScreenHasFocus, coveredByOtherScreen);
         }
 
-
         /// <summary>
         /// Responds to user menu selections.
         /// </summary>
         protected override void OnSelectEntry(int entryIndex)
         {
-            if ((availableSessions != null) && (entryIndex >= 0) && 
+            if ((availableSessions != null) && (entryIndex >= 0) &&
                 (entryIndex < availableSessions.Count))
             {
                 try
@@ -161,7 +147,6 @@ namespace NetRumble
             }
         }
 
-
         /// <summary>
         /// When the user cancels the screen.
         /// </summary>
@@ -172,11 +157,6 @@ namespace NetRumble
                 ExitScreen();
             }
         }
-
-
-
-
-
 
         /// <summary>
         /// Draw the screen.
@@ -201,8 +181,7 @@ namespace NetRumble
             }
             else
             {
-                Viewport viewport = ScreenManager.GraphicsDevice.Viewport;
-                Vector2 viewportSize = new Vector2(viewport.Width, viewport.Height);
+                Vector2 viewportSize = new Vector2(ScreenManager.BASE_BUFFER_WIDTH, ScreenManager.BASE_BUFFER_HEIGHT);
 
                 Vector2 position = new Vector2(0f, viewportSize.Y * 0.65f);
 
@@ -222,19 +201,14 @@ namespace NetRumble
                 Vector2 origin = new Vector2(0, ScreenManager.Font.LineSpacing / 2);
                 Vector2 size = ScreenManager.Font.MeasureString(alternateString);
                 position.X = viewportSize.X / 2f - size.X / 2f;
-                ScreenManager.SpriteBatch.DrawString(ScreenManager.Font, 
-                                                     alternateString, position, 
+                ScreenManager.SpriteBatch.DrawString(ScreenManager.Font,
+                                                     alternateString, position,
                                                      Color.White, 0, origin, 1.0f,
                                                      SpriteEffects.None, 0);
 
                 ScreenManager.SpriteBatch.End();
             }
         }
-
-
-
-
-
 
         /// <summary>
         /// Callback to receive the network-session search results (async/await style).
@@ -273,7 +247,6 @@ namespace NetRumble
             }
         }
 
-
         /// <summary>
         /// Callback to load the lobby screen with the new session.
         /// </summary>
@@ -298,7 +271,6 @@ namespace NetRumble
             ScreenManager.AddScreen(lobbyScreen);
         }
 
-
         /// <summary>
         /// Event handler for when the user selects ok on the "are you sure
         /// you want to exit" message box.
@@ -307,7 +279,5 @@ namespace NetRumble
         {
             ExitScreen();
         }
-
-
     }
 }

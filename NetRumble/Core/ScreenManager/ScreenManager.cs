@@ -31,7 +31,8 @@ namespace NetRumble
         List<GameScreen> screensToUpdate = new List<GameScreen>();
         List<GameScreen> screensToDraw = new List<GameScreen>();
 
-        InputState input = new InputState();
+        InputState inputState = new InputState(BASE_BUFFER_WIDTH, BASE_BUFFER_HEIGHT);
+        public InputState InputState => inputState;
 
         IGraphicsDeviceService graphicsDeviceService;
         public SignedInGamer invited;
@@ -44,8 +45,24 @@ namespace NetRumble
 
         bool traceEnabled;
 
+        internal const int BASE_BUFFER_WIDTH = 1280;
+        internal const int BASE_BUFFER_HEIGHT = 720;
 
+        private int backbufferWidth;
+        /// <summary>Gets or sets the current backbuffer width.</summary>
+        public int BackbufferWidth { get => backbufferWidth; set => backbufferWidth = value; }
 
+        private int backbufferHeight;
+        /// <summary>Gets or sets the current backbuffer height.</summary>
+        public int BackbufferHeight { get => backbufferHeight; set => backbufferHeight = value; }
+
+        private Vector2 baseScreenSize = new Vector2(BASE_BUFFER_WIDTH, BASE_BUFFER_HEIGHT);
+        /// <summary>Gets or sets the base screen size used for scaling calculations.</summary>
+        public Vector2 BaseScreenSize { get => baseScreenSize; set => baseScreenSize = value; }
+
+        private Matrix globalTransformation;
+        /// <summary>Gets or sets the global transformation matrix for scaling and positioning.</summary>
+        public Matrix GlobalTransformation { get => globalTransformation; set => globalTransformation = value; }
 
         /// <summary>
         /// Expose access to our Game instance (this is protected in the
@@ -66,7 +83,7 @@ namespace NetRumble
             get { return base.GraphicsDevice; }
         }
 
-        
+
         /// <summary>
         /// A content manager used to load data that is shared between multiple
         /// screens. This is never unloaded, so if a screen requires a large amount
@@ -159,12 +176,10 @@ namespace NetRumble
 
             // update the title-safe area
             titleSafeArea = new Rectangle(
-                (int)Math.Floor(GraphicsDevice.Viewport.X + 
-                   GraphicsDevice.Viewport.Width * 0.05f),
-                (int)Math.Floor(GraphicsDevice.Viewport.Y + 
-                   GraphicsDevice.Viewport.Height * 0.05f), 
-                (int)Math.Floor(GraphicsDevice.Viewport.Width * 0.9f), 
-                (int)Math.Floor(GraphicsDevice.Viewport.Height * 0.9f));
+                (int)Math.Floor(ScreenManager.BASE_BUFFER_WIDTH * 0.05f),
+                (int)Math.Floor(ScreenManager.BASE_BUFFER_HEIGHT * 0.05f),
+                (int)Math.Floor(ScreenManager.BASE_BUFFER_WIDTH * 0.9f),
+                (int)Math.Floor(ScreenManager.BASE_BUFFER_HEIGHT * 0.9f));
         }
 
 
@@ -194,7 +209,7 @@ namespace NetRumble
         public override void Update(GameTime gameTime)
         {
             // Read the keyboard and gamepad.
-            input.Update();
+            inputState.Update();
 
             // Make a copy of the master screen list, to avoid confusion if
             // the process of updating one screen adds or removes others
@@ -225,7 +240,7 @@ namespace NetRumble
                     // give it a chance to handle input and update presence.
                     if (!otherScreenHasFocus)
                     {
-                        screen.HandleInput(input);
+                        screen.HandleInput(inputState);
 
                         screen.UpdatePresence(); // presence support
 
@@ -276,7 +291,7 @@ namespace NetRumble
             {
                 if (screen.ScreenState == ScreenState.Hidden)
                     continue;
-             
+
                 screen.Draw(gameTime);
             }
         }
@@ -289,8 +304,8 @@ namespace NetRumble
         public void DrawRectangle(Rectangle rectangle, Color color)
         {
             //SpriteBatch.Begin();
-			// We changed this to be Opaque
-			spriteBatch.Begin(0,BlendState.Opaque, null, null, null);
+            // We changed this to be Opaque
+            spriteBatch.Begin(0, BlendState.Opaque, null, null, null);
             SpriteBatch.Draw(blankTexture, rectangle, color);
             SpriteBatch.End();
         }
@@ -313,7 +328,7 @@ namespace NetRumble
             {
                 screen.LoadContent();
             }
-            
+
             screens.Add(screen);
         }
 
@@ -332,7 +347,7 @@ namespace NetRumble
             {
                 screen.UnloadContent();
             }
-            
+
             screens.Remove(screen);
             screensToUpdate.Remove(screen);
         }
@@ -355,17 +370,71 @@ namespace NetRumble
         /// </summary>
         public void FadeBackBufferToBlack(int alpha)
         {
-            Viewport viewport = GraphicsDevice.Viewport;
-
             spriteBatch.Begin();
 
             spriteBatch.Draw(blankTexture,
-                             new Rectangle(0, 0, viewport.Width, viewport.Height),
+                             new Rectangle(0, 0, BASE_BUFFER_WIDTH, BASE_BUFFER_HEIGHT),
                              new Color((byte)0, (byte)0, (byte)0, (byte)alpha));
-            
+
             spriteBatch.End();
         }
+        
+        /// <summary>
+        /// Scales the game presentation area to match the screen's aspect ratio.
+        /// </summary>
+        public void ScalePresentationArea()
+        {
+            // Validate parameters before calculation
+            if (GraphicsDevice == null || baseScreenSize.X <= 0 || baseScreenSize.Y <= 0)
+            {
+                throw new InvalidOperationException("Invalid graphics configuration");
+            }
 
+            // Fetch screen dimensions
+            backbufferWidth = GraphicsDevice.PresentationParameters.BackBufferWidth;
+            backbufferHeight = GraphicsDevice.PresentationParameters.BackBufferHeight;
 
+            // Prevent division by zero
+            if (backbufferHeight == 0 || baseScreenSize.Y == 0)
+            {
+                return;
+            }
+
+            // Calculate aspect ratios
+            float baseAspectRatio = baseScreenSize.X / baseScreenSize.Y;
+            float screenAspectRatio = backbufferWidth / (float)backbufferHeight;
+
+            // Determine uniform scaling factor
+            float scalingFactor;
+            float horizontalOffset = 0;
+            float verticalOffset = 0;
+
+            if (screenAspectRatio > baseAspectRatio)
+            {
+                // Wider screen: scale by height
+                scalingFactor = backbufferHeight / baseScreenSize.Y;
+
+                // Centre things horizontally.
+                horizontalOffset = (backbufferWidth - baseScreenSize.X * scalingFactor) / 2;
+            }
+            else
+            {
+                // Taller screen: scale by width
+                scalingFactor = backbufferWidth / baseScreenSize.X;
+
+                // Centre things vertically.
+                verticalOffset = (backbufferHeight - baseScreenSize.Y * scalingFactor) / 2;
+            }
+
+            // Update the transformation matrix
+            globalTransformation = Matrix.CreateScale(scalingFactor) *
+                                   Matrix.CreateTranslation(horizontalOffset, verticalOffset, 0);
+
+            // Update the inputTransformation with the Inverted globalTransformation
+            inputState.UpdateInputTransformation(Matrix.Invert(globalTransformation));
+
+            // Debug info
+            Debug.WriteLine($"Screen Size - Width[{backbufferWidth}] Height[{backbufferHeight}] ScalingFactor[{scalingFactor}]");
+        }
     }
 }

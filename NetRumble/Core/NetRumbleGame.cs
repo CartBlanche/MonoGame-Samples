@@ -63,8 +63,8 @@ namespace NetRumble
             // initialize the graphics device manager
             graphicsDeviceManager = new GraphicsDeviceManager(this);
 
-            graphicsDeviceManager.PreferredBackBufferWidth = 1280;
-            graphicsDeviceManager.PreferredBackBufferHeight = 720;
+            graphicsDeviceManager.PreferredBackBufferWidth = ScreenManager.BASE_BUFFER_WIDTH;
+            graphicsDeviceManager.PreferredBackBufferHeight = ScreenManager.BASE_BUFFER_HEIGHT;
 
             if (UIUtility.IsMobile)
             {

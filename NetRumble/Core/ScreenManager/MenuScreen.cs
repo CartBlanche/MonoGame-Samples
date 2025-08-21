@@ -112,8 +112,7 @@ namespace NetRumble
         /// </summary>
         public override void Draw(GameTime gameTime)
         {
-            Viewport viewport = ScreenManager.GraphicsDevice.Viewport;
-            Vector2 viewportSize = new Vector2(viewport.Width, viewport.Height);
+            Vector2 viewportSize = new Vector2(ScreenManager.BASE_BUFFER_WIDTH, ScreenManager.BASE_BUFFER_HEIGHT);
 
             Vector2 position = new Vector2(0f, viewportSize.Y * 0.65f);
 

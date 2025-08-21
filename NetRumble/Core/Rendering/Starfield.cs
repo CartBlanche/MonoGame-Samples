@@ -112,12 +112,12 @@ namespace NetRumble
         /// <summary>
         /// The effect used to draw the clouds.
         /// </summary>
-        // TODO private Effect cloudEffect;
+        private Effect cloudEffect;
 
         /// <summary>
         /// The parameter on the cloud effect that receives the current position
         /// </summary>
-        // TODO private EffectParameter cloudEffectPosition;
+        private EffectParameter cloudEffectPosition;
 
         /// <summary>
         /// Create a new Starfield object.
@@ -174,8 +174,8 @@ namespace NetRumble
         public void UnloadContent()
         {
             cloudTexture = null;
-            // TODO cloudEffect = null;
-            // TODO cloudEffectPosition = null;
+            cloudEffect = null;
+            cloudEffectPosition = null;
 
             if (starTexture != null)
             {
@@ -197,8 +197,8 @@ namespace NetRumble
         public void Reset(Vector2 position)
         {
             // recreate the stars
-            int viewportWidth = graphicsDevice.Viewport.Width;
-            int viewportHeight = graphicsDevice.Viewport.Height;
+            int viewportWidth = ScreenManager.BASE_BUFFER_WIDTH;
+            int viewportHeight = ScreenManager.BASE_BUFFER_HEIGHT;
             for (int i = 0; i < stars.Length; ++i)
             {
                 stars[i] = new Vector2(RandomMath.Random.Next(0, viewportWidth),
@@ -229,7 +229,7 @@ namespace NetRumble
             Vector2 movement = -1.0f * (position - lastPosition);
 
             // create a rectangle representing the screen dimensions of the starfield
-            Rectangle starfieldRectangle = new Rectangle(0, 0, graphicsDevice.Viewport.Width, graphicsDevice.Viewport.Height);
+            Rectangle starfieldRectangle = new Rectangle(0, 0, ScreenManager.BASE_BUFFER_WIDTH, ScreenManager.BASE_BUFFER_HEIGHT);
 
             // draw a background color for the starfield
             spriteBatch.Begin();
@@ -237,17 +237,20 @@ namespace NetRumble
             spriteBatch.End();
 
             // draw the cloud texture
-            /* TODO cloudEffectPosition.SetValue(this.position);
-            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.NonPremultiplied, null, null, null, cloudEffect);
-            spriteBatch.Draw(cloudTexture, starfieldRectangle, null, Color.White, 0.0f, Vector2.Zero, SpriteEffects.None, 1.0f);
-            spriteBatch.End();*/
+            if (cloudEffect != null)
+            {
+                cloudEffectPosition.SetValue(this.position);
+                spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.NonPremultiplied, null, null, null, cloudEffect);
+                spriteBatch.Draw(cloudTexture, starfieldRectangle, null, Color.White, 0.0f, Vector2.Zero, SpriteEffects.None, 1.0f);
+                spriteBatch.End();
+            }
 
             // if we've moved too far, then reset, as the stars will be moving too fast
-            if (movement.Length() > maximumMovementPerUpdate)
-            {
-                Reset(position);
-                return;
-            }
+                if (movement.Length() > maximumMovementPerUpdate)
+                {
+                    Reset(position);
+                    return;
+                }
 
             // draw all of the stars
             spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.NonPremultiplied);
@@ -277,7 +280,7 @@ namespace NetRumble
                     stars[i].Y = starfieldRectangle.Y + starfieldRectangle.Height;
                 }
                 if (stars[i].Y >
-                    (starfieldRectangle.Y + graphicsDevice.Viewport.Height))
+                    (starfieldRectangle.Y + ScreenManager.BASE_BUFFER_HEIGHT))
                 {
                     stars[i].X = starfieldRectangle.X +
                         RandomMath.Random.Next(starfieldRectangle.Width);

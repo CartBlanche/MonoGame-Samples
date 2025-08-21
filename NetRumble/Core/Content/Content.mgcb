@@ -15,24 +15,24 @@
 #---------------------------------- Content ---------------------------------#
 
 #begin Effects/BloomCombine.fx
-/importer:EffectImporter
-/processor:EffectProcessor
-/build:Effects/BloomCombine.fx
+#/importer:EffectImporter
+#/processor:EffectProcessor
+#/build:Effects/BloomCombine.fx
 
 #begin Effects/BloomExtract.fx
-/importer:EffectImporter
-/processor:EffectProcessor
-/build:Effects/BloomExtract.fx
+#/importer:EffectImporter
+#/processor:EffectProcessor
+#/build:Effects/BloomExtract.fx
 
 #begin Effects/GaussianBlur.fx
-/importer:EffectImporter
-/processor:EffectProcessor
-/build:Effects/GaussianBlur.fx
+#/importer:EffectImporter
+#/processor:EffectProcessor
+#/build:Effects/GaussianBlur.fx
 
 #begin Effects/Clouds.fx
-/importer:EffectImporter
-/processor:EffectProcessor
-/build:Effects/Clouds.fx
+#/importer:EffectImporter
+#/processor:EffectProcessor
+#/build:Effects/Clouds.fx
 
 #begin Textures/blank.png
 /importer:TextureImporter

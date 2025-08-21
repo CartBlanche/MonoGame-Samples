@@ -130,11 +130,11 @@ namespace NetRumble
         public override void LoadContent()
         {
             // create and add the bloom effect
-            bloomComponent = new BloomComponent(ScreenManager.Game);
+            /* TODO bloomComponent = new BloomComponent(ScreenManager.Game);
             bloomComponent.Settings = BloomSettings.PresetSettings[0];
             ScreenManager.Game.Components.Add(bloomComponent);
             bloomComponent.Initialize();
-            bloomComponent.Visible = false; // we want to control when bloom component is drawn
+            bloomComponent.Visible = false; // we want to control when bloom component is drawn*/
 
             // create the starfield
             starfield = new Starfield(Vector2.Zero, ScreenManager.GraphicsDevice,
@@ -213,11 +213,9 @@ namespace NetRumble
                         Vector2 winnerStringSize =
                             world.PlayerFont.MeasureString(winnerString);
                         winnerStringPosition = new Vector2(
-                            ScreenManager.GraphicsDevice.Viewport.X +
-                                ScreenManager.GraphicsDevice.Viewport.Width / 2 -
+                                ScreenManager.BASE_BUFFER_WIDTH / 2 -
                                 (float)Math.Floor(winnerStringSize.X / 2),
-                            ScreenManager.GraphicsDevice.Viewport.Y +
-                                ScreenManager.GraphicsDevice.Viewport.Height / 2 -
+                            ScreenManager.BASE_BUFFER_HEIGHT / 2 -
                                 (float)Math.Floor(winnerStringSize.Y / 2));
                     }
                 }
@@ -368,10 +366,8 @@ namespace NetRumble
                 if ((world != null) && (localShip != null) && !IsExiting)
                 {
                     Vector2 center = new Vector2(
-                        localShip.Position.X + ScreenManager.GraphicsDevice.Viewport.X -
-                           ScreenManager.GraphicsDevice.Viewport.Width / 2,
-                        localShip.Position.Y + ScreenManager.GraphicsDevice.Viewport.Y -
-                           ScreenManager.GraphicsDevice.Viewport.Height / 2);
+                        localShip.Position.X + ScreenManager.BASE_BUFFER_WIDTH / 2,
+                        localShip.Position.Y + ScreenManager.BASE_BUFFER_HEIGHT / 2);
                     starfield.Draw(center);
                     world.Draw(elapsedTime, center);
 
@@ -401,43 +397,43 @@ namespace NetRumble
                 ScreenManager.SpriteBatch.Begin();
                 // draw players 0 - 3 at the top of the screen
                 Vector2 position = new Vector2(
-                    ScreenManager.GraphicsDevice.Viewport.Width * 0.2f,
-                    ScreenManager.GraphicsDevice.Viewport.Height * 0.1f);
+                    ScreenManager.BASE_BUFFER_WIDTH * 0.2f,
+                    ScreenManager.BASE_BUFFER_HEIGHT * 0.1f);
                 for (int i = 0; i < Math.Min(4, networkSession.AllGamers.Count); i++)
                 {
                     world.DrawPlayerData(totalTime, networkSession.AllGamers[i],
                         position, ScreenManager.SpriteBatch, false);
-                    position.X += ScreenManager.GraphicsDevice.Viewport.Width * 0.2f;
+                    position.X += ScreenManager.BASE_BUFFER_WIDTH * 0.2f;
                 }
                 // draw players 4 - 7 at the bottom of the screen
                 position = new Vector2(
-                    ScreenManager.GraphicsDevice.Viewport.Width * 0.2f,
-                    ScreenManager.GraphicsDevice.Viewport.Height * 0.9f);
+                    ScreenManager.BASE_BUFFER_WIDTH * 0.2f,
+                    ScreenManager.BASE_BUFFER_HEIGHT * 0.9f);
                 for (int i = 4; i < Math.Min(8, networkSession.AllGamers.Count); i++)
                 {
                     world.DrawPlayerData(totalTime, networkSession.AllGamers[i],
                         position, ScreenManager.SpriteBatch, false);
-                    position.X += ScreenManager.GraphicsDevice.Viewport.Width * 0.2f;
+                    position.X += ScreenManager.BASE_BUFFER_WIDTH * 0.2f;
                 }
                 // draw players 8 - 11 at the left of the screen
                 position = new Vector2(
-                    ScreenManager.GraphicsDevice.Viewport.Width * 0.13f,
-                    ScreenManager.GraphicsDevice.Viewport.Height * 0.2f);
+                    ScreenManager.BASE_BUFFER_WIDTH * 0.13f,
+                    ScreenManager.BASE_BUFFER_HEIGHT * 0.2f);
                 for (int i = 8; i < Math.Min(12, networkSession.AllGamers.Count); i++)
                 {
                     world.DrawPlayerData(totalTime, networkSession.AllGamers[i],
                         position, ScreenManager.SpriteBatch, false);
-                    position.Y += ScreenManager.GraphicsDevice.Viewport.Height * 0.2f;
+                    position.Y += ScreenManager.BASE_BUFFER_HEIGHT * 0.2f;
                 }
                 // draw players 12 - 15 at the right of the screen
                 position = new Vector2(
-                    ScreenManager.GraphicsDevice.Viewport.Width * 0.9f,
-                    ScreenManager.GraphicsDevice.Viewport.Height * 0.2f);
+                    ScreenManager.BASE_BUFFER_WIDTH * 0.9f,
+                    ScreenManager.BASE_BUFFER_HEIGHT * 0.2f);
                 for (int i = 12; i < Math.Min(16, networkSession.AllGamers.Count); i++)
                 {
                     world.DrawPlayerData(totalTime, networkSession.AllGamers[i],
                         position, ScreenManager.SpriteBatch, false);
-                    position.Y += ScreenManager.GraphicsDevice.Viewport.Height * 0.2f;
+                    position.Y += ScreenManager.BASE_BUFFER_HEIGHT * 0.2f;
                 }
                 // if the game is over, draw the winner text
                 if (world.GameWon && !String.IsNullOrEmpty(winnerString))
