@@ -223,23 +223,6 @@ namespace Microsoft.Xna.Framework.Net
         }
 
         /// <summary>
-        /// Sends data using PacketWriter.
-        /// </summary>
-        /// <param name="data">The data to send.</param>
-        /// <param name="options">Send options.</param>
-        public void SendData(PacketWriter data, SendDataOptions options)
-        {
-            if (data == null)
-                throw new ArgumentNullException(nameof(data), "PacketWriter cannot be null.");
-
-            if (!Enum.IsDefined(typeof(SendDataOptions), options))
-                throw new ArgumentOutOfRangeException(nameof(options), "Invalid send data option.");
-
-            byte[] serializedData = data.GetData();
-            SendDataInternal(serializedData, options, session.AllGamers);
-        }
-
-        /// <summary>
         /// Sends data using PacketWriter to specific recipients.
         /// </summary>
         /// <param name="data">The data to send.</param>
@@ -250,11 +233,26 @@ namespace Microsoft.Xna.Framework.Net
             if (data == null)
                 throw new ArgumentNullException(nameof(data), "PacketWriter cannot be null.");
 
+            if (!Enum.IsDefined(typeof(SendDataOptions), options))
+                throw new ArgumentOutOfRangeException(nameof(options), "Invalid send data option.");
+
             if (recipients == null)
                 throw new ArgumentNullException(nameof(recipients));
 
             byte[] serializedData = data.GetData();
             SendDataInternal(serializedData, options, recipients);
+
+            data.Position = 0; // Reset position after sending
+        }
+
+        /// <summary>
+        /// Sends data using PacketWriter.
+        /// </summary>
+        /// <param name="data">The data to send.</param>
+        /// <param name="options">Send options.</param>
+        public void SendData(PacketWriter data, SendDataOptions options)
+        {
+            SendData(data, options, session.AllGamers);
         }
 
         /// <summary>
