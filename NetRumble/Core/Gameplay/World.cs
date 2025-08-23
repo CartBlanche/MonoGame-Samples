@@ -491,6 +491,15 @@ namespace NetRumble
             }
         }
 
+        /// <summary>
+        /// Reset per-round game state flags (shared by Initialize and host GenerateWorld).
+        /// </summary>
+        private void ResetGameState()
+        {
+            gameWon = false;
+            winnerIndex = -1;
+            gameExited = false;
+        }
 
         /// <summary>
         /// Initialize the world with the data from the WorldSetup packet.
@@ -499,9 +508,7 @@ namespace NetRumble
         public void Initialize()
         {
             // reset the game status
-            gameWon = false;
-            winnerIndex = -1;
-            gameExited = false;
+            ResetGameState();
 
             // initialize the ships with the data from the packet
             for (int i = 0; i < MaximumPlayers; i++)

@@ -183,7 +183,7 @@ namespace NetRumble
                                bloomCombineEffect,
                                IntermediateBuffer.FinalResult);
 //            DrawFullscreenQuad(sceneRenderTarget,
-//                               viewport.Width, viewport.Height,
+//                               ScreenManager.BASE_BUFFER_WIDTH, ScreenManager.BASE_BUFFER_HEIGHT,
 //                               bloomCombineEffect,
 //                               IntermediateBuffer.FinalResult);
         }
@@ -219,7 +219,7 @@ namespace NetRumble
                 effect = null;
             }
 			effect = null;
-            spriteBatch.Begin(0, BlendState.Opaque, null, null, null, effect);
+            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.Opaque, null, null, null, effect, ScreenManager.GlobalTransformation);
             spriteBatch.Draw(texture, new Rectangle(0, 0, width, height), Color.White);
             spriteBatch.End();
         }

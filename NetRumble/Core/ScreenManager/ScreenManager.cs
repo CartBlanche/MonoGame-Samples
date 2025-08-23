@@ -60,9 +60,9 @@ namespace NetRumble
         /// <summary>Gets or sets the base screen size used for scaling calculations.</summary>
         public Vector2 BaseScreenSize { get => baseScreenSize; set => baseScreenSize = value; }
 
-        private Matrix globalTransformation;
+        private static Matrix globalTransformation = Matrix.Identity;
         /// <summary>Gets or sets the global transformation matrix for scaling and positioning.</summary>
-        public Matrix GlobalTransformation { get => globalTransformation; set => globalTransformation = value; }
+        public static Matrix GlobalTransformation { get => globalTransformation; set => globalTransformation = value; }
 
         /// <summary>
         /// Expose access to our Game instance (this is protected in the
