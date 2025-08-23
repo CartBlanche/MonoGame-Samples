@@ -6,29 +6,14 @@
     <AssemblyName>BloomSample.Windows</AssemblyName>
     <UseWindowsForms>false</UseWindowsForms>
     <UseWPF>false</UseWPF>
+    <MonoGamePlatform>Windows</MonoGamePlatform>
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Core\BloomSample.Core.csproj" />
     <PackageReference Include="MonoGame.Framework.WindowsDX" Version="3.8.*" />
+    <PackageReference Include="MonoGame.Framework.Content.Pipeline" Version="3.8.*" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="..\..\..\CompiledContent\Windows\Content\Textures\sunset.xnb" Link="Content\sunset.xnb">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="..\..\..\CompiledContent\Windows\Content\Fonts\hudFont.xnb" Link="Content\hudFont.xnb">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="..\..\..\CompiledContent\Windows\Content\Models\tank.xnb" Link="Content\tank.xnb">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="..\..\..\CompiledContent\Windows\Content\Effects\BloomExtract.xnb" Link="Content\BloomExtract.xnb">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="..\..\..\CompiledContent\Windows\Content\Effects\BloomCombine.xnb" Link="Content\BloomCombine.xnb">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="..\..\..\CompiledContent\Windows\Content\Effects\GaussianBlur.xnb" Link="Content\GaussianBlur.xnb">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
+    <MonoGameContentReference Include="..\..\Core\Content\Content.mgcb" />
   </ItemGroup>
 </Project>

@@ -3,30 +3,15 @@
     <TargetFramework>net8.0-android</TargetFramework>
     <OutputType>Exe</OutputType>
     <RootNamespace>BloomSample.Android</RootNamespace>
-    <AssemblyName>BloomSample.Android</AssemblyName>
+    <AssemblyName>BloomSample</AssemblyName>
+    <MonoGamePlatform>Android</MonoGamePlatform>
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Core\BloomSample.Core.csproj" />
     <PackageReference Include="MonoGame.Framework.Android" Version="3.8.*" />
+    <PackageReference Include="MonoGame.Framework.Content.Pipeline" Version="3.8.*" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="..\..\..\CompiledContent\Android\Content\Textures\sunset.xnb" Link="Content\sunset.xnb">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="..\..\..\CompiledContent\Android\Content\Fonts\hudFont.xnb" Link="Content\hudFont.xnb">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="..\..\..\CompiledContent\Android\Content\Models\tank.xnb" Link="Content\tank.xnb">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="..\..\..\CompiledContent\Android\Content\Effects\BloomExtract.xnb" Link="Content\BloomExtract.xnb">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="..\..\..\CompiledContent\Android\Content\Effects\BloomCombine.xnb" Link="Content\BloomCombine.xnb">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="..\..\..\CompiledContent\Android\Content\Effects\GaussianBlur.xnb" Link="Content\GaussianBlur.xnb">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
+    <MonoGameContentReference Include="..\..\Core\Content\Content.mgcb" />
   </ItemGroup>
 </Project>

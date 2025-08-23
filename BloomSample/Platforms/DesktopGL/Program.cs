@@ -8,10 +8,8 @@ namespace BloomSample.DesktopGL
         [STAThread]
         public static void Main()
         {
-            using (var game = new Game1())
+            using (var game = new BloomSampleGame())
                 game.Run();
         }
     }
 }
-
-// DesktopGL-specific entry point will be added here.

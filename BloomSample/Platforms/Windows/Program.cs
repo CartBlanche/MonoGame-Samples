@@ -8,10 +8,8 @@ namespace BloomSample.Windows
         [STAThread]
         public static void Main()
         {
-            using (var game = new Game1())
+            using (var game = new BloomSampleGame())
                 game.Run();
         }
     }
 }
-
-// Windows-specific entry point will be added here.

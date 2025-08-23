@@ -1,0 +1,58 @@
+#----------------------------- Global Properties ----------------------------#
+/outputDir:bin/$(Platform)/$(Configuration)
+/intermediateDir:obj/$(Platform)/$(Configuration)
+/platform:DesktopGL
+/configuration:Debug
+/compress:False
+
+#-------------------------------- References --------------------------------#
+
+#---------------------------------- Content ---------------------------------#
+
+# Effects
+#begin Effects\BloomCombine.fx
+/importer:EffectImporter
+/processor:EffectProcessor
+/build:Effects\BloomCombine.fx
+
+#begin Effects\BloomExtract.fx
+/importer:EffectImporter
+/processor:EffectProcessor
+/build:Effects\BloomExtract.fx
+
+#begin Effects\GaussianBlur.fx
+/importer:EffectImporter
+/processor:EffectProcessor
+/build:Effects\GaussianBlur.fx
+
+# Fonts
+#begin Fonts\hudFont.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/build:Fonts\hudFont.spritefont
+
+# Models
+#begin Models\tank.fbx
+/importer:FbxImporter
+/processor:ShatterProcessor
+/processorParam:ColorKeyColor=0,0,0,0
+/processorParam:ColorKeyEnabled=True
+/processorParam:DefaultEffect=BasicEffect
+/processorParam:GenerateMipmaps=True
+/processorParam:GenerateTangentFrames=False
+/processorParam:PremultiplyTextureAlpha=True
+/processorParam:PremultiplyVertexColors=True
+/processorParam:ResizeTexturesToPowerOfTwo=False
+/processorParam:RotationX=0
+/processorParam:RotationY=0
+/processorParam:RotationZ=0
+/processorParam:Scale=15
+/processorParam:SwapWindingOrder=False
+/processorParam:TextureFormat=Compressed
+/build:Models\tank.fbx
+
+# Textures
+#begin Textures\sunset.jpg
+/importer:TextureImporter
+/processor:TextureProcessor
+/build:Textures\sunset.jpg
