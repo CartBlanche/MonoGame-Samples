@@ -327,14 +327,45 @@ namespace Microsoft.Xna.Framework.Net
             switch (session.SessionType)
             {
                 case NetworkSessionType.SystemLink:
+                    // Ensure the sender (host) also processes its own outbound packet so
+                    // gameplay code (e.g. WorldSetup) follows the same receive path.
+                    bool includeSelf = false;
+
                     foreach (var recipient in recipients)
                     {
+                        if (recipient == this)
+                        {
+                            includeSelf = true;
+                            continue;
+                        }
                         session.SendDataToGamer(recipient, data, options);
+                    }
+
+                    // Loopback to self if included in recipients (typical when using session.AllGamers).
+                    if (includeSelf && IsLocal)
+                    {
+                        // Clone to avoid later mutation issues.
+                        var clone = new byte[data.Length];
+                        Buffer.BlockCopy(data, 0, clone, 0, data.Length);
+                        EnqueueIncomingPacket(clone, this);
                     }
                     break;
 
                 case NetworkSessionType.Local:
-                    // TODO: session.ProcessIncomingMessages(); // Simulate message delivery
+                    // Direct in-process delivery to every local gamer (split-screen scenario).
+                    // Reliable/in-order semantics are trivially satisfied.
+                    var delivered = new HashSet<NetworkGamer>();
+                    foreach (var recipient in recipients)
+                    {
+                        if (recipient == null || !recipient.IsLocal)
+                            continue;
+                        if (!delivered.Add(recipient))
+                            continue; // avoid duplicate enqueue if recipients enumerates same gamer twice
+
+                        var clone = new byte[data.Length];
+                        Buffer.BlockCopy(data, 0, clone, 0, data.Length);
+                        recipient.EnqueueIncomingPacket(clone, this);
+                    }
                     break;
 
                 case NetworkSessionType.PlayerMatch:
