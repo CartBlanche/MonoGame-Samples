@@ -35,7 +35,7 @@ I welcome contributions to the MonoGame Samples repository! Here's how you can g
 | [Cards Starter Kit](CardsStarterKit/README.md) | Card framework showing how to implement a Blackjack game. |
 |  [FloodControl](GameDevelopmentbyExample/FloodControl/README.md) | |
 | [HoneycombRush](HoneycombRush/README.md) | Arcade-style honeycomb collection game. |
-| [CatapultNetWars](CatapultNetWars/README.md) | Single Player and Networked multiplayer catapult game. Works on LAN |
+| [CatapultWars](CatapultWars/README.md) | Single Player and Networked multiplayer catapult game. Works on LAN |
 | [PacMan](PacMan/README.md) | Cross-platform Pac-Man clone. |
 |  [RobotRampage](GameDevelopmentbyExample/RobotRampage/README.md) |  | 
 | [RockRain](RockRain/README.md) | Arcade-style falling rocks game. |
@@ -48,7 +48,7 @@ I welcome contributions to the MonoGame Samples repository! Here's how you can g
 
 | Project | Description |
 |--------|-------------|
-| [2DShaderSample](2DShaderSample/README.md) | Custom 2D shader effects in MonoGame. |
+| [Shaders2D](Shaders2D/README.md) | Custom 2D shader effects in MonoGame. |
 | [Aiming](Aiming/README.md) | Aiming mechanics and input handling. |
 | [BouncingBox](BouncingBox/README.md) | Simple physics sample with bouncing boxes. |
 | [Cards Starter Kit](CardsStarterKit/README.md) | Card framework showing how to implement a Blackjack game. |
@@ -65,10 +65,10 @@ I welcome contributions to the MonoGame Samples repository! Here's how you can g
 | [InputReporter](InputReporter/README.md) | Displays live input values for controllers. |
 | [MultiTouch](MultiTouch/README.md) | Multi-touch input support. |
 | [PacMan](PacMan/README.md) | Cross-platform Pac-Man clone. |
-| [ParticleSample](ParticleSample/README.md) | Particle systems and effects. |
+| [Particle2D](Particle2D/README.md) | Particle systems and effects. |
 | [Primitives](Primitives/README.md) | Drawing primitive shapes (lines, points). |
-| [RectangleCollisionSample](RectangleCollisionSample/README.md) | Rectangle collision detection. |
-| [RenderTarget2DSample](RenderTarget2DSample/README.md) | Render-to-texture techniques. |
+| [RectangleCollision](RectangleCollision/README.md) | Rectangle collision detection. |
+| [RenderTarget2D](RenderTarget2D/README.md) | Render-to-texture techniques. |
 | [RockRain](RockRain/README.md) | Arcade-style falling rocks game. |
 | [RolePlayingGame](RolePlayingGame/README.md) | RPG sample with tile engine and menus. |
 | [StarWarrior](StarWarrior/README.md) | Classic space shooter sample. |
@@ -82,13 +82,13 @@ I welcome contributions to the MonoGame Samples repository! Here's how you can g
 | Project | Description |
 |--------|-------------|
 | [Audio3D](Audio3D/README.md) | 3D audio positioning and effects. |
-| [BloomSample](BloomSample/README.md) | Bloom post-processing effects. |
+| [BloomEffect](BloomEffect/README.md) | Bloom post-processing effects. |
 | [Colored3DCube](Colored3DCube/README.md) | Renders a colored 3D cube. |
-| [Graphics3DSample](Graphics3DSample/README.md) | Advanced 3D graphics techniques. |
+| [Graphics3D](Graphics3D/README.md) | Advanced 3D graphics techniques. |
 | [LensFlare](LensFlare/README.md) | Lens flare post-processing effects. |
 | [ReachGraphicsDemo](ReachGraphicsDemo/README.md) | Demonstrates Reach profile graphics features. |
 | [ShadowMapping](ShadowMapping/README.md) | Demonstrates shadow mapping techniques in 3D. |
-| [ShatterEffectSample](ShatterEffectSample/README.md) | 3D shatter effect demonstration. |
+| [ShatterEffect](ShatterEffect/README.md) | 3D shatter effect demonstration. |
 
 ---
 
@@ -101,7 +101,7 @@ I welcome contributions to the MonoGame Samples repository! Here's how you can g
 | [NetRumble](NetRumble/README.md) | Networked multiplayer space shooter. (NOT working yet) |
 | [NetworkPrediction](NetworkPrediction/README.md) | Networked gameplay prediction and synchronization. Works on LAN |
 | [NetworkStateManagment](NetworkStateManagment/README.md) | The project template for most of the networked games in this repo, that use a Lobby. Works on LAN |
-| [Peer2PeerSample](Peer2PeerSample/README.md) | Peer-to-peer multiplayer tank demo. Works on LAN |
+| [Peer2Peer](Peer2Peer/README.md) | Peer-to-peer multiplayer tank demo. Works on LAN |
 
 ---
 
@@ -114,7 +114,7 @@ I welcome contributions to the MonoGame Samples repository! Here's how you can g
 | [BatteryStatus](BatteryStatus/README.md) | Battery status and power management. |
 | [CompiledContent](CompiledContent/README.md) | Pre-built content files for other samples. |
 | [GameComponents](GameComponents/README.md) | Using and managing game components. |
-| [SamplesContentBuilder](SamplesContentBuilder/README.md) | Build and load content assets using MonoGame's content pipeline. |
+| [ContentBuilder](ContentBuilder/README.md) | Build and load content assets using MonoGame's content pipeline. |
 | [Sound](Sound/README.md) | Cross-platform sound playback. |
 
 ---
