@@ -3,7 +3,7 @@
     <TargetFramework>net8.0-windows</TargetFramework>
     <OutputType>WinExe</OutputType>
     <RootNamespace>Waypoint.Windows</RootNamespace>
-    <AssemblyName>Waypoint.Windows</AssemblyName>
+    <AssemblyName>Waypoint</AssemblyName>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>

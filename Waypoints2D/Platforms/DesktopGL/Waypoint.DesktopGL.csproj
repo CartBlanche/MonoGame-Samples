@@ -3,7 +3,7 @@
     <TargetFramework>net8.0</TargetFramework>
     <OutputType>WinExe</OutputType>
     <RootNamespace>Waypoint.DesktopGL</RootNamespace>
-    <AssemblyName>Waypoint.DesktopGL</AssemblyName>
+    <AssemblyName>Waypoint</AssemblyName>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>

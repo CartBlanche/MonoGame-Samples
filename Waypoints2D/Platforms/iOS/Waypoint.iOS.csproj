@@ -3,7 +3,7 @@
     <TargetFramework>net8.0-ios</TargetFramework>
     <OutputType>Exe</OutputType>
     <RootNamespace>Waypoint.iOS</RootNamespace>
-    <AssemblyName>Waypoint.iOS</AssemblyName>
+    <AssemblyName>Waypoint</AssemblyName>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>

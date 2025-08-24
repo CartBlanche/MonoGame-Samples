@@ -3,7 +3,7 @@
     <TargetFramework>net8.0-android</TargetFramework>
     <OutputType>Exe</OutputType>
     <RootNamespace>Waypoint.Android</RootNamespace>
-    <AssemblyName>Waypoint.Android</AssemblyName>
+    <AssemblyName>Waypoint</AssemblyName>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
