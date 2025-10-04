@@ -42,47 +42,37 @@
             "type": "process",
             "args": [
                 "build",
-                "${workspaceFolder}/CollisionSample.Android.csproj",
-                "/property:GenerateFullPaths=true",
-                "/consoleloggerparameters:NoSummary"
+                "${workspaceFolder}/Platforms/Android/CollisionSample.Android.csproj"
             ],
             "group": "build",
             "presentation": {
-                "reveal": "always"
+                "echo": true,
+                "reveal": "silent",
+                "focus": false,
+                "panel": "shared",
+                "showReuseMessage": true,
+                "clear": false
             },
-            "problemMatcher": "$msCompile"
+            "problemMatcher": "$msCompile",
         },
         {
-            "label": "publish",
+            "label": "build-ios",
             "command": "dotnet",
             "type": "process",
             "args": [
-                "publish",
-                "${workspaceFolder}/CollisionSample.DesktopGL.csproj",
-                "/property:GenerateFullPaths=true",
-                "/consoleloggerparameters:NoSummary"
+                "build",
+                "${workspaceFolder}/Platforms/iOS/CollisionSample.iOS.csproj"
             ],
             "group": "build",
             "presentation": {
-                "reveal": "silent"
+                "echo": true,
+                "reveal": "silent",
+                "focus": false,
+                "panel": "shared",
+                "showReuseMessage": true,
+                "clear": false
             },
-            "problemMatcher": "$msCompile"
-        },
-        {
-            "label": "watch",
-            "command": "dotnet",
-            "type": "process",
-            "args": [
-                "watch",
-                "run",
-                "--project",
-                "${workspaceFolder}/CollisionSample.DesktopGL.csproj"
-            ],
-            "group": "build",
-            "presentation": {
-                "reveal": "always"
-            },
-            "problemMatcher": "$msCompile"
+            "problemMatcher": "$msCompile",
         }
     ]
 }
