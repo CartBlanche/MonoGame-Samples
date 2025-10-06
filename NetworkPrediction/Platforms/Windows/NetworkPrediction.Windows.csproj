@@ -4,7 +4,7 @@
     <OutputType>WinExe</OutputType>
     <TargetFramework>net8.0-windows</TargetFramework>
     <RootNamespace>NetworkPrediction</RootNamespace>
-    <AssemblyName>NetworkPrediction.Windows</AssemblyName>
+    <AssemblyName>NetworkPrediction</AssemblyName>
     <UseWindowsForms>true</UseWindowsForms>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <Title>Network Prediction</Title>

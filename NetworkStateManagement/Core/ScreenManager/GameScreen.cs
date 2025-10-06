@@ -34,8 +34,6 @@ namespace NetworkStateManagement
 	/// </summary>
 	public abstract class GameScreen
 	{
-
-
 		/// <summary>
 		/// Normally when one screen is brought up over the top of another,
 		/// the first screen will transition off to make room for the new
@@ -51,7 +49,6 @@ namespace NetworkStateManagement
 
 		bool isPopup = false;
 
-
 		/// <summary>
 		/// Indicates how long the screen takes to
 		/// transition on when it is activated.
@@ -64,7 +61,6 @@ namespace NetworkStateManagement
 
 		TimeSpan transitionOnTime = TimeSpan.Zero;
 
-
 		/// <summary>
 		/// Indicates how long the screen takes to
 		/// transition off when it is deactivated.
@@ -76,7 +72,6 @@ namespace NetworkStateManagement
 		}
 
 		TimeSpan transitionOffTime = TimeSpan.Zero;
-
 
 		/// <summary>
 		/// Gets the current position of the screen transition, ranging
@@ -91,7 +86,6 @@ namespace NetworkStateManagement
 
 		float transitionPosition = 1;
 
-
 		/// <summary>
 		/// Gets the current alpha of the screen transition, ranging
 		/// from 1 (fully active, no transition) to 0 (transitioned
@@ -101,7 +95,6 @@ namespace NetworkStateManagement
 		{
 			get { return 1f - TransitionPosition; }
 		}
-
 
 		/// <summary>
 		/// Gets the current screen transition state.
@@ -113,7 +106,6 @@ namespace NetworkStateManagement
 		}
 
 		ScreenState screenState = ScreenState.TransitionOn;
-
 
 		/// <summary>
 		/// There are two possible reasons why a screen might be transitioning
@@ -131,7 +123,6 @@ namespace NetworkStateManagement
 
 		bool isExiting = false;
 
-
 		/// <summary>
 		/// Checks whether this screen is active and can respond to user input.
 		/// </summary>
@@ -147,7 +138,6 @@ namespace NetworkStateManagement
 
 		bool otherScreenHasFocus;
 
-
 		/// <summary>
 		/// Gets the manager that this screen belongs to.
 		/// </summary>
@@ -158,7 +148,6 @@ namespace NetworkStateManagement
 		}
 
 		ScreenManager screenManager;
-
 
 		/// <summary>
 		/// Gets the index of the player who is currently controlling this screen,
@@ -175,7 +164,6 @@ namespace NetworkStateManagement
 		}
 
 		PlayerIndex? controllingPlayer;
-
 
 		/// <summary>
 		/// Gets the gestures the screen is interested in. Screens should be as specific
@@ -203,17 +191,13 @@ namespace NetworkStateManagement
 
 		GestureType enabledGestures = GestureType.None;
 
-
-
-
-
 		/// <summary>
 		/// Load graphics content for the screen.
 		/// </summary>
 		public virtual void LoadContent()
 		{
+			ScreenManager.ScalePresentationArea();
 		}
-
 
 		/// <summary>
 		/// Unload content for the screen.
@@ -221,10 +205,6 @@ namespace NetworkStateManagement
 		public virtual void UnloadContent()
 		{
 		}
-
-
-
-
 
 		/// <summary>
 		/// Allows the screen to run logic, such as updating the transition position.
@@ -275,8 +255,15 @@ namespace NetworkStateManagement
 					screenState = ScreenState.Active;
 				}
 			}
-		}
 
+			// Check if the back buffer size has changed (e.g., window resize).
+			if (ScreenManager.BackbufferHeight != ScreenManager.GraphicsDevice.PresentationParameters.BackBufferHeight
+				|| ScreenManager.BackbufferWidth != ScreenManager.GraphicsDevice.PresentationParameters.BackBufferWidth)
+			{
+				// Adjust the presentation area to match the new back buffer size.
+				ScreenManager.ScalePresentationArea();
+			}
+		}
 
 		/// <summary>
 		/// Helper for updating the screen transition position.
@@ -307,7 +294,6 @@ namespace NetworkStateManagement
 			return true;
 		}
 
-
 		/// <summary>
 		/// Allows the screen to handle user input. Unlike Update, this method
 		/// is only called when the screen is active, and not when some other
@@ -317,17 +303,12 @@ namespace NetworkStateManagement
 		{
 		}
 
-
 		/// <summary>
 		/// This is called when the screen should draw itself.
 		/// </summary>
 		public virtual void Draw(GameTime gameTime)
 		{
 		}
-
-
-
-
 
 		/// <summary>
 		/// Tells the screen to go away. Unlike ScreenManager.RemoveScreen, which
@@ -347,7 +328,5 @@ namespace NetworkStateManagement
 				isExiting = true;
 			}
 		}
-
-
 	}
 }

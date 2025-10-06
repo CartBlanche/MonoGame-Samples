@@ -5,6 +5,7 @@
 // Copyright (C) Microsoft Corporation. All rights reserved.
 //-----------------------------------------------------------------------------
 
+using System;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.GamerServices;
@@ -22,43 +23,47 @@ namespace NetworkStateManagement
 	/// </summary>
 	public class NetworkStateManagementGame : Game
 	{
-
-		GraphicsDeviceManager graphics;
+		GraphicsDeviceManager graphicsDeviceManager;
 		ScreenManager screenManager;
-
+		public ScreenManager ScreenManager { get => screenManager; set => screenManager = value; }
 
 		// By preloading any assets used by UI rendering, we avoid framerate glitches
 		// when they suddenly need to be loaded in the middle of a menu transition.
 		static readonly string[] preloadAssets =
-	{
-		"gradient",
-		"cat",
-		"chat_ready",
-		"chat_able",
-		"chat_talking",
-		"chat_mute",
-	};
+		{
+			"gradient",
+			"cat",
+			"chat_ready",
+			"chat_able",
+			"chat_talking",
+			"chat_mute",
+		};
 
-
-
-
-		/// <summary>
-		/// The main game constructor.
-		/// </summary>		
-#if ANDROID
-		public NetworkStateManagementGame  (Activity activity) : base (activity)
-#else
-		public NetworkStateManagementGame()
-#endif
+        /// <summary>
+        /// The main game constructor.
+        /// </summary>		
+        public NetworkStateManagementGame()
 		{
 			Content.RootDirectory = "Content";
 
-			graphics = new GraphicsDeviceManager(this);
-#if MOBILE
-			graphics.IsFullScreen = true;
-#endif
-			graphics.PreferredBackBufferWidth = 1067;
-			graphics.PreferredBackBufferHeight = 600;
+			graphicsDeviceManager = new GraphicsDeviceManager(this);
+			graphicsDeviceManager.PreferredBackBufferWidth = ScreenManager.BASE_BUFFER_WIDTH;
+			graphicsDeviceManager.PreferredBackBufferHeight = ScreenManager.BASE_BUFFER_HEIGHT;
+
+			if (UIUtility.IsMobile)
+			{
+				graphicsDeviceManager.IsFullScreen = true;
+				IsMouseVisible = false;
+			}
+			else if (UIUtility.IsDesktop)
+			{
+				graphicsDeviceManager.IsFullScreen = false;
+				IsMouseVisible = true;
+			}
+			else
+			{
+				throw new PlatformNotSupportedException();
+			}
 
 			// Create components.
 			screenManager = new ScreenManager(this);
@@ -80,7 +85,6 @@ namespace NetworkStateManagement
 			// Guide.SimulateTrialMode = true;
 		}
 
-
 		/// <summary>
 		/// Loads graphics content.
 		/// </summary>
@@ -92,16 +96,12 @@ namespace NetworkStateManagement
 			}
 		}
 
-
-
-
-
 		/// <summary>
 		/// This is called when the game should draw itself.
 		/// </summary>
 		protected override void Draw(GameTime gameTime)
 		{
-			graphics.GraphicsDevice.Clear(Color.Black);
+			graphicsDeviceManager.GraphicsDevice.Clear(Color.Black);
 
 			// The real drawing happens inside the screen manager component.
 			base.Draw(gameTime);
@@ -109,5 +109,4 @@ namespace NetworkStateManagement
 
 
 	}
-
 }

@@ -22,15 +22,20 @@ namespace NetRumble
     /// </remarks>
     public class InputState
     {
-
         public KeyboardState CurrentKeyboardState;
         public GamePadState CurrentGamePadState;
 
         public KeyboardState LastKeyboardState;
         public GamePadState LastGamePadState;
 
-
-
+        /// <summary>
+        /// Helper for checking if a key was newly pressed during this update.
+        /// </summary>
+        public bool IsNewKeyPress(Keys key)
+        {
+            return (CurrentKeyboardState.IsKeyDown(key) &&
+                    LastKeyboardState.IsKeyUp(key));
+        }
 
         /// <summary>
         /// Checks for a "menu up" input action (on either keyboard or gamepad).
@@ -47,7 +52,6 @@ namespace NetRumble
             }
         }
 
-
         /// <summary>
         /// Checks for a "menu down" input action (on either keyboard or gamepad).
         /// </summary>
@@ -62,7 +66,6 @@ namespace NetRumble
                         LastGamePadState.ThumbSticks.Left.Y >= 0);
             }
         }
-
 
         /// <summary>
         /// Checks for a "menu select" input action (on either keyboard or gamepad).
@@ -80,7 +83,6 @@ namespace NetRumble
             }
         }
 
-
         /// <summary>
         /// Checks for a "menu cancel" input action (on either keyboard or gamepad).
         /// </summary>
@@ -95,7 +97,6 @@ namespace NetRumble
                         LastGamePadState.Buttons.Back == ButtonState.Released);
             }
         }
-
 
         /// <summary>
         /// Checks for a "pause the game" input action (on either keyboard or gamepad).
@@ -112,7 +113,6 @@ namespace NetRumble
             }
         }
 
-
         /// <summary>
         /// Checks for a positive "ship color change" input action
         /// </summary>
@@ -125,7 +125,6 @@ namespace NetRumble
                     LastGamePadState.Buttons.RightShoulder == ButtonState.Released);
             }
         }
-
 
         /// <summary>
         /// Checks for a negative "ship color change" input action.
@@ -140,8 +139,6 @@ namespace NetRumble
             }
         }
 
-
-
         /// <summary>
         /// Checks for a positive "ship model change" input action.
         /// </summary>
@@ -154,7 +151,6 @@ namespace NetRumble
                      LastGamePadState.Triggers.Right < 1f);
             }
         }
-
 
         /// <summary>
         /// Checks for a negative "ship model change" input action.
@@ -169,7 +165,6 @@ namespace NetRumble
             }
         }
 
-
         /// <summary>
         /// Checks for a "mark ready" input action (on either keyboard or gamepad).
         /// </summary>
@@ -183,9 +178,19 @@ namespace NetRumble
             }
         }
 
+        Matrix inputTransformation;
+        readonly float baseBufferWidth;
+        readonly float baseBufferHeight;
 
-
-
+        /// <summary>
+        /// Constructs a new input state.
+        /// </summary>
+        public InputState(float baseBufferWidth, float baseBufferHeight)
+        {
+            this.baseBufferWidth = baseBufferWidth;
+            this.baseBufferHeight = baseBufferHeight;
+            // Initialize the input state with the base buffer dimensions
+        }
 
         /// <summary>
         /// Reads the latest state of the keyboard and gamepad.
@@ -199,16 +204,13 @@ namespace NetRumble
             CurrentGamePadState = GamePad.GetState(PlayerIndex.One);
         }
 
-
         /// <summary>
-        /// Helper for checking if a key was newly pressed during this update.
+        /// Updates the matrix used to transform input coordinates.
         /// </summary>
-        public bool IsNewKeyPress(Keys key)
+        /// <param name="inputTransformation">The transformation matrix to apply.</param>
+        public void UpdateInputTransformation(Matrix inputTransformation)
         {
-            return (CurrentKeyboardState.IsKeyDown(key) &&
-                    LastKeyboardState.IsKeyUp(key));
+            this.inputTransformation = inputTransformation;
         }
-
-
     }
 }

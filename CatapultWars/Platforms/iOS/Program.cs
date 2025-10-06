@@ -1,15 +1,22 @@
-using System;
+using Foundation;
+using UIKit;
 
-namespace CatapultGame
+namespace CatapultGame.iOS
 {
-    public static class Program
+    [Register("AppDelegate")]
+    class AppDelegate : UIApplicationDelegate
     {
+        private CatapultGame game;
+
+        public override void FinishedLaunching(UIApplication app)
+        {
+            game = new CatapultGame();
+            game.Run();
+        }
+
         static void Main(string[] args)
         {
-            using (var game = new CatapultGame())
-            {
-                game.Run();
-            }
+            UIApplication.Main(args, null, typeof(AppDelegate));
         }
     }
 }

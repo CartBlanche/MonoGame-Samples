@@ -4,7 +4,7 @@
     <OutputType>WinExe</OutputType>
     <TargetFramework>net8.0</TargetFramework>
     <RootNamespace>NetworkPrediction</RootNamespace>
-    <AssemblyName>NetworkPrediction.DesktopGL</AssemblyName>
+    <AssemblyName>NetworkPrediction</AssemblyName>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <Title>Network Prediction</Title>
     <Product>NetworkPrediction</Product>

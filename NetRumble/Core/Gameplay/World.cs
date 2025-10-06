@@ -478,7 +478,7 @@ namespace NetRumble
                     // initialize the asteroid and it's starting position
                     asteroids[i].Initialize();
                     asteroids[i].Position =
-                        CollisionManager.FindSpawnPoint(asteroids[i], 
+                        CollisionManager.FindSpawnPoint(asteroids[i],
                         asteroids[i].Radius);
                     // write the starting position and velocity
                     packetWriter.Write(asteroids[i].Position);
@@ -491,6 +491,15 @@ namespace NetRumble
             }
         }
 
+        /// <summary>
+        /// Reset per-round game state flags (shared by Initialize and host GenerateWorld).
+        /// </summary>
+        private void ResetGameState()
+        {
+            gameWon = false;
+            winnerIndex = -1;
+            gameExited = false;
+        }
 
         /// <summary>
         /// Initialize the world with the data from the WorldSetup packet.
@@ -499,9 +508,7 @@ namespace NetRumble
         public void Initialize()
         {
             // reset the game status
-            gameWon = false;
-            winnerIndex = -1;
-            gameExited = false;
+            ResetGameState();
 
             // initialize the ships with the data from the packet
             for (int i = 0; i < MaximumPlayers; i++)
@@ -612,7 +619,7 @@ namespace NetRumble
                         {
                             packetWriter.Write((int)PacketTypes.GameWon);
                             packetWriter.Write(highScoreIndex);
-                            localGamer.SendData(packetWriter, 
+                            localGamer.SendData(packetWriter,
                                 SendDataOptions.ReliableInOrder);
                         }
 
@@ -647,7 +654,7 @@ namespace NetRumble
                                 packetWriter.Write(RandomMath.Random.Next(3));
                                 packetWriter.Write(CollisionManager.FindSpawnPoint(null,
                                     PowerUp.PowerUpRadius * 3f));
-                                localGamer.SendData(packetWriter, 
+                                localGamer.SendData(packetWriter,
                                     SendDataOptions.ReliableInOrder);
                             }
                         }
@@ -1012,7 +1019,7 @@ namespace NetRumble
         /// <param name="sender">The sender of the packet.</param>
         private void UpdatePlayerData(NetworkGamer sender)
         {
-            if ((networkSession != null) && (networkSession.LocalGamers.Count > 0) && 
+            if ((networkSession != null) && (networkSession.LocalGamers.Count > 0) &&
                 (sender != null))
             {
                 PlayerData playerData = sender.Tag as PlayerData;
@@ -1026,7 +1033,7 @@ namespace NetRumble
                     {
                         PlayerData localPlayerData =
                             localNetworkGamer.Tag as PlayerData;
-                        if ((localPlayerData != null) && 
+                        if ((localPlayerData != null) &&
                             !Ship.HasUniqueColorIndex(localNetworkGamer,
                                networkSession))
                         {
@@ -1034,7 +1041,8 @@ namespace NetRumble
                                 localPlayerData.ShipColor, networkSession);
                             packetWriter.Write((int)World.PacketTypes.PlayerData);
                             localPlayerData.Serialize(packetWriter);
-                            networkSession.LocalGamers[0].SendData(packetWriter, 
+
+                            networkSession.LocalGamers[0].SendData(packetWriter,
                                 SendDataOptions.ReliableInOrder);
                         }
                     }

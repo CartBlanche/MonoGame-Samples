@@ -29,5 +29,13 @@ namespace Microsoft.Xna.Framework.Net
         {
             return registry.TryGetValue(typeId, out var ctor) ? ctor() : null;
         }
+
+        static NetworkMessageRegistry()
+        {
+            Register<JoinRequestMessage>(2);
+            Register<JoinAcceptedMessage>(3);
+            Register<ReadinessUpdateMessage>(4);
+            Register<GameStateChangeMessage>(5);
+        }
     }
 }

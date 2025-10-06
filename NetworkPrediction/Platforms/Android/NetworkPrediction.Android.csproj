@@ -4,7 +4,7 @@
     <OutputType>Exe</OutputType>
     <TargetFramework>net8.0-android</TargetFramework>
     <RootNamespace>NetworkPrediction</RootNamespace>
-    <AssemblyName>NetworkPrediction.Android</AssemblyName>
+    <AssemblyName>NetworkPrediction</AssemblyName>
     <AndroidUseLatestPlatformSdk>true</AndroidUseLatestPlatformSdk>
     <AndroidApplication>true</AndroidApplication>
     <RuntimeIdentifiers>android-arm;android-arm64;android-x86;android-x64</RuntimeIdentifiers>

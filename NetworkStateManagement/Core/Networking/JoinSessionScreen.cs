@@ -75,7 +75,7 @@ namespace NetworkStateManagement
 
 				// Activate the network busy screen, which will display
 				// an animation until this operation has completed.
-				NetworkBusyScreen busyScreen = new NetworkBusyScreen(networkSession);
+				NetworkBusyScreen<NetworkSession> busyScreen = new NetworkBusyScreen<NetworkSession>(networkSession);
 
 				busyScreen.OperationCompleted += JoinSessionOperationCompleted;
 

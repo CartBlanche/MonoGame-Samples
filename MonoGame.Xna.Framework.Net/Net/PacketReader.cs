@@ -33,6 +33,19 @@ namespace Microsoft.Xna.Framework.Net
         }
 
         /// <summary>
+        /// Replaces the internal buffer with the provided data and rewinds to the start.
+        /// This mirrors XNA's PacketReader.SetBuffer behavior for reuse.
+        /// </summary>
+        public void Reset(byte[] data)
+        {
+            if (data == null) throw new ArgumentNullException(nameof(data));
+            stream.SetLength(0);
+            stream.Position = 0;
+            stream.Write(data, 0, data.Length);
+            stream.Position = 0;
+        }
+
+        /// <summary>
         /// Gets the length of the packet data.
         /// </summary>
         public int Length => (int)stream.Length;

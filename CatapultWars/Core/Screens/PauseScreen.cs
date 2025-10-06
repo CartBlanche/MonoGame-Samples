@@ -9,8 +9,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using GameStateManagement;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Net;
 
 namespace CatapultGame
 {
@@ -97,11 +97,20 @@ namespace CatapultGame
         /// 
         protected override void OnCancel(PlayerIndex playerIndex)
         {
+            // Tear down our network session
+            NetworkSession session = ScreenManager.Game.Services.GetService(typeof(NetworkSession)) as NetworkSession;
+            if (session != null)
+            {
+                if (session.AllGamers.Count == 1)
+                {
+                    session.EndGame();
+                }
+                session.Dispose();
+                ScreenManager.Game.Services.RemoveService(typeof(NetworkSession));
+            }
             AudioManager.StopSounds();
             ScreenManager.AddScreen(new MainMenuScreen(), null);
             ExitScreen();
-
-
         }
     }
 }

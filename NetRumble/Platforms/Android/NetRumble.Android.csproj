@@ -2,7 +2,7 @@
   <PropertyGroup>
     <TargetFramework>net8.0-android</TargetFramework>
     <OutputType>Exe</OutputType>
-    <AssemblyName>NetRumble.Android</AssemblyName>
+    <AssemblyName>NetRumble</AssemblyName>
     <RootNamespace>NetRumble.Android</RootNamespace>
     <AndroidManifest>AndroidManifest.xml</AndroidManifest>
     <SupportedOSPlatformVersion>28</SupportedOSPlatformVersion>
@@ -18,12 +18,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Content Include="..\..\Core\Content\**\*.xnb" Link="Content\%(RecursiveDir)%(Filename)%(Extension)">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="..\..\Core\Content\**\*.xml" Link="Content\%(RecursiveDir)%(Filename)%(Extension)">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
+    <MonoGameContentReference Include="..\..\Core\Content\Content.mgcb" />
   </ItemGroup>
 
 </Project>

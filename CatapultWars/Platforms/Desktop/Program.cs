@@ -1,15 +1,14 @@
 using System;
 
-namespace CatapultGame
+namespace CatapultGame.DesktopGL
 {
     public static class Program
     {
-        static void Main(string[] args)
+        [STAThread]
+        static void Main()
         {
             using (var game = new CatapultGame())
-            {
                 game.Run();
-            }
         }
     }
 }

@@ -11,7 +11,6 @@ using System.Linq;
 using System.Text;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
-using GameStateManagement;
 
 namespace CatapultGame
 {
@@ -30,11 +29,24 @@ namespace CatapultGame
             background = Load<Texture2D>("Textures/Backgrounds/title_screen");           
         }
 
+        /// <summary>
+        /// Updates the background screen. Unlike most screens, this should not
+        /// transition off even if it has been covered by another screen: it is
+        /// supposed to be covered, after all! This overload forces the
+        /// coveredByOtherScreen parameter to false in order to stop the base
+        /// Update method wanting to transition off.
+        /// </summary>
+        public override void Update(GameTime gameTime, bool otherScreenHasFocus,
+                                                       bool coveredByOtherScreen)
+        {
+            base.Update(gameTime, otherScreenHasFocus, false);
+        }
+
         public override void Draw(GameTime gameTime)
         {
             SpriteBatch spriteBatch = ScreenManager.SpriteBatch;
 
-            spriteBatch.Begin();
+            spriteBatch.Begin(SpriteSortMode.Deferred, null, null, null, null, null, ScreenManager.GlobalTransformation);
 
             // Draw Background
             spriteBatch.Draw(background, new Vector2(0, 0),

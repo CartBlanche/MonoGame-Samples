@@ -21,7 +21,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace CatapultGame
 {
-    class AI : Player
+    class AI : Human
     {
         Random random;
 
@@ -31,7 +31,7 @@ namespace CatapultGame
         }
 
         public AI(Game game, SpriteBatch screenSpriteBatch)
-            : base(game, screenSpriteBatch)
+            : base(game, screenSpriteBatch, PlayerSide.Right)
         {
             Catapult = new Catapult(game, screenSpriteBatch,
                             "Textures/Catapults/Red/redIdle/redIdle",
@@ -42,8 +42,8 @@ namespace CatapultGame
         {
             //Initialize randomizer
             random = new Random();
-
-            Catapult.Initialize();
+			IsAI = true;
+            //Catapult.Initialize();
 
             base.Initialize();
         }

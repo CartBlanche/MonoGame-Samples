@@ -15,7 +15,7 @@ using Microsoft.Xna.Framework.Input.Touch;
 using System.IO;
 using System.IO.IsolatedStorage;
 
-namespace GameStateManagement
+namespace CatapultGame
 {
     /// <summary>
     /// The screen manager is a component which manages one or more GameScreen
@@ -25,11 +25,11 @@ namespace GameStateManagement
     /// </summary>
     public class ScreenManager : DrawableGameComponent
     {
-
         List<GameScreen> screens = new List<GameScreen>();
         List<GameScreen> screensToUpdate = new List<GameScreen>();
 
-        InputState input = new InputState();
+        InputState inputState = new InputState(BASE_BUFFER_WIDTH, BASE_BUFFER_HEIGHT);
+        public InputState InputState => inputState;
 
         SpriteBatch spriteBatch;
         SpriteFont font;
@@ -39,8 +39,24 @@ namespace GameStateManagement
 
         bool traceEnabled;
 
+        internal const int BASE_BUFFER_WIDTH = 800;
+        internal const int BASE_BUFFER_HEIGHT = 480;
 
+        private int backbufferWidth;
+        /// <summary>Gets or sets the current backbuffer width.</summary>
+        public int BackbufferWidth { get => backbufferWidth; set => backbufferWidth = value; }
 
+        private int backbufferHeight;
+        /// <summary>Gets or sets the current backbuffer height.</summary>
+        public int BackbufferHeight { get => backbufferHeight; set => backbufferHeight = value; }
+
+        private Vector2 baseScreenSize = new Vector2(BASE_BUFFER_WIDTH, BASE_BUFFER_HEIGHT);
+        /// <summary>Gets or sets the base screen size used for scaling calculations.</summary>
+        public Vector2 BaseScreenSize { get => baseScreenSize; set => baseScreenSize = value; }
+
+        private Matrix globalTransformation;
+        /// <summary>Gets or sets the global transformation matrix for scaling and positioning.</summary>
+        public Matrix GlobalTransformation { get => globalTransformation; set => globalTransformation = value; }
 
         /// <summary>
         /// A default SpriteBatch shared by all the screens. This saves
@@ -51,7 +67,6 @@ namespace GameStateManagement
             get { return spriteBatch; }
         }
 
-
         /// <summary>
         /// A default font shared by all the screens. This saves
         /// each screen having to bother loading their own local copy.
@@ -60,7 +75,6 @@ namespace GameStateManagement
         {
             get { return font; }
         }
-
 
         /// <summary>
         /// If true, the manager prints out a list of all the screens
@@ -73,10 +87,6 @@ namespace GameStateManagement
             set { traceEnabled = value; }
         }
 
-
-
-
-
         /// <summary>
         /// Constructs a new screen manager component.
         /// </summary>
@@ -88,7 +98,6 @@ namespace GameStateManagement
             TouchPanel.EnabledGestures = GestureType.None;
         }
 
-
         /// <summary>
         /// Initializes the screen manager component.
         /// </summary>
@@ -98,7 +107,6 @@ namespace GameStateManagement
 
             isInitialized = true;
         }
-
 
         /// <summary>
         /// Load your graphics content.
@@ -119,7 +127,6 @@ namespace GameStateManagement
             }
         }
 
-
         /// <summary>
         /// Unload your graphics content.
         /// </summary>
@@ -132,17 +139,13 @@ namespace GameStateManagement
             }
         }
 
-
-
-
-
         /// <summary>
         /// Allows each screen to run logic.
         /// </summary>
         public override void Update(GameTime gameTime)
         {
             // Read the keyboard and gamepad.
-            input.Update();
+            inputState.Update();
 
             // Make a copy of the master screen list, to avoid confusion if
             // the process of updating one screen adds or removes others.
@@ -172,7 +175,7 @@ namespace GameStateManagement
                     // give it a chance to handle input.
                     if (!otherScreenHasFocus)
                     {
-                        screen.HandleInput(input);
+                        screen.HandleInput(inputState);
 
                         otherScreenHasFocus = true;
                     }
@@ -187,8 +190,8 @@ namespace GameStateManagement
             // Print debug trace?
             if (traceEnabled)
                 TraceScreens();
-        }
 
+        }
 
         /// <summary>
         /// Prints a list of all the screens, for debugging.
@@ -200,10 +203,10 @@ namespace GameStateManagement
             foreach (GameScreen screen in screens)
                 screenNames.Add(screen.GetType().Name);
 
-            Debug.WriteLine(string.Join(", ", screenNames.ToArray()));
+            Console.WriteLine(string.Join(", ", screenNames.ToArray()));
         }
 
-
+        int count = 0;
         /// <summary>
         /// Tells each screen to draw itself.
         /// </summary>
@@ -217,10 +220,6 @@ namespace GameStateManagement
                 screen.Draw(gameTime);
             }
         }
-
-
-
-
 
         /// <summary>
         /// Adds a new screen to the screen manager.
@@ -242,7 +241,6 @@ namespace GameStateManagement
             // update the TouchPanel to respond to gestures this screen is interested in
             TouchPanel.EnabledGestures = screen.EnabledGestures;
         }
-
 
         /// <summary>
         /// Removes a screen from the screen manager. You should normally
@@ -269,7 +267,6 @@ namespace GameStateManagement
             }
         }
 
-
         /// <summary>
         /// Expose an array holding all the screens. We return a copy rather
         /// than the real master list, because screens should only ever be added
@@ -280,19 +277,16 @@ namespace GameStateManagement
             return screens.ToArray();
         }
 
-
         /// <summary>
         /// Helper draws a translucent black fullscreen sprite, used for fading
         /// screens in and out, and for darkening the background behind popups.
         /// </summary>
         public void FadeBackBufferToBlack(float alpha)
         {
-            Viewport viewport = GraphicsDevice.Viewport;
-
-            spriteBatch.Begin();
+            spriteBatch.Begin(SpriteSortMode.Deferred, null, null, null, null, null, GlobalTransformation);
 
             spriteBatch.Draw(blankTexture,
-                             new Rectangle(0, 0, viewport.Width, viewport.Height),
+                             new Rectangle(0, 0, BASE_BUFFER_WIDTH, BASE_BUFFER_HEIGHT),
                              Color.Black * alpha);
 
             spriteBatch.End();
@@ -371,7 +365,7 @@ namespace GameStateManagement
                         if (storage.FileExists("ScreenManager\\ScreenList.dat"))
                         {
                             // load the list of screen types
-                            using (IsolatedStorageFileStream stream = 
+                            using (IsolatedStorageFileStream stream =
                                 storage.OpenFile("ScreenManager\\ScreenList.dat", FileMode.Open, FileAccess.Read))
                             {
                                 using (BinaryReader reader = new BinaryReader(stream))
@@ -397,7 +391,7 @@ namespace GameStateManagement
                         for (int i = 0; i < screens.Count; i++)
                         {
                             string filename = string.Format("ScreenManager\\Screen{0}.dat", i);
-                            using (IsolatedStorageFileStream stream = 
+                            using (IsolatedStorageFileStream stream =
                                 storage.OpenFile(filename, FileMode.Open, FileAccess.Read))
                             {
                                 screens[i].Deserialize(stream);
@@ -432,5 +426,62 @@ namespace GameStateManagement
             }
         }
 
+        /// <summary>
+        /// Scales the game presentation area to match the screen's aspect ratio.
+        /// </summary>
+        public void ScalePresentationArea()
+        {
+            // Validate parameters before calculation
+            if (GraphicsDevice == null || baseScreenSize.X <= 0 || baseScreenSize.Y <= 0)
+            {
+                throw new InvalidOperationException("Invalid graphics configuration");
+            }
+
+            // Fetch screen dimensions
+            backbufferWidth = GraphicsDevice.PresentationParameters.BackBufferWidth;
+            backbufferHeight = GraphicsDevice.PresentationParameters.BackBufferHeight;
+
+            // Prevent division by zero
+            if (backbufferHeight == 0 || baseScreenSize.Y == 0)
+            {
+                return;
+            }
+
+            // Calculate aspect ratios
+            float baseAspectRatio = baseScreenSize.X / baseScreenSize.Y;
+            float screenAspectRatio = backbufferWidth / (float)backbufferHeight;
+
+            // Determine uniform scaling factor
+            float scalingFactor;
+            float horizontalOffset = 0;
+            float verticalOffset = 0;
+
+            if (screenAspectRatio > baseAspectRatio)
+            {
+                // Wider screen: scale by height
+                scalingFactor = backbufferHeight / baseScreenSize.Y;
+
+                // Centre things horizontally.
+                horizontalOffset = (backbufferWidth - baseScreenSize.X * scalingFactor) / 2;
+            }
+            else
+            {
+                // Taller screen: scale by width
+                scalingFactor = backbufferWidth / baseScreenSize.X;
+
+                // Centre things vertically.
+                verticalOffset = (backbufferHeight - baseScreenSize.Y * scalingFactor) / 2;
+            }
+
+            // Update the transformation matrix
+            globalTransformation = Matrix.CreateScale(scalingFactor) *
+                                   Matrix.CreateTranslation(horizontalOffset, verticalOffset, 0);
+
+            // Update the inputTransformation with the Inverted globalTransformation
+            inputState.UpdateInputTransformation(Matrix.Invert(globalTransformation));
+
+            // Debug info
+            Debug.WriteLine($"Screen Size - Width[{backbufferWidth}] Height[{backbufferHeight}] ScalingFactor[{scalingFactor}]");
+        }
     }
 }

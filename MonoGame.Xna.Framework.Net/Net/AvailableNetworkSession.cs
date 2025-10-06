@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Net;
 using System.Threading.Tasks;
 
 namespace Microsoft.Xna.Framework.Net
@@ -17,7 +18,8 @@ namespace Microsoft.Xna.Framework.Net
             int openPrivateGamerSlots,
             NetworkSessionType sessionType,
             IDictionary<string, object> sessionProperties,
-            string sessionId)
+            string sessionId,
+            IPEndPoint hostEndpoint = null)
         {
             SessionName = sessionName;
             HostGamertag = hostGamertag;
@@ -27,6 +29,7 @@ namespace Microsoft.Xna.Framework.Net
             SessionType = sessionType;
             SessionProperties = new Dictionary<string, object>(sessionProperties);
             SessionId = sessionId;
+            HostEndpoint = hostEndpoint;
         }
         /// <summary>
         /// Gets the unique session ID.
@@ -72,5 +75,10 @@ namespace Microsoft.Xna.Framework.Net
         /// Gets the quality of service information.
         /// </summary>
         public QualityOfService QualityOfService { get; internal set; } = new QualityOfService();
+
+    /// <summary>
+    /// Gets the host's network endpoint for SystemLink (LAN) sessions.
+    /// </summary>
+    public IPEndPoint HostEndpoint { get; }
     }
 }

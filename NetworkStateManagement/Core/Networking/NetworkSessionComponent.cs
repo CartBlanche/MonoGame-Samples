@@ -244,7 +244,7 @@ namespace NetworkStateManagement
 				// delivered. When the loading screen finishes, it will activate the
 				// network busy screen, which displays an animation as it waits for
 				// the join operation to complete.
-				NetworkBusyScreen busyScreen = new NetworkBusyScreen(joinTask);
+				NetworkBusyScreen<NetworkSession> busyScreen = new NetworkBusyScreen<NetworkSession>(joinTask);
 
 				busyScreen.OperationCompleted += JoinInvitedOperationCompleted;
 
@@ -309,7 +309,7 @@ namespace NetworkStateManagement
 					return false;
 
 				case NetworkSessionType.PlayerMatch:
-					//case NetworkSessionType.Ranked:
+				case NetworkSessionType.Ranked:
 					return true;
 
 				default:

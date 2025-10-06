@@ -159,24 +159,18 @@ namespace NetRumble
 
         ScreenManager screenManager;
 
-
-
-
-
         /// <summary>
         /// Load graphics content for the screen.
         /// </summary>
-        public virtual void LoadContent() { }
-
+        public virtual void LoadContent()
+        {
+            ScreenManager.ScalePresentationArea();
+        }
 
         /// <summary>
         /// Unload content for the screen.
         /// </summary>
         public virtual void UnloadContent() { }
-
-
-
-
 
         /// <summary>
         /// Allows the screen to run logic, such as updating the transition position.
@@ -229,8 +223,15 @@ namespace NetRumble
                     screenState = ScreenState.Active;
                 }
             }
-        }
 
+            // Check if the back buffer size has changed (e.g., window resize).
+            if (ScreenManager.BackbufferHeight != ScreenManager.GraphicsDevice.PresentationParameters.BackBufferHeight
+                || ScreenManager.BackbufferWidth != ScreenManager.GraphicsDevice.PresentationParameters.BackBufferWidth)
+            {
+                // Adjust the presentation area to match the new back buffer size.
+                ScreenManager.ScalePresentationArea();
+            }
+        }
 
         /// <summary>
         /// Helper for updating the screen transition position.
@@ -255,11 +256,10 @@ namespace NetRumble
                 transitionPosition = MathHelper.Clamp(transitionPosition, 0, 1);
                 return false;
             }
-            
+
             // Otherwise we are still busy transitioning.
             return true;
         }
-
 
         /// <summary>
         /// Allows the screen to handle user input. Unlike Update, this method
@@ -268,21 +268,15 @@ namespace NetRumble
         /// </summary>
         public virtual void HandleInput(InputState input) { }
 
-
         /// <summary>
         /// Screen-specific update to gamer rich presence.
         /// </summary>
         public virtual void UpdatePresence() { }
 
-
         /// <summary>
         /// This is called when the screen should draw itself.
         /// </summary>
         public abstract void Draw(GameTime gameTime);
-
-
-
-
 
         /// <summary>
         /// Tells the screen to go away. Unlike ScreenManager.RemoveScreen, which
@@ -302,7 +296,5 @@ namespace NetRumble
                 isExiting = true;
             }
         }
-
-
     }
 }

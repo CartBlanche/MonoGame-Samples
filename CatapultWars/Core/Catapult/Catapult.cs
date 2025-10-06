@@ -163,17 +163,16 @@ namespace CatapultGame
             AnimationRunning = false;
             currentState = CatapultState.Idle;
             stallUpdateCycles = 0;
-
+			
+			// Load multiple animations form XML definition
+			XDocument doc = null;
             
-
-            // Load multiple animations form XML definition
-            XDocument doc = null;
             using (var stream = TitleContainer.OpenStream("Content/Textures/Catapults/AnimationsDef.xml"))
             {
                 doc = XDocument.Load(stream);
             }
-
-			XName name = XName.Get("Definition");
+				            
+            XName name = XName.Get("Definition");
             var definitions = doc.Document.Descendants(name);
 
             // Loop over all definitions in XML
@@ -432,7 +431,7 @@ namespace CatapultGame
             var aimAnimation = animations["Aim"];
             int frameToDisplay =
                 Convert.ToInt32(aimAnimation.FrameCount * ShotStrength);
-            aimAnimation.FrameIndex = frameToDisplay;
+            aimAnimation.FrameIndex = Math.Min(aimAnimation.FrameCount, frameToDisplay);
         }
 
         /// <summary>

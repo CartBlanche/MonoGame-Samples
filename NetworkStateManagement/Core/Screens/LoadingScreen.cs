@@ -31,7 +31,6 @@ namespace NetworkStateManagement
 	/// </summary>
 	class LoadingScreen : GameScreen
 	{
-
 		bool loadingIsSlow;
 		bool otherScreensAreGone;
 		GameScreen[] screensToLoad;
@@ -42,9 +41,6 @@ namespace NetworkStateManagement
 		IMessageDisplay messageDisplay;
 		GameTime loadStartTime;
 		TimeSpan loadAnimationTimer;
-
-
-
 
 		/// <summary>
 		/// The constructor is private: loading screens should
@@ -179,8 +175,7 @@ namespace NetworkStateManagement
 				string message = Resources.Loading;
 
 				// Center the text in the viewport.
-				Viewport viewport = ScreenManager.GraphicsDevice.Viewport;
-				Vector2 viewportSize = new Vector2(viewport.Width, viewport.Height);
+				Vector2 viewportSize = new Vector2(ScreenManager.BASE_BUFFER_WIDTH, ScreenManager.BASE_BUFFER_HEIGHT);
 				Vector2 textSize = font.MeasureString(message);
 				Vector2 textPosition = (viewportSize - textSize) / 2;
 
@@ -194,7 +189,7 @@ namespace NetworkStateManagement
 				message += new string('.', dotCount);
 
 				// Draw the text.
-				spriteBatch.Begin();
+				spriteBatch.Begin(SpriteSortMode.Deferred, null, null, null, null, null, ScreenManager.GlobalTransformation);
 				spriteBatch.DrawString(font, message, textPosition, color);
 				spriteBatch.End();
 			}

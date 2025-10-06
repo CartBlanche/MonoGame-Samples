@@ -336,6 +336,7 @@ namespace NetworkPrediction
                 tank.WriteNetworkPacket(packetWriter, gameTime);
 
                 gamer.SendData(packetWriter, SendDataOptions.InOrder);
+                packetWriter.Position = 0;
             }
         }
 

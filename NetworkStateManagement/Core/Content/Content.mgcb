@@ -1,0 +1,69 @@
+#----------------------------- Global Properties ----------------------------#
+
+/outputDir:bin/$(Platform)
+/intermediateDir:obj/$(Platform)
+/platform:DesktopGL
+/config:$(Configuration)
+/profile:HiDef
+/compress:False
+
+#-------------------------------- References --------------------------------#
+
+
+
+#---------------------------------- Content ---------------------------------#
+
+#begin blank.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/build:blank.png
+
+#begin background.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/build:background.png
+
+#begin chat_able.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/build:chat_able.png
+
+#begin chat_mute.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/build:chat_mute.png
+
+#begin chat_ready.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/build:chat_ready.png
+
+#begin chat_talking.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/build:chat_talking.png
+
+#begin cat.tga
+/importer:TextureImporter
+/processor:TextureProcessor
+/build:cat.tga
+
+#begin gradient.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/build:gradient.png
+
+#begin gamefont.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/build:gamefont.spritefont
+
+#begin menufont.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/build:menufont.spritefont
+
+#begin Game.ico
+/importer:TextureImporter
+/processor:TextureProcessor
+/build:Game.ico

@@ -142,7 +142,7 @@ namespace Microsoft.Xna.Framework.Net
             return length;
         }
 
-		public int ReceiveData(byte[] data, int offset, out NetworkGamer sender)
+        public int ReceiveData(byte[] data, int offset, out NetworkGamer sender)
         {
             if (data == null)
                 throw new ArgumentNullException(nameof(data));
@@ -161,21 +161,22 @@ namespace Microsoft.Xna.Framework.Net
             int length = Math.Min(data.Length - offset, packet.Data.Length);
             Array.Copy(packet.Data, 0, data, offset, length);
             return length;
-		}
+        }
 
-		/// <summary>
-		/// Receives data from this gamer using PacketReader.
-		/// </summary>
-		/// <param name="data">Array to receive the data into.</param>
-		/// <param name="sender">The gamer who sent the data.</param>
-		/// <returns>The number of bytes received.</returns>
-		public int ReceiveData(PacketReader reader, out NetworkGamer sender)
+        /// <summary>
+        /// Receives data from this gamer using PacketReader.
+        /// </summary>
+        /// <param name="data">Array to receive the data into.</param>
+        /// <param name="sender">The gamer who sent the data.</param>
+        /// <returns>The number of bytes received.</returns>
+        public int ReceiveData(PacketReader reader, out NetworkGamer sender)
         {
             // Ensure the session is valid
             if (session == null)
                 throw new InvalidOperationException("Network session is not initialized.");
 
-            reader = null;
+            if (reader == null)
+                throw new ArgumentNullException(nameof(reader));
             sender = null;
 
             // Check if data is available
@@ -184,7 +185,7 @@ namespace Microsoft.Xna.Framework.Net
 
             var packet = incomingPackets.Dequeue();
             sender = packet.Sender;
-            reader = new PacketReader(packet.Data);
+            reader.Reset(packet.Data);
             return packet.Data.Length;
         }
 
@@ -222,23 +223,6 @@ namespace Microsoft.Xna.Framework.Net
         }
 
         /// <summary>
-        /// Sends data using PacketWriter.
-        /// </summary>
-        /// <param name="data">The data to send.</param>
-        /// <param name="options">Send options.</param>
-        public void SendData(PacketWriter data, SendDataOptions options)
-        {
-            if (data == null)
-                throw new ArgumentNullException(nameof(data), "PacketWriter cannot be null.");
-
-            if (!Enum.IsDefined(typeof(SendDataOptions), options))
-                throw new ArgumentOutOfRangeException(nameof(options), "Invalid send data option.");
-
-            byte[] serializedData = data.GetData();
-            SendDataInternal(serializedData, options, session.AllGamers);
-        }
-
-        /// <summary>
         /// Sends data using PacketWriter to specific recipients.
         /// </summary>
         /// <param name="data">The data to send.</param>
@@ -249,11 +233,26 @@ namespace Microsoft.Xna.Framework.Net
             if (data == null)
                 throw new ArgumentNullException(nameof(data), "PacketWriter cannot be null.");
 
+            if (!Enum.IsDefined(typeof(SendDataOptions), options))
+                throw new ArgumentOutOfRangeException(nameof(options), "Invalid send data option.");
+
             if (recipients == null)
                 throw new ArgumentNullException(nameof(recipients));
 
             byte[] serializedData = data.GetData();
             SendDataInternal(serializedData, options, recipients);
+
+            data.Position = 0; // Reset position after sending
+        }
+
+        /// <summary>
+        /// Sends data using PacketWriter.
+        /// </summary>
+        /// <param name="data">The data to send.</param>
+        /// <param name="options">Send options.</param>
+        public void SendData(PacketWriter data, SendDataOptions options)
+        {
+            SendData(data, options, session.AllGamers);
         }
 
         /// <summary>
@@ -328,14 +327,45 @@ namespace Microsoft.Xna.Framework.Net
             switch (session.SessionType)
             {
                 case NetworkSessionType.SystemLink:
+                    // Ensure the sender (host) also processes its own outbound packet so
+                    // gameplay code (e.g. WorldSetup) follows the same receive path.
+                    bool includeSelf = false;
+
                     foreach (var recipient in recipients)
                     {
+                        if (recipient == this)
+                        {
+                            includeSelf = true;
+                            continue;
+                        }
                         session.SendDataToGamer(recipient, data, options);
+                    }
+
+                    // Loopback to self if included in recipients (typical when using session.AllGamers).
+                    if (includeSelf && IsLocal)
+                    {
+                        // Clone to avoid later mutation issues.
+                        var clone = new byte[data.Length];
+                        Buffer.BlockCopy(data, 0, clone, 0, data.Length);
+                        EnqueueIncomingPacket(clone, this);
                     }
                     break;
 
                 case NetworkSessionType.Local:
-                    // TODO: session.ProcessIncomingMessages(); // Simulate message delivery
+                    // Direct in-process delivery to every local gamer (split-screen scenario).
+                    // Reliable/in-order semantics are trivially satisfied.
+                    var delivered = new HashSet<NetworkGamer>();
+                    foreach (var recipient in recipients)
+                    {
+                        if (recipient == null || !recipient.IsLocal)
+                            continue;
+                        if (!delivered.Add(recipient))
+                            continue; // avoid duplicate enqueue if recipients enumerates same gamer twice
+
+                        var clone = new byte[data.Length];
+                        Buffer.BlockCopy(data, 0, clone, 0, data.Length);
+                        recipient.EnqueueIncomingPacket(clone, this);
+                    }
                     break;
 
                 case NetworkSessionType.PlayerMatch:

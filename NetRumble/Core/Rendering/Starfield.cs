@@ -17,8 +17,6 @@ namespace NetRumble
     /// </summary>
     public class Starfield : IDisposable
     {
-
-
         /// <summary>
         /// The number of stars in the starfield.
         /// </summary>
@@ -32,17 +30,17 @@ namespace NetRumble
         /// <summary>
         /// The colors for each layer of stars.
         /// </summary>
-        static readonly Color[] layerColors = new Color[numberOfLayers] 
-            { 
-                new Color(255, 255, 255, 255), 
-                new Color(255, 255, 255, 216), 
-                new Color(255, 255, 255, 192), 
-                new Color(255, 255, 255, 160), 
-                new Color(255, 255, 255, 128), 
-                new Color(255, 255, 255, 96), 
-                new Color(255, 255, 255, 64), 
-                new Color(255, 255, 255, 32) 
-            };
+        static readonly Color[] layerColors = new Color[numberOfLayers]
+        {
+            new Color(255, 255, 255, 255),
+            new Color(255, 255, 255, 216),
+            new Color(255, 255, 255, 192),
+            new Color(255, 255, 255, 160),
+            new Color(255, 255, 255, 128),
+            new Color(255, 255, 255, 96),
+            new Color(255, 255, 255, 64),
+            new Color(255, 255, 255, 32)
+        };
 
         /// <summary>
         /// The movement factor for each layer of stars, used in the parallax effect.
@@ -71,11 +69,6 @@ namespace NetRumble
         /// </summary>
         const int starSize = 2;
 
-
-
-
-
-
         /// <summary>
         /// The last position, used for the parallax effect.
         /// </summary>
@@ -90,11 +83,6 @@ namespace NetRumble
         /// The stars in the starfield.
         /// </summary>
         private Vector2[] stars;
-
-
-
-
-
 
         /// <summary>
         /// The graphics device used to render the starfield.
@@ -131,18 +119,13 @@ namespace NetRumble
         /// </summary>
         private EffectParameter cloudEffectPosition;
 
-
-
-
-
-
         /// <summary>
         /// Create a new Starfield object.
         /// </summary>
         /// <param name="position"></param>
         /// <param name="graphicsDevice">The graphics device used to render.</param>
         /// <param name="contentManager">The content manager for this object.</param>
-        public Starfield(Vector2 position, GraphicsDevice graphicsDevice, 
+        public Starfield(Vector2 position, GraphicsDevice graphicsDevice,
             ContentManager contentManager)
         {
             // safety-check the parameters, as they must be valid
@@ -164,7 +147,6 @@ namespace NetRumble
             Reset(position);
         }
 
-
         /// <summary>
         /// Load graphics data from the system.
         /// </summary>
@@ -174,10 +156,10 @@ namespace NetRumble
             cloudTexture = contentManager.Load<Texture2D>("Textures/clouds");
 
             // load the cloud effect
-            cloudEffect = contentManager.Load<Effect>("Effects/Clouds");
-			//cloudEffect = new CloudsEffect(graphicsDevice);
-            cloudEffectPosition = cloudEffect.Parameters["Position"];
-      
+            // TODO cloudEffect = contentManager.Load<Effect>("Effects/Clouds");
+            //cloudEffect = new CloudsEffect(graphicsDevice);
+            // TODO cloudEffectPosition = cloudEffect.Parameters["Position"];
+
             // create the star texture
             starTexture = new Texture2D(graphicsDevice, 1, 1, false, SurfaceFormat.Color);
             starTexture.SetData<Color>(new Color[] { Color.White });
@@ -185,7 +167,6 @@ namespace NetRumble
             // create the SpriteBatch object
             spriteBatch = new SpriteBatch(graphicsDevice);
         }
-
 
         /// <summary>
         /// Release graphics data.
@@ -209,7 +190,6 @@ namespace NetRumble
             }
         }
 
-
         /// <summary>
         /// Reset the stars and the parallax effect.
         /// </summary>
@@ -217,22 +197,17 @@ namespace NetRumble
         public void Reset(Vector2 position)
         {
             // recreate the stars
-            int viewportWidth = graphicsDevice.Viewport.Width;
-            int viewportHeight = graphicsDevice.Viewport.Height;
+            int viewportWidth = ScreenManager.BASE_BUFFER_WIDTH;
+            int viewportHeight = ScreenManager.BASE_BUFFER_HEIGHT;
             for (int i = 0; i < stars.Length; ++i)
             {
-                stars[i] = new Vector2(RandomMath.Random.Next(0, viewportWidth), 
+                stars[i] = new Vector2(RandomMath.Random.Next(0, viewportWidth),
                     RandomMath.Random.Next(0, viewportHeight));
             }
 
             // reset the position
             this.lastPosition = this.position = position;
         }
-
-
-
-
-
 
         /// <summary>
         /// Update and draw the starfield.
@@ -254,8 +229,7 @@ namespace NetRumble
             Vector2 movement = -1.0f * (position - lastPosition);
 
             // create a rectangle representing the screen dimensions of the starfield
-            Rectangle starfieldRectangle = new Rectangle(0, 0, 
-                graphicsDevice.Viewport.Width, graphicsDevice.Viewport.Height);
+            Rectangle starfieldRectangle = new Rectangle(0, 0, ScreenManager.BASE_BUFFER_WIDTH, ScreenManager.BASE_BUFFER_HEIGHT);
 
             // draw a background color for the starfield
             spriteBatch.Begin();
@@ -263,19 +237,20 @@ namespace NetRumble
             spriteBatch.End();
 
             // draw the cloud texture
-            cloudEffectPosition.SetValue(this.position);
-            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.NonPremultiplied, 
-                null, null, null, cloudEffect);
-            spriteBatch.Draw(cloudTexture, starfieldRectangle, null, Color.White, 0.0f,
-                Vector2.Zero, SpriteEffects.None, 1.0f);
-            spriteBatch.End();
+            if (cloudEffect != null)
+            {
+                cloudEffectPosition.SetValue(this.position);
+                spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.NonPremultiplied, null, null, null, cloudEffect);
+                spriteBatch.Draw(cloudTexture, starfieldRectangle, null, Color.White, 0.0f, Vector2.Zero, SpriteEffects.None, 1.0f);
+                spriteBatch.End();
+            }
 
             // if we've moved too far, then reset, as the stars will be moving too fast
-            if (movement.Length() > maximumMovementPerUpdate)
-            {
-                Reset(position);
-                return;
-            }
+                if (movement.Length() > maximumMovementPerUpdate)
+                {
+                    Reset(position);
+                    return;
+                }
 
             // draw all of the stars
             spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.NonPremultiplied);
@@ -289,41 +264,36 @@ namespace NetRumble
                 if (stars[i].X < starfieldRectangle.X)
                 {
                     stars[i].X = starfieldRectangle.X + starfieldRectangle.Width;
-                    stars[i].Y = starfieldRectangle.Y + 
+                    stars[i].Y = starfieldRectangle.Y +
                         RandomMath.Random.Next(starfieldRectangle.Height);
                 }
                 if (stars[i].X > (starfieldRectangle.X + starfieldRectangle.Width))
                 {
                     stars[i].X = starfieldRectangle.X;
-                    stars[i].Y = starfieldRectangle.Y + 
+                    stars[i].Y = starfieldRectangle.Y +
                         RandomMath.Random.Next(starfieldRectangle.Height);
                 }
                 if (stars[i].Y < starfieldRectangle.Y)
                 {
-                    stars[i].X = starfieldRectangle.X + 
+                    stars[i].X = starfieldRectangle.X +
                         RandomMath.Random.Next(starfieldRectangle.Width);
                     stars[i].Y = starfieldRectangle.Y + starfieldRectangle.Height;
                 }
-                if (stars[i].Y > 
-                    (starfieldRectangle.Y + graphicsDevice.Viewport.Height))
+                if (stars[i].Y >
+                    (starfieldRectangle.Y + ScreenManager.BASE_BUFFER_HEIGHT))
                 {
-                    stars[i].X = starfieldRectangle.X + 
+                    stars[i].X = starfieldRectangle.X +
                         RandomMath.Random.Next(starfieldRectangle.Width);
                     stars[i].Y = starfieldRectangle.Y;
                 }
 
                 // draw the star
-                spriteBatch.Draw(starTexture, 
+                spriteBatch.Draw(starTexture,
                     new Rectangle((int)stars[i].X, (int)stars[i].Y, starSize, starSize),
                     null, layerColors[depth]);
             }
             spriteBatch.End();
         }
-
-
-
-    
-
 
         /// <summary>
         /// Finalizes the Starfield object, calls Dispose(false)
@@ -332,7 +302,6 @@ namespace NetRumble
         {
             Dispose(false);
         }
-
 
         /// <summary>
         /// Disposes the Starfield object.
@@ -343,7 +312,6 @@ namespace NetRumble
             GC.SuppressFinalize(this);
         }
 
-        
         /// <summary>
         /// Disposes this object.
         /// </summary>
@@ -369,8 +337,5 @@ namespace NetRumble
                 }
             }
         }
-
-
     }
 }
-

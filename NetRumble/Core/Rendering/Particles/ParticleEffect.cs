@@ -21,8 +21,6 @@ namespace NetRumble
     /// </summary>
     public class ParticleEffect
     {
-
-
         /// <summary>
         /// The name of the particle effect.
         /// </summary>
@@ -31,19 +29,12 @@ namespace NetRumble
         /// <summary>
         /// The particle systems in this effect.
         /// </summary>
-        private Collection<ParticleSystem> particleSystems =
-            new Collection<ParticleSystem>();
-
-
-
-
-
+        private Collection<ParticleSystem> particleSystems = new Collection<ParticleSystem>();
 
         /// <summary>
         /// The position of the particle effect in the world.
         /// </summary>
         private Vector2 position;
-
 
         /// <summary>
         /// The gameplay object that the system is following, if any.
@@ -56,11 +47,6 @@ namespace NetRumble
             set { followObject = value; }
         }
 
-
-
-
-
-
         /// <summary>
         /// If true, the particle effect is currently active.
         /// </summary>
@@ -71,16 +57,10 @@ namespace NetRumble
             get { return active; }
         }
 
-
-
-
-
-
         /// <summary>
         /// Create a new particle effect.
         /// </summary>
         public ParticleEffect() { }
-
 
         /// <summary>
         /// Create a new particle effect that is a clone of another one.
@@ -103,7 +83,6 @@ namespace NetRumble
             return clone;
         }
 
-        
         /// <summary>
         /// Initialize the particle effect.
         /// </summary>
@@ -120,7 +99,6 @@ namespace NetRumble
             active = true;
         }
 
-
         /// <summary>
         /// Reset the particle effect.
         /// </summary>
@@ -135,11 +113,6 @@ namespace NetRumble
             // allow us to start updating and drawing
             active = true;
         }
-
-
-
-
-
 
         /// <summary>
         /// Update the particle effect.
@@ -173,11 +146,6 @@ namespace NetRumble
             }
         }
 
-
-
-
-
-
         /// <summary>
         /// Draw the particle effect.
         /// </summary>
@@ -197,11 +165,6 @@ namespace NetRumble
                 }
             }
         }
-
-
-
-
-
 
         /// <summary>
         /// Stop the particle effect.
@@ -224,11 +187,6 @@ namespace NetRumble
                 active = false;
             }
         }
-
-
-
-
-
 
         public string Name
         {
@@ -254,11 +212,6 @@ namespace NetRumble
             get { return particleSystems as Collection<ParticleSystem>; }
         }
 
-
-
-
-
-
         /// <summary>
         /// Create a new ParticleEffect object from the data in an XML file.
         /// </summary>
@@ -266,10 +219,13 @@ namespace NetRumble
         /// <returns>A new ParticleEffect object.</returns>
         public static ParticleEffect Load(string filepath)
         {
-            XmlSerializer serializer = new XmlSerializer(typeof(ParticleEffect));
-            return (ParticleEffect)serializer.Deserialize(File.OpenRead(filepath));
+            //XmlSerializer serializer = new XmlSerializer(typeof(ParticleEffect));
+            //return (ParticleEffect)serializer.Deserialize(File.OpenRead(filepath));
+            var serializer = new XmlSerializer(typeof(ParticleEffect));
+            using (var stream = TitleContainer.OpenStream(filepath))
+            {
+                return (ParticleEffect)serializer.Deserialize(stream);
+            }
         }
-
-
     }
 }

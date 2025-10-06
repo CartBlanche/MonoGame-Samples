@@ -19,38 +19,52 @@ using System.Text;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input.Touch;
-using Microsoft.Xna.Framework.Input;
-using GameStateManagement;
-
-
 
 namespace CatapultGame
 {
+	enum PlayerSide
+	{
+		Left,
+		Right
+	}
+
 	class Human : Player
 	{
 		// Drag variables to hold first and last gesture samples
 		GestureSample? prevSample;
 		GestureSample? firstSample;
-
+		public bool IsAI { get; protected set; }
 		public bool isDragging { get; set; }
 		// Constant for longest distance possible between drag points
 		readonly float maxDragDelta = (new Vector2 (480, 800)).Length ();
 		// Textures & position & spriteEffects used for Catapult
 		Texture2D arrow;
 		float arrowScale;
-		Vector2 catapultPosition = new Vector2 (140, 332);
+		Vector2 catapultPosition;
+		PlayerSide playerSide;
+		SpriteEffects spriteEffect = SpriteEffects.None;
 
-		public Human (Game game)
-            : base(game)
+		public Human (Game game) : base(game)
 		{
 		}
 
-		public Human (Game game, SpriteBatch screenSpriteBatch)
-            : base(game, screenSpriteBatch)
+		public Human (Game game, SpriteBatch screenSpriteBatch, PlayerSide playerSide) : base(game, screenSpriteBatch)
 		{
+			string idleTextureName = "";
+			this.playerSide = playerSide;
+
+			if (playerSide == PlayerSide.Left) {
+				catapultPosition = new Vector2 (140, 332);
+				idleTextureName = "Textures/Catapults/Blue/blueIdle/blueIdle";
+			} else {
+				catapultPosition = new Vector2 (600, 332);
+				spriteEffect = SpriteEffects.FlipHorizontally;
+				idleTextureName = "Textures/Catapults/Red/redIdle/redIdle";
+			}
+
 			Catapult = new Catapult (game, screenSpriteBatch,
-                                    "Textures/Catapults/Blue/blueIdle/blueIdle",
-                                    catapultPosition, SpriteEffects.None, false);
+						idleTextureName, catapultPosition, spriteEffect,
+						playerSide == PlayerSide.Left ? false : true);
 		}
 
 		public override void Initialize ()
@@ -112,9 +126,9 @@ namespace CatapultGame
 		public void HandleInput (InputState input)
 		{
 			// Process input only if in Human's turn
-			if (IsActive) {
+			if (IsActive && !IsAI) {
 
-				if (input.MouseGesture.HasFlag(MouseGestureType.FreeDrag)) {
+				if (input.MouseGesture.HasFlag (MouseGestureType.FreeDrag)) {
 					// If drag just began save the sample for future
 					// calculations and start Aim "animation"
 					if (null == firstMouseSample) {
@@ -132,7 +146,7 @@ namespace CatapultGame
 					float baseScale = 0.001f;
 					arrowScale = baseScale * delta.Length ();
 					isDragging = true;
-				} else if (input.MouseGesture.HasFlag(MouseGestureType.DragComplete)) {
+				} else if (input.MouseGesture.HasFlag (MouseGestureType.DragComplete)) {
 					// calc velocity based on delta between first and last
 					// gesture samples
 					if (null != firstMouseSample) {
@@ -159,13 +173,25 @@ namespace CatapultGame
 
 		public void DrawDragArrow (float arrowScale)
 		{
-			spriteBatch.Draw (arrow, catapultPosition + new Vector2 (0, -40),
-              null, Color.Blue, 0,
-              Vector2.Zero, new Vector2 (arrowScale, 0.1f), SpriteEffects.None, 0);
+			if (playerSide == PlayerSide.Left) {
+				spriteBatch.Draw (arrow, catapultPosition + new Vector2 (0, -40),
+						null, Color.Blue, 0,
+						Vector2.Zero, new Vector2 (arrowScale, 0.1f), spriteEffect, 0);
+			} else {
+				spriteBatch.Draw (arrow, catapultPosition + new Vector2 (-arrow.Width * arrowScale + 40, -40),
+						null, Color.Red, 0,
+						Vector2.Zero, new Vector2 (arrowScale, 0.1f), spriteEffect, 0);
+			}
 		}
 
+		// used to set the arrow scale from networking
+		internal float ArrowScale
+		{
+			get { return arrowScale; }
+			set { arrowScale = value; }
+		}
 		/// <summary>
-		/// Turn off dragging state and reset drag related variables
+		/// /// /// Turn off dragging state and reset drag related variables
 		/// </summary>
 		public void ResetDragState ()
 		{
