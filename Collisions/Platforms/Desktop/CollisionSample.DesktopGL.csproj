@@ -10,14 +10,21 @@
     <RootNamespace>CollisionSample</RootNamespace>
     <ApplicationManifest>..\..\Core\Content\app.manifest</ApplicationManifest>
     <ApplicationIcon>..\..\Core\Content\Game.ico</ApplicationIcon>
+    <MonoGamePlatform>DesktopGL</MonoGamePlatform>
+    <MonoGameBinariesPath Condition="'$(MonoGameBinariesPath)' == ''">$(MSBuildThisFileDirectory)..\..\..\MonoGame.3.8.4.2908-develop\MonoGame.Framework\</MonoGameBinariesPath>    
   </PropertyGroup>
-
   <ItemGroup>
-    <PackageReference Include="MonoGame.Framework.DesktopGL" Version="3.8.*" />
+    <None Include="$(MonoGameBinariesPath)$(MonoGamePlatform)\runtimes\win-x64\native\*">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <Reference Include="MonoGame.Framework">
+      <HintPath>$(MonoGameBinariesPath)$(MonoGamePlatform)\MonoGame.Framework.dll</HintPath>
+    </Reference>	
+  </ItemGroup>
+  <ItemGroup>
     <PackageReference Include="MonoGame.Content.Builder.Task" Version="3.8.*" />
     <ProjectReference Include="..\..\Core\CollisionSample.Core.csproj" />
   </ItemGroup>
-
   <ItemGroup>
     <Content Include="..\..\..\CompiledContent\Android\Content\Fonts\Arial.xnb" Link="Content\Arial.xnb">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

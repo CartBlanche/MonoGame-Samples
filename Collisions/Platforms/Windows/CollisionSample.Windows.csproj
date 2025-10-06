@@ -11,10 +11,18 @@
     <RootNamespace>CollisionSample</RootNamespace>
     <ApplicationManifest>..\..\Core\Content\app.manifest</ApplicationManifest>
     <ApplicationIcon>..\..\Core\Content\Game.ico</ApplicationIcon>
+    <MonoGamePlatform>WindowsDX</MonoGamePlatform>
+    <MonoGameBinariesPath Condition="'$(MonoGameBinariesPath)' == ''">$(MSBuildThisFileDirectory)..\..\..\MonoGame.3.8.4.2908-develop\MonoGame.Framework\</MonoGameBinariesPath>    
   </PropertyGroup>
-
   <ItemGroup>
-    <PackageReference Include="MonoGame.Framework.WindowsDX" Version="3.8.*" />
+    <None Include="$(MonoGameBinariesPath)$(MonoGamePlatform)\native\*">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <Reference Include="MonoGame.Framework">
+      <HintPath>$(MonoGameBinariesPath)$(MonoGamePlatform)\MonoGame.Framework.dll</HintPath>
+    </Reference>	
+  </ItemGroup>
+  <ItemGroup>
     <PackageReference Include="MonoGame.Content.Builder.Task" Version="3.8.*" />
     <ProjectReference Include="..\..\Core\CollisionSample.Core.csproj" />
   </ItemGroup>
