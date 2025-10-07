@@ -8,6 +8,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CollisionSample.Windows", "
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CollisionSample.DesktopGL", "Platforms\Desktop\CollisionSample.DesktopGL.csproj", "{AFFFC991-4956-45EF-8746-C1AE3FC7A247}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CollisionSample.DesktopVK", "Platforms\Vulkan\CollisionSample.DesktopVK.csproj", "{AFFFC991-4956-45EF-8746-C1AE3FC7A247}"
+EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CollisionSample.Android", "Platforms\Android\CollisionSample.Android.csproj", "{AFFFC991-4956-45EF-8746-C1AE3FC7A248}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CollisionSample.iOS", "Platforms\iOS\CollisionSample.iOS.csproj", "{AFFFC991-4956-45EF-8746-C1AE3FC7A249}"
