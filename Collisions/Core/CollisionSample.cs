@@ -166,7 +166,7 @@ namespace CollisionSample
             cameraTarget = cameraOrigins[0];
 
             paused = false;
-            
+
             base.Initialize();
         }
 
@@ -266,7 +266,7 @@ namespace CollisionSample
             // Animate primary ray (this is the only animated primary object)
             // It sweeps back and forth across the secondary objects
             const float sweepTime = 3.1f;
-            float rayDt = (-Math.Abs((t/sweepTime) % 2.0f - 1.0f) * NumSecondaryShapes + 0.5f) * gap;
+            float rayDt = (-Math.Abs((t / sweepTime) % 2.0f - 1.0f) * NumSecondaryShapes + 0.5f) * gap;
             primaryRay.Direction.X = (float)Math.Sin(xRate * (t + rayDt));
             primaryRay.Direction.Y = (float)Math.Sin(yRate * (t + rayDt));
             primaryRay.Direction.Z = (float)Math.Sin(zRate * (t + rayDt));
@@ -391,7 +391,7 @@ namespace CollisionSample
             }
 
             // Group cycle
-            if ( (currentKeyboardState.IsKeyDown(Keys.G) && previousKeyboardState.IsKeyUp(Keys.G)) ||
+            if ((currentKeyboardState.IsKeyDown(Keys.G) && previousKeyboardState.IsKeyUp(Keys.G)) ||
                  (currentGamePadState.IsButtonDown(Buttons.A) && previousGamePadState.IsButtonUp(Buttons.A)))
             {
                 currentCamera = (currentCamera + 1) % NumGroups;
@@ -494,7 +494,7 @@ namespace CollisionSample
             for (int g = 0; g < NumGroups; ++g)
             {
                 Vector3 origin = new Vector3(cameraOrigins[g].X - 20, cameraOrigins[g].Y - 10, cameraOrigins[g].Z - 20);
-                debugDraw.DrawWireGrid(Vector3.UnitX*40, Vector3.UnitZ*40, origin, 20, 20, Color.Black);
+                debugDraw.DrawWireGrid(Vector3.UnitX * 40, Vector3.UnitZ * 40, origin, 20, 20, Color.Black);
             }
 
             DrawPrimaryShapes();
@@ -543,7 +543,7 @@ namespace CollisionSample
             switch (cr)
             {
                 case ContainmentType.Contains:
-                    return Color.Red;
+                    return Color.Blue;
                 case ContainmentType.Disjoint:
                     return Color.LightGray;
                 case ContainmentType.Intersects:

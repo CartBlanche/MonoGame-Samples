@@ -8,7 +8,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CollisionSample.Windows", "
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CollisionSample.DesktopGL", "Platforms\Desktop\CollisionSample.DesktopGL.csproj", "{AFFFC991-4956-45EF-8746-C1AE3FC7A247}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CollisionSample.DesktopVK", "Platforms\Vulkan\CollisionSample.DesktopVK.csproj", "{AFFFC991-4956-45EF-8746-C1AE3FC7A247}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CollisionSample.DesktopVK", "Platforms\Vulkan\CollisionSample.DesktopVK.csproj", "{BB27C128-CEEB-46A7-A8BB-8E6A84EE73B0}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CollisionSample.Android", "Platforms\Android\CollisionSample.Android.csproj", "{AFFFC991-4956-45EF-8746-C1AE3FC7A248}"
 EndProject
@@ -32,6 +32,10 @@ Global
 		{AFFFC991-4956-45EF-8746-C1AE3FC7A247}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AFFFC991-4956-45EF-8746-C1AE3FC7A247}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AFFFC991-4956-45EF-8746-C1AE3FC7A247}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BB27C128-CEEB-46A7-A8BB-8E6A84EE73B0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BB27C128-CEEB-46A7-A8BB-8E6A84EE73B0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BB27C128-CEEB-46A7-A8BB-8E6A84EE73B0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BB27C128-CEEB-46A7-A8BB-8E6A84EE73B0}.Release|Any CPU.Build.0 = Release|Any CPU
 		{AFFFC991-4956-45EF-8746-C1AE3FC7A248}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{AFFFC991-4956-45EF-8746-C1AE3FC7A248}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AFFFC991-4956-45EF-8746-C1AE3FC7A248}.Release|Any CPU.ActiveCfg = Release|Any CPU

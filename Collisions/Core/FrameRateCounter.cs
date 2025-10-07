@@ -19,9 +19,9 @@ namespace CollisionSample
     /// </summary>
     public class FrameRateCounter : DrawableGameComponent
     {
-        ContentManager  content;
-        SpriteBatch     spriteBatch;
-        SpriteFont      spriteFont;
+        ContentManager content;
+        SpriteBatch spriteBatch;
+        SpriteFont spriteFont;
 
         int frameRate = 0;
         int frameCounter = 0;
@@ -70,6 +70,8 @@ namespace CollisionSample
             }
         }
 
+        const string legend = "\nBlue: Contains\nLightGray: Disjointed\nYellow: Intersects";
+
         /// <summary>
         /// Frame rate display occurs during the Draw method and uses the Font and Sprite batch to render text.
         /// </summary>
@@ -78,10 +80,11 @@ namespace CollisionSample
         {
             frameCounter++;
 
-            string fps = string.Format("fps: {0}", frameRate);
+            string fps = string.Format("FPS: {0}", frameRate);
+            fps += legend;
 
             spriteBatch.Begin();
-            spriteBatch.DrawString(spriteFont, fps, new Vector2(32, 32), Color.White);
+            spriteBatch.DrawString(spriteFont, fps, new Vector2(32, 20), Color.White);
             spriteBatch.End();
         }
     }
