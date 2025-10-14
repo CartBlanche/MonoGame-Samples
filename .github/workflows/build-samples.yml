@@ -1,0 +1,114 @@
+name: Build Samples
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main, develop ]
+  schedule:
+    - cron: "0 3 * * 1"   # Weekly (Mon) build to keep artifacts fresh
+
+permissions:
+  contents: read
+
+env:
+  DOTNET_NOLOGO: true
+  CONFIGURATION: Release
+
+jobs:
+  discover:
+    runs-on: ubuntu-latest
+    outputs:
+      projects: ${{ steps.collect.outputs.projects }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Collect Desktop platform project files
+        id: collect
+        shell: bash
+        run: |
+          set -e
+          # Find all Desktop platform csproj files: **/Platforms/Desktop/*.csproj
+          mapfile -t desktop_projects < <(find . -type f -path "*/Platforms/Desktop/*.csproj" | sort)
+          if [ ${#desktop_projects[@]} -eq 0 ]; then
+            echo "No Desktop platform projects found."
+            echo "projects=[]" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          echo "Discovered Desktop projects:"
+          printf '  %s\n' "${desktop_projects[@]}"
+          # Build JSON array
+          json=$(printf '%s\n' "${desktop_projects[@]}" | jq -R . | jq -s .)
+          echo "projects=$json" >> "$GITHUB_OUTPUT"
+
+  build:
+    needs: discover
+    if: ${{ needs.discover.outputs.projects != '[]' && needs.discover.outputs.projects != '' }}
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        project: ${{ fromJson(needs.discover.outputs.projects) }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup .NET 8
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: |
+            8.0.x
+
+      - name: Restore (solution-wide)
+        run: dotnet restore
+
+      - name: Publish sample
+        id: publish
+        shell: bash
+        run: |
+          set -e
+          PROJ="${{ matrix.project }}"
+          NAME=$(basename "$PROJ" .csproj)
+          OUTDIR="publish/$NAME"
+          echo "Publishing $PROJ -> $OUTDIR"
+          dotnet publish "$PROJ" -c "$CONFIGURATION" -o "$OUTDIR"
+          echo "Published files:"
+          find "$OUTDIR" -maxdepth 2 -type f -printf '  %P\n'
+          echo "outdir=$OUTDIR" >> "$GITHUB_OUTPUT"
+          echo "name=$NAME" >> "$GITHUB_OUTPUT"
+
+      - name: Zip artifact
+        id: zip
+        shell: bash
+        run: |
+          set -e
+          NAME="${{ steps.publish.outputs.name }}"
+          OUTDIR="${{ steps.publish.outputs.outdir }}"
+          ZIP="artifact-${NAME}.zip"
+          (cd "$OUTDIR" && zip -rq "../../$ZIP" .)
+          echo "zip=$ZIP" >> "$GITHUB_OUTPUT"
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: sample-${{ steps.publish.outputs.name }}
+          path: artifact-${{ steps.zip.outputs.zip || steps.publish.outputs.name }}.zip
+          if-no-files-found: error
+          retention-days: 14
+
+  summary:
+    needs: [discover, build]
+    if: always()
+    runs-on: ubuntu-latest
+    steps:
+      - name: Build Summary
+        run: |
+          echo "Desktop sample build summary:" >> $GITHUB_STEP_SUMMARY
+          if [ "${{ needs.discover.outputs.projects }}" = "[]" ] || [ -z "${{ needs.discover.outputs.projects }}" ]; then
+            echo "- No Desktop platform projects were found." >> $GITHUB_STEP_SUMMARY
+          else
+            echo "- Projects built: ${{ needs.discover.outputs.projects }}" >> $GITHUB_STEP_SUMMARY
+            echo "- Individual zipped artifacts are available under the workflow run artifacts section." >> $GITHUB_STEP_SUMMARY
