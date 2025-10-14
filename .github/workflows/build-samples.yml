@@ -18,7 +18,7 @@ env:
 
 jobs:
   discover:
-    runs-on: ubuntu-latest
+    runs-on: macos-latest
     outputs:
       projects: ${{ steps.collect.outputs.projects }}
     steps:
@@ -39,14 +39,14 @@ jobs:
           fi
           echo "Discovered Desktop projects:"
           printf '  %s\n' "${desktop_projects[@]}"
-          # Build JSON array
-          json=$(printf '%s\n' "${desktop_projects[@]}" | jq -R . | jq -s .)
-          echo "projects=$json" >> "$GITHUB_OUTPUT"
+          # Build compact single-line JSON array and write to output (avoid multi-line output command errors)
+          json=$(printf '%s\n' "${desktop_projects[@]}" | jq -R . | jq -s -c .)
+          echo "projects=${json}" >> "$GITHUB_OUTPUT"
 
   build:
     needs: discover
     if: ${{ needs.discover.outputs.projects != '[]' && needs.discover.outputs.projects != '' }}
-    runs-on: ubuntu-latest
+    runs-on: macos-latest
     strategy:
       fail-fast: false
       matrix:
@@ -95,14 +95,15 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: sample-${{ steps.publish.outputs.name }}
-          path: artifact-${{ steps.zip.outputs.zip || steps.publish.outputs.name }}.zip
+          # Use the known artifact file name we just created
+          path: artifact-${{ steps.publish.outputs.name }}.zip
           if-no-files-found: error
           retention-days: 14
 
   summary:
     needs: [discover, build]
     if: always()
-    runs-on: ubuntu-latest
+    runs-on: macos-latest
     steps:
       - name: Build Summary
         run: |
