@@ -30,18 +30,26 @@ jobs:
         shell: bash
         run: |
           set -e
-          # Find all Desktop platform csproj files: **/Platforms/Desktop/*.csproj
-          mapfile -t desktop_projects < <(find . -type f -path "*/Platforms/Desktop/*.csproj" | sort)
-          if [ ${#desktop_projects[@]} -eq 0 ]; then
+          # Ensure jq is available (macOS image usually has it, fallback to brew)
+          if ! command -v jq >/dev/null 2>&1; then
+            echo "jq not found, installing via Homebrew";
+            brew update >/dev/null 2>&1 || true
+            brew install jq >/dev/null 2>&1
+          fi
+          # Find all Desktop platform csproj files: **/Platforms/Desktop/*.csproj (portable without mapfile)
+          desktop_projects_tmp=$(mktemp)
+          find . -type f -path '*/Platforms/Desktop/*.csproj' | sort > "$desktop_projects_tmp"
+          if [ ! -s "$desktop_projects_tmp" ]; then
             echo "No Desktop platform projects found."
             echo "projects=[]" >> "$GITHUB_OUTPUT"
             exit 0
           fi
-          echo "Discovered Desktop projects:"
-          printf '  %s\n' "${desktop_projects[@]}"
-          # Build compact single-line JSON array and write to output (avoid multi-line output command errors)
-          json=$(printf '%s\n' "${desktop_projects[@]}" | jq -R . | jq -s -c .)
-          echo "projects=${json}" >> "$GITHUB_OUTPUT"
+          echo "Discovered Desktop projects:";
+          sed 's/^/  /' "$desktop_projects_tmp"
+          # Build compact single-line JSON array and write to output
+          json=$(jq -R . < "$desktop_projects_tmp" | jq -s -c .)
+          echo "projects=$json" >> "$GITHUB_OUTPUT"
+          rm -f "$desktop_projects_tmp"
 
   build:
     needs: discover
@@ -76,7 +84,8 @@ jobs:
           echo "Publishing $PROJ -> $OUTDIR"
           dotnet publish "$PROJ" -c "$CONFIGURATION" -o "$OUTDIR"
           echo "Published files:"
-          find "$OUTDIR" -maxdepth 2 -type f -printf '  %P\n'
+          # Portable listing (macOS BSD find lacks -printf)
+          find "$OUTDIR" -type f | sed "s|$OUTDIR/|  |"
           echo "outdir=$OUTDIR" >> "$GITHUB_OUTPUT"
           echo "name=$NAME" >> "$GITHUB_OUTPUT"
 
