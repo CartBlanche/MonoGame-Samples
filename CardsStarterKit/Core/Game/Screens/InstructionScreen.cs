@@ -60,7 +60,7 @@ namespace Blackjack
         {
             if (!isExit)
             {
-                if (UIUtilty.IsMobile)
+                if (UIUtility.IsMobile)
                 {
                     if (ScreenManager.InputState.Gestures.Count > 0 &&
                         ScreenManager.InputState.Gestures[0].GestureType == GestureType.Tap)

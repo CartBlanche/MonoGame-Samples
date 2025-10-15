@@ -161,7 +161,7 @@ namespace CardsFramework
             // Load all card assets
             for (int cardIndex = 0; cardIndex < 54; cardIndex++)
             {
-                assetName = UIUtilty.GetCardAssetName(fullDeck[cardIndex]);
+                assetName = UIUtility.GetCardAssetName(fullDeck[cardIndex]);
                 LoadUITexture("Cards", assetName);
             }
             // Load card back picture

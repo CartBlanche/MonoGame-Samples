@@ -49,7 +49,7 @@ namespace CardsFramework
         /// <param name="cardGame">The associated card game.</param>
         /// <param name="currentFrame">The texture serving as the current frame
         /// to display as the component.</param>
-        public AnimatedGameComponent(CardsGame cardGame, Texture2D? currentFrame, SpriteBatch sharedSpriteBatch, Matrix? globalTransformation = null)
+        public AnimatedGameComponent(CardsGame cardGame, Texture2D currentFrame, SpriteBatch sharedSpriteBatch, Matrix? globalTransformation = null)
             : base(cardGame.Game)
         {
             if (sharedSpriteBatch == null)

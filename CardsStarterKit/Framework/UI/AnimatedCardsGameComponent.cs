@@ -30,7 +30,7 @@ namespace CardsFramework
         /// </summary>
         /// <param name="card">The card associated with the animation component.</param>
         /// <param name="cardGame">The associated game.</param>
-        public AnimatedCardsGameComponent(TraditionalCard card, CardsGame cardGame, SpriteBatch? sharedSpriteBatch = null, Matrix? globalTransformation = null)
+        public AnimatedCardsGameComponent(TraditionalCard card, CardsGame cardGame, SpriteBatch sharedSpriteBatch = null, Matrix? globalTransformation = null)
             : base(cardGame, null, sharedSpriteBatch, globalTransformation)
         {
             Card = card;
@@ -48,7 +48,7 @@ namespace CardsFramework
 
 
             CurrentFrame = IsFaceDown ? CardGame.cardsAssets["CardBack_" + CardGame.Theme] :
-                CardGame.cardsAssets[UIUtilty.GetCardAssetName(Card)];
+                CardGame.cardsAssets[UIUtility.GetCardAssetName(Card)];
         }
 
         /// <summary>

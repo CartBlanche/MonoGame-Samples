@@ -84,7 +84,7 @@ namespace GameStateManagement
                 OnCancel(player);
             }
 
-            if (UIUtilty.IsDesktop)
+            if (UIUtility.IsDesktop)
             {
                 // Handle keyboard input
                 if (input.IsMenuUp(ControllingPlayer))
@@ -136,7 +136,7 @@ namespace GameStateManagement
                     }
                 }
             }
-            else if (UIUtilty.IsMobile)
+            else if (UIUtility.IsMobile)
             {
                 // Handle touch input
                 foreach (GestureSample gesture in input.Gestures)

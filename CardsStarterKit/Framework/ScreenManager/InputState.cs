@@ -92,11 +92,11 @@ namespace CardsFramework
             GamePadWasConnected = new bool[MaxInputs];
 
             // Configure platform-specific input options
-            if (UIUtilty.IsMobile)
+            if (UIUtility.IsMobile)
             {
                 TouchPanel.EnabledGestures = GestureType.Tap;
             }
-            else if (UIUtilty.IsDesktop)
+            else if (UIUtility.IsDesktop)
             {
                 // No desktop-specific initialization needed
             }
