@@ -1,30 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk">
-
   <PropertyGroup>
     <OutputType>Exe</OutputType>
     <TargetFramework>net8.0</TargetFramework>
-    <RollForward>Major</RollForward>
-    <PublishReadyToRun>false</PublishReadyToRun>
-    <TieredCompilation>false</TieredCompilation>
-    <AssemblyName>Collision</AssemblyName>
     <RootNamespace>CollisionSample</RootNamespace>
-    <ApplicationManifest>..\..\Core\Content\app.manifest</ApplicationManifest>
-    <ApplicationIcon>..\..\Core\Content\Game.ico</ApplicationIcon>
+    <AssemblyName>Collision</AssemblyName>
+    <AssemblyTitle>Collision</AssemblyTitle>
     <MonoGamePlatform>DesktopGL</MonoGamePlatform>
-    <MonoGameBinariesPath Condition="'$(MonoGameBinariesPath)' == ''">$(MSBuildThisFileDirectory)..\..\..\MonoGame.3.8.4.2908-develop\MonoGame.Framework\</MonoGameBinariesPath>    
+    <Description>DesktopGL platform for Collision Sample.</Description>
+    <Authors>CartBlanche</Authors>
+    <Company>MonoGame Foundation</Company>
+    <GenerateAssemblyInfo>true</GenerateAssemblyInfo>
   </PropertyGroup>
+
   <ItemGroup>
-    <None Include="$(MonoGameBinariesPath)$(MonoGamePlatform)\runtimes\win-x64\native\*">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <Reference Include="MonoGame.Framework">
-      <HintPath>$(MonoGameBinariesPath)$(MonoGamePlatform)\MonoGame.Framework.dll</HintPath>
-    </Reference>	
-  </ItemGroup>
-  <ItemGroup>
-    <PackageReference Include="MonoGame.Content.Builder.Task" Version="3.8.*" />
     <ProjectReference Include="..\..\Core\CollisionSample.Core.csproj" />
+    <PackageReference Include="MonoGame.Framework.DesktopGL" Version="3.8.*" />
+    <PackageReference Include="MonoGame.Content.Builder.Task" Version="3.8.*" />
   </ItemGroup>
+
   <ItemGroup>
     <Content Include="..\..\..\CompiledContent\Android\Content\Fonts\Arial.xnb" Link="Content\Arial.xnb">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

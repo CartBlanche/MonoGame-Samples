@@ -4,14 +4,11 @@
     <TargetFramework>net8.0</TargetFramework>
     <AssemblyName>CollisionSample.Core</AssemblyName>
     <RootNamespace>CollisionSample.Core</RootNamespace>
-    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
-    <MonoGamePlatform>Native</MonoGamePlatform>
-    <MonoGameBinariesPath Condition="'$(MonoGameBinariesPath)' == ''">$(MSBuildThisFileDirectory)..\..\MonoGame.3.8.4.2908-develop\MonoGame.Framework\</MonoGameBinariesPath>    
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>  
   </PropertyGroup>
+
   <ItemGroup>
-    <Reference Include="MonoGame.Framework">
-      <HintPath>$(MonoGameBinariesPath)$(MonoGamePlatform)\MonoGame.Framework.dll</HintPath>
-    </Reference>	
+    <PackageReference Include="MonoGame.Framework.DesktopGL" Version="3.8.*" PrivateAssets="all"/>
   </ItemGroup>
 
 </Project>
