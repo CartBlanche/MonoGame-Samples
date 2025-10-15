@@ -131,7 +131,8 @@ namespace CollisionSample
                 foreach (EffectPass pass in basicEffect.CurrentTechnique.Passes)
                 {
                     pass.Apply();
-                    device.DrawIndexedPrimitives(PrimitiveType.LineList, 0, 0, VertexCount, 0, IndexCount / 2);
+                    // Updated to new overload: DrawIndexedPrimitives(PrimitiveType primitiveType, int baseVertex, int startIndex, int primitiveCount)
+                    device.DrawIndexedPrimitives(PrimitiveType.LineList, 0, 0, IndexCount / 2);
                 }
 
                 device.SetVertexBuffer(null);
