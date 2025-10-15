@@ -114,24 +114,12 @@ jobs:
           find "$OUTDIR" -type f | sed "s|$OUTDIR/|  |"
           echo "outdir=$OUTDIR" >> "$GITHUB_OUTPUT"
           echo "name=$NAME" >> "$GITHUB_OUTPUT"
-
-      - name: Zip artifact
-        id: zip
-        shell: bash
-        run: |
-          set -e
-          NAME="${{ steps.publish.outputs.name }}"
-          OUTDIR="${{ steps.publish.outputs.outdir }}"
-          ZIP="artifact-${NAME}.zip"
-          (cd "$OUTDIR" && zip -rq "../../$ZIP" .)
-          echo "zip=$ZIP" >> "$GITHUB_OUTPUT"
-
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
           name: sample-${{ steps.publish.outputs.name }}
-          # Use the known artifact file name we just created
-          path: artifact-${{ steps.publish.outputs.name }}.zip
+          # Upload the published output directory directly (no nested zip)
+          path: ${{ steps.publish.outputs.outdir }}
           if-no-files-found: error
           retention-days: 14
 
