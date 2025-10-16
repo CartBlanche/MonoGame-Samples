@@ -117,7 +117,7 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
-          name: sample-${{ steps.publish.outputs.name }}
+          name: ${{ steps.publish.outputs.name }}
           # Upload the published output directory directly (no nested zip)
           path: ${{ steps.publish.outputs.outdir }}
           if-no-files-found: error
