@@ -1,0 +1,120 @@
+{
+  "name": "ExampleScene",
+  "description": "A simple example scene showing JSON scene format",
+  "entities": [
+    {
+      "name": "Player",
+      "tag": "Player",
+      "layer": 0,
+      "components": [
+        {
+          "type": "Transform3D",
+          "position": [0, 1.8, 0],
+          "rotation": [0, 0, 0, 1],
+          "scale": [1, 1, 1]
+        },
+        {
+          "type": "PlayerController",
+          "moveSpeed": 10.0,
+          "jumpForce": 9.0
+        },
+        {
+          "type": "CharacterController",
+          "capsuleHeight": 1.8,
+          "capsuleRadius": 0.4
+        },
+        {
+          "type": "CameraController",
+          "lookSensitivity": 1.0,
+          "fieldOfView": 60
+        },
+        {
+          "type": "Health",
+          "maxHealth": 100
+        }
+      ]
+    },
+    {
+      "name": "Enemy_Turret_01",
+      "tag": "Enemy",
+      "layer": 1,
+      "components": [
+        {
+          "type": "Transform3D",
+          "position": [10, 0.5, 10],
+          "rotation": [0, 0, 0, 1],
+          "scale": [1, 1, 1]
+        },
+        {
+          "type": "EnemyController",
+          "enemyType": "Turret",
+          "detectionRange": 20.0,
+          "attackRange": 15.0
+        },
+        {
+          "type": "Health",
+          "maxHealth": 50
+        }
+      ]
+    },
+    {
+      "name": "Floor",
+      "tag": "Ground",
+      "layer": 2,
+      "components": [
+        {
+          "type": "Transform3D",
+          "position": [0, 0, 0],
+          "rotation": [0, 0, 0, 1],
+          "scale": [50, 0.1, 50]
+        },
+        {
+          "type": "StaticCollider",
+          "shape": "box"
+        },
+        {
+          "type": "MeshRenderer",
+          "mesh": "cube",
+          "color": [0.5, 0.5, 0.5, 1.0]
+        }
+      ]
+    },
+    {
+      "name": "SpawnPoint_Enemy_01",
+      "tag": "EnemySpawn",
+      "layer": 0,
+      "components": [
+        {
+          "type": "Transform3D",
+          "position": [5, 0, 5],
+          "rotation": [0, 0, 0, 1],
+          "scale": [1, 1, 1]
+        }
+      ]
+    },
+    {
+      "name": "Objective_KillEnemies",
+      "tag": "Objective",
+      "layer": 0,
+      "components": [
+        {
+          "type": "Transform3D",
+          "position": [0, 0, 0],
+          "rotation": [0, 0, 0, 1],
+          "scale": [1, 1, 1]
+        },
+        {
+          "type": "ObjectiveKillEnemies",
+          "targetCount": 5,
+          "description": "Eliminate all enemies"
+        }
+      ]
+    }
+  ],
+  "metadata": {
+    "author": "MonoGame FPS",
+    "version": "1.0",
+    "created": "2025-10-27",
+    "notes": "Example scene demonstrating the JSON format. Components are registered in the SceneManager's component factory."
+  }
+}

@@ -1,0 +1,31 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net8.0</TargetFramework>
+    <LangVersion>latest</LangVersion>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <PublishReadyToRun>false</PublishReadyToRun>
+    <TieredCompilation>false</TieredCompilation>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Shooter.Core\Shooter.Core.csproj" />
+    <ProjectReference Include="..\..\Shooter.Physics\Shooter.Physics.csproj" />
+    <ProjectReference Include="..\..\Shooter.Graphics\Shooter.Graphics.csproj" />
+    <ProjectReference Include="..\..\Shooter.Gameplay\Shooter.Gameplay.csproj" />
+    <ProjectReference Include="..\..\Shooter.UI\Shooter.UI.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="MonoGame.Framework.DesktopGL" Version="3.8.2.1105" />
+    <PackageReference Include="MonoGame.Content.Builder.Task" Version="3.8.2.1105" />
+  </ItemGroup>
+
+  <!-- Content pipeline disabled until Phase 1 - no assets yet -->
+  <!-- <ItemGroup>
+    <MonoGameContentReference Include="Content\Content.mgcb" />
+  </ItemGroup> -->
+
+</Project>
