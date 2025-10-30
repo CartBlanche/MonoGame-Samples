@@ -1,0 +1,38 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net9.0-windows</TargetFramework>
+    <OutputType>WinExe</OutputType>
+    <RootNamespace>Shooter.Windows</RootNamespace>
+    <AssemblyName>Shooter</AssemblyName>
+    <AssemblyTitle>Shooter - Windows</AssemblyTitle>
+    <AssemblyDescription>MonoGame Port of Unity's Shooter to Windows</AssemblyDescription>
+    <AssemblyCompany>MonoGame Samples</AssemblyCompany>
+    <AssemblyProduct>Shooter</AssemblyProduct>
+    <AssemblyCopyright>Dominique Louis</AssemblyCopyright>
+    <AssemblyVersion>1.0.0.0</AssemblyVersion>
+    <FileVersion>1.0.0.0</FileVersion>
+    <UseWindowsForms>true</UseWindowsForms>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <MonoGamePlatform>Windows</MonoGamePlatform>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Shooter.Core\Shooter.Core.csproj" />
+    <ProjectReference Include="..\..\Shooter.Physics\Shooter.Physics.csproj" />
+    <ProjectReference Include="..\..\Shooter.Graphics\Shooter.Graphics.csproj" />
+    <ProjectReference Include="..\..\Shooter.Gameplay\Shooter.Gameplay.csproj" />
+    <ProjectReference Include="..\..\Shooter.UI\Shooter.UI.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="MonoGame.Framework.WindowsDX" Version="3.8.*" />
+    <PackageReference Include="MonoGame.Content.Builder.Task" Version="3.8.*" />
+  </ItemGroup>
+
+  <!-- Content pipeline disabled until Phase 1 - no assets yet -->
+  <!-- <ItemGroup>
+    <MonoGameContentReference Include="Content\Content.mgcb" />
+  </ItemGroup> -->
+
+</Project>

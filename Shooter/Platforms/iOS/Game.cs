@@ -1,12 +1,14 @@
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using Shooter.Core.Plugins.Graphics;
-using Shooter.Core.Plugins.Physics;
-using Shooter.Core.Scenes;
 using Shooter.Core.Services;
+using Shooter.Core.Plugins.Physics;
+using Shooter.Core.Plugins.Graphics;
 using Shooter.Graphics;
 using Shooter.Physics;
+using Shooter.Gameplay.Systems;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+
+using Shooter.Core.Scenes;
 using System;
 using System.Linq;
 
@@ -328,10 +330,6 @@ public class ShooterGame : Game
     /// <param name="gameTime">Provides timing information</param>
     protected override void Update(GameTime gameTime)
     {
-        // Exit on Escape (temporary - will be replaced with proper menu)
-        if (Keyboard.GetState().IsKeyDown(Keys.Escape))
-            Exit();
-
         // Update core services
         var timeService = ServiceLocator.Get<ITimeService>();
         var inputService = ServiceLocator.Get<IInputService>();
