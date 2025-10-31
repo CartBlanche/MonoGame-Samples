@@ -174,14 +174,15 @@ namespace PeerToPeer
 		/// <summary>
 		/// Joins an existing network session.
 		/// </summary>
-		void JoinSession(NetworkSessionType type)
+		async void JoinSession(NetworkSessionType type)
 		{
 			DrawMessage($"Joining {type} session...");
 
 			try
 			{
-				// Search for sessions.
-				using (AvailableNetworkSessionCollection availableSessions = NetworkSession.Find(type, maxLocalGamers, null))
+				// Search for sessions asynchronously with cancellation support
+				var cancellationTokenSource = new System.Threading.CancellationTokenSource(TimeSpan.FromSeconds(5)); // 5 second timeout
+				using (AvailableNetworkSessionCollection availableSessions = await NetworkSession.FindAsync(type, maxLocalGamers, null, cancellationTokenSource.Token))
 				{
 					if (availableSessions.Count == 0)
 					{
@@ -190,10 +191,14 @@ namespace PeerToPeer
 					}
 
 					// Join the first session we found.
-					networkSession = NetworkSession.Join(availableSessions[0]);
+					networkSession = await NetworkSession.JoinAsync(availableSessions[0], cancellationTokenSource.Token);
 
 					HookSessionEvents();
 				}
+			}
+			catch (System.OperationCanceledException)
+			{
+				errorMessage = "Session discovery timed out after 5 seconds.";
 			}
 			catch (Exception e)
 			{

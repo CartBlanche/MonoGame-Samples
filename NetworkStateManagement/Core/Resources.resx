@@ -245,6 +245,6 @@ B button, Esc = cancel</value>
     <value>Single Player</value>
   </data>
   <data name="SystemLink" xml:space="preserve">
-    <value>System Link</value>
+    <value>LAN Session</value>
   </data>
 </root>

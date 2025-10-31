@@ -292,7 +292,8 @@ namespace Microsoft.Xna.Framework.Net
                     // SystemLink: start UDP listener and broadcast session
                     session = new NetworkSession(sessionType, maxGamers, privateGamerSlots, true);
                     session.sessionState = NetworkSessionState.Lobby;
-                    _ = SystemLinkSessionManager.AdvertiseSessionAsync(session, cancellationToken); // Fire-and-forget
+                    // Use the session's own cancellation token, not the CreateAsync parameter
+                    _ = SystemLinkSessionManager.AdvertiseSessionAsync(session, session.cancellationTokenSource.Token); // Fire-and-forget
                     break;
                 default:
                     // Not implemented
