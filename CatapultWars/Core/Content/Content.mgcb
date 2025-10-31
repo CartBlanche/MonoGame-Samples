@@ -184,5 +184,10 @@
 /processor:TextureProcessor
 /build:Textures/Catapults/Red/redPullback/redCatapult_Pullback.png
 
+#begin gradient.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/build:gradient.png
+
 #begin Textures/Catapults/AnimationsDef.xml
 /copy:Textures/Catapults/AnimationsDef.xml
