@@ -119,17 +119,39 @@ namespace Warlords
                         // If no card clicked, check for zone clicks to play selected card
                         if (!cardClicked && selectedCard != null)
                         {
-                            // Check Your Battlefield
-                            if (zoneRects[0].Contains(mousePos))
+                            // Handle different card types
+                            if (selectedCard is EventCard eventCard)
                             {
-                                game.PlayCardGeneric(selectedCard, game.Field.PlayerBattlefield);
+                                // Events play immediately
+                                game.PlayEvent(eventCard);
                                 selectedCard = null;
                             }
-                            // Check Your Home Base
-                            else if (zoneRects[1].Contains(mousePos))
+                            else if (selectedCard is ItemCard itemCard)
                             {
-                                game.PlayCardGeneric(selectedCard, game.Field.PlayerHomeBase);
-                                selectedCard = null;
+                                // Items need to be equipped to a character
+                                // Check if clicking on a character in player's zones
+                                CharacterCard targetCharacter = GetCharacterAtPosition(mousePos);
+                                if (targetCharacter != null)
+                                {
+                                    game.PlayItem(itemCard, targetCharacter);
+                                    selectedCard = null;
+                                }
+                            }
+                            else
+                            {
+                                // Character or Terrain cards - play to zones
+                                // Check Your Battlefield
+                                if (zoneRects[0].Contains(mousePos))
+                                {
+                                    game.PlayCardGeneric(selectedCard, game.Field.PlayerBattlefield);
+                                    selectedCard = null;
+                                }
+                                // Check Your Home Base
+                                else if (zoneRects[1].Contains(mousePos))
+                                {
+                                    game.PlayCardGeneric(selectedCard, game.Field.PlayerHomeBase);
+                                    selectedCard = null;
+                                }
                             }
                         }
                     }
@@ -145,6 +167,47 @@ namespace Warlords
             }
             
             base.HandleInput(input);
+        }
+        
+        /// <summary>
+        /// Get character card at mouse position (in player's zones only)
+        /// </summary>
+        private CharacterCard GetCharacterAtPosition(Point mousePos)
+        {
+            int screenWidth = ScreenManager.GraphicsDevice.Viewport.Width;
+            int screenHeight = ScreenManager.GraphicsDevice.Viewport.Height;
+            
+            // Zone dimensions
+            int zoneHeight = (screenHeight - 50 - 140) / 4;
+            
+            // Check player zones (YOUR BATTLEFIELD and YOUR HOME BASE)
+            GameZone[] playerZones = { game.Field.PlayerBattlefield, game.Field.PlayerHomeBase };
+            int[] zoneIndices = { 2, 3 }; // Zone 2 and 3 are player zones
+            
+            for (int i = 0; i < playerZones.Length; i++)
+            {
+                var zone = playerZones[i];
+                int yPos = 50 + (zoneIndices[i] * zoneHeight);
+                
+                int cardX = 200;
+                int cardY = yPos + 10;
+                int cardWidth = 100;
+                int cardHeight = zoneHeight - 20;
+                int cardSpacing = 8;
+                
+                for (int j = 0; j < zone.Characters.Count; j++)
+                {
+                    int x = cardX + (j * (cardWidth + cardSpacing));
+                    Rectangle cardRect = new Rectangle(x, cardY, cardWidth, cardHeight);
+                    
+                    if (cardRect.Contains(mousePos))
+                    {
+                        return zone.Characters[j];
+                    }
+                }
+            }
+            
+            return null;
         }
         
         public override void Update(GameTime gameTime, bool otherScreenHasFocus, bool coveredByOtherScreen)
@@ -263,6 +326,28 @@ namespace Warlords
                     Vector2 terrainPos = new Vector2(15, yPos + 25);
                     screenManager.SpriteBatch.DrawString(font, terrainText, terrainPos, Color.LightGreen,
                         0f, Vector2.Zero, 0.5f, SpriteEffects.None, 0f);
+                    
+                    // Show terrain effect for this zone type
+                    string effectText = "";
+                    if (zone.Type == ZoneType.HomeBase || zone.Type == ZoneType.EnemyBase)
+                    {
+                        if (zone.ActiveTerrain.RegenBonus > 0)
+                            effectText = $"+{zone.ActiveTerrain.RegenBonus} Regen";
+                    }
+                    else if (zone.Type == ZoneType.Battlefield || zone.Type == ZoneType.EnemyBattlefield)
+                    {
+                        if (zone.ActiveTerrain.SEBonus > 0)
+                            effectText = $"+{zone.ActiveTerrain.SEBonus} SE";
+                        else if (zone.ActiveTerrain.AttackBonus > 0)
+                            effectText = $"+{zone.ActiveTerrain.AttackBonus} ATK";
+                    }
+                    
+                    if (!string.IsNullOrEmpty(effectText))
+                    {
+                        Vector2 effectPos = new Vector2(15, yPos + 40);
+                        screenManager.SpriteBatch.DrawString(font, effectText, effectPos, Color.Yellow,
+                            0f, Vector2.Zero, 0.4f, SpriteEffects.None, 0f);
+                    }
                 }
                 
                 // Draw character cards in this zone
@@ -293,16 +378,30 @@ namespace Warlords
                     screenManager.SpriteBatch.DrawString(font, name, namePos, Color.White, 
                         0f, Vector2.Zero, 0.55f, SpriteEffects.None, 0f);
                     
+                    // Item indicator if equipped
+                    if (character.EquippedItem != null)
+                    {
+                        string itemIndicator = $"[{character.EquippedItem.Name}]";
+                        Vector2 itemPos = new Vector2(x + 3, cardY + 18);
+                        screenManager.SpriteBatch.DrawString(font, itemIndicator, itemPos, Color.Gold, 
+                            0f, Vector2.Zero, 0.35f, SpriteEffects.None, 0f);
+                    }
+                    
                     // SE - smaller text
                     string seText = $"SE:{character.CurrentSoulEssence}";
                     Vector2 sePos = new Vector2(x + 3, cardY + cardHeight - 30);
                     screenManager.SpriteBatch.DrawString(font, seText, sePos, Color.Cyan, 
                         0f, Vector2.Zero, 0.45f, SpriteEffects.None, 0f);
                     
-                    // ATK - smaller text
-                    string atkText = $"ATK:{character.AttackPower}";
+                    // ATK - show with terrain bonus if present
+                    int baseAttack = character.AttackPower;
+                    int terrainBonus = zone.ActiveTerrain?.AttackBonus ?? 0;
+                    string atkText = terrainBonus > 0 ? 
+                        $"ATK:{baseAttack}+{terrainBonus}" : 
+                        $"ATK:{baseAttack}";
                     Vector2 atkPos = new Vector2(x + 3, cardY + cardHeight - 17);
-                    screenManager.SpriteBatch.DrawString(font, atkText, atkPos, Color.Red, 
+                    Color atkColor = terrainBonus > 0 ? Color.Orange : Color.Red;
+                    screenManager.SpriteBatch.DrawString(font, atkText, atkPos, atkColor, 
                         0f, Vector2.Zero, 0.45f, SpriteEffects.None, 0f);
                 }
             }
@@ -435,6 +534,56 @@ namespace Warlords
                     screenManager.SpriteBatch.DrawString(font, effectText, effectPos, Color.Gray, 
                         0f, Vector2.Zero, 0.5f, SpriteEffects.None, 0f);
                 }
+                else if (card is ItemCard itemCard)
+                {
+                    // Item card - orange/gold
+                    cardColor = isSelected ? Color.Orange * 0.9f : new Color(184, 134, 11) * 0.8f;
+                    
+                    // Draw card background
+                    screenManager.SpriteBatch.Draw(screenManager.BlankTexture, handCardRects[i], cardColor);
+                    DrawCardBorder(handCardRects[i], borderColor, isSelected ? 4 : 2);
+                    
+                    // Draw card info
+                    string cardName = itemCard.Name.Length > 14 ? itemCard.Name.Substring(0, 14) : itemCard.Name;
+                    string typeText = "ITEM";
+                    string equipText = "Click char";
+                    
+                    Vector2 namePos = new Vector2(x + 3, y + 3);
+                    Vector2 typePos = new Vector2(x + 3, y + 45);
+                    Vector2 equipPos = new Vector2(x + 3, y + 65);
+                    
+                    screenManager.SpriteBatch.DrawString(font, cardName, namePos, Color.White, 
+                        0f, Vector2.Zero, 0.65f, SpriteEffects.None, 0f);
+                    screenManager.SpriteBatch.DrawString(font, typeText, typePos, Color.Gold, 
+                        0f, Vector2.Zero, 0.55f, SpriteEffects.None, 0f);
+                    screenManager.SpriteBatch.DrawString(font, equipText, equipPos, new Color(255, 218, 185), 
+                        0f, Vector2.Zero, 0.5f, SpriteEffects.None, 0f);
+                }
+                else if (card is EventCard eventCard)
+                {
+                    // Event card - purple/magenta
+                    cardColor = isSelected ? Color.Magenta * 0.9f : new Color(138, 43, 226) * 0.8f;
+                    
+                    // Draw card background
+                    screenManager.SpriteBatch.Draw(screenManager.BlankTexture, handCardRects[i], cardColor);
+                    DrawCardBorder(handCardRects[i], borderColor, isSelected ? 4 : 2);
+                    
+                    // Draw card info
+                    string cardName = eventCard.Name.Length > 14 ? eventCard.Name.Substring(0, 14) : eventCard.Name;
+                    string typeText = "EVENT";
+                    string effectText = "Click to use";
+                    
+                    Vector2 namePos = new Vector2(x + 3, y + 3);
+                    Vector2 typePos = new Vector2(x + 3, y + 45);
+                    Vector2 effectPos = new Vector2(x + 3, y + 65);
+                    
+                    screenManager.SpriteBatch.DrawString(font, cardName, namePos, Color.White, 
+                        0f, Vector2.Zero, 0.65f, SpriteEffects.None, 0f);
+                    screenManager.SpriteBatch.DrawString(font, typeText, typePos, new Color(148, 0, 211), 
+                        0f, Vector2.Zero, 0.55f, SpriteEffects.None, 0f);
+                    screenManager.SpriteBatch.DrawString(font, effectText, effectPos, new Color(221, 160, 221), 
+                        0f, Vector2.Zero, 0.5f, SpriteEffects.None, 0f);
+                }
             }
             
             // Draw instructions if waiting for player
@@ -442,6 +591,8 @@ namespace Warlords
             {
                 string instruction = selectedCard == null 
                     ? "Click a card to select" 
+                    : selectedCard is ItemCard ? "Click a character to equip"
+                    : selectedCard is EventCard ? "Event will play instantly"
                     : $"Click a zone to play {selectedCard.Name}";
                     
                 Vector2 instructionPos = new Vector2(screenWidth - 400, handAreaY + 8);

@@ -60,15 +60,34 @@ namespace WarlordsFramework
             // Can't advance if already acted
             if (character.HasActedThisTurn) return false;
             
-            // Can't move to battlefield if no terrain
-            if (toZone.Type == ZoneType.Battlefield && toZone.ActiveTerrain == null)
-                return false;
+            // Can't move if character not in fromZone
+            if (!fromZone.Characters.Contains(character)) return false;
+            
+            // Player movement rules
+            if (fromZone.Owner == PlayerSide.Player)
+            {
+                // Player can advance from Home Base to Battlefield
+                if (fromZone.Type == ZoneType.HomeBase && toZone.Type == ZoneType.Battlefield)
+                    return true;
+                    
+                // Player can advance from Battlefield to Enemy Battlefield (attack)
+                if (fromZone.Type == ZoneType.Battlefield && toZone.Type == ZoneType.EnemyBattlefield)
+                    return true;
+            }
+            
+            // Opponent movement rules
+            if (fromZone.Owner == PlayerSide.Opponent)
+            {
+                // Opponent can advance from Base to Battlefield
+                if (fromZone.Type == ZoneType.EnemyBase && toZone.Type == ZoneType.EnemyBattlefield)
+                    return true;
+                    
+                // Opponent can advance from Battlefield to Player Battlefield (attack)
+                if (fromZone.Type == ZoneType.EnemyBattlefield && toZone.Type == ZoneType.Battlefield)
+                    return true;
+            }
                 
-            // Can't advance to enemy battlefield if enemies present
-            if (toZone.Type == ZoneType.EnemyBattlefield && toZone.HasCharacters)
-                return false;
-                
-            return true;
+            return false;
         }
     }
 }

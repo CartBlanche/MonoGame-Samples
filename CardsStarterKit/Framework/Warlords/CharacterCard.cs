@@ -26,6 +26,9 @@ namespace WarlordsFramework
         public bool HasActedThisTurn { get; set; }
         public bool CanRetreat { get; set; }
         
+        // Equipment
+        public ItemCard EquippedItem { get; set; }
+        
         // Future expansion - abilities (null for minimal prototype)
         public object WishGene { get; set; }
         public object SoulSkill { get; set; }

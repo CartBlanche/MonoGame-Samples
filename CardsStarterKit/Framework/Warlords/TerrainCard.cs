@@ -14,6 +14,11 @@ namespace WarlordsFramework
         public string HomeBaseEffectDescription { get; set; }
         public string BattlefieldEffectDescription { get; set; }
         
+        // Numeric bonuses
+        public int SEBonus { get; set; }
+        public int AttackBonus { get; set; }
+        public int RegenBonus { get; set; }
+        
         // Future expansion - actual effect objects (null for minimal prototype)
         public object HomeBaseEffect { get; set; }
         public object BattlefieldEffect { get; set; }
