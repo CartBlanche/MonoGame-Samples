@@ -42,8 +42,8 @@ namespace GameStateManagement
 
         bool traceEnabled;
 
-        internal const int BASE_BUFFER_WIDTH = 800;
-        internal const int BASE_BUFFER_HEIGHT = 480;
+        internal const int BASE_BUFFER_WIDTH = 1280;
+        internal const int BASE_BUFFER_HEIGHT = 720;
 
         private int backbufferWidth;
         /// <summary>Gets or sets the current backbuffer width.</summary>
