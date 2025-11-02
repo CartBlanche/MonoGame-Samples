@@ -70,6 +70,10 @@ namespace WarlordsFramework
                 if (fromZone.Type == ZoneType.HomeBase && toZone.Type == ZoneType.Battlefield)
                     return true;
                     
+                // Player can retreat from Battlefield to Home Base
+                if (fromZone.Type == ZoneType.Battlefield && toZone.Type == ZoneType.HomeBase)
+                    return true;
+                    
                 // Player can advance from Battlefield to Enemy Battlefield (attack)
                 if (fromZone.Type == ZoneType.Battlefield && toZone.Type == ZoneType.EnemyBattlefield)
                     return true;
@@ -80,6 +84,10 @@ namespace WarlordsFramework
             {
                 // Opponent can advance from Base to Battlefield
                 if (fromZone.Type == ZoneType.EnemyBase && toZone.Type == ZoneType.EnemyBattlefield)
+                    return true;
+                    
+                // Opponent can retreat from Battlefield to Base
+                if (fromZone.Type == ZoneType.EnemyBattlefield && toZone.Type == ZoneType.EnemyBase)
                     return true;
                     
                 // Opponent can advance from Battlefield to Player Battlefield (attack)

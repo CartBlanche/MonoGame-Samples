@@ -89,66 +89,305 @@ namespace Warlords
         }
         
         /// <summary>
-        /// Create a simple test deck for prototype
+        /// Create a test deck for a player with diverse cards
         /// </summary>
         private void CreateTestDeck(WarlordsPlayer player)
         {
-            // Create 2 terrain cards
-            for (int i = 0; i < 2; i++)
-            {
-                var terrain = new TerrainCard
-                {
-                    Name = i == 0 ? "Sacred Ground" : "Dark Wasteland",
-                    LoreDescription = i == 0 ? "Holy land that heals allies" : "Cursed land of power",
-                    HomeBaseEffectDescription = i == 0 ? "+500 SE regen per turn" : "+200 SE regen per turn",
-                    BattlefieldEffectDescription = i == 0 ? "Characters gain +500 SE" : "Characters gain +200 ATK",
-                    SEBonus = i == 0 ? 500 : 0,
-                    AttackBonus = i == 0 ? 0 : 200,
-                    RegenBonus = i == 0 ? 500 : 200, // Both provide regen bonus when at Home Base
-                    Rarity = CardRarity.Uncommon
-                };
-                terrain.Tags.Add("Terrain");
-                player.Deck.Add(terrain);
-            }
+            // ===== TERRAIN CARDS (5 different terrains) =====
             
-            // Create 1 item card
-            var item = new ItemCard
+            // Sacred Ground - High regen terrain
+            var sacredGround = new TerrainCard
             {
-                Name = "Soul Blade",
-                LoreDescription = "A weapon forged from crystallized souls",
-                RequiresCharacter = true,
+                Name = "Sacred Ground",
+                LoreDescription = "Holy land blessed by ancient spirits",
+                HomeBaseEffectDescription = "+800 SE regen per turn",
+                BattlefieldEffectDescription = "Characters gain +300 SE",
+                SEBonus = 300,
+                AttackBonus = 0,
+                RegenBonus = 800,
+                SoulEssenceCost = 900,
                 Rarity = CardRarity.Rare
             };
-            item.Tags.Add("Item");
-            item.Tags.Add("Weapon");
-            item.EquipRestrictions.Add("Character");
-            player.Deck.Add(item);
+            sacredGround.Tags.Add("Terrain");
+            player.Deck.Add(sacredGround);
             
-            // Create 1 event card
-            var eventCard = new EventCard
+            // Dark Wasteland - Attack boost terrain
+            var darkWasteland = new TerrainCard
             {
-                Name = "Soul Storm",
-                LoreDescription = "A devastating blast of soul energy",
+                Name = "Dark Wasteland",
+                LoreDescription = "Cursed land that amplifies aggression",
+                HomeBaseEffectDescription = "+300 SE regen per turn",
+                BattlefieldEffectDescription = "Characters gain +400 ATK",
+                SEBonus = 0,
+                AttackBonus = 400,
+                RegenBonus = 300,
+                SoulEssenceCost = 800,
                 Rarity = CardRarity.Uncommon
             };
-            eventCard.Tags.Add("Event");
-            player.Deck.Add(eventCard);
+            darkWasteland.Tags.Add("Terrain");
+            player.Deck.Add(darkWasteland);
             
-            // Create 6 character cards with varying power
+            // Mystic Forest - Balanced terrain
+            var mysticForest = new TerrainCard
+            {
+                Name = "Mystic Forest",
+                LoreDescription = "Ancient woods filled with magic",
+                HomeBaseEffectDescription = "+500 SE regen per turn",
+                BattlefieldEffectDescription = "Characters gain +200 SE and +200 ATK",
+                SEBonus = 200,
+                AttackBonus = 200,
+                RegenBonus = 500,
+                SoulEssenceCost = 1000,
+                Rarity = CardRarity.Uncommon
+            };
+            mysticForest.Tags.Add("Terrain");
+            player.Deck.Add(mysticForest);
+            
+            // Volcanic Crater - High attack terrain
+            var volcanicCrater = new TerrainCard
+            {
+                Name = "Volcanic Crater",
+                LoreDescription = "Molten earth that fuels fury",
+                HomeBaseEffectDescription = "+200 SE regen per turn",
+                BattlefieldEffectDescription = "Characters gain +600 ATK",
+                SEBonus = 0,
+                AttackBonus = 600,
+                RegenBonus = 200,
+                SoulEssenceCost = 1100,
+                Rarity = CardRarity.Rare
+            };
+            volcanicCrater.Tags.Add("Terrain");
+            player.Deck.Add(volcanicCrater);
+            
+            // Crystal Sanctuary - SE boost terrain
+            var crystalSanctuary = new TerrainCard
+            {
+                Name = "Crystal Sanctuary",
+                LoreDescription = "Shimmering crystals that store souls",
+                HomeBaseEffectDescription = "+600 SE regen per turn",
+                BattlefieldEffectDescription = "Characters gain +600 SE",
+                SEBonus = 600,
+                AttackBonus = 0,
+                RegenBonus = 600,
+                SoulEssenceCost = 1000,
+                Rarity = CardRarity.Rare
+            };
+            crystalSanctuary.Tags.Add("Terrain");
+            player.Deck.Add(crystalSanctuary);
+            
+            // ===== CHARACTER CARDS (12 diverse characters) =====
+            
+            // Scout - Cheap, weak
+            var scout = new CharacterCard
+            {
+                Name = "Soul Scout",
+                LoreDescription = "Swift reconnaissance unit",
+                MaxSoulEssence = 3000,
+                CurrentSoulEssence = 3000,
+                AttackPower = 600,
+                Classification = Classification.Human,
+                SoulEssenceCost = 400,
+                Rarity = CardRarity.Common
+            };
+            scout.Tags.Add("Character");
+            player.Deck.Add(scout);
+            
+            // Soldier - Basic unit
+            var soldier = new CharacterCard
+            {
+                Name = "Soul Soldier",
+                LoreDescription = "Standard infantry warrior",
+                MaxSoulEssence = 5000,
+                CurrentSoulEssence = 5000,
+                AttackPower = 1000,
+                Classification = Classification.Human,
+                SoulEssenceCost = 600,
+                Rarity = CardRarity.Common
+            };
+            soldier.Tags.Add("Character");
+            player.Deck.Add(soldier);
+            
+            // Knight - Mid-tier unit
+            var knight = new CharacterCard
+            {
+                Name = "Soul Knight",
+                LoreDescription = "Armored warrior of honor",
+                MaxSoulEssence = 7000,
+                CurrentSoulEssence = 7000,
+                AttackPower = 1400,
+                Classification = Classification.Human,
+                SoulEssenceCost = 900,
+                Rarity = CardRarity.Uncommon
+            };
+            knight.Tags.Add("Character");
+            player.Deck.Add(knight);
+            
+            // Paladin - Tanky unit
+            var paladin = new CharacterCard
+            {
+                Name = "Soul Paladin",
+                LoreDescription = "Holy defender with immense vitality",
+                MaxSoulEssence = 10000,
+                CurrentSoulEssence = 10000,
+                AttackPower = 1200,
+                Classification = Classification.Human,
+                SoulEssenceCost = 1100,
+                Rarity = CardRarity.Uncommon
+            };
+            paladin.Tags.Add("Character");
+            player.Deck.Add(paladin);
+            
+            // Berserker - High attack unit
+            var berserker = new CharacterCard
+            {
+                Name = "Soul Berserker",
+                LoreDescription = "Raging warrior of pure fury",
+                MaxSoulEssence = 6000,
+                CurrentSoulEssence = 6000,
+                AttackPower = 2000,
+                Classification = Classification.Human,
+                SoulEssenceCost = 1200,
+                Rarity = CardRarity.Rare
+            };
+            berserker.Tags.Add("Character");
+            player.Deck.Add(berserker);
+            
+            // Champion - Powerful balanced unit
+            var champion = new CharacterCard
+            {
+                Name = "Soul Champion",
+                LoreDescription = "Elite warrior of legendary skill",
+                MaxSoulEssence = 9000,
+                CurrentSoulEssence = 9000,
+                AttackPower = 1800,
+                Classification = Classification.Human,
+                SoulEssenceCost = 1400,
+                Rarity = CardRarity.Rare
+            };
+            champion.Tags.Add("Character");
+            player.Deck.Add(champion);
+            
+            // Add 6 more basic warriors for deck padding
             for (int i = 0; i < 6; i++)
             {
-                var card = new CharacterCard
+                var warrior = new CharacterCard
                 {
                     Name = $"Warrior {i + 1}",
-                    MaxSoulEssence = 5000 + (i * 1000),
-                    CurrentSoulEssence = 5000 + (i * 1000),
-                    AttackPower = 1000 + (i * 100),
+                    LoreDescription = "Trained combatant",
+                    MaxSoulEssence = 4000 + (i * 500),
+                    CurrentSoulEssence = 4000 + (i * 500),
+                    AttackPower = 800 + (i * 100),
                     Classification = Classification.Human,
-                    Rarity = i > 4 ? CardRarity.Rare : CardRarity.Common
+                    SoulEssenceCost = 500 + (i * 100),
+                    Rarity = i > 3 ? CardRarity.Uncommon : CardRarity.Common
                 };
-                card.Tags.Add("Character");
-                player.Deck.Add(card);
+                warrior.Tags.Add("Character");
+                player.Deck.Add(warrior);
             }
+            
+            // ===== ITEM CARDS (4 different items) =====
+            
+            // Soul Blade - Attack boost
+            var soulBlade = new ItemCard
+            {
+                Name = "Soul Blade",
+                LoreDescription = "Weapon forged from crystallized souls",
+                RequiresCharacter = true,
+                SoulEssenceCost = 700,
+                Rarity = CardRarity.Uncommon
+            };
+            soulBlade.Tags.Add("Item");
+            soulBlade.Tags.Add("Weapon");
+            soulBlade.EquipRestrictions.Add("Human");
+            player.Deck.Add(soulBlade);
+            
+            // Soul Shield - SE boost
+            var soulShield = new ItemCard
+            {
+                Name = "Soul Shield",
+                LoreDescription = "Defensive barrier of pure essence",
+                RequiresCharacter = true,
+                SoulEssenceCost = 600,
+                Rarity = CardRarity.Common
+            };
+            soulShield.Tags.Add("Item");
+            soulShield.Tags.Add("Armor");
+            soulShield.EquipRestrictions.Add("Human");
+            player.Deck.Add(soulShield);
+            
+            // Soul Amulet - Regen boost
+            var soulAmulet = new ItemCard
+            {
+                Name = "Soul Amulet",
+                LoreDescription = "Mystical charm that enhances recovery",
+                RequiresCharacter = true,
+                SoulEssenceCost = 500,
+                Rarity = CardRarity.Common
+            };
+            soulAmulet.Tags.Add("Item");
+            soulAmulet.Tags.Add("Accessory");
+            soulAmulet.EquipRestrictions.Add("Human");
+            player.Deck.Add(soulAmulet);
+            
+            // Exodei Ring - Powerful legendary item
+            var exodeiRing = new ItemCard
+            {
+                Name = "Exodei Ring",
+                LoreDescription = "Ancient artifact of immense power",
+                RequiresCharacter = true,
+                SoulEssenceCost = 1000,
+                Rarity = CardRarity.Rare
+            };
+            exodeiRing.Tags.Add("Item");
+            exodeiRing.Tags.Add("Accessory");
+            exodeiRing.EquipRestrictions.Add("Human");
+            player.Deck.Add(exodeiRing);
+            
+            // ===== EVENT CARDS (4 different events) =====
+            
+            // Soul Storm - AOE damage
+            var soulStorm = new EventCard
+            {
+                Name = "Soul Storm",
+                LoreDescription = "Devastating blast of soul energy",
+                SoulEssenceCost = 1500,
+                Rarity = CardRarity.Rare
+            };
+            soulStorm.Tags.Add("Event");
+            player.Deck.Add(soulStorm);
+            
+            // Soul Harvest - Heal
+            var soulHarvest = new EventCard
+            {
+                Name = "Soul Harvest",
+                LoreDescription = "Drain essence from the void",
+                SoulEssenceCost = 800,
+                Rarity = CardRarity.Uncommon
+            };
+            soulHarvest.Tags.Add("Event");
+            player.Deck.Add(soulHarvest);
+            
+            // Soul Strike - Single target damage
+            var soulStrike = new EventCard
+            {
+                Name = "Soul Strike",
+                LoreDescription = "Focused blast of destructive power",
+                SoulEssenceCost = 1000,
+                Rarity = CardRarity.Uncommon
+            };
+            soulStrike.Tags.Add("Event");
+            player.Deck.Add(soulStrike);
+            
+            // Soul Blessing - Buff allies
+            var soulBlessing = new EventCard
+            {
+                Name = "Soul Blessing",
+                LoreDescription = "Empower your forces with divine energy",
+                SoulEssenceCost = 900,
+                Rarity = CardRarity.Uncommon
+            };
+            soulBlessing.Tags.Add("Event");
+            player.Deck.Add(soulBlessing);
             
             // Shuffle deck
             player.Deck = player.Deck.OrderBy(x => Guid.NewGuid()).ToList();
@@ -174,6 +413,10 @@ namespace Warlords
         {
             if (CurrentPlayer.Hand.Contains(card))
             {
+                // Check if player has enough SE to play the card
+                if (!CurrentPlayer.SEManager.SpendSE(card.SoulEssenceCost))
+                    return; // Not enough SE
+                
                 CurrentPlayer.Hand.Remove(card);
                 zone.AddCharacter(card);
                 
@@ -195,6 +438,10 @@ namespace Warlords
         {
             if (CurrentPlayer.Hand.Contains(terrain))
             {
+                // Check if player has enough SE to play the card
+                if (!CurrentPlayer.SEManager.SpendSE(terrain.SoulEssenceCost))
+                    return; // Not enough SE
+                
                 CurrentPlayer.Hand.Remove(terrain);
                 zone.ActiveTerrain = terrain;
                 
@@ -270,6 +517,10 @@ namespace Warlords
                 }
             }
             
+            // Check if player has enough SE to play the card
+            if (!CurrentPlayer.SEManager.SpendSE(item.SoulEssenceCost))
+                return; // Not enough SE
+            
             // Remove from hand
             CurrentPlayer.Hand.Remove(item);
             
@@ -291,7 +542,26 @@ namespace Warlords
                 // Soul Blade: +500 Attack Power
                 target.AttackPower += 500;
             }
-            // Add more item effects here as needed
+            else if (item.Name == "Soul Shield")
+            {
+                // Soul Shield: +2000 Max SE and Current SE
+                target.MaxSoulEssence += 2000;
+                target.CurrentSoulEssence += 2000;
+            }
+            else if (item.Name == "Soul Amulet")
+            {
+                // Soul Amulet: +300 Attack Power and +1000 SE
+                target.AttackPower += 300;
+                target.MaxSoulEssence += 1000;
+                target.CurrentSoulEssence += 1000;
+            }
+            else if (item.Name == "Exodei Ring")
+            {
+                // Exodei Ring: +800 Attack Power, +3000 SE (legendary item)
+                target.AttackPower += 800;
+                target.MaxSoulEssence += 3000;
+                target.CurrentSoulEssence += 3000;
+            }
         }
         
         /// <summary>
@@ -301,6 +571,10 @@ namespace Warlords
         {
             // Check if player has the card
             if (!CurrentPlayer.Hand.Contains(eventCard)) return;
+            
+            // Check if player has enough SE to play the card
+            if (!CurrentPlayer.SEManager.SpendSE(eventCard.SoulEssenceCost))
+                return; // Not enough SE
             
             // Remove from hand
             CurrentPlayer.Hand.Remove(eventCard);
@@ -342,7 +616,64 @@ namespace Warlords
                     }
                 }
             }
-            // Add more event effects here as needed
+            else if (eventCard.Name == "Soul Harvest")
+            {
+                // Soul Harvest: Heal current player for 3000 SE
+                CurrentPlayer.SEManager.GainSE(3000);
+            }
+            else if (eventCard.Name == "Soul Strike")
+            {
+                // Soul Strike: Deal 3000 damage to a random enemy character
+                var opponentZones = (CurrentPlayer == Player) ? 
+                    new[] { Field.OpponentBase, Field.OpponentBattlefield } :
+                    new[] { Field.PlayerHomeBase, Field.PlayerBattlefield };
+                
+                // Collect all enemy characters
+                var allEnemies = new List<CharacterCard>();
+                foreach (var zone in opponentZones)
+                {
+                    allEnemies.AddRange(zone.Characters);
+                }
+                
+                // Damage a random enemy if any exist
+                if (allEnemies.Count > 0)
+                {
+                    var random = new Random();
+                    var target = allEnemies[random.Next(allEnemies.Count)];
+                    target.TakeDamage(3000);
+                    
+                    // Remove if defeated
+                    if (target.IsDefeated)
+                    {
+                        foreach (var zone in opponentZones)
+                        {
+                            if (zone.Characters.Contains(target))
+                            {
+                                zone.RemoveCharacter(target);
+                                MoveToNexus(target);
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
+            else if (eventCard.Name == "Soul Blessing")
+            {
+                // Soul Blessing: Give all friendly characters +500 ATK and +1000 SE
+                var friendlyZones = (CurrentPlayer == Player) ? 
+                    new[] { Field.PlayerHomeBase, Field.PlayerBattlefield } :
+                    new[] { Field.OpponentBase, Field.OpponentBattlefield };
+                
+                foreach (var zone in friendlyZones)
+                {
+                    foreach (var character in zone.Characters)
+                    {
+                        character.AttackPower += 500;
+                        character.MaxSoulEssence += 1000;
+                        character.CurrentSoulEssence += 1000;
+                    }
+                }
+            }
         }
 
         
@@ -541,24 +872,35 @@ namespace Warlords
         /// </summary>
         private bool SimpleAI()
         {
-            // Play event cards first (instant effects)
-            var eventCard = Opponent.Hand.OfType<EventCard>().FirstOrDefault();
+            int currentSE = Opponent.SEManager.CurrentSE;
+            
+            // Play event cards first (instant effects) - check affordability
+            var eventCard = Opponent.Hand.OfType<EventCard>()
+                .Where(e => e.SoulEssenceCost <= currentSE)
+                .OrderByDescending(e => e.SoulEssenceCost) // Prioritize expensive events
+                .FirstOrDefault();
             if (eventCard != null)
             {
                 PlayEvent(eventCard);
                 return true;
             }
             
-            // Play terrain card if we don't have one on battlefield
-            var terrainCard = Opponent.Hand.OfType<TerrainCard>().FirstOrDefault();
+            // Play terrain card if we don't have one on battlefield - check affordability
+            var terrainCard = Opponent.Hand.OfType<TerrainCard>()
+                .Where(t => t.SoulEssenceCost <= currentSE)
+                .OrderByDescending(t => t.AttackBonus + t.RegenBonus) // Prioritize valuable terrains
+                .FirstOrDefault();
             if (terrainCard != null && Field.OpponentBattlefield.ActiveTerrain == null)
             {
                 PlayTerrain(terrainCard, Field.OpponentBattlefield);
                 return true;
             }
             
-            // Play item cards on battlefield characters
-            var itemCard = Opponent.Hand.OfType<ItemCard>().FirstOrDefault();
+            // Play item cards on battlefield characters - check affordability
+            var itemCard = Opponent.Hand.OfType<ItemCard>()
+                .Where(i => i.SoulEssenceCost <= currentSE)
+                .OrderByDescending(i => i.SoulEssenceCost) // Prioritize expensive items
+                .FirstOrDefault();
             if (itemCard != null && Field.OpponentBattlefield.HasCharacters)
             {
                 // Find a character without an item
@@ -570,8 +912,11 @@ namespace Warlords
                 }
             }
             
-            // Play first character card in hand to home base
-            var characterCard = Opponent.Hand.OfType<CharacterCard>().FirstOrDefault();
+            // Play character cards to home base - check affordability, prioritize stronger characters
+            var characterCard = Opponent.Hand.OfType<CharacterCard>()
+                .Where(c => c.SoulEssenceCost <= currentSE)
+                .OrderByDescending(c => c.AttackPower) // Prioritize high attack characters
+                .FirstOrDefault();
             if (characterCard != null)
             {
                 PlayCard(characterCard, Field.OpponentBase);

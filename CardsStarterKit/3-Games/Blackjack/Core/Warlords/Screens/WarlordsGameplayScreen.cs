@@ -28,8 +28,14 @@ namespace Warlords
         
         // Card selection
         private WarlordsCard selectedCard;
+        private CharacterCard selectedCharacterOnField; // Track selected character from field
         private Rectangle[] handCardRects;
         private Rectangle[] zoneRects;
+        
+        // Feedback system
+        private string feedbackMessage = "";
+        private float feedbackTimer = 0f;
+        private const float FeedbackDuration = 2.0f;
         
         public WarlordsGameplayScreen(string theme)
         {
@@ -100,6 +106,7 @@ namespace Warlords
                     if (endTurnButton.Contains(mousePos))
                     {
                         selectedCard = null; // Clear selection
+                        selectedCharacterOnField = null; // Clear character selection
                         game.PlayerEndTurn();
                     }
                     // Check for hand card clicks
@@ -110,47 +117,123 @@ namespace Warlords
                         {
                             if (handCardRects[i].Contains(mousePos))
                             {
-                                selectedCard = game.Player.Hand[i];
+                                var clickedCard = game.Player.Hand[i];
+                                
+                                // Check if player can afford this card
+                                if (game.Player.SEManager.CurrentSE >= clickedCard.SoulEssenceCost)
+                                {
+                                    // Special handling for event cards - they play immediately
+                                    if (clickedCard is EventCard eventCard)
+                                    {
+                                        game.PlayEvent(eventCard);
+                                        feedbackMessage = ""; // Clear any previous feedback
+                                        selectedCard = null; // Events don't stay selected
+                                    }
+                                    else
+                                    {
+                                        selectedCard = clickedCard;
+                                        feedbackMessage = ""; // Clear any previous feedback
+                                    }
+                                }
+                                else
+                                {
+                                    // Can't afford - show feedback
+                                    int needed = clickedCard.SoulEssenceCost - game.Player.SEManager.CurrentSE;
+                                    feedbackMessage = $"Not enough SE! Need {needed} more.";
+                                    feedbackTimer = FeedbackDuration;
+                                    selectedCard = null; // Clear selection
+                                }
+                                
                                 cardClicked = true;
                                 break;
                             }
                         }
                         
-                        // If no card clicked, check for zone clicks to play selected card
+                        // If no card in hand was clicked, check for clicking characters on field
+                        if (!cardClicked)
+                        {
+                            // Check if clicking on a character already on the field for movement
+                            CharacterCard clickedCharacter = GetCharacterAtPosition(mousePos);
+                            if (clickedCharacter != null)
+                            {
+                                // If we have an item selected, try to equip it
+                                if (selectedCard is ItemCard itemCard)
+                                {
+                                    game.PlayItem(itemCard, clickedCharacter);
+                                    selectedCard = null;
+                                    selectedCharacterOnField = null;
+                                }
+                                // Otherwise, select this character for movement
+                                else
+                                {
+                                    selectedCard = clickedCharacter;
+                                    selectedCharacterOnField = clickedCharacter;
+                                }
+                            }
+                        }
+                        
+                        // If we have a selected card and no character was clicked, handle zone clicks to play/move it
                         if (!cardClicked && selectedCard != null)
                         {
-                            // Handle different card types
-                            if (selectedCard is EventCard eventCard)
+                            // Skip if we just selected a character above
+                            CharacterCard clickedCharacter = GetCharacterAtPosition(mousePos);
+                            if (clickedCharacter != null)
                             {
-                                // Events play immediately
-                                game.PlayEvent(eventCard);
-                                selectedCard = null;
+                                // Already handled above
                             }
                             else if (selectedCard is ItemCard itemCard)
                             {
-                                // Items need to be equipped to a character
-                                // Check if clicking on a character in player's zones
-                                CharacterCard targetCharacter = GetCharacterAtPosition(mousePos);
-                                if (targetCharacter != null)
-                                {
-                                    game.PlayItem(itemCard, targetCharacter);
-                                    selectedCard = null;
-                                }
+                                // Items can only be equipped to characters (already handled above when clicking character)
+                                // If clicking zone with item selected, do nothing
                             }
                             else
                             {
-                                // Character or Terrain cards - play to zones
-                                // Check Your Battlefield
-                                if (zoneRects[0].Contains(mousePos))
+                                // Character or Terrain cards
+                                // Check if this is a character already on field (movement)
+                                bool isCharacterOnField = selectedCard is CharacterCard charCard &&
+                                    (game.Field.PlayerHomeBase.Characters.Contains(charCard) ||
+                                     game.Field.PlayerBattlefield.Characters.Contains(charCard));
+                                
+                                if (isCharacterOnField)
                                 {
-                                    game.PlayCardGeneric(selectedCard, game.Field.PlayerBattlefield);
-                                    selectedCard = null;
+                                    // Try to move the character
+                                    // Determine current zone
+                                    GameZone fromZone = game.Field.PlayerHomeBase.Characters.Contains((CharacterCard)selectedCard) 
+                                        ? game.Field.PlayerHomeBase 
+                                        : game.Field.PlayerBattlefield;
+                                    
+                                    // Check Your Battlefield
+                                    if (zoneRects[0].Contains(mousePos))
+                                    {
+                                        game.MoveCharacter((CharacterCard)selectedCard, fromZone, game.Field.PlayerBattlefield);
+                                        selectedCard = null;
+                                        selectedCharacterOnField = null;
+                                    }
+                                    // Check Your Home Base
+                                    else if (zoneRects[1].Contains(mousePos))
+                                    {
+                                        game.MoveCharacter((CharacterCard)selectedCard, fromZone, game.Field.PlayerHomeBase);
+                                        selectedCard = null;
+                                        selectedCharacterOnField = null;
+                                    }
                                 }
-                                // Check Your Home Base
-                                else if (zoneRects[1].Contains(mousePos))
+                                else
                                 {
-                                    game.PlayCardGeneric(selectedCard, game.Field.PlayerHomeBase);
-                                    selectedCard = null;
+                                    // Playing from hand to zones
+                                    // Check Your Battlefield
+                                    if (zoneRects[0].Contains(mousePos))
+                                    {
+                                        game.PlayCardGeneric(selectedCard, game.Field.PlayerBattlefield);
+                                        selectedCard = null;
+                                        selectedCharacterOnField = null;
+                                    }
+                                    // Check Your Home Base
+                                    else if (zoneRects[1].Contains(mousePos))
+                                    {
+                                        game.PlayCardGeneric(selectedCard, game.Field.PlayerHomeBase);
+                                        selectedCard = null;
+                                        selectedCharacterOnField = null;
+                                    }
                                 }
                             }
                         }
@@ -177,10 +260,12 @@ namespace Warlords
             int screenWidth = ScreenManager.GraphicsDevice.Viewport.Width;
             int screenHeight = ScreenManager.GraphicsDevice.Viewport.Height;
             
-            // Zone dimensions
-            int zoneHeight = (screenHeight - 50 - 140) / 4;
+            // Zone dimensions - must match DrawZonesWithCards exactly
+            int handAreaHeight = 140;
+            int playAreaHeight = screenHeight - handAreaHeight - 50;
+            int zoneHeight = playAreaHeight / 4;
             
-            // Check player zones (YOUR BATTLEFIELD and YOUR HOME BASE)
+            // Check player zones (YOUR BATTLEFIELD is index 2, YOUR HOME BASE is index 3)
             GameZone[] playerZones = { game.Field.PlayerBattlefield, game.Field.PlayerHomeBase };
             int[] zoneIndices = { 2, 3 }; // Zone 2 and 3 are player zones
             
@@ -215,6 +300,17 @@ namespace Warlords
             if (!coveredByOtherScreen && game != null)
             {
                 game.Update(gameTime);
+                
+                // Update feedback timer
+                if (feedbackTimer > 0f)
+                {
+                    feedbackTimer -= (float)gameTime.ElapsedGameTime.TotalSeconds;
+                    if (feedbackTimer < 0f)
+                    {
+                        feedbackTimer = 0f;
+                        feedbackMessage = "";
+                    }
+                }
             }
             
             base.Update(gameTime, otherScreenHasFocus, coveredByOtherScreen);
@@ -230,6 +326,7 @@ namespace Warlords
                 DrawZonesWithCards(gameTime);
                 DrawPlayerHand(gameTime);
                 DrawEndTurnButton(gameTime);
+                DrawFeedbackMessage(gameTime);
                 DrawGameOverScreen(gameTime);
             }
         }
@@ -364,13 +461,18 @@ namespace Warlords
                     
                     Rectangle cardRect = new Rectangle(x, cardY, cardWidth, cardHeight);
                     
+                    // Check if this character is selected
+                    bool isSelected = (selectedCharacterOnField == character);
+                    
                     // Card background
                     Color cardColor = zone.Owner == PlayerSide.Player ? 
                         new Color(30, 144, 255, 220) :  // Dodger blue for player
                         new Color(220, 20, 60, 220);    // Crimson for enemy
                     
                     screenManager.SpriteBatch.Draw(screenManager.BlankTexture, cardRect, cardColor);
-                    DrawCardBorder(cardRect, Color.Gold, 2);
+                    
+                    // Draw border - gold and thicker if selected
+                    DrawCardBorder(cardRect, isSelected ? Color.Gold : Color.White, isSelected ? 4 : 2);
                     
                     // Card name - smaller
                     string name = character.Name.Length > 12 ? character.Name.Substring(0, 12) : character.Name;
@@ -485,8 +587,12 @@ namespace Warlords
                 
                 if (card is CharacterCard charCard)
                 {
-                    // Character card - dark gray
-                    cardColor = isSelected ? Color.Yellow * 0.9f : Color.DarkGray * 0.8f;
+                    // Check if player can afford this card
+                    bool canAfford = game.Player.SEManager.CurrentSE >= card.SoulEssenceCost;
+                    
+                    // Character card - dark gray, dimmed if unaffordable
+                    cardColor = isSelected ? Color.Yellow * 0.9f : 
+                                canAfford ? Color.DarkGray * 0.8f : Color.DarkGray * 0.4f;
                     
                     // Draw card background
                     screenManager.SpriteBatch.Draw(screenManager.BlankTexture, handCardRects[i], cardColor);
@@ -502,17 +608,30 @@ namespace Warlords
                     Vector2 atkPos = new Vector2(x + 3, y + 65);
                     
                     // Scale down text
-                    screenManager.SpriteBatch.DrawString(font, cardName, namePos, Color.White, 
+                    Color textColor = canAfford ? Color.White : Color.Gray;
+                    screenManager.SpriteBatch.DrawString(font, cardName, namePos, textColor, 
                         0f, Vector2.Zero, 0.65f, SpriteEffects.None, 0f);
-                    screenManager.SpriteBatch.DrawString(font, seText, sePos, Color.Cyan, 
+                    screenManager.SpriteBatch.DrawString(font, seText, sePos, canAfford ? Color.Cyan : Color.DarkCyan, 
                         0f, Vector2.Zero, 0.55f, SpriteEffects.None, 0f);
-                    screenManager.SpriteBatch.DrawString(font, atkText, atkPos, Color.Red, 
+                    screenManager.SpriteBatch.DrawString(font, atkText, atkPos, canAfford ? Color.Red : Color.DarkRed, 
                         0f, Vector2.Zero, 0.55f, SpriteEffects.None, 0f);
+                    
+                    // Draw cost in top-right corner
+                    string costText = $"{card.SoulEssenceCost}";
+                    Vector2 costSize = font.MeasureString(costText) * 0.5f;
+                    Vector2 costPos = new Vector2(x + cardWidth - costSize.X - 3, y + 3);
+                    Color costColor = canAfford ? Color.Gold : Color.Red;
+                    screenManager.SpriteBatch.DrawString(font, costText, costPos, costColor, 
+                        0f, Vector2.Zero, 0.5f, SpriteEffects.None, 0f);
                 }
                 else if (card is TerrainCard terrainCard)
                 {
-                    // Terrain card - green
-                    cardColor = isSelected ? Color.LightGreen * 0.9f : Color.DarkGreen * 0.8f;
+                    // Check if player can afford this card
+                    bool canAfford = game.Player.SEManager.CurrentSE >= card.SoulEssenceCost;
+                    
+                    // Terrain card - green, dimmed if unaffordable
+                    cardColor = isSelected ? Color.LightGreen * 0.9f : 
+                                canAfford ? Color.DarkGreen * 0.8f : Color.DarkGreen * 0.4f;
                     
                     // Draw card background
                     screenManager.SpriteBatch.Draw(screenManager.BlankTexture, handCardRects[i], cardColor);
@@ -527,17 +646,30 @@ namespace Warlords
                     Vector2 typePos = new Vector2(x + 3, y + 45);
                     Vector2 effectPos = new Vector2(x + 3, y + 65);
                     
-                    screenManager.SpriteBatch.DrawString(font, cardName, namePos, Color.White, 
+                    Color textColor = canAfford ? Color.White : Color.Gray;
+                    screenManager.SpriteBatch.DrawString(font, cardName, namePos, textColor, 
                         0f, Vector2.Zero, 0.65f, SpriteEffects.None, 0f);
-                    screenManager.SpriteBatch.DrawString(font, typeText, typePos, Color.LightGreen, 
+                    screenManager.SpriteBatch.DrawString(font, typeText, typePos, canAfford ? Color.LightGreen : Color.DarkGreen, 
                         0f, Vector2.Zero, 0.55f, SpriteEffects.None, 0f);
                     screenManager.SpriteBatch.DrawString(font, effectText, effectPos, Color.Gray, 
+                        0f, Vector2.Zero, 0.5f, SpriteEffects.None, 0f);
+                    
+                    // Draw cost in top-right corner
+                    string costText = $"{card.SoulEssenceCost}";
+                    Vector2 costSize = font.MeasureString(costText) * 0.5f;
+                    Vector2 costPos = new Vector2(x + cardWidth - costSize.X - 3, y + 3);
+                    Color costColor = canAfford ? Color.Gold : Color.Red;
+                    screenManager.SpriteBatch.DrawString(font, costText, costPos, costColor, 
                         0f, Vector2.Zero, 0.5f, SpriteEffects.None, 0f);
                 }
                 else if (card is ItemCard itemCard)
                 {
-                    // Item card - orange/gold
-                    cardColor = isSelected ? Color.Orange * 0.9f : new Color(184, 134, 11) * 0.8f;
+                    // Check if player can afford this card
+                    bool canAfford = game.Player.SEManager.CurrentSE >= card.SoulEssenceCost;
+                    
+                    // Item card - orange/gold, dimmed if unaffordable
+                    cardColor = isSelected ? Color.Orange * 0.9f : 
+                                canAfford ? new Color(184, 134, 11) * 0.8f : new Color(184, 134, 11) * 0.4f;
                     
                     // Draw card background
                     screenManager.SpriteBatch.Draw(screenManager.BlankTexture, handCardRects[i], cardColor);
@@ -552,17 +684,30 @@ namespace Warlords
                     Vector2 typePos = new Vector2(x + 3, y + 45);
                     Vector2 equipPos = new Vector2(x + 3, y + 65);
                     
-                    screenManager.SpriteBatch.DrawString(font, cardName, namePos, Color.White, 
+                    Color textColor = canAfford ? Color.White : Color.Gray;
+                    screenManager.SpriteBatch.DrawString(font, cardName, namePos, textColor, 
                         0f, Vector2.Zero, 0.65f, SpriteEffects.None, 0f);
-                    screenManager.SpriteBatch.DrawString(font, typeText, typePos, Color.Gold, 
+                    screenManager.SpriteBatch.DrawString(font, typeText, typePos, canAfford ? Color.Gold : new Color(139, 101, 8), 
                         0f, Vector2.Zero, 0.55f, SpriteEffects.None, 0f);
                     screenManager.SpriteBatch.DrawString(font, equipText, equipPos, new Color(255, 218, 185), 
+                        0f, Vector2.Zero, 0.5f, SpriteEffects.None, 0f);
+                    
+                    // Draw cost in top-right corner
+                    string costText = $"{card.SoulEssenceCost}";
+                    Vector2 costSize = font.MeasureString(costText) * 0.5f;
+                    Vector2 costPos = new Vector2(x + cardWidth - costSize.X - 3, y + 3);
+                    Color costColor = canAfford ? Color.Gold : Color.Red;
+                    screenManager.SpriteBatch.DrawString(font, costText, costPos, costColor, 
                         0f, Vector2.Zero, 0.5f, SpriteEffects.None, 0f);
                 }
                 else if (card is EventCard eventCard)
                 {
-                    // Event card - purple/magenta
-                    cardColor = isSelected ? Color.Magenta * 0.9f : new Color(138, 43, 226) * 0.8f;
+                    // Check if player can afford this card
+                    bool canAfford = game.Player.SEManager.CurrentSE >= card.SoulEssenceCost;
+                    
+                    // Event card - purple/magenta, dimmed if unaffordable
+                    cardColor = isSelected ? Color.Magenta * 0.9f : 
+                                canAfford ? new Color(138, 43, 226) * 0.8f : new Color(138, 43, 226) * 0.4f;
                     
                     // Draw card background
                     screenManager.SpriteBatch.Draw(screenManager.BlankTexture, handCardRects[i], cardColor);
@@ -577,11 +722,20 @@ namespace Warlords
                     Vector2 typePos = new Vector2(x + 3, y + 45);
                     Vector2 effectPos = new Vector2(x + 3, y + 65);
                     
-                    screenManager.SpriteBatch.DrawString(font, cardName, namePos, Color.White, 
+                    Color textColor = canAfford ? Color.White : Color.Gray;
+                    screenManager.SpriteBatch.DrawString(font, cardName, namePos, textColor, 
                         0f, Vector2.Zero, 0.65f, SpriteEffects.None, 0f);
-                    screenManager.SpriteBatch.DrawString(font, typeText, typePos, new Color(148, 0, 211), 
+                    screenManager.SpriteBatch.DrawString(font, typeText, typePos, canAfford ? new Color(148, 0, 211) : new Color(98, 0, 141), 
                         0f, Vector2.Zero, 0.55f, SpriteEffects.None, 0f);
                     screenManager.SpriteBatch.DrawString(font, effectText, effectPos, new Color(221, 160, 221), 
+                        0f, Vector2.Zero, 0.5f, SpriteEffects.None, 0f);
+                    
+                    // Draw cost in top-right corner
+                    string costText = $"{card.SoulEssenceCost}";
+                    Vector2 costSize = font.MeasureString(costText) * 0.5f;
+                    Vector2 costPos = new Vector2(x + cardWidth - costSize.X - 3, y + 3);
+                    Color costColor = canAfford ? Color.Gold : Color.Red;
+                    screenManager.SpriteBatch.DrawString(font, costText, costPos, costColor, 
                         0f, Vector2.Zero, 0.5f, SpriteEffects.None, 0f);
                 }
             }
@@ -647,6 +801,50 @@ namespace Warlords
                 screenManager.SpriteBatch.DrawString(font, aiText, textPos, Color.Orange,
                     0f, Vector2.Zero, 0.7f, SpriteEffects.None, 0f);
             }
+            
+            screenManager.SpriteBatch.End();
+        }
+        
+        /// <summary>
+        /// Draw feedback messages (like insufficient SE warnings)
+        /// </summary>
+        private void DrawFeedbackMessage(GameTime gameTime)
+        {
+            if (feedbackTimer <= 0f || string.IsNullOrEmpty(feedbackMessage))
+                return;
+            
+            screenManager.SpriteBatch.Begin();
+            
+            // Calculate fade based on remaining time
+            float alpha = Math.Min(1.0f, feedbackTimer / 0.5f); // Fade out in last 0.5 seconds
+            
+            // Draw message in center of screen with background
+            Vector2 messageSize = font.MeasureString(feedbackMessage);
+            int messageWidth = (int)(messageSize.X * 0.8f) + 20;
+            int messageHeight = (int)(messageSize.Y * 0.8f) + 20;
+            int screenWidth = screenManager.GraphicsDevice.Viewport.Width;
+            int screenHeight = screenManager.GraphicsDevice.Viewport.Height;
+            
+            Rectangle messageBox = new Rectangle(
+                (screenWidth - messageWidth) / 2,
+                (screenHeight - messageHeight) / 2,
+                messageWidth,
+                messageHeight
+            );
+            
+            // Draw semi-transparent background
+            screenManager.SpriteBatch.Draw(screenManager.BlankTexture, messageBox, Color.Black * (0.8f * alpha));
+            
+            // Draw red border
+            DrawCardBorder(messageBox, Color.Red * alpha, 3);
+            
+            // Draw message text
+            Vector2 textPos = new Vector2(
+                messageBox.X + (messageBox.Width - messageSize.X * 0.8f) / 2,
+                messageBox.Y + (messageBox.Height - messageSize.Y * 0.8f) / 2
+            );
+            screenManager.SpriteBatch.DrawString(font, feedbackMessage, textPos, Color.Red * alpha,
+                0f, Vector2.Zero, 0.8f, SpriteEffects.None, 0f);
             
             screenManager.SpriteBatch.End();
         }
