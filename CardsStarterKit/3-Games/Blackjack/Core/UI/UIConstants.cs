@@ -3,7 +3,6 @@
 //
 // UI scaling constants for resolution-independent rendering in Blackjack
 //-----------------------------------------------------------------------------
-
 using System;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
