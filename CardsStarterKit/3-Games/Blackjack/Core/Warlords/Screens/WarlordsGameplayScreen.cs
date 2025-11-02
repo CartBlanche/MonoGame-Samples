@@ -57,16 +57,25 @@ namespace Warlords
             game.Initialize();
             game.StartGame();
             
-            // Define end turn button
-            // Define end turn button - in hand area on right
+            // Get screen dimensions
             int screenHeight = screenManager.GraphicsDevice.Viewport.Height;
-            int handAreaY = screenHeight - 140;
+            int screenWidth = screenManager.GraphicsDevice.Viewport.Width;
+            
+            // Calculate proportional dimensions
+            int handAreaHeight = UIConstants.GetHandAreaHeight(screenHeight);
+            int topBarHeight = UIConstants.GetTopBarHeight(screenHeight);
+            int buttonWidth = UIConstants.GetButtonWidth(screenWidth);
+            int buttonHeight = UIConstants.GetButtonHeight(screenHeight);
+            int padding = UIConstants.GetPadding(screenWidth);
+            
+            // Define end turn button - in hand area on right
+            int handAreaY = screenHeight - handAreaHeight;
             
             endTurnButton = new Rectangle(
-                screenManager.SafeArea.Right - 160,
-                handAreaY + 70,
-                150,
-                60
+                screenManager.SafeArea.Right - buttonWidth - padding,
+                handAreaY + (handAreaHeight - buttonHeight) / 2,
+                buttonWidth,
+                buttonHeight
             );
             
             // Initialize card and zone rectangles
@@ -74,16 +83,14 @@ namespace Warlords
             zoneRects = new Rectangle[2]; // Player's two zones (Home Base and Battlefield)
             
             // Define zone click areas
-            int screenWidth = screenManager.GraphicsDevice.Viewport.Width;
-            int handAreaHeight = 140;
-            int playAreaHeight = screenHeight - handAreaHeight - 50; // 50 for top bar
+            int playAreaHeight = screenHeight - handAreaHeight - topBarHeight;
             int zoneHeight = playAreaHeight / 4;
             
             // Your Battlefield (purple zone) - 3rd zone
-            zoneRects[0] = new Rectangle(0, 50 + (2 * zoneHeight), screenWidth, zoneHeight);
+            zoneRects[0] = new Rectangle(0, topBarHeight + (2 * zoneHeight), screenWidth, zoneHeight);
             
             // Your Home Base (dark blue zone) - 4th zone
-            zoneRects[1] = new Rectangle(0, 50 + (3 * zoneHeight), screenWidth, zoneHeight);
+            zoneRects[1] = new Rectangle(0, topBarHeight + (3 * zoneHeight), screenWidth, zoneHeight);
             
             previousMouseState = Mouse.GetState();
             
@@ -260,10 +267,16 @@ namespace Warlords
             int screenWidth = ScreenManager.GraphicsDevice.Viewport.Width;
             int screenHeight = ScreenManager.GraphicsDevice.Viewport.Height;
             
-            // Zone dimensions - must match DrawZonesWithCards exactly
-            int handAreaHeight = 140;
-            int playAreaHeight = screenHeight - handAreaHeight - 50;
+            // Calculate proportional dimensions - must match DrawZonesWithCards exactly
+            int handAreaHeight = UIConstants.GetHandAreaHeight(screenHeight);
+            int topBarHeight = UIConstants.GetTopBarHeight(screenHeight);
+            int playAreaHeight = screenHeight - handAreaHeight - topBarHeight;
             int zoneHeight = playAreaHeight / 4;
+            
+            int cardWidth = UIConstants.GetCardWidth(screenWidth);
+            int cardHeight = UIConstants.GetCardHeight(screenHeight);
+            int cardSpacing = UIConstants.GetCardSpacing(screenWidth);
+            int padding = UIConstants.GetPadding(screenWidth);
             
             // Check player zones (YOUR BATTLEFIELD is index 2, YOUR HOME BASE is index 3)
             GameZone[] playerZones = { game.Field.PlayerBattlefield, game.Field.PlayerHomeBase };
@@ -272,18 +285,17 @@ namespace Warlords
             for (int i = 0; i < playerZones.Length; i++)
             {
                 var zone = playerZones[i];
-                int yPos = 50 + (zoneIndices[i] * zoneHeight);
+                int yPos = topBarHeight + (zoneIndices[i] * zoneHeight);
                 
-                int cardX = 200;
-                int cardY = yPos + 10;
-                int cardWidth = 100;
-                int cardHeight = zoneHeight - 20;
-                int cardSpacing = 8;
+                int cardX = (int)(screenWidth * 0.16f); // 16% from left
+                int cardY = yPos + padding;
+                int maxCardHeight = zoneHeight - (2 * padding);
+                int actualCardHeight = Math.Min(cardHeight, maxCardHeight);
                 
                 for (int j = 0; j < zone.Characters.Count; j++)
                 {
                     int x = cardX + (j * (cardWidth + cardSpacing));
-                    Rectangle cardRect = new Rectangle(x, cardY, cardWidth, cardHeight);
+                    Rectangle cardRect = new Rectangle(x, cardY, cardWidth, actualCardHeight);
                     
                     if (cardRect.Contains(mousePos))
                     {
@@ -338,35 +350,38 @@ namespace Warlords
         {
             screenManager.SpriteBatch.Begin();
             
+            int screenWidth = screenManager.GraphicsDevice.Viewport.Width;
+            int screenHeight = screenManager.GraphicsDevice.Viewport.Height;
+            
             // Top bar with SE and turn info
-            int topBarHeight = 50;
-            Rectangle topBar = new Rectangle(0, 0, screenManager.GraphicsDevice.Viewport.Width, topBarHeight);
+            int topBarHeight = UIConstants.GetTopBarHeight(screenHeight);
+            int padding = UIConstants.GetPadding(screenWidth);
+            
+            Rectangle topBar = new Rectangle(0, 0, screenWidth, topBarHeight);
             screenManager.SpriteBatch.Draw(screenManager.BlankTexture, topBar, Color.Black * 0.8f);
             
             // Enemy SE (left)
             string enemySE = $"Enemy SE: {game.Opponent.SEManager.CurrentSE:N0}";
-            Vector2 enemySEPos = new Vector2(20, 15);
-            screenManager.SpriteBatch.DrawString(font, enemySE, enemySEPos, Color.Red);
+            Vector2 enemySEPos = new Vector2(padding, padding);
+            screenManager.SpriteBatch.DrawString(font, enemySE, enemySEPos, Color.Red, 
+                0f, Vector2.Zero, UIConstants.RegularTextScale, SpriteEffects.None, 0f);
             
             // Turn indicator (center)
             string turnText = $"Turn: {game.CurrentPlayer.Name}";
-            Vector2 turnSize = font.MeasureString(turnText);
+            Vector2 turnSize = font.MeasureString(turnText) * UIConstants.RegularTextScale;
             Vector2 turnPos = new Vector2(
-                (screenManager.GraphicsDevice.Viewport.Width - turnSize.X) / 2, 15);
+                (screenWidth - turnSize.X) / 2, padding);
             Color turnColor = game.CurrentPlayer == game.Player ? Color.Yellow : Color.Orange;
-            screenManager.SpriteBatch.DrawString(font, turnText, turnPos, turnColor);
+            screenManager.SpriteBatch.DrawString(font, turnText, turnPos, turnColor,
+                0f, Vector2.Zero, UIConstants.RegularTextScale, SpriteEffects.None, 0f);
             
             // Your SE (right)
             string yourSE = $"Your SE: {game.Player.SEManager.CurrentSE:N0}";
-            Vector2 yourSESize = font.MeasureString(yourSE);
+            Vector2 yourSESize = font.MeasureString(yourSE) * UIConstants.RegularTextScale;
             Vector2 yourSEPos = new Vector2(
-                screenManager.GraphicsDevice.Viewport.Width - yourSESize.X - 20, 15);
-            screenManager.SpriteBatch.DrawString(font, yourSE, yourSEPos, Color.Lime);
-            
-            // Bottom info bar
-            string enemyHand = $"Enemy Hand: {game.Opponent.Hand.Count}";
-            Vector2 enemyHandPos = new Vector2(20, 55);
-            screenManager.SpriteBatch.DrawString(font, enemyHand, enemyHandPos, Color.Gray);
+                screenWidth - yourSESize.X - padding, padding);
+            screenManager.SpriteBatch.DrawString(font, yourSE, yourSEPos, Color.Lime,
+                0f, Vector2.Zero, UIConstants.RegularTextScale, SpriteEffects.None, 0f);
             
             screenManager.SpriteBatch.End();
         }
@@ -381,10 +396,12 @@ namespace Warlords
             int screenHeight = screenManager.GraphicsDevice.Viewport.Height;
             int screenWidth = screenManager.GraphicsDevice.Viewport.Width;
             
-            // Reserve bottom 140px for player hand
-            int handAreaHeight = 140;
-            int playAreaHeight = screenHeight - handAreaHeight - 50; // 50 for top bar
+            // Calculate proportional dimensions
+            int handAreaHeight = UIConstants.GetHandAreaHeight(screenHeight);
+            int topBarHeight = UIConstants.GetTopBarHeight(screenHeight);
+            int playAreaHeight = screenHeight - handAreaHeight - topBarHeight;
             int zoneHeight = playAreaHeight / 4;
+            int padding = UIConstants.GetPadding(screenWidth);
             
             var zones = new[] 
             { 
@@ -405,24 +422,24 @@ namespace Warlords
             for (int i = 0; i < zones.Length; i++)
             {
                 var zone = zones[i];
-                int yPos = 50 + (i * zoneHeight); // Start after top bar
+                int yPos = topBarHeight + (i * zoneHeight);
                 
                 // Zone background overlay
                 Rectangle zoneBg = new Rectangle(0, yPos, screenWidth, zoneHeight);
                 screenManager.SpriteBatch.Draw(screenManager.BlankTexture, zoneBg, zoneColors[i]);
                 
                 // Zone label
-                Vector2 labelPos = new Vector2(15, yPos + 5);
+                Vector2 labelPos = new Vector2(padding, yPos + padding / 2);
                 screenManager.SpriteBatch.DrawString(font, zoneNames[i], labelPos, Color.White,
-                    0f, Vector2.Zero, 0.65f, SpriteEffects.None, 0f);
+                    0f, Vector2.Zero, UIConstants.RegularTextScale, SpriteEffects.None, 0f);
                 
                 // Terrain indicator (if present)
                 if (zone.ActiveTerrain != null)
                 {
                     string terrainText = $"[{zone.ActiveTerrain.Name}]";
-                    Vector2 terrainPos = new Vector2(15, yPos + 25);
+                    Vector2 terrainPos = new Vector2(padding, yPos + padding * 1.5f);
                     screenManager.SpriteBatch.DrawString(font, terrainText, terrainPos, Color.LightGreen,
-                        0f, Vector2.Zero, 0.5f, SpriteEffects.None, 0f);
+                        0f, Vector2.Zero, UIConstants.SmallTextScale, SpriteEffects.None, 0f);
                     
                     // Show terrain effect for this zone type
                     string effectText = "";
@@ -441,25 +458,27 @@ namespace Warlords
                     
                     if (!string.IsNullOrEmpty(effectText))
                     {
-                        Vector2 effectPos = new Vector2(15, yPos + 40);
+                        Vector2 effectPos = new Vector2(padding, yPos + padding * 2.5f);
                         screenManager.SpriteBatch.DrawString(font, effectText, effectPos, Color.Yellow,
-                            0f, Vector2.Zero, 0.4f, SpriteEffects.None, 0f);
+                            0f, Vector2.Zero, UIConstants.TinyTextScale, SpriteEffects.None, 0f);
                     }
                 }
                 
                 // Draw character cards in this zone
-                int cardX = 200;
-                int cardY = yPos + 10;
-                int cardWidth = 100;
-                int cardHeight = zoneHeight - 20;
-                int cardSpacing = 8;
+                int cardWidth = UIConstants.GetCardWidth(screenWidth);
+                int cardHeight = UIConstants.GetCardHeight(screenHeight);
+                int cardSpacing = UIConstants.GetCardSpacing(screenWidth);
+                int cardX = (int)(screenWidth * 0.16f); // 16% from left
+                int cardY = yPos + padding;
+                int maxCardHeight = zoneHeight - (2 * padding);
+                int actualCardHeight = Math.Min(cardHeight, maxCardHeight);
                 
                 for (int j = 0; j < zone.Characters.Count; j++)
                 {
                     var character = zone.Characters[j];
                     int x = cardX + (j * (cardWidth + cardSpacing));
                     
-                    Rectangle cardRect = new Rectangle(x, cardY, cardWidth, cardHeight);
+                    Rectangle cardRect = new Rectangle(x, cardY, cardWidth, actualCardHeight);
                     
                     // Check if this character is selected
                     bool isSelected = (selectedCharacterOnField == character);
@@ -472,28 +491,30 @@ namespace Warlords
                     screenManager.SpriteBatch.Draw(screenManager.BlankTexture, cardRect, cardColor);
                     
                     // Draw border - gold and thicker if selected
-                    DrawCardBorder(cardRect, isSelected ? Color.Gold : Color.White, isSelected ? 4 : 2);
+                    DrawCardBorder(cardRect, isSelected ? Color.Gold : Color.White, 
+                        isSelected ? UIConstants.BorderThicknessThick : UIConstants.BorderThicknessThin);
                     
                     // Card name - smaller
                     string name = character.Name.Length > 12 ? character.Name.Substring(0, 12) : character.Name;
                     Vector2 namePos = new Vector2(x + 3, cardY + 3);
                     screenManager.SpriteBatch.DrawString(font, name, namePos, Color.White, 
-                        0f, Vector2.Zero, 0.55f, SpriteEffects.None, 0f);
+                        0f, Vector2.Zero, UIConstants.SmallTextScale, SpriteEffects.None, 0f);
                     
                     // Item indicator if equipped
                     if (character.EquippedItem != null)
                     {
                         string itemIndicator = $"[{character.EquippedItem.Name}]";
+                        Vector2 itemSize = font.MeasureString(itemIndicator) * UIConstants.TinyTextScale;
                         Vector2 itemPos = new Vector2(x + 3, cardY + 18);
                         screenManager.SpriteBatch.DrawString(font, itemIndicator, itemPos, Color.Gold, 
-                            0f, Vector2.Zero, 0.35f, SpriteEffects.None, 0f);
+                            0f, Vector2.Zero, UIConstants.TinyTextScale, SpriteEffects.None, 0f);
                     }
                     
                     // SE - smaller text
                     string seText = $"SE:{character.CurrentSoulEssence}";
-                    Vector2 sePos = new Vector2(x + 3, cardY + cardHeight - 30);
+                    Vector2 sePos = new Vector2(x + 3, cardY + actualCardHeight - 30);
                     screenManager.SpriteBatch.DrawString(font, seText, sePos, Color.Cyan, 
-                        0f, Vector2.Zero, 0.45f, SpriteEffects.None, 0f);
+                        0f, Vector2.Zero, UIConstants.SmallTextScale, SpriteEffects.None, 0f);
                     
                     // ATK - show with terrain bonus if present
                     int baseAttack = character.AttackPower;
@@ -501,10 +522,10 @@ namespace Warlords
                     string atkText = terrainBonus > 0 ? 
                         $"ATK:{baseAttack}+{terrainBonus}" : 
                         $"ATK:{baseAttack}";
-                    Vector2 atkPos = new Vector2(x + 3, cardY + cardHeight - 17);
+                    Vector2 atkPos = new Vector2(x + 3, cardY + actualCardHeight - 17);
                     Color atkColor = terrainBonus > 0 ? Color.Orange : Color.Red;
                     screenManager.SpriteBatch.DrawString(font, atkText, atkPos, atkColor, 
-                        0f, Vector2.Zero, 0.45f, SpriteEffects.None, 0f);
+                        0f, Vector2.Zero, UIConstants.SmallTextScale, SpriteEffects.None, 0f);
                 }
             }
             
@@ -549,9 +570,10 @@ namespace Warlords
             int screenHeight = screenManager.GraphicsDevice.Viewport.Height;
             int screenWidth = screenManager.GraphicsDevice.Viewport.Width;
             
-            // Hand area at bottom
-            int handAreaHeight = 140;
+            // Hand area at bottom - using proportional sizing
+            int handAreaHeight = UIConstants.GetHandAreaHeight(screenHeight);
             int handAreaY = screenHeight - handAreaHeight;
+            int padding = UIConstants.GetPadding(screenWidth);
             
             // Draw hand area background
             Rectangle handBg = new Rectangle(0, handAreaY, screenWidth, handAreaHeight);
@@ -559,15 +581,16 @@ namespace Warlords
             
             // Hand label
             string handLabel = $"YOUR HAND ({game.Player.Hand.Count} cards | Deck: {game.Player.Deck.Count})";
-            Vector2 labelPos = new Vector2(10, handAreaY + 5);
+            Vector2 labelPos = new Vector2(padding, handAreaY + padding / 2);
             screenManager.SpriteBatch.DrawString(font, handLabel, labelPos, Color.White,
-                0f, Vector2.Zero, 0.6f, SpriteEffects.None, 0f);
+                0f, Vector2.Zero, UIConstants.RegularTextScale, SpriteEffects.None, 0f);
             
-            int cardWidth = 110;
-            int cardHeight = 90;
-            int cardSpacing = 8;
-            int startX = 10;
-            int startY = handAreaY + 35;
+            // Calculate proportional card dimensions
+            int cardWidth = UIConstants.GetCardWidth(screenWidth);
+            int cardHeight = (int)(cardWidth * 1.2f); // Maintain aspect ratio
+            int cardSpacing = UIConstants.GetCardSpacing(screenWidth);
+            int startX = padding;
+            int startY = handAreaY + (int)(padding * 2.5f);
             
             for (int i = 0; i < game.Player.Hand.Count && i < handCardRects.Length; i++)
             {
@@ -596,7 +619,7 @@ namespace Warlords
                     
                     // Draw card background
                     screenManager.SpriteBatch.Draw(screenManager.BlankTexture, handCardRects[i], cardColor);
-                    DrawCardBorder(handCardRects[i], borderColor, isSelected ? 4 : 2);
+                    DrawCardBorder(handCardRects[i], borderColor, isSelected ? UIConstants.BorderThicknessThick : UIConstants.BorderThicknessThin);
                     
                     // Draw card info with smaller text
                     string cardName = charCard.Name.Length > 14 ? charCard.Name.Substring(0, 14) : charCard.Name;
@@ -610,19 +633,19 @@ namespace Warlords
                     // Scale down text
                     Color textColor = canAfford ? Color.White : Color.Gray;
                     screenManager.SpriteBatch.DrawString(font, cardName, namePos, textColor, 
-                        0f, Vector2.Zero, 0.65f, SpriteEffects.None, 0f);
+                        0f, Vector2.Zero, UIConstants.RegularTextScale, SpriteEffects.None, 0f);
                     screenManager.SpriteBatch.DrawString(font, seText, sePos, canAfford ? Color.Cyan : Color.DarkCyan, 
-                        0f, Vector2.Zero, 0.55f, SpriteEffects.None, 0f);
+                        0f, Vector2.Zero, UIConstants.SmallTextScale, SpriteEffects.None, 0f);
                     screenManager.SpriteBatch.DrawString(font, atkText, atkPos, canAfford ? Color.Red : Color.DarkRed, 
-                        0f, Vector2.Zero, 0.55f, SpriteEffects.None, 0f);
+                        0f, Vector2.Zero, UIConstants.SmallTextScale, SpriteEffects.None, 0f);
                     
                     // Draw cost in top-right corner
                     string costText = $"{card.SoulEssenceCost}";
-                    Vector2 costSize = font.MeasureString(costText) * 0.5f;
+                    Vector2 costSize = font.MeasureString(costText) * UIConstants.SmallTextScale;
                     Vector2 costPos = new Vector2(x + cardWidth - costSize.X - 3, y + 3);
                     Color costColor = canAfford ? Color.Gold : Color.Red;
                     screenManager.SpriteBatch.DrawString(font, costText, costPos, costColor, 
-                        0f, Vector2.Zero, 0.5f, SpriteEffects.None, 0f);
+                        0f, Vector2.Zero, UIConstants.SmallTextScale, SpriteEffects.None, 0f);
                 }
                 else if (card is TerrainCard terrainCard)
                 {
@@ -635,7 +658,7 @@ namespace Warlords
                     
                     // Draw card background
                     screenManager.SpriteBatch.Draw(screenManager.BlankTexture, handCardRects[i], cardColor);
-                    DrawCardBorder(handCardRects[i], borderColor, isSelected ? 4 : 2);
+                    DrawCardBorder(handCardRects[i], borderColor, isSelected ? UIConstants.BorderThicknessThick : UIConstants.BorderThicknessThin);
                     
                     // Draw card info with smaller text
                     string cardName = terrainCard.Name.Length > 14 ? terrainCard.Name.Substring(0, 14) : terrainCard.Name;
@@ -648,19 +671,19 @@ namespace Warlords
                     
                     Color textColor = canAfford ? Color.White : Color.Gray;
                     screenManager.SpriteBatch.DrawString(font, cardName, namePos, textColor, 
-                        0f, Vector2.Zero, 0.65f, SpriteEffects.None, 0f);
+                        0f, Vector2.Zero, UIConstants.RegularTextScale, SpriteEffects.None, 0f);
                     screenManager.SpriteBatch.DrawString(font, typeText, typePos, canAfford ? Color.LightGreen : Color.DarkGreen, 
-                        0f, Vector2.Zero, 0.55f, SpriteEffects.None, 0f);
+                        0f, Vector2.Zero, UIConstants.SmallTextScale, SpriteEffects.None, 0f);
                     screenManager.SpriteBatch.DrawString(font, effectText, effectPos, Color.Gray, 
-                        0f, Vector2.Zero, 0.5f, SpriteEffects.None, 0f);
+                        0f, Vector2.Zero, UIConstants.SmallTextScale, SpriteEffects.None, 0f);
                     
                     // Draw cost in top-right corner
                     string costText = $"{card.SoulEssenceCost}";
-                    Vector2 costSize = font.MeasureString(costText) * 0.5f;
+                    Vector2 costSize = font.MeasureString(costText) * UIConstants.SmallTextScale;
                     Vector2 costPos = new Vector2(x + cardWidth - costSize.X - 3, y + 3);
                     Color costColor = canAfford ? Color.Gold : Color.Red;
                     screenManager.SpriteBatch.DrawString(font, costText, costPos, costColor, 
-                        0f, Vector2.Zero, 0.5f, SpriteEffects.None, 0f);
+                        0f, Vector2.Zero, UIConstants.SmallTextScale, SpriteEffects.None, 0f);
                 }
                 else if (card is ItemCard itemCard)
                 {
@@ -673,7 +696,7 @@ namespace Warlords
                     
                     // Draw card background
                     screenManager.SpriteBatch.Draw(screenManager.BlankTexture, handCardRects[i], cardColor);
-                    DrawCardBorder(handCardRects[i], borderColor, isSelected ? 4 : 2);
+                    DrawCardBorder(handCardRects[i], borderColor, isSelected ? UIConstants.BorderThicknessThick : UIConstants.BorderThicknessThin);
                     
                     // Draw card info
                     string cardName = itemCard.Name.Length > 14 ? itemCard.Name.Substring(0, 14) : itemCard.Name;
@@ -686,19 +709,19 @@ namespace Warlords
                     
                     Color textColor = canAfford ? Color.White : Color.Gray;
                     screenManager.SpriteBatch.DrawString(font, cardName, namePos, textColor, 
-                        0f, Vector2.Zero, 0.65f, SpriteEffects.None, 0f);
+                        0f, Vector2.Zero, UIConstants.RegularTextScale, SpriteEffects.None, 0f);
                     screenManager.SpriteBatch.DrawString(font, typeText, typePos, canAfford ? Color.Gold : new Color(139, 101, 8), 
-                        0f, Vector2.Zero, 0.55f, SpriteEffects.None, 0f);
+                        0f, Vector2.Zero, UIConstants.SmallTextScale, SpriteEffects.None, 0f);
                     screenManager.SpriteBatch.DrawString(font, equipText, equipPos, new Color(255, 218, 185), 
-                        0f, Vector2.Zero, 0.5f, SpriteEffects.None, 0f);
+                        0f, Vector2.Zero, UIConstants.SmallTextScale, SpriteEffects.None, 0f);
                     
                     // Draw cost in top-right corner
                     string costText = $"{card.SoulEssenceCost}";
-                    Vector2 costSize = font.MeasureString(costText) * 0.5f;
+                    Vector2 costSize = font.MeasureString(costText) * UIConstants.SmallTextScale;
                     Vector2 costPos = new Vector2(x + cardWidth - costSize.X - 3, y + 3);
                     Color costColor = canAfford ? Color.Gold : Color.Red;
                     screenManager.SpriteBatch.DrawString(font, costText, costPos, costColor, 
-                        0f, Vector2.Zero, 0.5f, SpriteEffects.None, 0f);
+                        0f, Vector2.Zero, UIConstants.SmallTextScale, SpriteEffects.None, 0f);
                 }
                 else if (card is EventCard eventCard)
                 {
@@ -711,7 +734,7 @@ namespace Warlords
                     
                     // Draw card background
                     screenManager.SpriteBatch.Draw(screenManager.BlankTexture, handCardRects[i], cardColor);
-                    DrawCardBorder(handCardRects[i], borderColor, isSelected ? 4 : 2);
+                    DrawCardBorder(handCardRects[i], borderColor, isSelected ? UIConstants.BorderThicknessThick : UIConstants.BorderThicknessThin);
                     
                     // Draw card info
                     string cardName = eventCard.Name.Length > 14 ? eventCard.Name.Substring(0, 14) : eventCard.Name;
@@ -724,19 +747,19 @@ namespace Warlords
                     
                     Color textColor = canAfford ? Color.White : Color.Gray;
                     screenManager.SpriteBatch.DrawString(font, cardName, namePos, textColor, 
-                        0f, Vector2.Zero, 0.65f, SpriteEffects.None, 0f);
+                        0f, Vector2.Zero, UIConstants.RegularTextScale, SpriteEffects.None, 0f);
                     screenManager.SpriteBatch.DrawString(font, typeText, typePos, canAfford ? new Color(148, 0, 211) : new Color(98, 0, 141), 
-                        0f, Vector2.Zero, 0.55f, SpriteEffects.None, 0f);
+                        0f, Vector2.Zero, UIConstants.SmallTextScale, SpriteEffects.None, 0f);
                     screenManager.SpriteBatch.DrawString(font, effectText, effectPos, new Color(221, 160, 221), 
-                        0f, Vector2.Zero, 0.5f, SpriteEffects.None, 0f);
+                        0f, Vector2.Zero, UIConstants.SmallTextScale, SpriteEffects.None, 0f);
                     
                     // Draw cost in top-right corner
                     string costText = $"{card.SoulEssenceCost}";
-                    Vector2 costSize = font.MeasureString(costText) * 0.5f;
+                    Vector2 costSize = font.MeasureString(costText) * UIConstants.SmallTextScale;
                     Vector2 costPos = new Vector2(x + cardWidth - costSize.X - 3, y + 3);
                     Color costColor = canAfford ? Color.Gold : Color.Red;
                     screenManager.SpriteBatch.DrawString(font, costText, costPos, costColor, 
-                        0f, Vector2.Zero, 0.5f, SpriteEffects.None, 0f);
+                        0f, Vector2.Zero, UIConstants.SmallTextScale, SpriteEffects.None, 0f);
                 }
             }
             
@@ -749,9 +772,10 @@ namespace Warlords
                     : selectedCard is EventCard ? "Event will play instantly"
                     : $"Click a zone to play {selectedCard.Name}";
                     
-                Vector2 instructionPos = new Vector2(screenWidth - 400, handAreaY + 8);
+                Vector2 instructionSize = font.MeasureString(instruction) * UIConstants.RegularTextScale;
+                Vector2 instructionPos = new Vector2(screenWidth - instructionSize.X - padding, handAreaY + padding / 2);
                 screenManager.SpriteBatch.DrawString(font, instruction, instructionPos, Color.Yellow,
-                    0f, Vector2.Zero, 0.6f, SpriteEffects.None, 0f);
+                    0f, Vector2.Zero, UIConstants.RegularTextScale, SpriteEffects.None, 0f);
             }
             
             screenManager.SpriteBatch.End();
@@ -778,28 +802,29 @@ namespace Warlords
                 screenManager.SpriteBatch.Draw(screenManager.BlankTexture, endTurnButton, buttonColor);
                 
                 // Button border
-                DrawCardBorder(endTurnButton, Color.White, 3);
+                DrawCardBorder(endTurnButton, Color.White, UIConstants.BorderThicknessMedium);
                 
                 // Button text - scaled
                 string buttonText = "END TURN";
-                Vector2 textSize = font.MeasureString(buttonText);
+                Vector2 textSize = font.MeasureString(buttonText) * UIConstants.TitleTextScale;
                 Vector2 textPos = new Vector2(
-                    endTurnButton.X + (endTurnButton.Width - (textSize.X * 0.8f)) / 2,
-                    endTurnButton.Y + (endTurnButton.Height - (textSize.Y * 0.8f)) / 2
+                    endTurnButton.X + (endTurnButton.Width - textSize.X) / 2,
+                    endTurnButton.Y + (endTurnButton.Height - textSize.Y) / 2
                 );
                 screenManager.SpriteBatch.DrawString(font, buttonText, textPos, Color.Black,
-                    0f, Vector2.Zero, 0.8f, SpriteEffects.None, 0f);
+                    0f, Vector2.Zero, UIConstants.TitleTextScale, SpriteEffects.None, 0f);
             }
             else if (game.CurrentPlayer == game.Opponent)
             {
                 // Show "AI Thinking..." message
                 string aiText = "AI Turn...";
+                Vector2 textSize = font.MeasureString(aiText) * UIConstants.RegularTextScale;
                 Vector2 textPos = new Vector2(
-                    endTurnButton.X + 10,
-                    endTurnButton.Y + 15
+                    endTurnButton.X + (endTurnButton.Width - textSize.X) / 2,
+                    endTurnButton.Y + (endTurnButton.Height - textSize.Y) / 2
                 );
                 screenManager.SpriteBatch.DrawString(font, aiText, textPos, Color.Orange,
-                    0f, Vector2.Zero, 0.7f, SpriteEffects.None, 0f);
+                    0f, Vector2.Zero, UIConstants.RegularTextScale, SpriteEffects.None, 0f);
             }
             
             screenManager.SpriteBatch.End();
@@ -819,9 +844,9 @@ namespace Warlords
             float alpha = Math.Min(1.0f, feedbackTimer / 0.5f); // Fade out in last 0.5 seconds
             
             // Draw message in center of screen with background
-            Vector2 messageSize = font.MeasureString(feedbackMessage);
-            int messageWidth = (int)(messageSize.X * 0.8f) + 20;
-            int messageHeight = (int)(messageSize.Y * 0.8f) + 20;
+            Vector2 messageSize = font.MeasureString(feedbackMessage) * UIConstants.TitleTextScale;
+            int messageWidth = (int)messageSize.X + UIConstants.GetPadding(screenManager.GraphicsDevice.Viewport.Width) * 2;
+            int messageHeight = (int)messageSize.Y + UIConstants.GetPadding(screenManager.GraphicsDevice.Viewport.Height) * 2;
             int screenWidth = screenManager.GraphicsDevice.Viewport.Width;
             int screenHeight = screenManager.GraphicsDevice.Viewport.Height;
             
@@ -836,15 +861,15 @@ namespace Warlords
             screenManager.SpriteBatch.Draw(screenManager.BlankTexture, messageBox, Color.Black * (0.8f * alpha));
             
             // Draw red border
-            DrawCardBorder(messageBox, Color.Red * alpha, 3);
+            DrawCardBorder(messageBox, Color.Red * alpha, UIConstants.BorderThicknessMedium);
             
             // Draw message text
             Vector2 textPos = new Vector2(
-                messageBox.X + (messageBox.Width - messageSize.X * 0.8f) / 2,
-                messageBox.Y + (messageBox.Height - messageSize.Y * 0.8f) / 2
+                messageBox.X + (messageBox.Width - messageSize.X) / 2,
+                messageBox.Y + (messageBox.Height - messageSize.Y) / 2
             );
             screenManager.SpriteBatch.DrawString(font, feedbackMessage, textPos, Color.Red * alpha,
-                0f, Vector2.Zero, 0.8f, SpriteEffects.None, 0f);
+                0f, Vector2.Zero, UIConstants.TitleTextScale, SpriteEffects.None, 0f);
             
             screenManager.SpriteBatch.End();
         }
