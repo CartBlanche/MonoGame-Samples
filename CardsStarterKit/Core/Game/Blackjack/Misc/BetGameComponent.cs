@@ -94,19 +94,29 @@ namespace Blackjack
 
             Rectangle bounds = new Rectangle(0, 0, ScreenManager.BASE_BUFFER_WIDTH, ScreenManager.BASE_BUFFER_HEIGHT);
 
-            positions[chipsAssets.Count - 1] = new Vector2(bounds.Left + 10,
-                bounds.Bottom - size.Height - 80);
+            int smallPadding = UIConstants.GetSmallPadding(bounds.Width);
+            int chipSpacing = UIConstants.GetChipSpacing(bounds.Height);
+            int mediumPadding = UIConstants.GetMediumPadding(bounds.Height);
+            int buttonWidth = UIConstants.GetButtonWidth(bounds.Width);
+            int buttonHeight = UIConstants.GetButtonHeight(bounds.Height);
+            int buttonSpacing = UIConstants.GetButtonSpacing(bounds.Width);
+
+            // Position chip buttons higher to avoid overlap with Deal/Clear buttons
+            // Place them above the buttons with extra spacing
+            int chipAreaBottomMargin = buttonHeight + (smallPadding * 3); // Space for buttons + gap
+            positions[chipsAssets.Count - 1] = new Vector2(bounds.Left + smallPadding,
+                bounds.Bottom - size.Height - chipSpacing - chipAreaBottomMargin);
             for (int chipIndex = 2; chipIndex <= chipsAssets.Count; chipIndex++)
             {
                 size = chipsAssets[assetNames[chipsAssets.Count - chipIndex]].Bounds;
                 positions[chipsAssets.Count - chipIndex] = positions[chipsAssets.Count - (chipIndex - 1)] -
-                    new Vector2(0, size.Height + 10);
+                    new Vector2(0, size.Height + smallPadding);
             }
 
             // Initialize bet button
             bet = new Button("ButtonRegular", "ButtonPressed", input, cardGame, spriteBatch, globalTransformation)
             {
-                Bounds = new Rectangle(bounds.Left + 10, bounds.Bottom - 60, 100, 50),
+                Bounds = new Rectangle(bounds.Left + smallPadding, bounds.Bottom - buttonHeight - smallPadding, buttonWidth, buttonHeight),
                 Font = cardGame.Font,
                 Text = "Deal",
             };
@@ -116,7 +126,7 @@ namespace Blackjack
             // Initialize clear button
             clear = new Button("ButtonRegular", "ButtonPressed", input, cardGame, spriteBatch, globalTransformation)
             {
-                Bounds = new Rectangle(bounds.Left + 120, bounds.Bottom - 60, 100, 50),
+                Bounds = new Rectangle(bounds.Left + smallPadding + buttonWidth + smallPadding, bounds.Bottom - buttonHeight - smallPadding, buttonWidth, buttonHeight),
                 Font = cardGame.Font,
                 Text = "Clear",
             };

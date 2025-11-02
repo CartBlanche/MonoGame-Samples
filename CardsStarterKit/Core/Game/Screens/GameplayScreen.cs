@@ -27,12 +27,7 @@ namespace Blackjack
         List<DrawableGameComponent> pauseVisibleComponents = new List<DrawableGameComponent>();
         Rectangle safeArea;
 
-        static Vector2[] playerCardOffset = new Vector2[]
-        {
-            new Vector2(100f, 190f),
-            new Vector2(336f, 210f),
-            new Vector2(570f, 190f)
-        };
+        Vector2[] playerCardOffset;
 
         /// <summary>
         /// Initializes a new instance of the screen.
@@ -53,6 +48,18 @@ namespace Blackjack
         public override void LoadContent()
         {
             safeArea = ScreenManager.SafeArea;
+
+            // Calculate proportional player positions (better centered and spread out)
+            // These positions should space the three player areas evenly across the table
+            float playerY = safeArea.Height * 0.29f; // ~210px at 720px
+            float centerY = safeArea.Height * 0.26f; // ~190px at 720px - slightly higher for side players
+
+            playerCardOffset = new Vector2[]
+            {
+                new Vector2(safeArea.Width * 0.18f, centerY),   // Left player - moved right (~230px at 1280px)
+                new Vector2(safeArea.Width * 0.42f, playerY),   // Center player - truly centered (~537px at 1280px)
+                new Vector2(safeArea.Width * 0.66f, centerY)    // Right player - balanced (~845px at 1280px)
+            };
 
             // Initialize virtual cursor
             inputHelper = new InputHelper(ScreenManager);

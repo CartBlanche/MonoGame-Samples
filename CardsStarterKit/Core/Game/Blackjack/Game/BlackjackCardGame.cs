@@ -95,6 +95,16 @@ namespace Blackjack
             betGameComponent = new BetGameComponent(players, screenManager.InputState, Theme, this, screenManager.SpriteBatch, screenManager.GlobalTransformation);
             Game.Components.Add(betGameComponent);
 
+            // Calculate proportional dimensions
+            int screenWidth = screenManager.SafeArea.Width;
+            int screenHeight = screenManager.SafeArea.Height;
+            int smallPadding = UIConstants.GetSmallPadding(screenWidth);
+            int mediumPadding = UIConstants.GetMediumPadding(screenHeight);
+            int buttonWidth = UIConstants.GetButtonWidth(screenWidth);
+            int buttonHeight = UIConstants.GetButtonHeight(screenHeight);
+            int buttonSpacing = UIConstants.GetButtonSpacing(screenWidth);
+            int wideButtonWidth = UIConstants.GetWideButtonWidth(screenWidth);
+
             // Initialize the game buttons
             string[] buttonsText = { "Hit", "Stand", "Double", "Split", "Insurance" };
             for (int buttonIndex = 0; buttonIndex < buttonsText.Length; buttonIndex++)
@@ -103,9 +113,9 @@ namespace Blackjack
                     screenManager.InputState, this, screenManager.SpriteBatch, screenManager.GlobalTransformation)
                 {
                     Text = buttonsText[buttonIndex],
-                    Bounds = new Rectangle(screenManager.SafeArea.Left + 10 + buttonIndex * 110,
-                        screenManager.SafeArea.Bottom - 60,
-                    100, 50),
+                    Bounds = new Rectangle(screenManager.SafeArea.Left + smallPadding + buttonIndex * buttonSpacing,
+                        screenManager.SafeArea.Bottom - buttonHeight - smallPadding,
+                    buttonWidth, buttonHeight),
                     Font = this.Font,
                     Visible = false,
                     Enabled = false
@@ -119,8 +129,8 @@ namespace Blackjack
             {
                 Text = "New Hand",
 
-                Bounds = new Rectangle(screenManager.SafeArea.Left + 10,
-                    screenManager.SafeArea.Bottom - 60, 200, 50),
+                Bounds = new Rectangle(screenManager.SafeArea.Left + smallPadding,
+                    screenManager.SafeArea.Bottom - buttonHeight - smallPadding, wideButtonWidth, buttonHeight),
                 Font = this.Font,
                 Visible = false,
                 Enabled = false
@@ -129,7 +139,7 @@ namespace Blackjack
             // Alter the insurance button's bounds as it is considerably larger than
             // the other buttons
             Rectangle insuranceBounds = buttons["Insurance"].Bounds;
-            insuranceBounds.Width = 200;
+            insuranceBounds.Width = wideButtonWidth;
             buttons["Insurance"].Bounds = insuranceBounds;
 
             newGame.Click += newGame_Click;
