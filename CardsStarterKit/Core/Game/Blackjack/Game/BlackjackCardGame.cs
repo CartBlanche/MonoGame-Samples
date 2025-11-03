@@ -43,14 +43,14 @@ namespace Blackjack
         // An offset used for drawing the second hand which appears after a split in
         // the correct location.
         Vector2 secondHandOffset = new Vector2(100, 25);
-        static Vector2 ringOffset = new Vector2(0, 110);
+        // Ring offset is now calculated proportionally in the constructor
 
         Vector2 frameSize = new Vector2(180, 180);
 
         public BlackjackGameState State { get; set; }
         ScreenManager screenManager;
 
-        const int maxPlayers = 3;
+        const int maxPlayers = 7;  // Expanded from 3 to support networked multiplayer
         const int minPlayers = 1;
 
         /// <summary>
@@ -66,7 +66,7 @@ namespace Blackjack
         public BlackjackCardGame(Rectangle tableBounds, Vector2 dealerPosition,
             Func<int, Vector2> placeOrder, ScreenManager screenManager, string theme)
             : base(6, 0, CardSuit.AllSuits, CardsFramework.CardValue.NonJokers,
-            minPlayers, maxPlayers, new BlackJackTable(ringOffset, tableBounds,
+            minPlayers, maxPlayers, new BlackJackTable(UIConstants.GetRingOffset(screenManager.SafeArea.Height), tableBounds,
                 dealerPosition, maxPlayers, placeOrder, theme, screenManager.Game, screenManager.SpriteBatch, screenManager.GlobalTransformation),
             theme, screenManager.Game)
         {

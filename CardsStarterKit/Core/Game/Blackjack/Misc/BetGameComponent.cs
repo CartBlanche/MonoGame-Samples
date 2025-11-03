@@ -318,17 +318,38 @@ namespace Blackjack
 
             BlackjackPlayer player;
 
-            // Draws the player balance and bet amount
+            // Draws the player balance, bet amount, and names below chip circles
             for (int playerIndex = 0; playerIndex < players.Count; playerIndex++)
             {
                 BlackJackTable table = (BlackJackTable)cardGame.GameTable;
-                Vector2 position = table[playerIndex] + table.RingOffset +
-                    new Vector2(table.RingTexture.Bounds.Width, 0);
+                
+                // Account for scaled ring texture
+                float ringScale = UIConstants.GetChipScale();
+                float scaledRingHeight = table.RingTexture.Bounds.Height * ringScale;
+                
+                // Position text below the chip circle center
+                // RingOffset puts us at the circle center, so add half the scaled height to get to bottom
+                Vector2 basePosition = table[playerIndex] + table.RingOffset + 
+                    new Vector2(0, scaledRingHeight / 2f + 10); // 10px padding below circle
+                
                 player = (BlackjackPlayer)players[playerIndex];
+                
+                // Draw bet amount (top line)
                 spriteBatch.DrawString(cardGame.Font, "$" + player.BetAmount.ToString(),
-                    position, Color.White);
+                    basePosition, Color.White, 0f, Vector2.Zero, 0.75f, SpriteEffects.None, 0f);
+                
+                // Draw balance (second line)
                 spriteBatch.DrawString(cardGame.Font, "$" + player.Balance.ToString(),
-                    position + new Vector2(0, 30), Color.White);
+                    basePosition + new Vector2(0, 20), Color.White, 0f, Vector2.Zero, 0.75f, SpriteEffects.None, 0f);
+                
+                // Draw player name with AI indicator (bottom line)
+                string playerName = player.Name;
+                bool isAI = player is BlackjackAIPlayer;
+                Color nameColor = isAI ? Color.Yellow : Color.Cyan; // Yellow for AI, Cyan for human
+                string displayName = isAI ? $"{playerName} (AI)" : playerName;
+                
+                spriteBatch.DrawString(cardGame.Font, displayName,
+                    basePosition + new Vector2(0, 40), nameColor, 0f, Vector2.Zero, 0.70f, SpriteEffects.None, 0f);
             }
 
             spriteBatch.End();
@@ -595,9 +616,14 @@ namespace Blackjack
             Vector2 offset = Vector2.Zero;
 
             BlackJackTable table = ((BlackJackTable)cardGame.GameTable);
-            offset = table.RingOffset +
-                new Vector2(table.RingTexture.Bounds.Width - blankChip.Bounds.Width,
-                    table.RingTexture.Bounds.Height - blankChip.Bounds.Height) / 2f;
+            
+            // The ring is drawn with center origin, so we need to account for that
+            // Ring position is at the CENTER of the scaled ring texture
+            float ringScale = UIConstants.GetChipScale();
+            
+            // Since ring is drawn from center, the offset should just center the chip
+            // within the ring (no need to calculate top-left position)
+            offset = table.RingOffset - new Vector2(blankChip.Bounds.Width / 2f, blankChip.Bounds.Height / 2f);
 
             if (secondHand == true)
             {

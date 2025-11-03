@@ -4,6 +4,8 @@
 // UI scaling constants for resolution-independent rendering in Blackjack
 //-----------------------------------------------------------------------------
 
+using Microsoft.Xna.Framework;
+
 namespace Blackjack
 {
     /// <summary>
@@ -22,6 +24,12 @@ namespace Blackjack
         public const float MediumPaddingRatio = 0.047f;       // ~60px at 1280px
         public const float ButtonSpacingRatio = 0.086f;       // ~110px at 1280px
         public const float ChipSpacingRatio = 0.063f;         // ~80px at 1280px
+        
+        // Card and chip scaling for 7 players (scaled down from 3 players)
+        public const float CardScaleRatio = 0.65f;            // 65% of original size to fit 7 players
+        public const float ChipCircleRadiusRatio = 0.055f;    // ~40px radius at 720px height (was ~70px for 3 players)
+        public const float ChipScaleRatio = 0.7f;             // 70% of original chip size
+        public const float RingOffsetYRatio = 0.153f;         // ~110px at 720px height - distance below card position for chip circle
         
         // Text scaling
         public const float RegularTextScale = 0.6f;
@@ -97,6 +105,38 @@ namespace Blackjack
         public static int GetChipSpacing(int screenHeight)
         {
             return GetHeightScaled(screenHeight, ChipSpacingRatio);
+        }
+        
+        /// <summary>
+        /// Get chip circle radius for player positions
+        /// </summary>
+        public static int GetChipCircleRadius(int screenHeight)
+        {
+            return GetHeightScaled(screenHeight, ChipCircleRadiusRatio);
+        }
+        
+        /// <summary>
+        /// Get card scale for 7 players
+        /// </summary>
+        public static float GetCardScale()
+        {
+            return CardScaleRatio;
+        }
+        
+        /// <summary>
+        /// Get chip scale for 7 players
+        /// </summary>
+        public static float GetChipScale()
+        {
+            return ChipScaleRatio;
+        }
+        
+        /// <summary>
+        /// Get ring offset (distance below card position for chip circle)
+        /// </summary>
+        public static Vector2 GetRingOffset(int screenHeight)
+        {
+            return new Vector2(0, GetHeightScaled(screenHeight, RingOffsetYRatio));
         }
     }
 }

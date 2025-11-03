@@ -49,16 +49,21 @@ namespace Blackjack
         {
             safeArea = ScreenManager.SafeArea;
 
-            // Calculate proportional player positions (better centered and spread out)
-            // These positions should space the three player areas evenly across the table
-            float playerY = safeArea.Height * 0.29f; // ~210px at 720px
-            float centerY = safeArea.Height * 0.26f; // ~190px at 720px - slightly higher for side players
+            // Calculate proportional player positions for 7 players evenly spaced across the table
+            // Spread them more evenly from left to right in a gentle arc
+            float bottomY = safeArea.Height * 0.30f;  // ~216px - bottom positions
+            float topY = safeArea.Height * 0.25f;     // ~180px - top positions (alternating arc)
 
             playerCardOffset = new Vector2[]
             {
-                new Vector2(safeArea.Width * 0.18f, centerY),   // Left player - moved right (~230px at 1280px)
-                new Vector2(safeArea.Width * 0.42f, playerY),   // Center player - truly centered (~537px at 1280px)
-                new Vector2(safeArea.Width * 0.66f, centerY)    // Right player - balanced (~845px at 1280px)
+                // Evenly distribute 7 positions across the width from ~10% to ~85%
+                new Vector2(safeArea.Width * 0.10f, bottomY),   // Position 0 - far left
+                new Vector2(safeArea.Width * 0.225f, topY),     // Position 1 - left-center (higher)
+                new Vector2(safeArea.Width * 0.35f, bottomY),   // Position 2 - left-mid
+                new Vector2(safeArea.Width * 0.475f, topY),     // Position 3 - center (higher)
+                new Vector2(safeArea.Width * 0.60f, bottomY),   // Position 4 - right-mid
+                new Vector2(safeArea.Width * 0.725f, topY),     // Position 5 - right-center (higher)
+                new Vector2(safeArea.Width * 0.85f, bottomY)    // Position 6 - far right
             };
 
             // Initialize virtual cursor
@@ -154,16 +159,16 @@ namespace Blackjack
             // Add human player
             blackJackGame.AddPlayer(new BlackjackPlayer("Abe", blackJackGame));
 
-            // Add AI players
-            BlackjackAIPlayer player = new BlackjackAIPlayer("Benny", blackJackGame);
-            blackJackGame.AddPlayer(player);
-            player.Hit += player_Hit;
-            player.Stand += player_Stand;
-
-            player = new BlackjackAIPlayer("Chuck", blackJackGame);
-            blackJackGame.AddPlayer(player);
-            player.Hit += player_Hit;
-            player.Stand += player_Stand;
+            // Add AI players (6 total for 7-player game)
+            string[] aiNames = { "Benny", "Chuck", "Diana", "Eddie", "Fiona", "George" };
+            
+            for (int i = 0; i < aiNames.Length; i++)
+            {
+                BlackjackAIPlayer player = new BlackjackAIPlayer(aiNames[i], blackJackGame);
+                blackJackGame.AddPlayer(player);
+                player.Hit += player_Hit;
+                player.Stand += player_Stand;
+            }
 
             // Load UI assets
             string[] assets = { "blackjack", "bust", "lose", "push", "win", "pass", "Shuffle_" + theme };
@@ -183,15 +188,15 @@ namespace Blackjack
         /// <returns>The position for the player's hand on the game table.</returns>
         private Vector2 GetPlayerCardPosition(int player)
         {
-            switch (player)
+            // Support up to 7 players (indices 0-6)
+            if (player >= 0 && player < playerCardOffset.Length)
             {
-                case 0:
-                case 1:
-                case 2:
-                    return playerCardOffset[player];
-                default:
-                    throw new ArgumentException(
-                        "Player index should be between 0 and 2", "player");
+                return playerCardOffset[player];
+            }
+            else
+            {
+                throw new ArgumentException(
+                    $"Player index should be between 0 and {playerCardOffset.Length - 1}", "player");
             }
         }
 
