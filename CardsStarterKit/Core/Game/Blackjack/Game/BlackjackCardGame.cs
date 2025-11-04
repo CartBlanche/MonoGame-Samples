@@ -50,9 +50,6 @@ namespace Blackjack
         public BlackjackGameState State { get; set; }
         ScreenManager screenManager;
 
-        const int maxPlayers = 7;  // Expanded from 3 to support networked multiplayer
-        const int minPlayers = 1;
-
         /// <summary>
         /// Creates a new instance of the <see cref="BlackjackCardGame"/> class.
         /// </summary>
@@ -66,8 +63,8 @@ namespace Blackjack
         public BlackjackCardGame(Rectangle tableBounds, Vector2 dealerPosition,
             Func<int, Vector2> placeOrder, ScreenManager screenManager, string theme)
             : base(6, 0, CardSuit.AllSuits, CardsFramework.CardValue.NonJokers,
-            minPlayers, maxPlayers, new BlackJackTable(UIConstants.GetRingOffset(screenManager.SafeArea.Height), tableBounds,
-                dealerPosition, maxPlayers, placeOrder, theme, screenManager.Game, screenManager.SpriteBatch, screenManager.GlobalTransformation),
+            BlackjackConstants.MinPlayers, BlackjackConstants.MaxPlayers, new BlackJackTable(UIConstants.GetRingOffset(screenManager.SafeArea.Height), tableBounds,
+                dealerPosition, BlackjackConstants.MaxPlayers, placeOrder, theme, screenManager.Game, screenManager.SpriteBatch, screenManager.GlobalTransformation),
             theme, screenManager.Game)
         {
             dealerPlayer = new BlackjackPlayer("Dealer", this);
@@ -76,11 +73,11 @@ namespace Blackjack
 
             if (animatedHands == null)
             {
-                animatedHands = new AnimatedHandGameComponent[maxPlayers];
+                animatedHands = new AnimatedHandGameComponent[BlackjackConstants.MaxPlayers];
             }
             if (animatedSecondHands == null)
             {
-                animatedSecondHands = new AnimatedHandGameComponent[maxPlayers];
+                animatedSecondHands = new AnimatedHandGameComponent[BlackjackConstants.MaxPlayers];
             }
         }
 
@@ -626,17 +623,19 @@ namespace Blackjack
             int cardLocationInHand = animatedHand.GetCardLocationInHand(card);
             AnimatedCardsGameComponent cardComponent = animatedHand.GetCardGameComponent(cardLocationInHand);
 
-            // Add the transition animation
-            cardComponent.AddAnimation(
-                new TransitionGameComponentAnimation(GameTable.DealerPosition,
+            var cardAnimation = new TransitionGameComponentAnimation(GameTable.DealerPosition,
                 animatedHand.CurrentPosition +
                 animatedHand.GetCardRelativePosition(cardLocationInHand))
-                {
-                    StartTime = startTime,
-                    PerformBeforeStart = ShowComponent,
-                    PerformBeforSartArgs = cardComponent,
-                    PerformWhenDone = PlayDealSound
-                });
+            {
+                StartTime = startTime,
+                PerformBeforeStart = ShowComponent,
+                PerformBeforSartArgs = cardComponent,
+                PerformWhenDone = PlayDealSound
+            };
+            cardAnimation.Duration = duration;
+
+            // Add the transition animation
+            cardComponent.AddAnimation(cardAnimation);
 
             if (flipCard)
             {
