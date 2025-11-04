@@ -13,6 +13,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 using CardsFramework;
 using Microsoft.Xna.Framework.Input.Touch;
+using System.Globalization;
 
 namespace Blackjack
 {
@@ -156,8 +157,17 @@ namespace Blackjack
         private void InitializeGame()
         {
             blackJackGame.Initialize();
+
+            var defaultPlayerName = Environment.UserName;
+            if (string.IsNullOrEmpty(defaultPlayerName))
+            {
+                defaultPlayerName = "You";
+            }
+
+            TextInfo myTI = new CultureInfo("en-GB",false).TextInfo;
+
             // Add human player
-            blackJackGame.AddPlayer(new BlackjackPlayer("Abe", blackJackGame));
+            blackJackGame.AddPlayer(new BlackjackPlayer(myTI.ToTitleCase(defaultPlayerName), blackJackGame));
 
             // Add AI players (6 total for 7-player game)
             string[] aiNames = { "Benny", "Chuck", "Diana", "Eddie", "Fiona", "George" };
