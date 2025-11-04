@@ -429,6 +429,11 @@
 /processor:TextureProcessor
 /build:Images/UI/win.png
 
+#begin Images/UI/gradient.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/build:Images/UI/gradient.png
+
 #begin Images/youLose.png
 /importer:TextureImporter
 /processor:TextureProcessor
