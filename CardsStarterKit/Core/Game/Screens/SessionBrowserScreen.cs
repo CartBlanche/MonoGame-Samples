@@ -177,10 +177,11 @@ namespace Blackjack
             
             spriteBatch.Begin();
             
-            // Draw "Available Games" section header
+            // Draw "Available Games:" section header below the title if there are sessions
             if (availableSessions.Count > 0)
             {
-                Vector2 sectionPosition = new Vector2(ScreenManager.SafeArea.Left + 100, ScreenManager.SafeArea.Top + 160);
+                // Position below title (which is at SafeArea.Top + 80) and add some spacing
+                Vector2 sectionPosition = new Vector2(ScreenManager.SafeArea.Left + 100, ScreenManager.SafeArea.Top + 150);
                 spriteBatch.DrawString(font, "Available Games:", sectionPosition, Color.Yellow, 0f, Vector2.Zero, 0.9f, SpriteEffects.None, 0f);
             }
             

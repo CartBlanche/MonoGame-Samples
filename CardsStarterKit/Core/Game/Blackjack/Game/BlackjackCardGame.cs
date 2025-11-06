@@ -25,6 +25,9 @@ namespace Blackjack
         public bool IsNetworkGame { get; set; }
         public bool IsHost { get; set; }
 
+        // Public accessor for the players list (needed for network synchronization)
+        public System.Collections.Generic.List<CardsFramework.Player> Players => players;
+
         private int currentShuffleSeed;
 
         Dictionary<Player, string> playerHandValueTexts =
@@ -1709,6 +1712,33 @@ namespace Blackjack
         {
             currentShuffleSeed = seed;
             dealer.Shuffle(seed);
+        }
+
+        /// <summary>
+        /// Broadcasts the complete player list (including AI players) to all clients.
+        /// Should be called by the host after all players (human + AI) have been added.
+        /// </summary>
+        public void BroadcastPlayerList()
+        {
+            if (NetworkSession == null || !IsHost)
+                return;
+
+            var playerInfoList = new System.Collections.Generic.List<Networking.PlayerInfo>();
+            foreach (var player in players)
+            {
+                playerInfoList.Add(new Networking.PlayerInfo
+                {
+                    Name = player.Name,
+                    IsAI = player is BlackjackAIPlayer
+                });
+            }
+
+            var packet = new Networking.PlayerListSyncPacket { Players = playerInfoList };
+            var writer = new Microsoft.Xna.Framework.Net.PacketWriter();
+            writer.Write((byte)Networking.PacketType.PlayerListSync);
+            packet.Serialize(writer);
+
+            NetworkSession.LocalGamers[0].SendData(writer, Microsoft.Xna.Framework.Net.SendDataOptions.Reliable);
         }
 
         /// <summary>

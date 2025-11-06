@@ -346,7 +346,22 @@ namespace Blackjack
                 string playerName = player.Name;
                 bool isAI = player is BlackjackAIPlayer;
                 Color nameColor = isAI ? Color.Yellow : Color.Cyan; // Yellow for AI, Cyan for human
-                string displayName = isAI ? $"{playerName} (AI)" : playerName;
+                string displayName = playerName;
+                
+                // Add (AI) suffix for AI players
+                if (isAI)
+                {
+                    displayName = $"{playerName} (AI)";
+                }
+                // Add (Host) suffix for the first human player in network games
+                else if (cardGame is BlackjackCardGame blackjackGame && 
+                         blackjackGame.IsNetworkGame && 
+                         blackjackGame.NetworkSession != null &&
+                         playerIndex == 0)
+                {
+                    displayName = $"{playerName} (Host)";
+                    nameColor = Color.LightGreen; // Distinct color for host
+                }
                 
                 spriteBatch.DrawString(cardGame.Font, displayName,
                     basePosition + new Vector2(0, 40), nameColor, 0f, Vector2.Zero, 0.70f, SpriteEffects.None, 0f);

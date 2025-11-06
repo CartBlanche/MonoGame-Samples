@@ -169,6 +169,9 @@ namespace Blackjack
                 var packetType = (Blackjack.Networking.PacketType)packetReader.ReadByte();
                 switch (packetType)
                 {
+                    case Blackjack.Networking.PacketType.PlayerListSync:
+                        HandlePlayerListSyncPacket(sender, packetReader);
+                        break;
                     case Blackjack.Networking.PacketType.CardDealt:
                         HandleCardDealtPacket(sender, packetReader);
                         break;
@@ -185,6 +188,44 @@ namespace Blackjack
                     default:
                         // Unknown or unhandled packet type
                         break;
+                }
+            }
+        }
+
+        // Packet handlers
+        private void HandlePlayerListSyncPacket(NetworkGamer sender, PacketReader reader)
+        {
+            var packet = Blackjack.Networking.PlayerListSyncPacket.Deserialize(reader);
+            
+            // Only clients should process this - host already has the correct player list
+            if (networkSession != null && !networkSession.IsHost)
+            {
+                // Clear existing AI players (clients shouldn't have created any)
+                // But we need to recreate the full player list to match the host
+                
+                // The client should have already added human players in InitializeGame
+                // Now we need to add AI players to match the host's list
+                
+                System.Globalization.TextInfo myTI = new System.Globalization.CultureInfo("en-GB", false).TextInfo;
+                
+                // Get current player count (should be just human players)
+                int currentPlayerCount = blackJackGame.Players.Count;
+                
+                // Add any missing players from the packet
+                for (int i = currentPlayerCount; i < packet.Players.Count; i++)
+                {
+                    var playerInfo = packet.Players[i];
+                    if (playerInfo.IsAI)
+                    {
+                        // Add AI player (but don't wire up events - host controls AI)
+                        BlackjackAIPlayer aiPlayer = new BlackjackAIPlayer(playerInfo.Name, blackJackGame);
+                        blackJackGame.AddPlayer(aiPlayer);
+                    }
+                    else
+                    {
+                        // Add human player (shouldn't normally happen, but handle it)
+                        blackJackGame.AddPlayer(new BlackjackPlayer(myTI.ToTitleCase(playerInfo.Name), blackJackGame));
+                    }
                 }
             }
         }
@@ -329,6 +370,12 @@ namespace Blackjack
             for (int chipIndex = 0; chipIndex < assets.Length; chipIndex++)
             {
                 blackJackGame.LoadUITexture("UI", assets[chipIndex]);
+            }
+
+            // Host broadcasts the full player list to clients so they know about AI players
+            if (networkSession != null && networkSession.IsHost)
+            {
+                blackJackGame.BroadcastPlayerList();
             }
 
             blackJackGame.StartRound();
