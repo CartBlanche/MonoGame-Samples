@@ -152,6 +152,7 @@ namespace Blackjack
 
             base.Update(gameTime, otherScreenHasFocus, coveredByOtherScreen);
         }
+
         // Centralized network packet dispatcher
         private void ProcessNetworkPackets()
         {
@@ -236,8 +237,6 @@ namespace Blackjack
             }
         }
 
-        // ...existing code...
-
         /// <summary>
         /// Draw the screen
         /// </summary>
@@ -265,34 +264,48 @@ namespace Blackjack
             // Add players from lobby
             if (joinedPlayers != null && joinedPlayers.Count > 0)
             {
-                foreach (var playerName in joinedPlayers)
+                // Determine how many are human players (from network session)
+                int humanPlayerCount = joinedPlayers.Count;
+                if (networkSession != null)
                 {
-                    blackJackGame.AddPlayer(new BlackjackPlayer(myTI.ToTitleCase(playerName), blackJackGame));
+                    // In network games, only count actual network gamers as human players
+                    humanPlayerCount = networkSession.AllGamers.Count;
                 }
-                // Fill remaining slots with AI
-                string[] aiNames = { "Benny", "Chuck", "Diana", "Eddie", "Fiona", "George" };
-                int aiSlotsNeeded = 7 - joinedPlayers.Count;
-                for (int i = 0; i < aiSlotsNeeded && i < aiNames.Length; i++)
+
+                // Add human players
+                for (int i = 0; i < humanPlayerCount; i++)
                 {
-                    BlackjackAIPlayer player = new BlackjackAIPlayer(aiNames[i], blackJackGame);
-                    blackJackGame.AddPlayer(player);
-                    player.Hit += player_Hit;
-                    player.Stand += player_Stand;
+                    blackJackGame.AddPlayer(new BlackjackPlayer(myTI.ToTitleCase(joinedPlayers[i]), blackJackGame));
+                }
+
+                // Only the host creates AI players in network games
+                // In local games, always create AI players
+                if (networkSession == null || networkSession.IsHost)
+                {
+                    // Fill remaining slots with AI
+                    int aiSlotsNeeded = BlackjackConstants.MaxPlayers - humanPlayerCount;
+                    for (int i = 0; i < aiSlotsNeeded && i < BlackjackConstants.DefaultAINames.Length; i++)
+                    {
+                        BlackjackAIPlayer player = new BlackjackAIPlayer(BlackjackConstants.DefaultAINames[i], blackJackGame);
+                        blackJackGame.AddPlayer(player);
+                        player.Hit += player_Hit;
+                        player.Stand += player_Stand;
+                    }
                 }
             }
             else
             {
-                // Fallback: single player + 6 AI
+                // Fallback: single player + 6 AI (local game only)
                 var defaultPlayerName = Environment.UserName;
                 if (string.IsNullOrEmpty(defaultPlayerName))
                 {
                     defaultPlayerName = "You";
                 }
+
                 blackJackGame.AddPlayer(new BlackjackPlayer(myTI.ToTitleCase(defaultPlayerName), blackJackGame));
-                string[] aiNames = { "Benny", "Chuck", "Diana", "Eddie", "Fiona", "George" };
-                for (int i = 0; i < aiNames.Length; i++)
+                for (int i = 0; i < BlackjackConstants.DefaultAINames.Length; i++)
                 {
-                    BlackjackAIPlayer player = new BlackjackAIPlayer(aiNames[i], blackJackGame);
+                    BlackjackAIPlayer player = new BlackjackAIPlayer(BlackjackConstants.DefaultAINames[i], blackJackGame);
                     blackJackGame.AddPlayer(player);
                     player.Hit += player_Hit;
                     player.Stand += player_Stand;
@@ -420,6 +433,5 @@ namespace Blackjack
         {
             blackJackGame.Double();
         }
-
     }
 }

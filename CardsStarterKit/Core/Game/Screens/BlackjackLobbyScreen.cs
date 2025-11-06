@@ -17,7 +17,6 @@ namespace Blackjack
         MenuEntry startGameMenuEntry;
         MenuEntry leaveLobbyMenuEntry;
         List<string> joinedPlayers = new List<string>();
-        readonly string[] aiNames = { "Benny", "Chuck", "Diana", "Eddie", "Fiona", "George" };
         bool isHost;
         NetworkSession networkSession;
 
@@ -102,19 +101,12 @@ namespace Blackjack
             }
             else if (networkSession == null)
             {
-                // Local game - start immediately
-                var allPlayers = new List<string>(joinedPlayers);
-                int aiSlotsNeeded = 7 - allPlayers.Count;
-                for (int i = 0; i < aiSlotsNeeded && i < aiNames.Length; i++)
-                    allPlayers.Add(aiNames[i]);
-
-                // Exit all screens to clear the background and lobby screens
-                foreach (GameScreen screen in ScreenManager.GetScreens())
-                    screen.ExitScreen();
-
-                ScreenManager.AddScreen(new GameplayScreen(MainMenuScreen.Theme, allPlayers, null), null);
+                // TODO Display Message that network session is required to start game
             }
-            // If client in network game, do nothing - only host can start
+            else
+            {
+                // If client in network game, do nothing - only host can start
+            }
         }
 
         void LeaveLobbyMenuEntrySelected(object sender, EventArgs e)
@@ -162,10 +154,8 @@ namespace Blackjack
                 if (networkSession.SessionState == NetworkSessionState.Playing)
                 {
                     // Host started the game, transition all players
+                    // Only pass human player names - GameplayScreen will add AI players on host only
                     var allPlayers = new List<string>(joinedPlayers);
-                    int aiSlotsNeeded = 7 - allPlayers.Count;
-                    for (int i = 0; i < aiSlotsNeeded && i < aiNames.Length; i++)
-                        allPlayers.Add(aiNames[i]);
 
                     // Exit all screens to clear the background and lobby screens
                     foreach (GameScreen screen in ScreenManager.GetScreens())
