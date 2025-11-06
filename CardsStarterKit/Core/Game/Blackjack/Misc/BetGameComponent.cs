@@ -772,12 +772,23 @@ namespace Blackjack
         {
             // Finish the bet
             int playerIndex = GetCurrentPlayer();
+            int finalBetAmount = currentBet;
+            
             // If the player did not bet, show that he has passed on this round
             if (currentBet == 0)
             {
                 ((BlackjackCardGame)cardGame).ShowPlayerPass(playerIndex);
             }
+            
             ((BlackjackPlayer)players[playerIndex]).IsDoneBetting = true;
+            
+            // Broadcast bet to network (host only)
+            BlackjackCardGame blackjackGame = cardGame as BlackjackCardGame;
+            if (blackjackGame != null && blackjackGame.IsNetworkGame && blackjackGame.IsHost)
+            {
+                blackjackGame.BroadcastBetPlaced((byte)playerIndex, finalBetAmount);
+            }
+            
             currentChipComponent.Clear();
             currentBet = 0;
         }

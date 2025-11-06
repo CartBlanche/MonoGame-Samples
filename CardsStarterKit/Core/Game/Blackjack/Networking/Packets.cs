@@ -21,15 +21,20 @@ namespace Blackjack.Networking
 
     public class BetPlacedPacket
     {
+        public byte PlayerIndex { get; set; }
         public int BetAmount { get; set; }
+        
         public void Serialize(PacketWriter writer)
         {
+            writer.Write(PlayerIndex);
             writer.Write(BetAmount);
         }
+        
         public static BetPlacedPacket Deserialize(PacketReader reader)
         {
             return new BetPlacedPacket
             {
+                PlayerIndex = reader.ReadByte(),
                 BetAmount = reader.ReadInt32()
             };
         }

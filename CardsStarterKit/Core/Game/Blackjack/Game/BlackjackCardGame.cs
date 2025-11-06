@@ -565,11 +565,25 @@ namespace Blackjack
                             AddDealAnimation(card, animatedHands[playerIndex], true, dealDuration,
                                 DateTime.Now + TimeSpan.FromSeconds(
                                 dealDuration.TotalSeconds * (dealIndex * players.Count + playerIndex)));
+
+                            // Broadcast card dealt in network games (host only)
+                            if (IsNetworkGame && IsHost)
+                            {
+                                BroadcastCardDealt(card, (byte)playerIndex, false, HandTypes.First);
+                            }
                         }
                     }
                     // Deal a card to the dealer
                     card = dealer.DealCardToHand(dealerPlayer.Hand);
-                    AddDealAnimation(card, dealerHandComponent, dealIndex == 0, dealDuration, DateTime.Now);
+                    bool isHoleCard = (dealIndex == 0); // First dealer card is the hole card
+                    AddDealAnimation(card, dealerHandComponent, isHoleCard, dealDuration, DateTime.Now);
+
+                    // Broadcast dealer card in network games (host only)
+                    if (IsNetworkGame && IsHost)
+                    {
+                        // Use player index 255 to indicate dealer
+                        BroadcastCardDealt(card, 255, isHoleCard, HandTypes.First);
+                    }
                 }
             }
         }
@@ -1721,6 +1735,27 @@ namespace Blackjack
         }
 
         /// <summary>
+        /// Broadcasts a bet placed event to all players.
+        /// </summary>
+        public void BroadcastBetPlaced(byte playerIndex, int betAmount)
+        {
+            if (NetworkSession == null || !IsHost)
+                return;
+
+            var packet = new Networking.BetPlacedPacket
+            {
+                PlayerIndex = playerIndex,
+                BetAmount = betAmount
+            };
+
+            var writer = new Microsoft.Xna.Framework.Net.PacketWriter();
+            writer.Write((byte)Networking.PacketType.BetPlaced);
+            packet.Serialize(writer);
+
+            NetworkSession.LocalGamers[0].SendData(writer, Microsoft.Xna.Framework.Net.SendDataOptions.Reliable);
+        }
+
+        /// <summary>
         /// Broadcasts a turn change event.
         /// </summary>
         private void BroadcastTurnChanged(byte currentPlayerIndex)
@@ -1750,6 +1785,58 @@ namespace Blackjack
             packet.Serialize(writer);
 
             NetworkSession.LocalGamers[0].SendData(writer, Microsoft.Xna.Framework.Net.SendDataOptions.Reliable);
+        }
+
+        /// <summary>
+        /// Handles a card dealt packet received from the host (client-side).
+        /// Recreates the dealing action that happened on the host.
+        /// </summary>
+        public void HandleReceivedCardDealt(TraditionalCard card, byte playerIndex, bool faceDown, HandTypes handType)
+        {
+            // This method is called on clients when they receive a CardDealt packet from the host
+            // The deck is already synchronized via the shuffle seed, so cards are dealt in the same order
+            
+            if (playerIndex == 255)
+            {
+                // Dealer card
+                var dealtCard = dealer.DealCardToHand(dealerPlayer.Hand);
+                AddDealAnimation(dealtCard, dealerHandComponent, faceDown, dealDuration, DateTime.Now);
+            }
+            else if (playerIndex < players.Count)
+            {
+                // Player card
+                var player = (BlackjackPlayer)players[playerIndex];
+                Hand targetHand = (handType == HandTypes.First) ? player.Hand : player.SecondHand;
+                
+                var dealtCard = dealer.DealCardToHand(targetHand);
+                AddDealAnimation(dealtCard, animatedHands[playerIndex], !faceDown, dealDuration, DateTime.Now);
+            }
+        }
+
+        /// <summary>
+        /// Handles a bet placed packet received from the host (client-side).
+        /// Updates the player's bet state to match the host.
+        /// </summary>
+        public void HandleReceivedBetPlaced(byte playerIndex, int betAmount)
+        {
+            // This method is called on clients when they receive a BetPlaced packet from the host
+            if (playerIndex < players.Count)
+            {
+                var player = (BlackjackPlayer)players[playerIndex];
+                
+                if (betAmount == 0)
+                {
+                    // Player passed
+                    ShowPlayerPass(playerIndex);
+                }
+                else
+                {
+                    // Apply the bet (this updates balance and bet amount)
+                    player.Bet(betAmount);
+                }
+                
+                player.IsDoneBetting = true;
+            }
         }
     }
 }

@@ -7,14 +7,14 @@ namespace Blackjack.Networking
     {
         public static void Write(this PacketWriter writer, TraditionalCard card)
         {
-            writer.Write((byte)card.Type); // Suit
-            writer.Write((byte)card.Value); // Value
+            writer.Write((byte)card.Type); // Suit (fits in byte - max 0x08)
+            writer.Write((ushort)card.Value); // Value (needs ushort - max 0x4000)
         }
 
         public static TraditionalCard ReadCard(this PacketReader reader)
         {
             var suit = (CardSuit)reader.ReadByte();
-            var value = (CardValue)reader.ReadByte();
+            var value = (CardValue)reader.ReadUInt16();
             return TraditionalCard.Create(suit, value);
         }
 

@@ -193,14 +193,25 @@ namespace Blackjack
         private void HandleCardDealtPacket(NetworkGamer sender, PacketReader reader)
         {
             var packet = Blackjack.Networking.CardDealtPacket.Deserialize(reader);
-            // TODO: Apply card to correct player hand and update UI/animation
-            // This is called on clients when host deals a card
+            
+            // Only clients should process this - host already dealt the card locally
+            if (networkSession != null && !networkSession.IsHost)
+            {
+                // Forward to the game to handle the card dealing
+                blackJackGame.HandleReceivedCardDealt(packet.Card, packet.PlayerIndex, packet.FaceDown, packet.HandType);
+            }
         }
 
         private void HandleBetPlacedPacket(NetworkGamer sender, PacketReader reader)
         {
             var packet = Blackjack.Networking.BetPlacedPacket.Deserialize(reader);
-            // TODO: Update bet state for correct player
+            
+            // Only clients should process this - host already placed the bet locally
+            if (networkSession != null && !networkSession.IsHost)
+            {
+                // Forward to the game to handle the bet
+                blackJackGame.HandleReceivedBetPlaced(packet.PlayerIndex, packet.BetAmount);
+            }
         }
 
         private void HandlePlayerActionPacket(NetworkGamer sender, PacketReader reader)
