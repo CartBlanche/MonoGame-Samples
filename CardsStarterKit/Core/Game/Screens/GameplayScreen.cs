@@ -247,11 +247,22 @@ namespace Blackjack
         {
             var packet = Blackjack.Networking.BetPlacedPacket.Deserialize(reader);
             
-            // Only clients should process this - host already placed the bet locally
-            if (networkSession != null && !networkSession.IsHost)
+            if (networkSession != null)
             {
-                // Forward to the game to handle the bet
-                blackJackGame.HandleReceivedBetPlaced(packet.PlayerIndex, packet.BetAmount);
+                if (networkSession.IsHost)
+                {
+                    // Host receives bet from client
+                    // Apply the bet locally on the host
+                    blackJackGame.HandleReceivedBetPlaced(packet.PlayerIndex, packet.BetAmount);
+                    
+                    // Broadcast to all other clients (so all clients stay in sync)
+                    blackJackGame.BroadcastBetPlaced(packet.PlayerIndex, packet.BetAmount);
+                }
+                else
+                {
+                    // Client receives bet broadcast from host
+                    blackJackGame.HandleReceivedBetPlaced(packet.PlayerIndex, packet.BetAmount);
+                }
             }
         }
 
@@ -274,6 +285,9 @@ namespace Blackjack
                         break;
                     case Blackjack.Networking.BlackjackAction.Split:
                         blackJackGame.Split();
+                        break;
+                    case Blackjack.Networking.BlackjackAction.Insurance:
+                        blackJackGame.Insurance();
                         break;
                 }
             }

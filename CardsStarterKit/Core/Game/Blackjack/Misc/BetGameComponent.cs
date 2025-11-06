@@ -797,11 +797,20 @@ namespace Blackjack
             
             ((BlackjackPlayer)players[playerIndex]).IsDoneBetting = true;
             
-            // Broadcast bet to network (host only)
+            // Send/broadcast bet to network
             BlackjackCardGame blackjackGame = cardGame as BlackjackCardGame;
-            if (blackjackGame != null && blackjackGame.IsNetworkGame && blackjackGame.IsHost)
+            if (blackjackGame != null && blackjackGame.IsNetworkGame)
             {
-                blackjackGame.BroadcastBetPlaced((byte)playerIndex, finalBetAmount);
+                if (blackjackGame.IsHost)
+                {
+                    // Host broadcasts the bet to all clients
+                    blackjackGame.BroadcastBetPlaced((byte)playerIndex, finalBetAmount);
+                }
+                else
+                {
+                    // Client sends their bet to the host
+                    blackjackGame.SendBetPlaced((byte)playerIndex, finalBetAmount);
+                }
             }
             
             currentChipComponent.Clear();

@@ -55,7 +55,11 @@ namespace Blackjack
             startGameMenuEntry.Selected += StartGameMenuEntrySelected;
             leaveLobbyMenuEntry.Selected += LeaveLobbyMenuEntrySelected;
 
-            MenuEntries.Add(startGameMenuEntry);
+            // Only add "Start Game" button for the host
+            if (isHost)
+            {
+                MenuEntries.Add(startGameMenuEntry);
+            }
             MenuEntries.Add(leaveLobbyMenuEntry);
 
             base.LoadContent();

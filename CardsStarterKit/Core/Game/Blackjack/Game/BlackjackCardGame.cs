@@ -1423,6 +1423,19 @@ namespace Blackjack
         }
 
         /// <summary>
+        /// Performs the "Insurance" action for the current player.
+        /// </summary>
+        public void Insurance()
+        {
+            BlackjackPlayer player = (BlackjackPlayer)GetCurrentPlayer();
+            if (player == null)
+                return;
+            player.IsInsurance = true;
+            player.Balance -= player.BetAmount / 2f;
+            betGameComponent.AddChips(players.IndexOf(player), player.BetAmount / 2, true, false);
+        }
+
+        /// <summary>
         /// Changes the visiblility of most game buttons.
         /// </summary>
         /// <param name="visible">True to make the buttons visible, false to make
@@ -1593,12 +1606,16 @@ namespace Blackjack
         /// <see cref="System.EventArgs"/> instance containing the event data.</param>
         void Insurance_Click(object sender, EventArgs e)
         {
-            BlackjackPlayer player = (BlackjackPlayer)GetCurrentPlayer();
-            if (player == null)
-                return;
-            player.IsInsurance = true;
-            player.Balance -= player.BetAmount / 2f;
-            betGameComponent.AddChips(players.IndexOf(player), player.BetAmount / 2, true, false);
+            if (IsNetworkGame && !IsHost)
+            {
+                // Client sends action to host
+                SendPlayerAction(Networking.BlackjackAction.Insurance);
+            }
+            else
+            {
+                // Host or local game executes action
+                Insurance();
+            }
             showInsurance = false;
         }
 
@@ -1624,7 +1641,16 @@ namespace Blackjack
         /// <see cref="System.EventArgs"/> instance containing the event data.</param>
         void Hit_Click(object sender, EventArgs e)
         {
-            Hit();
+            if (IsNetworkGame && !IsHost)
+            {
+                // Client sends action to host
+                SendPlayerAction(Networking.BlackjackAction.Hit);
+            }
+            else
+            {
+                // Host or local game executes action
+                Hit();
+            }
             showInsurance = false;
         }
 
@@ -1636,7 +1662,16 @@ namespace Blackjack
         /// <see cref="System.EventArgs"/> instance containing the event data.</param>
         void Stand_Click(object sender, EventArgs e)
         {
-            Stand();
+            if (IsNetworkGame && !IsHost)
+            {
+                // Client sends action to host
+                SendPlayerAction(Networking.BlackjackAction.Stand);
+            }
+            else
+            {
+                // Host or local game executes action
+                Stand();
+            }
             showInsurance = false;
         }
 
@@ -1648,7 +1683,16 @@ namespace Blackjack
         /// <see cref="System.EventArgs"/> instance containing the event data.</param>
         void Double_Click(object sender, EventArgs e)
         {
-            Double();
+            if (IsNetworkGame && !IsHost)
+            {
+                // Client sends action to host
+                SendPlayerAction(Networking.BlackjackAction.Double);
+            }
+            else
+            {
+                // Host or local game executes action
+                Double();
+            }
             showInsurance = false;
         }
 
@@ -1660,7 +1704,16 @@ namespace Blackjack
         /// <see cref="System.EventArgs"/> instance containing the event data.</param>
         void Split_Click(object sender, EventArgs e)
         {
-            Split();
+            if (IsNetworkGame && !IsHost)
+            {
+                // Client sends action to host
+                SendPlayerAction(Networking.BlackjackAction.Split);
+            }
+            else
+            {
+                // Host or local game executes action
+                Split();
+            }
             showInsurance = false;
         }
 
@@ -1770,6 +1823,27 @@ namespace Blackjack
         public void BroadcastBetPlaced(byte playerIndex, int betAmount)
         {
             if (NetworkSession == null || !IsHost)
+                return;
+
+            var packet = new Networking.BetPlacedPacket
+            {
+                PlayerIndex = playerIndex,
+                BetAmount = betAmount
+            };
+
+            var writer = new Microsoft.Xna.Framework.Net.PacketWriter();
+            writer.Write((byte)Networking.PacketType.BetPlaced);
+            packet.Serialize(writer);
+
+            NetworkSession.LocalGamers[0].SendData(writer, Microsoft.Xna.Framework.Net.SendDataOptions.Reliable);
+        }
+
+        /// <summary>
+        /// Sends a bet placed event from client to host.
+        /// </summary>
+        public void SendBetPlaced(byte playerIndex, int betAmount)
+        {
+            if (NetworkSession == null || NetworkSession.LocalGamers.Count == 0)
                 return;
 
             var packet = new Networking.BetPlacedPacket
