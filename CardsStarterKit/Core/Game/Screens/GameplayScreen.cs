@@ -14,6 +14,7 @@ using Microsoft.Xna.Framework.Input;
 using CardsFramework;
 using Microsoft.Xna.Framework.Input.Touch;
 using System.Globalization;
+using Microsoft.Xna.Framework.Net;
 
 namespace Blackjack
 {
@@ -30,10 +31,12 @@ namespace Blackjack
 
         Vector2[] playerCardOffset;
 
+        NetworkSession networkSession;
+
         /// <summary>
         /// Initializes a new instance of the screen.
         /// </summary>
-        public GameplayScreen(string theme)
+        public GameplayScreen(string theme, List<string> joinedPlayers = null, NetworkSession networkSession = null)
         {
             TransitionOnTime = TimeSpan.FromSeconds(0.0);
             TransitionOffTime = TimeSpan.FromSeconds(0.5);
@@ -41,7 +44,11 @@ namespace Blackjack
             EnabledGestures = GestureType.Tap;
 
             this.theme = theme;
+            this.joinedPlayers = joinedPlayers;
+            this.networkSession = networkSession;
         }
+
+        private List<string> joinedPlayers;
 
         /// <summary>
         /// Load content and initializes the actual game.
@@ -80,6 +87,13 @@ namespace Blackjack
             blackJackGame = new BlackjackCardGame(safeArea, new Vector2(safeArea.Left + safeArea.Width / 2 - 50, safeArea.Top + 20),
                 GetPlayerCardPosition, ScreenManager, theme);
 
+            // Wire up network session if in multiplayer mode
+            if (networkSession != null)
+            {
+                blackJackGame.NetworkSession = networkSession;
+                blackJackGame.IsNetworkGame = true;
+                blackJackGame.IsHost = networkSession.IsHost;
+            }
 
             InitializeGame();
 
@@ -133,8 +147,96 @@ namespace Blackjack
                 blackJackGame.Update(gameTime);
             }
 
+            // Centralized network packet dispatcher
+            ProcessNetworkPackets();
+
             base.Update(gameTime, otherScreenHasFocus, coveredByOtherScreen);
         }
+        // Centralized network packet dispatcher
+        private void ProcessNetworkPackets()
+        {
+            if (networkSession == null || networkSession.LocalGamers.Count == 0)
+                return;
+
+            var localGamer = networkSession.LocalGamers[0];
+            var packetReader = new PacketReader();
+            while (localGamer.IsDataAvailable)
+            {
+                NetworkGamer sender;
+                localGamer.ReceiveData(packetReader, out sender);
+                // Read packet type (assume PacketType is a byte)
+                var packetType = (Blackjack.Networking.PacketType)packetReader.ReadByte();
+                switch (packetType)
+                {
+                    case Blackjack.Networking.PacketType.CardDealt:
+                        HandleCardDealtPacket(sender, packetReader);
+                        break;
+                    case Blackjack.Networking.PacketType.BetPlaced:
+                        HandleBetPlacedPacket(sender, packetReader);
+                        break;
+                    case Blackjack.Networking.PacketType.PlayerAction:
+                        HandlePlayerActionPacket(sender, packetReader);
+                        break;
+                    case Blackjack.Networking.PacketType.ShuffleSeed:
+                        HandleShuffleSeedPacket(sender, packetReader);
+                        break;
+                    // Add more cases for other packet types as needed
+                    default:
+                        // Unknown or unhandled packet type
+                        break;
+                }
+            }
+        }
+
+        // Example packet handlers (implement actual logic as needed)
+        private void HandleCardDealtPacket(NetworkGamer sender, PacketReader reader)
+        {
+            var packet = Blackjack.Networking.CardDealtPacket.Deserialize(reader);
+            // TODO: Apply card to correct player hand and update UI/animation
+            // This is called on clients when host deals a card
+        }
+
+        private void HandleBetPlacedPacket(NetworkGamer sender, PacketReader reader)
+        {
+            var packet = Blackjack.Networking.BetPlacedPacket.Deserialize(reader);
+            // TODO: Update bet state for correct player
+        }
+
+        private void HandlePlayerActionPacket(NetworkGamer sender, PacketReader reader)
+        {
+            var packet = Blackjack.Networking.PlayerActionPacket.Deserialize(reader);
+            // Host receives action from client and processes it
+            if (networkSession != null && networkSession.IsHost)
+            {
+                switch (packet.Action)
+                {
+                    case Blackjack.Networking.BlackjackAction.Hit:
+                        blackJackGame.Hit();
+                        break;
+                    case Blackjack.Networking.BlackjackAction.Stand:
+                        blackJackGame.Stand();
+                        break;
+                    case Blackjack.Networking.BlackjackAction.Double:
+                        blackJackGame.Double();
+                        break;
+                    case Blackjack.Networking.BlackjackAction.Split:
+                        blackJackGame.Split();
+                        break;
+                }
+            }
+        }
+
+        private void HandleShuffleSeedPacket(NetworkGamer sender, PacketReader reader)
+        {
+            var packet = Blackjack.Networking.ShuffleSeedPacket.Deserialize(reader);
+            // Client receives shuffle seed from host
+            if (networkSession != null && !networkSession.IsHost)
+            {
+                blackJackGame.ReceiveShuffleSeed(packet.Seed);
+            }
+        }
+
+        // ...existing code...
 
         /// <summary>
         /// Draw the screen
@@ -158,26 +260,43 @@ namespace Blackjack
         {
             blackJackGame.Initialize();
 
-            var defaultPlayerName = Environment.UserName;
-            if (string.IsNullOrEmpty(defaultPlayerName))
+            TextInfo myTI = new CultureInfo("en-GB", false).TextInfo;
+
+            // Add players from lobby
+            if (joinedPlayers != null && joinedPlayers.Count > 0)
             {
-                defaultPlayerName = "You";
+                foreach (var playerName in joinedPlayers)
+                {
+                    blackJackGame.AddPlayer(new BlackjackPlayer(myTI.ToTitleCase(playerName), blackJackGame));
+                }
+                // Fill remaining slots with AI
+                string[] aiNames = { "Benny", "Chuck", "Diana", "Eddie", "Fiona", "George" };
+                int aiSlotsNeeded = 7 - joinedPlayers.Count;
+                for (int i = 0; i < aiSlotsNeeded && i < aiNames.Length; i++)
+                {
+                    BlackjackAIPlayer player = new BlackjackAIPlayer(aiNames[i], blackJackGame);
+                    blackJackGame.AddPlayer(player);
+                    player.Hit += player_Hit;
+                    player.Stand += player_Stand;
+                }
             }
-
-            TextInfo myTI = new CultureInfo("en-GB",false).TextInfo;
-
-            // Add human player
-            blackJackGame.AddPlayer(new BlackjackPlayer(myTI.ToTitleCase(defaultPlayerName), blackJackGame));
-
-            // Add AI players (6 total for 7-player game)
-            string[] aiNames = { "Benny", "Chuck", "Diana", "Eddie", "Fiona", "George" };
-            
-            for (int i = 0; i < aiNames.Length; i++)
+            else
             {
-                BlackjackAIPlayer player = new BlackjackAIPlayer(aiNames[i], blackJackGame);
-                blackJackGame.AddPlayer(player);
-                player.Hit += player_Hit;
-                player.Stand += player_Stand;
+                // Fallback: single player + 6 AI
+                var defaultPlayerName = Environment.UserName;
+                if (string.IsNullOrEmpty(defaultPlayerName))
+                {
+                    defaultPlayerName = "You";
+                }
+                blackJackGame.AddPlayer(new BlackjackPlayer(myTI.ToTitleCase(defaultPlayerName), blackJackGame));
+                string[] aiNames = { "Benny", "Chuck", "Diana", "Eddie", "Fiona", "George" };
+                for (int i = 0; i < aiNames.Length; i++)
+                {
+                    BlackjackAIPlayer player = new BlackjackAIPlayer(aiNames[i], blackJackGame);
+                    blackJackGame.AddPlayer(player);
+                    player.Hit += player_Hit;
+                    player.Stand += player_Stand;
+                }
             }
 
             // Load UI assets
@@ -301,5 +420,6 @@ namespace Blackjack
         {
             blackJackGame.Double();
         }
+
     }
 }

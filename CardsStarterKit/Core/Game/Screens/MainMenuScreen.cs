@@ -57,7 +57,8 @@ namespace Blackjack
             foreach (GameScreen screen in ScreenManager.GetScreens())
                 screen.ExitScreen();
 
-            ScreenManager.AddScreen(new GameplayScreen(Theme), null);
+            ScreenManager.AddScreen(new BackgroundScreen(), null);
+            ScreenManager.AddScreen(new SessionBrowserScreen(), null);
         }
 
         /// <summary>

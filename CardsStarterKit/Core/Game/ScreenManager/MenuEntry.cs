@@ -10,9 +10,30 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Blackjack;
 using CardsFramework;
+using Microsoft.Xna.Framework.Net;
 
 namespace GameStateManagement
 {
+    /// <summary>
+    /// MenuEntry subclass for displaying AvailableNetworkSession info.
+    /// </summary>
+    class AvailableSessionMenuEntry : MenuEntry
+    {
+        public AvailableNetworkSession AvailableSession { get; }
+
+        public AvailableSessionMenuEntry(AvailableNetworkSession session)
+            : base(GetMenuItemText(session))
+        {
+            AvailableSession = session;
+        }
+
+        static string GetMenuItemText(AvailableNetworkSession session)
+        {
+            int totalSlots = session.CurrentGamerCount + session.OpenPublicGamerSlots;
+            return $"{session.HostGamertag} ({session.CurrentGamerCount}/{totalSlots})";
+        }
+    }
+    
     /// <summary>
     /// Helper class represents a single entry in a MenuScreen. By default this
     /// just draws the entry text string, but it can be customized to display menu
@@ -58,6 +79,11 @@ namespace GameStateManagement
         public float Scale { get; set; }
 
         public float Rotation { get; set; }
+
+        /// <summary>
+        /// Optional tag for storing custom data (e.g., session reference).
+        /// </summary>
+        public object Tag { get; set; }
 
         /// <summary>
         /// Event raised when the menu entry is selected.
@@ -158,17 +184,14 @@ namespace GameStateManagement
         private Vector2 getTextPosition(MenuScreen screen)
         {
             Vector2 textPosition = Vector2.Zero;
-            if (Scale == 1f)
-            {
-                textPosition = new Vector2((int)destination.X + destination.Width / 2 - GetWidth(screen) / 2,
-                                   (int)destination.Y);
-            }
-            else
-            {
-                textPosition = new Vector2(
-                    (int)destination.X + (destination.Width / 2 - ((GetWidth(screen) / 2) * Scale)),
-                                 (int)destination.Y + (GetHeight(screen) - GetHeight(screen) * Scale) / 2);
-            }
+            
+            // Calculate horizontal centering
+            float centeredX = destination.X + (destination.Width / 2.0f) - (GetWidth(screen) / 2.0f) * Scale;
+            
+            // Calculate vertical centering
+            float centeredY = destination.Y + (destination.Height / 2.0f) - (GetHeight(screen) / 2.0f) * Scale;
+            
+            textPosition = new Vector2(centeredX, centeredY);
 
             return textPosition;
         }

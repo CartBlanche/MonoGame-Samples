@@ -21,6 +21,12 @@ namespace Blackjack
 {
     class BlackjackCardGame : CardsGame
     {
+        public Microsoft.Xna.Framework.Net.NetworkSession NetworkSession { get; set; }
+        public bool IsNetworkGame { get; set; }
+        public bool IsHost { get; set; }
+
+        private int currentShuffleSeed;
+
         Dictionary<Player, string> playerHandValueTexts =
             new Dictionary<Player, string>();
         Dictionary<Player, string> playerSecondHandValueTexts =
@@ -972,7 +978,29 @@ namespace Blackjack
         {
             playerHandValueTexts.Clear();
             AudioManager.PlaySound("Shuffle");
-            dealer.Shuffle();
+
+            // Generate shuffle seed (host only) or wait for it (clients)
+            if (IsNetworkGame && IsHost)
+            {
+                // Host generates a deterministic seed
+                currentShuffleSeed = Environment.TickCount;
+                dealer.Shuffle(currentShuffleSeed);
+
+                // Broadcast shuffle seed to all clients
+                BroadcastShuffleSeed(currentShuffleSeed);
+            }
+            else if (IsNetworkGame && !IsHost)
+            {
+                // Client waits for shuffle seed from host
+                // The shuffle will be performed when the ShuffleSeedPacket is received
+                // For now, just mark that we're waiting
+            }
+            else
+            {
+                // Local game - shuffle normally
+                dealer.Shuffle();
+            }
+
             DisplayPlayingHands();
             State = BlackjackGameState.Shuffling;
         }
@@ -1642,6 +1670,86 @@ namespace Blackjack
 
             screenManager.AddScreen(new BackgroundScreen(), null);
             screenManager.AddScreen(new MainMenuScreen(), null);
+        }
+
+        /// <summary>
+        /// Broadcasts the shuffle seed to all players in the network session.
+        /// </summary>
+        private void BroadcastShuffleSeed(int seed)
+        {
+            if (NetworkSession == null || !IsHost)
+                return;
+
+            var packet = new Networking.ShuffleSeedPacket { Seed = seed };
+            var writer = new Microsoft.Xna.Framework.Net.PacketWriter();
+            writer.Write((byte)Networking.PacketType.ShuffleSeed);
+            packet.Serialize(writer);
+
+            NetworkSession.LocalGamers[0].SendData(writer, Microsoft.Xna.Framework.Net.SendDataOptions.Reliable);
+        }
+
+        /// <summary>
+        /// Handles receiving a shuffle seed from the host.
+        /// </summary>
+        public void ReceiveShuffleSeed(int seed)
+        {
+            currentShuffleSeed = seed;
+            dealer.Shuffle(seed);
+        }
+
+        /// <summary>
+        /// Broadcasts a card dealt event to all players.
+        /// </summary>
+        private void BroadcastCardDealt(TraditionalCard card, byte playerIndex, bool faceDown, HandTypes handType)
+        {
+            if (NetworkSession == null || !IsHost)
+                return;
+
+            var packet = new Networking.CardDealtPacket
+            {
+                Card = card,
+                PlayerIndex = playerIndex,
+                FaceDown = faceDown,
+                HandType = handType
+            };
+
+            var writer = new Microsoft.Xna.Framework.Net.PacketWriter();
+            writer.Write((byte)Networking.PacketType.CardDealt);
+            packet.Serialize(writer);
+
+            NetworkSession.LocalGamers[0].SendData(writer, Microsoft.Xna.Framework.Net.SendDataOptions.Reliable);
+        }
+
+        /// <summary>
+        /// Broadcasts a turn change event.
+        /// </summary>
+        private void BroadcastTurnChanged(byte currentPlayerIndex)
+        {
+            if (NetworkSession == null || !IsHost)
+                return;
+
+            var packet = new Networking.TurnChangedPacket { CurrentPlayerIndex = currentPlayerIndex };
+            var writer = new Microsoft.Xna.Framework.Net.PacketWriter();
+            writer.Write((byte)Networking.PacketType.TurnChanged);
+            packet.Serialize(writer);
+
+            NetworkSession.LocalGamers[0].SendData(writer, Microsoft.Xna.Framework.Net.SendDataOptions.Reliable);
+        }
+
+        /// <summary>
+        /// Sends a player action to the host.
+        /// </summary>
+        public void SendPlayerAction(Networking.BlackjackAction action)
+        {
+            if (NetworkSession == null || NetworkSession.LocalGamers.Count == 0)
+                return;
+
+            var packet = new Networking.PlayerActionPacket { Action = action };
+            var writer = new Microsoft.Xna.Framework.Net.PacketWriter();
+            writer.Write((byte)Networking.PacketType.PlayerAction);
+            packet.Serialize(writer);
+
+            NetworkSession.LocalGamers[0].SendData(writer, Microsoft.Xna.Framework.Net.SendDataOptions.Reliable);
         }
     }
 }
