@@ -254,7 +254,7 @@ public class BepuPhysicsProvider : IPhysicsProvider
                 Point = origin + direction * hitHandler.T,
                 Normal = hitHandler.Normal,
                 Distance = hitHandler.T,
-                Body = hitHandler.HitBody
+                Body = hitHandler.HitBody,
                 // UserData is automatically provided by Body.UserData property
             };
             return true;
@@ -419,6 +419,22 @@ internal class BepuPhysicsBody : IPhysicsBody
     // Store shape extents for raycast testing
     public Vector3 HalfExtents { get; set; }
     
+    // Collision events
+    public event Action<CollisionInfo>? OnCollisionEnter;
+    public event Action<CollisionInfo>? OnCollisionStay;
+    public event Action<CollisionInfo>? OnCollisionExit;
+    public event Action<IPhysicsBody>? OnTriggerEnter;
+    public event Action<IPhysicsBody>? OnTriggerStay;
+    public event Action<IPhysicsBody>? OnTriggerExit;
+    
+    // Internal: Fire collision events
+    internal void FireCollisionEnter(CollisionInfo info) => OnCollisionEnter?.Invoke(info);
+    internal void FireCollisionStay(CollisionInfo info) => OnCollisionStay?.Invoke(info);
+    internal void FireCollisionExit(CollisionInfo info) => OnCollisionExit?.Invoke(info);
+    internal void FireTriggerEnter(IPhysicsBody other) => OnTriggerEnter?.Invoke(other);
+    internal void FireTriggerStay(IPhysicsBody other) => OnTriggerStay?.Invoke(other);
+    internal void FireTriggerExit(IPhysicsBody other) => OnTriggerExit?.Invoke(other);
+    
     public Vector3 Position
     {
         get
@@ -581,24 +597,24 @@ unsafe struct NarrowPhaseCallbacks : INarrowPhaseCallbacks
 struct PoseIntegratorCallbacks : IPoseIntegratorCallbacks
 {
     private Vector3 _gravity;
-    
+
     public PoseIntegratorCallbacks(Vector3 gravity)
     {
         _gravity = gravity;
     }
-    
+
     public readonly AngularIntegrationMode AngularIntegrationMode => AngularIntegrationMode.Nonconserving;
     public readonly bool AllowSubstepsForUnconstrainedBodies => false;
     public readonly bool IntegrateVelocityForKinematics => false;
-    
+
     public void Initialize(Simulation simulation)
     {
     }
-    
+
     public readonly void PrepareForIntegration(float dt)
     {
     }
-    
+
     public void IntegrateVelocity(Vector<int> bodyIndices, Vector3Wide position, QuaternionWide orientation, BodyInertiaWide localInertia, Vector<int> integrationMask, int workerIndex, Vector<float> dt, ref BodyVelocityWide velocity)
     {
         // Apply gravity to all Y components

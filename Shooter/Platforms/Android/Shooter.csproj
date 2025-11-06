@@ -18,11 +18,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Shooter.Core\Shooter.Core.csproj" />
-    <ProjectReference Include="..\..\Shooter.Physics\Shooter.Physics.csproj" />
-    <ProjectReference Include="..\..\Shooter.Graphics\Shooter.Graphics.csproj" />
-    <ProjectReference Include="..\..\Shooter.Gameplay\Shooter.Gameplay.csproj" />
-    <ProjectReference Include="..\..\Shooter.UI\Shooter.UI.csproj" />
+    <ProjectReference Include="..\..\Core\Shooter.Core.csproj" />
+    <ProjectReference Include="..\..\Physics\Shooter.Physics.csproj" />
+    <ProjectReference Include="..\..\Graphics\Shooter.Graphics.csproj" />
+    <ProjectReference Include="..\..\Gameplay\Shooter.Gameplay.csproj" />
+    <ProjectReference Include="..\..\UI\Shooter.UI.csproj" />
   </ItemGroup>
 
   <ItemGroup>
@@ -30,9 +30,8 @@
     <PackageReference Include="MonoGame.Content.Builder.Task" Version="3.8.*" />
   </ItemGroup>
 
-  <!-- Content pipeline disabled until Phase 1 - no assets yet -->
-  <!-- <ItemGroup>
-    <MonoGameContentReference Include="Content\Content.mgcb" />
-  </ItemGroup> -->
+  <ItemGroup>
+    <MonoGameContentReference Include="..\..\Core\Content\Content.mgcb" />
+  </ItemGroup>
 
 </Project>

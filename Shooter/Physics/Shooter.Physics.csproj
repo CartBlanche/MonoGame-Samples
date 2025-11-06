@@ -5,11 +5,15 @@
     <LangVersion>latest</LangVersion>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Shooter.Core\Shooter.Core.csproj" />
-    <ProjectReference Include="..\Shooter.Physics\Shooter.Physics.csproj" />
+    <ProjectReference Include="..\Core\Shooter.Core.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="BepuPhysics" Version="2.4.0" />
   </ItemGroup>
 
 </Project>

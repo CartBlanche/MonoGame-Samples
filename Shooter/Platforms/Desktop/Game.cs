@@ -294,22 +294,25 @@ public class ShooterGame : Game
     protected override void LoadContent()
     {
         _spriteBatch = new SpriteBatch(GraphicsDevice);
-        
-        // TODO Phase 1: Load content via Content Pipeline
-        // TODO Phase 5: Load Gum UI screens
-        
-        Console.WriteLine("Content loaded (placeholder - Phase 1 will add actual content)");
-        
+
+        // Load SpriteFont for HUD
+        SpriteFont hudFont = Content.Load<SpriteFont>("DefaultFont");
+
         // Create Phase 2 test scene AFTER all services are initialized
         CreateTestScene();
-        
-        // Load HUD content after scene is created
+
+        // Wire up HUD overlay in ForwardGraphicsProvider
+        var graphicsProvider = ServiceLocator.Get<IGraphicsProvider>() as ForwardGraphicsProvider;
         var playerEntity = _sceneManager?.ActiveScene?.FindEntitiesByTag("Player").FirstOrDefault();
-        if (playerEntity != null)
+        if (graphicsProvider != null && playerEntity != null)
         {
-            var hud = playerEntity.GetComponent<Gameplay.Components.HUD>();
-            hud?.LoadContent(GraphicsDevice, _spriteBatch);
-            Console.WriteLine("[Game] HUD content loaded");
+            var weaponController = playerEntity.GetComponent<Gameplay.Components.WeaponController>();
+            if (weaponController != null)
+            {
+                graphicsProvider.SetHUDFont(hudFont);
+                graphicsProvider.SetPlayerWeaponController(weaponController);
+                Console.WriteLine("[Game] HUD overlay wired up");
+            }
         }
     }
 

@@ -5,15 +5,15 @@
     <LangVersion>latest</LangVersion>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Shooter.Core\Shooter.Core.csproj" />
+  <ProjectReference Include="..\Core\Shooter.Core.csproj" />
+  <ProjectReference Include="..\Gameplay\Shooter.Gameplay.csproj" />
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="BepuPhysics" Version="2.4.0" />
+    <PackageReference Include="MonoGame.Framework.DesktopGL" Version="3.8.2.1105" />
   </ItemGroup>
 
 </Project>

@@ -22,8 +22,8 @@ namespace Shooter.Gameplay.Components
         // Weapon management
         private Weapon[] _weapons;
         private int _currentWeaponIndex = -1;
-        public Weapon CurrentWeapon => _currentWeaponIndex >= 0 && _currentWeaponIndex < _weapons.Length 
-            ? _weapons[_currentWeaponIndex] 
+        public Weapon CurrentWeapon => _currentWeaponIndex >= 0 && _currentWeaponIndex < _weapons.Length
+            ? _weapons[_currentWeaponIndex]
             : null;
 
         // Input tracking
@@ -146,9 +146,17 @@ namespace Shooter.Gameplay.Components
             // Attempt to fire
             if (shouldFire)
             {
-                // Get firing origin and direction from camera (already System.Numerics.Vector3)
                 Vector3 origin = _camera.Position;
                 Vector3 direction = _camera.Forward;
+
+                if (!CurrentWeapon.CanFire)
+                {
+                    if (CurrentWeapon.IsReloading)
+                        Console.WriteLine($"Cannot fire {CurrentWeapon.Name}: Reloading...");
+                    else if (CurrentWeapon.CurrentAmmoInMag <= 0)
+                        Console.WriteLine($"Cannot fire {CurrentWeapon.Name}: Out of ammo! Press R to reload.");
+                    return;
+                }
 
                 CurrentWeapon.TryFire(origin, direction);
             }
@@ -166,10 +174,19 @@ namespace Shooter.Gameplay.Components
 
             if (_inputService.IsKeyPressed(Microsoft.Xna.Framework.Input.Keys.R))
             {
+                if (CurrentWeapon.CurrentReserveAmmo <= 0)
+                {
+                    Console.WriteLine($"Cannot reload {CurrentWeapon.Name}: No reserve ammo left!");
+                    return;
+                }
                 CurrentWeapon.StartReload();
                 if (CurrentWeapon.IsReloading)
                 {
                     Console.WriteLine($"Reloading {CurrentWeapon.Name}...");
+                }
+                else
+                {
+                    Console.WriteLine($"Cannot reload {CurrentWeapon.Name}: Magazine is already full or reloading in progress.");
                 }
             }
         }
@@ -244,7 +261,7 @@ namespace Shooter.Gameplay.Components
             if (_currentWeaponIndex == slotIndex)
             {
                 _currentWeaponIndex = -1;
-                
+
                 // Try to find another weapon to switch to
                 for (int i = 0; i < _weapons.Length; i++)
                 {
@@ -288,6 +305,19 @@ namespace Shooter.Gameplay.Components
             // Fire the hitscan raycast through the projectile system
             // Pass Owner as the attacker for damage attribution
             var hit = _projectileSystem.FireHitscan(origin, direction, damage, CurrentWeapon?.Range ?? 1000f, Owner);
+
+            // Print feedback if we hit an entity with health
+            if (hit.UserData is Shooter.Core.Entities.Entity hitEntity)
+            {
+                var health = hitEntity.GetComponent<Shooter.Gameplay.Components.Health>();
+                if (health != null)
+                {
+                    if (health.IsDead)
+                        Console.WriteLine($"[WeaponController] {hitEntity.Name} was killed!");
+                    else
+                        Console.WriteLine($"[WeaponController] {hitEntity.Name} took damage. HP: {health.CurrentHealth:0.0}/{health.MaxHealth:0.0}");
+                }
+            }
         }
 
         /// <summary>

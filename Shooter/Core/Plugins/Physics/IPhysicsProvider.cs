@@ -181,6 +181,43 @@ public class CapsuleShape : ColliderShape
 }
 
 /// <summary>
+/// Information about a collision between two bodies.
+/// Similar to Unity's Collision class.
+/// </summary>
+public struct CollisionInfo
+{
+    /// <summary>
+    /// The other body involved in the collision.
+    /// Similar to Collision.collider in Unity.
+    /// </summary>
+    public IPhysicsBody OtherBody;
+
+    /// <summary>
+    /// Contact point in world space.
+    /// Similar to Collision.contacts[0].point in Unity.
+    /// </summary>
+    public Vector3 ContactPoint;
+
+    /// <summary>
+    /// Contact normal (points from other body toward this body).
+    /// Similar to Collision.contacts[0].normal in Unity.
+    /// </summary>
+    public Vector3 ContactNormal;
+
+    /// <summary>
+    /// Relative velocity at the contact point.
+    /// Similar to Collision.relativeVelocity in Unity.
+    /// </summary>
+    public Vector3 RelativeVelocity;
+
+    /// <summary>
+    /// Impulse applied to resolve the collision.
+    /// Similar to Collision.impulse in Unity.
+    /// </summary>
+    public float ImpulseMagnitude;
+}
+
+/// <summary>
 /// Interface for a physics body in the simulation.
 /// Represents a single rigid body with collision.
 /// Similar to Unity's Rigidbody component.
@@ -246,6 +283,42 @@ public interface IPhysicsBody
     /// Similar to GameObject.layer in Unity.
     /// </summary>
     int Layer { get; set; }
+
+    /// <summary>
+    /// Event fired when this body starts colliding with another body.
+    /// Similar to OnCollisionEnter in Unity.
+    /// </summary>
+    event Action<CollisionInfo>? OnCollisionEnter;
+
+    /// <summary>
+    /// Event fired when this body is colliding with another body (every frame).
+    /// Similar to OnCollisionStay in Unity.
+    /// </summary>
+    event Action<CollisionInfo>? OnCollisionStay;
+
+    /// <summary>
+    /// Event fired when this body stops colliding with another body.
+    /// Similar to OnCollisionExit in Unity.
+    /// </summary>
+    event Action<CollisionInfo>? OnCollisionExit;
+
+    /// <summary>
+    /// Event fired when this body (as a trigger) detects another body.
+    /// Similar to OnTriggerEnter in Unity.
+    /// </summary>
+    event Action<IPhysicsBody>? OnTriggerEnter;
+
+    /// <summary>
+    /// Event fired when this body (as a trigger) is detecting another body (every frame).
+    /// Similar to OnTriggerStay in Unity.
+    /// </summary>
+    event Action<IPhysicsBody>? OnTriggerStay;
+
+    /// <summary>
+    /// Event fired when this body (as a trigger) stops detecting another body.
+    /// Similar to OnTriggerExit in Unity.
+    /// </summary>
+    event Action<IPhysicsBody>? OnTriggerExit;
 }
 
 /// <summary>

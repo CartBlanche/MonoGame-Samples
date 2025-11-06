@@ -8,11 +8,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Shooter.Core\Shooter.Core.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <PackageReference Include="MonoGame.Framework.DesktopGL" Version="3.8.2.1105" />
+    <ProjectReference Include="..\Core\Shooter.Core.csproj" />
+    <ProjectReference Include="..\Physics\Shooter.Physics.csproj" />
   </ItemGroup>
 
 </Project>

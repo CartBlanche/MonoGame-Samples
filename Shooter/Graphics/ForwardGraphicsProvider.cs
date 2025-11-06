@@ -5,6 +5,7 @@ using System.Numerics;
 using Vector3 = System.Numerics.Vector3;
 using Vector4 = System.Numerics.Vector4;
 using Matrix = System.Numerics.Matrix4x4;
+using Shooter.Gameplay.Components;
 
 namespace Shooter.Graphics;
 
@@ -40,9 +41,30 @@ namespace Shooter.Graphics;
 /// - More complex but more efficient for lots of lights
 /// 
 /// For an educational FPS, forward rendering is perfect!
-/// </summary>
+/// <summary>
 public class ForwardGraphicsProvider : IGraphicsProvider
 {
+    // Temporary font for HUD
+    private SpriteFont? _hudFont;
+
+    // Reference to player weapon controller for HUD
+    private Shooter.Gameplay.Components.WeaponController? _playerWeaponController;
+
+    /// <summary>
+    /// Set the font to use for HUD overlay.
+    /// </summary>
+    public void SetHUDFont(SpriteFont font)
+    {
+        _hudFont = font;
+    }
+
+    /// <summary>
+    /// Set the player weapon controller for HUD overlay.
+    /// </summary>
+    public void SetPlayerWeaponController(Shooter.Gameplay.Components.WeaponController controller)
+    {
+        _playerWeaponController = controller;
+    }
     private GraphicsDevice? _graphicsDevice;
     private BasicEffect? _basicEffect;
     private RasterizerState? _rasterizerState;
@@ -50,8 +72,8 @@ public class ForwardGraphicsProvider : IGraphicsProvider
     
     // Primitive meshes (cached for performance)
     private PrimitiveMesh? _cubeMesh;
-    private PrimitiveMesh? _sphereMesh;
-    private PrimitiveMesh? _capsuleMesh;
+    private PrimitiveMesh? _sphereMesh = null;
+    private PrimitiveMesh? _capsuleMesh = null;
     
     // Current rendering state
     private ICamera? _currentCamera;
@@ -178,6 +200,25 @@ public class ForwardGraphicsProvider : IGraphicsProvider
                 
             DrawRenderable(renderable);
         }
+
+        // Draw HUD overlay (ammo/reload status)
+        if (_hudFont != null && _playerWeaponController != null)
+        {
+            var weapon = _playerWeaponController.CurrentWeapon;
+            if (weapon != null && _graphicsDevice != null)
+            {
+                string hudText = $"{weapon.Name} | Ammo: {weapon.CurrentAmmoInMag}/{weapon.CurrentReserveAmmo}";
+                if (weapon.IsReloading)
+                    hudText += " | Reloading...";
+                else if (weapon.CurrentAmmoInMag == 0)
+                    hudText += " | OUT OF AMMO!";
+
+                SpriteBatch spriteBatch = new SpriteBatch(_graphicsDevice);
+                spriteBatch.Begin();
+                spriteBatch.DrawString(_hudFont, hudText, new Microsoft.Xna.Framework.Vector2(20, 20), Microsoft.Xna.Framework.Color.White);
+                spriteBatch.End();
+            }
+        }
     }
     
     /// <summary>
@@ -228,8 +269,6 @@ public class ForwardGraphicsProvider : IGraphicsProvider
             _graphicsDevice.DrawIndexedPrimitives(
                 PrimitiveType.TriangleList,
                 0, // base vertex
-                0, // min vertex index
-                mesh.VertexCount, // num vertices
                 0, // start index
                 mesh.PrimitiveCount // primitive count (triangles)
             );
@@ -542,11 +581,10 @@ internal class PrimitiveMesh : IDisposable
     public IndexBuffer? IndexBuffer { get; set; }
     public int VertexCount { get; set; }
     public int PrimitiveCount { get; set; }
-    
+
     public void Dispose()
     {
         VertexBuffer?.Dispose();
         IndexBuffer?.Dispose();
     }
 }
-

@@ -8,7 +8,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Shooter.Core\Shooter.Core.csproj" />
+    <ProjectReference Include="..\Core\Shooter.Core.csproj" />
   </ItemGroup>
 
 </Project>
