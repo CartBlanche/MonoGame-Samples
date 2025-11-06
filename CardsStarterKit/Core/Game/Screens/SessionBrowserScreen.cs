@@ -8,7 +8,9 @@ using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Net;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
 using GameStateManagement;
+using CardsFramework;
 
 namespace Blackjack
 {
@@ -113,22 +115,20 @@ namespace Blackjack
 
         void RefreshSessionList()
         {
-            // Remove all existing session entries from MenuEntries
+            // Remove all existing session entries from MenuEntries  
             foreach (var entry in sessionEntries)
             {
                 MenuEntries.Remove(entry);
             }
             sessionEntries.Clear();
             
-            // Add updated session entries (inserted before the last 3 buttons: Host, Refresh, Back)
-            int insertIndex = MenuEntries.Count - 3;
+            // Don't add session entries to MenuEntries - we'll draw them separately
+            // Just create the entries for the available sessions
             foreach (var session in availableSessions)
             {
                 var entry = new AvailableSessionMenuEntry(session);
                 entry.Selected += JoinSessionMenuEntrySelected;
                 sessionEntries.Add(entry);
-                MenuEntries.Insert(insertIndex, entry);
-                insertIndex++;
             }
         }
 
@@ -154,6 +154,50 @@ namespace Blackjack
             }
         }
 
+        public override void HandleInput(InputState input)
+        {
+            // Handle input for session entries (manual click detection)
+            // Check if mouse button was clicked (pressed then released)
+            if (input.CurrentMouseState.LeftButton == ButtonState.Released &&
+                input.LastMouseState.LeftButton == ButtonState.Pressed)
+            {
+                Vector2 mousePosition = new Vector2(input.CurrentMouseState.X, input.CurrentMouseState.Y);
+                SpriteFont font = ScreenManager.Font;
+                
+                // Check if clicked on a session entry
+                if (availableSessions.Count > 0)
+                {
+                    Vector2 headerPosition = new Vector2(ScreenManager.SafeArea.Left + 100, ScreenManager.SafeArea.Top + 150);
+                    Vector2 sessionPosition = new Vector2(ScreenManager.SafeArea.Left + 120, headerPosition.Y + font.LineSpacing * 1.5f);
+                    float scale = 0.85f;
+                    
+                    for (int i = 0; i < sessionEntries.Count; i++)
+                    {
+                        var sessionEntry = sessionEntries[i];
+                        Vector2 textSize = font.MeasureString(sessionEntry.Text) * scale;
+                        Rectangle hitBox = new Rectangle(
+                            (int)sessionPosition.X,
+                            (int)sessionPosition.Y,
+                            (int)textSize.X,
+                            (int)(font.LineSpacing * scale)
+                        );
+                        
+                        if (hitBox.Contains(mousePosition))
+                        {
+                            // Clicked on this session - join it
+                            JoinSessionMenuEntrySelected(sessionEntry, EventArgs.Empty);
+                            return;
+                        }
+                        
+                        sessionPosition.Y += font.LineSpacing * scale + 10;
+                    }
+                }
+            }
+            
+            // Let base class handle button input
+            base.HandleInput(input);
+        }
+
         protected override void OnCancel(PlayerIndex playerIndex)
         {
             // Exit all screens and return to main menu (without BackgroundScreen to avoid logo)
@@ -169,7 +213,7 @@ namespace Blackjack
             // Draw solid background to cover any BackgroundScreen logo
             ScreenManager.GraphicsDevice.Clear(new Color(50, 20, 20)); // Dark red background
             
-            // Draw menu entries and title from base class
+            // Draw menu entries (bottom buttons) and title from base class
             base.Draw(gameTime);
             
             SpriteBatch spriteBatch = ScreenManager.SpriteBatch;
@@ -177,12 +221,29 @@ namespace Blackjack
             
             spriteBatch.Begin();
             
-            // Draw "Available Games:" section header below the title if there are sessions
+            // Draw "Available Games:" section header and session list
             if (availableSessions.Count > 0)
             {
-                // Position below title (which is at SafeArea.Top + 80) and add some spacing
-                Vector2 sectionPosition = new Vector2(ScreenManager.SafeArea.Left + 100, ScreenManager.SafeArea.Top + 150);
-                spriteBatch.DrawString(font, "Available Games:", sectionPosition, Color.Yellow, 0f, Vector2.Zero, 0.9f, SpriteEffects.None, 0f);
+                // Draw header
+                Vector2 headerPosition = new Vector2(ScreenManager.SafeArea.Left + 100, ScreenManager.SafeArea.Top + 150);
+                spriteBatch.DrawString(font, "Available Games:", headerPosition, Color.Yellow, 0f, Vector2.Zero, 0.9f, SpriteEffects.None, 0f);
+                
+                // Draw session entries in a vertical list below the header
+                Vector2 sessionPosition = new Vector2(ScreenManager.SafeArea.Left + 120, headerPosition.Y + font.LineSpacing * 1.5f);
+                
+                for (int i = 0; i < sessionEntries.Count; i++)
+                {
+                    var sessionEntry = sessionEntries[i];
+                    Color color = Color.White;
+                    float scale = 0.85f;
+                    
+                    // Draw the session entry text
+                    string sessionText = sessionEntry.Text;
+                    spriteBatch.DrawString(font, sessionText, sessionPosition, color, 0f, Vector2.Zero, scale, SpriteEffects.None, 0f);
+                    
+                    // Move down for next entry
+                    sessionPosition.Y += font.LineSpacing * scale + 10; // Add some padding
+                }
             }
             
             // Draw status at bottom left
