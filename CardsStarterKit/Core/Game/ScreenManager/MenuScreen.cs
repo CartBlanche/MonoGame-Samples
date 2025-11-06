@@ -299,8 +299,10 @@ namespace GameStateManagement
             // the movement slow down as it nears the end).
             float transitionOffset = (float)Math.Pow(TransitionPosition, 2);
 
-            // Draw the menu title centered on the screen
-            Vector2 titlePosition = new Vector2(graphics.Viewport.Width / 2, 375);
+            // Draw the menu title in the top third of the screen
+            Vector2 titlePosition = new Vector2(
+                graphics.Viewport.Width / 2, 
+                ScreenManager.SafeArea.Top + 80); // Position in top third instead of center
             Vector2 titleOrigin = font.MeasureString(menuTitle) / 2;
             Color titleColor = new Color(192, 192, 192) * TransitionAlpha;
             float titleScale = 1.25f;

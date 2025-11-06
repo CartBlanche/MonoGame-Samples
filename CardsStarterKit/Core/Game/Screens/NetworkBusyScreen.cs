@@ -146,7 +146,7 @@ namespace Blackjack
 			SpriteBatch spriteBatch = ScreenManager.SpriteBatch;
 			SpriteFont font = ScreenManager.Font;
 
-            string message = "Network Busy"; // TODO Resources.NetworkBusy;
+            string message = Resources.NetworkBusy;
 
 			const int hPad = 32;
 			const int vPad = 16;

@@ -21,7 +21,7 @@ namespace Blackjack
         NetworkSession networkSession;
 
         public BlackjackLobbyScreen(NetworkSession networkSession = null)
-            : base("Blackjack Lobby")
+            : base("Lobby")
         {
             this.networkSession = networkSession;
 
@@ -63,6 +63,9 @@ namespace Blackjack
 
         public override void Draw(GameTime gameTime)
         {
+            // Draw solid background to cover any BackgroundScreen logo
+            ScreenManager.GraphicsDevice.Clear(new Color(50, 20, 20)); // Dark red background
+            
             base.Draw(gameTime);
 
             SpriteBatch spriteBatch = ScreenManager.SpriteBatch;

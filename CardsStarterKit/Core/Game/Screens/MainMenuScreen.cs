@@ -57,7 +57,7 @@ namespace Blackjack
             foreach (GameScreen screen in ScreenManager.GetScreens())
                 screen.ExitScreen();
 
-            ScreenManager.AddScreen(new BackgroundScreen(), null);
+            // Don't add BackgroundScreen - we don't want the logo on the session browser
             ScreenManager.AddScreen(new SessionBrowserScreen(), null);
         }
 

@@ -25,7 +25,7 @@ namespace Blackjack
         bool isSearching = false;
 
         public SessionBrowserScreen()
-            : base("Join or Host a Blackjack Game")
+            : base("Join or Host a Game")
         {
         }
 
@@ -41,11 +41,10 @@ namespace Blackjack
 
             MenuEntries.Add(hostGameMenuEntry);
             MenuEntries.Add(refreshMenuEntry);
+            MenuEntries.Add(backMenuEntry);
             
             // Start async session discovery
             BeginFindSessions();
-            
-            MenuEntries.Add(backMenuEntry);
 
             base.LoadContent();
         }
@@ -114,14 +113,22 @@ namespace Blackjack
 
         void RefreshSessionList()
         {
+            // Remove all existing session entries from MenuEntries
+            foreach (var entry in sessionEntries)
+            {
+                MenuEntries.Remove(entry);
+            }
             sessionEntries.Clear();
+            
+            // Add updated session entries (inserted before the last 3 buttons: Host, Refresh, Back)
+            int insertIndex = MenuEntries.Count - 3;
             foreach (var session in availableSessions)
             {
                 var entry = new AvailableSessionMenuEntry(session);
                 entry.Selected += JoinSessionMenuEntrySelected;
                 sessionEntries.Add(entry);
-                // Insert after hostGameMenuEntry, before backMenuEntry
-                MenuEntries.Insert(MenuEntries.Count - 1, entry);
+                MenuEntries.Insert(insertIndex, entry);
+                insertIndex++;
             }
         }
 
@@ -149,34 +156,50 @@ namespace Blackjack
 
         protected override void OnCancel(PlayerIndex playerIndex)
         {
+            // Exit all screens and return to main menu (without BackgroundScreen to avoid logo)
+            foreach (GameScreen screen in ScreenManager.GetScreens())
+                screen.ExitScreen();
+            
             ScreenManager.AddScreen(new BackgroundScreen(), null);
             ScreenManager.AddScreen(new MainMenuScreen(), null);
         }
 
         public override void Draw(GameTime gameTime)
         {
+            // Draw solid background to cover any BackgroundScreen logo
+            ScreenManager.GraphicsDevice.Clear(new Color(50, 20, 20)); // Dark red background
+            
+            // Draw menu entries and title from base class
             base.Draw(gameTime);
             
-            // Show session count and search status
             SpriteBatch spriteBatch = ScreenManager.SpriteBatch;
             SpriteFont font = ScreenManager.Font;
-            Vector2 position = new Vector2(ScreenManager.SafeArea.Left + 50, ScreenManager.SafeArea.Bottom - 100);
             
             spriteBatch.Begin();
+            
+            // Draw "Available Games" section header
+            if (availableSessions.Count > 0)
+            {
+                Vector2 sectionPosition = new Vector2(ScreenManager.SafeArea.Left + 100, ScreenManager.SafeArea.Top + 160);
+                spriteBatch.DrawString(font, "Available Games:", sectionPosition, Color.Yellow, 0f, Vector2.Zero, 0.9f, SpriteEffects.None, 0f);
+            }
+            
+            // Draw status at bottom left
+            Vector2 statusPosition = new Vector2(ScreenManager.SafeArea.Left + 50, ScreenManager.SafeArea.Bottom - 80);
             
             string statusText = isSearching 
                 ? "Searching for games..." 
                 : $"Found {availableSessions.Count} game(s)";
             
-            spriteBatch.DrawString(font, statusText, position, Color.Yellow, 0f, Vector2.Zero, 0.8f, SpriteEffects.None, 0f);
+            spriteBatch.DrawString(font, statusText, statusPosition, Color.LightGreen, 0f, Vector2.Zero, 0.8f, SpriteEffects.None, 0f);
             
             // Show auto-refresh timer
             if (!isSearching)
             {
                 int secondsUntilRefresh = (int)(AutoRefreshInterval - timeSinceLastSearch.TotalSeconds);
                 string timerText = $"Auto-refresh in {secondsUntilRefresh}s";
-                position.Y += font.LineSpacing;
-                spriteBatch.DrawString(font, timerText, position, Color.Gray, 0f, Vector2.Zero, 0.7f, SpriteEffects.None, 0f);
+                statusPosition.Y += font.LineSpacing;
+                spriteBatch.DrawString(font, timerText, statusPosition, Color.Gray, 0f, Vector2.Zero, 0.7f, SpriteEffects.None, 0f);
             }
             
             spriteBatch.End();
