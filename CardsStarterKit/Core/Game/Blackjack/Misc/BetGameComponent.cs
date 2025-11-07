@@ -33,6 +33,9 @@ namespace Blackjack
 
         bool isKeyDown = false;
 
+        // In network games, this specifies which player index the local user controls
+        public int LocalPlayerIndex { get; set; } = -1;
+
         Button bet;
         Button clear;
 
@@ -262,7 +265,22 @@ namespace Blackjack
                     int chipValue = GetIntersectingChipValue(position);
                     if (chipValue != 0)
                     {
-                        AddChip(GetCurrentPlayer(), chipValue, false);
+                        // Determine which player should receive the chip
+                        int targetPlayerIndex;
+                        BlackjackCardGame blackjackGame = cardGame as BlackjackCardGame;
+
+                        if (blackjackGame != null && blackjackGame.IsNetworkGame && LocalPlayerIndex >= 0)
+                        {
+                            // In network games, always bet for the local player
+                            targetPlayerIndex = LocalPlayerIndex;
+                        }
+                        else
+                        {
+                            // In single-player, bet for the current player
+                            targetPlayerIndex = GetCurrentPlayer();
+                        }
+
+                        AddChip(targetPlayerIndex, chipValue, false);
                     }
                     isKeyDown = true;
                 }
@@ -322,47 +340,47 @@ namespace Blackjack
             for (int playerIndex = 0; playerIndex < players.Count; playerIndex++)
             {
                 BlackJackTable table = (BlackJackTable)cardGame.GameTable;
-                
+
                 // Account for scaled ring texture
                 float ringScale = UIConstants.GetChipScale();
                 float scaledRingHeight = table.RingTexture.Bounds.Height * ringScale;
-                
+
                 // Position text below the chip circle center
                 // RingOffset puts us at the circle center, so add half the scaled height to get to bottom
-                Vector2 basePosition = table[playerIndex] + table.RingOffset + 
+                Vector2 basePosition = table[playerIndex] + table.RingOffset +
                     new Vector2(0, scaledRingHeight / 2f + 10); // 10px padding below circle
-                
+
                 player = (BlackjackPlayer)players[playerIndex];
-                
+
                 // Draw bet amount (top line)
                 spriteBatch.DrawString(cardGame.Font, "$" + player.BetAmount.ToString(),
                     basePosition, Color.White, 0f, Vector2.Zero, 0.75f, SpriteEffects.None, 0f);
-                
+
                 // Draw balance (second line)
                 spriteBatch.DrawString(cardGame.Font, "$" + player.Balance.ToString(),
                     basePosition + new Vector2(0, 20), Color.White, 0f, Vector2.Zero, 0.75f, SpriteEffects.None, 0f);
-                
+
                 // Draw player name with AI indicator (bottom line)
                 string playerName = player.Name;
                 bool isAI = player is BlackjackAIPlayer;
                 Color nameColor = isAI ? Color.Yellow : Color.Cyan; // Yellow for AI, Cyan for human
                 string displayName = playerName;
-                
+
                 // Add (AI) suffix for AI players
                 if (isAI)
                 {
                     displayName = $"{playerName} (AI)";
                 }
                 // Add (Host) suffix for the first human player in network games
-                else if (cardGame is BlackjackCardGame blackjackGame && 
-                         blackjackGame.IsNetworkGame && 
+                else if (cardGame is BlackjackCardGame blackjackGame &&
+                         blackjackGame.IsNetworkGame &&
                          blackjackGame.NetworkSession != null &&
                          playerIndex == 0)
                 {
                     displayName = $"{playerName} (Host)";
                     nameColor = Color.LightGreen; // Distinct color for host
                 }
-                
+
                 spriteBatch.DrawString(cardGame.Font, displayName,
                     basePosition + new Vector2(0, 40), nameColor, 0f, Vector2.Zero, 0.70f, SpriteEffects.None, 0f);
             }
@@ -435,7 +453,7 @@ namespace Blackjack
                 });
 
                 currentChipComponent.Add(chipComponent);
-                
+
                 // Send chip addition to network in real-time (if enabled)
                 if (sendToNetwork)
                 {
@@ -652,11 +670,11 @@ namespace Blackjack
             Vector2 offset = Vector2.Zero;
 
             BlackJackTable table = ((BlackJackTable)cardGame.GameTable);
-            
+
             // The ring is drawn with center origin, so we need to account for that
             // Ring position is at the CENTER of the scaled ring texture
             float ringScale = UIConstants.GetChipScale();
-            
+
             // Since ring is drawn from center, the offset should just center the chip
             // within the ring (no need to calculate top-left position)
             offset = table.RingOffset - new Vector2(blankChip.Bounds.Width / 2f, blankChip.Bounds.Height / 2f);
@@ -809,15 +827,15 @@ namespace Blackjack
             // Finish the bet
             int playerIndex = GetCurrentPlayer();
             int finalBetAmount = currentBet;
-            
+
             // If the player did not bet, show that he has passed on this round
             if (currentBet == 0)
             {
                 ((BlackjackCardGame)cardGame).ShowPlayerPass(playerIndex);
             }
-            
+
             ((BlackjackPlayer)players[playerIndex]).IsDoneBetting = true;
-            
+
             // Send/broadcast bet to network
             BlackjackCardGame blackjackGame = cardGame as BlackjackCardGame;
             if (blackjackGame != null && blackjackGame.IsNetworkGame)
@@ -833,7 +851,7 @@ namespace Blackjack
                     blackjackGame.SendBetPlaced((byte)playerIndex, finalBetAmount);
                 }
             }
-            
+
             currentChipComponent.Clear();
             currentBet = 0;
         }

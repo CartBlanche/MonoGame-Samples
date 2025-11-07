@@ -7,6 +7,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using GameStateManagement;
 using Microsoft.Xna.Framework;
@@ -199,21 +200,21 @@ namespace Blackjack
         private void HandlePlayerListSyncPacket(NetworkGamer sender, PacketReader reader)
         {
             var packet = Blackjack.Networking.PlayerListSyncPacket.Deserialize(reader);
-            
+
             // Only clients should process this - host already has the correct player list
             if (networkSession != null && !networkSession.IsHost)
             {
                 // Clear existing AI players (clients shouldn't have created any)
                 // But we need to recreate the full player list to match the host
-                
+
                 // The client should have already added human players in InitializeGame
                 // Now we need to add AI players to match the host's list
-                
+
                 System.Globalization.TextInfo myTI = new System.Globalization.CultureInfo("en-GB", false).TextInfo;
-                
+
                 // Get current player count (should be just human players)
                 int currentPlayerCount = blackJackGame.Players.Count;
-                
+
                 // Add any missing players from the packet
                 for (int i = currentPlayerCount; i < packet.Players.Count; i++)
                 {
@@ -237,7 +238,7 @@ namespace Blackjack
         private void HandleCardDealtPacket(NetworkGamer sender, PacketReader reader)
         {
             var packet = Blackjack.Networking.CardDealtPacket.Deserialize(reader);
-            
+
             // Only clients should process this - host already dealt the card locally
             if (networkSession != null && !networkSession.IsHost)
             {
@@ -249,7 +250,7 @@ namespace Blackjack
         private void HandleBetPlacedPacket(NetworkGamer sender, PacketReader reader)
         {
             var packet = Blackjack.Networking.BetPlacedPacket.Deserialize(reader);
-            
+
             if (networkSession != null)
             {
                 if (networkSession.IsHost)
@@ -260,7 +261,7 @@ namespace Blackjack
                     {
                         // Apply the bet locally on the host
                         blackJackGame.HandleReceivedBetPlaced(packet.PlayerIndex, packet.BetAmount);
-                        
+
                         // Broadcast to all other clients (so all clients stay in sync)
                         blackJackGame.BroadcastBetPlaced(packet.PlayerIndex, packet.BetAmount);
                     }
@@ -276,7 +277,7 @@ namespace Blackjack
         private void HandleChipAddedPacket(NetworkGamer sender, PacketReader reader)
         {
             var packet = Blackjack.Networking.ChipAddedPacket.Deserialize(reader);
-            
+
             if (networkSession != null)
             {
                 if (networkSession.IsHost)
@@ -287,7 +288,7 @@ namespace Blackjack
                     {
                         // Apply the chip locally on the host (this will trigger the animation and update bet)
                         blackJackGame.HandleReceivedChipAdded(packet.PlayerIndex, packet.ChipValue);
-                        
+
                         // Broadcast to all other clients (so all clients stay in sync)
                         blackJackGame.BroadcastChipAdded(packet.PlayerIndex, packet.ChipValue);
                     }
@@ -424,6 +425,27 @@ namespace Blackjack
             if (networkSession != null && networkSession.IsHost)
             {
                 blackJackGame.BroadcastPlayerList();
+            }
+
+            // In network games, determine which player index belongs to the local user
+            if (networkSession != null && networkSession.LocalGamers.Count > 0)
+            {
+                string localGamerTag = networkSession.LocalGamers[0].Gamertag;
+
+                // Find which player in the game matches the local gamer's tag
+                for (int i = 0; i < blackJackGame.Players.Count; i++)
+                {
+                    if (blackJackGame.Players[i].Name.Equals(localGamerTag, StringComparison.OrdinalIgnoreCase))
+                    {
+                        // Found the local player - tell BetGameComponent
+                        var betComponent = blackJackGame.Game.Components.OfType<BetGameComponent>().FirstOrDefault();
+                        if (betComponent != null)
+                        {
+                            betComponent.LocalPlayerIndex = i;
+                        }
+                        break;
+                    }
+                }
             }
 
             blackJackGame.StartRound();
