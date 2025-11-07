@@ -5,6 +5,7 @@ namespace Blackjack.Networking
         PlayerAction = 1,
         BetPlaced = 2,
         PlayerListSync = 3,
+        ChipAdded = 4,
         GameStateUpdate = 10,
         CardDealt = 11,
         ShuffleSeed = 12,

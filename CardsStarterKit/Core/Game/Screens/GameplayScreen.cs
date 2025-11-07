@@ -178,6 +178,9 @@ namespace Blackjack
                     case Blackjack.Networking.PacketType.BetPlaced:
                         HandleBetPlacedPacket(sender, packetReader);
                         break;
+                    case Blackjack.Networking.PacketType.ChipAdded:
+                        HandleChipAddedPacket(sender, packetReader);
+                        break;
                     case Blackjack.Networking.PacketType.PlayerAction:
                         HandlePlayerActionPacket(sender, packetReader);
                         break;
@@ -251,17 +254,48 @@ namespace Blackjack
             {
                 if (networkSession.IsHost)
                 {
-                    // Host receives bet from client
-                    // Apply the bet locally on the host
-                    blackJackGame.HandleReceivedBetPlaced(packet.PlayerIndex, packet.BetAmount);
-                    
-                    // Broadcast to all other clients (so all clients stay in sync)
-                    blackJackGame.BroadcastBetPlaced(packet.PlayerIndex, packet.BetAmount);
+                    // Host receives bet from a client
+                    // Don't process if this is from the local host machine (to avoid processing our own broadcast)
+                    if (!sender.IsLocal)
+                    {
+                        // Apply the bet locally on the host
+                        blackJackGame.HandleReceivedBetPlaced(packet.PlayerIndex, packet.BetAmount);
+                        
+                        // Broadcast to all other clients (so all clients stay in sync)
+                        blackJackGame.BroadcastBetPlaced(packet.PlayerIndex, packet.BetAmount);
+                    }
                 }
                 else
                 {
                     // Client receives bet broadcast from host
                     blackJackGame.HandleReceivedBetPlaced(packet.PlayerIndex, packet.BetAmount);
+                }
+            }
+        }
+
+        private void HandleChipAddedPacket(NetworkGamer sender, PacketReader reader)
+        {
+            var packet = Blackjack.Networking.ChipAddedPacket.Deserialize(reader);
+            
+            if (networkSession != null)
+            {
+                if (networkSession.IsHost)
+                {
+                    // Host receives chip addition from a client
+                    // Don't process if this is from the local host machine (to avoid processing our own broadcast)
+                    if (!sender.IsLocal)
+                    {
+                        // Apply the chip locally on the host (this will trigger the animation and update bet)
+                        blackJackGame.HandleReceivedChipAdded(packet.PlayerIndex, packet.ChipValue);
+                        
+                        // Broadcast to all other clients (so all clients stay in sync)
+                        blackJackGame.BroadcastChipAdded(packet.PlayerIndex, packet.ChipValue);
+                    }
+                }
+                else
+                {
+                    // Client receives chip addition broadcast from host
+                    blackJackGame.HandleReceivedChipAdded(packet.PlayerIndex, packet.ChipValue);
                 }
             }
         }

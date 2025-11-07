@@ -77,6 +77,27 @@ namespace Blackjack.Networking
         }
     }
 
+    public class ChipAddedPacket
+    {
+        public byte PlayerIndex { get; set; }
+        public int ChipValue { get; set; }
+        
+        public void Serialize(PacketWriter writer)
+        {
+            writer.Write(PlayerIndex);
+            writer.Write(ChipValue);
+        }
+        
+        public static ChipAddedPacket Deserialize(PacketReader reader)
+        {
+            return new ChipAddedPacket
+            {
+                PlayerIndex = reader.ReadByte(),
+                ChipValue = reader.ReadInt32()
+            };
+        }
+    }
+
     public class CardDealtPacket
     {
         public byte PlayerIndex { get; set; }

@@ -380,7 +380,9 @@ namespace Blackjack
         /// <param name="chipValue">The value on the chip to add.</param>
         /// <param name="secondHand">True if this chip is added to the chip pile
         /// belonging to the player's second hand.</param>
-        public void AddChip(int playerIndex, int chipValue, bool secondHand)
+        /// <param name="sendToNetwork">Whether to send this chip addition over the network. 
+        /// Set to false when receiving chip additions from the network to avoid loops.</param>
+        public void AddChip(int playerIndex, int chipValue, bool secondHand, bool sendToNetwork = true)
         {
             // Only add the chip if the bet is successfully performed
             if (((BlackjackPlayer)players[playerIndex]).Bet(chipValue))
@@ -433,6 +435,25 @@ namespace Blackjack
                 });
 
                 currentChipComponent.Add(chipComponent);
+                
+                // Send chip addition to network in real-time (if enabled)
+                if (sendToNetwork)
+                {
+                    BlackjackCardGame blackjackGame = cardGame as BlackjackCardGame;
+                    if (blackjackGame != null && blackjackGame.IsNetworkGame)
+                    {
+                        if (blackjackGame.IsHost)
+                        {
+                            // Host broadcasts the chip addition to all clients
+                            blackjackGame.BroadcastChipAdded((byte)playerIndex, chipValue);
+                        }
+                        else
+                        {
+                            // Client sends their chip addition to the host
+                            blackjackGame.SendChipAdded((byte)playerIndex, chipValue);
+                        }
+                    }
+                }
             }
         }
 

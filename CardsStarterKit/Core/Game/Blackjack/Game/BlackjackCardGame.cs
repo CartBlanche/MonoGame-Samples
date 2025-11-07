@@ -1860,6 +1860,48 @@ namespace Blackjack
         }
 
         /// <summary>
+        /// Broadcasts a chip added event to all players.
+        /// </summary>
+        public void BroadcastChipAdded(byte playerIndex, int chipValue)
+        {
+            if (NetworkSession == null || !IsHost)
+                return;
+
+            var packet = new Networking.ChipAddedPacket
+            {
+                PlayerIndex = playerIndex,
+                ChipValue = chipValue
+            };
+
+            var writer = new Microsoft.Xna.Framework.Net.PacketWriter();
+            writer.Write((byte)Networking.PacketType.ChipAdded);
+            packet.Serialize(writer);
+
+            NetworkSession.LocalGamers[0].SendData(writer, Microsoft.Xna.Framework.Net.SendDataOptions.Reliable);
+        }
+
+        /// <summary>
+        /// Sends a chip added event from client to host.
+        /// </summary>
+        public void SendChipAdded(byte playerIndex, int chipValue)
+        {
+            if (NetworkSession == null || NetworkSession.LocalGamers.Count == 0)
+                return;
+
+            var packet = new Networking.ChipAddedPacket
+            {
+                PlayerIndex = playerIndex,
+                ChipValue = chipValue
+            };
+
+            var writer = new Microsoft.Xna.Framework.Net.PacketWriter();
+            writer.Write((byte)Networking.PacketType.ChipAdded);
+            packet.Serialize(writer);
+
+            NetworkSession.LocalGamers[0].SendData(writer, Microsoft.Xna.Framework.Net.SendDataOptions.Reliable);
+        }
+
+        /// <summary>
         /// Broadcasts a turn change event.
         /// </summary>
         private void BroadcastTurnChanged(byte currentPlayerIndex)
@@ -1940,6 +1982,22 @@ namespace Blackjack
                 }
                 
                 player.IsDoneBetting = true;
+            }
+        }
+
+        /// <summary>
+        /// Handles a chip added packet received over the network.
+        /// Adds the chip with animation on the receiving machine.
+        /// </summary>
+        public void HandleReceivedChipAdded(byte playerIndex, int chipValue)
+        {
+            // This method is called when receiving a ChipAdded packet
+            // We add the chip with animation but don't re-send to network (sendToNetwork: false)
+            if (playerIndex < players.Count && betGameComponent != null)
+            {
+                // Add the visual chip component with animation
+                // The sendToNetwork parameter is false to prevent infinite loop
+                betGameComponent.AddChip(playerIndex, chipValue, false, sendToNetwork: false);
             }
         }
     }
