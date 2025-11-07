@@ -5,6 +5,7 @@
 //-----------------------------------------------------------------------------
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using GameStateManagement;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -144,7 +145,13 @@ namespace Blackjack
 
             if (networkSession != null)
             {
-                foreach (NetworkGamer gamer in networkSession.AllGamers)
+                // CRITICAL: Ensure consistent player ordering across all machines
+                // Host must ALWAYS be first, then other players sorted by their network ID
+                var orderedGamers = networkSession.AllGamers
+                    .OrderByDescending(g => g.IsHost)  // Host first
+                    .ThenBy(g => g.Id);                 // Then others sorted by ID
+                
+                foreach (NetworkGamer gamer in orderedGamers)
                 {
                     joinedPlayers.Add(gamer.Gamertag);
                 }
