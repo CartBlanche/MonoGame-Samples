@@ -825,7 +825,20 @@ namespace Blackjack
         void Bet_Click(object sender, EventArgs e)
         {
             // Finish the bet
-            int playerIndex = GetCurrentPlayer();
+            int playerIndex;
+            BlackjackCardGame blackjackGame = cardGame as BlackjackCardGame;
+
+            if (blackjackGame != null && blackjackGame.IsNetworkGame && LocalPlayerIndex >= 0)
+            {
+                // In network games, mark the LOCAL player as done betting
+                playerIndex = LocalPlayerIndex;
+            }
+            else
+            {
+                // In single-player, use current player
+                playerIndex = GetCurrentPlayer();
+            }
+
             int finalBetAmount = currentBet;
 
             // If the player did not bet, show that he has passed on this round
@@ -837,7 +850,6 @@ namespace Blackjack
             ((BlackjackPlayer)players[playerIndex]).IsDoneBetting = true;
 
             // Send/broadcast bet to network
-            BlackjackCardGame blackjackGame = cardGame as BlackjackCardGame;
             if (blackjackGame != null && blackjackGame.IsNetworkGame)
             {
                 if (blackjackGame.IsHost)
