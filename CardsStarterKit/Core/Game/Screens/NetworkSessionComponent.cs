@@ -33,8 +33,36 @@ namespace Blackjack
         public static void Create(ScreenManager screenManager, NetworkSession networkSession)
         {
             Game game = screenManager.Game;
+
+            // Remove any existing NetworkSession service and component before adding new ones
+            if (game.Services.GetService(typeof(NetworkSession)) != null)
+            {
+                game.Services.RemoveService(typeof(NetworkSession));
+            }
+
+            // Remove any existing NetworkSessionComponent
+            var existingComponent = FindSessionComponent(game);
+            if (existingComponent != null)
+            {
+                game.Components.Remove(existingComponent);
+                existingComponent.Dispose();
+            }
+
             game.Services.AddService(typeof(NetworkSession), networkSession);
             game.Components.Add(new NetworkSessionComponent(screenManager, networkSession));
+        }
+
+        /// <summary>
+        /// Searches through the Game.Components collection to find the NetworkSessionComponent (if any exists).
+        /// </summary>
+        static NetworkSessionComponent FindSessionComponent(Game game)
+        {
+            foreach (var component in game.Components)
+            {
+                if (component is NetworkSessionComponent sessionComponent)
+                    return sessionComponent;
+            }
+            return null;
         }
 
         public override void Initialize()
