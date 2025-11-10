@@ -852,16 +852,16 @@ namespace Blackjack
             // Send/broadcast bet to network
             if (blackjackGame != null && blackjackGame.IsNetworkGame)
             {
-                if (blackjackGame.IsHost)
-                {
-                    // Host broadcasts the bet to all clients
-                    blackjackGame.BroadcastBetPlaced((byte)playerIndex, finalBetAmount);
-                }
-                else
+                // Only non-host players send their bets to the network
+                // The host handles its own bets locally without broadcasting
+                // (the host will broadcast OTHER players' bets when it receives them)
+                if (!blackjackGame.IsHost)
                 {
                     // Client sends their bet to the host
                     blackjackGame.SendBetPlaced((byte)playerIndex, finalBetAmount);
                 }
+                // Note: Host does NOT broadcast here - it just applies the bet locally
+                // When clients send their bets, the host will broadcast those in HandleBetPlacedPacket
             }
 
             currentChipComponent.Clear();
