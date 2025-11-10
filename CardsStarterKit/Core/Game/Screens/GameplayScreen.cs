@@ -166,32 +166,47 @@ namespace Blackjack
             {
                 NetworkGamer sender;
                 localGamer.ReceiveData(packetReader, out sender);
-                // Read packet type (assume PacketType is a byte)
-                var packetType = (Blackjack.Networking.PacketType)packetReader.ReadByte();
-                switch (packetType)
+                
+                try
                 {
-                    case Blackjack.Networking.PacketType.PlayerListSync:
-                        HandlePlayerListSyncPacket(sender, packetReader);
-                        break;
-                    case Blackjack.Networking.PacketType.CardDealt:
-                        HandleCardDealtPacket(sender, packetReader);
-                        break;
-                    case Blackjack.Networking.PacketType.BetPlaced:
-                        HandleBetPlacedPacket(sender, packetReader);
-                        break;
-                    case Blackjack.Networking.PacketType.ChipAdded:
-                        HandleChipAddedPacket(sender, packetReader);
-                        break;
-                    case Blackjack.Networking.PacketType.PlayerAction:
-                        HandlePlayerActionPacket(sender, packetReader);
-                        break;
-                    case Blackjack.Networking.PacketType.ShuffleSeed:
-                        HandleShuffleSeedPacket(sender, packetReader);
-                        break;
-                    // Add more cases for other packet types as needed
-                    default:
-                        // Unknown or unhandled packet type
-                        break;
+                    // Read packet type (assume PacketType is a byte)
+                    var packetType = (Blackjack.Networking.PacketType)packetReader.ReadByte();
+                    System.Console.WriteLine($"[PACKET] Received {packetType} from {sender.Gamertag}");
+                    
+                    switch (packetType)
+                    {
+                        case Blackjack.Networking.PacketType.PlayerListSync:
+                            HandlePlayerListSyncPacket(sender, packetReader);
+                            break;
+                        case Blackjack.Networking.PacketType.CardDealt:
+                            HandleCardDealtPacket(sender, packetReader);
+                            break;
+                        case Blackjack.Networking.PacketType.BetPlaced:
+                            HandleBetPlacedPacket(sender, packetReader);
+                            break;
+                        case Blackjack.Networking.PacketType.ChipAdded:
+                            HandleChipAddedPacket(sender, packetReader);
+                            break;
+                        case Blackjack.Networking.PacketType.PlayerAction:
+                            HandlePlayerActionPacket(sender, packetReader);
+                            break;
+                        case Blackjack.Networking.PacketType.ShuffleSeed:
+                            HandleShuffleSeedPacket(sender, packetReader);
+                            break;
+                        // Add more cases for other packet types as needed
+                        default:
+                            System.Console.WriteLine($"[PACKET] Unknown packet type: {(byte)packetType}");
+                            break;
+                    }
+                }
+                catch (System.IO.EndOfStreamException ex)
+                {
+                    System.Console.WriteLine($"[PACKET ERROR] EndOfStreamException while processing packet from {sender.Gamertag}: {ex.Message}");
+                    System.Console.WriteLine($"[PACKET ERROR] Stack trace: {ex.StackTrace}");
+                }
+                catch (System.Exception ex)
+                {
+                    System.Console.WriteLine($"[PACKET ERROR] Exception while processing packet from {sender.Gamertag}: {ex.GetType().Name} - {ex.Message}");
                 }
             }
         }

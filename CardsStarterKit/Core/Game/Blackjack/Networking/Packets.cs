@@ -113,13 +113,33 @@ namespace Blackjack.Networking
         }
         public static CardDealtPacket Deserialize(PacketReader reader)
         {
-            return new CardDealtPacket
+            try
             {
-                PlayerIndex = reader.ReadByte(),
-                Card = reader.ReadCard(),
-                FaceDown = reader.ReadBoolean(),
-                HandType = (HandTypes)reader.ReadByte()
-            };
+                var playerIndex = reader.ReadByte();
+                System.Console.WriteLine($"[CardDealtPacket] PlayerIndex: {playerIndex}");
+                
+                var card = reader.ReadCard();
+                System.Console.WriteLine($"[CardDealtPacket] Card: {card.Type} {card.Value}");
+                
+                var faceDown = reader.ReadBoolean();
+                System.Console.WriteLine($"[CardDealtPacket] FaceDown: {faceDown}");
+                
+                var handType = (HandTypes)reader.ReadByte();
+                System.Console.WriteLine($"[CardDealtPacket] HandType: {handType}");
+                
+                return new CardDealtPacket
+                {
+                    PlayerIndex = playerIndex,
+                    Card = card,
+                    FaceDown = faceDown,
+                    HandType = handType
+                };
+            }
+            catch (System.Exception ex)
+            {
+                System.Console.WriteLine($"[CardDealtPacket ERROR] Failed to deserialize: {ex.Message}");
+                throw;
+            }
         }
     }
 
