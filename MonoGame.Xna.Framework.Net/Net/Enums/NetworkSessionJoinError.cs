@@ -27,6 +27,16 @@ namespace Microsoft.Xna.Framework.Net
         /// <summary>
         /// Session not joinable.
         /// </summary>
-        SessionNotJoinable
+        SessionNotJoinable,
+
+        /// <summary>
+        /// Protocol version mismatch between client and host.
+        /// </summary>
+        ProtocolVersionMismatch,
+
+        /// <summary>
+        /// Join request timed out (no response from host).
+        /// </summary>
+        Timeout
     }
 }

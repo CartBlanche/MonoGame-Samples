@@ -28,11 +28,16 @@ namespace Microsoft.Xna.Framework.Net
 
         private INetworkTransport networkTransport;
         internal NetworkSessionState sessionState;
-        private bool disposed;
+        internal bool disposed;
         private bool isHost;
         internal string sessionId;
         private Task receiveTask;
         private CancellationTokenSource cancellationTokenSource;
+
+        // Phase 1 additions
+        private ConnectionHealthMonitor connectionMonitor;
+        private NetworkDiagnostics diagnostics;
+        private INetworkLogger logger;
 
         // Events
         public event EventHandler<GameStartedEventArgs> GameStarted;
@@ -79,6 +84,20 @@ namespace Microsoft.Xna.Framework.Net
         }
 
         /// <summary>
+        /// Gets network diagnostics for this session.
+        /// </summary>
+        public NetworkDiagnostics Diagnostics => diagnostics;
+
+        /// <summary>
+        /// Gets or sets the network logger.
+        /// </summary>
+        public INetworkLogger Logger
+        {
+            get => logger;
+            set => logger = value ?? new NullNetworkLogger();
+        }
+
+        /// <summary>
         /// Initializes a new NetworkSession.
         /// </summary>
         private NetworkSession(NetworkSessionType sessionType, int maxGamers, int privateGamerSlots, bool isHost)
@@ -99,6 +118,11 @@ namespace Microsoft.Xna.Framework.Net
 
             networkTransport = new UdpTransport();
             cancellationTokenSource = new CancellationTokenSource();
+
+            // Phase 1: Initialize diagnostics and logging
+            diagnostics = new NetworkDiagnostics();
+            logger = new ConsoleNetworkLogger();
+            connectionMonitor = new ConnectionHealthMonitor();
 
             // Add local gamer
             var gamerGuid = Guid.NewGuid().ToString();
@@ -131,7 +155,8 @@ namespace Microsoft.Xna.Framework.Net
             : this(sessionType, maxGamers, privateGamerSlots, isHost)
         {
             this.sessionId = sessionId;
-            this.sessionState = NetworkSessionState.Lobby;
+            // Don't set state here - let JoinSessionAsync set it to Joining, then acceptance sets it to Lobby
+            // The main constructor already starts the receive loop for SystemLink sessions
         }
 
         /// <summary>
@@ -292,6 +317,9 @@ namespace Microsoft.Xna.Framework.Net
                     // SystemLink: start UDP listener and broadcast session
                     session = new NetworkSession(sessionType, maxGamers, privateGamerSlots, true);
                     session.sessionState = NetworkSessionState.Lobby;
+                    // Phase 1: Start connection monitoring for SystemLink sessions
+                    session.connectionMonitor.StartMonitoring(session);
+                    session.logger?.LogInfo($"Started connection monitoring for session {session.sessionId}");
                     // Use the session's own cancellation token, not the CreateAsync parameter
                     _ = SystemLinkSessionManager.AdvertiseSessionAsync(session, session.cancellationTokenSource.Token); // Fire-and-forget
                     break;
@@ -474,6 +502,28 @@ namespace Microsoft.Xna.Framework.Net
         }
 
         /// <summary>
+        /// Phase 2: Broadcasts session state change to all gamers.
+        /// </summary>
+        private void BroadcastSessionState(NetworkSessionState newState, string reason)
+        {
+            if (!IsHost)
+                return; // Only host broadcasts state changes
+
+            logger?.LogInfo($"Broadcasting session state change: {newState} - {reason}");
+
+            var stateMessage = new SessionStateMessage
+            {
+                NewState = newState,
+                Timestamp = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds(),
+                Reason = reason
+            };
+
+            var writer = new PacketWriter();
+            stateMessage.Serialize(writer);
+            SendToAll(writer, SendDataOptions.Reliable);
+        }
+
+        /// <summary>
         /// Starts the game.
         /// </summary>
         public void StartGame()
@@ -483,9 +533,12 @@ namespace Microsoft.Xna.Framework.Net
                 sessionState = NetworkSessionState.Playing;
                 OnGameStarted();
 
-                // Host should notify others that the game started
+                // Phase 2: Broadcast state change
                 if (IsHost)
                 {
+                    BroadcastSessionState(NetworkSessionState.Playing, "Host started game");
+                    
+                    // Also send legacy GameStateChangeMessage for backward compatibility
                     var msg = new GameStateChangeMessage { Kind = GameStateChangeKind.Started };
                     var writer = new PacketWriter();
                     msg.Serialize(writer);
@@ -504,8 +557,12 @@ namespace Microsoft.Xna.Framework.Net
                 sessionState = NetworkSessionState.Lobby;
                 OnGameEnded();
 
+                // Phase 2: Broadcast state change
                 if (IsHost)
                 {
+                    BroadcastSessionState(NetworkSessionState.Lobby, "Game ended");
+                    
+                    // Also send legacy GameStateChangeMessage for backward compatibility
                     var msg = new GameStateChangeMessage { Kind = GameStateChangeKind.Ended };
                     var writer = new PacketWriter();
                     msg.Serialize(writer);
@@ -558,12 +615,83 @@ namespace Microsoft.Xna.Framework.Net
         {
             if (e.Message is JoinRequestMessage joinRequest)
             {
-                // Handle join request
-                var newGamer = new NetworkGamer(this, joinRequest.GamerId, isLocal: false, isHost: false, gamertag: joinRequest.Gamertag);
-                AddGamer(newGamer);
-                RegisterGamerEndpoint(newGamer, e.RemoteEndPoint);
+                // Phase 1: Check protocol version
+                if (joinRequest.ProtocolVersion != JoinRequestMessage.CURRENT_PROTOCOL_VERSION)
+                {
+                    logger?.LogWarning($"Join request from {joinRequest.Gamertag} has protocol version {joinRequest.ProtocolVersion}, expected {JoinRequestMessage.CURRENT_PROTOCOL_VERSION}");
+                    
+                    var rejection = new JoinRejectedMessage
+                    {
+                        ErrorCode = NetworkSessionJoinError.ProtocolVersionMismatch,
+                        Reason = $"Protocol version mismatch. Host: v{JoinRequestMessage.CURRENT_PROTOCOL_VERSION}, Client: v{joinRequest.ProtocolVersion}"
+                    };
+                    var rejectWriter = new PacketWriter();
+                    rejection.Serialize(rejectWriter);
+                    networkTransport.Send(rejectWriter.GetData(), e.RemoteEndPoint);
+                    return;
+                }
 
-                // Send JoinAcceptedMessage back to the sender
+                // Phase 1: Check if session is full
+                if (AllGamers.Count >= MaxGamers)
+                {
+                    logger?.LogWarning($"Join request from {joinRequest.Gamertag} rejected: session is full ({AllGamers.Count}/{MaxGamers})");
+                    
+                    var rejection = new JoinRejectedMessage
+                    {
+                        ErrorCode = NetworkSessionJoinError.SessionFull,
+                        Reason = "Session is full"
+                    };
+                    var rejectWriter = new PacketWriter();
+                    rejection.Serialize(rejectWriter);
+                    networkTransport.Send(rejectWriter.GetData(), e.RemoteEndPoint);
+                    return;
+                }
+
+                // Phase 1 FIX: Check if gamer already exists (from previous retry)
+                // CRITICAL: Keep the check and add in the same lock to prevent race conditions
+                NetworkGamer existingGamer = null;
+                bool isNewGamer = false;
+                
+                Console.WriteLine($"[JOIN-DEBUG] Processing join request from {joinRequest.Gamertag} (ID: {joinRequest.GamerId})");
+                Console.WriteLine($"[JOIN-DEBUG] Current gamer count before lock: {AllGamers.Count}");
+                
+                lock (lockObject)
+                {
+                    Console.WriteLine($"[JOIN-DEBUG] Inside lock, checking for existing gamer with ID: {joinRequest.GamerId}");
+                    existingGamer = gamers.FirstOrDefault(g => g.Id == joinRequest.GamerId);
+                    
+                    if (existingGamer == null)
+                    {
+                        // New gamer - create and add atomically while holding lock
+                        Console.WriteLine($"[JOIN-DEBUG] No existing gamer found, creating new gamer");
+                        logger?.LogInfo($"Accepting join request from {joinRequest.Gamertag} (ID: {joinRequest.GamerId})");
+                        var newGamer = new NetworkGamer(this, joinRequest.GamerId, isLocal: false, isHost: false, gamertag: joinRequest.Gamertag);
+                        gamers.Add(newGamer);
+                        Console.WriteLine($"[JOIN-DEBUG] Added new gamer, count now: {gamers.Count}");
+                        existingGamer = newGamer;
+                        isNewGamer = true;
+                    }
+                    else
+                    {
+                        // Gamer already joined (this is a retry) - just resend acceptance
+                        Console.WriteLine($"[JOIN-DEBUG] Found existing gamer: {existingGamer.Gamertag}, this is a retry");
+                        logger?.LogInfo($"Join request from {joinRequest.Gamertag} is a retry (gamer already exists), resending acceptance");
+                    }
+                }
+                
+                Console.WriteLine($"[JOIN-DEBUG] After lock, total gamers: {AllGamers.Count}");
+                
+                // Register endpoint outside lock (uses its own lock internally)
+                RegisterGamerEndpoint(existingGamer, e.RemoteEndPoint);
+                
+                // Notify connection monitor for new gamers only
+                if (isNewGamer)
+                {
+                    connectionMonitor?.OnGamerJoined(existingGamer);
+                    OnGamerJoined(existingGamer);
+                }
+
+                // Send JoinAcceptedMessage back to the sender (always send, even on retry)
                 var joinAccepted = new JoinAcceptedMessage
                 {
                     SessionId = sessionId,
@@ -573,12 +701,15 @@ namespace Microsoft.Xna.Framework.Net
                 var writer = new PacketWriter();
                 joinAccepted.Serialize(writer);
                 networkTransport.Send(writer.GetData(), e.RemoteEndPoint);
+                logger?.LogInfo($"Sent JoinAcceptedMessage to {joinRequest.Gamertag}");
             }
             else if (e.Message is JoinAcceptedMessage joinAccepted)
             {
                 // Client receives confirmation from host; ensure host is present and mapped
                 if (!IsHost)
                 {
+                    logger?.LogInfo($"Received JoinAcceptedMessage from host {joinAccepted.HostGamertag}");
+                    
                     var existingHost = gamers.FirstOrDefault(g => g.IsHost);
                     if (existingHost != null && existingHost.Id != joinAccepted.HostGamerId)
                     {
@@ -591,7 +722,17 @@ namespace Microsoft.Xna.Framework.Net
                     if (existingHost == null)
                         AddGamer(host);
                     RegisterGamerEndpoint(host, e.RemoteEndPoint);
+                    
+                    // Phase 1: Transition to Lobby state when join is accepted
+                    sessionState = NetworkSessionState.Lobby;
+                    logger?.LogInfo("Successfully joined session, now in Lobby state");
                 }
+            }
+            else if (e.Message is JoinRejectedMessage joinRejected)
+            {
+                // Phase 1: Handle join rejection
+                logger?.LogError($"Join rejected: {joinRejected.Reason} (Error: {joinRejected.ErrorCode})");
+                // Session state remains in Joining, caller will check this
             }
             else if (e.Message is PlayerMoveMessage moveMessage)
             {
@@ -649,6 +790,69 @@ namespace Microsoft.Xna.Framework.Net
                     OnGameEnded();
                 }
             }
+            else if (e.Message is HeartbeatMessage heartbeat)
+            {
+                // Phase 1: Handle heartbeat from remote gamer
+                connectionMonitor?.OnHeartbeatReceived(heartbeat.GamerId, heartbeat);
+            }
+            else if (e.Message is HeartbeatReplyMessage heartbeatReply)
+            {
+                // Phase 1: Handle heartbeat reply for RTT calculation
+                connectionMonitor?.OnHeartbeatReplyReceived(heartbeatReply.GamerId, heartbeatReply);
+                
+                // Update diagnostics
+                var rtt = TimeSpan.FromMilliseconds(
+                    DateTimeOffset.UtcNow.ToUnixTimeMilliseconds() - heartbeatReply.RequestTimestamp);
+                diagnostics?.RecordRtt(rtt);
+            }
+            else if (e.Message is GamerLeavingMessage leaveMessage)
+            {
+                // Phase 2: Handle graceful leave - immediate gamer removal
+                logger?.LogInfo($"Received leave notification from gamer {leaveMessage.GamerId}: {leaveMessage.Reason}");
+                
+                NetworkGamer leavingGamer = null;
+                lock (lockObject)
+                {
+                    leavingGamer = gamers.FirstOrDefault(g => g.Id == leaveMessage.GamerId);
+                }
+                
+                if (leavingGamer != null)
+                {
+                    logger?.LogInfo($"Removing {leavingGamer.Gamertag} from session (graceful leave)");
+                    RemoveGamer(leavingGamer);
+                    
+                    // Notify connection monitor (stops tracking this gamer)
+                    connectionMonitor?.OnGamerLeft(leavingGamer);
+                }
+                else
+                {
+                    logger?.LogWarning($"Received leave notification for unknown gamer {leaveMessage.GamerId}");
+                }
+            }
+            else if (e.Message is SessionStateMessage stateMessage)
+            {
+                // Phase 2: Handle session state synchronization from host
+                if (!IsHost)
+                {
+                    logger?.LogInfo($"Received session state update: {stateMessage.NewState} - {stateMessage.Reason}");
+                    
+                    // Update local session state to match host
+                    var previousState = sessionState;
+                    sessionState = stateMessage.NewState;
+                    
+                    // Raise appropriate events based on state transition
+                    if (previousState == NetworkSessionState.Lobby && stateMessage.NewState == NetworkSessionState.Playing)
+                    {
+                        OnGameStarted();
+                    }
+                    else if (previousState == NetworkSessionState.Playing && stateMessage.NewState == NetworkSessionState.Lobby)
+                    {
+                        OnGameEnded();
+                    }
+                    
+                    logger?.LogInfo($"Session state changed from {previousState} to {sessionState}");
+                }
+            }
 
             // Raise the MessageReceived event
             var handler = MessageReceived;
@@ -683,19 +887,82 @@ namespace Microsoft.Xna.Framework.Net
         }
 
         /// <summary>
+        /// Phase 2: Gracefully leaves the session with immediate notification to all gamers.
+        /// Sends GamerLeavingMessage to all remote gamers before disposing.
+        /// </summary>
+        /// <param name="reason">Optional reason for leaving (e.g., "User quit").</param>
+        public void Leave(string reason = "User left session")
+        {
+            if (disposed)
+                return;
+
+            logger?.LogInfo($"Leaving session: {reason}");
+
+            // Send leave notification to all remote gamers
+            var localGamer = LocalGamers.FirstOrDefault();
+            if (localGamer != null && networkTransport != null && networkTransport.IsBound)
+            {
+                var leaveMessage = new GamerLeavingMessage
+                {
+                    GamerId = localGamer.Id,
+                    Reason = reason
+                };
+
+                var writer = new PacketWriter();
+                leaveMessage.Serialize(writer);
+                var data = writer.GetData();
+
+                // Send to all remote gamers
+                lock (lockObject)
+                {
+                    foreach (var gamer in gamers.Where(g => !g.IsLocal))
+                    {
+                        try
+                        {
+                            if (gamerEndpoints.TryGetValue(gamer.Id, out var endpoint))
+                            {
+                                networkTransport.Send(data, endpoint);
+                                logger?.LogInfo($"Sent leave notification to {gamer.Gamertag}");
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            logger?.LogError($"Failed to send leave notification to {gamer.Gamertag}", ex);
+                        }
+                    }
+                }
+
+                // Give a brief moment for messages to be sent
+                System.Threading.Thread.Sleep(50);
+            }
+
+            // Now dispose normally
+            Dispose();
+        }
+
+        /// <summary>
         /// Disposes the network session.
         /// </summary>
         public void Dispose()
         {
             if (!disposed)
             {
-                cancellationTokenSource?.Cancel();
+                disposed = true; // Set BEFORE cleanup to prevent re-entry
+                
+                try { cancellationTokenSource?.Cancel(); } catch { /* Already disposed */ }
+                
+                // Phase 1: Stop connection monitoring
+                connectionMonitor?.StopMonitoring();
+                
                 // Dispose transport first to unblock ReceiveAsync
                 networkTransport?.Dispose();
+                
                 try { receiveTask?.Wait(1000); } catch { /* ignore */ }
-                cancellationTokenSource?.Dispose();
+                
+                try { cancellationTokenSource?.Dispose(); } catch { /* Already disposed */ }
+                
+                // Raise SessionEnded event (may cause re-entrant Dispose call, now safe)
                 OnSessionEnded(NetworkSessionEndReason.ClientSignedOut);
-                disposed = true;
             }
         }
 
@@ -703,19 +970,28 @@ namespace Microsoft.Xna.Framework.Net
         {
             if (!disposed)
             {
-                cancellationTokenSource?.Cancel();
+                disposed = true; // Set BEFORE cleanup to prevent re-entry
+                
+                try { cancellationTokenSource?.Cancel(); } catch { /* Already disposed */ }
+                
+                // Phase 1: Stop connection monitoring
+                connectionMonitor?.StopMonitoring();
+                
                 // Dispose transport first to unblock any pending ReceiveAsync
                 if (networkTransport is IAsyncDisposable asyncTransport)
                     await asyncTransport.DisposeAsync();
                 else
                     networkTransport?.Dispose();
+                    
                 if (receiveTask != null)
                 {
                     await Task.WhenAny(receiveTask, Task.Delay(1000));
                 }
-                cancellationTokenSource?.Dispose();
+                
+                try { cancellationTokenSource?.Dispose(); } catch { /* Already disposed */ }
+                
+                // Raise SessionEnded event (may cause re-entrant Dispose call, now safe)
                 OnSessionEnded(NetworkSessionEndReason.ClientSignedOut);
-                disposed = true;
             }
         }
 
@@ -838,6 +1114,8 @@ namespace Microsoft.Xna.Framework.Net
                 gamers.Remove(gamer);
                 gamerEndpoints.Remove(gamer.Id);
             }
+            // Phase 1: Notify connection monitor
+            connectionMonitor?.OnGamerLeft(gamer);
             OnGamerLeft(gamer);
         }
 
@@ -858,10 +1136,13 @@ namespace Microsoft.Xna.Framework.Net
                 try
                 {
                     networkTransport.Send(data, endpoint);
+                    // Phase 1: Record sent packet in diagnostics
+                    diagnostics?.RecordPacketSent(data.Length);
                 }
                 catch (Exception ex)
                 {
-                    Debug.WriteLine($"Failed to send data to {gamer.Gamertag}: {ex.Message}");
+                    // Phase 1: Use logger
+                    logger?.LogError($"Failed to send data to {gamer.Gamertag}: {ex.Message}", ex);
                 }
             }
         }
@@ -894,6 +1175,9 @@ namespace Microsoft.Xna.Framework.Net
                     var (data, senderEndpoint) = await networkTransport.ReceiveAsync();
                     if (data.Length > 0)
                     {
+                        // Phase 1: Record received packet in diagnostics
+                        diagnostics?.RecordPacketReceived(data.Length);
+                        
                         // Identify sender by endpoint mapping
                         NetworkGamer senderGamer = null;
                         lock (lockObject)
@@ -930,18 +1214,43 @@ namespace Microsoft.Xna.Framework.Net
 
                         if (!handledFramework)
                         {
-                            // Application payload. Enqueue for LocalGamer.ReceiveData
+                            // Application payload. Enqueue for all LocalGamers in this session
                             if (senderGamer != null)
                             {
-                                NetworkGamer.LocalGamer?.EnqueueIncomingPacket(data, senderGamer);
+                                // Enqueue to all local gamers so they can receive via ReceiveData()
+                                foreach (var localGamer in LocalGamers)
+                                {
+                                    localGamer.EnqueueIncomingPacket(data, senderGamer);
+                                }
                             }
                         }
                     }
                 }
-                catch (ObjectDisposedException) { break; }
+                catch (ObjectDisposedException) 
+                { 
+                    // Session disposed - exit gracefully
+                    break; 
+                }
+                catch (OperationCanceledException)
+                {
+                    // Cancellation token triggered - exit gracefully
+                    break;
+                }
+                catch (System.Net.Sockets.SocketException sex) when (sex.SocketErrorCode == System.Net.Sockets.SocketError.OperationAborted)
+                {
+                    // Socket operation canceled during shutdown - exit gracefully
+                    break;
+                }
                 catch (Exception ex)
                 {
-                    Debug.WriteLine($"ReceiveLoop error: {ex.Message}");
+                    // Only log unexpected errors
+                    if (!cancellationToken.IsCancellationRequested)
+                    {
+                        logger?.LogError($"ReceiveLoop error: {ex.Message}", ex);
+                    }
+                    // Exit if cancellation was requested
+                    if (cancellationToken.IsCancellationRequested)
+                        break;
                 }
             }
         }

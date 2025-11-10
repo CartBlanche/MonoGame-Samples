@@ -11,6 +11,11 @@ namespace Microsoft.Xna.Framework.Net
         Creating,
 
         /// <summary>
+        /// Session is joining (client waiting for host acceptance).
+        /// </summary>
+        Joining,
+
+        /// <summary>
         /// Session is in the lobby, waiting for players.
         /// </summary>
         Lobby,
