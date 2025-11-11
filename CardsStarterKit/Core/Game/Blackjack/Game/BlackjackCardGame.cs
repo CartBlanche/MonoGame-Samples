@@ -1941,21 +1941,38 @@ namespace Blackjack
         {
             // This method is called on clients when they receive a CardDealt packet from the host
             // The deck is already synchronized via the shuffle seed, so cards are dealt in the same order
-            
+
             if (playerIndex == 255)
             {
                 // Dealer card
                 var dealtCard = dealer.DealCardToHand(dealerPlayer.Hand);
-                AddDealAnimation(dealtCard, dealerHandComponent, faceDown, dealDuration, DateTime.Now);
+
+                if (dealerHandComponent != null)
+                {
+                    AddDealAnimation(dealtCard, dealerHandComponent, faceDown, dealDuration, DateTime.Now);
+                }
+                else
+                {
+                    System.Console.WriteLine($"[CardDealt] Warning: dealerHandComponent is null, skipping animation");
+                }
             }
             else if (playerIndex < players.Count)
             {
                 // Player card
                 var player = (BlackjackPlayer)players[playerIndex];
                 Hand targetHand = (handType == HandTypes.First) ? player.Hand : player.SecondHand;
-                
+
                 var dealtCard = dealer.DealCardToHand(targetHand);
-                AddDealAnimation(dealtCard, animatedHands[playerIndex], !faceDown, dealDuration, DateTime.Now);
+
+                // Only add animation if the animated hand component exists for this player
+                if (animatedHands != null && playerIndex < animatedHands.Length && animatedHands[playerIndex] != null)
+                {
+                    AddDealAnimation(dealtCard, animatedHands[playerIndex], !faceDown, dealDuration, DateTime.Now);
+                }
+                else
+                {
+                    System.Console.WriteLine($"[CardDealt] Warning: animatedHands[{playerIndex}] is null, skipping animation");
+                }
             }
         }
 
@@ -1969,7 +1986,7 @@ namespace Blackjack
             if (playerIndex < players.Count)
             {
                 var player = (BlackjackPlayer)players[playerIndex];
-                
+
                 if (betAmount == 0)
                 {
                     // Player passed
@@ -1980,7 +1997,7 @@ namespace Blackjack
                     // Apply the bet (this updates balance and bet amount)
                     player.Bet(betAmount);
                 }
-                
+
                 player.IsDoneBetting = true;
             }
         }

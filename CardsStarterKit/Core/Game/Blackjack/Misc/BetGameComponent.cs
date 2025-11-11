@@ -174,37 +174,30 @@ namespace Blackjack
 
                     BlackjackPlayer player = (BlackjackPlayer)players[playerIndex];
 
-                    System.Console.WriteLine($"[BET-UPDATE] Current player: {playerIndex}, IsAI: {player is BlackjackAIPlayer}, IsDoneBetting: {player.IsDoneBetting}");
-
                     // If the player is an AI player, have it bet
                     if (player is BlackjackAIPlayer)
                     {
                         ShowAndEnableButtons(false);
                         int bet = ((BlackjackAIPlayer)player).AIBet();
-                        System.Console.WriteLine($"[BET-UPDATE] AI player {playerIndex} bet: {bet}");
 
                         BlackjackCardGame blackjackGame = cardGame as BlackjackCardGame;
 
                         if (bet > 0)
                         {
-                            System.Console.WriteLine($"[BET-UPDATE] AI player {playerIndex} placing chips");
                             AddChip(playerIndex, bet, false);
                         }
                         else
                         {
-                            System.Console.WriteLine($"[BET-UPDATE] AI player {playerIndex} passing (bet=0)");
                             // Show that the player has passed on this round
                             blackjackGame?.ShowPlayerPass(playerIndex);
                         }
 
                         // Mark AI player as done betting
                         player.IsDoneBetting = true;
-                        System.Console.WriteLine($"[BET-UPDATE] AI player {playerIndex} marked IsDoneBetting=true");
 
                         // Broadcast the AI's bet to network
                         if (blackjackGame != null && blackjackGame.IsNetworkGame && blackjackGame.IsHost)
                         {
-                            System.Console.WriteLine($"[BET-UPDATE] Host broadcasting AI player {playerIndex} bet: {bet}");
                             blackjackGame.BroadcastBetPlaced((byte)playerIndex, bet);
                         }
 
@@ -227,27 +220,12 @@ namespace Blackjack
                 {
                     BlackjackCardGame blackjackGame = ((BlackjackCardGame)cardGame);
 
-                    // Log all player betting states
-                    System.Console.WriteLine($"[BET-UPDATE] Last player done betting. Player states:");
-                    for (int i = 0; i < players.Count; i++)
-                    {
-                        var p = (BlackjackPlayer)players[i];
-                        System.Console.WriteLine($"[BET-UPDATE]   Player {i}: IsDoneBetting={p.IsDoneBetting}, IsAI={p is BlackjackAIPlayer}");
-                    }
-
-                    System.Console.WriteLine($"[BET-UPDATE] Checking animations...");
-
                     if (!blackjackGame.CheckForRunningAnimations<AnimatedGameComponent>())
                     {
-                        System.Console.WriteLine($"[BET-UPDATE] No animations running. Advancing to Dealing state.");
                         ShowAndEnableButtons(false);
                         blackjackGame.State = BlackjackGameState.Dealing;
 
                         Enabled = false;
-                    }
-                    else
-                    {
-                        System.Console.WriteLine($"[BET-UPDATE] Animations still running, waiting...");
                     }
                 }
             }
@@ -266,11 +244,9 @@ namespace Blackjack
             {
                 if (!((BlackjackPlayer)players[playerIndex]).IsDoneBetting)
                 {
-                    System.Console.WriteLine($"[GET-CURRENT] Found player {playerIndex} not done betting");
                     return playerIndex;
                 }
             }
-            System.Console.WriteLine($"[GET-CURRENT] All players done betting, returning -1");
             return -1;
         }
 
@@ -868,23 +844,18 @@ namespace Blackjack
             int playerIndex;
             BlackjackCardGame blackjackGame = cardGame as BlackjackCardGame;
 
-            System.Console.WriteLine($"[BET-CLICK] Called. IsNetworkGame: {blackjackGame?.IsNetworkGame}, LocalPlayerIndex: {LocalPlayerIndex}");
-
             if (blackjackGame != null && blackjackGame.IsNetworkGame && LocalPlayerIndex >= 0)
             {
                 // In network games, mark the LOCAL player as done betting
                 playerIndex = LocalPlayerIndex;
-                System.Console.WriteLine($"[BET-CLICK] Network game - using LocalPlayerIndex: {playerIndex}");
             }
             else
             {
                 // In single-player, use current player
                 playerIndex = GetCurrentPlayer();
-                System.Console.WriteLine($"[BET-CLICK] Single-player - using GetCurrentPlayer: {playerIndex}");
             }
 
             int finalBetAmount = currentBet;
-            System.Console.WriteLine($"[BET-CLICK] Player {playerIndex} finalizing bet of {finalBetAmount}");
 
             // If the player did not bet, show that he has passed on this round
             if (currentBet == 0)
@@ -893,20 +864,17 @@ namespace Blackjack
             }
 
             ((BlackjackPlayer)players[playerIndex]).IsDoneBetting = true;
-            System.Console.WriteLine($"[BET-CLICK] Player {playerIndex} marked IsDoneBetting=true");
 
             // Send/broadcast bet to network
             if (blackjackGame != null && blackjackGame.IsNetworkGame)
             {
                 if (blackjackGame.IsHost)
                 {
-                    System.Console.WriteLine($"[BET-CLICK] Host broadcasting BetPlaced for player {playerIndex}, amount: {finalBetAmount}");
                     // Host broadcasts the bet to all clients
                     blackjackGame.BroadcastBetPlaced((byte)playerIndex, finalBetAmount);
                 }
                 else
                 {
-                    System.Console.WriteLine($"[BET-CLICK] Client sending BetPlaced for player {playerIndex}, amount: {finalBetAmount}");
                     // Client sends their bet to the host
                     blackjackGame.SendBetPlaced((byte)playerIndex, finalBetAmount);
                 }
@@ -914,7 +882,6 @@ namespace Blackjack
 
             currentChipComponent.Clear();
             currentBet = 0;
-            System.Console.WriteLine($"[BET-CLICK] Completed for player {playerIndex}");
         }
     }
 }
