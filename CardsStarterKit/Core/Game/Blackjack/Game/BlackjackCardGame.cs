@@ -617,13 +617,21 @@ namespace Blackjack
                 // Display the hands participating in the game
                 for (int playerIndex = 0; playerIndex < players.Count; playerIndex++)
                 {
-                    if (((BlackjackPlayer)players[playerIndex]).MadeBet)
+                    // Safety check: ensure animated hand component exists before accessing it
+                    if (animatedHands[playerIndex] != null)
                     {
-                        animatedHands[playerIndex].Visible = false;
+                        if (((BlackjackPlayer)players[playerIndex]).MadeBet)
+                        {
+                            animatedHands[playerIndex].Visible = false;
+                        }
+                        else
+                        {
+                            animatedHands[playerIndex].Visible = true;
+                        }
                     }
                     else
                     {
-                        animatedHands[playerIndex].Visible = true;
+                        System.Console.WriteLine($"[StartPlaying] Warning: animatedHands[{playerIndex}] is null for player {players[playerIndex].Name}");
                     }
                 }
             }

@@ -166,13 +166,13 @@ namespace Blackjack
             {
                 NetworkGamer sender;
                 localGamer.ReceiveData(packetReader, out sender);
-                
+
                 try
                 {
                     // Read packet type (assume PacketType is a byte)
                     var packetType = (Blackjack.Networking.PacketType)packetReader.ReadByte();
                     System.Console.WriteLine($"[PACKET] Received {packetType} from {sender.Gamertag}");
-                    
+
                     switch (packetType)
                     {
                         case Blackjack.Networking.PacketType.PlayerListSync:
@@ -246,6 +246,11 @@ namespace Blackjack
                         blackJackGame.AddPlayer(new BlackjackPlayer(myTI.ToTitleCase(playerInfo.Name), blackJackGame));
                     }
                 }
+
+                // Now that we have the complete player list, start the round
+                // This ensures DisplayPlayingHands() creates animatedHands for all players including AI
+                System.Console.WriteLine($"[PlayerListSync] Client received {packet.Players.Count} players, starting round now");
+                blackJackGame.StartRound();
             }
         }
 
@@ -463,7 +468,13 @@ namespace Blackjack
                 }
             }
 
-            blackJackGame.StartRound();
+            // Only start the round immediately if we're the host or in a local game
+            // Clients need to wait for the PlayerListSync packet first
+            if (networkSession == null || networkSession.IsHost)
+            {
+                blackJackGame.StartRound();
+            }
+            // Note: Clients will call StartRound() after receiving PlayerListSync packet
         }
 
         /// <summary>
