@@ -182,7 +182,14 @@ namespace Blackjack
                     {
                         // Deal 2 cards and start playing
                         State = BlackjackGameState.Playing;
-                        Deal();
+
+                        // In network games, only the host deals cards
+                        // Clients will receive CardDealt packets and create animations via HandleReceivedCardDealt
+                        if (!IsNetworkGame || IsHost)
+                        {
+                            Deal();
+                        }
+
                         StartPlaying();
                     }
                     break;
