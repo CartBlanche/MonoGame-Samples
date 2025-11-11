@@ -642,6 +642,13 @@ namespace Blackjack
         public void AddDealAnimation(TraditionalCard card, AnimatedHandGameComponent
             animatedHand, bool flipCard, TimeSpan duration, DateTime startTime)
         {
+            // Safety check: if animatedHand is null, we can't create animations
+            if (animatedHand == null)
+            {
+                System.Console.WriteLine($"[AddDealAnimation] ERROR: animatedHand parameter is null! Cannot create animation.");
+                return;
+            }
+
             // Get the card location and card component
             int cardLocationInHand = animatedHand.GetCardLocationInHand(card);
             AnimatedCardsGameComponent cardComponent = animatedHand.GetCardGameComponent(cardLocationInHand);
