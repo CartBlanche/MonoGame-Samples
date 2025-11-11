@@ -35,6 +35,15 @@ namespace GameStateManagement
         private bool isMouseDown = false;
 
         /// <summary>
+        /// Gets whether the mouse button is currently pressed down.
+        /// Used by MenuEntry to determine if it should show the pressed texture.
+        /// </summary>
+        public bool IsMouseDown
+        {
+            get { return isMouseDown; }
+        }
+
+        /// <summary>
         /// Gets the list of menu entries, so derived classes can add
         /// or change the menu contents.
         /// </summary>
@@ -301,7 +310,7 @@ namespace GameStateManagement
 
             // Draw the menu title in the top third of the screen
             Vector2 titlePosition = new Vector2(
-                graphics.Viewport.Width / 2, 
+                graphics.Viewport.Width / 2,
                 ScreenManager.SafeArea.Top + 80); // Position in top third instead of center
             Vector2 titleOrigin = font.MeasureString(menuTitle) / 2;
             Color titleColor = new Color(192, 192, 192) * TransitionAlpha;

@@ -256,54 +256,49 @@ namespace Blackjack
         /// <param name="mouseState">Mouse input information.</param>
         private void HandleInput()
         {
-            bool isPressed = false;
+            bool isClicked = false;
             Vector2 position = Vector2.Zero;
 
-            // Check for tap gestures
+            // Check for tap gestures (touch release)
             if (input.Gestures.Count > 0 && input.Gestures[0].GestureType == GestureType.Tap)
             {
-                isPressed = true;
+                isClicked = true;
                 position = input.Gestures[0].Position;
             }
 
-            // Check for mouse input
-            if (input.CurrentMouseState.LeftButton == ButtonState.Pressed)
+            // Check for mouse click (button was pressed last frame, released this frame)
+            bool wasPressed = input.LastMouseState.LeftButton == ButtonState.Pressed;
+            bool isReleased = input.CurrentMouseState.LeftButton == ButtonState.Released;
+
+            if (wasPressed && isReleased)
             {
-                isPressed = true;
+                isClicked = true;
                 position = new Vector2(input.CurrentMouseState.X, input.CurrentMouseState.Y);
             }
 
-            // Handle chip interaction logic
-            if (isPressed)
+            // Handle chip interaction logic only on click/tap completion
+            if (isClicked)
             {
-                if (!isKeyDown)
+                int chipValue = GetIntersectingChipValue(position);
+                if (chipValue != 0)
                 {
-                    int chipValue = GetIntersectingChipValue(position);
-                    if (chipValue != 0)
+                    // Determine which player should receive the chip
+                    int targetPlayerIndex;
+                    BlackjackCardGame blackjackGame = cardGame as BlackjackCardGame;
+
+                    if (blackjackGame != null && blackjackGame.IsNetworkGame && LocalPlayerIndex >= 0)
                     {
-                        // Determine which player should receive the chip
-                        int targetPlayerIndex;
-                        BlackjackCardGame blackjackGame = cardGame as BlackjackCardGame;
-
-                        if (blackjackGame != null && blackjackGame.IsNetworkGame && LocalPlayerIndex >= 0)
-                        {
-                            // In network games, always bet for the local player
-                            targetPlayerIndex = LocalPlayerIndex;
-                        }
-                        else
-                        {
-                            // In single-player, bet for the current player
-                            targetPlayerIndex = GetCurrentPlayer();
-                        }
-
-                        AddChip(targetPlayerIndex, chipValue, false);
+                        // In network games, always bet for the local player
+                        targetPlayerIndex = LocalPlayerIndex;
                     }
-                    isKeyDown = true;
+                    else
+                    {
+                        // In single-player, bet for the current player
+                        targetPlayerIndex = GetCurrentPlayer();
+                    }
+
+                    AddChip(targetPlayerIndex, chipValue, false);
                 }
-            }
-            else
-            {
-                isKeyDown = false;
             }
         }
 
