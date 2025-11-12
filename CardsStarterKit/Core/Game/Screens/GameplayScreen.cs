@@ -193,6 +193,22 @@ namespace Blackjack
                         case Blackjack.Networking.PacketType.ShuffleSeed:
                             HandleShuffleSeedPacket(sender, packetReader);
                             break;
+                        // Phase 5: Gameplay action packets
+                        case Blackjack.Networking.PacketType.HitAction:
+                            HandleHitActionPacket(sender, packetReader);
+                            break;
+                        case Blackjack.Networking.PacketType.StandAction:
+                            HandleStandActionPacket(sender, packetReader);
+                            break;
+                        case Blackjack.Networking.PacketType.DoubleAction:
+                            HandleDoubleActionPacket(sender, packetReader);
+                            break;
+                        case Blackjack.Networking.PacketType.SplitAction:
+                            HandleSplitActionPacket(sender, packetReader);
+                            break;
+                        case Blackjack.Networking.PacketType.InsuranceAction:
+                            HandleInsuranceActionPacket(sender, packetReader);
+                            break;
                         // Add more cases for other packet types as needed
                         default:
                             System.Console.WriteLine($"[PACKET] Unknown packet type: {(byte)packetType}");
@@ -586,6 +602,62 @@ namespace Blackjack
         void player_Double(object sender, EventArgs e)
         {
             blackJackGame.Double();
+        }
+
+        // Phase 5: Gameplay Action Packet Handlers
+        private void HandleHitActionPacket(NetworkGamer sender, PacketReader reader)
+        {
+            var packet = Blackjack.Networking.HitActionPacket.Deserialize(reader);
+
+            // Only clients should process this - host already executed the action locally
+            if (networkSession != null && !networkSession.IsHost)
+            {
+                blackJackGame.HandleReceivedHitAction(packet.PlayerIndex);
+            }
+        }
+
+        private void HandleStandActionPacket(NetworkGamer sender, PacketReader reader)
+        {
+            var packet = Blackjack.Networking.StandActionPacket.Deserialize(reader);
+
+            // Only clients should process this - host already executed the action locally
+            if (networkSession != null && !networkSession.IsHost)
+            {
+                blackJackGame.HandleReceivedStandAction(packet.PlayerIndex);
+            }
+        }
+
+        private void HandleDoubleActionPacket(NetworkGamer sender, PacketReader reader)
+        {
+            var packet = Blackjack.Networking.DoubleActionPacket.Deserialize(reader);
+
+            // Only clients should process this - host already executed the action locally
+            if (networkSession != null && !networkSession.IsHost)
+            {
+                blackJackGame.HandleReceivedDoubleAction(packet.PlayerIndex);
+            }
+        }
+
+        private void HandleSplitActionPacket(NetworkGamer sender, PacketReader reader)
+        {
+            var packet = Blackjack.Networking.SplitActionPacket.Deserialize(reader);
+
+            // Only clients should process this - host already executed the action locally
+            if (networkSession != null && !networkSession.IsHost)
+            {
+                blackJackGame.HandleReceivedSplitAction(packet.PlayerIndex);
+            }
+        }
+
+        private void HandleInsuranceActionPacket(NetworkGamer sender, PacketReader reader)
+        {
+            var packet = Blackjack.Networking.InsuranceActionPacket.Deserialize(reader);
+
+            // Only clients should process this - host already executed the action locally
+            if (networkSession != null && !networkSession.IsHost)
+            {
+                blackJackGame.HandleReceivedInsuranceAction(packet.PlayerIndex);
+            }
         }
     }
 }

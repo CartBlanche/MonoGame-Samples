@@ -14,6 +14,12 @@ namespace Blackjack.Networking
         TurnChanged = 15,
         BalanceUpdate = 16,
         BettingPhaseStarted = 17,
+        // Phase 5: Gameplay actions
+        HitAction = 20,
+        StandAction = 21,
+        DoubleAction = 22,
+        SplitAction = 23,
+        InsuranceAction = 24,
     }
 
     public enum BlackjackAction : byte

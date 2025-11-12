@@ -193,4 +193,85 @@ namespace Blackjack.Networking
             };
         }
     }
+
+    // Phase 5: Gameplay Action Packets
+    public class HitActionPacket
+    {
+        public byte PlayerIndex { get; set; }
+        public void Serialize(PacketWriter writer)
+        {
+            writer.Write(PlayerIndex);
+        }
+        public static HitActionPacket Deserialize(PacketReader reader)
+        {
+            return new HitActionPacket
+            {
+                PlayerIndex = reader.ReadByte()
+            };
+        }
+    }
+
+    public class StandActionPacket
+    {
+        public byte PlayerIndex { get; set; }
+        public void Serialize(PacketWriter writer)
+        {
+            writer.Write(PlayerIndex);
+        }
+        public static StandActionPacket Deserialize(PacketReader reader)
+        {
+            return new StandActionPacket
+            {
+                PlayerIndex = reader.ReadByte()
+            };
+        }
+    }
+
+    public class DoubleActionPacket
+    {
+        public byte PlayerIndex { get; set; }
+        public void Serialize(PacketWriter writer)
+        {
+            writer.Write(PlayerIndex);
+        }
+        public static DoubleActionPacket Deserialize(PacketReader reader)
+        {
+            return new DoubleActionPacket
+            {
+                PlayerIndex = reader.ReadByte()
+            };
+        }
+    }
+
+    public class SplitActionPacket
+    {
+        public byte PlayerIndex { get; set; }
+        public void Serialize(PacketWriter writer)
+        {
+            writer.Write(PlayerIndex);
+        }
+        public static SplitActionPacket Deserialize(PacketReader reader)
+        {
+            return new SplitActionPacket
+            {
+                PlayerIndex = reader.ReadByte()
+            };
+        }
+    }
+
+    public class InsuranceActionPacket
+    {
+        public byte PlayerIndex { get; set; }
+        public void Serialize(PacketWriter writer)
+        {
+            writer.Write(PlayerIndex);
+        }
+        public static InsuranceActionPacket Deserialize(PacketReader reader)
+        {
+            return new InsuranceActionPacket
+            {
+                PlayerIndex = reader.ReadByte()
+            };
+        }
+    }
 }
