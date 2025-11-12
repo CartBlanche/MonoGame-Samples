@@ -1065,6 +1065,10 @@ namespace Blackjack
             playerHandValueTexts.Clear();
             AudioManager.PlaySound("Shuffle");
 
+            // Reset card dealing sequence tracking for network synchronization
+            cardSequenceCounter = 0;
+            dealStartTime = DateTime.MinValue;
+
             // Generate shuffle seed (host only) or wait for it (clients)
             if (IsNetworkGame && IsHost)
             {
@@ -2046,10 +2050,26 @@ namespace Blackjack
         /// Handles a card dealt packet received from the host (client-side).
         /// Recreates the dealing action that happened on the host.
         /// </summary>
+        // Track the sequence of cards dealt for proper animation timing on clients
+        private int cardSequenceCounter = 0;
+        private DateTime dealStartTime = DateTime.MinValue;
+
         public void HandleReceivedCardDealt(TraditionalCard card, byte playerIndex, bool faceDown, HandTypes handType)
         {
             // This method is called on clients when they receive a CardDealt packet from the host
             // The deck is already synchronized via the shuffle seed, so cards are dealt in the same order
+
+            // Reset sequence counter at the start of a new deal sequence
+            if (dealStartTime == DateTime.MinValue || (DateTime.Now - dealStartTime).TotalSeconds > 5)
+            {
+                dealStartTime = DateTime.Now;
+                cardSequenceCounter = 0;
+            }
+
+            // Calculate staggered start time based on card sequence
+            // This matches the timing logic in Deal() method
+            DateTime startTime = dealStartTime + TimeSpan.FromSeconds(dealDuration.TotalSeconds * cardSequenceCounter);
+            cardSequenceCounter++;
 
             if (playerIndex == 255)
             {
@@ -2058,7 +2078,7 @@ namespace Blackjack
 
                 if (dealerHandComponent != null)
                 {
-                    AddDealAnimation(dealtCard, dealerHandComponent, faceDown, dealDuration, DateTime.Now);
+                    AddDealAnimation(dealtCard, dealerHandComponent, faceDown, dealDuration, startTime);
                 }
                 else
                 {
@@ -2076,7 +2096,7 @@ namespace Blackjack
                 // Only add animation if the animated hand component exists for this player
                 if (animatedHands != null && playerIndex < animatedHands.Length && animatedHands[playerIndex] != null)
                 {
-                    AddDealAnimation(dealtCard, animatedHands[playerIndex], !faceDown, dealDuration, DateTime.Now);
+                    AddDealAnimation(dealtCard, animatedHands[playerIndex], !faceDown, dealDuration, startTime);
                 }
                 else
                 {
