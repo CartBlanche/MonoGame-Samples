@@ -15,6 +15,8 @@ namespace Blackjack
 {
     public class BlackjackAnimatedDealerHandComponent : AnimatedHandGameComponent
     {
+        private int cardSpacing;
+
         /// <summary>
         /// Creates a new instance of the 
         /// <see cref="BlackjackAnimatedDealerHandComponent"/> class.
@@ -27,6 +29,18 @@ namespace Blackjack
             CardsGame cardGame, Microsoft.Xna.Framework.Graphics.SpriteBatch spriteBatch, Microsoft.Xna.Framework.Matrix globalTransformation)
             : base(place, hand, cardGame, spriteBatch, globalTransformation)
         {
+            // Calculate card spacing based on screen width
+            var blackjackGame = cardGame as BlackjackCardGame;
+            if (blackjackGame != null)
+            {
+                int screenWidth = blackjackGame.ScreenManager.SafeArea.Width;
+                cardSpacing = UIConstants.GetDealerCardSpacing(screenWidth);
+            }
+            else
+            {
+                // Fallback to a reasonable default
+                cardSpacing = 30;
+            }
         }
 
         /// <summary>
@@ -39,7 +53,7 @@ namespace Blackjack
         /// rendered.</returns>
         public override Vector2 GetCardRelativePosition(int cardLocationInHand)
         {
-            return new Vector2(30 * cardLocationInHand, 0);
+            return new Vector2(cardSpacing * cardLocationInHand, 0);
         }
     }
 }

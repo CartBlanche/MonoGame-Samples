@@ -31,6 +31,29 @@ namespace Blackjack
         public const float ChipScaleRatio = 0.7f;             // 70% of original chip size
         public const float RingOffsetYRatio = 0.153f;         // ~110px at 720px height - distance below card position for chip circle
         
+        // Card dimensions and spacing (based on original card size 71x96)
+        public const float CardWidthRatio = 0.055f;           // ~71px at 1280px width
+        public const float CardHeightRatio = 0.133f;          // ~96px at 720px height
+        public const float DealerCardSpacingRatio = 0.023f;   // ~30px at 1280px width
+        public const float PlayerCardHorizontalSpacingRatio = 0.020f; // ~25px at 1280px width
+        public const float PlayerCardVerticalSpacingRatio = 0.042f;   // ~30px at 720px height
+        public const float SecondHandOffsetXRatio = 0.078f;   // ~100px at 1280px width
+        public const float SecondHandOffsetYRatio = 0.035f;   // ~25px at 720px height
+        public const float BetSecondHandOffsetXRatio = 0.020f; // ~25px at 1280px width
+        public const float BetSecondHandOffsetYRatio = 0.042f; // ~30px at 720px height
+        
+        // Shuffle animation parameters
+        public const float ShuffleSplitDistanceRatio = 0.117f; // ~150px at 1280px width
+        public const float ShuffleCascadeHeightRatio = 0.111f; // ~80px at 720px height
+        public const float DeckLayerOffsetRatio = 0.0012f;     // ~1.5px at 1280px width
+        
+        // Frame size for UI elements
+        public const float FrameWidthRatio = 0.141f;          // ~180px at 1280px width
+        public const float FrameHeightRatio = 0.250f;         // ~180px at 720px height
+        
+        // Insurance position
+        public const float InsuranceYPositionRatio = 0.167f;  // ~120px at 720px height
+        
         // Text scaling
         public const float RegularTextScale = 0.6f;
         public const float SmallTextScale = 0.5f;
@@ -137,6 +160,117 @@ namespace Blackjack
         public static Vector2 GetRingOffset(int screenHeight)
         {
             return new Vector2(0, GetHeightScaled(screenHeight, RingOffsetYRatio));
+        }
+        
+        /// <summary>
+        /// Get card width based on screen width
+        /// </summary>
+        public static int GetCardWidth(int screenWidth)
+        {
+            return GetWidthScaled(screenWidth, CardWidthRatio);
+        }
+        
+        /// <summary>
+        /// Get card height based on screen height
+        /// </summary>
+        public static int GetCardHeight(int screenHeight)
+        {
+            return GetHeightScaled(screenHeight, CardHeightRatio);
+        }
+        
+        /// <summary>
+        /// Get card size as Vector2
+        /// </summary>
+        public static Vector2 GetCardSize(int screenWidth, int screenHeight)
+        {
+            return new Vector2(GetCardWidth(screenWidth), GetCardHeight(screenHeight));
+        }
+        
+        /// <summary>
+        /// Get dealer card spacing (horizontal spacing between cards)
+        /// </summary>
+        public static int GetDealerCardSpacing(int screenWidth)
+        {
+            return GetWidthScaled(screenWidth, DealerCardSpacingRatio);
+        }
+        
+        /// <summary>
+        /// Get player card horizontal spacing
+        /// </summary>
+        public static int GetPlayerCardHorizontalSpacing(int screenWidth)
+        {
+            return GetWidthScaled(screenWidth, PlayerCardHorizontalSpacingRatio);
+        }
+        
+        /// <summary>
+        /// Get player card vertical spacing
+        /// </summary>
+        public static int GetPlayerCardVerticalSpacing(int screenHeight)
+        {
+            return GetHeightScaled(screenHeight, PlayerCardVerticalSpacingRatio);
+        }
+        
+        /// <summary>
+        /// Get second hand offset for split hands
+        /// </summary>
+        public static Vector2 GetSecondHandOffset(int screenWidth, int screenHeight)
+        {
+            return new Vector2(
+                GetWidthScaled(screenWidth, SecondHandOffsetXRatio),
+                GetHeightScaled(screenHeight, SecondHandOffsetYRatio));
+        }
+        
+        /// <summary>
+        /// Get second hand offset for betting component
+        /// </summary>
+        public static Vector2 GetBetSecondHandOffset(int screenWidth, int screenHeight)
+        {
+            return new Vector2(
+                GetWidthScaled(screenWidth, BetSecondHandOffsetXRatio),
+                GetHeightScaled(screenHeight, BetSecondHandOffsetYRatio));
+        }
+        
+        /// <summary>
+        /// Get shuffle split distance
+        /// </summary>
+        public static float GetShuffleSplitDistance(int screenWidth)
+        {
+            return GetWidthScaled(screenWidth, ShuffleSplitDistanceRatio);
+        }
+        
+        /// <summary>
+        /// Get shuffle cascade height
+        /// </summary>
+        public static float GetShuffleCascadeHeight(int screenHeight)
+        {
+            return GetHeightScaled(screenHeight, ShuffleCascadeHeightRatio);
+        }
+        
+        /// <summary>
+        /// Get deck layer offset for stacked deck display
+        /// </summary>
+        public static Vector2 GetDeckLayerOffset(int screenWidth)
+        {
+            float offset = GetWidthScaled(screenWidth, DeckLayerOffsetRatio);
+            return new Vector2(offset, offset);
+        }
+        
+        /// <summary>
+        /// Get frame size for UI elements
+        /// </summary>
+        public static Vector2 GetFrameSize(int screenWidth, int screenHeight)
+        {
+            return new Vector2(
+                GetWidthScaled(screenWidth, FrameWidthRatio),
+                GetHeightScaled(screenHeight, FrameHeightRatio));
+        }
+        
+        /// <summary>
+        /// Get insurance Y position
+        /// </summary>
+        public static float GetInsuranceYPosition(int screenHeight)
+        {
+            return GetHeightScaled(screenHeight, InsuranceYPositionRatio);
         }
     }
 }

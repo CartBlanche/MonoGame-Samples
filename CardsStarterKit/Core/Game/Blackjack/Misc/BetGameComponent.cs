@@ -40,8 +40,8 @@ namespace Blackjack
         Button clear;
 
         Vector2 ChipOffset { get; set; }
-        static float insuranceYPosition = 120;
-        static Vector2 secondHandOffset = new Vector2(25, 30);
+        float insuranceYPosition;
+        Vector2 secondHandOffset;
 
         List<AnimatedGameComponent> currentChipComponent = new List<AnimatedGameComponent>();
         int currentBet = 0;
@@ -69,6 +69,22 @@ namespace Blackjack
             this.spriteBatch = spriteBatch;
             this.globalTransformation = globalTransformation;
             chipsAssets = new Dictionary<int, Texture2D>();
+            
+            // Calculate proportional values based on screen size
+            var blackjackGame = cardGame as BlackjackCardGame;
+            if (blackjackGame != null)
+            {
+                int screenWidth = blackjackGame.ScreenManager.SafeArea.Width;
+                int screenHeight = blackjackGame.ScreenManager.SafeArea.Height;
+                secondHandOffset = UIConstants.GetBetSecondHandOffset(screenWidth, screenHeight);
+                insuranceYPosition = UIConstants.GetInsuranceYPosition(screenHeight);
+            }
+            else
+            {
+                // Fallback to default values
+                secondHandOffset = new Vector2(25, 30);
+                insuranceYPosition = 120;
+            }
         }
 
 

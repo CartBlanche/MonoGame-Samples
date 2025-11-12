@@ -45,19 +45,25 @@ namespace Blackjack
 
         BetGameComponent betGameComponent;
         AnimatedHandGameComponent dealerHandComponent;
+        DeckDisplayComponent deckDisplay;
         Dictionary<string, Button> buttons = new Dictionary<string, Button>();
         Button newGame;
         bool showInsurance;
 
         // An offset used for drawing the second hand which appears after a split in
-        // the correct location.
-        Vector2 secondHandOffset = new Vector2(100, 25);
+        // the correct location. Calculated proportionally based on screen size.
+        Vector2 secondHandOffset;
         // Ring offset is now calculated proportionally in the constructor
 
-        Vector2 frameSize = new Vector2(180, 180);
+        Vector2 frameSize;
 
         public BlackjackGameState State { get; set; }
         ScreenManager screenManager;
+        
+        /// <summary>
+        /// Public accessor for screen manager (needed for hand components to calculate scaling)
+        /// </summary>
+        public ScreenManager ScreenManager => screenManager;
 
         /// <summary>
         /// Creates a new instance of the <see cref="BlackjackCardGame"/> class.
@@ -79,6 +85,10 @@ namespace Blackjack
             dealerPlayer = new BlackjackPlayer("Dealer", this);
             turnFinishedByPlayer = new bool[MaximumPlayers];
             this.screenManager = screenManager;
+
+            // Calculate proportional UI sizes based on screen dimensions
+            secondHandOffset = UIConstants.GetSecondHandOffset(screenManager.SafeArea.Width, screenManager.SafeArea.Height);
+            frameSize = UIConstants.GetFrameSize(screenManager.SafeArea.Width, screenManager.SafeArea.Height);
 
             if (animatedHands == null)
             {
@@ -263,43 +273,75 @@ namespace Blackjack
         /// </summary>
         private void ShowShuffleAnimation()
         {
-            // Add shuffling animation
-            AnimatedGameComponent animationComponent = new AnimatedGameComponent(this, null, screenManager.SpriteBatch, screenManager.GlobalTransformation)
+            // Hide the deck display during shuffle animation
+            if (deckDisplay != null)
             {
-                CurrentPosition = GameTable.DealerPosition,
-                Visible = false
-            };
-            Game.Components.Add(animationComponent);
+                deckDisplay.Visible = false;
+            }
 
-            animationComponent.AddAnimation(
-                new FramesetGameComponentAnimation(cardsAssets["Shuffle_" + Theme], 32, 11, frameSize)
+            // Create a list of cards for the shuffle animation (only show a subset for performance)
+            // Using 52 cards (one deck) is enough for a good visual effect
+            var deckCards = new List<TraditionalCard>();
+            int cardsToShow = Math.Min(52, dealer.Count); // Show max 52 cards
+            for (int i = 0; i < cardsToShow; i++)
+            {
+                deckCards.Add(dealer[i]);
+            }
+
+            // Calculate deck position in center of the right quarter of the table
+            Rectangle tableBounds = GameTable.TableBounds;
+            float rightQuarterCenter = tableBounds.Left + (tableBounds.Width * 5f / 8f);
+            Vector2 deckPosition = new Vector2(rightQuarterCenter, GameTable.DealerPosition.Y);
+
+            // Get scaled card size and shuffle parameters
+            Vector2 cardSize = UIConstants.GetCardSize(screenManager.SafeArea.Width, screenManager.SafeArea.Height);
+            float splitDistance = UIConstants.GetShuffleSplitDistance(screenManager.SafeArea.Width);
+            float cascadeHeight = UIConstants.GetShuffleCascadeHeight(screenManager.SafeArea.Height);
+
+            // Create a riffle shuffle animation ending at the deck position
+            var shuffleAnimation = new RiffleShuffleAnimation(
+                this, 
+                deckPosition, // Shuffle ends at the deck position (right quarter center of table)
+                TimeSpan.FromSeconds(1.8), // 1.8 seconds - enough time to see the motion
+                cardSize) // Scaled card size
+            {
+                SplitDistance = splitDistance, // Scaled split distance
+                CascadeHeight = cascadeHeight // Scaled cascade height
+            };
+
+            // Set up callbacks
+            shuffleAnimation.OnAnimationComplete = () =>
+            {
+                AudioManager.PlaySound("Shuffle");
+                
+                // Show the deck display after shuffle completes
+                if (deckDisplay != null)
                 {
-                    Duration = TimeSpan.FromSeconds(1.5f),
-                    PerformBeforeStart = ShowComponent,
-                    PerformBeforSartArgs = animationComponent,
-                    PerformWhenDone = PlayShuffleAndRemoveComponent,
-                    PerformWhenDoneArgs = animationComponent
-                });
-            State = BlackjackGameState.Betting;
+                    deckDisplay.Visible = true;
+                }
+                
+                State = BlackjackGameState.Betting;
+            };
+
+            // Create and initialize the shuffle animation component
+            var shuffleComponent = new ShuffleAnimationComponent(
+                Game,
+                shuffleAnimation,
+                deckCards,
+                screenManager.SpriteBatch,
+                screenManager.GlobalTransformation);
+            
+            Game.Components.Add(shuffleComponent);
+            shuffleComponent.Initialize();
         }
 
         /// <summary>
-        /// Helper method to show component
+        /// Helper method to show component (used by other animations)
         /// </summary>
         /// <param name="obj"></param>
         void ShowComponent(object obj)
         {
             ((AnimatedGameComponent)obj).Visible = true;
-        }
-
-        /// <summary>
-        /// Helper method to play shuffle sound and remove component
-        /// </summary>
-        /// <param name="obj"></param>
-        void PlayShuffleAndRemoveComponent(object obj)
-        {
-            AudioManager.PlaySound("Shuffle");
-            Game.Components.Remove((AnimatedGameComponent)obj);
         }
 
         /// <summary>
@@ -668,7 +710,12 @@ namespace Blackjack
             int cardLocationInHand = animatedHand.GetCardLocationInHand(card);
             AnimatedCardsGameComponent cardComponent = animatedHand.GetCardGameComponent(cardLocationInHand);
 
-            var cardAnimation = new TransitionGameComponentAnimation(GameTable.DealerPosition,
+            // Cards are dealt from the deck position in the center of the right quarter
+            Rectangle tableBounds = GameTable.TableBounds;
+            float rightQuarterCenter = tableBounds.Left + (tableBounds.Width * 5f / 8f);
+            Vector2 deckPosition = new Vector2(rightQuarterCenter, GameTable.DealerPosition.Y);
+
+            var cardAnimation = new TransitionGameComponentAnimation(deckPosition,
                 animatedHand.CurrentPosition +
                 animatedHand.GetCardRelativePosition(cardLocationInHand))
             {
@@ -1041,7 +1088,47 @@ namespace Blackjack
             }
 
             DisplayPlayingHands();
+            ShowDeckDisplay();
             State = BlackjackGameState.Shuffling;
+        }
+
+        /// <summary>
+        /// Shows the visual deck display in center of the right quarter of the table
+        /// </summary>
+        private void ShowDeckDisplay()
+        {
+            // Remove existing deck display if present
+            if (deckDisplay != null && Game.Components.Contains(deckDisplay))
+            {
+                Game.Components.Remove(deckDisplay);
+            }
+
+            // Position the deck in center of the right quarter of the table
+            // Calculate the center of the right quarter for responsive positioning
+            Rectangle tableBounds = GameTable.TableBounds;
+            float rightQuarterCenter = tableBounds.Left + (tableBounds.Width * 5f / 8f); // 5/8 = center of right quarter
+            float deckX = rightQuarterCenter;
+            
+            // Keep the same Y position as the dealer's hand
+            float deckY = GameTable.DealerPosition.Y;
+            Vector2 deckPosition = new Vector2(deckX, deckY);
+
+            // Get scaled layer offset
+            Vector2 layerOffset = UIConstants.GetDeckLayerOffset(screenManager.SafeArea.Width);
+
+            // Create new deck display
+            deckDisplay = new DeckDisplayComponent(
+                Game,
+                this,
+                deckPosition,
+                screenManager.SpriteBatch,
+                screenManager.GlobalTransformation)
+            {
+                StackLayers = 4, // Show 4 layers for a nice thick deck
+                LayerOffset = layerOffset // Scaled offset for depth
+            };
+
+            Game.Components.Add(deckDisplay);
         }
 
         /// <summary>
