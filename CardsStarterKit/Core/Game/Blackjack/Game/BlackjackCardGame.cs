@@ -59,7 +59,7 @@ namespace Blackjack
 
         public BlackjackGameState State { get; set; }
         ScreenManager screenManager;
-        
+
         /// <summary>
         /// Public accessor for screen manager (needed for hand components to calculate scaling)
         /// </summary>
@@ -300,7 +300,7 @@ namespace Blackjack
 
             // Create a riffle shuffle animation ending at the deck position
             var shuffleAnimation = new RiffleShuffleAnimation(
-                this, 
+                this,
                 deckPosition, // Shuffle ends at the deck position (right quarter center of table)
                 TimeSpan.FromSeconds(1.8), // 1.8 seconds - enough time to see the motion
                 cardSize) // Scaled card size
@@ -313,13 +313,13 @@ namespace Blackjack
             shuffleAnimation.OnAnimationComplete = () =>
             {
                 AudioManager.PlaySound("Shuffle");
-                
+
                 // Show the deck display after shuffle completes
                 if (deckDisplay != null)
                 {
                     deckDisplay.Visible = true;
                 }
-                
+
                 State = BlackjackGameState.Betting;
             };
 
@@ -330,7 +330,7 @@ namespace Blackjack
                 deckCards,
                 screenManager.SpriteBatch,
                 screenManager.GlobalTransformation);
-            
+
             Game.Components.Add(shuffleComponent);
             shuffleComponent.Initialize();
         }
@@ -1112,7 +1112,7 @@ namespace Blackjack
             Rectangle tableBounds = GameTable.TableBounds;
             float rightQuarterCenter = tableBounds.Left + (tableBounds.Width * 5f / 8f); // 5/8 = center of right quarter
             float deckX = rightQuarterCenter;
-            
+
             // Keep the same Y position as the dealer's hand
             float deckY = GameTable.DealerPosition.Y;
             Vector2 deckPosition = new Vector2(deckX, deckY);
@@ -1468,18 +1468,18 @@ namespace Blackjack
             TraditionalCard card = dealer.DealCardToHand(player.Hand);
             AddDealAnimation(card, animatedHands[playerIndex], true, dealDuration,
                 DateTime.Now + animation.EstimatedTimeForAnimationCompletion);
-            
+
             // Broadcast first card dealt in network games
             if (IsNetworkGame && IsHost)
             {
                 BroadcastCardDealt(card, (byte)playerIndex, false, HandTypes.First);
             }
-            
+
             card = dealer.DealCardToHand(player.SecondHand);
             AddDealAnimation(card, animatedSecondHands[playerIndex], true, dealDuration,
                 DateTime.Now + animation.EstimatedTimeForAnimationCompletion +
                 dealDuration);
-            
+
             // Broadcast second card dealt in network games
             if (IsNetworkGame && IsHost)
             {
@@ -1563,7 +1563,7 @@ namespace Blackjack
                     card = dealer.DealCardToHand(player.Hand);
                     AddDealAnimation(card, animatedHands[playerIndex], true,
                         dealDuration, DateTime.Now);
-                    
+
                     // Broadcast card dealt in network games
                     if (IsNetworkGame && IsHost)
                     {
@@ -1574,7 +1574,7 @@ namespace Blackjack
                     card = dealer.DealCardToHand(player.SecondHand);
                     AddDealAnimation(card, animatedSecondHands[playerIndex], true,
                         dealDuration, DateTime.Now);
-                    
+
                     // Broadcast card dealt in network games
                     if (IsNetworkGame && IsHost)
                     {
@@ -1595,7 +1595,7 @@ namespace Blackjack
             BlackjackPlayer player = (BlackjackPlayer)GetCurrentPlayer();
             if (player == null)
                 return;
-            
+
             int playerIndex = players.IndexOf(player);
 
             // Broadcast to network in network games
@@ -2279,29 +2279,15 @@ namespace Blackjack
         /// <summary>
         /// Handles a Hit action received from the network.
         /// Executes the Hit move for the specified player.
+        /// NOTE: Does NOT deal cards - cards are dealt via CardDealt packets.
         /// </summary>
         public void HandleReceivedHitAction(byte playerIndex)
         {
-            if (playerIndex >= players.Count)
-                return;
+            // This handler is for game state synchronization only
+            // The actual card dealing is handled by CardDealt packets
+            // which are sent separately by the host
 
-            var player = (BlackjackPlayer)players[playerIndex];
-            
-            // Execute Hit logic directly (internal version that doesn't broadcast)
-            TraditionalCard card;
-            switch (player.CurrentHandType)
-            {
-                case HandTypes.First:
-                    card = dealer.DealCardToHand(player.Hand);
-                    AddDealAnimation(card, animatedHands[playerIndex], true, dealDuration, DateTime.Now);
-                    break;
-                case HandTypes.Second:
-                    card = dealer.DealCardToHand(player.SecondHand);
-                    AddDealAnimation(card, animatedSecondHands[playerIndex], true, dealDuration, DateTime.Now);
-                    break;
-                default:
-                    throw new System.Exception("Player has an unsupported hand type.");
-            }
+            // No action needed here - the CardDealt packet will handle the card
         }
 
         /// <summary>
@@ -2346,6 +2332,7 @@ namespace Blackjack
         /// <summary>
         /// Handles a Double action received from the network.
         /// Executes the Double move for the specified player.
+        /// NOTE: Does NOT deal cards - cards are dealt via CardDealt packets.
         /// </summary>
         public void HandleReceivedDoubleAction(byte playerIndex)
         {
@@ -2354,7 +2341,7 @@ namespace Blackjack
 
             var player = (BlackjackPlayer)players[playerIndex];
 
-            // Execute Double logic
+            // Execute Double logic - update chip stacks and flags
             switch (player.CurrentHandType)
             {
                 case HandTypes.First:
@@ -2376,22 +2363,7 @@ namespace Blackjack
                     throw new System.Exception("Player has an unsupported hand type.");
             }
 
-            // Deal one more card and stand
-            TraditionalCard card;
-            switch (player.CurrentHandType)
-            {
-                case HandTypes.First:
-                    card = dealer.DealCardToHand(player.Hand);
-                    AddDealAnimation(card, animatedHands[playerIndex], true, dealDuration, DateTime.Now);
-                    break;
-                case HandTypes.Second:
-                    card = dealer.DealCardToHand(player.SecondHand);
-                    AddDealAnimation(card, animatedSecondHands[playerIndex], true, dealDuration, DateTime.Now);
-                    break;
-                default:
-                    throw new System.Exception("Player has an unsupported hand type.");
-            }
-
+            // Update turn state (card dealing is handled by CardDealt packet)
             // Automatically stand after double
             if (player.IsSplit == false)
             {
@@ -2421,6 +2393,7 @@ namespace Blackjack
         /// <summary>
         /// Handles a Split action received from the network.
         /// Executes the Split move for the specified player.
+        /// NOTE: Does NOT deal new cards - cards are dealt via CardDealt packets.
         /// </summary>
         public void HandleReceivedSplitAction(byte playerIndex)
         {
@@ -2434,7 +2407,7 @@ namespace Blackjack
             Vector2 sourcePosition = animatedHands[playerIndex].GetCardGameComponent(1).CurrentPosition;
             Vector2 targetPosition = animatedHands[playerIndex].GetCardGameComponent(0).CurrentPosition +
                 secondHandOffset;
-            
+
             var animation = new TransitionGameComponentAnimation(sourcePosition, targetPosition)
             {
                 StartTime = DateTime.Now,
@@ -2454,13 +2427,7 @@ namespace Blackjack
             animatedGameComponent.IsFaceDown = false;
             animatedGameComponent.AddAnimation(animation);
 
-            // Deal additional cards
-            TraditionalCard card = dealer.DealCardToHand(player.Hand);
-            AddDealAnimation(card, animatedHands[playerIndex], true, dealDuration,
-                DateTime.Now + animation.EstimatedTimeForAnimationCompletion);
-            card = dealer.DealCardToHand(player.SecondHand);
-            AddDealAnimation(card, animatedSecondHands[playerIndex], true, dealDuration,
-                DateTime.Now + animation.EstimatedTimeForAnimationCompletion + dealDuration);
+            // Note: Additional cards will be dealt via CardDealt packets from the host
         }
 
         /// <summary>
