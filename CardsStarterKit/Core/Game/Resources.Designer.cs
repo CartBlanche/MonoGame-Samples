@@ -8,10 +8,11 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Blackjack {
+namespace Blackjack
+{
     using System;
-    
-    
+
+
     /// <summary>
     ///   A strongly-typed resource class, for looking up localized strings, etc.
     /// </summary>
@@ -22,411 +23,719 @@ namespace Blackjack {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    internal class Resources {
-        
+    internal class Resources
+    {
+
         private static global::System.Resources.ResourceManager resourceMan;
-        
+
         private static global::System.Globalization.CultureInfo resourceCulture;
-        
+
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        internal Resources() {
+        internal Resources()
+        {
         }
-        
+
         /// <summary>
         ///   Returns the cached ResourceManager instance used by this class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Resources.ResourceManager ResourceManager {
-            get {
-                if (object.ReferenceEquals(resourceMan, null)) {
+        internal static global::System.Resources.ResourceManager ResourceManager
+        {
+            get
+            {
+                if (object.ReferenceEquals(resourceMan, null))
+                {
                     global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Blackjack.Core.Resources", typeof(Resources).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
             }
         }
-        
+
         /// <summary>
         ///   Overrides the current thread's CurrentUICulture property for all
         ///   resource lookups using this strongly typed resource class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Globalization.CultureInfo Culture {
-            get {
+        internal static global::System.Globalization.CultureInfo Culture
+        {
+            get
+            {
                 return resourceCulture;
             }
-            set {
+            set
+            {
                 resourceCulture = value;
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Back.
         /// </summary>
-        internal static string Back {
-            get {
+        internal static string Back
+        {
+            get
+            {
                 return ResourceManager.GetString("Back", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Are you sure you want to end this session?.
         /// </summary>
-        internal static string ConfirmEndSession {
-            get {
+        internal static string ConfirmEndSession
+        {
+            get
+            {
                 return ResourceManager.GetString("ConfirmEndSession", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Are you sure you want to exit this sample?.
         /// </summary>
-        internal static string ConfirmExitSample {
-            get {
+        internal static string ConfirmExitSample
+        {
+            get
+            {
                 return ResourceManager.GetString("ConfirmExitSample", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Are you sure you want to start the game,
         ///even though not all players are ready?.
         /// </summary>
-        internal static string ConfirmForceStartGame {
-            get {
+        internal static string ConfirmForceStartGame
+        {
+            get
+            {
                 return ResourceManager.GetString("ConfirmForceStartGame", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Are you sure you want to leave this session?.
         /// </summary>
-        internal static string ConfirmLeaveSession {
-            get {
+        internal static string ConfirmLeaveSession
+        {
+            get
+            {
                 return ResourceManager.GetString("ConfirmLeaveSession", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Online gameplay is not available in trial mode.
         ///Would you like to purchase this game?.
         /// </summary>
-        internal static string ConfirmMarketplace {
-            get {
+        internal static string ConfirmMarketplace
+        {
+            get
+            {
                 return ResourceManager.GetString("ConfirmMarketplace", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Are you sure you want to quit this game?.
         /// </summary>
-        internal static string ConfirmQuitGame {
-            get {
+        internal static string ConfirmQuitGame
+        {
+            get
+            {
                 return ResourceManager.GetString("ConfirmQuitGame", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Create Session.
         /// </summary>
-        internal static string CreateSession {
-            get {
+        internal static string CreateSession
+        {
+            get
+            {
                 return ResourceManager.GetString("CreateSession", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to End Session.
         /// </summary>
-        internal static string EndSession {
-            get {
+        internal static string EndSession
+        {
+            get
+            {
                 return ResourceManager.GetString("EndSession", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Lost connection to the network session.
         /// </summary>
-        internal static string ErrorDisconnected {
-            get {
+        internal static string ErrorDisconnected
+        {
+            get
+            {
                 return ResourceManager.GetString("ErrorDisconnected", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to You must sign in a suitable gamer profile
         ///in order to access this functionality.
         /// </summary>
-        internal static string ErrorGamerPrivilege {
-            get {
+        internal static string ErrorGamerPrivilege
+        {
+            get
+            {
                 return ResourceManager.GetString("ErrorGamerPrivilege", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Host ended the session.
         /// </summary>
-        internal static string ErrorHostEndedSession {
-            get {
+        internal static string ErrorHostEndedSession
+        {
+            get
+            {
                 return ResourceManager.GetString("ErrorHostEndedSession", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to There was an error while
         ///accessing the network.
         /// </summary>
-        internal static string ErrorNetwork {
-            get {
+        internal static string ErrorNetwork
+        {
+            get
+            {
                 return ResourceManager.GetString("ErrorNetwork", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Networking is turned
         ///off or not connected.
         /// </summary>
-        internal static string ErrorNetworkNotAvailable {
-            get {
+        internal static string ErrorNetworkNotAvailable
+        {
+            get
+            {
                 return ResourceManager.GetString("ErrorNetworkNotAvailable", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Host kicked you out of the session.
         /// </summary>
-        internal static string ErrorRemovedByHost {
-            get {
+        internal static string ErrorRemovedByHost
+        {
+            get
+            {
                 return ResourceManager.GetString("ErrorRemovedByHost", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to This session is already full.
         /// </summary>
-        internal static string ErrorSessionFull {
-            get {
+        internal static string ErrorSessionFull
+        {
+            get
+            {
                 return ResourceManager.GetString("ErrorSessionFull", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Session not found. It may have ended,
         ///or there may be no network connectivity
         ///between the local machine and session host.
         /// </summary>
-        internal static string ErrorSessionNotFound {
-            get {
+        internal static string ErrorSessionNotFound
+        {
+            get
+            {
                 return ResourceManager.GetString("ErrorSessionNotFound", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to You must wait for the host to return to
         ///the lobby before you can join this session.
         /// </summary>
-        internal static string ErrorSessionNotJoinable {
-            get {
+        internal static string ErrorSessionNotJoinable
+        {
+            get
+            {
                 return ResourceManager.GetString("ErrorSessionNotJoinable", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to This functionality is not available in trial mode.
         /// </summary>
-        internal static string ErrorTrialMode {
-            get {
+        internal static string ErrorTrialMode
+        {
+            get
+            {
                 return ResourceManager.GetString("ErrorTrialMode", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to An unknown error occurred.
         /// </summary>
-        internal static string ErrorUnknown {
-            get {
+        internal static string ErrorUnknown
+        {
+            get
+            {
                 return ResourceManager.GetString("ErrorUnknown", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Exit.
         /// </summary>
-        internal static string Exit {
-            get {
+        internal static string Exit
+        {
+            get
+            {
                 return ResourceManager.GetString("Exit", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Find Sessions.
         /// </summary>
-        internal static string FindSessions {
-            get {
+        internal static string FindSessions
+        {
+            get
+            {
                 return ResourceManager.GetString("FindSessions", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to  (host).
         /// </summary>
-        internal static string HostSuffix {
-            get {
+        internal static string HostSuffix
+        {
+            get
+            {
                 return ResourceManager.GetString("HostSuffix", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Join Session.
         /// </summary>
-        internal static string JoinSession {
-            get {
+        internal static string JoinSession
+        {
+            get
+            {
                 return ResourceManager.GetString("JoinSession", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Leave Session.
         /// </summary>
-        internal static string LeaveSession {
-            get {
+        internal static string LeaveSession
+        {
+            get
+            {
                 return ResourceManager.GetString("LeaveSession", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Loading.
         /// </summary>
-        internal static string Loading {
-            get {
+        internal static string Loading
+        {
+            get
+            {
                 return ResourceManager.GetString("Loading", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Lobby.
         /// </summary>
-        internal static string Lobby {
-            get {
+        internal static string Lobby
+        {
+            get
+            {
                 return ResourceManager.GetString("Lobby", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Main Menu.
         /// </summary>
-        internal static string MainMenu {
-            get {
+        internal static string MainMenu
+        {
+            get
+            {
                 return ResourceManager.GetString("MainMenu", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to 
         ///A button, Space, Enter = ok
         ///B button, Esc = cancel.
         /// </summary>
-        internal static string MessageBoxUsage {
-            get {
+        internal static string MessageBoxUsage
+        {
+            get
+            {
                 return ResourceManager.GetString("MessageBoxUsage", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to {0} joined.
         /// </summary>
-        internal static string MessageGamerJoined {
-            get {
+        internal static string MessageGamerJoined
+        {
+            get
+            {
                 return ResourceManager.GetString("MessageGamerJoined", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to {0} left.
         /// </summary>
-        internal static string MessageGamerLeft {
-            get {
+        internal static string MessageGamerLeft
+        {
+            get
+            {
                 return ResourceManager.GetString("MessageGamerLeft", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Networking....
         /// </summary>
-        internal static string NetworkBusy {
-            get {
+        internal static string NetworkBusy
+        {
+            get
+            {
                 return ResourceManager.GetString("NetworkBusy", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to No sessions found.
         /// </summary>
-        internal static string NoSessionsFound {
-            get {
+        internal static string NoSessionsFound
+        {
+            get
+            {
                 return ResourceManager.GetString("NoSessionsFound", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Paused.
         /// </summary>
-        internal static string Paused {
-            get {
+        internal static string Paused
+        {
+            get
+            {
                 return ResourceManager.GetString("Paused", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to LIVE.
         /// </summary>
-        internal static string PlayerMatch {
-            get {
+        internal static string PlayerMatch
+        {
+            get
+            {
                 return ResourceManager.GetString("PlayerMatch", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Quit Game.
         /// </summary>
-        internal static string QuitGame {
-            get {
+        internal static string QuitGame
+        {
+            get
+            {
                 return ResourceManager.GetString("QuitGame", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Resume Game.
         /// </summary>
-        internal static string ResumeGame {
-            get {
+        internal static string ResumeGame
+        {
+            get
+            {
                 return ResourceManager.GetString("ResumeGame", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Return to Lobby.
         /// </summary>
-        internal static string ReturnToLobby {
-            get {
+        internal static string ReturnToLobby
+        {
+            get
+            {
                 return ResourceManager.GetString("ReturnToLobby", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Single Player.
         /// </summary>
-        internal static string SinglePlayer {
-            get {
+        internal static string SinglePlayer
+        {
+            get
+            {
                 return ResourceManager.GetString("SinglePlayer", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to System Link.
         /// </summary>
-        internal static string SystemLink {
-            get {
+        internal static string SystemLink
+        {
+            get
+            {
                 return ResourceManager.GetString("SystemLink", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Play.
+        /// </summary>
+        internal static string Play
+        {
+            get
+            {
+                return ResourceManager.GetString("Play", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Theme.
+        /// </summary>
+        internal static string Theme
+        {
+            get
+            {
+                return ResourceManager.GetString("Theme", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Quit.
+        /// </summary>
+        internal static string Quit
+        {
+            get
+            {
+                return ResourceManager.GetString("Quit", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Host New Game.
+        /// </summary>
+        internal static string HostNewGame
+        {
+            get
+            {
+                return ResourceManager.GetString("HostNewGame", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Refresh.
+        /// </summary>
+        internal static string Refresh
+        {
+            get
+            {
+                return ResourceManager.GetString("Refresh", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Start Game.
+        /// </summary>
+        internal static string StartGame
+        {
+            get
+            {
+                return ResourceManager.GetString("StartGame", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Available Games:.
+        /// </summary>
+        internal static string AvailableGames
+        {
+            get
+            {
+                return ResourceManager.GetString("AvailableGames", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Players:.
+        /// </summary>
+        internal static string Players
+        {
+            get
+            {
+                return ResourceManager.GetString("Players", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Deck.
+        /// </summary>
+        internal static string Deck
+        {
+            get
+            {
+                return ResourceManager.GetString("Deck", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Return.
+        /// </summary>
+        internal static string Return
+        {
+            get
+            {
+                return ResourceManager.GetString("Return", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Searching for games....
+        /// </summary>
+        internal static string SearchingForGames
+        {
+            get
+            {
+                return ResourceManager.GetString("SearchingForGames", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Found {0} game{1}.
+        /// </summary>
+        internal static string FoundGames
+        {
+            get
+            {
+                return ResourceManager.GetString("FoundGames", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Auto-refresh in {0}s.
+        /// </summary>
+        internal static string AutoRefreshIn
+        {
+            get
+            {
+                return ResourceManager.GetString("AutoRefreshIn", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Dealer: House.
+        /// </summary>
+        internal static string Dealer
+        {
+            get
+            {
+                return ResourceManager.GetString("Dealer", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to HOST.
+        /// </summary>
+        internal static string Host
+        {
+            get
+            {
+                return ResourceManager.GetString("Host", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Slot {0}: {1}.
+        /// </summary>
+        internal static string Slot
+        {
+            get
+            {
+                return ResourceManager.GetString("Slot", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Join or Host a Game.
+        /// </summary>
+        internal static string JoinOrHostGame
+        {
+            get
+            {
+                return ResourceManager.GetString("JoinOrHostGame", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Failed to create session..
+        /// </summary>
+        internal static string FailedToCreateSession
+        {
+            get
+            {
+                return ResourceManager.GetString("FailedToCreateSession", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Failed to join session..
+        /// </summary>
+        internal static string FailedToJoinSession
+        {
+            get
+            {
+                return ResourceManager.GetString("FailedToJoinSession", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to OK.
+        /// </summary>
+        internal static string OK
+        {
+            get
+            {
+                return ResourceManager.GetString("OK", resourceCulture);
             }
         }
     }

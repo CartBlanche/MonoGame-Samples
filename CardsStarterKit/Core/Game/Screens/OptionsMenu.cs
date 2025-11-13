@@ -45,8 +45,8 @@ namespace Blackjack
         {
             safeArea = ScreenManager.SafeArea;
             // Create our menu entries.
-            MenuEntry themeGameMenuEntry = new MenuEntry("Deck");
-            MenuEntry returnMenuEntry = new MenuEntry("Return");
+            MenuEntry themeGameMenuEntry = new MenuEntry(Resources.Deck);
+            MenuEntry returnMenuEntry = new MenuEntry(Resources.Return);
 
             // Hook up menu event handlers.
             themeGameMenuEntry.Selected += ThemeGameMenuEntrySelected;

@@ -21,21 +21,21 @@ namespace Blackjack
         MenuEntry backMenuEntry;
         List<MenuEntry> sessionEntries = new List<MenuEntry>();
         List<AvailableNetworkSession> availableSessions = new List<AvailableNetworkSession>();
-        
+
         TimeSpan timeSinceLastSearch = TimeSpan.Zero;
         const float AutoRefreshInterval = 5.0f; // Auto-refresh every 5 seconds
         bool isSearching = false;
 
         public SessionBrowserScreen()
-            : base("Join or Host a Game")
+            : base(Resources.JoinOrHostGame)
         {
         }
 
         public override void LoadContent()
         {
-            hostGameMenuEntry = new MenuEntry("Host New Game");
-            refreshMenuEntry = new MenuEntry("Refresh");
-            backMenuEntry = new MenuEntry("Back");
+            hostGameMenuEntry = new MenuEntry(Resources.HostNewGame);
+            refreshMenuEntry = new MenuEntry(Resources.Refresh);
+            backMenuEntry = new MenuEntry(Resources.Back);
 
             hostGameMenuEntry.Selected += HostGameMenuEntrySelected;
             refreshMenuEntry.Selected += RefreshMenuEntrySelected;
@@ -44,13 +44,13 @@ namespace Blackjack
             MenuEntries.Add(hostGameMenuEntry);
             MenuEntries.Add(refreshMenuEntry);
             MenuEntries.Add(backMenuEntry);
-            
+
             // Start async session discovery
             BeginFindSessions();
 
             base.LoadContent();
         }
-        
+
         void RefreshMenuEntrySelected(object sender, EventArgs e)
         {
             // Manually trigger a refresh
@@ -82,7 +82,7 @@ namespace Blackjack
                 }
                 else
                 {
-                    ScreenManager.AddScreen(new MessageBoxScreen("Failed to create session."), null);
+                    ScreenManager.AddScreen(new MessageBoxScreen(Resources.FailedToCreateSession), null);
                 }
             };
             ScreenManager.AddScreen(busyScreen, null);
@@ -106,7 +106,7 @@ namespace Blackjack
                     }
                     else
                     {
-                        ScreenManager.AddScreen(new MessageBoxScreen("Failed to join session."), null);
+                        ScreenManager.AddScreen(new MessageBoxScreen(Resources.FailedToJoinSession), null);
                     }
                 };
                 ScreenManager.AddScreen(busyScreen, null);
@@ -121,7 +121,7 @@ namespace Blackjack
                 MenuEntries.Remove(entry);
             }
             sessionEntries.Clear();
-            
+
             // Don't add session entries to MenuEntries - we'll draw them separately
             // Just create the entries for the available sessions
             foreach (var session in availableSessions)
@@ -135,7 +135,7 @@ namespace Blackjack
         public override void Update(GameTime gameTime, bool otherScreenHasFocus, bool coveredByOtherScreen)
         {
             base.Update(gameTime, otherScreenHasFocus, coveredByOtherScreen);
-            
+
             // Auto-refresh session list periodically
             if (!isSearching && !coveredByOtherScreen)
             {
@@ -146,11 +146,11 @@ namespace Blackjack
                     timeSinceLastSearch = TimeSpan.Zero;
                 }
             }
-            
+
             // Update refresh button text to show status
             if (refreshMenuEntry != null)
             {
-                refreshMenuEntry.Text = isSearching ? "Searching..." : "Refresh";
+                refreshMenuEntry.Text = isSearching ? Resources.NetworkBusy : Resources.Refresh;
             }
         }
 
@@ -163,14 +163,14 @@ namespace Blackjack
             {
                 Vector2 mousePosition = new Vector2(input.CurrentMouseState.X, input.CurrentMouseState.Y);
                 SpriteFont font = ScreenManager.Font;
-                
+
                 // Check if clicked on a session entry
                 if (availableSessions.Count > 0)
                 {
                     Vector2 headerPosition = new Vector2(ScreenManager.SafeArea.Left + 100, ScreenManager.SafeArea.Top + 150);
                     Vector2 sessionPosition = new Vector2(ScreenManager.SafeArea.Left + 120, headerPosition.Y + font.LineSpacing * 1.5f);
                     float scale = 0.85f;
-                    
+
                     for (int i = 0; i < sessionEntries.Count; i++)
                     {
                         var sessionEntry = sessionEntries[i];
@@ -181,19 +181,19 @@ namespace Blackjack
                             (int)textSize.X,
                             (int)(font.LineSpacing * scale)
                         );
-                        
+
                         if (hitBox.Contains(mousePosition))
                         {
                             // Clicked on this session - join it
                             JoinSessionMenuEntrySelected(sessionEntry, EventArgs.Empty);
                             return;
                         }
-                        
+
                         sessionPosition.Y += font.LineSpacing * scale + 10;
                     }
                 }
             }
-            
+
             // Let base class handle button input
             base.HandleInput(input);
         }
@@ -203,7 +203,7 @@ namespace Blackjack
             // Exit all screens and return to main menu (without BackgroundScreen to avoid logo)
             foreach (GameScreen screen in ScreenManager.GetScreens())
                 screen.ExitScreen();
-            
+
             ScreenManager.AddScreen(new BackgroundScreen(), null);
             ScreenManager.AddScreen(new MainMenuScreen(), null);
         }
@@ -212,58 +212,59 @@ namespace Blackjack
         {
             // Draw solid background to cover any BackgroundScreen logo
             ScreenManager.GraphicsDevice.Clear(new Color(50, 20, 20)); // Dark red background
-            
+
             // Draw menu entries (bottom buttons) and title from base class
             base.Draw(gameTime);
-            
+
             SpriteBatch spriteBatch = ScreenManager.SpriteBatch;
             SpriteFont font = ScreenManager.Font;
-            
+
             spriteBatch.Begin();
-            
+
             // Draw "Available Games:" section header and session list
             if (availableSessions.Count > 0)
             {
                 // Draw header
                 Vector2 headerPosition = new Vector2(ScreenManager.SafeArea.Left + 100, ScreenManager.SafeArea.Top + 150);
-                spriteBatch.DrawString(font, "Available Games:", headerPosition, Color.Yellow, 0f, Vector2.Zero, 0.9f, SpriteEffects.None, 0f);
-                
+                spriteBatch.DrawString(font, Resources.AvailableGames, headerPosition, Color.Yellow, 0f, Vector2.Zero, 0.9f, SpriteEffects.None, 0f);
+
                 // Draw session entries in a vertical list below the header
                 Vector2 sessionPosition = new Vector2(ScreenManager.SafeArea.Left + 120, headerPosition.Y + font.LineSpacing * 1.5f);
-                
+
                 for (int i = 0; i < sessionEntries.Count; i++)
                 {
                     var sessionEntry = sessionEntries[i];
                     Color color = Color.White;
                     float scale = 0.85f;
-                    
+
                     // Draw the session entry text
                     string sessionText = sessionEntry.Text;
                     spriteBatch.DrawString(font, sessionText, sessionPosition, color, 0f, Vector2.Zero, scale, SpriteEffects.None, 0f);
-                    
+
                     // Move down for next entry
                     sessionPosition.Y += font.LineSpacing * scale + 10; // Add some padding
                 }
             }
-            
+
             // Draw status at bottom left
             Vector2 statusPosition = new Vector2(ScreenManager.SafeArea.Left + 50, ScreenManager.SafeArea.Bottom - 80);
-            
-            string statusText = isSearching 
-                ? "Searching for games..." 
-                : $"Found {availableSessions.Count} game(s)";
-            
+
+            var pluralGames = availableSessions.Count == 0 || availableSessions.Count > 1 ? "s" : "";
+            string statusText = isSearching
+                ? Resources.SearchingForGames
+                : string.Format(Resources.FoundGames, availableSessions.Count, pluralGames);
+
             spriteBatch.DrawString(font, statusText, statusPosition, Color.LightGreen, 0f, Vector2.Zero, 0.8f, SpriteEffects.None, 0f);
-            
+
             // Show auto-refresh timer
             if (!isSearching)
             {
                 int secondsUntilRefresh = (int)(AutoRefreshInterval - timeSinceLastSearch.TotalSeconds);
-                string timerText = $"Auto-refresh in {secondsUntilRefresh}s";
+                string timerText = string.Format(Resources.AutoRefreshIn, secondsUntilRefresh);
                 statusPosition.Y += font.LineSpacing;
                 spriteBatch.DrawString(font, timerText, statusPosition, Color.Gray, 0f, Vector2.Zero, 0.7f, SpriteEffects.None, 0f);
             }
-            
+
             spriteBatch.End();
         }
 
@@ -274,9 +275,9 @@ namespace Blackjack
         {
             if (isSearching)
                 return; // Already searching
-                
+
             isSearching = true;
-            
+
             var asyncResult = NetworkSession.FindAsync(
                 NetworkSessionType.SystemLink,
                 1, // local gamers

@@ -212,7 +212,7 @@ the lobby before you can join this session</value>
   <data name="MessageBoxUsage" xml:space="preserve">
     <value>
 A button, Space, Enter = ok
-B button, Esc = cancel</value>
+B button, Esc = Cancel</value>
   </data>
   <data name="MessageGamerJoined" xml:space="preserve">
     <value>{0} joined</value>
@@ -221,7 +221,7 @@ B button, Esc = cancel</value>
     <value>{0} left</value>
   </data>
   <data name="NetworkBusy" xml:space="preserve">
-    <value>Networking...</value>
+    <value>Searching...</value>
   </data>
   <data name="NoSessionsFound" xml:space="preserve">
     <value>No sessions found</value>
@@ -246,5 +246,65 @@ B button, Esc = cancel</value>
   </data>
   <data name="SystemLink" xml:space="preserve">
     <value>LAN Session</value>
+  </data>
+  <data name="Play" xml:space="preserve">
+    <value>Play</value>
+  </data>
+  <data name="Theme" xml:space="preserve">
+    <value>Theme</value>
+  </data>
+  <data name="Quit" xml:space="preserve">
+    <value>Quit</value>
+  </data>
+  <data name="HostNewGame" xml:space="preserve">
+    <value>Host New Game</value>
+  </data>
+  <data name="Refresh" xml:space="preserve">
+    <value>Refresh</value>
+  </data>
+  <data name="StartGame" xml:space="preserve">
+    <value>Start Game</value>
+  </data>
+  <data name="AvailableGames" xml:space="preserve">
+    <value>Available Games:</value>
+  </data>
+  <data name="Players" xml:space="preserve">
+    <value>Players:</value>
+  </data>
+  <data name="Deck" xml:space="preserve">
+    <value>Deck</value>
+  </data>
+  <data name="Return" xml:space="preserve">
+    <value>Return</value>
+  </data>
+  <data name="SearchingForGames" xml:space="preserve">
+    <value>Searching for games...</value>
+  </data>
+  <data name="FoundGames" xml:space="preserve">
+    <value>Found {0} game{1}</value>
+  </data>
+  <data name="AutoRefreshIn" xml:space="preserve">
+    <value>Auto-refresh in {0}s</value>
+  </data>
+  <data name="Dealer" xml:space="preserve">
+    <value>Dealer: House</value>
+  </data>
+  <data name="Host" xml:space="preserve">
+    <value>HOST</value>
+  </data>
+  <data name="Slot" xml:space="preserve">
+    <value>Slot {0}: {1}</value>
+  </data>
+  <data name="JoinOrHostGame" xml:space="preserve">
+    <value>Join or Host a Game</value>
+  </data>
+  <data name="FailedToCreateSession" xml:space="preserve">
+    <value>Failed to create session.</value>
+  </data>
+  <data name="FailedToJoinSession" xml:space="preserve">
+    <value>Failed to join session.</value>
+  </data>
+  <data name="OK" xml:space="preserve">
+    <value>OK</value>
   </data>
 </root>

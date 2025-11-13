@@ -27,7 +27,7 @@ namespace Blackjack
 
         public override void LoadContent()
         {
-            okMenuEntry = new MenuEntry("OK");
+            okMenuEntry = new MenuEntry(Resources.OK);
             okMenuEntry.Selected += OkMenuEntrySelected;
             //MenuEntries.Add(okMenuEntry);
             base.LoadContent();

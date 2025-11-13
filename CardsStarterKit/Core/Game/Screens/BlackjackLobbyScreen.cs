@@ -22,7 +22,7 @@ namespace Blackjack
         NetworkSession networkSession;
 
         public BlackjackLobbyScreen(NetworkSession networkSession = null)
-            : base("Lobby")
+            : base(Resources.Lobby)
         {
             this.networkSession = networkSession;
 
@@ -50,8 +50,8 @@ namespace Blackjack
 
         public override void LoadContent()
         {
-            startGameMenuEntry = new MenuEntry("Start Game");
-            leaveLobbyMenuEntry = new MenuEntry("Leave Lobby");
+            startGameMenuEntry = new MenuEntry(Resources.StartGame);
+            leaveLobbyMenuEntry = new MenuEntry(Resources.LeaveSession);
 
             startGameMenuEntry.Selected += StartGameMenuEntrySelected;
             leaveLobbyMenuEntry.Selected += LeaveLobbyMenuEntrySelected;
@@ -70,7 +70,7 @@ namespace Blackjack
         {
             // Draw solid background to cover any BackgroundScreen logo
             ScreenManager.GraphicsDevice.Clear(new Color(50, 20, 20)); // Dark red background
-            
+
             base.Draw(gameTime);
 
             SpriteBatch spriteBatch = ScreenManager.SpriteBatch;
@@ -78,16 +78,16 @@ namespace Blackjack
             Vector2 position = new Vector2(ScreenManager.SafeArea.Left + 50, ScreenManager.SafeArea.Top + 100);
 
             spriteBatch.Begin();
-            spriteBatch.DrawString(font, "Players:", position, Color.White);
+            spriteBatch.DrawString(font, Resources.Players, position, Color.White);
             position.Y += font.LineSpacing * 2;
 
             int slotIndex = 0;
             // Show joined players
             foreach (var playerName in joinedPlayers)
             {
-                string slotText = $"Slot {slotIndex + 1}: {playerName}";
+                string slotText = string.Format(Resources.Slot, slotIndex + 1, playerName);
                 if (slotIndex == 0 && isHost)
-                    slotText += "    [HOST]";
+                    slotText += $"    [{Resources.Host}]";
                 spriteBatch.DrawString(font, slotText, position, Color.Green);
                 position.Y += font.LineSpacing;
                 slotIndex++;
@@ -95,7 +95,7 @@ namespace Blackjack
             // Do NOT show AI players until Start Game is clicked
             // Dealer
             position.Y += font.LineSpacing;
-            spriteBatch.DrawString(font, "Dealer: House", position, Color.Yellow);
+            spriteBatch.DrawString(font, Resources.Dealer, position, Color.Yellow);
             spriteBatch.End();
         }
 
@@ -150,7 +150,7 @@ namespace Blackjack
                 var orderedGamers = networkSession.AllGamers
                     .OrderByDescending(g => g.IsHost)  // Host first
                     .ThenBy(g => g.Id);                 // Then others sorted by ID
-                
+
                 foreach (NetworkGamer gamer in orderedGamers)
                 {
                     joinedPlayers.Add(gamer.Gamertag);

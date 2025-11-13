@@ -30,9 +30,9 @@ namespace Blackjack
         public override void LoadContent()
         {
             // Create our menu entries.
-            MenuEntry startGameMenuEntry = new MenuEntry("Play");
-            MenuEntry themeGameMenuEntry = new MenuEntry("Theme");
-            MenuEntry exitMenuEntry = new MenuEntry("Exit");
+            MenuEntry startGameMenuEntry = new MenuEntry(Resources.Play);
+            MenuEntry themeGameMenuEntry = new MenuEntry(Resources.Theme);
+            MenuEntry exitMenuEntry = new MenuEntry(Resources.Exit);
 
             // Hook up menu event handlers.
             startGameMenuEntry.Selected += StartGameMenuEntrySelected;

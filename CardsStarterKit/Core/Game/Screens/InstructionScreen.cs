@@ -124,7 +124,7 @@ namespace Blackjack
             if (isExit)
             {
                 Rectangle safeArea = ScreenManager.SafeArea;
-                string text = "Loading...";
+                string text = Resources.Loading;
                 Vector2 measure = font.MeasureString(text);
                 Vector2 textPosition = new Vector2(safeArea.Center.X - measure.X / 2,
                     safeArea.Center.Y - measure.Y / 2);
