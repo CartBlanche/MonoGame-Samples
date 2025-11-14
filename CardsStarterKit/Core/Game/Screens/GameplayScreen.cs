@@ -209,6 +209,9 @@ namespace Blackjack
                         case Blackjack.Networking.PacketType.InsuranceAction:
                             HandleInsuranceActionPacket(sender, packetReader);
                             break;
+                        case Blackjack.Networking.PacketType.TurnChanged:
+                            HandleTurnChangedPacket(sender, packetReader);
+                            break;
                         // Add more cases for other packet types as needed
                         default:
                             System.Console.WriteLine($"[PACKET] Unknown packet type: {(byte)packetType}");
@@ -658,6 +661,14 @@ namespace Blackjack
             {
                 blackJackGame.HandleReceivedInsuranceAction(packet.PlayerIndex);
             }
+        }
+
+        private void HandleTurnChangedPacket(NetworkGamer sender, PacketReader reader)
+        {
+            var packet = Blackjack.Networking.TurnChangedPacket.Deserialize(reader);
+            System.Console.WriteLine($"[PACKET] Turn changed from {sender.Gamertag}, current player index: {packet.CurrentPlayerIndex}");
+
+            blackJackGame.HandleReceivedTurnChanged(packet.CurrentPlayerIndex);
         }
     }
 }

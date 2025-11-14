@@ -1419,6 +1419,14 @@ namespace Blackjack
                             "Player has an unsupported hand type.");
                 }
             }
+
+            // Broadcast turn change to synchronize active player
+            if (IsNetworkGame && IsHost)
+            {
+                Player nextPlayer = GetCurrentPlayer();
+                byte nextPlayerIndex = nextPlayer != null ? (byte)players.IndexOf(nextPlayer) : (byte)255;
+                BroadcastTurnChanged(nextPlayerIndex);
+            }
         }
 
         /// <summary>
@@ -1734,6 +1742,14 @@ namespace Blackjack
                     throw new Exception(
                         "Player has an unsupported hand type.");
             }
+
+            // Broadcast turn change after bust
+            if (IsNetworkGame && IsHost)
+            {
+                Player nextPlayer = GetCurrentPlayer();
+                byte nextPlayerIndex = nextPlayer != null ? (byte)players.IndexOf(nextPlayer) : (byte)255;
+                BroadcastTurnChanged(nextPlayerIndex);
+            }
         }
 
         /// <summary>
@@ -1774,6 +1790,14 @@ namespace Blackjack
                 default:
                     throw new Exception(
                         "Player has an unsupported hand type.");
+            }
+
+            // Broadcast turn change after blackjack
+            if (IsNetworkGame && IsHost)
+            {
+                Player nextPlayer = GetCurrentPlayer();
+                byte nextPlayerIndex = nextPlayer != null ? (byte)players.IndexOf(nextPlayer) : (byte)255;
+                BroadcastTurnChanged(nextPlayerIndex);
             }
         }
 
@@ -2449,6 +2473,32 @@ namespace Blackjack
             player.Balance -= player.BetAmount / 2f;
             betGameComponent.AddChips(playerIndex, player.BetAmount / 2, true, false);
             showInsurance = false;
+        }
+
+        /// <summary>
+        /// Handles a turn changed notification received from the network.
+        /// Updates UI and button state to reflect the new active player.
+        /// </summary>
+        public void HandleReceivedTurnChanged(byte currentPlayerIndex)
+        {
+            // Value 255 indicates no active player (all players finished)
+            if (currentPlayerIndex == 255)
+            {
+                System.Console.WriteLine("[TurnChanged] All players have finished their turns");
+                return;
+            }
+
+            if (currentPlayerIndex >= players.Count)
+            {
+                System.Console.WriteLine($"[TurnChanged] Invalid player index: {currentPlayerIndex}");
+                return;
+            }
+
+            var currentPlayer = (BlackjackPlayer)players[currentPlayerIndex];
+            System.Console.WriteLine($"[TurnChanged] Turn changed to player {currentPlayerIndex}: {currentPlayer.Name}");
+
+            // The button availability will be updated in the next Update() cycle
+            // via SetButtonAvailability(), which checks GetCurrentPlayer()
         }
     }
 }
