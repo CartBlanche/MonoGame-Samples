@@ -16,8 +16,7 @@ namespace Blackjack
 {
     class MainMenuScreen : MenuScreen
     {
-        public static string Theme = "Red";
-
+        public static string Theme { get; set; } = "Red";
 
         /// <summary>
         /// Initializes a new instance of the screen.
@@ -25,23 +24,25 @@ namespace Blackjack
         public MainMenuScreen()
             : base("")
         {
+            // Load theme from settings
+            Theme = GameSettings.Instance.Theme;
         }
 
         public override void LoadContent()
         {
             // Create our menu entries.
             MenuEntry startGameMenuEntry = new MenuEntry(Resources.Play);
-            MenuEntry themeGameMenuEntry = new MenuEntry(Resources.Theme);
+            MenuEntry settingsMenuEntry = new MenuEntry(Resources.Settings);
             MenuEntry exitMenuEntry = new MenuEntry(Resources.Exit);
 
             // Hook up menu event handlers.
             startGameMenuEntry.Selected += StartGameMenuEntrySelected;
-            themeGameMenuEntry.Selected += ThemeGameMenuEntrySelected;
+            settingsMenuEntry.Selected += SettingsMenuEntrySelected;
             exitMenuEntry.Selected += OnCancel;
 
             // Add entries to the menu.
             MenuEntries.Add(startGameMenuEntry);
-            MenuEntries.Add(themeGameMenuEntry);
+            MenuEntries.Add(settingsMenuEntry);
             MenuEntries.Add(exitMenuEntry);
 
             base.LoadContent();
@@ -62,13 +63,13 @@ namespace Blackjack
         }
 
         /// <summary>
-        /// Respond to "Theme" Item Selection
+        /// Respond to "Settings" Item Selection
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        void ThemeGameMenuEntrySelected(object sender, EventArgs e)
+        void SettingsMenuEntrySelected(object sender, EventArgs e)
         {
-            ScreenManager.AddScreen(new OptionsMenu(), null);
+            ScreenManager.AddScreen(new SettingsScreen(), null);
         }
 
         /// <summary>

@@ -542,6 +542,17 @@ namespace Blackjack
         }
 
         /// <summary>
+        ///   Looks up a localized string similar to Settings.
+        /// </summary>
+        internal static string Settings
+        {
+            get
+            {
+                return ResourceManager.GetString("Settings", resourceCulture);
+            }
+        }
+
+        /// <summary>
         ///   Looks up a localized string similar to Quit.
         /// </summary>
         internal static string Quit
@@ -736,6 +747,193 @@ namespace Blackjack
             get
             {
                 return ResourceManager.GetString("OK", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Settings.
+        /// </summary>
+        internal static string SettingsTitle
+        {
+            get
+            {
+                return ResourceManager.GetString("SettingsTitle", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to DISPLAY.
+        /// </summary>
+        internal static string SettingsDisplay
+        {
+            get
+            {
+                return ResourceManager.GetString("SettingsDisplay", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to AUDIO.
+        /// </summary>
+        internal static string SettingsAudio
+        {
+            get
+            {
+                return ResourceManager.GetString("SettingsAudio", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to AI PLAYERS.
+        /// </summary>
+        internal static string SettingsAIPlayers
+        {
+            get
+            {
+                return ResourceManager.GetString("SettingsAIPlayers", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to GAMEPLAY.
+        /// </summary>
+        internal static string SettingsGameplay
+        {
+            get
+            {
+                return ResourceManager.GetString("SettingsGameplay", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Language.
+        /// </summary>
+        internal static string SettingsLanguage
+        {
+            get
+            {
+                return ResourceManager.GetString("SettingsLanguage", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Card Back Theme.
+        /// </summary>
+        internal static string SettingsCardBackTheme
+        {
+            get
+            {
+                return ResourceManager.GetString("SettingsCardBackTheme", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Sound Volume.
+        /// </summary>
+        internal static string SettingsSoundVolume
+        {
+            get
+            {
+                return ResourceManager.GetString("SettingsSoundVolume", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Music Volume.
+        /// </summary>
+        internal static string SettingsMusicVolume
+        {
+            get
+            {
+                return ResourceManager.GetString("SettingsMusicVolume", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Max AI Players.
+        /// </summary>
+        internal static string SettingsMaxAIPlayers
+        {
+            get
+            {
+                return ResourceManager.GetString("SettingsMaxAIPlayers", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Fill Empty Slots.
+        /// </summary>
+        internal static string SettingsFillEmptySlots
+        {
+            get
+            {
+                return ResourceManager.GetString("SettingsFillEmptySlots", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Animation Speed.
+        /// </summary>
+        internal static string SettingsAnimationSpeed
+        {
+            get
+            {
+                return ResourceManager.GetString("SettingsAnimationSpeed", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Auto-Stand on 21.
+        /// </summary>
+        internal static string SettingsAutoStandOn21
+        {
+            get
+            {
+                return ResourceManager.GetString("SettingsAutoStandOn21", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Show Card Count.
+        /// </summary>
+        internal static string SettingsShowCardCount
+        {
+            get
+            {
+                return ResourceManager.GetString("SettingsShowCardCount", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Previous.
+        /// </summary>
+        internal static string Previous
+        {
+            get
+            {
+                return ResourceManager.GetString("Previous", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Next.
+        /// </summary>
+        internal static string Next
+        {
+            get
+            {
+                return ResourceManager.GetString("Next", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Page {0} of {1}.
+        /// </summary>
+        internal static string PageIndicator
+        {
+            get
+            {
+                return ResourceManager.GetString("PageIndicator", resourceCulture);
             }
         }
     }

@@ -1,64 +1,5 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <root>
-  <!-- 
-    Microsoft ResX Schema 
-    
-    Version 2.0
-    
-    The primary goals of this format is to allow a simple XML format 
-    that is mostly human readable. The generation and parsing of the 
-    various data types are done through the TypeConverter classes 
-    associated with the data types.
-    
-    Example:
-    
-    ... ado.net/XML headers & schema ...
-    <resheader name="resmimetype">text/microsoft-resx</resheader>
-    <resheader name="version">2.0</resheader>
-    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
-    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
-    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
-    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
-    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
-        <value>[base64 mime encoded serialized .NET Framework object]</value>
-    </data>
-    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
-        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
-        <comment>This is a comment</comment>
-    </data>
-                
-    There are any number of "resheader" rows that contain simple 
-    name/value pairs.
-    
-    Each data row contains a name, and value. The row also contains a 
-    type or mimetype. Type corresponds to a .NET class that support 
-    text/value conversion through the TypeConverter architecture. 
-    Classes that don't support this are serialized and stored with the 
-    mimetype set.
-    
-    The mimetype is used for serialized objects, and tells the 
-    ResXResourceReader how to depersist the object. This is currently not 
-    extensible. For a given mimetype the value must be set accordingly:
-    
-    Note - application/x-microsoft.net.object.binary.base64 is the format 
-    that the ResXResourceWriter will generate, however the reader can 
-    read any of the formats listed below.
-    
-    mimetype: application/x-microsoft.net.object.binary.base64
-    value   : The object must be serialized with 
-            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
-            : and then encoded with base64 encoding.
-    
-    mimetype: application/x-microsoft.net.object.soap.base64
-    value   : The object must be serialized with 
-            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
-            : and then encoded with base64 encoding.
-
-    mimetype: application/x-microsoft.net.object.bytearray.base64
-    value   : The object must be serialized into a byte array 
-            : using a System.ComponentModel.TypeConverter
-            : and then encoded with base64 encoding.
-    -->
   <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
     <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
     <xsd:element name="root" msdata:IsDataSet="true">
@@ -112,253 +53,253 @@
     <value>2.0</value>
   </resheader>
   <resheader name="reader">
-    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <resheader name="writer">
-    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="Back" xml:space="preserve">
-    <value>Back</value>
+    <value>Indietro</value>
   </data>
   <data name="ConfirmEndSession" xml:space="preserve">
-    <value>Are you sure you want to end this session?</value>
+    <value>Sei sicuro di voler terminare questa sessione?</value>
   </data>
   <data name="ConfirmExitSample" xml:space="preserve">
-    <value>Are you sure you want to exit this sample?</value>
+    <value>Sei sicuro di voler uscire da questo esempio?</value>
   </data>
   <data name="ConfirmForceStartGame" xml:space="preserve">
-    <value>Are you sure you want to start the game,
-even though not all players are ready?</value>
+    <value>Sei sicuro di voler iniziare il gioco,
+anche se non tutti i giocatori sono pronti?</value>
   </data>
   <data name="ConfirmLeaveSession" xml:space="preserve">
-    <value>Are you sure you want to leave this session?</value>
+    <value>Sei sicuro di voler abbandonare questa sessione?</value>
   </data>
   <data name="ConfirmMarketplace" xml:space="preserve">
-    <value>Online gameplay is not available in trial mode.
-Would you like to purchase this game?</value>
+    <value>Il gioco online non è disponibile in modalità prova.
+Vorresti acquistare questo gioco?</value>
   </data>
   <data name="ConfirmQuitGame" xml:space="preserve">
-    <value>Are you sure you want to quit this game?</value>
+    <value>Sei sicuro di voler uscire da questo gioco?</value>
   </data>
   <data name="CreateSession" xml:space="preserve">
-    <value>Create Session</value>
+    <value>Crea sessione</value>
   </data>
   <data name="EndSession" xml:space="preserve">
-    <value>End Session</value>
+    <value>Termina sessione</value>
   </data>
   <data name="ErrorDisconnected" xml:space="preserve">
-    <value>Lost connection to the network session</value>
+    <value>Connessione persa alla sessione di rete</value>
   </data>
   <data name="ErrorGamerPrivilege" xml:space="preserve">
-    <value>You must sign in a suitable gamer profile
-in order to access this functionality</value>
+    <value>Devi accedere con un profilo giocatore appropriato
+per accedere a questa funzione</value>
   </data>
   <data name="ErrorHostEndedSession" xml:space="preserve">
-    <value>Host ended the session</value>
+    <value>L'host ha terminato la sessione</value>
   </data>
   <data name="ErrorNetwork" xml:space="preserve">
-    <value>There was an error while
-accessing the network</value>
+    <value>Si è verificato un errore durante
+l'accesso alla rete</value>
   </data>
   <data name="ErrorNetworkNotAvailable" xml:space="preserve">
-    <value>Networking is turned
-off or not connected</value>
+    <value>La rete è disabilitata
+o non è connessa</value>
   </data>
   <data name="ErrorRemovedByHost" xml:space="preserve">
-    <value>Host kicked you out of the session</value>
+    <value>L'host ti ha espulso dalla sessione</value>
   </data>
   <data name="ErrorSessionFull" xml:space="preserve">
-    <value>This session is already full</value>
+    <value>Questa sessione è già completa</value>
   </data>
   <data name="ErrorSessionNotFound" xml:space="preserve">
-    <value>Session not found. It may have ended,
-or there may be no network connectivity
-between the local machine and session host</value>
+    <value>Sessione non trovata. Potrebbe essere terminata,
+o potrebbe non esserci connettività di rete
+tra la macchina locale e l'host della sessione</value>
   </data>
   <data name="ErrorSessionNotJoinable" xml:space="preserve">
-    <value>You must wait for the host to return to
-the lobby before you can join this session</value>
+    <value>Devi aspettare che l'host torni alla
+lobby prima di unirti a questa sessione</value>
   </data>
   <data name="ErrorTrialMode" xml:space="preserve">
-    <value>This functionality is not available in trial mode</value>
+    <value>Questa funzione non è disponibile in modalità prova</value>
   </data>
   <data name="ErrorUnknown" xml:space="preserve">
-    <value>An unknown error occurred</value>
+    <value>Si è verificato un errore sconosciuto</value>
   </data>
   <data name="Exit" xml:space="preserve">
-    <value>Exit</value>
+    <value>Esci</value>
   </data>
   <data name="FindSessions" xml:space="preserve">
-    <value>Find Sessions</value>
+    <value>Trova sessioni</value>
   </data>
   <data name="HostSuffix" xml:space="preserve">
     <value> (host)</value>
   </data>
   <data name="JoinSession" xml:space="preserve">
-    <value>Join Session</value>
+    <value>Unisciti alla sessione</value>
   </data>
   <data name="LeaveSession" xml:space="preserve">
-    <value>Leave Session</value>
+    <value>Abbandona sessione</value>
   </data>
   <data name="Loading" xml:space="preserve">
-    <value>Loading</value>
+    <value>Caricamento</value>
   </data>
   <data name="Lobby" xml:space="preserve">
     <value>Lobby</value>
   </data>
   <data name="MainMenu" xml:space="preserve">
-    <value>Main Menu</value>
+    <value>Menu principale</value>
   </data>
   <data name="MessageBoxUsage" xml:space="preserve">
     <value>
-A button, Space, Enter = ok
-B button, Esc = Cancel</value>
+Pulsante A, Spazio, Invio = OK
+Pulsante B, Esc = Annulla</value>
   </data>
   <data name="MessageGamerJoined" xml:space="preserve">
-    <value>{0} joined</value>
+    <value>{0} si è unito</value>
   </data>
   <data name="MessageGamerLeft" xml:space="preserve">
-    <value>{0} left</value>
+    <value>{0} se n'è andato</value>
   </data>
   <data name="NetworkBusy" xml:space="preserve">
-    <value>Searching...</value>
+    <value>Ricerca...</value>
   </data>
   <data name="NoSessionsFound" xml:space="preserve">
-    <value>No sessions found</value>
+    <value>Nessuna sessione trovata</value>
   </data>
   <data name="Paused" xml:space="preserve">
-    <value>Paused</value>
+    <value>In pausa</value>
   </data>
   <data name="PlayerMatch" xml:space="preserve">
-    <value>LIVE</value>
+    <value>ONLINE</value>
   </data>
   <data name="QuitGame" xml:space="preserve">
-    <value>Quit Game</value>
+    <value>Esci dal gioco</value>
   </data>
   <data name="ResumeGame" xml:space="preserve">
-    <value>Resume Game</value>
+    <value>Riprendi gioco</value>
   </data>
   <data name="ReturnToLobby" xml:space="preserve">
-    <value>Return to Lobby</value>
+    <value>Torna alla lobby</value>
   </data>
   <data name="SinglePlayer" xml:space="preserve">
-    <value>Single Player</value>
+    <value>Giocatore singolo</value>
   </data>
   <data name="SystemLink" xml:space="preserve">
-    <value>LAN Session</value>
+    <value>Sessione LAN</value>
   </data>
   <data name="Play" xml:space="preserve">
-    <value>Play</value>
+    <value>Gioca</value>
   </data>
   <data name="Theme" xml:space="preserve">
-    <value>Theme</value>
+    <value>Tema</value>
   </data>
   <data name="Settings" xml:space="preserve">
-    <value>Settings</value>
+    <value>Impostazioni</value>
   </data>
   <data name="Quit" xml:space="preserve">
-    <value>Quit</value>
+    <value>Esci</value>
   </data>
   <data name="HostNewGame" xml:space="preserve">
-    <value>Host New Game</value>
+    <value>Ospita nuovo gioco</value>
   </data>
   <data name="Refresh" xml:space="preserve">
-    <value>Refresh</value>
+    <value>Aggiorna</value>
   </data>
   <data name="StartGame" xml:space="preserve">
-    <value>Start Game</value>
+    <value>Inizia gioco</value>
   </data>
   <data name="AvailableGames" xml:space="preserve">
-    <value>Available Games:</value>
+    <value>Giochi disponibili:</value>
   </data>
   <data name="Players" xml:space="preserve">
-    <value>Players:</value>
+    <value>Giocatori:</value>
   </data>
   <data name="Deck" xml:space="preserve">
-    <value>Deck</value>
+    <value>Mazzo</value>
   </data>
   <data name="Return" xml:space="preserve">
-    <value>Return</value>
+    <value>Torna</value>
   </data>
   <data name="SearchingForGames" xml:space="preserve">
-    <value>Searching for games...</value>
+    <value>Ricerca di giochi...</value>
   </data>
   <data name="FoundGames" xml:space="preserve">
-    <value>Found {0} game{1}</value>
+    <value>{0} gioco{1} trovato{1}</value>
   </data>
   <data name="AutoRefreshIn" xml:space="preserve">
-    <value>Auto-refresh in {0}s</value>
+    <value>Aggiornamento automatico tra {0}s</value>
   </data>
   <data name="Dealer" xml:space="preserve">
-    <value>Dealer: House</value>
+    <value>Banco: Casa</value>
   </data>
   <data name="Host" xml:space="preserve">
     <value>HOST</value>
   </data>
   <data name="Slot" xml:space="preserve">
-    <value>Slot {0}: {1}</value>
+    <value>Posto {0}: {1}</value>
   </data>
   <data name="JoinOrHostGame" xml:space="preserve">
-    <value>Join or Host a Game</value>
+    <value>Unisciti o ospita un gioco</value>
   </data>
   <data name="FailedToCreateSession" xml:space="preserve">
-    <value>Failed to create session.</value>
+    <value>Impossibile creare la sessione.</value>
   </data>
   <data name="FailedToJoinSession" xml:space="preserve">
-    <value>Failed to join session.</value>
+    <value>Impossibile unirsi alla sessione.</value>
   </data>
   <data name="OK" xml:space="preserve">
     <value>OK</value>
   </data>
   <data name="SettingsTitle" xml:space="preserve">
-    <value>Settings</value>
+    <value>Impostazioni</value>
   </data>
   <data name="SettingsDisplay" xml:space="preserve">
-    <value>DISPLAY</value>
+    <value>SCHERMO</value>
   </data>
   <data name="SettingsAudio" xml:space="preserve">
     <value>AUDIO</value>
   </data>
   <data name="SettingsAIPlayers" xml:space="preserve">
-    <value>AI PLAYERS</value>
+    <value>GIOCATORI IA</value>
   </data>
   <data name="SettingsGameplay" xml:space="preserve">
     <value>GAMEPLAY</value>
   </data>
   <data name="SettingsLanguage" xml:space="preserve">
-    <value>Language</value>
+    <value>Lingua</value>
   </data>
   <data name="SettingsCardBackTheme" xml:space="preserve">
-    <value>Card Back Theme</value>
+    <value>Tema retro carta</value>
   </data>
   <data name="SettingsSoundVolume" xml:space="preserve">
-    <value>Sound Volume</value>
+    <value>Volume suono</value>
   </data>
   <data name="SettingsMusicVolume" xml:space="preserve">
-    <value>Music Volume</value>
+    <value>Volume musica</value>
   </data>
   <data name="SettingsMaxAIPlayers" xml:space="preserve">
-    <value>Max AI Players</value>
+    <value>Giocatori IA massimi</value>
   </data>
   <data name="SettingsFillEmptySlots" xml:space="preserve">
-    <value>Fill Empty Slots</value>
+    <value>Riempi posti vuoti</value>
   </data>
   <data name="SettingsAnimationSpeed" xml:space="preserve">
-    <value>Animation Speed</value>
+    <value>Velocità animazione</value>
   </data>
   <data name="SettingsAutoStandOn21" xml:space="preserve">
-    <value>Auto-Stand on 21</value>
+    <value>Resta automaticamente su 21</value>
   </data>
   <data name="SettingsShowCardCount" xml:space="preserve">
-    <value>Show Card Count</value>
+    <value>Mostra conteggio carte</value>
   </data>
   <data name="Previous" xml:space="preserve">
-    <value>Previous</value>
+    <value>Precedente</value>
   </data>
   <data name="Next" xml:space="preserve">
-    <value>Next</value>
+    <value>Successivo</value>
   </data>
   <data name="PageIndicator" xml:space="preserve">
-    <value>Page {0} of {1}</value>
+    <value>Pagina {0} di {1}</value>
   </data>
 </root>
