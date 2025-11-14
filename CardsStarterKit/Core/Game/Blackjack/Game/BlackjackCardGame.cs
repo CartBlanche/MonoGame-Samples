@@ -217,10 +217,14 @@ namespace Blackjack
                         {
                             BlackjackPlayer player =
                                 (BlackjackPlayer)GetCurrentPlayer();
+
                             // If the current player is an AI player, make it play
-                            if (player is BlackjackAIPlayer)
+                            if (player is BlackjackAIPlayer aiPlayer)
                             {
-                                ((BlackjackAIPlayer)player).AIPlay();
+                                if (!IsNetworkGame || IsHost)
+                                {
+                                    aiPlayer.AIPlay();
+                                }
                             }
 
                             CheckRules();
