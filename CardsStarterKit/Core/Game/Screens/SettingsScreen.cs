@@ -609,7 +609,7 @@ namespace Blackjack
             Vector2 pageTextSize = settingsFont.MeasureString(pageText);
             Vector2 pageTextPos = new Vector2(
                 safeArea.Center.X - pageTextSize.X / 2,
-                safeArea.Bottom - 35);
+                safeArea.Bottom - 55);
             spriteBatch.DrawString(settingsFont, pageText, pageTextPos, Color.White * TransitionAlpha);
 
             spriteBatch.End();

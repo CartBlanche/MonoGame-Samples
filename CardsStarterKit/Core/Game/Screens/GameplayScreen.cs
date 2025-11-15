@@ -422,9 +422,13 @@ namespace Blackjack
                 // In local games, always create AI players
                 if (networkSession == null || networkSession.IsHost)
                 {
-                    // Fill remaining slots with AI
-                    int aiSlotsNeeded = BlackjackConstants.MaxPlayers - humanPlayerCount;
-                    for (int i = 0; i < aiSlotsNeeded && i < BlackjackConstants.DefaultAINames.Length; i++)
+                    // Fill remaining slots with AI based on settings
+                    int maxAI = GameSettings.Instance.MaxAIPlayers;
+                    int aiSlotsToFill = GameSettings.Instance.FillEmptySlotsWithAI 
+                        ? Math.Min(BlackjackConstants.MaxPlayers - humanPlayerCount, maxAI)
+                        : Math.Min(maxAI, BlackjackConstants.MaxPlayers - humanPlayerCount);
+                    
+                    for (int i = 0; i < aiSlotsToFill && i < BlackjackConstants.DefaultAINames.Length; i++)
                     {
                         BlackjackAIPlayer player = new BlackjackAIPlayer(BlackjackConstants.DefaultAINames[i], blackJackGame);
                         blackJackGame.AddPlayer(player);
@@ -443,7 +447,10 @@ namespace Blackjack
                 }
 
                 blackJackGame.AddPlayer(new BlackjackPlayer(myTI.ToTitleCase(defaultPlayerName), blackJackGame));
-                for (int i = 0; i < BlackjackConstants.DefaultAINames.Length; i++)
+                
+                // Add AI players based on settings
+                int maxAI = GameSettings.Instance.MaxAIPlayers;
+                for (int i = 0; i < maxAI && i < BlackjackConstants.DefaultAINames.Length; i++)
                 {
                     BlackjackAIPlayer player = new BlackjackAIPlayer(BlackjackConstants.DefaultAINames[i], blackJackGame);
                     blackJackGame.AddPlayer(player);
