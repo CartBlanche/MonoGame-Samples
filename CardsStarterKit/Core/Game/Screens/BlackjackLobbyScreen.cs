@@ -85,7 +85,9 @@ namespace Blackjack
             // Show joined players
             foreach (var playerName in joinedPlayers)
             {
-                string slotText = string.Format(Resources.Slot, slotIndex + 1, playerName);
+                // Strip GUID suffix for display (e.g., "Player_abc123de" -> "Player")
+                string displayName = CardsFramework.UIUtility.StripGuidSuffix(playerName);
+                string slotText = string.Format(Resources.Slot, slotIndex + 1, displayName);
                 if (slotIndex == 0 && isHost)
                     slotText += $"    [{Resources.Host}]";
                 spriteBatch.DrawString(font, slotText, position, Color.Green);

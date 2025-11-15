@@ -557,12 +557,16 @@ namespace Blackjack
         {
             Hand hand = animatedHand.Hand;
 
+            // Position the value to the right of the first card, not moving with each new card
             Vector2 position = GameTable.PlaceOrder(place) +
-                animatedHand.GetCardRelativePosition(hand.Count - 1);
+                animatedHand.GetCardRelativePosition(0); // Use first card (index 0) instead of last card
             Vector2 measure = Font.MeasureString(value);
+            int cardWidth = cardsAssets["CardBack_" + Theme].Bounds.Width;
+            int cardHeight = cardsAssets["CardBack_" + Theme].Bounds.Height;
 
-            position.X += (cardsAssets["CardBack_" + Theme].Bounds.Width - measure.X) / 2;
-            position.Y -= measure.Y + 5;
+            // Position at bottom-right corner of first card, below the card edge
+            position.X += cardWidth - (measure.X / 2); // Right edge of card, centered
+            position.Y += cardHeight + 5; // Below the card, with small padding
 
             screenManager.SpriteBatch.Draw(screenManager.BlankTexture,
                 new Rectangle((int)position.X - 4, (int)position.Y,

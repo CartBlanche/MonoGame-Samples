@@ -409,10 +409,10 @@ namespace Blackjack
                 {
                     // Fill remaining slots with AI based on settings
                     int maxAI = GameSettings.Instance.MaxAIPlayers;
-                    int aiSlotsToFill = GameSettings.Instance.FillEmptySlotsWithAI 
+                    int aiSlotsToFill = GameSettings.Instance.FillEmptySlotsWithAI
                         ? Math.Min(BlackjackConstants.MaxPlayers - humanPlayerCount, maxAI)
                         : Math.Min(maxAI, BlackjackConstants.MaxPlayers - humanPlayerCount);
-                    
+
                     for (int i = 0; i < aiSlotsToFill && i < BlackjackConstants.DefaultAINames.Length; i++)
                     {
                         BlackjackAIPlayer player = new BlackjackAIPlayer(BlackjackConstants.DefaultAINames[i], blackJackGame);
@@ -432,7 +432,7 @@ namespace Blackjack
                 }
 
                 blackJackGame.AddPlayer(new BlackjackPlayer(myTI.ToTitleCase(defaultPlayerName), blackJackGame));
-                
+
                 // Add AI players based on settings
                 int maxAI = GameSettings.Instance.MaxAIPlayers;
                 for (int i = 0; i < maxAI && i < BlackjackConstants.DefaultAINames.Length; i++)
@@ -509,9 +509,9 @@ namespace Blackjack
             }
 
             playerCardOffset = new Vector2[playerCount];
-            
-            float bottomY = safeArea.Height * 0.30f;  // ~216px - bottom positions
-            float topY = safeArea.Height * 0.25f;     // ~180px - top positions (alternating arc)
+
+            float bottomY = safeArea.Height * 0.41f;  // ~302px - bottom positions (moved down more)
+            float topY = safeArea.Height * 0.36f;     // ~266px - top positions (alternating arc, moved down more)
 
             // Calculate spacing based on number of players
             // More players = tighter spacing, fewer players = more spread out
@@ -537,7 +537,7 @@ namespace Blackjack
 
                 // Alternate between bottom and top Y positions for visual variety
                 float yPosition = (i % 2 == 0) ? bottomY : topY;
-                
+
                 playerCardOffset[i] = new Vector2(xPosition, yPosition);
             }
         }

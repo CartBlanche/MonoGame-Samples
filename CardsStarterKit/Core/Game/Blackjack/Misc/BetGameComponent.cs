@@ -69,7 +69,7 @@ namespace Blackjack
             this.spriteBatch = spriteBatch;
             this.globalTransformation = globalTransformation;
             chipsAssets = new Dictionary<int, Texture2D>();
-            
+
             // Calculate proportional values based on screen size
             var blackjackGame = cardGame as BlackjackCardGame;
             if (blackjackGame != null)
@@ -391,12 +391,14 @@ namespace Blackjack
                 string playerName = player.Name;
                 bool isAI = player is BlackjackAIPlayer;
                 Color nameColor = isAI ? Color.Yellow : Color.Cyan; // Yellow for AI, Cyan for human
-                string displayName = playerName;
+
+                // Strip GUID suffix from human player names for display (but keep full name for network identification)
+                string displayName = CardsFramework.UIUtility.StripGuidSuffix(playerName);
 
                 // Add (AI) suffix for AI players
                 if (isAI)
                 {
-                    displayName = $"{playerName} (AI)";
+                    displayName = $"{displayName} (AI)";
                 }
                 // Add (Host) suffix for the first human player in network games
                 else if (cardGame is BlackjackCardGame blackjackGame &&
@@ -404,7 +406,7 @@ namespace Blackjack
                          blackjackGame.NetworkSession != null &&
                          playerIndex == 0)
                 {
-                    displayName = $"{playerName} (Host)";
+                    displayName = $"{displayName} (Host)";
                     nameColor = Color.LightGreen; // Distinct color for host
                 }
 
