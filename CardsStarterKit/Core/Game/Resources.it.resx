@@ -174,10 +174,10 @@ Pulsante B, Esc = Annulla</value>
     <value>ONLINE</value>
   </data>
   <data name="QuitGame" xml:space="preserve">
-    <value>Esci dal gioco</value>
+    <value>Esci</value>
   </data>
   <data name="ResumeGame" xml:space="preserve">
-    <value>Riprendi gioco</value>
+    <value>Riprendi</value>
   </data>
   <data name="ReturnToLobby" xml:space="preserve">
     <value>Torna alla lobby</value>
@@ -201,13 +201,13 @@ Pulsante B, Esc = Annulla</value>
     <value>Esci</value>
   </data>
   <data name="HostNewGame" xml:space="preserve">
-    <value>Ospita nuovo gioco</value>
+    <value>Nuovo Gioco</value>
   </data>
   <data name="Refresh" xml:space="preserve">
     <value>Aggiorna</value>
   </data>
   <data name="StartGame" xml:space="preserve">
-    <value>Inizia gioco</value>
+    <value>Inizia</value>
   </data>
   <data name="AvailableGames" xml:space="preserve">
     <value>Giochi disponibili:</value>

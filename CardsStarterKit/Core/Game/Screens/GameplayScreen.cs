@@ -58,22 +58,7 @@ namespace Blackjack
         {
             safeArea = ScreenManager.SafeArea;
 
-            // Calculate proportional player positions for 7 players evenly spaced across the table
-            // Spread them more evenly from left to right in a gentle arc
-            float bottomY = safeArea.Height * 0.30f;  // ~216px - bottom positions
-            float topY = safeArea.Height * 0.25f;     // ~180px - top positions (alternating arc)
-
-            playerCardOffset = new Vector2[]
-            {
-                // Evenly distribute 7 positions across the width from ~10% to ~85%
-                new Vector2(safeArea.Width * 0.10f, bottomY),   // Position 0 - far left
-                new Vector2(safeArea.Width * 0.225f, topY),     // Position 1 - left-center (higher)
-                new Vector2(safeArea.Width * 0.35f, bottomY),   // Position 2 - left-mid
-                new Vector2(safeArea.Width * 0.475f, topY),     // Position 3 - center (higher)
-                new Vector2(safeArea.Width * 0.60f, bottomY),   // Position 4 - right-mid
-                new Vector2(safeArea.Width * 0.725f, topY),     // Position 5 - right-center (higher)
-                new Vector2(safeArea.Width * 0.85f, bottomY)    // Position 6 - far right
-            };
+            // Player positions will be calculated dynamically after we know how many players there are
 
             // Initialize virtual cursor
             inputHelper = new InputHelper(ScreenManager);
@@ -459,6 +444,13 @@ namespace Blackjack
                 }
             }
 
+            // Calculate player positions now that we know the actual number of players
+            int totalPlayers = blackJackGame.Players.Count;
+            CalculatePlayerPositions(totalPlayers);
+
+            // Update the table to show only the actual number of player spots
+            blackJackGame.GameTable.SetPlaces(totalPlayers);
+
             // Load UI assets
             string[] assets = { "blackjack", "bust", "lose", "push", "win", "pass", "Shuffle_" + theme };
 
@@ -504,21 +496,68 @@ namespace Blackjack
         }
 
         /// <summary>
+        /// Calculates player positions dynamically based on the actual number of players.
+        /// Centers and spreads them evenly across the table.
+        /// </summary>
+        /// <param name="playerCount">The actual number of players in the game.</param>
+        private void CalculatePlayerPositions(int playerCount)
+        {
+            if (playerCount <= 0)
+            {
+                playerCardOffset = new Vector2[0];
+                return;
+            }
+
+            playerCardOffset = new Vector2[playerCount];
+            
+            float bottomY = safeArea.Height * 0.30f;  // ~216px - bottom positions
+            float topY = safeArea.Height * 0.25f;     // ~180px - top positions (alternating arc)
+
+            // Calculate spacing based on number of players
+            // More players = tighter spacing, fewer players = more spread out
+            float leftMargin = safeArea.Width * 0.10f;
+            float rightMargin = safeArea.Width * 0.10f;
+            float usableWidth = safeArea.Width - leftMargin - rightMargin;
+
+            // Distribute players evenly across the usable width
+            for (int i = 0; i < playerCount; i++)
+            {
+                float xPosition;
+                if (playerCount == 1)
+                {
+                    // Single player: center
+                    xPosition = safeArea.Width * 0.5f;
+                }
+                else
+                {
+                    // Multiple players: spread evenly
+                    float spacing = usableWidth / (playerCount - 1);
+                    xPosition = leftMargin + (i * spacing);
+                }
+
+                // Alternate between bottom and top Y positions for visual variety
+                float yPosition = (i % 2 == 0) ? bottomY : topY;
+                
+                playerCardOffset[i] = new Vector2(xPosition, yPosition);
+            }
+        }
+
+        /// <summary>
         /// Gets the player hand positions according to the player index.
         /// </summary>
         /// <param name="player">The player's index.</param>
         /// <returns>The position for the player's hand on the game table.</returns>
         private Vector2 GetPlayerCardPosition(int player)
         {
-            // Support up to 7 players (indices 0-6)
-            if (player >= 0 && player < playerCardOffset.Length)
+            // Support dynamic number of players
+            if (playerCardOffset != null && player >= 0 && player < playerCardOffset.Length)
             {
                 return playerCardOffset[player];
             }
             else
             {
-                throw new ArgumentException(
-                    $"Player index should be between 0 and {playerCardOffset.Length - 1}", "player");
+                // Fallback to center if positions haven't been calculated yet
+                return new Vector2(safeArea.Width * 0.5f, safeArea.Height * 0.30f);
             }
         }
 

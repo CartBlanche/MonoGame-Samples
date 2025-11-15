@@ -174,10 +174,10 @@ Bouton B, Échap = Annuler</value>
     <value>EN LIGNE</value>
   </data>
   <data name="QuitGame" xml:space="preserve">
-    <value>Quitter le jeu</value>
+    <value>Quitter</value>
   </data>
   <data name="ResumeGame" xml:space="preserve">
-    <value>Reprendre le jeu</value>
+    <value>Reprendre</value>
   </data>
   <data name="ReturnToLobby" xml:space="preserve">
     <value>Retour au hall</value>
@@ -201,13 +201,13 @@ Bouton B, Échap = Annuler</value>
     <value>Quitter</value>
   </data>
   <data name="HostNewGame" xml:space="preserve">
-    <value>Héberger une nouvelle partie</value>
+    <value>Nouvelle Partie</value>
   </data>
   <data name="Refresh" xml:space="preserve">
     <value>Actualiser</value>
   </data>
   <data name="StartGame" xml:space="preserve">
-    <value>Commencer le jeu</value>
+    <value>Commencer</value>
   </data>
   <data name="AvailableGames" xml:space="preserve">
     <value>Jeux disponibles :</value>

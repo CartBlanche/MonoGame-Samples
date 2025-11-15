@@ -236,7 +236,7 @@ B button, Esc = Cancel</value>
     <value>Quit Game</value>
   </data>
   <data name="ResumeGame" xml:space="preserve">
-    <value>Resume Game</value>
+    <value>Resume</value>
   </data>
   <data name="ReturnToLobby" xml:space="preserve">
     <value>Return to Lobby</value>
@@ -260,13 +260,13 @@ B button, Esc = Cancel</value>
     <value>Quit</value>
   </data>
   <data name="HostNewGame" xml:space="preserve">
-    <value>Host New Game</value>
+    <value>New Game</value>
   </data>
   <data name="Refresh" xml:space="preserve">
     <value>Refresh</value>
   </data>
   <data name="StartGame" xml:space="preserve">
-    <value>Start Game</value>
+    <value>Start</value>
   </data>
   <data name="AvailableGames" xml:space="preserve">
     <value>Available Games:</value>

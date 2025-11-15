@@ -31,6 +31,15 @@ namespace CardsFramework
         public int Places { get; private set; }
 
         /// <summary>
+        /// Updates the number of places/spots to display on the table.
+        /// </summary>
+        /// <param name="places">The new number of places.</param>
+        public void SetPlaces(int places)
+        {
+            Places = places;
+        }
+
+        /// <summary>
         /// Returns the player position on the table according to the player index.
         /// </summary>
         /// <param name="index">Player's index.</param>

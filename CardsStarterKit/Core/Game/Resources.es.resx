@@ -174,10 +174,10 @@ Botón B, Esc = Cancelar</value>
     <value>EN LÍNEA</value>
   </data>
   <data name="QuitGame" xml:space="preserve">
-    <value>Salir del juego</value>
+    <value>Salir</value>
   </data>
   <data name="ResumeGame" xml:space="preserve">
-    <value>Reanudar juego</value>
+    <value>Reanudar</value>
   </data>
   <data name="ReturnToLobby" xml:space="preserve">
     <value>Volver al lobby</value>
@@ -201,13 +201,13 @@ Botón B, Esc = Cancelar</value>
     <value>Salir</value>
   </data>
   <data name="HostNewGame" xml:space="preserve">
-    <value>Alojar nuevo juego</value>
+    <value>Nuevo Juego</value>
   </data>
   <data name="Refresh" xml:space="preserve">
     <value>Actualizar</value>
   </data>
   <data name="StartGame" xml:space="preserve">
-    <value>Comenzar juego</value>
+    <value>Comenzar</value>
   </data>
   <data name="AvailableGames" xml:space="preserve">
     <value>Juegos disponibles:</value>
