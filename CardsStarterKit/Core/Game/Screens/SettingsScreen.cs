@@ -208,6 +208,7 @@ namespace Blackjack
                 //"日本語" => "中文",
                 _ => "English"
             };
+            BuildSettingItems(); // Rebuild items to refresh all labels
         }
 
         private void CycleToPreviousLanguage()
@@ -221,6 +222,7 @@ namespace Blackjack
                 "Français" => "English",
                 _ => "Italiano" // Default to last active language
             };
+            BuildSettingItems(); // Rebuild items to refresh all labels
         }
 
         private void AddHeader(string text, ref float yPos)
