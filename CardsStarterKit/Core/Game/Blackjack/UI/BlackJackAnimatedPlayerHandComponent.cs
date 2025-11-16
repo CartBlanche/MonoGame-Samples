@@ -33,10 +33,10 @@ namespace Blackjack
             : base(place, hand, cardGame, spriteBatch, globalTransformation)
         {
             // Move cards up above the chip circle by a card height + padding
-            if (cardGame is BlackjackCardGame  blackjackGame)
+            if (cardGame is BlackjackCardGame blackjackGame)
             {
                 int cardHeight = UIConstants.GetCardHeight(blackjackGame.ScreenManager.SafeArea.Height);
-                this.offset = new Vector2(0, -(cardHeight / 2 )); // Above chip circle
+                this.offset = new Vector2(0, -(cardHeight / 2)); // Above chip circle
             }
             else
             {

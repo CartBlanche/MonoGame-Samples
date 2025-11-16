@@ -120,32 +120,44 @@ namespace Blackjack
             int buttonHeight = UIConstants.GetButtonHeight(bounds.Height);
             int buttonSpacing = UIConstants.GetButtonSpacing(bounds.Width);
 
-            // Position chip buttons higher to avoid overlap with Deal/Clear buttons
-            // Place them above the buttons with extra spacing
-            int chipAreaBottomMargin = buttonHeight + (smallPadding * 3); // Space for buttons + gap
-            positions[chipsAssets.Count - 1] = new Vector2(bounds.Left + smallPadding,
-                bounds.Bottom - size.Height - chipSpacing - chipAreaBottomMargin);
-            for (int chipIndex = 2; chipIndex <= chipsAssets.Count; chipIndex++)
+            // Calculate total width of all chips side by side
+            int totalChipWidth = 0;
+            for (int i = 0; i < assetNames.Length; i++)
             {
-                size = chipsAssets[assetNames[chipsAssets.Count - chipIndex]].Bounds;
-                positions[chipsAssets.Count - chipIndex] = positions[chipsAssets.Count - (chipIndex - 1)] -
-                    new Vector2(0, size.Height + smallPadding);
+                totalChipWidth += chipsAssets[assetNames[i]].Bounds.Width;
+            }
+            totalChipWidth += smallPadding * (assetNames.Length - 1); // Spacing between chips
+
+            // Position chips horizontally centered at bottom
+            int startX = (bounds.Width - totalChipWidth) / 2;
+            int chipY = bounds.Bottom - size.Height - smallPadding;
+
+            positions[0] = new Vector2(startX, chipY);
+            for (int chipIndex = 1; chipIndex < chipsAssets.Count; chipIndex++)
+            {
+                int prevChipWidth = chipsAssets[assetNames[chipIndex - 1]].Bounds.Width;
+                positions[chipIndex] = positions[chipIndex - 1] + new Vector2(prevChipWidth + smallPadding, 0);
             }
 
-            // Initialize bet button
+            // Calculate total width of both buttons side by side
+            int totalButtonWidth = (buttonWidth * 2) + smallPadding;
+            int buttonStartX = (bounds.Width - totalButtonWidth) / 2;
+            int buttonY = chipY - buttonHeight - (smallPadding * 2);
+
+            // Initialize bet button (centered above chips)
             bet = new Button("ButtonRegular", "ButtonPressed", input, cardGame, spriteBatch, globalTransformation)
             {
-                Bounds = new Rectangle(bounds.Left + smallPadding, bounds.Bottom - buttonHeight - smallPadding, buttonWidth, buttonHeight),
+                Bounds = new Rectangle(buttonStartX, buttonY, buttonWidth, buttonHeight),
                 Font = cardGame.Font,
                 Text = "Deal",
             };
             bet.Click += Bet_Click;
             Game.Components.Add(bet);
 
-            // Initialize clear button
+            // Initialize clear button (to the right of bet button)
             clear = new Button("ButtonRegular", "ButtonPressed", input, cardGame, spriteBatch, globalTransformation)
             {
-                Bounds = new Rectangle(bounds.Left + smallPadding + buttonWidth + smallPadding, bounds.Bottom - buttonHeight - smallPadding, buttonWidth, buttonHeight),
+                Bounds = new Rectangle(buttonStartX + buttonWidth + smallPadding, buttonY, buttonWidth, buttonHeight),
                 Font = cardGame.Font,
                 Text = "Clear",
             };

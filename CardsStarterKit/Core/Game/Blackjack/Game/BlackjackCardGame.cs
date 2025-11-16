@@ -37,7 +37,7 @@ namespace Blackjack
         private Hand deadCards = new Hand(); // stores used cards
         private BlackjackPlayer dealerPlayer;
         bool[] turnFinishedByPlayer;
-        
+
         /// <summary>
         /// Gets the animation duration multiplier based on the AnimationSpeed setting.
         /// Fast = 0.5x, Normal = 1.0x, Slow = 1.5x
@@ -49,7 +49,7 @@ namespace Blackjack
                 AnimationSpeed.Slow => 1.5f,
                 _ => 1.0f // Normal
             };
-        
+
         TimeSpan DealDuration => TimeSpan.FromMilliseconds(500 * AnimationSpeedMultiplier);
 
         AnimatedHandGameComponent[] animatedHands;
@@ -127,59 +127,55 @@ namespace Blackjack
             // Calculate proportional dimensions
             int screenWidth = screenManager.SafeArea.Width;
             int screenHeight = screenManager.SafeArea.Height;
-            int smallPadding = UIConstants.GetSmallPadding(screenWidth);
+            Rectangle bounds = new Rectangle(0, 0, ScreenManager.BASE_BUFFER_WIDTH, ScreenManager.BASE_BUFFER_HEIGHT);
+            int smallPadding = UIConstants.GetSmallPadding(bounds.Width);
             int mediumPadding = UIConstants.GetMediumPadding(screenHeight);
             int buttonWidth = UIConstants.GetButtonWidth(screenWidth);
             int buttonHeight = UIConstants.GetButtonHeight(screenHeight);
             int buttonSpacing = UIConstants.GetButtonSpacing(screenWidth);
             int wideButtonWidth = UIConstants.GetWideButtonWidth(screenWidth);
 
-            // Initialize the game buttons
-            string[] buttonsText = { "Hit", "Stand", "Double", "Split", "Insurance" };
-            for (int buttonIndex = 0; buttonIndex < buttonsText.Length; buttonIndex++)
+            // Initialize the game buttons - position them centered above betting chips
+            // All action and betting buttons will be in a single row above the chips
+            int chipHeight = 50; // Approximate chip texture height
+            int buttonY = ScreenManager.BASE_BUFFER_HEIGHT - chipHeight - (smallPadding * 3) - buttonHeight;
+
+            // All possible buttons in a single row (Deal, Clear, Hit, Stand, Double, Split, Insurance, New Hand)
+            string[] allButtons = { "Deal", "Clear", "Hit", "Stand", "Double", "Split", "Insurance", "New Hand" };
+
+            // Calculate total width needed for all buttons (7 regular + 1 wide)
+            int totalButtonsWidth = (buttonWidth * 7) + (smallPadding * 6) + (UIConstants.GetWideButtonWidth(screenManager.SafeArea.Width) - buttonWidth); // New Hand is wide
+            int buttonStartX = (ScreenManager.BASE_BUFFER_WIDTH - totalButtonsWidth) / 2;
+            int currentX = buttonStartX;
+
+            foreach (var btn in allButtons)
             {
+                int width = (btn == "New Hand") ? UIConstants.GetWideButtonWidth(screenManager.SafeArea.Width) : buttonWidth;
+                // Always use the same Y value for all buttons
                 Button button = new Button("ButtonRegular", "ButtonPressed",
                     screenManager.InputState, this, screenManager.SpriteBatch, screenManager.GlobalTransformation)
                 {
-                    Text = buttonsText[buttonIndex],
-                    Bounds = new Rectangle(screenManager.SafeArea.Left + smallPadding + buttonIndex * buttonSpacing,
-                        screenManager.SafeArea.Bottom - buttonHeight - smallPadding,
-                    buttonWidth, buttonHeight),
+                    Text = btn,
+                    Bounds = new Rectangle(currentX, buttonY, width, buttonHeight),
                     Font = this.Font,
                     Visible = false,
                     Enabled = false
                 };
-                buttons.Add(buttonsText[buttonIndex], button);
+                if (btn != "Deal" && btn != "Clear" && btn != "New Hand")
+                    buttons.Add(btn, button); // Only add gameplay buttons to dictionary
+                if (btn == "New Hand")
+                    newGame = button;
                 Game.Components.Add(button);
+                currentX += width + smallPadding;
             }
 
-            newGame = new Button("ButtonRegular", "ButtonPressed",
-                    screenManager.InputState, this, screenManager.SpriteBatch, screenManager.GlobalTransformation)
-            {
-                Text = "New Hand",
-
-                Bounds = new Rectangle(screenManager.SafeArea.Left + smallPadding,
-                    screenManager.SafeArea.Bottom - buttonHeight - smallPadding, wideButtonWidth, buttonHeight),
-                Font = this.Font,
-                Visible = false,
-                Enabled = false
-            };
-
-            // Alter the insurance button's bounds as it is considerably larger than
-            // the other buttons
-            Rectangle insuranceBounds = buttons["Insurance"].Bounds;
-            insuranceBounds.Width = wideButtonWidth;
-            buttons["Insurance"].Bounds = insuranceBounds;
-
-            newGame.Click += newGame_Click;
-            Game.Components.Add(newGame);
-
-            // Register to click event
+            // Register to click event for gameplay buttons
             buttons["Hit"].Click += Hit_Click;
             buttons["Stand"].Click += Stand_Click;
             buttons["Double"].Click += Double_Click;
             buttons["Split"].Click += Split_Click;
             buttons["Insurance"].Click += Insurance_Click;
+            newGame.Click += newGame_Click;
         }
 
         /// <summary>
@@ -198,7 +194,7 @@ namespace Blackjack
                     break;
                 case BlackjackGameState.Betting:
                     {
-                        EnableButtons(false);
+                        ChangeButtonsEnablement(false);
                     }
                     break;
                 case BlackjackGameState.Dealing:
@@ -254,7 +250,7 @@ namespace Blackjack
                             SetButtonAvailability();
                         }
                         else
-                            EnableButtons(false);
+                            ChangeButtonsEnablement(false);
                     }
                     break;
                 case BlackjackGameState.RoundEnd:
@@ -1148,7 +1144,7 @@ namespace Blackjack
 
             // Position the deck in top-right corner for a realistic casino look
             Rectangle tableBounds = GameTable.TableBounds;
-            
+
             // Position in top-right area with some padding from edges
             int cardWidth = UIConstants.GetCardWidth(screenManager.SafeArea.Width);
             int cardHeight = UIConstants.GetCardHeight(screenManager.SafeArea.Height);
@@ -1184,13 +1180,13 @@ namespace Blackjack
             // Hide all buttons if no player is in play or the player is an AI player
             if (player == null || player is BlackjackAIPlayer)
             {
-                EnableButtons(false);
+                ChangeButtonsEnablement(false);
                 ChangeButtonsVisiblility(false);
                 return;
             }
 
             // Show all buttons
-            EnableButtons(true);
+            ChangeButtonsEnablement(true);
             ChangeButtonsVisiblility(true);
 
             // Set insurance button availability
@@ -1236,6 +1232,8 @@ namespace Blackjack
                 buttons["Split"].Visible = false;
                 buttons["Split"].Enabled = false;
             }
+
+            LayoutVisibleButtons();
         }
 
         /// <summary>
@@ -1677,6 +1675,8 @@ namespace Blackjack
             buttons["Double"].Visible = visible;
             buttons["Split"].Visible = visible;
             buttons["Insurance"].Visible = visible;
+
+            LayoutVisibleButtons();
         }
 
         /// <summary>
@@ -1684,13 +1684,15 @@ namespace Blackjack
         /// </summary>
         /// <param name="enabled">True to enable the buttons , false to 
         /// disable them.</param>
-        void EnableButtons(bool enabled)
+        void ChangeButtonsEnablement(bool enabled)
         {
             buttons["Hit"].Enabled = enabled;
             buttons["Stand"].Enabled = enabled;
             buttons["Double"].Enabled = enabled;
             buttons["Split"].Enabled = enabled;
             buttons["Insurance"].Enabled = enabled;
+
+            LayoutVisibleButtons();
         }
 
         /// <summary>
@@ -2542,6 +2544,56 @@ namespace Blackjack
 
             // The button availability will be updated in the next Update() cycle
             // via SetButtonAvailability(), which checks GetCurrentPlayer()
+        }
+
+        private void LayoutVisibleButtons()
+        {
+            // Gather all visible buttons (including "New Hand" if it's not in the dictionary)
+            List<Button> visibleButtons = new List<Button>();
+            foreach (var btn in buttons.Values)
+            {
+                if (btn.Visible)
+                    visibleButtons.Add(btn);
+            }
+            if (newGame != null && newGame.Visible && !visibleButtons.Contains(newGame))
+                visibleButtons.Add(newGame);
+
+            if (visibleButtons.Count == 0)
+                return;
+
+            // Get UI constants
+            int screenWidth = screenManager.SafeArea.Width;
+            int smallPadding = UIConstants.GetSmallPadding(screenWidth);
+            int buttonHeight = UIConstants.GetButtonHeight(screenManager.SafeArea.Height);
+
+            // Calculate total width of all visible buttons (accounting for "New Hand" being wide)
+            int totalWidth = 0;
+            for (int i = 0; i < visibleButtons.Count; i++)
+            {
+                var btn = visibleButtons[i];
+                int btnWidth = (btn == newGame)
+                    ? UIConstants.GetWideButtonWidth(screenWidth)
+                    : UIConstants.GetButtonWidth(screenWidth);
+                totalWidth += btnWidth;
+                if (i < visibleButtons.Count - 1)
+                    totalWidth += smallPadding;
+            }
+
+            // Center the row horizontally
+            int startX = (ScreenManager.BASE_BUFFER_WIDTH - totalWidth) / 2;
+            int chipHeight = 50; // Approximate chip texture height
+            int buttonY = ScreenManager.BASE_BUFFER_HEIGHT - chipHeight - (smallPadding * 7) - buttonHeight;
+
+            // Position each button
+            int currentX = startX;
+            foreach (var btn in visibleButtons)
+            {
+                int btnWidth = (btn == newGame)
+                    ? UIConstants.GetWideButtonWidth(screenWidth)
+                    : UIConstants.GetButtonWidth(screenWidth);
+                btn.Bounds = new Rectangle(currentX, buttonY, btn.Bounds.Width, btn.Bounds.Height);
+                currentX += btnWidth + smallPadding;
+            }
         }
     }
 }
