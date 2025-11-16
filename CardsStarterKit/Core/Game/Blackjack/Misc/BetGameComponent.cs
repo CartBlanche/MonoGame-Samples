@@ -449,8 +449,10 @@ namespace Blackjack
                 // Get the proper offset according to the platform (pc, phone, xbox)
                 Vector2 offset = GetChipOffset(playerIndex, secondHand);
 
+                // Stack chips slightly offset but keep them centered in the ring
+                // Use smaller offsets to prevent drifting from center
                 position = cardGame.GameTable[playerIndex] + offset +
-                    new Vector2(-currentChipComponent.Count * 2, currentChipComponent.Count * 1);
+                    new Vector2(-currentChipComponent.Count * 1, currentChipComponent.Count * 0.5f);
 
 
                 // Find the index of the chip
