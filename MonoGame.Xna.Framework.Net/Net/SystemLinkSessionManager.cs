@@ -55,7 +55,7 @@ namespace Microsoft.Xna.Framework.Net
                         broadcastCount++;
                         Console.WriteLine($"[BROADCAST] Sent broadcast #{broadcastCount} - SessionID: {session.sessionId}, Gamers: {session.AllGamers.Count}/{session.MaxGamers}");
 
-                        await Task.Delay(1000, cancellationToken); // Broadcast every second
+                        await Task.Delay(750, cancellationToken); // Broadcast every 750ms for faster discovery
                     }
 
                     Console.WriteLine($"[BROADCAST] Stopped broadcasting. Reason: Cancelled={cancellationToken.IsCancellationRequested}, Full={session.AllGamers.Count >= session.MaxGamers}, Ended={session.sessionState == NetworkSessionState.Ended}");
@@ -83,9 +83,10 @@ namespace Microsoft.Xna.Framework.Net
                     udpClient.EnableBroadcast = true;
                     // DON'T set ReceiveTimeout - it interferes with ReceiveAsync()
 
-                    // Phase 1: Listen for 2.5 seconds to reliably catch at least 2 broadcast cycles (hosts broadcast every 1 second)
+                    // Phase 1: Listen for 1.5 seconds to catch at least 1 broadcast cycle (hosts broadcast every 1 second)
+                    // Reduced from 2.5s for faster discovery while still being reliable
                     var startTime = DateTime.UtcNow;
-                    var endTime = startTime.AddSeconds(2.5);
+                    var endTime = startTime.AddSeconds(1.5);
                     int receiveAttempts = 0;
                     int packetsReceived = 0;
 
@@ -94,9 +95,9 @@ namespace Microsoft.Xna.Framework.Net
                         try
                         {
                             receiveAttempts++;
-                            // Try to receive with timeout
+                            // Try to receive with reduced timeout for faster response
                             var receiveTask = udpClient.ReceiveAsync();
-                            var timeoutTask = Task.Delay(150, cancellationToken);
+                            var timeoutTask = Task.Delay(100, cancellationToken);
                             var completedTask = await Task.WhenAny(receiveTask, timeoutTask);
 
                             if (completedTask == receiveTask)
@@ -199,8 +200,8 @@ namespace Microsoft.Xna.Framework.Net
         {
             // Phase 1: Reliable join with timeout and retry
             const int MAX_RETRIES = 3;
-            const int TIMEOUT_MS = 500; // Fast timeout for LAN
-            
+            const int TIMEOUT_MS = 300; // Faster timeout for LAN (reduced from 500ms)
+
             Console.WriteLine($"[JOIN] Starting join process for session {availableSession.SessionId}");
 
             // Create client session in Joining state
@@ -236,15 +237,15 @@ namespace Microsoft.Xna.Framework.Net
             for (int attempt = 0; attempt < MAX_RETRIES; attempt++)
             {
                 Console.WriteLine($"[JOIN] Sending join request (attempt {attempt + 1}/{MAX_RETRIES})");
-                
+
                 // CRITICAL: Use the session's own local gamer, not the static NetworkGamer.LocalGamer
                 // The static property can be stale when multiple sessions exist (e.g., testing on same machine)
                 var localGamer = session.LocalGamers.FirstOrDefault();
                 if (localGamer == null)
                     throw new InvalidOperationException("No local gamer found in session");
-                
+
                 Console.WriteLine($"[JOIN] Sending as gamer: {localGamer.Gamertag} (ID: {localGamer.Id})");
-                
+
                 var joinRequest = new JoinRequestMessage
                 {
                     GamerId = localGamer.Id,
@@ -269,7 +270,7 @@ namespace Microsoft.Xna.Framework.Net
                             ?.Invoke(session.GetType().GetField("connectionMonitor", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)?.GetValue(session), new object[] { session });
                         return session;
                     }
-                    
+
                     // Check if we received rejection (would still be in Joining state but we can check for it)
                     // For now, just wait
                     await Task.Delay(50, cancellationToken);
