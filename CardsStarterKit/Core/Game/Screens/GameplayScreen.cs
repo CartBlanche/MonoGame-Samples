@@ -251,6 +251,13 @@ namespace Blackjack
                     }
                 }
 
+                // CRITICAL: Recalculate player positions now that we have the full player list
+                int totalPlayers = blackJackGame.Players.Count;
+                CalculatePlayerPositions(totalPlayers);
+
+                // Update the table to show the correct number of player spots
+                blackJackGame.GameTable.SetPlaces(totalPlayers);
+
                 // Now that we have the complete player list, start the round
                 // This ensures DisplayPlayingHands() creates animatedHands for all players including AI
                 System.Console.WriteLine($"[PlayerListSync] Client received {packet.Players.Count} players, starting round now");
