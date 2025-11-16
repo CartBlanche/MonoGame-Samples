@@ -105,6 +105,16 @@ namespace CardsFramework
         {
             animationCompleted = true;
             
+            // CRITICAL: Hide cards immediately before doing anything else
+            // This prevents the "ghost deck" from appearing at shuffle position
+            if (animatedCards != null)
+            {
+                foreach (var card in animatedCards)
+                {
+                    card.Visible = false;
+                }
+            }
+            
             // Invoke completion callback
             shuffleAnimation.OnAnimationComplete?.Invoke();
             
@@ -122,6 +132,13 @@ namespace CardsFramework
         {
             if (animatedCards != null)
             {
+                // First make all cards invisible
+                foreach (var card in animatedCards)
+                {
+                    card.Visible = false;
+                }
+
+                // Then remove them from the game
                 foreach (var card in animatedCards)
                 {
                     if (Game.Components.Contains(card))

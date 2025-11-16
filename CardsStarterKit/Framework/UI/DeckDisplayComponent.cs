@@ -33,6 +33,11 @@ namespace CardsFramework
         public Vector2 LayerOffset { get; set; } = new Vector2(1, 1);
 
         /// <summary>
+        /// Rotation angle in radians (default -45 degrees / clockwise for casino look)
+        /// </summary>
+        public float Rotation { get; set; } = MathHelper.ToRadians(-45);
+
+        /// <summary>
         /// Whether the deck should be visible
         /// </summary>
         public new bool Visible { get; set; } = true;
@@ -85,6 +90,9 @@ namespace CardsFramework
 
             spriteBatch.Begin(SpriteSortMode.Deferred, null, null, null, null, null, globalTransformation);
 
+            // Calculate origin point for rotation (center of the card)
+            Vector2 origin = new Vector2(cardBackTexture.Width / 2f, cardBackTexture.Height / 2f);
+
             // Draw multiple layers to create a stacked deck effect
             for (int i = 0; i < StackLayers; i++)
             {
@@ -94,7 +102,8 @@ namespace CardsFramework
                 float alpha = 1.0f - (i * 0.1f);
                 Color color = Color.White * alpha;
                 
-                spriteBatch.Draw(cardBackTexture, layerPosition, color);
+                // Draw with rotation around the center origin
+                spriteBatch.Draw(cardBackTexture, layerPosition, null, color, Rotation, origin, 1.0f, SpriteEffects.None, 0f);
             }
 
             spriteBatch.End();

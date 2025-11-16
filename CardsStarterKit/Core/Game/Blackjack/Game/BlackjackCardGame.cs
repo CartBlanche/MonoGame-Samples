@@ -305,21 +305,29 @@ namespace Blackjack
                 deckCards.Add(dealer[i]);
             }
 
-            // Calculate deck position in center of the right quarter of the table
+            // Calculate shuffle position in top-center (where shuffle visibly happens)
             Rectangle tableBounds = GameTable.TableBounds;
-            float rightQuarterCenter = tableBounds.Left + (tableBounds.Width * 5f / 8f);
-            Vector2 deckPosition = new Vector2(rightQuarterCenter, GameTable.DealerPosition.Y);
+            int cardWidth = UIConstants.GetCardWidth(screenManager.SafeArea.Width);
+            int cardHeight = UIConstants.GetCardHeight(screenManager.SafeArea.Height);
+            float shuffleCenterX = tableBounds.Left + (tableBounds.Width / 2f);
+            float shuffleY = tableBounds.Top + 40;
+            Vector2 shufflePosition = new Vector2(shuffleCenterX, shuffleY);
+
+            // Calculate final deck position (top-right where deck sits for dealing)
+            float finalDeckX = tableBounds.Right - cardWidth - 40;
+            float finalDeckY = tableBounds.Top + 40;
+            Vector2 finalDeckPosition = new Vector2(finalDeckX, finalDeckY);
 
             // Get scaled card size and shuffle parameters
             Vector2 cardSize = UIConstants.GetCardSize(screenManager.SafeArea.Width, screenManager.SafeArea.Height);
             float splitDistance = UIConstants.GetShuffleSplitDistance(screenManager.SafeArea.Width);
             float cascadeHeight = UIConstants.GetShuffleCascadeHeight(screenManager.SafeArea.Height);
 
-            // Create a riffle shuffle animation ending at the deck position
+            // Create a riffle shuffle animation at top-center
             var shuffleAnimation = new RiffleShuffleAnimation(
                 this,
-                deckPosition, // Shuffle ends at the deck position (right quarter center of table)
-                TimeSpan.FromSeconds(1.8), // 1.8 seconds - enough time to see the motion
+                shufflePosition, // Shuffle happens at top-center
+                TimeSpan.FromSeconds(1.0), // Fast shuffle - back to original speed
                 cardSize) // Scaled card size
             {
                 SplitDistance = splitDistance, // Scaled split distance
@@ -331,12 +339,13 @@ namespace Blackjack
             {
                 AudioManager.PlaySound("Shuffle");
 
-                // Show the deck display after shuffle completes (if setting is enabled)
+                // Immediately show deck at top-right position (no slide animation)
                 if (deckDisplay != null && GameSettings.Instance.ShowCardCount)
                 {
                     deckDisplay.Visible = true;
                 }
 
+                // Transition to betting state
                 State = BlackjackGameState.Betting;
             };
 
@@ -731,10 +740,13 @@ namespace Blackjack
             int cardLocationInHand = animatedHand.GetCardLocationInHand(card);
             AnimatedCardsGameComponent cardComponent = animatedHand.GetCardGameComponent(cardLocationInHand);
 
-            // Cards are dealt from the deck position in the center of the right quarter
+            // Cards are dealt from the deck position in the top-right corner
             Rectangle tableBounds = GameTable.TableBounds;
-            float rightQuarterCenter = tableBounds.Left + (tableBounds.Width * 5f / 8f);
-            Vector2 deckPosition = new Vector2(rightQuarterCenter, GameTable.DealerPosition.Y);
+            int cardWidth = UIConstants.GetCardWidth(screenManager.SafeArea.Width);
+            int cardHeight = UIConstants.GetCardHeight(screenManager.SafeArea.Height);
+            float deckX = tableBounds.Right - cardWidth - 40; // Match deck display position
+            float deckY = tableBounds.Top + 40;
+            Vector2 deckPosition = new Vector2(deckX, deckY);
 
             var cardAnimation = new TransitionGameComponentAnimation(deckPosition,
                 animatedHand.CurrentPosition +
@@ -1134,14 +1146,14 @@ namespace Blackjack
                 return;
             }
 
-            // Position the deck in center of the right quarter of the table
-            // Calculate the center of the right quarter for responsive positioning
+            // Position the deck in top-right corner for a realistic casino look
             Rectangle tableBounds = GameTable.TableBounds;
-            float rightQuarterCenter = tableBounds.Left + (tableBounds.Width * 5f / 8f); // 5/8 = center of right quarter
-            float deckX = rightQuarterCenter;
-
-            // Keep the same Y position as the dealer's hand
-            float deckY = GameTable.DealerPosition.Y;
+            
+            // Position in top-right area with some padding from edges
+            int cardWidth = UIConstants.GetCardWidth(screenManager.SafeArea.Width);
+            int cardHeight = UIConstants.GetCardHeight(screenManager.SafeArea.Height);
+            float deckX = tableBounds.Right - cardWidth - 40; // 40px padding from right edge
+            float deckY = tableBounds.Top + 40; // 40px padding from top edge
             Vector2 deckPosition = new Vector2(deckX, deckY);
 
             // Get scaled layer offset
