@@ -62,6 +62,7 @@ namespace Blackjack
         Dictionary<string, Button> buttons = new Dictionary<string, Button>();
         Button newGame;
         bool showInsurance;
+        bool balanceAnimationsStarted = false;
 
         // An offset used for drawing the second hand which appears after a split in
         // the correct location. Calculated proportionally based on screen size.
@@ -257,24 +258,34 @@ namespace Blackjack
                     {
                         if (dealerHandComponent.EstimatedTimeForAnimationsCompletion() == TimeSpan.Zero)
                         {
-                            betGameComponent.CalculateBalance(dealerPlayer);
-                            // Check if there is enough money to play
-                            // then show new game option or tell the player he has lost
-                            if (((BlackjackPlayer)players[0]).Balance < 5)
+                            // Start chip animations only once
+                            if (!balanceAnimationsStarted)
                             {
-                                EndGame();
-                            }
-                            else
-                            {
-                                // Hide all gameplay buttons before showing "New Hand" button
-                                foreach (var btn in buttons.Values)
+                                balanceAnimationsStarted = true;
+                                betGameComponent.CalculateBalanceWithAnimations(dealerPlayer, () =>
                                 {
-                                    btn.Visible = false;
-                                    btn.Enabled = false;
-                                }
+                                    // Callback when all animations complete
+                                    balanceAnimationsStarted = false;
 
-                                newGame.Enabled = true;
-                                newGame.Visible = true;
+                                    // Check if there is enough money to play
+                                    // then show new game option or tell the player he has lost
+                                    if (((BlackjackPlayer)players[0]).Balance < 5)
+                                    {
+                                        EndGame();
+                                    }
+                                    else
+                                    {
+                                        // Hide all gameplay buttons before showing "New Hand" button
+                                        foreach (var btn in buttons.Values)
+                                        {
+                                            btn.Visible = false;
+                                            btn.Enabled = false;
+                                        }
+
+                                        newGame.Enabled = true;
+                                        newGame.Visible = true;
+                                    }
+                                });
                             }
                         }
                     }

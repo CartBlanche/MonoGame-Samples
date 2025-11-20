@@ -49,6 +49,8 @@ namespace Blackjack
         Vector2 secondHandOffset;
 
         List<AnimatedGameComponent> currentChipComponent = new List<AnimatedGameComponent>();
+        // Track all chip components for each player (for win/loss animations)
+        Dictionary<int, List<AnimatedGameComponent>> playerChipComponents = new Dictionary<int, List<AnimatedGameComponent>>();
         int currentBet = 0;
         InputState input;
         InputHelper inputHelper;
@@ -504,6 +506,13 @@ namespace Blackjack
 
                 currentChipComponent.Add(chipComponent);
 
+                // Track chip for this player (for win/loss animations)
+                if (!playerChipComponents.ContainsKey(playerIndex))
+                {
+                    playerChipComponents[playerIndex] = new List<AnimatedGameComponent>();
+                }
+                playerChipComponents[playerIndex].Add(chipComponent);
+
                 // Send chip addition to network in real-time (if enabled)
                 if (sendToNetwork)
                 {
@@ -575,7 +584,96 @@ namespace Blackjack
 
         /// <summary>
         /// Updates the balance of all players in light of their bets and the dealer's
-        /// hand.
+        /// hand. WITH ANIMATIONS - triggers chip animations sequentially for each player.
+        /// </summary>
+        /// <param name="dealerPlayer">Player object representing the dealer.</param>
+        /// <param name="completionCallback">Called when all animations complete.</param>
+        public void CalculateBalanceWithAnimations(BlackjackPlayer dealerPlayer, Action completionCallback = null)
+        {
+            // Process players sequentially with animations
+            ProcessPlayerAnimationsSequentially(dealerPlayer, 0, completionCallback);
+        }
+
+        /// <summary>
+        /// Recursively processes player animations one at a time.
+        /// </summary>
+        private void ProcessPlayerAnimationsSequentially(BlackjackPlayer dealerPlayer, int playerIndex, Action completionCallback)
+        {
+            if (playerIndex >= players.Count)
+            {
+                // All players processed
+                completionCallback?.Invoke();
+                return;
+            }
+
+            BlackjackPlayer player = (BlackjackPlayer)players[playerIndex];
+
+            // Calculate factors for this player
+            float factor = CalculateFactorForHand(dealerPlayer, player, HandTypes.First);
+            float totalWinAmount = 0;
+
+            if (player.IsSplit)
+            {
+                float factor2 = CalculateFactorForHand(dealerPlayer, player, HandTypes.Second);
+                float initialBet = player.BetAmount / ((player.Double ? 2f : 1f) + (player.SecondDouble ? 2f : 1f));
+                float bet1 = initialBet * (player.Double ? 2f : 1f);
+                float bet2 = initialBet * (player.SecondDouble ? 2f : 1f);
+
+                totalWinAmount = bet1 * factor + bet2 * factor2;
+
+                if (player.IsInsurance && dealerPlayer.BlackJack)
+                {
+                    totalWinAmount += initialBet;
+                }
+            }
+            else
+            {
+                if (player.IsInsurance && dealerPlayer.BlackJack)
+                {
+                    totalWinAmount = player.BetAmount + (player.BetAmount * factor);
+                }
+                else
+                {
+                    totalWinAmount = player.BetAmount * factor;
+                }
+            }
+
+            // Determine animation type based on result
+            if (factor > 0)
+            {
+                // Win - chips return to selector and balance increases
+                AnimateWinningChips(playerIndex, totalWinAmount, () =>
+                {
+                    player.ClearBet();
+                    // Move to next player
+                    ProcessPlayerAnimationsSequentially(dealerPlayer, playerIndex + 1, completionCallback);
+                });
+            }
+            else if (factor < 0)
+            {
+                // Loss - chips go to dealer and balance decreases (totalWinAmount is negative)
+                AnimateLosingChips(playerIndex, totalWinAmount, () =>
+                {
+                    player.ClearBet();
+                    // Move to next player
+                    ProcessPlayerAnimationsSequentially(dealerPlayer, playerIndex + 1, completionCallback);
+                });
+            }
+            else
+            {
+                // Push - chips return to selector (no balance change)
+                AnimateWinningChips(playerIndex, 0, () =>
+                {
+                    player.ClearBet();
+                    // Move to next player
+                    ProcessPlayerAnimationsSequentially(dealerPlayer, playerIndex + 1, completionCallback);
+                });
+            }
+        }
+
+        /// <summary>
+        /// Updates the balance of all players in light of their bets and the dealer's
+        /// hand. (LEGACY - no animations, instant update)
         /// </summary>
         /// <param name="dealerPlayer">Player object representing the dealer.</param>
         public void CalculateBalance(BlackjackPlayer dealerPlayer)
@@ -624,6 +722,266 @@ namespace Blackjack
 
                 player.ClearBet();
             }
+        }
+
+        /// <summary>
+        /// Animates winning chips returning to the chip selector and updates player balance incrementally.
+        /// For local players, chips fly to selector. For remote/AI players, chips fly to name text.
+        /// </summary>
+        /// <param name="playerIndex">Index of the player who won.</param>
+        /// <param name="winAmount">Amount won (used to determine which chips to animate).</param>
+        /// <param name="callback">Callback to invoke when all animations complete.</param>
+        public void AnimateWinningChips(int playerIndex, float winAmount, Action callback = null)
+        {
+            if (!playerChipComponents.ContainsKey(playerIndex) || playerChipComponents[playerIndex].Count == 0)
+            {
+                callback?.Invoke();
+                return;
+            }
+
+            BlackjackPlayer player = (BlackjackPlayer)players[playerIndex];
+            bool isLocal = IsLocalPlayer(playerIndex);
+
+            if (isLocal)
+            {
+                // Local player: chips fly to selector positions
+                AnimateChipsToSelector(playerIndex, winAmount, callback);
+            }
+            else
+            {
+                // Remote/AI player: chips fly to name text and disappear
+                AnimateChipsToNameText(playerIndex, winAmount, callback);
+            }
+        }
+
+        /// <summary>
+        /// Animates chips to the chip selector (for local players).
+        /// </summary>
+        private void AnimateChipsToSelector(int playerIndex, float winAmount, Action callback = null)
+        {
+            BlackjackPlayer player = (BlackjackPlayer)players[playerIndex];
+            var chips = playerChipComponents[playerIndex];
+
+            // Animate chips one by one back to their selector positions
+            TimeSpan delayBetweenChips = TimeSpan.FromMilliseconds(100);
+            DateTime startTime = DateTime.Now;
+
+            for (int i = 0; i < chips.Count; i++)
+            {
+                var chip = chips[i];
+
+                // Determine which chip value this is based on texture
+                int chipValue = GetChipValueFromComponent(chip);
+                int chipIndex = GetChipSelectorIndex(chipValue);
+
+                if (chipIndex >= 0 && chipIndex < positions.Length)
+                {
+                    bool isLastChip = (i == chips.Count - 1);
+
+                    // Animate chip back to selector position
+                    chip.AddAnimation(new TransitionGameComponentAnimation(
+                        chip.CurrentPosition, positions[chipIndex])
+                    {
+                        Duration = TimeSpan.FromSeconds(0.5),
+                        StartTime = startTime + (delayBetweenChips * i),
+                        PerformWhenDone = isLastChip ? (object obj) =>
+                        {
+                            PlayBetSound(obj);
+                            // Update balance after last chip arrives
+                            player.Balance += winAmount;
+                            // Clean up all chips
+                            CleanupPlayerChips(playerIndex);
+                            callback?.Invoke();
+                        }
+                        : PlayBetSound
+                    });
+                }
+            }
+        }
+
+        /// <summary>
+        /// Animates chips to the player's name text position with shrink/fade effect (for remote/AI players).
+        /// </summary>
+        private void AnimateChipsToNameText(int playerIndex, float winAmount, Action callback = null)
+        {
+            BlackjackPlayer player = (BlackjackPlayer)players[playerIndex];
+            var chips = playerChipComponents[playerIndex];
+
+            Vector2 targetPosition = GetPlayerNameTextPosition(playerIndex);
+
+            // Animate chips one by one to name text
+            TimeSpan delayBetweenChips = TimeSpan.FromMilliseconds(100);
+            DateTime startTime = DateTime.Now;
+
+            for (int i = 0; i < chips.Count; i++)
+            {
+                var chip = chips[i];
+                bool isLastChip = (i == chips.Count - 1);
+
+                // Animate chip to name position with fade/shrink
+                chip.AddAnimation(new TransitionGameComponentAnimation(
+                    chip.CurrentPosition, targetPosition)
+                {
+                    Duration = TimeSpan.FromSeconds(0.5),
+                    StartTime = startTime + (delayBetweenChips * i),
+                    PerformWhenDone = (object obj) =>
+                    {
+                        PlayBetSound(obj);
+
+                        if (isLastChip)
+                        {
+                            // Update balance when last chip arrives
+                            player.Balance += winAmount;
+                            // Clean up all chips
+                            CleanupPlayerChips(playerIndex);
+                            callback?.Invoke();
+                        }
+                    }
+                });
+
+                // Add scale animation to shrink chip as it arrives (from 1.0 to 0.0)
+                chip.AddAnimation(new ScaleGameComponentAnimation(1.0f, 0.0f)
+                {
+                    Duration = TimeSpan.FromSeconds(0.5),
+                    StartTime = startTime + (delayBetweenChips * i)
+                });
+            }
+        }
+
+        /// <summary>
+        /// Animates losing chips moving to the dealer position and deducts the loss from player balance.
+        /// </summary>
+        /// <param name="playerIndex">Index of the player who lost.</param>
+        /// <param name="lossAmount">The negative amount to subtract from balance (e.g., -50 means lose $50).</param>
+        /// <param name="callback">Callback to invoke when all animations complete.</param>
+        public void AnimateLosingChips(int playerIndex, float lossAmount, Action callback = null)
+        {
+            if (!playerChipComponents.ContainsKey(playerIndex) || playerChipComponents[playerIndex].Count == 0)
+            {
+                callback?.Invoke();
+                return;
+            }
+
+            BlackjackPlayer player = (BlackjackPlayer)players[playerIndex];
+            var chips = playerChipComponents[playerIndex];
+
+            // Get dealer position (center top of screen)
+            Vector2 dealerPosition = cardGame.GameTable.DealerPosition;
+
+            // Animate all chips simultaneously to dealer
+            TimeSpan delayBetweenChips = TimeSpan.FromMilliseconds(50);
+            DateTime startTime = DateTime.Now;
+
+            for (int i = 0; i < chips.Count; i++)
+            {
+                var chip = chips[i];
+                bool isLastChip = (i == chips.Count - 1);
+
+                chip.AddAnimation(new TransitionGameComponentAnimation(
+                    chip.CurrentPosition, dealerPosition)
+                {
+                    Duration = TimeSpan.FromSeconds(0.6),
+                    StartTime = startTime + (delayBetweenChips * i),
+                    PerformWhenDone = isLastChip ? (object obj) =>
+                    {
+                        // Deduct loss from balance when last chip reaches dealer (lossAmount is negative)
+                        player.Balance += lossAmount;
+                        // Clean up all chips after last one reaches dealer
+                        CleanupPlayerChips(playerIndex);
+                        callback?.Invoke();
+                    }
+                    : null
+                });
+            }
+        }
+
+        /// <summary>
+        /// Helper method to get chip value from its texture.
+        /// </summary>
+        private int GetChipValueFromTexture(Texture2D texture)
+        {
+            foreach (var kvp in chipsAssets)
+            {
+                if (kvp.Value == texture)
+                    return kvp.Key;
+            }
+            return 0;
+        }
+
+        /// <summary>
+        /// Helper method to get chip value from an AnimatedGameComponent.
+        /// </summary>
+        private int GetChipValueFromComponent(AnimatedGameComponent chipComponent)
+        {
+            return GetChipValueFromTexture(chipComponent.CurrentFrame);
+        }
+
+        /// <summary>
+        /// Helper method to get the index in the positions array for a chip value.
+        /// </summary>
+        private int GetChipSelectorIndex(int chipValue)
+        {
+            for (int i = 0; i < assetNames.Length; i++)
+            {
+                if (assetNames[i] == chipValue)
+                    return i;
+            }
+            return -1;
+        }
+
+        /// <summary>
+        /// Cleans up chip components for a specific player.
+        /// </summary>
+        private void CleanupPlayerChips(int playerIndex)
+        {
+            if (playerChipComponents.ContainsKey(playerIndex))
+            {
+                foreach (var chip in playerChipComponents[playerIndex])
+                {
+                    Game.Components.Remove(chip);
+                }
+                playerChipComponents[playerIndex].Clear();
+                playerChipComponents.Remove(playerIndex);
+            }
+        }
+
+        /// <summary>
+        /// Determines if a player is the local player (controlled by this machine).
+        /// </summary>
+        private bool IsLocalPlayer(int playerIndex)
+        {
+            BlackjackCardGame blackjackGame = cardGame as BlackjackCardGame;
+
+            if (blackjackGame != null && blackjackGame.IsNetworkGame && LocalPlayerIndex >= 0)
+            {
+                // In network games, only the LocalPlayerIndex player is local
+                return playerIndex == LocalPlayerIndex;
+            }
+            else
+            {
+                // In single-player games, player 0 is the local player
+                return playerIndex == 0;
+            }
+        }
+
+        /// <summary>
+        /// Calculates the position where player name text is rendered.
+        /// This is used as the target for chip animations for remote/AI players.
+        /// </summary>
+        private Vector2 GetPlayerNameTextPosition(int playerIndex)
+        {
+            BlackJackTable table = (BlackJackTable)cardGame.GameTable;
+
+            // Account for scaled ring texture
+            float ringScale = UIConstants.GetChipScale();
+            float scaledRingHeight = table.RingTexture.Bounds.Height * ringScale;
+
+            // Position text below the chip circle center (same as Draw method)
+            Vector2 basePosition = table[playerIndex] + table.RingOffset +
+                new Vector2(0, scaledRingHeight / 2f + 10); // 10px padding below circle
+
+            // Name is on the third line (40px below base position)
+            return basePosition + new Vector2(0, 40);
         }
 
         /// <summary>
