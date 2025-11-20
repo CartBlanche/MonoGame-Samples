@@ -266,6 +266,13 @@ namespace Blackjack
                             }
                             else
                             {
+                                // Hide all gameplay buttons before showing "New Hand" button
+                                foreach (var btn in buttons.Values)
+                                {
+                                    btn.Visible = false;
+                                    btn.Enabled = false;
+                                }
+
                                 newGame.Enabled = true;
                                 newGame.Visible = true;
                             }
@@ -2563,8 +2570,15 @@ namespace Blackjack
 
             // Get UI constants
             int screenWidth = screenManager.SafeArea.Width;
+            int screenHeight = screenManager.SafeArea.Height;
             int smallPadding = UIConstants.GetSmallPadding(screenWidth);
-            int buttonHeight = UIConstants.GetButtonHeight(screenManager.SafeArea.Height);
+            int buttonHeight = UIConstants.GetButtonHeight(screenHeight);
+
+            // Get actual chip height from bet component for accurate positioning
+            int chipHeight = betGameComponent?.ChipHeight ?? 50;
+
+            // Calculate button Y position using shared helper for consistency with betting phase
+            int buttonY = UIConstants.GetGameplayButtonYPosition(chipHeight, ScreenManager.BASE_BUFFER_WIDTH, ScreenManager.BASE_BUFFER_HEIGHT);
 
             // Calculate total width of all visible buttons (accounting for "New Hand" being wide)
             int totalWidth = 0;
@@ -2581,8 +2595,6 @@ namespace Blackjack
 
             // Center the row horizontally
             int startX = (ScreenManager.BASE_BUFFER_WIDTH - totalWidth) / 2;
-            int chipHeight = 50; // Approximate chip texture height
-            int buttonY = ScreenManager.BASE_BUFFER_HEIGHT - chipHeight - (smallPadding * 7) - buttonHeight;
 
             // Position each button
             int currentX = startX;
@@ -2591,7 +2603,8 @@ namespace Blackjack
                 int btnWidth = (btn == newGame)
                     ? UIConstants.GetWideButtonWidth(screenWidth)
                     : UIConstants.GetButtonWidth(screenWidth);
-                btn.Bounds = new Rectangle(currentX, buttonY, btn.Bounds.Width, btn.Bounds.Height);
+                // Fixed: Use calculated btnWidth and buttonHeight instead of existing btn.Bounds dimensions
+                btn.Bounds = new Rectangle(currentX, buttonY, btnWidth, buttonHeight);
                 currentX += btnWidth + smallPadding;
             }
         }

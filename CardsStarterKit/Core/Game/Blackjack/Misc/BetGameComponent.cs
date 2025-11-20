@@ -36,6 +36,11 @@ namespace Blackjack
         // In network games, this specifies which player index the local user controls
         public int LocalPlayerIndex { get; set; } = -1;
 
+        /// <summary>
+        /// Gets the height of the chip texture (once loaded)
+        /// </summary>
+        public int ChipHeight => blankChip?.Height ?? 50; // Default to 50 if not loaded yet
+
         Button bet;
         Button clear;
 
@@ -139,10 +144,12 @@ namespace Blackjack
                 positions[chipIndex] = positions[chipIndex - 1] + new Vector2(prevChipWidth + smallPadding, 0);
             }
 
+            // Calculate button Y position using shared helper for consistency
+            int buttonY = UIConstants.GetGameplayButtonYPosition(size.Height, bounds.Width, bounds.Height);
+
             // Calculate total width of both buttons side by side
             int totalButtonWidth = (buttonWidth * 2) + smallPadding;
             int buttonStartX = (bounds.Width - totalButtonWidth) / 2;
-            int buttonY = chipY - buttonHeight - (smallPadding * 2);
 
             // Initialize bet button (centered above chips)
             bet = new Button("ButtonRegular", "ButtonPressed", input, cardGame, spriteBatch, globalTransformation)

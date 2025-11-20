@@ -272,5 +272,23 @@ namespace Blackjack
         {
             return GetHeightScaled(screenHeight, InsuranceYPositionRatio);
         }
+
+        /// <summary>
+        /// Calculate the Y position for gameplay buttons (Deal, Clear, Hit, Stand, etc.)
+        /// This ensures consistent button positioning across betting and gameplay phases.
+        /// </summary>
+        /// <param name="chipTextureHeight">The actual height of the chip texture in pixels</param>
+        /// <param name="screenWidth">The screen width (for calculating padding)</param>
+        /// <param name="screenHeight">The screen height (for calculating button height)</param>
+        /// <returns>The Y coordinate where buttons should be positioned</returns>
+        public static int GetGameplayButtonYPosition(int chipTextureHeight, int screenWidth, int screenHeight)
+        {
+            int smallPadding = GetSmallPadding(screenWidth);
+            int buttonHeight = GetButtonHeight(screenHeight);
+
+            // Position buttons above the chips with consistent spacing
+            // Bottom of screen - chip height - padding below chips - button height - padding between buttons and chips
+            return screenHeight - chipTextureHeight - smallPadding - buttonHeight - (smallPadding * 2);
+        }
     }
 }
