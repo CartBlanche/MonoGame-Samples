@@ -21,9 +21,7 @@ namespace Blackjack
         private Texture2D cardBackTexture;
         private Texture2D buttonRegularTexture;
         private Texture2D buttonPressedTexture;
-        private SpriteFont titleFont;
-        private SpriteFont settingsFont;
-        private SpriteFont headerFont;
+        // Fonts are accessed directly from ScreenManager to ensure we always use current font
         private GameSettings settings;
         private Rectangle safeArea;
 
@@ -65,9 +63,9 @@ namespace Blackjack
             ContentManager content = ScreenManager.Game.Content;
 
             background = content.Load<Texture2D>("Images/UI/table");
-            titleFont = content.Load<SpriteFont>("Fonts/MenuFont");
-            settingsFont = content.Load<SpriteFont>("Fonts/Regular");
-            headerFont = content.Load<SpriteFont>("Fonts/MenuFont");
+
+            // Fonts are accessed directly from ScreenManager properties (no caching)
+
             buttonRegularTexture = content.Load<Texture2D>("Images/ButtonRegular");
             buttonPressedTexture = content.Load<Texture2D>("Images/ButtonPressed");
 
@@ -100,6 +98,18 @@ namespace Blackjack
             BuildSettingItems();
 
             base.LoadContent();
+        }
+
+        /// <summary>
+        /// Reloads fonts when language changes between CJK and non-CJK languages.
+        /// </summary>
+        public void ReloadFonts(bool useCJKFont)
+        {
+            // No need to cache fonts - they're accessed directly from ScreenManager
+            System.Console.WriteLine($"[SettingsScreen] Font reload requested (CJK: {useCJKFont})");
+
+            // Rebuild setting items to recalculate bounds with new font metrics
+            BuildSettingItems();
         }
 
         private void BuildSettingItems()
@@ -187,8 +197,8 @@ namespace Blackjack
             int navButtonHeight = (int)(40 * heightScale);
 
             // Calculate button widths based on text size with padding
-            Vector2 prevTextSize = settingsFont.MeasureString(Resources.Previous);
-            Vector2 nextTextSize = settingsFont.MeasureString(Resources.Next);
+            Vector2 prevTextSize = ScreenManager.RegularFont.MeasureString(Resources.Previous);
+            Vector2 nextTextSize = ScreenManager.RegularFont.MeasureString(Resources.Next);
             int prevButtonWidth = (int)(prevTextSize.X + 40 * heightScale);
             int nextButtonWidth = (int)(nextTextSize.X + 40 * heightScale);
 
@@ -204,34 +214,46 @@ namespace Blackjack
 
         private void CycleToNextLanguage()
         {
-            settings.Language = settings.Language switch
+            // Determine next language
+            string nextLanguage = settings.Language switch
             {
                 "English" => "Français",
                 "Français" => "Español",
                 "Español" => "Italiano",
                 "Italiano" => "Русский",
-                "Русский" => "English",
-                //"Italiano" => "日本語",
-                //"日本語" => "中文",
+                "Русский" => "日本語",
+                "日本語" => "中文",
+                "中文" => "English",
                 _ => "English"
             };
-            BuildSettingItems(); // Rebuild items to refresh all labels
+
+            // Reload fonts BEFORE changing language (which changes culture)
+            ScreenManager.ReloadFontForLanguage(nextLanguage);
+
+            // Now set the language (this will change CurrentUICulture)
+            settings.Language = nextLanguage;
         }
 
         private void CycleToPreviousLanguage()
         {
-            settings.Language = settings.Language switch
+            // Determine previous language
+            string previousLanguage = settings.Language switch
             {
+                "English" => "中文",
                 "中文" => "日本語",
-                "日本語" => "Italiano",
-                "English" => "Русский",
+                "日本語" => "Русский",
                 "Русский" => "Italiano",
                 "Italiano" => "Español",
                 "Español" => "Français",
                 "Français" => "English",
-                _ => "Русский" // Default to last active language
+                _ => "中文" // Default to last active language
             };
-            BuildSettingItems(); // Rebuild items to refresh all labels
+
+            // Reload fonts BEFORE changing language (which changes culture)
+            ScreenManager.ReloadFontForLanguage(previousLanguage);
+
+            // Now set the language (this will change CurrentUICulture)
+            settings.Language = previousLanguage;
         }
 
         private void CycleToNextCurrency()
@@ -523,9 +545,9 @@ namespace Blackjack
 
             // Draw title
             string title = Resources.SettingsTitle;
-            Vector2 titleSize = titleFont.MeasureString(title);
+            Vector2 titleSize = ScreenManager.Font.MeasureString(title);
             Vector2 titlePos = new Vector2(safeArea.Center.X - titleSize.X / 2, safeArea.Top + 10);
-            spriteBatch.DrawString(titleFont, title, titlePos, Color.White * TransitionAlpha);
+            spriteBatch.DrawString(ScreenManager.Font, title, titlePos, Color.White * TransitionAlpha);
 
             // Draw card preview
             Rectangle cardRect = new Rectangle((int)cardPreviewPosition.X, (int)cardPreviewPosition.Y,
@@ -542,7 +564,7 @@ namespace Blackjack
                 {
                     // Draw header with larger font
                     Vector2 headerPos = new Vector2(item.Bounds.X, item.Bounds.Y);
-                    spriteBatch.DrawString(headerFont, item.Label, headerPos,
+                    spriteBatch.DrawString(ScreenManager.Font, item.Label, headerPos,
                         Color.Gold * TransitionAlpha);
                 }
                 else
@@ -555,12 +577,12 @@ namespace Blackjack
 
                     // Draw label
                     Vector2 labelPos = new Vector2(item.Bounds.X + 10,
-                        item.Bounds.Y + (item.Bounds.Height - settingsFont.LineSpacing) / 2);
-                    spriteBatch.DrawString(settingsFont, item.Label, labelPos, color);
+                        item.Bounds.Y + (item.Bounds.Height - ScreenManager.RegularFont.LineSpacing) / 2);
+                    spriteBatch.DrawString(ScreenManager.RegularFont, item.Label, labelPos, color);
 
                     // Draw value and controls
                     string valueText = item.GetValue?.Invoke() ?? "";
-                    Vector2 valueSize = settingsFont.MeasureString(valueText);
+                    Vector2 valueSize = ScreenManager.RegularFont.MeasureString(valueText);
 
                     if (item.Type == SettingType.Checkbox)
                     {
@@ -574,11 +596,11 @@ namespace Blackjack
                         // Draw checkmark if checked
                         if (isChecked)
                         {
-                            Vector2 checkSize = settingsFont.MeasureString("X");
+                            Vector2 checkSize = ScreenManager.RegularFont.MeasureString("X");
                             Vector2 checkPos = new Vector2(
                                 checkboxBounds.X + (checkboxBounds.Width - checkSize.X) / 2,
                                 checkboxBounds.Y + (checkboxBounds.Height - checkSize.Y) / 2);
-                            spriteBatch.DrawString(settingsFont, "X", checkPos, Color.Black * TransitionAlpha);
+                            spriteBatch.DrawString(ScreenManager.RegularFont, "X", checkPos, Color.Black * TransitionAlpha);
                         }
                     }
                     else
@@ -591,27 +613,27 @@ namespace Blackjack
                         bool leftPressed = (pressedButtonIndex == i * 2);
                         Texture2D leftTexture = leftPressed ? buttonPressedTexture : buttonRegularTexture;
                         spriteBatch.Draw(leftTexture, leftButton, Color.White * TransitionAlpha);
-                        Vector2 minusSize = settingsFont.MeasureString("-");
+                        Vector2 minusSize = ScreenManager.RegularFont.MeasureString("-");
                         Vector2 minusPos = new Vector2(
                             leftButton.X + (leftButton.Width - minusSize.X) / 2,
                             leftButton.Y + (leftButton.Height - minusSize.Y) / 2);
-                        spriteBatch.DrawString(settingsFont, "-", minusPos, Color.Black * TransitionAlpha);
+                        spriteBatch.DrawString(ScreenManager.RegularFont, "-", minusPos, Color.Black * TransitionAlpha);
 
                         // Draw value in center
                         Vector2 valuePos = new Vector2(
                             leftButton.Right + (rightButton.Left - leftButton.Right - valueSize.X) / 2,
-                            item.Bounds.Y + (item.Bounds.Height - settingsFont.LineSpacing) / 2);
-                        spriteBatch.DrawString(settingsFont, valueText, valuePos, color);
+                            item.Bounds.Y + (item.Bounds.Height - ScreenManager.RegularFont.LineSpacing) / 2);
+                        spriteBatch.DrawString(ScreenManager.RegularFont, valueText, valuePos, color);
 
                         // Draw right button [+]
                         bool rightPressed = (pressedButtonIndex == i * 2 + 1);
                         Texture2D rightTexture = rightPressed ? buttonPressedTexture : buttonRegularTexture;
                         spriteBatch.Draw(rightTexture, rightButton, Color.White * TransitionAlpha);
-                        Vector2 plusSize = settingsFont.MeasureString("+");
+                        Vector2 plusSize = ScreenManager.RegularFont.MeasureString("+");
                         Vector2 plusPos = new Vector2(
                             rightButton.X + (rightButton.Width - plusSize.X) / 2,
                             rightButton.Y + (rightButton.Height - plusSize.Y) / 2);
-                        spriteBatch.DrawString(settingsFont, "+", plusPos, Color.Black * TransitionAlpha);
+                        spriteBatch.DrawString(ScreenManager.RegularFont, "+", plusPos, Color.Black * TransitionAlpha);
                     }
                 }
             }
@@ -622,11 +644,11 @@ namespace Blackjack
                 Texture2D prevTexture = isPrevButtonPressed ? buttonPressedTexture : buttonRegularTexture;
                 spriteBatch.Draw(prevTexture, prevButtonBounds, Color.White * TransitionAlpha);
                 string prevText = Resources.Previous;
-                Vector2 prevTextSize = settingsFont.MeasureString(prevText);
+                Vector2 prevTextSize = ScreenManager.RegularFont.MeasureString(prevText);
                 Vector2 prevTextPos = new Vector2(
                     prevButtonBounds.X + (prevButtonBounds.Width - prevTextSize.X) / 2,
                     prevButtonBounds.Y + (prevButtonBounds.Height - prevTextSize.Y) / 2);
-                spriteBatch.DrawString(settingsFont, prevText, prevTextPos, Color.Black * TransitionAlpha);
+                spriteBatch.DrawString(ScreenManager.RegularFont, prevText, prevTextPos, Color.Black * TransitionAlpha);
             }
 
             if (currentPage < TotalPages - 1)
@@ -634,20 +656,31 @@ namespace Blackjack
                 Texture2D nextTexture = isNextButtonPressed ? buttonPressedTexture : buttonRegularTexture;
                 spriteBatch.Draw(nextTexture, nextButtonBounds, Color.White * TransitionAlpha);
                 string nextText = Resources.Next;
-                Vector2 nextTextSize = settingsFont.MeasureString(nextText);
+                Vector2 nextTextSize = ScreenManager.RegularFont.MeasureString(nextText);
                 Vector2 nextTextPos = new Vector2(
                     nextButtonBounds.X + (nextButtonBounds.Width - nextTextSize.X) / 2,
                     nextButtonBounds.Y + (nextButtonBounds.Height - nextTextSize.Y) / 2);
-                spriteBatch.DrawString(settingsFont, nextText, nextTextPos, Color.Black * TransitionAlpha);
+                spriteBatch.DrawString(ScreenManager.RegularFont, nextText, nextTextPos, Color.Black * TransitionAlpha);
             }
 
             // Draw page indicator
             string pageText = string.Format(Resources.PageIndicator, currentPage + 1, TotalPages);
-            Vector2 pageTextSize = settingsFont.MeasureString(pageText);
+            var font = ScreenManager.RegularFont;
+            System.Console.WriteLine($"[SettingsScreen] About to measure pageText='{pageText}' with font ID={font.GetHashCode()}");
+            System.Console.WriteLine($"[SettingsScreen] Font has {font.Characters.Count} characters, DefaultCharacter={(font.DefaultCharacter.HasValue ? font.DefaultCharacter.Value.ToString() : "none")}");
+
+            // Check if font contains each character in the text
+            foreach (char c in pageText)
+            {
+                bool hasChar = font.Characters.Contains(c);
+                System.Console.WriteLine($"[SettingsScreen] Character '{c}' (U+{((int)c):X4}): {(hasChar ? "YES" : "NO")}");
+            }
+
+            Vector2 pageTextSize = font.MeasureString(pageText);
             Vector2 pageTextPos = new Vector2(
                 safeArea.Center.X - pageTextSize.X / 2,
                 safeArea.Bottom - 55);
-            spriteBatch.DrawString(settingsFont, pageText, pageTextPos, Color.White * TransitionAlpha);
+            spriteBatch.DrawString(font, pageText, pageTextPos, Color.White * TransitionAlpha);
 
             spriteBatch.End();
 

@@ -209,10 +209,10 @@ Bボタン、Esc = キャンセル</value>
     <value>開始</value>
   </data>
   <data name="AvailableGames" xml:space="preserve">
-    <value>利用可能なゲーム：</value>
+    <value>利用可能なゲーム </value>
   </data>
   <data name="Players" xml:space="preserve">
-    <value>プレイヤー：</value>
+    <value>プレイヤー </value>
   </data>
   <data name="Deck" xml:space="preserve">
     <value>デッキ</value>
@@ -230,13 +230,13 @@ Bボタン、Esc = キャンセル</value>
     <value>{0}秒後に自動更新</value>
   </data>
   <data name="Dealer" xml:space="preserve">
-    <value>ディーラー：ハウス</value>
+    <value>ディーラー ハウス</value>
   </data>
   <data name="Host" xml:space="preserve">
     <value>ホスト</value>
   </data>
   <data name="Slot" xml:space="preserve">
-    <value>スロット{0}：{1}</value>
+    <value>スロット{0} {1}</value>
   </data>
   <data name="JoinOrHostGame" xml:space="preserve">
     <value>ゲームに参加またはホスト</value>

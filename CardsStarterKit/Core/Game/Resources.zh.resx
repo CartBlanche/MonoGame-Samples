@@ -209,10 +209,10 @@ B按钮、Esc = 取消</value>
     <value>开始</value>
   </data>
   <data name="AvailableGames" xml:space="preserve">
-    <value>可用游戏：</value>
+    <value>可用游戏 </value>
   </data>
   <data name="Players" xml:space="preserve">
-    <value>玩家：</value>
+    <value>玩家 </value>
   </data>
   <data name="Deck" xml:space="preserve">
     <value>牌组</value>
@@ -230,13 +230,13 @@ B按钮、Esc = 取消</value>
     <value>{0}秒后自动刷新</value>
   </data>
   <data name="Dealer" xml:space="preserve">
-    <value>庄家：赌场</value>
+    <value>庄家 赌场</value>
   </data>
   <data name="Host" xml:space="preserve">
     <value>主机</value>
   </data>
   <data name="Slot" xml:space="preserve">
-    <value>槽位{0}：{1}</value>
+    <value>槽位{0} {1}</value>
   </data>
   <data name="JoinOrHostGame" xml:space="preserve">
     <value>加入或主持游戏</value>
@@ -305,6 +305,6 @@ B按钮、Esc = 取消</value>
     <value>下一页</value>
   </data>
   <data name="PageIndicator" xml:space="preserve">
-    <value>第{0}页，共{1}页</value>
+    <value>第{0}页 共{1}页</value>
   </data>
 </root>
