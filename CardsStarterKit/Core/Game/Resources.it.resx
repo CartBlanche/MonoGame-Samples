@@ -293,6 +293,9 @@ Pulsante B, Esc = Annulla</value>
   <data name="SettingsShowCardCount" xml:space="preserve">
     <value>Mostra conteggio carte</value>
   </data>
+  <data name="SettingsPersistWinnings" xml:space="preserve">
+    <value>Mantieni vincite</value>
+  </data>
   <data name="Previous" xml:space="preserve">
     <value>Precedente</value>
   </data>

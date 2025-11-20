@@ -789,6 +789,7 @@ namespace Blackjack
                             PlayBetSound(obj);
                             // Update balance after last chip arrives
                             player.Balance += winAmount;
+                            SavePlayerBalanceIfNeeded(playerIndex);
                             // Clean up all chips
                             CleanupPlayerChips(playerIndex);
                             callback?.Invoke();
@@ -832,6 +833,7 @@ namespace Blackjack
                         {
                             // Update balance when last chip arrives
                             player.Balance += winAmount;
+                            SavePlayerBalanceIfNeeded(playerIndex);
                             // Clean up all chips
                             CleanupPlayerChips(playerIndex);
                             callback?.Invoke();
@@ -886,6 +888,7 @@ namespace Blackjack
                     {
                         // Deduct loss from balance when last chip reaches dealer (lossAmount is negative)
                         player.Balance += lossAmount;
+                        SavePlayerBalanceIfNeeded(playerIndex);
                         // Clean up all chips after last one reaches dealer
                         CleanupPlayerChips(playerIndex);
                         callback?.Invoke();
@@ -961,6 +964,28 @@ namespace Blackjack
             {
                 // In single-player games, player 0 is the local player
                 return playerIndex == 0;
+            }
+        }
+
+        /// <summary>
+        /// Saves the player balance to settings if persistent winnings is enabled
+        /// and this is a single-player (non-network) game.
+        /// </summary>
+        private void SavePlayerBalanceIfNeeded(int playerIndex)
+        {
+            BlackjackCardGame blackjackGame = cardGame as BlackjackCardGame;
+
+            // Only save in single-player games (not network games)
+            if (blackjackGame != null && !blackjackGame.IsNetworkGame &&
+                GameSettings.Instance.PersistWinnings && playerIndex == 0)
+            {
+                var player = players[playerIndex] as BlackjackPlayer;
+                if (player != null)
+                {
+                    GameSettings.Instance.SavedPlayerBalance = player.Balance;
+                    GameSettings.Save();
+                    System.Console.WriteLine($"[PersistWinnings] Saved balance: {player.Balance}");
+                }
             }
         }
 

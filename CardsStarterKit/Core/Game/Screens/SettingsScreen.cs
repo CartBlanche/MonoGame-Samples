@@ -173,6 +173,8 @@ namespace Blackjack
                     (v) => settings.AutoStandOn21 = v, ref yPos);
                 AddCheckboxSetting(Resources.SettingsShowCardCount, () => settings.ShowCardCount,
                     (v) => settings.ShowCardCount = v, ref yPos);
+                AddCheckboxSetting(Resources.SettingsPersistWinnings, () => settings.PersistWinnings,
+                    (v) => settings.PersistWinnings = v, ref yPos);
             }
 
             // Calculate navigation button bounds at bottom (proportional to screen)

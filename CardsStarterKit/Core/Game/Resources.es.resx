@@ -293,6 +293,9 @@ Botón B, Esc = Cancelar</value>
   <data name="SettingsShowCardCount" xml:space="preserve">
     <value>Mostrar conteo de cartas</value>
   </data>
+  <data name="SettingsPersistWinnings" xml:space="preserve">
+    <value>Mantener ganancias</value>
+  </data>
   <data name="Previous" xml:space="preserve">
     <value>Anterior</value>
   </data>

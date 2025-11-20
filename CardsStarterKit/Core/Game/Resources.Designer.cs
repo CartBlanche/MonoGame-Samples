@@ -905,6 +905,17 @@ namespace Blackjack
         }
 
         /// <summary>
+        ///   Looks up a localized string similar to Persist Winnings.
+        /// </summary>
+        internal static string SettingsPersistWinnings
+        {
+            get
+            {
+                return ResourceManager.GetString("SettingsPersistWinnings", resourceCulture);
+            }
+        }
+
+        /// <summary>
         ///   Looks up a localized string similar to Previous.
         /// </summary>
         internal static string Previous

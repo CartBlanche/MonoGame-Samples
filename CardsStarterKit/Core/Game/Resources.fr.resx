@@ -293,6 +293,9 @@ Bouton B, Échap = Annuler</value>
   <data name="SettingsShowCardCount" xml:space="preserve">
     <value>Afficher le compte de cartes</value>
   </data>
+  <data name="SettingsPersistWinnings" xml:space="preserve">
+    <value>Conserver les gains</value>
+  </data>
   <data name="Previous" xml:space="preserve">
     <value>Précédent</value>
   </data>

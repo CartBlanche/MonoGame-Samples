@@ -48,6 +48,8 @@ namespace Blackjack
         public AnimationSpeed AnimationSpeed { get; set; } = AnimationSpeed.Normal;
         public bool AutoStandOn21 { get; set; } = false;
         public bool ShowCardCount { get; set; } = true;
+        public bool PersistWinnings { get; set; } = false;
+        public float SavedPlayerBalance { get; set; } = 500f;
 
         /// <summary>
         /// Gets the singleton instance of GameSettings.
@@ -127,6 +129,7 @@ namespace Blackjack
                     string json = File.ReadAllText(settingsFilePath);
                     instance = JsonSerializer.Deserialize<GameSettings>(json);
                     System.Console.WriteLine($"[Settings] Loaded from {settingsFilePath}");
+                    System.Console.WriteLine($"[Settings] PersistWinnings={instance.PersistWinnings}, SavedPlayerBalance={instance.SavedPlayerBalance}");
                 }
                 else
                 {
@@ -196,6 +199,7 @@ namespace Blackjack
                 string json = JsonSerializer.Serialize(instance, options);
                 File.WriteAllText(settingsFilePath, json);
                 System.Console.WriteLine($"[Settings] Saved to {settingsFilePath}");
+                System.Console.WriteLine($"[Settings] PersistWinnings={instance.PersistWinnings}, SavedPlayerBalance={instance.SavedPlayerBalance}");
             }
             catch (Exception ex)
             {

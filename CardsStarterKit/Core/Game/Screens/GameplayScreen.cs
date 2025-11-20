@@ -74,11 +74,17 @@ namespace Blackjack
                 GetPlayerCardPosition, ScreenManager, theme);
 
             // Wire up network session if in multiplayer mode
-            if (networkSession != null)
+            // Only treat as network game if there are actually multiple human players
+            if (networkSession != null && networkSession.AllGamers.Count > 1)
             {
                 blackJackGame.NetworkSession = networkSession;
                 blackJackGame.IsNetworkGame = true;
                 blackJackGame.IsHost = networkSession.IsHost;
+                System.Console.WriteLine($"[LoadContent] Network game detected with {networkSession.AllGamers.Count} gamers, IsNetworkGame=true");
+            }
+            else
+            {
+                System.Console.WriteLine($"[LoadContent] Single-player game, IsNetworkGame={blackJackGame.IsNetworkGame}, networkSession={(networkSession == null ? "null" : $"exists with {networkSession.AllGamers.Count} gamers")}");
             }
 
             InitializeGame();
@@ -393,6 +399,8 @@ namespace Blackjack
 
             TextInfo myTI = new CultureInfo("en-GB", false).TextInfo;
 
+            System.Console.WriteLine($"[InitializeGame] joinedPlayers={(joinedPlayers == null ? "null" : joinedPlayers.Count.ToString())}, networkSession={(networkSession == null ? "null" : "not null")}");
+
             // Add players from lobby
             if (joinedPlayers != null && joinedPlayers.Count > 0)
             {
@@ -407,7 +415,20 @@ namespace Blackjack
                 // Add human players
                 for (int i = 0; i < humanPlayerCount; i++)
                 {
-                    blackJackGame.AddPlayer(new BlackjackPlayer(myTI.ToTitleCase(joinedPlayers[i]), blackJackGame));
+                    var player = new BlackjackPlayer(myTI.ToTitleCase(joinedPlayers[i]), blackJackGame);
+
+                    // Load saved balance if persistent winnings is enabled (single-player only, first player)
+                    if (i == 0 && !blackJackGame.IsNetworkGame && GameSettings.Instance.PersistWinnings)
+                    {
+                        player.Balance = GameSettings.Instance.SavedPlayerBalance;
+                        System.Console.WriteLine($"[PersistWinnings] (Path 1) Loaded balance: {player.Balance}");
+                    }
+                    else
+                    {
+                        System.Console.WriteLine($"[PersistWinnings] (Path 1) Using default balance: {player.Balance} (i={i}, IsNetworkGame={blackJackGame.IsNetworkGame}, PersistWinnings={GameSettings.Instance.PersistWinnings})");
+                    }
+
+                    blackJackGame.AddPlayer(player);
                 }
 
                 // Only the host creates AI players in network games
@@ -438,7 +459,20 @@ namespace Blackjack
                     defaultPlayerName = "You";
                 }
 
-                blackJackGame.AddPlayer(new BlackjackPlayer(myTI.ToTitleCase(defaultPlayerName), blackJackGame));
+                var humanPlayer = new BlackjackPlayer(myTI.ToTitleCase(defaultPlayerName), blackJackGame);
+
+                // Load saved balance if persistent winnings is enabled (single-player only)
+                if (GameSettings.Instance.PersistWinnings)
+                {
+                    humanPlayer.Balance = GameSettings.Instance.SavedPlayerBalance;
+                    System.Console.WriteLine($"[PersistWinnings] (Path 2 - Fallback) Loaded balance: {humanPlayer.Balance}");
+                }
+                else
+                {
+                    System.Console.WriteLine($"[PersistWinnings] (Path 2 - Fallback) Using default balance: {humanPlayer.Balance}");
+                }
+
+                blackJackGame.AddPlayer(humanPlayer);
 
                 // Add AI players based on settings
                 int maxAI = GameSettings.Instance.MaxAIPlayers;

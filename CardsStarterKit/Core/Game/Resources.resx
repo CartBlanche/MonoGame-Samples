@@ -352,6 +352,9 @@ B button, Esc = Cancel</value>
   <data name="SettingsShowCardCount" xml:space="preserve">
     <value>Show Card Count</value>
   </data>
+  <data name="SettingsPersistWinnings" xml:space="preserve">
+    <value>Persist Winnings</value>
+  </data>
   <data name="Previous" xml:space="preserve">
     <value>Previous</value>
   </data>
