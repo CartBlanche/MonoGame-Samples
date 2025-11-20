@@ -89,6 +89,9 @@ namespace Blackjack
 
             InitializeGame();
 
+            // Update button text/fonts to match current language
+            UpdateButtonText();
+
             base.LoadContent();
         }
 
@@ -396,6 +399,8 @@ namespace Blackjack
         private void InitializeGame()
         {
             blackJackGame.Initialize();
+
+            blackJackGame.UpdateButtonText();
 
             TextInfo myTI = new CultureInfo("en-GB", false).TextInfo;
 
@@ -756,6 +761,19 @@ namespace Blackjack
             System.Console.WriteLine($"[PACKET] Turn changed from {sender.Gamertag}, current player index: {packet.CurrentPlayerIndex}");
 
             blackJackGame.HandleReceivedTurnChanged(packet.CurrentPlayerIndex);
+        }
+
+        /// <summary>
+        /// Updates button text after language change
+        /// </summary>
+        public void UpdateButtonText()
+        {
+            if (blackJackGame != null)
+            {
+                blackJackGame.UpdateButtonText();
+                var betComponent = blackJackGame.Game.Components.OfType<BetGameComponent>().FirstOrDefault();
+                betComponent?.UpdateButtonText();
+            }
         }
     }
 }

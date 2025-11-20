@@ -958,5 +958,93 @@ namespace Blackjack
                 return ResourceManager.GetString("PageIndicator", resourceCulture);
             }
         }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Deal.
+        /// </summary>
+        internal static string Deal
+        {
+            get
+            {
+                return ResourceManager.GetString("Deal", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Clear.
+        /// </summary>
+        internal static string Clear
+        {
+            get
+            {
+                return ResourceManager.GetString("Clear", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Hit.
+        /// </summary>
+        internal static string Hit
+        {
+            get
+            {
+                return ResourceManager.GetString("Hit", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Stand.
+        /// </summary>
+        internal static string Stand
+        {
+            get
+            {
+                return ResourceManager.GetString("Stand", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Double.
+        /// </summary>
+        internal static string Double
+        {
+            get
+            {
+                return ResourceManager.GetString("Double", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Split.
+        /// </summary>
+        internal static string Split
+        {
+            get
+            {
+                return ResourceManager.GetString("Split", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Insurance.
+        /// </summary>
+        internal static string Insurance
+        {
+            get
+            {
+                return ResourceManager.GetString("Insurance", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to New Hand.
+        /// </summary>
+        internal static string NewHand
+        {
+            get
+            {
+                return ResourceManager.GetString("NewHand", resourceCulture);
+            }
+        }
     }
 }

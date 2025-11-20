@@ -142,29 +142,40 @@ namespace Blackjack
             int buttonY = ScreenManager.BASE_BUFFER_HEIGHT - chipHeight - (smallPadding * 3) - buttonHeight;
 
             // All possible buttons in a single row (Deal, Clear, Hit, Stand, Double, Split, Insurance, New Hand)
-            string[] allButtons = { "Deal", "Clear", "Hit", "Stand", "Double", "Split", "Insurance", "New Hand" };
+            // Using resource strings for localization
+            var buttonData = new[]
+            {
+                new { Key = "Deal", Text = Resources.Deal },
+                new { Key = "Clear", Text = Resources.Clear },
+                new { Key = "Hit", Text = Resources.Hit },
+                new { Key = "Stand", Text = Resources.Stand },
+                new { Key = "Double", Text = Resources.Double },
+                new { Key = "Split", Text = Resources.Split },
+                new { Key = "Insurance", Text = Resources.Insurance },
+                new { Key = "NewHand", Text = Resources.NewHand }
+            };
 
             // Calculate total width needed for all buttons (7 regular + 1 wide)
             int totalButtonsWidth = (buttonWidth * 7) + (smallPadding * 6) + (UIConstants.GetWideButtonWidth(screenManager.SafeArea.Width) - buttonWidth); // New Hand is wide
             int buttonStartX = (ScreenManager.BASE_BUFFER_WIDTH - totalButtonsWidth) / 2;
             int currentX = buttonStartX;
 
-            foreach (var btn in allButtons)
+            foreach (var btn in buttonData)
             {
-                int width = (btn == "New Hand") ? UIConstants.GetWideButtonWidth(screenManager.SafeArea.Width) : buttonWidth;
+                int width = (btn.Key == "NewHand") ? UIConstants.GetWideButtonWidth(screenManager.SafeArea.Width) : buttonWidth;
                 // Always use the same Y value for all buttons
                 Button button = new Button("ButtonRegular", "ButtonPressed",
                     screenManager.InputState, this, screenManager.SpriteBatch, screenManager.GlobalTransformation)
                 {
-                    Text = btn,
+                    Text = btn.Text,
                     Bounds = new Rectangle(currentX, buttonY, width, buttonHeight),
                     Font = this.Font,
                     Visible = false,
                     Enabled = false
                 };
-                if (btn != "Deal" && btn != "Clear" && btn != "New Hand")
-                    buttons.Add(btn, button); // Only add gameplay buttons to dictionary
-                if (btn == "New Hand")
+                if (btn.Key != "Deal" && btn.Key != "Clear" && btn.Key != "NewHand")
+                    buttons.Add(btn.Key, button); // Only add gameplay buttons to dictionary
+                if (btn.Key == "NewHand")
                     newGame = button;
                 Game.Components.Add(button);
                 currentX += width + smallPadding;
@@ -177,6 +188,50 @@ namespace Blackjack
             buttons["Split"].Click += Split_Click;
             buttons["Insurance"].Click += Insurance_Click;
             newGame.Click += newGame_Click;
+        }
+
+        /// <summary>
+        /// Updates button text and fonts after language change to match current Resources
+        /// </summary>
+        public void UpdateButtonText()
+        {
+            // First update the game's font from content manager
+            bool useCJKFont = Blackjack.GameSettings.Instance.Language == "日本語" ||
+                              Blackjack.GameSettings.Instance.Language == "中文";
+            string fontPath = useCJKFont ? "Fonts/Regular_CJK" : "Fonts/Regular";
+            this.Font = Game.Content.Load<SpriteFont>(fontPath);
+
+            // Update both text and font for each button
+            if (buttons.ContainsKey("Hit"))
+            {
+                buttons["Hit"].Text = Resources.Hit;
+                buttons["Hit"].Font = this.Font;
+            }
+            if (buttons.ContainsKey("Stand"))
+            {
+                buttons["Stand"].Text = Resources.Stand;
+                buttons["Stand"].Font = this.Font;
+            }
+            if (buttons.ContainsKey("Double"))
+            {
+                buttons["Double"].Text = Resources.Double;
+                buttons["Double"].Font = this.Font;
+            }
+            if (buttons.ContainsKey("Split"))
+            {
+                buttons["Split"].Text = Resources.Split;
+                buttons["Split"].Font = this.Font;
+            }
+            if (buttons.ContainsKey("Insurance"))
+            {
+                buttons["Insurance"].Text = Resources.Insurance;
+                buttons["Insurance"].Font = this.Font;
+            }
+            if (newGame != null)
+            {
+                newGame.Text = Resources.NewHand;
+                newGame.Font = this.Font;
+            }
         }
 
         /// <summary>

@@ -367,4 +367,28 @@ B button, Esc = Cancel</value>
   <data name="PageIndicator" xml:space="preserve">
     <value>Page {0} of {1}</value>
   </data>
+  <data name="Deal" xml:space="preserve">
+    <value>Deal</value>
+  </data>
+  <data name="Clear" xml:space="preserve">
+    <value>Clear</value>
+  </data>
+  <data name="Hit" xml:space="preserve">
+    <value>Hit</value>
+  </data>
+  <data name="Stand" xml:space="preserve">
+    <value>Stand</value>
+  </data>
+  <data name="Double" xml:space="preserve">
+    <value>Double</value>
+  </data>
+  <data name="Split" xml:space="preserve">
+    <value>Split</value>
+  </data>
+  <data name="Insurance" xml:space="preserve">
+    <value>Insurance</value>
+  </data>
+  <data name="NewHand" xml:space="preserve">
+    <value>New Hand</value>
+  </data>
 </root>

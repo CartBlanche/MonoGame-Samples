@@ -307,4 +307,28 @@ Bボタン、Esc = キャンセル</value>
   <data name="PageIndicator" xml:space="preserve">
     <value>ページ{0}/{1}</value>
   </data>
+  <data name="Deal" xml:space="preserve">
+    <value>配る</value>
+  </data>
+  <data name="Clear" xml:space="preserve">
+    <value>クリア</value>
+  </data>
+  <data name="Hit" xml:space="preserve">
+    <value>ヒット</value>
+  </data>
+  <data name="Stand" xml:space="preserve">
+    <value>スタンド</value>
+  </data>
+  <data name="Double" xml:space="preserve">
+    <value>ダブル</value>
+  </data>
+  <data name="Split" xml:space="preserve">
+    <value>スプリット</value>
+  </data>
+  <data name="Insurance" xml:space="preserve">
+    <value>インシュランス</value>
+  </data>
+  <data name="NewHand" xml:space="preserve">
+    <value>新しい手</value>
+  </data>
 </root>

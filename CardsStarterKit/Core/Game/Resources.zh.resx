@@ -307,4 +307,28 @@ B按钮、Esc = 取消</value>
   <data name="PageIndicator" xml:space="preserve">
     <value>第{0}页 共{1}页</value>
   </data>
+  <data name="Deal" xml:space="preserve">
+    <value>发牌</value>
+  </data>
+  <data name="Clear" xml:space="preserve">
+    <value>清除</value>
+  </data>
+  <data name="Hit" xml:space="preserve">
+    <value>要牌</value>
+  </data>
+  <data name="Stand" xml:space="preserve">
+    <value>停牌</value>
+  </data>
+  <data name="Double" xml:space="preserve">
+    <value>加倍</value>
+  </data>
+  <data name="Split" xml:space="preserve">
+    <value>分牌</value>
+  </data>
+  <data name="Insurance" xml:space="preserve">
+    <value>保险</value>
+  </data>
+  <data name="NewHand" xml:space="preserve">
+    <value>新手牌</value>
+  </data>
 </root>

@@ -108,8 +108,8 @@ namespace Blackjack
             // No need to cache fonts - they're accessed directly from ScreenManager
             System.Console.WriteLine($"[SettingsScreen] Font reload requested (CJK: {useCJKFont})");
 
-            // Rebuild setting items to recalculate bounds with new font metrics
-            BuildSettingItems();
+            // Don't rebuild items here - will be done after language is set to avoid
+            // measuring text in new language with old fonts
         }
 
         private void BuildSettingItems()
@@ -227,11 +227,15 @@ namespace Blackjack
                 _ => "English"
             };
 
-            // Reload fonts BEFORE changing language (which changes culture)
+            // Phase 1: Reload fonts BEFORE changing language
             ScreenManager.ReloadFontForLanguage(nextLanguage);
 
-            // Now set the language (this will change CurrentUICulture)
+            // Phase 2: Set the language (this will change CurrentUICulture)
             settings.Language = nextLanguage;
+
+            // Phase 3: Refresh all screens now that language and fonts are both updated
+            BuildSettingItems();
+            ScreenManager.RefreshScreensAfterLanguageChange();
         }
 
         private void CycleToPreviousLanguage()
@@ -249,11 +253,15 @@ namespace Blackjack
                 _ => "中文" // Default to last active language
             };
 
-            // Reload fonts BEFORE changing language (which changes culture)
+            // Phase 1: Reload fonts BEFORE changing language
             ScreenManager.ReloadFontForLanguage(previousLanguage);
 
-            // Now set the language (this will change CurrentUICulture)
+            // Phase 2: Set the language (this will change CurrentUICulture)
             settings.Language = previousLanguage;
+
+            // Phase 3: Refresh all screens now that language and fonts are both updated
+            BuildSettingItems();
+            ScreenManager.RefreshScreensAfterLanguageChange();
         }
 
         private void CycleToNextCurrency()
@@ -665,22 +673,11 @@ namespace Blackjack
 
             // Draw page indicator
             string pageText = string.Format(Resources.PageIndicator, currentPage + 1, TotalPages);
-            var font = ScreenManager.RegularFont;
-            System.Console.WriteLine($"[SettingsScreen] About to measure pageText='{pageText}' with font ID={font.GetHashCode()}");
-            System.Console.WriteLine($"[SettingsScreen] Font has {font.Characters.Count} characters, DefaultCharacter={(font.DefaultCharacter.HasValue ? font.DefaultCharacter.Value.ToString() : "none")}");
-
-            // Check if font contains each character in the text
-            foreach (char c in pageText)
-            {
-                bool hasChar = font.Characters.Contains(c);
-                System.Console.WriteLine($"[SettingsScreen] Character '{c}' (U+{((int)c):X4}): {(hasChar ? "YES" : "NO")}");
-            }
-
-            Vector2 pageTextSize = font.MeasureString(pageText);
+            Vector2 pageTextSize = ScreenManager.RegularFont.MeasureString(pageText);
             Vector2 pageTextPos = new Vector2(
                 safeArea.Center.X - pageTextSize.X / 2,
                 safeArea.Bottom - 55);
-            spriteBatch.DrawString(font, pageText, pageTextPos, Color.White * TransitionAlpha);
+            spriteBatch.DrawString(ScreenManager.RegularFont, pageText, pageTextPos, Color.White * TransitionAlpha);
 
             spriteBatch.End();
 

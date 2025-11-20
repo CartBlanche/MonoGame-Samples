@@ -158,7 +158,7 @@ namespace Blackjack
             {
                 Bounds = new Rectangle(buttonStartX, buttonY, buttonWidth, buttonHeight),
                 Font = cardGame.Font,
-                Text = "Deal",
+                Text = Resources.Deal,
             };
             bet.Click += Bet_Click;
             Game.Components.Add(bet);
@@ -168,11 +168,28 @@ namespace Blackjack
             {
                 Bounds = new Rectangle(buttonStartX + buttonWidth + smallPadding, buttonY, buttonWidth, buttonHeight),
                 Font = cardGame.Font,
-                Text = "Clear",
+                Text = Resources.Clear,
             };
             clear.Click += Clear_Click;
             Game.Components.Add(clear);
             ShowAndEnableButtons(false);
+        }
+
+        /// <summary>
+        /// Updates button text and fonts after language change to match current Resources
+        /// </summary>
+        public void UpdateButtonText()
+        {
+            if (bet != null)
+            {
+                bet.Text = Resources.Deal;
+                bet.Font = cardGame.Font;
+            }
+            if (clear != null)
+            {
+                clear.Text = Resources.Clear;
+                clear.Font = cardGame.Font;
+            }
         }
 
         /// <summary>

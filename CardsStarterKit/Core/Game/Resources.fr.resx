@@ -308,4 +308,28 @@ Bouton B, Échap = Annuler</value>
   <data name="PageIndicator" xml:space="preserve">
     <value>Page {0} sur {1}</value>
   </data>
+  <data name="Deal" xml:space="preserve">
+    <value>Distribuer</value>
+  </data>
+  <data name="Clear" xml:space="preserve">
+    <value>Effacer</value>
+  </data>
+  <data name="Hit" xml:space="preserve">
+    <value>Tirer</value>
+  </data>
+  <data name="Stand" xml:space="preserve">
+    <value>Rester</value>
+  </data>
+  <data name="Double" xml:space="preserve">
+    <value>Doubler</value>
+  </data>
+  <data name="Split" xml:space="preserve">
+    <value>Séparer</value>
+  </data>
+  <data name="Insurance" xml:space="preserve">
+    <value>Assurance</value>
+  </data>
+  <data name="NewHand" xml:space="preserve">
+    <value>Nouvelle main</value>
+  </data>
 </root>

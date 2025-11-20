@@ -307,4 +307,28 @@
   <data name="PageIndicator" xml:space="preserve">
     <value>Страница {0} из {1}</value>
   </data>
+  <data name="Deal" xml:space="preserve">
+    <value>Раздать</value>
+  </data>
+  <data name="Clear" xml:space="preserve">
+    <value>Очистить</value>
+  </data>
+  <data name="Hit" xml:space="preserve">
+    <value>Взять</value>
+  </data>
+  <data name="Stand" xml:space="preserve">
+    <value>Остаться</value>
+  </data>
+  <data name="Double" xml:space="preserve">
+    <value>Удвоить</value>
+  </data>
+  <data name="Split" xml:space="preserve">
+    <value>Разделить</value>
+  </data>
+  <data name="Insurance" xml:space="preserve">
+    <value>Страховка</value>
+  </data>
+  <data name="NewHand" xml:space="preserve">
+    <value>Новая рука</value>
+  </data>
 </root>

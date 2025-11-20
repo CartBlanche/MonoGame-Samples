@@ -198,6 +198,8 @@ namespace GameStateManagement
         /// <summary>
         /// Reloads the font based on the current language setting.
         /// Uses CJK fonts for Japanese and Chinese, regular fonts for other languages.
+        /// NOTE: This only loads fonts. Call RefreshScreensAfterLanguageChange() after
+        /// the language has been set to rebuild screen content.
         /// </summary>
         public void ReloadFontForLanguage(string language)
         {
@@ -216,18 +218,30 @@ namespace GameStateManagement
             boldFont = content.Load<SpriteFont>(boldFontPath);
 
             System.Console.WriteLine($"[ScreenManager] Reloaded fonts: Menu={menuFontPath}, Regular={regularFontPath}, Bold={boldFontPath} for language: {language}");
-            System.Console.WriteLine($"[ScreenManager] Font object IDs: font={font.GetHashCode()}, regularFont={regularFont.GetHashCode()}, boldFont={boldFont.GetHashCode()}");
+        }
 
-            // Notify all screens to reload their fonts
+        /// <summary>
+        /// Refreshes all screens after language change. Call this AFTER setting the language
+        /// to ensure screens rebuild with matching language and fonts.
+        /// </summary>
+        public void RefreshScreensAfterLanguageChange()
+        {
+            System.Console.WriteLine($"[ScreenManager] Refreshing screens after language change");
+
             foreach (GameScreen screen in screens)
             {
                 if (screen is Blackjack.SettingsScreen settingsScreen)
                 {
-                    settingsScreen.ReloadFonts(useCJKFont);
+                    // SettingsScreen rebuilds itself in the cycle methods
+                }
+                else if (screen is Blackjack.GameplayScreen gameplayScreen)
+                {
+                    // Update gameplay button text (Deal, Clear, Hit, Stand, etc.)
+                    gameplayScreen.UpdateButtonText();
                 }
                 else if (screen is GameStateManagement.MenuScreen menuScreen)
                 {
-                    // Force menu screens to rebuild their entries with the new font
+                    // Force menu screens to rebuild their entries with the new language
                     menuScreen.LoadContent();
                 }
             }
