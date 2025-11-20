@@ -272,6 +272,9 @@ Pulsante B, Esc = Annulla</value>
   <data name="SettingsCardBackTheme" xml:space="preserve">
     <value>Tema retro carta</value>
   </data>
+  <data name="SettingsCurrency" xml:space="preserve">
+    <value>Valuta</value>
+  </data>
   <data name="SettingsSoundVolume" xml:space="preserve">
     <value>Volume suono</value>
   </data>

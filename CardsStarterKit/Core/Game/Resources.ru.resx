@@ -1,0 +1,310 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Back" xml:space="preserve">
+    <value>Назад</value>
+  </data>
+  <data name="ConfirmEndSession" xml:space="preserve">
+    <value>Вы уверены, что хотите завершить сессию?</value>
+  </data>
+  <data name="ConfirmExitSample" xml:space="preserve">
+    <value>Вы уверены, что хотите выйти из примера?</value>
+  </data>
+  <data name="ConfirmForceStartGame" xml:space="preserve">
+    <value>Вы уверены, что хотите начать игру,
+хотя не все игроки готовы?</value>
+  </data>
+  <data name="ConfirmLeaveSession" xml:space="preserve">
+    <value>Вы уверены, что хотите покинуть сессию?</value>
+  </data>
+  <data name="ConfirmMarketplace" xml:space="preserve">
+    <value>Онлайн-игра недоступна в пробной версии.
+Хотите приобрести эту игру?</value>
+  </data>
+  <data name="ConfirmQuitGame" xml:space="preserve">
+    <value>Вы уверены, что хотите выйти из игры?</value>
+  </data>
+  <data name="CreateSession" xml:space="preserve">
+    <value>Создать сессию</value>
+  </data>
+  <data name="EndSession" xml:space="preserve">
+    <value>Завершить сессию</value>
+  </data>
+  <data name="ErrorDisconnected" xml:space="preserve">
+    <value>Потеряно соединение с сетевой сессией</value>
+  </data>
+  <data name="ErrorGamerPrivilege" xml:space="preserve">
+    <value>Необходимо войти в подходящий профиль игрока
+для доступа к этой функции</value>
+  </data>
+  <data name="ErrorHostEndedSession" xml:space="preserve">
+    <value>Хост завершил сессию</value>
+  </data>
+  <data name="ErrorNetwork" xml:space="preserve">
+    <value>Произошла ошибка при
+доступе к сети</value>
+  </data>
+  <data name="ErrorNetworkNotAvailable" xml:space="preserve">
+    <value>Сеть отключена или
+не подключена</value>
+  </data>
+  <data name="ErrorRemovedByHost" xml:space="preserve">
+    <value>Хост исключил вас из сессии</value>
+  </data>
+  <data name="ErrorSessionFull" xml:space="preserve">
+    <value>Эта сессия уже заполнена</value>
+  </data>
+  <data name="ErrorSessionNotFound" xml:space="preserve">
+    <value>Сессия не найдена. Возможно, она завершилась,
+или нет сетевого подключения между
+локальным компьютером и хостом сессии</value>
+  </data>
+  <data name="ErrorSessionNotJoinable" xml:space="preserve">
+    <value>Необходимо дождаться возвращения хоста в
+лобби, прежде чем присоединиться к сессии</value>
+  </data>
+  <data name="ErrorTrialMode" xml:space="preserve">
+    <value>Эта функция недоступна в пробной версии</value>
+  </data>
+  <data name="ErrorUnknown" xml:space="preserve">
+    <value>Произошла неизвестная ошибка</value>
+  </data>
+  <data name="Exit" xml:space="preserve">
+    <value>Выход</value>
+  </data>
+  <data name="FindSessions" xml:space="preserve">
+    <value>Найти сессии</value>
+  </data>
+  <data name="HostSuffix" xml:space="preserve">
+    <value> (хост)</value>
+  </data>
+  <data name="JoinSession" xml:space="preserve">
+    <value>Присоединиться к сессии</value>
+  </data>
+  <data name="LeaveSession" xml:space="preserve">
+    <value>Покинуть сессию</value>
+  </data>
+  <data name="Loading" xml:space="preserve">
+    <value>Загрузка</value>
+  </data>
+  <data name="Lobby" xml:space="preserve">
+    <value>Лобби</value>
+  </data>
+  <data name="MainMenu" xml:space="preserve">
+    <value>Главное меню</value>
+  </data>
+  <data name="MessageBoxUsage" xml:space="preserve">
+    <value>Кнопка A, Пробел, Enter = OK
+Кнопка B, Esc = Отмена</value>
+  </data>
+  <data name="MessageGamerJoined" xml:space="preserve">
+    <value>{0} присоединился</value>
+  </data>
+  <data name="MessageGamerLeft" xml:space="preserve">
+    <value>{0} вышел</value>
+  </data>
+  <data name="NetworkBusy" xml:space="preserve">
+    <value>Поиск...</value>
+  </data>
+  <data name="NoSessionsFound" xml:space="preserve">
+    <value>Сессии не найдены</value>
+  </data>
+  <data name="Paused" xml:space="preserve">
+    <value>Пауза</value>
+  </data>
+  <data name="PlayerMatch" xml:space="preserve">
+    <value>ОНЛАЙН</value>
+  </data>
+  <data name="QuitGame" xml:space="preserve">
+    <value>Выход из игры</value>
+  </data>
+  <data name="ResumeGame" xml:space="preserve">
+    <value>Продолжить</value>
+  </data>
+  <data name="ReturnToLobby" xml:space="preserve">
+    <value>Вернуться в лобби</value>
+  </data>
+  <data name="SinglePlayer" xml:space="preserve">
+    <value>Одиночная игра</value>
+  </data>
+  <data name="SystemLink" xml:space="preserve">
+    <value>Локальная сессия</value>
+  </data>
+  <data name="Play" xml:space="preserve">
+    <value>Играть</value>
+  </data>
+  <data name="Theme" xml:space="preserve">
+    <value>Тема</value>
+  </data>
+  <data name="Settings" xml:space="preserve">
+    <value>Настройки</value>
+  </data>
+  <data name="Quit" xml:space="preserve">
+    <value>Выход</value>
+  </data>
+  <data name="HostNewGame" xml:space="preserve">
+    <value>Новая игра</value>
+  </data>
+  <data name="Refresh" xml:space="preserve">
+    <value>Обновить</value>
+  </data>
+  <data name="StartGame" xml:space="preserve">
+    <value>Начать</value>
+  </data>
+  <data name="AvailableGames" xml:space="preserve">
+    <value>Доступные игры:</value>
+  </data>
+  <data name="Players" xml:space="preserve">
+    <value>Игроки:</value>
+  </data>
+  <data name="Deck" xml:space="preserve">
+    <value>Колода</value>
+  </data>
+  <data name="Return" xml:space="preserve">
+    <value>Назад</value>
+  </data>
+  <data name="SearchingForGames" xml:space="preserve">
+    <value>Поиск игр...</value>
+  </data>
+  <data name="FoundGames" xml:space="preserve">
+    <value>Найдено игр: {0}</value>
+  </data>
+  <data name="AutoRefreshIn" xml:space="preserve">
+    <value>Автообновление через {0}с</value>
+  </data>
+  <data name="Dealer" xml:space="preserve">
+    <value>Дилер: Казино</value>
+  </data>
+  <data name="Host" xml:space="preserve">
+    <value>ХОСТ</value>
+  </data>
+  <data name="Slot" xml:space="preserve">
+    <value>Слот {0}: {1}</value>
+  </data>
+  <data name="JoinOrHostGame" xml:space="preserve">
+    <value>Присоединиться или создать игру</value>
+  </data>
+  <data name="FailedToCreateSession" xml:space="preserve">
+    <value>Не удалось создать сессию</value>
+  </data>
+  <data name="FailedToJoinSession" xml:space="preserve">
+    <value>Не удалось присоединиться к сессии</value>
+  </data>
+  <data name="OK" xml:space="preserve">
+    <value>ОК</value>
+  </data>
+  <data name="SettingsTitle" xml:space="preserve">
+    <value>Настройки</value>
+  </data>
+  <data name="SettingsDisplay" xml:space="preserve">
+    <value>ДИСПЛЕЙ</value>
+  </data>
+  <data name="SettingsAudio" xml:space="preserve">
+    <value>АУДИО</value>
+  </data>
+  <data name="SettingsAIPlayers" xml:space="preserve">
+    <value>ИИ ИГРОКИ</value>
+  </data>
+  <data name="SettingsGameplay" xml:space="preserve">
+    <value>ИГРОВОЙ ПРОЦЕСС</value>
+  </data>
+  <data name="SettingsLanguage" xml:space="preserve">
+    <value>Язык</value>
+  </data>
+  <data name="SettingsCardBackTheme" xml:space="preserve">
+    <value>Тема рубашки карты</value>
+  </data>
+  <data name="SettingsCurrency" xml:space="preserve">
+    <value>Валюта</value>
+  </data>
+  <data name="SettingsSoundVolume" xml:space="preserve">
+    <value>Громкость звука</value>
+  </data>
+  <data name="SettingsMusicVolume" xml:space="preserve">
+    <value>Громкость музыки</value>
+  </data>
+  <data name="SettingsMaxAIPlayers" xml:space="preserve">
+    <value>Макс. игроков ИИ</value>
+  </data>
+  <data name="SettingsFillEmptySlots" xml:space="preserve">
+    <value>Заполнить пустые места</value>
+  </data>
+  <data name="SettingsAnimationSpeed" xml:space="preserve">
+    <value>Скорость анимации</value>
+  </data>
+  <data name="SettingsAutoStandOn21" xml:space="preserve">
+    <value>Автостоп на 21</value>
+  </data>
+  <data name="SettingsShowCardCount" xml:space="preserve">
+    <value>Показать счёт карт</value>
+  </data>
+  <data name="SettingsPersistWinnings" xml:space="preserve">
+    <value>Сохранять выигрыш</value>
+  </data>
+  <data name="Previous" xml:space="preserve">
+    <value>Назад</value>
+  </data>
+  <data name="Next" xml:space="preserve">
+    <value>Далее</value>
+  </data>
+  <data name="PageIndicator" xml:space="preserve">
+    <value>Страница {0} из {1}</value>
+  </data>
+</root>

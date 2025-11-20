@@ -828,6 +828,17 @@ namespace Blackjack
         }
 
         /// <summary>
+        ///   Looks up a localized string similar to Currency.
+        /// </summary>
+        internal static string SettingsCurrency
+        {
+            get
+            {
+                return ResourceManager.GetString("SettingsCurrency", resourceCulture);
+            }
+        }
+
+        /// <summary>
         ///   Looks up a localized string similar to Sound Volume.
         /// </summary>
         internal static string SettingsSoundVolume

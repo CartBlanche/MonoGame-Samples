@@ -109,7 +109,7 @@ namespace Blackjack
 
             if (currentPage == 0)
             {
-                // Page 1: DISPLAY, AUDIO, and AI PLAYERS
+                // Page 1: DISPLAY and AUDIO
                 AddHeader(Resources.SettingsDisplay, ref yPos);
                 AddCycleSetting(Resources.SettingsLanguage, GetLanguageDisplay,
                     CycleToPreviousLanguage,
@@ -126,6 +126,10 @@ namespace Blackjack
                         MainMenuScreen.Theme = settings.Theme;
                     },
                     ref yPos);
+                AddCycleSetting(Resources.SettingsCurrency, () => settings.Currency,
+                    CycleToPreviousCurrency,
+                    CycleToNextCurrency,
+                    null, ref yPos);
 
                 yPos += groupSpacing - itemSpacing; // Extra space before next group
 
@@ -135,19 +139,10 @@ namespace Blackjack
                     (v) => settings.SoundVolume = v, ref yPos);
                 AddSliderSetting(Resources.SettingsMusicVolume, () => settings.MusicVolume,
                     (v) => settings.MusicVolume = v, ref yPos);
-
-                yPos += groupSpacing - itemSpacing;
-
-                // AI PLAYERS section
-                AddHeader(Resources.SettingsAIPlayers, ref yPos);
-                AddCounterSetting(Resources.SettingsMaxAIPlayers, () => settings.MaxAIPlayers, 0, GameSettings.GetPlatformMaxAIPlayers(),
-                    (v) => settings.MaxAIPlayers = (byte)v, ref yPos);
-                AddCheckboxSetting(Resources.SettingsFillEmptySlots, () => settings.FillEmptySlotsWithAI,
-                    (v) => settings.FillEmptySlotsWithAI = v, ref yPos);
             }
             else if (currentPage == 1)
             {
-                // Page 2: GAMEPLAY
+                // Page 2: GAMEPLAY and AI PLAYERS
                 AddHeader(Resources.SettingsGameplay, ref yPos);
                 AddCycleSetting(Resources.SettingsAnimationSpeed, () => settings.AnimationSpeed.ToString(),
                     () =>
@@ -175,6 +170,15 @@ namespace Blackjack
                     (v) => settings.ShowCardCount = v, ref yPos);
                 AddCheckboxSetting(Resources.SettingsPersistWinnings, () => settings.PersistWinnings,
                     (v) => settings.PersistWinnings = v, ref yPos);
+
+                yPos += groupSpacing - itemSpacing; // Extra space before next group
+
+                // AI PLAYERS section
+                AddHeader(Resources.SettingsAIPlayers, ref yPos);
+                AddCounterSetting(Resources.SettingsMaxAIPlayers, () => settings.MaxAIPlayers, 0, GameSettings.GetPlatformMaxAIPlayers(),
+                    (v) => settings.MaxAIPlayers = (byte)v, ref yPos);
+                AddCheckboxSetting(Resources.SettingsFillEmptySlots, () => settings.FillEmptySlotsWithAI,
+                    (v) => settings.FillEmptySlotsWithAI = v, ref yPos);
             }
 
             // Calculate navigation button bounds at bottom (proportional to screen)
@@ -205,7 +209,8 @@ namespace Blackjack
                 "English" => "Français",
                 "Français" => "Español",
                 "Español" => "Italiano",
-                "Italiano" => "English",
+                "Italiano" => "Русский",
+                "Русский" => "English",
                 //"Italiano" => "日本語",
                 //"日本語" => "中文",
                 _ => "English"
@@ -219,12 +224,42 @@ namespace Blackjack
             {
                 "中文" => "日本語",
                 "日本語" => "Italiano",
+                "English" => "Русский",
+                "Русский" => "Italiano",
                 "Italiano" => "Español",
                 "Español" => "Français",
                 "Français" => "English",
-                _ => "Italiano" // Default to last active language
+                _ => "Русский" // Default to last active language
             };
             BuildSettingItems(); // Rebuild items to refresh all labels
+        }
+
+        private void CycleToNextCurrency()
+        {
+            settings.Currency = settings.Currency switch
+            {
+                "$" => "€",
+                "€" => "£",
+                "£" => "¥",
+                "¥" => "₽",
+                "₽" => "$",
+                _ => "$"
+            };
+            GameSettings.Save();
+        }
+
+        private void CycleToPreviousCurrency()
+        {
+            settings.Currency = settings.Currency switch
+            {
+                "$" => "₽",
+                "₽" => "¥",
+                "¥" => "£",
+                "£" => "€",
+                "€" => "$",
+                _ => "$"
+            };
+            GameSettings.Save();
         }
 
         private void AddHeader(string text, ref float yPos)

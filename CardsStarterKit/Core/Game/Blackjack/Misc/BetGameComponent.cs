@@ -401,11 +401,11 @@ namespace Blackjack
                 player = (BlackjackPlayer)players[playerIndex];
 
                 // Draw bet amount (top line)
-                spriteBatch.DrawString(cardGame.Font, "$" + player.BetAmount.ToString(),
+                spriteBatch.DrawString(cardGame.Font, GameSettings.Instance.Currency + player.BetAmount.ToString(),
                     basePosition, Color.White, 0f, Vector2.Zero, 0.75f, SpriteEffects.None, 0f);
 
                 // Draw balance (second line)
-                spriteBatch.DrawString(cardGame.Font, "$" + player.Balance.ToString(),
+                spriteBatch.DrawString(cardGame.Font, GameSettings.Instance.Currency + player.Balance.ToString(),
                     basePosition + new Vector2(0, 20), Color.White, 0f, Vector2.Zero, 0.75f, SpriteEffects.None, 0f);
 
                 // Draw player name with AI indicator (bottom line)

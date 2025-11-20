@@ -35,6 +35,7 @@ namespace Blackjack
             }
         }
         public string Theme { get; set; } = "Red";
+        public string Currency { get; set; } = "$";
 
         // AI settings
         public byte MaxAIPlayers { get; set; } = GetPlatformMaxAIPlayers();
@@ -133,8 +134,11 @@ namespace Blackjack
                 }
                 else
                 {
+                    // First launch - detect OS language and set defaults
                     instance = new GameSettings();
-                    System.Console.WriteLine("[Settings] Created default settings");
+                    DetectAndSetOSLanguage();
+                    System.Console.WriteLine("[Settings] Created default settings (first launch)");
+                    System.Console.WriteLine($"[Settings] Detected language: {instance.Language}, Currency: {instance.Currency}");
                     Save(); // Save default settings
                 }
             }
@@ -156,6 +160,61 @@ namespace Blackjack
         }
 
         /// <summary>
+        /// Detects the OS language and sets the language and currency accordingly.
+        /// Called only on first launch.
+        /// </summary>
+        private static void DetectAndSetOSLanguage()
+        {
+            try
+            {
+                string osLanguage = CultureInfo.CurrentUICulture.TwoLetterISOLanguageName.ToLower();
+                System.Console.WriteLine($"[Settings] Detected OS language: {osLanguage} ({CultureInfo.CurrentUICulture.Name})");
+
+                // Map OS language to game language and set appropriate currency
+                switch (osLanguage)
+                {
+                    case "fr":
+                        instance.language = "Français";
+                        instance.Currency = "€";
+                        break;
+                    case "es":
+                        instance.language = "Español";
+                        instance.Currency = "€";
+                        break;
+                    case "it":
+                        instance.language = "Italiano";
+                        instance.Currency = "€";
+                        break;
+                    case "ja":
+                        instance.language = "日本語";
+                        instance.Currency = "¥";
+                        break;
+                    case "zh":
+                        instance.language = "中文";
+                        instance.Currency = "¥";
+                        break;
+                    case "ru":
+                        instance.language = "Русский";
+                        instance.Currency = "₽";
+                        break;
+                    default:
+                        instance.language = "English";
+                        instance.Currency = "$";
+                        break;
+                }
+
+                // Apply the detected language
+                ApplyLanguage(instance.language);
+            }
+            catch (Exception ex)
+            {
+                System.Console.WriteLine($"[Settings] Error detecting OS language: {ex.Message}");
+                instance.language = "English";
+                instance.Currency = "$";
+            }
+        }
+
+        /// <summary>
         /// Applies the language setting by changing the current UI culture.
         /// </summary>
         private static void ApplyLanguage(string languageName)
@@ -170,6 +229,7 @@ namespace Blackjack
                     "Italiano" => "it-IT",
                     "日本語" => "ja-JP",
                     "中文" => "zh-CN",
+                    "Русский" => "ru-RU",
                     _ => "en-US" // Default to English
                 };
 

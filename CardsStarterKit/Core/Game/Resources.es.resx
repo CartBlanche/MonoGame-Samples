@@ -272,6 +272,9 @@ Botón B, Esc = Cancelar</value>
   <data name="SettingsCardBackTheme" xml:space="preserve">
     <value>Tema del reverso de carta</value>
   </data>
+  <data name="SettingsCurrency" xml:space="preserve">
+    <value>Moneda</value>
+  </data>
   <data name="SettingsSoundVolume" xml:space="preserve">
     <value>Volumen de sonido</value>
   </data>

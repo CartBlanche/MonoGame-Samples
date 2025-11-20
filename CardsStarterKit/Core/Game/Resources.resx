@@ -331,6 +331,9 @@ B button, Esc = Cancel</value>
   <data name="SettingsCardBackTheme" xml:space="preserve">
     <value>Card Back Theme</value>
   </data>
+  <data name="SettingsCurrency" xml:space="preserve">
+    <value>Currency</value>
+  </data>
   <data name="SettingsSoundVolume" xml:space="preserve">
     <value>Sound Volume</value>
   </data>

@@ -55,6 +55,21 @@ with.
         <Start>&#32;</Start>
         <End>&#255;</End>
       </CharacterRegion>
+      <!-- Cyrillic characters for Russian support -->
+      <CharacterRegion>
+        <Start>&#x0400;</Start>
+        <End>&#x04FF;</End>
+      </CharacterRegion>
+      <!-- Ruble sign (₽) Unicode U+20BD / decimal 8381 -->
+      <CharacterRegion>
+        <Start>&#8381;</Start>
+        <End>&#8381;</End>
+      </CharacterRegion>
+      <!-- Other currency symbols -->
+      <CharacterRegion>
+        <Start>&#x20A0;</Start>
+        <End>&#x20CF;</End>
+      </CharacterRegion>
     </CharacterRegions>
   </Asset>
 </XnaContent>

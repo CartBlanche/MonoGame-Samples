@@ -272,6 +272,9 @@ Bouton B, Échap = Annuler</value>
   <data name="SettingsCardBackTheme" xml:space="preserve">
     <value>Thème du dos de carte</value>
   </data>
+  <data name="SettingsCurrency" xml:space="preserve">
+    <value>Devise</value>
+  </data>
   <data name="SettingsSoundVolume" xml:space="preserve">
     <value>Volume sonore</value>
   </data>
