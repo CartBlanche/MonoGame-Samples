@@ -203,28 +203,13 @@ namespace Blackjack
             spriteBatch.Draw(isPressed ? PressedTexture : RegularTexture, Bounds, Color.White);
             if (Font != null && !string.IsNullOrEmpty(Text))
             {
-                try
-                {
-                    Vector2 textPosition = Font.MeasureString(Text);
-                    textPosition = new Vector2(Bounds.Width - textPosition.X,
-                        Bounds.Height - textPosition.Y);
-                    textPosition /= 2;
-                    textPosition.X += Bounds.X;
-                    textPosition.Y += Bounds.Y;
-                    spriteBatch.DrawString(Font, Text, textPosition, Color.White);
-                }
-                catch (ArgumentException ex)
-                {
-                    System.Console.WriteLine($"[Button] Failed to measure/draw text '{Text}' with font {Font.GetHashCode()}");
-                    System.Console.WriteLine($"[Button] Font has {Font.Characters.Count} characters");
-                    System.Console.WriteLine($"[Button] Error: {ex.Message}");
-                    foreach (char c in Text)
-                    {
-                        bool hasChar = Font.Characters.Contains(c);
-                        System.Console.WriteLine($"[Button] Character '{c}' (U+{((int)c):X4}): {(hasChar ? "YES" : "NO")}");
-                    }
-                    throw;
-                }
+                Vector2 textPosition = Font.MeasureString(Text);
+                textPosition = new Vector2(Bounds.Width - textPosition.X,
+                    Bounds.Height - textPosition.Y);
+                textPosition /= 2;
+                textPosition.X += Bounds.X;
+                textPosition.Y += Bounds.Y;
+                spriteBatch.DrawString(Font, Text, textPosition, Color.White);
             }
 
             spriteBatch.End();

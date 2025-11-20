@@ -182,8 +182,6 @@ namespace GameStateManagement
             regularFont = content.Load<SpriteFont>(regularFontPath);
             boldFont = content.Load<SpriteFont>(boldFontPath);
 
-            System.Console.WriteLine($"[ScreenManager] Initial font load: Menu={menuFontPath}, Regular={regularFontPath}, Bold={boldFontPath} for language: {currentLanguage}");
-
             blankTexture = content.Load<Texture2D>("Images/blank");
             buttonBackground = content.Load<Texture2D>("Images/ButtonRegular");
             buttonPressed = content.Load<Texture2D>("Images/ButtonPressed");
@@ -216,8 +214,6 @@ namespace GameStateManagement
             font = content.Load<SpriteFont>(menuFontPath);
             regularFont = content.Load<SpriteFont>(regularFontPath);
             boldFont = content.Load<SpriteFont>(boldFontPath);
-
-            System.Console.WriteLine($"[ScreenManager] Reloaded fonts: Menu={menuFontPath}, Regular={regularFontPath}, Bold={boldFontPath} for language: {language}");
         }
 
         /// <summary>
@@ -226,8 +222,6 @@ namespace GameStateManagement
         /// </summary>
         public void RefreshScreensAfterLanguageChange()
         {
-            System.Console.WriteLine($"[ScreenManager] Refreshing screens after language change");
-
             foreach (GameScreen screen in screens)
             {
                 if (screen is Blackjack.SettingsScreen settingsScreen)

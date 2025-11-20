@@ -106,8 +106,6 @@ namespace Blackjack
         public void ReloadFonts(bool useCJKFont)
         {
             // No need to cache fonts - they're accessed directly from ScreenManager
-            System.Console.WriteLine($"[SettingsScreen] Font reload requested (CJK: {useCJKFont})");
-
             // Don't rebuild items here - will be done after language is set to avoid
             // measuring text in new language with old fonts
         }
