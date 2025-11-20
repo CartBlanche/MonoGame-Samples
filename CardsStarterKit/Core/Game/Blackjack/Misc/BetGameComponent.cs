@@ -1215,13 +1215,19 @@ namespace Blackjack
         void Clear_Click(object sender, EventArgs e)
         {
             // Clear current player chips from screen and resets his bet
+            int playerIndex = GetCurrentPlayer();
+            BlackjackPlayer player = (BlackjackPlayer)players[playerIndex];
+
             currentBet = 0;
-            ((BlackjackPlayer)players[GetCurrentPlayer()]).ClearBet();
-            for (int chipComponentIndex = 0; chipComponentIndex < currentChipComponent.Count; chipComponentIndex++)
+
+            // Animate chips returning to selector positions (reuse winning chip animation)
+            // Pass 0 for winAmount since we're just returning the bet, not adding winnings
+            AnimateChipsToSelector(playerIndex, 0, () =>
             {
-                Game.Components.Remove(currentChipComponent[chipComponentIndex]);
-            }
-            currentChipComponent.Clear();
+                // Clear the bet after animation completes
+                player.ClearBet();
+                currentChipComponent.Clear();
+            });
         }
 
         /// <summary>
