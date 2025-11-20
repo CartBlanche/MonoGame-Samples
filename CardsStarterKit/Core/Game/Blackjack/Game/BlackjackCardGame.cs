@@ -284,6 +284,9 @@ namespace Blackjack
 
                                         newGame.Enabled = true;
                                         newGame.Visible = true;
+
+                                        // Ensure "New Hand" button is centered
+                                        LayoutVisibleButtons();
                                     }
                                 });
                             }
