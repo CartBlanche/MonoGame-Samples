@@ -43,6 +43,9 @@ namespace Blackjack
         private bool isNextButtonPressed = false;
         private bool isPrevButtonPressed = false;
 
+        private Rectangle backButtonBounds;
+        private bool isBackButtonPressed = false;
+
         private InputHelper inputHelper;
         private float itemSpacing;
         private float groupSpacing;
@@ -202,6 +205,15 @@ namespace Blackjack
 
             prevButtonBounds = new Rectangle(safeArea.Left + (int)(100 * heightScale), navButtonY, prevButtonWidth, navButtonHeight);
             nextButtonBounds = new Rectangle(safeArea.Right - nextButtonWidth - (int)(100 * heightScale), navButtonY, nextButtonWidth, navButtonHeight);
+
+            // Calculate back button bounds in top-left corner
+            int backButtonSize = (int)(50 * heightScale);
+            int backButtonPadding = (int)(20 * heightScale);
+            backButtonBounds = new Rectangle(
+                safeArea.Left + backButtonPadding,
+                safeArea.Top + backButtonPadding,
+                backButtonSize,
+                backButtonSize);
         }
 
         private string GetLanguageDisplay()
@@ -430,11 +442,23 @@ namespace Blackjack
             pressedButtonIndex = -1;
             isNextButtonPressed = false;
             isPrevButtonPressed = false;
+            isBackButtonPressed = false;
 
             // Check for mouse click (left button just pressed)
             if (mouseState.LeftButton == ButtonState.Pressed &&
                 previousMouseState.LeftButton == ButtonState.Released)
             {
+                // Check back button
+                if (backButtonBounds.Contains(mousePos))
+                {
+                    isBackButtonPressed = true;
+                    AudioManager.PlaySound("menu_select");
+                    ExitScreen();
+                    previousMouseState = mouseState;
+                    previousKeyboardState = keyboardState;
+                    return;
+                }
+
                 // Check navigation buttons
                 if (currentPage < TotalPages - 1 && nextButtonBounds.Contains(mousePos))
                 {
@@ -643,6 +667,16 @@ namespace Blackjack
                     }
                 }
             }
+
+            // Draw back button
+            Texture2D backTexture = isBackButtonPressed ? buttonPressedTexture : buttonRegularTexture;
+            spriteBatch.Draw(backTexture, backButtonBounds, Color.Red * TransitionAlpha);
+            string backText = "X";
+            Vector2 backTextSize = ScreenManager.Font.MeasureString(backText);
+            Vector2 backTextPos = new Vector2(
+                backButtonBounds.X + (backButtonBounds.Width - backTextSize.X) / 2,
+                backButtonBounds.Y + (backButtonBounds.Height - backTextSize.Y) / 2);
+            spriteBatch.DrawString(ScreenManager.Font, backText, backTextPos, Color.White * TransitionAlpha);
 
             // Draw page navigation buttons
             if (currentPage > 0)
