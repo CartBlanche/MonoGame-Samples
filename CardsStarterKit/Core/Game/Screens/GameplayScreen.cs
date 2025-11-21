@@ -425,6 +425,13 @@ namespace Blackjack
                     // Load saved balance if persistent winnings is enabled (single-player only, first player)
                     if (i == 0 && !blackJackGame.IsNetworkGame && GameSettings.Instance.PersistWinnings)
                     {
+                        // Reset to default if saved balance is 0 or negative
+                        if (GameSettings.Instance.SavedPlayerBalance <= 0)
+                        {
+                            GameSettings.Instance.SavedPlayerBalance = 500f;
+                            GameSettings.Save();
+                            System.Console.WriteLine($"[PersistWinnings] (Path 1) Reset negative/zero balance to default: 500");
+                        }
                         player.Balance = GameSettings.Instance.SavedPlayerBalance;
                         System.Console.WriteLine($"[PersistWinnings] (Path 1) Loaded balance: {player.Balance}");
                     }
@@ -469,6 +476,13 @@ namespace Blackjack
                 // Load saved balance if persistent winnings is enabled (single-player only)
                 if (GameSettings.Instance.PersistWinnings)
                 {
+                    // Reset to default if saved balance is 0 or negative
+                    if (GameSettings.Instance.SavedPlayerBalance <= 0)
+                    {
+                        GameSettings.Instance.SavedPlayerBalance = 500f;
+                        GameSettings.Save();
+                        System.Console.WriteLine($"[PersistWinnings] (Path 2 - Fallback) Reset negative/zero balance to default: 500");
+                    }
                     humanPlayer.Balance = GameSettings.Instance.SavedPlayerBalance;
                     System.Console.WriteLine($"[PersistWinnings] (Path 2 - Fallback) Loaded balance: {humanPlayer.Balance}");
                 }
