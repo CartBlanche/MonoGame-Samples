@@ -177,19 +177,50 @@ namespace Blackjack
 
         /// <summary>
         /// Updates button text and fonts after language change to match current Resources
+        /// Also resizes buttons to fit the new text
         /// </summary>
         public void UpdateButtonText()
         {
+            int screenWidth = ScreenManager.BASE_BUFFER_WIDTH;
+            int minButtonWidth = UIConstants.GetButtonWidth(screenWidth);
+
             if (bet != null)
             {
                 bet.Text = Resources.Deal;
                 bet.Font = cardGame.Font;
+
+                // Calculate new width based on text using centralized UIConstants method
+                int newWidth = UIConstants.CalculateButtonWidth(Resources.Deal, cardGame.Font, minButtonWidth, screenWidth);
+                bet.Bounds = new Rectangle(bet.Bounds.X, bet.Bounds.Y, newWidth, bet.Bounds.Height);
             }
             if (clear != null)
             {
                 clear.Text = Resources.Clear;
                 clear.Font = cardGame.Font;
+
+                // Calculate new width based on text using centralized UIConstants method
+                int newWidth = UIConstants.CalculateButtonWidth(Resources.Clear, cardGame.Font, minButtonWidth, screenWidth);
+                clear.Bounds = new Rectangle(clear.Bounds.X, clear.Bounds.Y, newWidth, clear.Bounds.Height);
             }
+
+            // Reposition buttons to maintain proper spacing
+            RepositionBetButtons();
+        }
+
+        /// <summary>
+        /// Repositions bet buttons to maintain proper spacing after width changes
+        /// </summary>
+        private void RepositionBetButtons()
+        {
+            if (bet == null || clear == null)
+                return;
+
+            int smallPadding = UIConstants.GetSmallPadding(ScreenManager.BASE_BUFFER_WIDTH);
+            int totalWidth = bet.Bounds.Width + clear.Bounds.Width + smallPadding;
+            int startX = (ScreenManager.BASE_BUFFER_WIDTH - totalWidth) / 2;
+
+            bet.Bounds = new Rectangle(startX, bet.Bounds.Y, bet.Bounds.Width, bet.Bounds.Height);
+            clear.Bounds = new Rectangle(startX + bet.Bounds.Width + smallPadding, clear.Bounds.Y, clear.Bounds.Width, clear.Bounds.Height);
         }
 
         /// <summary>

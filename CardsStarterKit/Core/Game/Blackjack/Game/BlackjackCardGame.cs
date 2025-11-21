@@ -192,6 +192,7 @@ namespace Blackjack
 
         /// <summary>
         /// Updates button text and fonts after language change to match current Resources
+        /// Also resizes buttons to fit the new text
         /// </summary>
         public void UpdateButtonText()
         {
@@ -201,36 +202,93 @@ namespace Blackjack
             string fontPath = useCJKFont ? "Fonts/Regular_CJK" : "Fonts/Regular";
             this.Font = Game.Content.Load<SpriteFont>(fontPath);
 
-            // Update both text and font for each button
+            // Collect all buttons that need updating with their new text
+            var buttonUpdates = new List<(Button button, string text, bool isWide)>();
+
+            if (buttons.ContainsKey("Deal"))
+                buttonUpdates.Add((buttons["Deal"], Resources.Deal, false));
+            if (buttons.ContainsKey("Clear"))
+                buttonUpdates.Add((buttons["Clear"], Resources.Clear, false));
             if (buttons.ContainsKey("Hit"))
-            {
-                buttons["Hit"].Text = Resources.Hit;
-                buttons["Hit"].Font = this.Font;
-            }
+                buttonUpdates.Add((buttons["Hit"], Resources.Hit, false));
             if (buttons.ContainsKey("Stand"))
-            {
-                buttons["Stand"].Text = Resources.Stand;
-                buttons["Stand"].Font = this.Font;
-            }
+                buttonUpdates.Add((buttons["Stand"], Resources.Stand, false));
             if (buttons.ContainsKey("Double"))
-            {
-                buttons["Double"].Text = Resources.Double;
-                buttons["Double"].Font = this.Font;
-            }
+                buttonUpdates.Add((buttons["Double"], Resources.Double, false));
             if (buttons.ContainsKey("Split"))
-            {
-                buttons["Split"].Text = Resources.Split;
-                buttons["Split"].Font = this.Font;
-            }
+                buttonUpdates.Add((buttons["Split"], Resources.Split, false));
             if (buttons.ContainsKey("Insurance"))
-            {
-                buttons["Insurance"].Text = Resources.Insurance;
-                buttons["Insurance"].Font = this.Font;
-            }
+                buttonUpdates.Add((buttons["Insurance"], Resources.Insurance, false));
             if (newGame != null)
+                buttonUpdates.Add((newGame, Resources.NewHand, true));
+
+            // Update text, font, and calculate new widths
+            int screenWidth = screenManager.SafeArea.Width;
+            int minButtonWidth = UIConstants.GetButtonWidth(screenWidth);
+            int minWideWidth = UIConstants.GetWideButtonWidth(screenWidth);
+
+            foreach (var (button, text, isWide) in buttonUpdates)
             {
-                newGame.Text = Resources.NewHand;
-                newGame.Font = this.Font;
+                button.Text = text;
+                button.Font = this.Font;
+
+                // Calculate new width based on text using centralized UIConstants method
+                int newWidth = UIConstants.CalculateButtonWidth(text, this.Font,
+                    isWide ? minWideWidth : minButtonWidth, screenWidth);
+
+                // Update button bounds with new width (keep same X, Y, and height)
+                button.Bounds = new Rectangle(
+                    button.Bounds.X,
+                    button.Bounds.Y,
+                    newWidth,
+                    button.Bounds.Height);
+            }
+
+            // Recalculate button positions to maintain proper spacing
+            RepositionButtons();
+        }
+
+        /// <summary>
+        /// Repositions all buttons to maintain even spacing after width changes
+        /// </summary>
+        private void RepositionButtons()
+        {
+            int smallPadding = UIConstants.GetSmallPadding(screenManager.SafeArea.Width);
+
+            // Calculate total width of all buttons
+            int totalWidth = 0;
+            var allButtons = new List<Button>();
+
+            // Add all buttons in order
+            if (buttons.ContainsKey("Deal")) allButtons.Add(buttons["Deal"]);
+            if (buttons.ContainsKey("Clear")) allButtons.Add(buttons["Clear"]);
+            if (buttons.ContainsKey("Hit")) allButtons.Add(buttons["Hit"]);
+            if (buttons.ContainsKey("Stand")) allButtons.Add(buttons["Stand"]);
+            if (buttons.ContainsKey("Double")) allButtons.Add(buttons["Double"]);
+            if (buttons.ContainsKey("Split")) allButtons.Add(buttons["Split"]);
+            if (buttons.ContainsKey("Insurance")) allButtons.Add(buttons["Insurance"]);
+            if (newGame != null) allButtons.Add(newGame);
+
+            foreach (var button in allButtons)
+            {
+                totalWidth += button.Bounds.Width;
+            }
+            totalWidth += smallPadding * (allButtons.Count - 1); // Add spacing between buttons
+
+            // Center the button row
+            int startX = (ScreenManager.BASE_BUFFER_WIDTH - totalWidth) / 2;
+            int currentX = startX;
+
+            // Reposition each button
+            foreach (var button in allButtons)
+            {
+                button.Bounds = new Rectangle(
+                    currentX,
+                    button.Bounds.Y,
+                    button.Bounds.Width,
+                    button.Bounds.Height);
+
+                currentX += button.Bounds.Width + smallPadding;
             }
         }
 

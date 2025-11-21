@@ -4,7 +4,9 @@
 // UI scaling constants for resolution-independent rendering in Blackjack
 //-----------------------------------------------------------------------------
 
+using System;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace Blackjack
 {
@@ -289,6 +291,27 @@ namespace Blackjack
             // Position buttons above the chips with consistent spacing
             // Bottom of screen - chip height - padding below chips - button height - padding between buttons and chips
             return screenHeight - chipTextureHeight - smallPadding - buttonHeight - (smallPadding * 2);
+        }
+
+        /// <summary>
+        /// Calculate button width based on text size with padding.
+        /// Returns the larger of minWidth or the width required to fit the text.
+        /// </summary>
+        /// <param name="text">The button text to measure</param>
+        /// <param name="font">The font used to render the text</param>
+        /// <param name="minWidth">The minimum button width</param>
+        /// <param name="screenWidth">The screen width (for calculating padding)</param>
+        /// <returns>The calculated button width in pixels</returns>
+        public static int CalculateButtonWidth(string text, SpriteFont font, int minWidth, int screenWidth)
+        {
+            if (string.IsNullOrEmpty(text) || font == null)
+                return minWidth;
+
+            Vector2 textSize = font.MeasureString(text);
+            int padding = GetSmallPadding(screenWidth) * 2; // Padding on both sides
+            int requiredWidth = (int)textSize.X + padding;
+
+            return Math.Max(minWidth, requiredWidth);
         }
     }
 }
