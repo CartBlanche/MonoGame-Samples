@@ -147,6 +147,7 @@ namespace Blackjack
             // If the sound exists, start it
             if (audioManager.soundBank.ContainsKey(soundName))
             {
+                audioManager.soundBank[soundName].Volume = GameSettings.Instance.SoundVolume;
                 audioManager.soundBank[soundName].Play();
             }
         }
@@ -166,6 +167,7 @@ namespace Blackjack
                     audioManager.soundBank[soundName].IsLooped = isLooped;
                 }
 
+                audioManager.soundBank[soundName].Volume = GameSettings.Instance.SoundVolume;
                 audioManager.soundBank[soundName].Play();
             }
         }
@@ -261,6 +263,7 @@ namespace Blackjack
                 }
 
                 MediaPlayer.IsRepeating = true;
+                MediaPlayer.Volume = GameSettings.Instance.MusicVolume;
 
                 MediaPlayer.Play(audioManager.musicBank[musicSoundName]);
             }

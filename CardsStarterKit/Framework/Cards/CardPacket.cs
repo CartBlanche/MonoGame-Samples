@@ -219,6 +219,25 @@ namespace CardsFramework
         }
 
         /// <summary>
+        /// Shuffles the cards in the packet using a specified seed for deterministic shuffling.
+        /// </summary>
+        /// <param name="seed">The seed for the random number generator.</param>
+        public void Shuffle(int seed)
+        {
+            Random random = new Random(seed);
+            List<TraditionalCard> shuffledDeck = new List<TraditionalCard>();
+
+            while (cards.Count > 0)
+            {
+                TraditionalCard card = cards[random.Next(0, cards.Count)];
+                cards.Remove(card);
+                shuffledDeck.Add(card);
+            }
+
+            cards = shuffledDeck;
+        }
+
+        /// <summary>
         /// Removes the specified card from the packet. The first matching card
         /// will be removed.
         /// </summary>

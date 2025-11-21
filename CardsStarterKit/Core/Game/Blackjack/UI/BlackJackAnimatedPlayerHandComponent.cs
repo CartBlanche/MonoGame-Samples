@@ -16,6 +16,8 @@ namespace Blackjack
     public class BlackjackAnimatedPlayerHandComponent : AnimatedHandGameComponent
     {
         Vector2 offset;
+        private int horizontalSpacing;
+        private int verticalSpacing;
 
         /// <summary>
         /// Creates a new instance of the 
@@ -30,7 +32,17 @@ namespace Blackjack
             CardsGame cardGame, Microsoft.Xna.Framework.Graphics.SpriteBatch spriteBatch, Microsoft.Xna.Framework.Matrix globalTransformation)
             : base(place, hand, cardGame, spriteBatch, globalTransformation)
         {
-            this.offset = Vector2.Zero;
+            // Move cards up above the chip circle by a card height + padding
+            if (cardGame is BlackjackCardGame blackjackGame)
+            {
+                int cardHeight = UIConstants.GetCardHeight(blackjackGame.ScreenManager.SafeArea.Height);
+                this.offset = new Vector2(0, -(cardHeight / 2)); // Above chip circle
+            }
+            else
+            {
+                this.offset = new Vector2(0, -120); // Fallback offset
+            }
+            InitializeSpacing(cardGame);
         }
 
         /// <summary>
@@ -47,7 +59,39 @@ namespace Blackjack
             Hand hand, CardsGame cardGame, Microsoft.Xna.Framework.Graphics.SpriteBatch spriteBatch, Microsoft.Xna.Framework.Matrix globalTransformation)
             : base(place, hand, cardGame, spriteBatch, globalTransformation)
         {
-            this.offset = offset;
+            // Apply additional Y offset to move cards above chip circle, keeping provided X offset
+            var blackjackGame = cardGame as BlackjackCardGame;
+            if (blackjackGame != null)
+            {
+                int cardHeight = UIConstants.GetCardHeight(blackjackGame.ScreenManager.SafeArea.Height);
+                this.offset = new Vector2(offset.X, offset.Y - cardHeight - 15); // Above chip circle
+            }
+            else
+            {
+                this.offset = new Vector2(offset.X, offset.Y - 120); // Fallback offset
+            }
+            InitializeSpacing(cardGame);
+        }
+
+        /// <summary>
+        /// Initialize card spacing based on screen dimensions
+        /// </summary>
+        private void InitializeSpacing(CardsGame cardGame)
+        {
+            var blackjackGame = cardGame as BlackjackCardGame;
+            if (blackjackGame != null)
+            {
+                int screenWidth = blackjackGame.ScreenManager.SafeArea.Width;
+                int screenHeight = blackjackGame.ScreenManager.SafeArea.Height;
+                horizontalSpacing = UIConstants.GetPlayerCardHorizontalSpacing(screenWidth);
+                verticalSpacing = UIConstants.GetPlayerCardVerticalSpacing(screenHeight);
+            }
+            else
+            {
+                // Fallback to reasonable defaults
+                horizontalSpacing = 25;
+                verticalSpacing = 30;
+            }
         }
 
         /// <summary>
@@ -60,7 +104,7 @@ namespace Blackjack
         /// rendered.</returns>
         public override Vector2 GetCardRelativePosition(int cardLocationInHand)
         {
-            return new Vector2(25 * cardLocationInHand, -30 * cardLocationInHand) +
+            return new Vector2(horizontalSpacing * cardLocationInHand, -verticalSpacing * cardLocationInHand) +
                 offset;
         }
     }

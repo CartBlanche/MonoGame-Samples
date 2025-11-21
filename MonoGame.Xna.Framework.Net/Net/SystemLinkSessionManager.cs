@@ -55,7 +55,7 @@ namespace Microsoft.Xna.Framework.Net
                         broadcastCount++;
                         Console.WriteLine($"[BROADCAST] Sent broadcast #{broadcastCount} - SessionID: {session.sessionId}, Gamers: {session.AllGamers.Count}/{session.MaxGamers}");
 
-                        await Task.Delay(1000, cancellationToken); // Broadcast every second
+                        await Task.Delay(750, cancellationToken); // Broadcast every 750ms for faster discovery
                     }
 
                     Console.WriteLine($"[BROADCAST] Stopped broadcasting. Reason: Cancelled={cancellationToken.IsCancellationRequested}, Full={session.AllGamers.Count >= session.MaxGamers}, Ended={session.sessionState == NetworkSessionState.Ended}");
@@ -83,9 +83,10 @@ namespace Microsoft.Xna.Framework.Net
                     udpClient.EnableBroadcast = true;
                     // DON'T set ReceiveTimeout - it interferes with ReceiveAsync()
 
-                    // Listen for 2 seconds to catch at least 2 broadcast cycles (hosts broadcast every 1 second)
+                    // Phase 1: Listen for 1.5 seconds to catch at least 1 broadcast cycle (hosts broadcast every 1 second)
+                    // Reduced from 2.5s for faster discovery while still being reliable
                     var startTime = DateTime.UtcNow;
-                    var endTime = startTime.AddSeconds(2);
+                    var endTime = startTime.AddSeconds(1.5);
                     int receiveAttempts = 0;
                     int packetsReceived = 0;
 
@@ -94,9 +95,9 @@ namespace Microsoft.Xna.Framework.Net
                         try
                         {
                             receiveAttempts++;
-                            // Try to receive with timeout
+                            // Try to receive with reduced timeout for faster response
                             var receiveTask = udpClient.ReceiveAsync();
-                            var timeoutTask = Task.Delay(150, cancellationToken);
+                            var timeoutTask = Task.Delay(100, cancellationToken);
                             var completedTask = await Task.WhenAny(receiveTask, timeoutTask);
 
                             if (completedTask == receiveTask)
@@ -197,14 +198,19 @@ namespace Microsoft.Xna.Framework.Net
 
         public static async Task<NetworkSession> JoinSessionAsync(AvailableNetworkSession availableSession, CancellationToken cancellationToken)
         {
-            // Minimal viable join: create a new client session and remember the host endpoint
-            await Task.Delay(10, cancellationToken);
+            // Phase 1: Reliable join with timeout and retry
+            const int MAX_RETRIES = 3;
+            const int TIMEOUT_MS = 300; // Faster timeout for LAN (reduced from 500ms)
+
+            Console.WriteLine($"[JOIN] Starting join process for session {availableSession.SessionId}");
+
+            // Create client session in Joining state
             var session = new NetworkSession(NetworkSessionType.SystemLink,
                 availableSession.OpenPublicGamerSlots + availableSession.CurrentGamerCount,
                 availableSession.OpenPrivateGamerSlots,
                 false,
                 availableSession.SessionId);
-            session.sessionState = NetworkSessionState.Lobby;
+            session.sessionState = NetworkSessionState.Joining; // Phase 1: Use new Joining state
 
             // Copy session properties from AvailableNetworkSession to NetworkSession
             foreach (var kvp in availableSession.SessionProperties)
@@ -217,25 +223,68 @@ namespace Microsoft.Xna.Framework.Net
             }
 
             // Create a synthetic remote host gamer and record endpoint so SendToAll can reach host
-            if (availableSession.HostEndpoint != null)
+            if (availableSession.HostEndpoint == null)
             {
-                var hostGamer = new NetworkGamer(session, Guid.NewGuid().ToString(), isLocal: false, isHost: true, gamertag: availableSession.HostGamertag);
-                session.GetType().GetMethod("AddGamer", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)
-                    ?.Invoke(session, new object[] { hostGamer });
-                session.RegisterGamerEndpoint(hostGamer, availableSession.HostEndpoint);
+                throw new NetworkSessionJoinException("Host endpoint is null", NetworkSessionJoinError.SessionNotFound);
+            }
 
-                // Proactively send a JoinRequest to the host so it can add this client
+            var hostGamer = new NetworkGamer(session, Guid.NewGuid().ToString(), isLocal: false, isHost: true, gamertag: availableSession.HostGamertag);
+            session.GetType().GetMethod("AddGamer", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)
+                ?.Invoke(session, new object[] { hostGamer });
+            session.RegisterGamerEndpoint(hostGamer, availableSession.HostEndpoint);
+
+            // Phase 1: Send join request with retry logic
+            for (int attempt = 0; attempt < MAX_RETRIES; attempt++)
+            {
+                Console.WriteLine($"[JOIN] Sending join request (attempt {attempt + 1}/{MAX_RETRIES})");
+
+                // CRITICAL: Use the session's own local gamer, not the static NetworkGamer.LocalGamer
+                // The static property can be stale when multiple sessions exist (e.g., testing on same machine)
+                var localGamer = session.LocalGamers.FirstOrDefault();
+                if (localGamer == null)
+                    throw new InvalidOperationException("No local gamer found in session");
+
+                Console.WriteLine($"[JOIN] Sending as gamer: {localGamer.Gamertag} (ID: {localGamer.Id})");
+
                 var joinRequest = new JoinRequestMessage
                 {
-                    GamerId = NetworkGamer.LocalGamer.Id,
-                    Gamertag = NetworkGamer.LocalGamer.Gamertag
+                    GamerId = localGamer.Id,
+                    Gamertag = localGamer.Gamertag,
+                    ProtocolVersion = JoinRequestMessage.CURRENT_PROTOCOL_VERSION
                 };
                 var writer = new PacketWriter();
                 joinRequest.Serialize(writer);
                 session.NetworkTransport.Send(writer.GetData(), availableSession.HostEndpoint);
+
+                // Wait for response (NetworkSession.OnMessageReceived will update state to Lobby if accepted)
+                var waitStart = DateTime.UtcNow;
+                while ((DateTime.UtcNow - waitStart).TotalMilliseconds < TIMEOUT_MS)
+                {
+                    if (session.sessionState == NetworkSessionState.Lobby)
+                    {
+                        Console.WriteLine($"[JOIN] Successfully joined session after {attempt + 1} attempt(s)");
+                        // Phase 1: Start connection monitoring for client
+                        session.GetType().GetField("connectionMonitor", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)
+                            ?.GetValue(session)
+                            ?.GetType().GetMethod("StartMonitoring")
+                            ?.Invoke(session.GetType().GetField("connectionMonitor", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)?.GetValue(session), new object[] { session });
+                        return session;
+                    }
+
+                    // Check if we received rejection (would still be in Joining state but we can check for it)
+                    // For now, just wait
+                    await Task.Delay(50, cancellationToken);
+                }
+
+                Console.WriteLine($"[JOIN] Attempt {attempt + 1} timed out");
             }
 
-            return session;
+            // After MAX_RETRIES attempts, give up
+            Console.WriteLine($"[JOIN] Failed to join session after {MAX_RETRIES} attempts");
+            session.Dispose();
+            throw new NetworkSessionJoinException(
+                $"Failed to join session after {MAX_RETRIES} attempts. Host may be unreachable or session is full.",
+                NetworkSessionJoinError.Timeout);
         }
     }
 }

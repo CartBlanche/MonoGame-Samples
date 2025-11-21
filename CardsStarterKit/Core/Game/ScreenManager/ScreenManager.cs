@@ -34,9 +34,12 @@ namespace GameStateManagement
         public InputState InputState => inputState;
 
         SpriteBatch spriteBatch;
-        SpriteFont font;
+        SpriteFont font;  // MenuFont
+        SpriteFont regularFont;
+        SpriteFont boldFont;
         Texture2D blankTexture;
         Texture2D buttonBackground;
+        Texture2D buttonPressed;
 
         bool isInitialized;
 
@@ -75,6 +78,11 @@ namespace GameStateManagement
             get { return buttonBackground; }
         }
 
+        public Texture2D ButtonPressed
+        {
+            get { return buttonPressed; }
+        }
+
         public Texture2D BlankTexture
         {
             get { return blankTexture; }
@@ -87,6 +95,23 @@ namespace GameStateManagement
         public SpriteFont Font
         {
             get { return font; }
+            set { font = value; }
+        }
+
+        /// <summary>
+        /// Regular font (automatically switches between Regular and Regular_CJK based on language)
+        /// </summary>
+        public SpriteFont RegularFont
+        {
+            get { return regularFont; }
+        }
+
+        /// <summary>
+        /// Bold font (automatically switches between Bold and Bold_CJK based on language)
+        /// </summary>
+        public SpriteFont BoldFont
+        {
+            get { return boldFont; }
         }
 
         /// <summary>
@@ -143,14 +168,76 @@ namespace GameStateManagement
             ContentManager content = Game.Content;
 
             spriteBatch = new SpriteBatch(GraphicsDevice);
-            font = content.Load<SpriteFont>("Fonts/MenuFont");
+
+            // Load the appropriate fonts based on the saved language setting
+            // This handles the case where the game was closed with a CJK language selected
+            string currentLanguage = Blackjack.GameSettings.Instance.Language;
+            bool useCJKFont = currentLanguage == "日本語" || currentLanguage == "中文";
+
+            string menuFontPath = useCJKFont ? "Fonts/MenuFont_CJK" : "Fonts/MenuFont";
+            string regularFontPath = useCJKFont ? "Fonts/Regular_CJK" : "Fonts/Regular";
+            string boldFontPath = useCJKFont ? "Fonts/Bold_CJK" : "Fonts/Bold";
+
+            font = content.Load<SpriteFont>(menuFontPath);
+            regularFont = content.Load<SpriteFont>(regularFontPath);
+            boldFont = content.Load<SpriteFont>(boldFontPath);
+
             blankTexture = content.Load<Texture2D>("Images/blank");
             buttonBackground = content.Load<Texture2D>("Images/ButtonRegular");
+            buttonPressed = content.Load<Texture2D>("Images/ButtonPressed");
 
             // Tell each of the screens to load their content.
             foreach (GameScreen screen in screens)
             {
                 screen.LoadContent();
+            }
+        }
+
+        /// <summary>
+        /// Reloads the font based on the current language setting.
+        /// Uses CJK fonts for Japanese and Chinese, regular fonts for other languages.
+        /// NOTE: This only loads fonts. Call RefreshScreensAfterLanguageChange() after
+        /// the language has been set to rebuild screen content.
+        /// </summary>
+        public void ReloadFontForLanguage(string language)
+        {
+            ContentManager content = Game.Content;
+
+            // Determine if we need CJK font support
+            bool useCJKFont = language == "日本語" || language == "中文";
+
+            // Load all appropriate fonts
+            string menuFontPath = useCJKFont ? "Fonts/MenuFont_CJK" : "Fonts/MenuFont";
+            string regularFontPath = useCJKFont ? "Fonts/Regular_CJK" : "Fonts/Regular";
+            string boldFontPath = useCJKFont ? "Fonts/Bold_CJK" : "Fonts/Bold";
+
+            font = content.Load<SpriteFont>(menuFontPath);
+            regularFont = content.Load<SpriteFont>(regularFontPath);
+            boldFont = content.Load<SpriteFont>(boldFontPath);
+        }
+
+        /// <summary>
+        /// Refreshes all screens after language change. Call this AFTER setting the language
+        /// to ensure screens rebuild with matching language and fonts.
+        /// </summary>
+        public void RefreshScreensAfterLanguageChange()
+        {
+            foreach (GameScreen screen in screens)
+            {
+                if (screen is Blackjack.SettingsScreen settingsScreen)
+                {
+                    // SettingsScreen rebuilds itself in the cycle methods
+                }
+                else if (screen is Blackjack.GameplayScreen gameplayScreen)
+                {
+                    // Update gameplay button text (Deal, Clear, Hit, Stand, etc.)
+                    gameplayScreen.UpdateButtonText();
+                }
+                else if (screen is GameStateManagement.MenuScreen menuScreen)
+                {
+                    // Force menu screens to rebuild their entries with the new language
+                    menuScreen.LoadContent();
+                }
             }
         }
 

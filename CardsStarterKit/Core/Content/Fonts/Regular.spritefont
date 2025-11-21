@@ -10,9 +10,10 @@ with.
 
     <!--
     Modify this string to change the font that will be imported.
+    Using Arial Unicode for better currency symbol support
     -->
-    <FontName>Arial</FontName>
-
+    <FontName>Arial Unicode</FontName>
+    
     <!--
     Size is a float value, measured in points. Modify this value to change
     the size of the font.
@@ -53,7 +54,17 @@ with.
     <CharacterRegions>
       <CharacterRegion>
         <Start>&#32;</Start>
-        <End>&#126;</End>
+        <End>&#255;</End>
+      </CharacterRegion>
+      <!-- Cyrillic characters for Russian support -->
+      <CharacterRegion>
+        <Start>&#x0400;</Start>
+        <End>&#x04FF;</End>
+      </CharacterRegion>
+      <!-- Currency symbols (includes €, £, ¥, ₽, etc.) -->
+      <CharacterRegion>
+        <Start>&#x20A0;</Start>
+        <End>&#x20CF;</End>
       </CharacterRegion>
     </CharacterRegions>
   </Asset>

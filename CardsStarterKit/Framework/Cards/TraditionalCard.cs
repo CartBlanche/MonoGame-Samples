@@ -67,9 +67,17 @@ namespace CardsFramework
     /// </remarks>
     public class TraditionalCard
     {
+        /// <summary>
+        /// Factory method for deserialization, creates a card with no holding collection.
+        /// </summary>
+        public static TraditionalCard Create(CardSuit type, CardValue value)
+        {
+            return new TraditionalCard(type, value, null);
+        }
+
         public CardSuit Type { get; set; }
         public CardValue Value { get; set; }
-        public CardPacket HoldingCardCollection; 
+        public CardPacket HoldingCardCollection;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="TraditionalCard"/> class.

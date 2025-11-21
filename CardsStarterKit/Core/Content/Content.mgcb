@@ -29,6 +29,21 @@
 /processor:FontDescriptionProcessor
 /build:Fonts/Regular.spritefont
 
+#begin Fonts/Bold_CJK.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/build:Fonts/Bold_CJK.spritefont
+
+#begin Fonts/MenuFont_CJK.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/build:Fonts/MenuFont_CJK.spritefont
+
+#begin Fonts/Regular_CJK.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/build:Fonts/Regular_CJK.spritefont
+
 #begin Images/blank.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -428,6 +443,11 @@
 /importer:TextureImporter
 /processor:TextureProcessor
 /build:Images/UI/win.png
+
+#begin Images/UI/gradient.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/build:Images/UI/gradient.png
 
 #begin Images/youLose.png
 /importer:TextureImporter

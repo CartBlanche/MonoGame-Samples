@@ -49,9 +49,15 @@ namespace Blackjack
 
             SpriteBatch.Begin(SpriteSortMode.Deferred, null, null, null, null, null, globalTransformation);
 
+            // Scale rings down for 7 players
+            float ringScale = UIConstants.ChipScaleRatio;
+            
             for (int placeIndex = 0; placeIndex < Places; placeIndex++)
             {
-                SpriteBatch.Draw(RingTexture, PlaceOrder(placeIndex) + RingOffset, Color.White);
+                Vector2 position = PlaceOrder(placeIndex) + RingOffset;
+                Vector2 origin = new Vector2(RingTexture.Width / 2f, RingTexture.Height / 2f);
+                
+                SpriteBatch.Draw(RingTexture, position, null, Color.White, 0f, origin, ringScale, SpriteEffects.None, 0f);
             }
 
             SpriteBatch.End();

@@ -21,6 +21,15 @@ namespace Blackjack
 {
     class BlackjackCardGame : CardsGame
     {
+        public Microsoft.Xna.Framework.Net.NetworkSession NetworkSession { get; set; }
+        public bool IsNetworkGame { get; set; }
+        public bool IsHost { get; set; }
+
+        // Public accessor for the players list (needed for network synchronization)
+        public System.Collections.Generic.List<CardsFramework.Player> Players => players;
+
+        private int currentShuffleSeed;
+
         Dictionary<Player, string> playerHandValueTexts =
             new Dictionary<Player, string>();
         Dictionary<Player, string> playerSecondHandValueTexts =
@@ -28,7 +37,20 @@ namespace Blackjack
         private Hand deadCards = new Hand(); // stores used cards
         private BlackjackPlayer dealerPlayer;
         bool[] turnFinishedByPlayer;
-        TimeSpan dealDuration = TimeSpan.FromMilliseconds(500);
+
+        /// <summary>
+        /// Gets the animation duration multiplier based on the AnimationSpeed setting.
+        /// Fast = 0.5x, Normal = 1.0x, Slow = 1.5x
+        /// </summary>
+        private float AnimationSpeedMultiplier =>
+            GameSettings.Instance.AnimationSpeed switch
+            {
+                AnimationSpeed.Fast => 0.5f,
+                AnimationSpeed.Slow => 1.5f,
+                _ => 1.0f // Normal
+            };
+
+        TimeSpan DealDuration => TimeSpan.FromMilliseconds(500 * AnimationSpeedMultiplier);
 
         AnimatedHandGameComponent[] animatedHands;
         // An additional list for managing hands created when performing a split.
@@ -36,22 +58,26 @@ namespace Blackjack
 
         BetGameComponent betGameComponent;
         AnimatedHandGameComponent dealerHandComponent;
+        DeckDisplayComponent deckDisplay;
         Dictionary<string, Button> buttons = new Dictionary<string, Button>();
         Button newGame;
         bool showInsurance;
+        bool balanceAnimationsStarted = false;
 
         // An offset used for drawing the second hand which appears after a split in
-        // the correct location.
-        Vector2 secondHandOffset = new Vector2(100, 25);
-        static Vector2 ringOffset = new Vector2(0, 110);
+        // the correct location. Calculated proportionally based on screen size.
+        Vector2 secondHandOffset;
+        // Ring offset is now calculated proportionally in the constructor
 
-        Vector2 frameSize = new Vector2(180, 180);
+        Vector2 frameSize;
 
         public BlackjackGameState State { get; set; }
         ScreenManager screenManager;
 
-        const int maxPlayers = 3;
-        const int minPlayers = 1;
+        /// <summary>
+        /// Public accessor for screen manager (needed for hand components to calculate scaling)
+        /// </summary>
+        public ScreenManager ScreenManager => screenManager;
 
         /// <summary>
         /// Creates a new instance of the <see cref="BlackjackCardGame"/> class.
@@ -66,21 +92,25 @@ namespace Blackjack
         public BlackjackCardGame(Rectangle tableBounds, Vector2 dealerPosition,
             Func<int, Vector2> placeOrder, ScreenManager screenManager, string theme)
             : base(6, 0, CardSuit.AllSuits, CardsFramework.CardValue.NonJokers,
-            minPlayers, maxPlayers, new BlackJackTable(ringOffset, tableBounds,
-                dealerPosition, maxPlayers, placeOrder, theme, screenManager.Game, screenManager.SpriteBatch, screenManager.GlobalTransformation),
+            BlackjackConstants.MinPlayers, BlackjackConstants.MaxPlayers, new BlackJackTable(UIConstants.GetRingOffset(screenManager.SafeArea.Height), tableBounds,
+                dealerPosition, BlackjackConstants.MaxPlayers, placeOrder, theme, screenManager.Game, screenManager.SpriteBatch, screenManager.GlobalTransformation),
             theme, screenManager.Game)
         {
             dealerPlayer = new BlackjackPlayer("Dealer", this);
             turnFinishedByPlayer = new bool[MaximumPlayers];
             this.screenManager = screenManager;
 
+            // Calculate proportional UI sizes based on screen dimensions
+            secondHandOffset = UIConstants.GetSecondHandOffset(screenManager.SafeArea.Width, screenManager.SafeArea.Height);
+            frameSize = UIConstants.GetFrameSize(screenManager.SafeArea.Width, screenManager.SafeArea.Height);
+
             if (animatedHands == null)
             {
-                animatedHands = new AnimatedHandGameComponent[maxPlayers];
+                animatedHands = new AnimatedHandGameComponent[BlackjackConstants.MaxPlayers];
             }
             if (animatedSecondHands == null)
             {
-                animatedSecondHands = new AnimatedHandGameComponent[maxPlayers];
+                animatedSecondHands = new AnimatedHandGameComponent[BlackjackConstants.MaxPlayers];
             }
         }
 
@@ -98,59 +128,168 @@ namespace Blackjack
             // Calculate proportional dimensions
             int screenWidth = screenManager.SafeArea.Width;
             int screenHeight = screenManager.SafeArea.Height;
-            int smallPadding = UIConstants.GetSmallPadding(screenWidth);
+            Rectangle bounds = new Rectangle(0, 0, ScreenManager.BASE_BUFFER_WIDTH, ScreenManager.BASE_BUFFER_HEIGHT);
+            int smallPadding = UIConstants.GetSmallPadding(bounds.Width);
             int mediumPadding = UIConstants.GetMediumPadding(screenHeight);
             int buttonWidth = UIConstants.GetButtonWidth(screenWidth);
             int buttonHeight = UIConstants.GetButtonHeight(screenHeight);
             int buttonSpacing = UIConstants.GetButtonSpacing(screenWidth);
             int wideButtonWidth = UIConstants.GetWideButtonWidth(screenWidth);
 
-            // Initialize the game buttons
-            string[] buttonsText = { "Hit", "Stand", "Double", "Split", "Insurance" };
-            for (int buttonIndex = 0; buttonIndex < buttonsText.Length; buttonIndex++)
+            // Initialize the game buttons - position them centered above betting chips
+            // All action and betting buttons will be in a single row above the chips
+            int chipHeight = 50; // Approximate chip texture height
+            int buttonY = ScreenManager.BASE_BUFFER_HEIGHT - chipHeight - (smallPadding * 3) - buttonHeight;
+
+            // All possible buttons in a single row (Deal, Clear, Hit, Stand, Double, Split, Insurance, New Hand)
+            // Using resource strings for localization
+            var buttonData = new[]
             {
+                new { Key = "Deal", Text = Resources.Deal },
+                new { Key = "Clear", Text = Resources.Clear },
+                new { Key = "Hit", Text = Resources.Hit },
+                new { Key = "Stand", Text = Resources.Stand },
+                new { Key = "Double", Text = Resources.Double },
+                new { Key = "Split", Text = Resources.Split },
+                new { Key = "Insurance", Text = Resources.Insurance },
+                new { Key = "NewHand", Text = Resources.NewHand }
+            };
+
+            // Calculate total width needed for all buttons (7 regular + 1 wide)
+            int totalButtonsWidth = (buttonWidth * 7) + (smallPadding * 6) + (UIConstants.GetWideButtonWidth(screenManager.SafeArea.Width) - buttonWidth); // New Hand is wide
+            int buttonStartX = (ScreenManager.BASE_BUFFER_WIDTH - totalButtonsWidth) / 2;
+            int currentX = buttonStartX;
+
+            foreach (var btn in buttonData)
+            {
+                int width = (btn.Key == "NewHand") ? UIConstants.GetWideButtonWidth(screenManager.SafeArea.Width) : buttonWidth;
+                // Always use the same Y value for all buttons
                 Button button = new Button("ButtonRegular", "ButtonPressed",
                     screenManager.InputState, this, screenManager.SpriteBatch, screenManager.GlobalTransformation)
                 {
-                    Text = buttonsText[buttonIndex],
-                    Bounds = new Rectangle(screenManager.SafeArea.Left + smallPadding + buttonIndex * buttonSpacing,
-                        screenManager.SafeArea.Bottom - buttonHeight - smallPadding,
-                    buttonWidth, buttonHeight),
+                    Text = btn.Text,
+                    Bounds = new Rectangle(currentX, buttonY, width, buttonHeight),
                     Font = this.Font,
                     Visible = false,
                     Enabled = false
                 };
-                buttons.Add(buttonsText[buttonIndex], button);
+                if (btn.Key != "Deal" && btn.Key != "Clear" && btn.Key != "NewHand")
+                    buttons.Add(btn.Key, button); // Only add gameplay buttons to dictionary
+                if (btn.Key == "NewHand")
+                    newGame = button;
                 Game.Components.Add(button);
+                currentX += width + smallPadding;
             }
 
-            newGame = new Button("ButtonRegular", "ButtonPressed",
-                    screenManager.InputState, this, screenManager.SpriteBatch, screenManager.GlobalTransformation)
-            {
-                Text = "New Hand",
-
-                Bounds = new Rectangle(screenManager.SafeArea.Left + smallPadding,
-                    screenManager.SafeArea.Bottom - buttonHeight - smallPadding, wideButtonWidth, buttonHeight),
-                Font = this.Font,
-                Visible = false,
-                Enabled = false
-            };
-
-            // Alter the insurance button's bounds as it is considerably larger than
-            // the other buttons
-            Rectangle insuranceBounds = buttons["Insurance"].Bounds;
-            insuranceBounds.Width = wideButtonWidth;
-            buttons["Insurance"].Bounds = insuranceBounds;
-
-            newGame.Click += newGame_Click;
-            Game.Components.Add(newGame);
-
-            // Register to click event
+            // Register to click event for gameplay buttons
             buttons["Hit"].Click += Hit_Click;
             buttons["Stand"].Click += Stand_Click;
             buttons["Double"].Click += Double_Click;
             buttons["Split"].Click += Split_Click;
             buttons["Insurance"].Click += Insurance_Click;
+            newGame.Click += newGame_Click;
+        }
+
+        /// <summary>
+        /// Updates button text and fonts after language change to match current Resources
+        /// Also resizes buttons to fit the new text
+        /// </summary>
+        public void UpdateButtonText()
+        {
+            // First update the game's font from content manager
+            bool useCJKFont = Blackjack.GameSettings.Instance.Language == "日本語" ||
+                              Blackjack.GameSettings.Instance.Language == "中文";
+            string fontPath = useCJKFont ? "Fonts/Regular_CJK" : "Fonts/Regular";
+            this.Font = Game.Content.Load<SpriteFont>(fontPath);
+
+            // Collect all buttons that need updating with their new text
+            var buttonUpdates = new List<(Button button, string text, bool isWide)>();
+
+            if (buttons.ContainsKey("Deal"))
+                buttonUpdates.Add((buttons["Deal"], Resources.Deal, false));
+            if (buttons.ContainsKey("Clear"))
+                buttonUpdates.Add((buttons["Clear"], Resources.Clear, false));
+            if (buttons.ContainsKey("Hit"))
+                buttonUpdates.Add((buttons["Hit"], Resources.Hit, false));
+            if (buttons.ContainsKey("Stand"))
+                buttonUpdates.Add((buttons["Stand"], Resources.Stand, false));
+            if (buttons.ContainsKey("Double"))
+                buttonUpdates.Add((buttons["Double"], Resources.Double, false));
+            if (buttons.ContainsKey("Split"))
+                buttonUpdates.Add((buttons["Split"], Resources.Split, false));
+            if (buttons.ContainsKey("Insurance"))
+                buttonUpdates.Add((buttons["Insurance"], Resources.Insurance, false));
+            if (newGame != null)
+                buttonUpdates.Add((newGame, Resources.NewHand, true));
+
+            // Update text, font, and calculate new widths
+            int screenWidth = screenManager.SafeArea.Width;
+            int minButtonWidth = UIConstants.GetButtonWidth(screenWidth);
+            int minWideWidth = UIConstants.GetWideButtonWidth(screenWidth);
+
+            foreach (var (button, text, isWide) in buttonUpdates)
+            {
+                button.Text = text;
+                button.Font = this.Font;
+
+                // Calculate new width based on text using centralized UIConstants method
+                int newWidth = UIConstants.CalculateButtonWidth(text, this.Font,
+                    isWide ? minWideWidth : minButtonWidth, screenWidth);
+
+                // Update button bounds with new width (keep same X, Y, and height)
+                button.Bounds = new Rectangle(
+                    button.Bounds.X,
+                    button.Bounds.Y,
+                    newWidth,
+                    button.Bounds.Height);
+            }
+
+            // Recalculate button positions to maintain proper spacing
+            RepositionButtons();
+        }
+
+        /// <summary>
+        /// Repositions all buttons to maintain even spacing after width changes
+        /// </summary>
+        private void RepositionButtons()
+        {
+            int smallPadding = UIConstants.GetSmallPadding(screenManager.SafeArea.Width);
+
+            // Calculate total width of all buttons
+            int totalWidth = 0;
+            var allButtons = new List<Button>();
+
+            // Add all buttons in order
+            if (buttons.ContainsKey("Deal")) allButtons.Add(buttons["Deal"]);
+            if (buttons.ContainsKey("Clear")) allButtons.Add(buttons["Clear"]);
+            if (buttons.ContainsKey("Hit")) allButtons.Add(buttons["Hit"]);
+            if (buttons.ContainsKey("Stand")) allButtons.Add(buttons["Stand"]);
+            if (buttons.ContainsKey("Double")) allButtons.Add(buttons["Double"]);
+            if (buttons.ContainsKey("Split")) allButtons.Add(buttons["Split"]);
+            if (buttons.ContainsKey("Insurance")) allButtons.Add(buttons["Insurance"]);
+            if (newGame != null) allButtons.Add(newGame);
+
+            foreach (var button in allButtons)
+            {
+                totalWidth += button.Bounds.Width;
+            }
+            totalWidth += smallPadding * (allButtons.Count - 1); // Add spacing between buttons
+
+            // Center the button row
+            int startX = (ScreenManager.BASE_BUFFER_WIDTH - totalWidth) / 2;
+            int currentX = startX;
+
+            // Reposition each button
+            foreach (var button in allButtons)
+            {
+                button.Bounds = new Rectangle(
+                    currentX,
+                    button.Bounds.Y,
+                    button.Bounds.Width,
+                    button.Bounds.Height);
+
+                currentX += button.Bounds.Width + smallPadding;
+            }
         }
 
         /// <summary>
@@ -169,14 +308,21 @@ namespace Blackjack
                     break;
                 case BlackjackGameState.Betting:
                     {
-                        EnableButtons(false);
+                        ChangeButtonsEnablement(false);
                     }
                     break;
                 case BlackjackGameState.Dealing:
                     {
                         // Deal 2 cards and start playing
                         State = BlackjackGameState.Playing;
-                        Deal();
+
+                        // In network games, only the host deals cards
+                        // Clients will receive CardDealt packets and create animations via HandleReceivedCardDealt
+                        if (!IsNetworkGame || IsHost)
+                        {
+                            Deal();
+                        }
+
                         StartPlaying();
                     }
                     break;
@@ -194,10 +340,14 @@ namespace Blackjack
                         {
                             BlackjackPlayer player =
                                 (BlackjackPlayer)GetCurrentPlayer();
+
                             // If the current player is an AI player, make it play
-                            if (player is BlackjackAIPlayer)
+                            if (player is BlackjackAIPlayer aiPlayer)
                             {
-                                ((BlackjackAIPlayer)player).AIPlay();
+                                if (!IsNetworkGame || IsHost)
+                                {
+                                    aiPlayer.AIPlay();
+                                }
                             }
 
                             CheckRules();
@@ -214,24 +364,44 @@ namespace Blackjack
                             SetButtonAvailability();
                         }
                         else
-                            EnableButtons(false);
+                            ChangeButtonsEnablement(false);
                     }
                     break;
                 case BlackjackGameState.RoundEnd:
                     {
                         if (dealerHandComponent.EstimatedTimeForAnimationsCompletion() == TimeSpan.Zero)
                         {
-                            betGameComponent.CalculateBalance(dealerPlayer);
-                            // Check if there is enough money to play
-                            // then show new game option or tell the player he has lost
-                            if (((BlackjackPlayer)players[0]).Balance < 5)
+                            // Start chip animations only once
+                            if (!balanceAnimationsStarted)
                             {
-                                EndGame();
-                            }
-                            else
-                            {
-                                newGame.Enabled = true;
-                                newGame.Visible = true;
+                                balanceAnimationsStarted = true;
+                                betGameComponent.CalculateBalanceWithAnimations(dealerPlayer, () =>
+                                {
+                                    // Callback when all animations complete
+                                    balanceAnimationsStarted = false;
+
+                                    // Check if there is enough money to play
+                                    // then show new game option or tell the player he has lost
+                                    if (((BlackjackPlayer)players[0]).Balance < 5)
+                                    {
+                                        EndGame();
+                                    }
+                                    else
+                                    {
+                                        // Hide all gameplay buttons before showing "New Hand" button
+                                        foreach (var btn in buttons.Values)
+                                        {
+                                            btn.Visible = false;
+                                            btn.Enabled = false;
+                                        }
+
+                                        newGame.Enabled = true;
+                                        newGame.Visible = true;
+
+                                        // Ensure "New Hand" button is centered
+                                        LayoutVisibleButtons();
+                                    }
+                                });
                             }
                         }
                     }
@@ -250,43 +420,84 @@ namespace Blackjack
         /// </summary>
         private void ShowShuffleAnimation()
         {
-            // Add shuffling animation
-            AnimatedGameComponent animationComponent = new AnimatedGameComponent(this, null, screenManager.SpriteBatch, screenManager.GlobalTransformation)
+            // Hide the deck display during shuffle animation
+            if (deckDisplay != null)
             {
-                CurrentPosition = GameTable.DealerPosition,
-                Visible = false
-            };
-            Game.Components.Add(animationComponent);
+                deckDisplay.Visible = false;
+            }
 
-            animationComponent.AddAnimation(
-                new FramesetGameComponentAnimation(cardsAssets["Shuffle_" + Theme], 32, 11, frameSize)
+            // Create a list of cards for the shuffle animation (only show a subset for performance)
+            // Using 52 cards (one deck) is enough for a good visual effect
+            var deckCards = new List<TraditionalCard>();
+            int cardsToShow = Math.Min(52, dealer.Count); // Show max 52 cards
+            for (int i = 0; i < cardsToShow; i++)
+            {
+                deckCards.Add(dealer[i]);
+            }
+
+            // Calculate shuffle position in top-center (where shuffle visibly happens)
+            Rectangle tableBounds = GameTable.TableBounds;
+            int cardWidth = UIConstants.GetCardWidth(screenManager.SafeArea.Width);
+            int cardHeight = UIConstants.GetCardHeight(screenManager.SafeArea.Height);
+            float shuffleCenterX = tableBounds.Left + (tableBounds.Width / 2f);
+            float shuffleY = tableBounds.Top + 40;
+            Vector2 shufflePosition = new Vector2(shuffleCenterX, shuffleY);
+
+            // Calculate final deck position (top-right where deck sits for dealing)
+            float finalDeckX = tableBounds.Right - cardWidth - 40;
+            float finalDeckY = tableBounds.Top + 40;
+            Vector2 finalDeckPosition = new Vector2(finalDeckX, finalDeckY);
+
+            // Get scaled card size and shuffle parameters
+            Vector2 cardSize = UIConstants.GetCardSize(screenManager.SafeArea.Width, screenManager.SafeArea.Height);
+            float splitDistance = UIConstants.GetShuffleSplitDistance(screenManager.SafeArea.Width);
+            float cascadeHeight = UIConstants.GetShuffleCascadeHeight(screenManager.SafeArea.Height);
+
+            // Create a riffle shuffle animation at top-center
+            var shuffleAnimation = new RiffleShuffleAnimation(
+                this,
+                shufflePosition, // Shuffle happens at top-center
+                TimeSpan.FromSeconds(1.0), // Fast shuffle - back to original speed
+                cardSize) // Scaled card size
+            {
+                SplitDistance = splitDistance, // Scaled split distance
+                CascadeHeight = cascadeHeight // Scaled cascade height
+            };
+
+            // Set up callbacks
+            shuffleAnimation.OnAnimationComplete = () =>
+            {
+                AudioManager.PlaySound("Shuffle");
+
+                // Immediately show deck at top-right position (no slide animation)
+                if (deckDisplay != null && GameSettings.Instance.ShowCardCount)
                 {
-                    Duration = TimeSpan.FromSeconds(1.5f),
-                    PerformBeforeStart = ShowComponent,
-                    PerformBeforSartArgs = animationComponent,
-                    PerformWhenDone = PlayShuffleAndRemoveComponent,
-                    PerformWhenDoneArgs = animationComponent
-                });
-            State = BlackjackGameState.Betting;
+                    deckDisplay.Visible = true;
+                }
+
+                // Transition to betting state
+                State = BlackjackGameState.Betting;
+            };
+
+            // Create and initialize the shuffle animation component
+            var shuffleComponent = new ShuffleAnimationComponent(
+                Game,
+                shuffleAnimation,
+                deckCards,
+                screenManager.SpriteBatch,
+                screenManager.GlobalTransformation);
+
+            Game.Components.Add(shuffleComponent);
+            shuffleComponent.Initialize();
         }
 
         /// <summary>
-        /// Helper method to show component
+        /// Helper method to show component (used by other animations)
         /// </summary>
         /// <param name="obj"></param>
         void ShowComponent(object obj)
         {
             ((AnimatedGameComponent)obj).Visible = true;
-        }
-
-        /// <summary>
-        /// Helper method to play shuffle sound and remove component
-        /// </summary>
-        /// <param name="obj"></param>
-        void PlayShuffleAndRemoveComponent(object obj)
-        {
-            AudioManager.PlaySound("Shuffle");
-            Game.Components.Remove((AnimatedGameComponent)obj);
         }
 
         /// <summary>
@@ -485,12 +696,16 @@ namespace Blackjack
         {
             Hand hand = animatedHand.Hand;
 
+            // Position the value to the right of the first card, not moving with each new card
             Vector2 position = GameTable.PlaceOrder(place) +
-                animatedHand.GetCardRelativePosition(hand.Count - 1);
+                animatedHand.GetCardRelativePosition(0); // Use first card (index 0) instead of last card
             Vector2 measure = Font.MeasureString(value);
+            int cardWidth = cardsAssets["CardBack_" + Theme].Bounds.Width;
+            int cardHeight = cardsAssets["CardBack_" + Theme].Bounds.Height;
 
-            position.X += (cardsAssets["CardBack_" + Theme].Bounds.Width - measure.X) / 2;
-            position.Y -= measure.Y + 5;
+            // Position at bottom-right corner of first card, below the card edge
+            position.X += cardWidth - (measure.X / 2); // Right edge of card, centered
+            position.Y += cardHeight + 5; // Below the card, with small padding
 
             screenManager.SpriteBatch.Draw(screenManager.BlankTexture,
                 new Rectangle((int)position.X - 4, (int)position.Y,
@@ -559,14 +774,28 @@ namespace Blackjack
                             // Deal a card to one of the players
                             card = dealer.DealCardToHand(players[playerIndex].Hand);
 
-                            AddDealAnimation(card, animatedHands[playerIndex], true, dealDuration,
+                            AddDealAnimation(card, animatedHands[playerIndex], true, DealDuration,
                                 DateTime.Now + TimeSpan.FromSeconds(
-                                dealDuration.TotalSeconds * (dealIndex * players.Count + playerIndex)));
+                                DealDuration.TotalSeconds * (dealIndex * players.Count + playerIndex)));
+
+                            // Broadcast card dealt in network games (host only)
+                            if (IsNetworkGame && IsHost)
+                            {
+                                BroadcastCardDealt(card, (byte)playerIndex, false, HandTypes.First);
+                            }
                         }
                     }
                     // Deal a card to the dealer
                     card = dealer.DealCardToHand(dealerPlayer.Hand);
-                    AddDealAnimation(card, dealerHandComponent, dealIndex == 0, dealDuration, DateTime.Now);
+                    bool isHoleCard = (dealIndex == 0); // First dealer card is the hole card
+                    AddDealAnimation(card, dealerHandComponent, isHoleCard, DealDuration, DateTime.Now);
+
+                    // Broadcast dealer card in network games (host only)
+                    if (IsNetworkGame && IsHost)
+                    {
+                        // Use player index 255 to indicate dealer
+                        BroadcastCardDealt(card, 255, isHoleCard, HandTypes.First);
+                    }
                 }
             }
         }
@@ -597,13 +826,21 @@ namespace Blackjack
                 // Display the hands participating in the game
                 for (int playerIndex = 0; playerIndex < players.Count; playerIndex++)
                 {
-                    if (((BlackjackPlayer)players[playerIndex]).MadeBet)
+                    // Safety check: ensure animated hand component exists before accessing it
+                    if (animatedHands[playerIndex] != null)
                     {
-                        animatedHands[playerIndex].Visible = false;
+                        if (((BlackjackPlayer)players[playerIndex]).MadeBet)
+                        {
+                            animatedHands[playerIndex].Visible = false;
+                        }
+                        else
+                        {
+                            animatedHands[playerIndex].Visible = true;
+                        }
                     }
                     else
                     {
-                        animatedHands[playerIndex].Visible = true;
+                        System.Console.WriteLine($"[StartPlaying] Warning: animatedHands[{playerIndex}] is null for player {players[playerIndex].Name}");
                     }
                 }
             }
@@ -622,21 +859,38 @@ namespace Blackjack
         public void AddDealAnimation(TraditionalCard card, AnimatedHandGameComponent
             animatedHand, bool flipCard, TimeSpan duration, DateTime startTime)
         {
+            // Safety check: if animatedHand is null, we can't create animations
+            if (animatedHand == null)
+            {
+                System.Console.WriteLine($"[AddDealAnimation] ERROR: animatedHand parameter is null! Cannot create animation.");
+                return;
+            }
+
             // Get the card location and card component
             int cardLocationInHand = animatedHand.GetCardLocationInHand(card);
             AnimatedCardsGameComponent cardComponent = animatedHand.GetCardGameComponent(cardLocationInHand);
 
-            // Add the transition animation
-            cardComponent.AddAnimation(
-                new TransitionGameComponentAnimation(GameTable.DealerPosition,
+            // Cards are dealt from the deck position in the top-right corner
+            Rectangle tableBounds = GameTable.TableBounds;
+            int cardWidth = UIConstants.GetCardWidth(screenManager.SafeArea.Width);
+            int cardHeight = UIConstants.GetCardHeight(screenManager.SafeArea.Height);
+            float deckX = tableBounds.Right - cardWidth - 40; // Match deck display position
+            float deckY = tableBounds.Top + 40;
+            Vector2 deckPosition = new Vector2(deckX, deckY);
+
+            var cardAnimation = new TransitionGameComponentAnimation(deckPosition,
                 animatedHand.CurrentPosition +
                 animatedHand.GetCardRelativePosition(cardLocationInHand))
-                {
-                    StartTime = startTime,
-                    PerformBeforeStart = ShowComponent,
-                    PerformBeforSartArgs = cardComponent,
-                    PerformWhenDone = PlayDealSound
-                });
+            {
+                StartTime = startTime,
+                PerformBeforeStart = ShowComponent,
+                PerformBeforSartArgs = cardComponent,
+                PerformWhenDone = PlayDealSound
+            };
+            cardAnimation.Duration = duration;
+
+            // Add the transition animation
+            cardComponent.AddAnimation(cardAnimation);
 
             if (flipCard)
             {
@@ -736,7 +990,7 @@ namespace Blackjack
             {
                 StartTime =
                     DateTime.Now + estimatedTimeToCompleteAnimations,
-                Duration = TimeSpan.FromSeconds(1f),
+                Duration = TimeSpan.FromSeconds(1f * AnimationSpeedMultiplier),
                 PerformBeforeStart = ShowComponent,
                 PerformBeforSartArgs = animationComponent
             });
@@ -772,7 +1026,7 @@ namespace Blackjack
             AnimatedCardsGameComponent cardComponent = dealerHandComponent.GetCardGameComponent(1);
             cardComponent.AddAnimation(new FlipGameComponentAnimation()
             {
-                Duration = TimeSpan.FromSeconds(0.5),
+                Duration = TimeSpan.FromSeconds(0.5 * AnimationSpeedMultiplier),
                 StartTime = DateTime.Now
             });
         }
@@ -930,8 +1184,8 @@ namespace Blackjack
             while (dealerValue <= 17)
             {
                 TraditionalCard card = dealer.DealCardToHand(dealerPlayer.Hand);
-                AddDealAnimation(card, dealerHandComponent, true, dealDuration,
-                    DateTime.Now.AddMilliseconds(1000 * (cardsDealed + 1)));
+                AddDealAnimation(card, dealerHandComponent, true, DealDuration,
+                    DateTime.Now.AddMilliseconds(1000 * AnimationSpeedMultiplier * (cardsDealed + 1)));
                 cardsDealed++;
                 dealerPlayer.CalculateValues();
                 dealerValue = dealerPlayer.FirstValue;
@@ -973,9 +1227,81 @@ namespace Blackjack
         {
             playerHandValueTexts.Clear();
             AudioManager.PlaySound("Shuffle");
-            dealer.Shuffle();
+
+            // Reset card dealing sequence tracking for network synchronization
+            cardSequenceCounter = 0;
+            dealStartTime = DateTime.MinValue;
+
+            // Generate shuffle seed (host only) or wait for it (clients)
+            if (IsNetworkGame && IsHost)
+            {
+                // Host generates a deterministic seed
+                currentShuffleSeed = Environment.TickCount;
+                dealer.Shuffle(currentShuffleSeed);
+
+                // Broadcast shuffle seed to all clients
+                BroadcastShuffleSeed(currentShuffleSeed);
+            }
+            else if (IsNetworkGame && !IsHost)
+            {
+                // Client waits for shuffle seed from host
+                // The shuffle will be performed when the ShuffleSeedPacket is received
+                // For now, just mark that we're waiting
+            }
+            else
+            {
+                // Local game - shuffle normally
+                dealer.Shuffle();
+            }
+
             DisplayPlayingHands();
+            ShowDeckDisplay();
             State = BlackjackGameState.Shuffling;
+        }
+
+        /// <summary>
+        /// Shows the visual deck display in center of the right quarter of the table
+        /// </summary>
+        private void ShowDeckDisplay()
+        {
+            // Remove existing deck display if present
+            if (deckDisplay != null && Game.Components.Contains(deckDisplay))
+            {
+                Game.Components.Remove(deckDisplay);
+            }
+
+            // Don't show deck display if card count setting is disabled
+            if (!GameSettings.Instance.ShowCardCount)
+            {
+                return;
+            }
+
+            // Position the deck in top-right corner for a realistic casino look
+            Rectangle tableBounds = GameTable.TableBounds;
+
+            // Position in top-right area with some padding from edges
+            int cardWidth = UIConstants.GetCardWidth(screenManager.SafeArea.Width);
+            int cardHeight = UIConstants.GetCardHeight(screenManager.SafeArea.Height);
+            float deckX = tableBounds.Right - cardWidth - 40; // 40px padding from right edge
+            float deckY = tableBounds.Top + 40; // 40px padding from top edge
+            Vector2 deckPosition = new Vector2(deckX, deckY);
+
+            // Get scaled layer offset
+            Vector2 layerOffset = UIConstants.GetDeckLayerOffset(screenManager.SafeArea.Width);
+
+            // Create new deck display
+            deckDisplay = new DeckDisplayComponent(
+                Game,
+                this,
+                deckPosition,
+                screenManager.SpriteBatch,
+                screenManager.GlobalTransformation)
+            {
+                StackLayers = 4, // Show 4 layers for a nice thick deck
+                LayerOffset = layerOffset // Scaled offset for depth
+            };
+
+            Game.Components.Add(deckDisplay);
         }
 
         /// <summary>
@@ -988,13 +1314,13 @@ namespace Blackjack
             // Hide all buttons if no player is in play or the player is an AI player
             if (player == null || player is BlackjackAIPlayer)
             {
-                EnableButtons(false);
+                ChangeButtonsEnablement(false);
                 ChangeButtonsVisiblility(false);
                 return;
             }
 
             // Show all buttons
-            EnableButtons(true);
+            ChangeButtonsEnablement(true);
             ChangeButtonsVisiblility(true);
 
             // Set insurance button availability
@@ -1040,6 +1366,8 @@ namespace Blackjack
                 buttons["Split"].Visible = false;
                 buttons["Split"].Enabled = false;
             }
+
+            LayoutVisibleButtons();
         }
 
         /// <summary>
@@ -1222,11 +1550,19 @@ namespace Blackjack
             if (player == null)
                 return;
 
+            int playerIndex = players.IndexOf(player);
+
+            // Broadcast to network in network games
+            if (IsNetworkGame && IsHost)
+            {
+                BroadcastStandAction((byte)playerIndex);
+            }
+
             // If the player only has one hand, his turn ends. Otherwise, he now plays
             // using his next hand
             if (player.IsSplit == false)
             {
-                turnFinishedByPlayer[players.IndexOf(player)] = true;
+                turnFinishedByPlayer[playerIndex] = true;
             }
             else
             {
@@ -1235,7 +1571,7 @@ namespace Blackjack
                     case HandTypes.First:
                         if (player.SecondBlackJack)
                         {
-                            turnFinishedByPlayer[players.IndexOf(player)] = true;
+                            turnFinishedByPlayer[playerIndex] = true;
                         }
                         else
                         {
@@ -1243,12 +1579,20 @@ namespace Blackjack
                         }
                         break;
                     case HandTypes.Second:
-                        turnFinishedByPlayer[players.IndexOf(player)] = true;
+                        turnFinishedByPlayer[playerIndex] = true;
                         break;
                     default:
                         throw new Exception(
                             "Player has an unsupported hand type.");
                 }
+            }
+
+            // Broadcast turn change to synchronize active player
+            if (IsNetworkGame && IsHost)
+            {
+                Player nextPlayer = GetCurrentPlayer();
+                byte nextPlayerIndex = nextPlayer != null ? (byte)players.IndexOf(nextPlayer) : (byte)255;
+                BroadcastTurnChanged(nextPlayerIndex);
             }
         }
 
@@ -1262,6 +1606,12 @@ namespace Blackjack
             BlackjackPlayer player = (BlackjackPlayer)GetCurrentPlayer();
 
             int playerIndex = players.IndexOf(player);
+
+            // Broadcast to network in network games
+            if (IsNetworkGame && IsHost)
+            {
+                BroadcastSplitAction((byte)playerIndex);
+            }
 
             player.InitializeSecondHand();
 
@@ -1295,12 +1645,25 @@ namespace Blackjack
 
             // Deal an additional cards to each of the new hands
             TraditionalCard card = dealer.DealCardToHand(player.Hand);
-            AddDealAnimation(card, animatedHands[playerIndex], true, dealDuration,
+            AddDealAnimation(card, animatedHands[playerIndex], true, DealDuration,
                 DateTime.Now + animation.EstimatedTimeForAnimationCompletion);
+
+            // Broadcast first card dealt in network games
+            if (IsNetworkGame && IsHost)
+            {
+                BroadcastCardDealt(card, (byte)playerIndex, false, HandTypes.First);
+            }
+
             card = dealer.DealCardToHand(player.SecondHand);
-            AddDealAnimation(card, animatedSecondHands[playerIndex], true, dealDuration,
+            AddDealAnimation(card, animatedSecondHands[playerIndex], true, DealDuration,
                 DateTime.Now + animation.EstimatedTimeForAnimationCompletion +
-                dealDuration);
+                DealDuration);
+
+            // Broadcast second card dealt in network games
+            if (IsNetworkGame && IsHost)
+            {
+                BroadcastCardDealt(card, (byte)playerIndex, false, HandTypes.Second);
+            }
         }
 
         /// <summary>
@@ -1311,6 +1674,12 @@ namespace Blackjack
             BlackjackPlayer player = (BlackjackPlayer)GetCurrentPlayer();
 
             int playerIndex = players.IndexOf(player);
+
+            // Broadcast to network in network games
+            if (IsNetworkGame && IsHost)
+            {
+                BroadcastDoubleAction((byte)playerIndex);
+            }
 
             switch (player.CurrentHandType)
             {
@@ -1359,23 +1728,73 @@ namespace Blackjack
 
             int playerIndex = players.IndexOf(player);
 
+            // Broadcast to network in network games (host only deals cards)
+            if (IsNetworkGame && IsHost)
+            {
+                BroadcastHitAction((byte)playerIndex);
+            }
+
             // Draw a card to the appropriate hand
+            TraditionalCard card;
             switch (player.CurrentHandType)
             {
                 case HandTypes.First:
-                    TraditionalCard card = dealer.DealCardToHand(player.Hand);
+                    card = dealer.DealCardToHand(player.Hand);
                     AddDealAnimation(card, animatedHands[playerIndex], true,
-                        dealDuration, DateTime.Now);
+                        DealDuration, DateTime.Now);
+
+                    // Broadcast card dealt in network games
+                    if (IsNetworkGame && IsHost)
+                    {
+                        BroadcastCardDealt(card, (byte)playerIndex, false, HandTypes.First);
+                    }
                     break;
                 case HandTypes.Second:
                     card = dealer.DealCardToHand(player.SecondHand);
                     AddDealAnimation(card, animatedSecondHands[playerIndex], true,
-                        dealDuration, DateTime.Now);
+                        DealDuration, DateTime.Now);
+
+                    // Broadcast card dealt in network games
+                    if (IsNetworkGame && IsHost)
+                    {
+                        BroadcastCardDealt(card, (byte)playerIndex, false, HandTypes.Second);
+                    }
                     break;
                 default:
                     throw new Exception(
                         "Player has an unsupported hand type.");
             }
+
+            // Auto-stand on 21 if enabled in settings
+            player.CalculateValues();
+            int handValue = player.CurrentHandType == HandTypes.First ? player.FirstValue : player.SecondValue;
+            if (GameSettings.Instance.AutoStandOn21 && handValue == 21)
+            {
+                Stand();
+            }
+        }
+
+        /// <summary>
+        /// Performs the "Insurance" action for the current player.
+        /// </summary>
+        public void Insurance()
+        {
+            BlackjackPlayer player = (BlackjackPlayer)GetCurrentPlayer();
+            if (player == null)
+                return;
+
+            int playerIndex = players.IndexOf(player);
+
+            // Broadcast to network in network games
+            if (IsNetworkGame && IsHost)
+            {
+                BroadcastInsuranceAction((byte)playerIndex);
+            }
+
+            player.IsInsurance = true;
+            player.Balance -= player.BetAmount / 2f;
+            betGameComponent.AddChips(playerIndex, player.BetAmount / 2, true, false);
+            showInsurance = false;
         }
 
         /// <summary>
@@ -1390,6 +1809,8 @@ namespace Blackjack
             buttons["Double"].Visible = visible;
             buttons["Split"].Visible = visible;
             buttons["Insurance"].Visible = visible;
+
+            LayoutVisibleButtons();
         }
 
         /// <summary>
@@ -1397,13 +1818,15 @@ namespace Blackjack
         /// </summary>
         /// <param name="enabled">True to enable the buttons , false to 
         /// disable them.</param>
-        void EnableButtons(bool enabled)
+        void ChangeButtonsEnablement(bool enabled)
         {
             buttons["Hit"].Enabled = enabled;
             buttons["Stand"].Enabled = enabled;
             buttons["Double"].Enabled = enabled;
             buttons["Split"].Enabled = enabled;
             buttons["Insurance"].Enabled = enabled;
+
+            LayoutVisibleButtons();
         }
 
         /// <summary>
@@ -1498,6 +1921,14 @@ namespace Blackjack
                     throw new Exception(
                         "Player has an unsupported hand type.");
             }
+
+            // Broadcast turn change after bust
+            if (IsNetworkGame && IsHost)
+            {
+                Player nextPlayer = GetCurrentPlayer();
+                byte nextPlayerIndex = nextPlayer != null ? (byte)players.IndexOf(nextPlayer) : (byte)255;
+                BroadcastTurnChanged(nextPlayerIndex);
+            }
         }
 
         /// <summary>
@@ -1539,6 +1970,14 @@ namespace Blackjack
                     throw new Exception(
                         "Player has an unsupported hand type.");
             }
+
+            // Broadcast turn change after blackjack
+            if (IsNetworkGame && IsHost)
+            {
+                Player nextPlayer = GetCurrentPlayer();
+                byte nextPlayerIndex = nextPlayer != null ? (byte)players.IndexOf(nextPlayer) : (byte)255;
+                BroadcastTurnChanged(nextPlayerIndex);
+            }
         }
 
         /// <summary>
@@ -1549,12 +1988,16 @@ namespace Blackjack
         /// <see cref="System.EventArgs"/> instance containing the event data.</param>
         void Insurance_Click(object sender, EventArgs e)
         {
-            BlackjackPlayer player = (BlackjackPlayer)GetCurrentPlayer();
-            if (player == null)
-                return;
-            player.IsInsurance = true;
-            player.Balance -= player.BetAmount / 2f;
-            betGameComponent.AddChips(players.IndexOf(player), player.BetAmount / 2, true, false);
+            if (IsNetworkGame && !IsHost)
+            {
+                // Client sends action to host
+                SendPlayerAction(Networking.BlackjackAction.Insurance);
+            }
+            else
+            {
+                // Host or local game executes action
+                Insurance();
+            }
             showInsurance = false;
         }
 
@@ -1580,7 +2023,16 @@ namespace Blackjack
         /// <see cref="System.EventArgs"/> instance containing the event data.</param>
         void Hit_Click(object sender, EventArgs e)
         {
-            Hit();
+            if (IsNetworkGame && !IsHost)
+            {
+                // Client sends action to host
+                SendPlayerAction(Networking.BlackjackAction.Hit);
+            }
+            else
+            {
+                // Host or local game executes action
+                Hit();
+            }
             showInsurance = false;
         }
 
@@ -1592,7 +2044,16 @@ namespace Blackjack
         /// <see cref="System.EventArgs"/> instance containing the event data.</param>
         void Stand_Click(object sender, EventArgs e)
         {
-            Stand();
+            if (IsNetworkGame && !IsHost)
+            {
+                // Client sends action to host
+                SendPlayerAction(Networking.BlackjackAction.Stand);
+            }
+            else
+            {
+                // Host or local game executes action
+                Stand();
+            }
             showInsurance = false;
         }
 
@@ -1604,7 +2065,16 @@ namespace Blackjack
         /// <see cref="System.EventArgs"/> instance containing the event data.</param>
         void Double_Click(object sender, EventArgs e)
         {
-            Double();
+            if (IsNetworkGame && !IsHost)
+            {
+                // Client sends action to host
+                SendPlayerAction(Networking.BlackjackAction.Double);
+            }
+            else
+            {
+                // Host or local game executes action
+                Double();
+            }
             showInsurance = false;
         }
 
@@ -1616,7 +2086,16 @@ namespace Blackjack
         /// <see cref="System.EventArgs"/> instance containing the event data.</param>
         void Split_Click(object sender, EventArgs e)
         {
-            Split();
+            if (IsNetworkGame && !IsHost)
+            {
+                // Client sends action to host
+                SendPlayerAction(Networking.BlackjackAction.Split);
+            }
+            else
+            {
+                // Host or local game executes action
+                Split();
+            }
             showInsurance = false;
         }
 
@@ -1643,6 +2122,618 @@ namespace Blackjack
 
             screenManager.AddScreen(new BackgroundScreen(), null);
             screenManager.AddScreen(new MainMenuScreen(), null);
+        }
+
+        /// <summary>
+        /// Broadcasts the shuffle seed to all players in the network session.
+        /// </summary>
+        private void BroadcastShuffleSeed(int seed)
+        {
+            if (NetworkSession == null || !IsHost)
+                return;
+
+            var packet = new Networking.ShuffleSeedPacket { Seed = seed };
+            var writer = new Microsoft.Xna.Framework.Net.PacketWriter();
+            writer.Write((byte)Networking.PacketType.ShuffleSeed);
+            packet.Serialize(writer);
+
+            NetworkSession.LocalGamers[0].SendData(writer, Microsoft.Xna.Framework.Net.SendDataOptions.Reliable);
+        }
+
+        /// <summary>
+        /// Handles receiving a shuffle seed from the host.
+        /// </summary>
+        public void ReceiveShuffleSeed(int seed)
+        {
+            currentShuffleSeed = seed;
+            dealer.Shuffle(seed);
+        }
+
+        /// <summary>
+        /// Broadcasts the complete player list (including AI players) to all clients.
+        /// Should be called by the host after all players (human + AI) have been added.
+        /// </summary>
+        public void BroadcastPlayerList()
+        {
+            if (NetworkSession == null || !IsHost)
+                return;
+
+            var playerInfoList = new System.Collections.Generic.List<Networking.PlayerInfo>();
+            foreach (var player in players)
+            {
+                playerInfoList.Add(new Networking.PlayerInfo
+                {
+                    Name = player.Name,
+                    IsAI = player is BlackjackAIPlayer
+                });
+            }
+
+            var packet = new Networking.PlayerListSyncPacket { Players = playerInfoList };
+            var writer = new Microsoft.Xna.Framework.Net.PacketWriter();
+            writer.Write((byte)Networking.PacketType.PlayerListSync);
+            packet.Serialize(writer);
+
+            NetworkSession.LocalGamers[0].SendData(writer, Microsoft.Xna.Framework.Net.SendDataOptions.Reliable);
+        }
+
+        /// <summary>
+        /// Broadcasts a card dealt event to all players.
+        /// </summary>
+        private void BroadcastCardDealt(TraditionalCard card, byte playerIndex, bool faceDown, HandTypes handType)
+        {
+            if (NetworkSession == null || !IsHost)
+                return;
+
+            var packet = new Networking.CardDealtPacket
+            {
+                Card = card,
+                PlayerIndex = playerIndex,
+                FaceDown = faceDown,
+                HandType = handType
+            };
+
+            var writer = new Microsoft.Xna.Framework.Net.PacketWriter();
+            writer.Write((byte)Networking.PacketType.CardDealt);
+            packet.Serialize(writer);
+
+            NetworkSession.LocalGamers[0].SendData(writer, Microsoft.Xna.Framework.Net.SendDataOptions.Reliable);
+        }
+
+        /// <summary>
+        /// Broadcasts a bet placed event to all players.
+        /// </summary>
+        public void BroadcastBetPlaced(byte playerIndex, int betAmount)
+        {
+            if (NetworkSession == null || !IsHost)
+                return;
+
+            var packet = new Networking.BetPlacedPacket
+            {
+                PlayerIndex = playerIndex,
+                BetAmount = betAmount
+            };
+
+            var writer = new Microsoft.Xna.Framework.Net.PacketWriter();
+            writer.Write((byte)Networking.PacketType.BetPlaced);
+            packet.Serialize(writer);
+
+            NetworkSession.LocalGamers[0].SendData(writer, Microsoft.Xna.Framework.Net.SendDataOptions.Reliable);
+        }
+
+        /// <summary>
+        /// Sends a bet placed event from client to host.
+        /// </summary>
+        public void SendBetPlaced(byte playerIndex, int betAmount)
+        {
+            if (NetworkSession == null || NetworkSession.LocalGamers.Count == 0)
+                return;
+
+            var packet = new Networking.BetPlacedPacket
+            {
+                PlayerIndex = playerIndex,
+                BetAmount = betAmount
+            };
+
+            var writer = new Microsoft.Xna.Framework.Net.PacketWriter();
+            writer.Write((byte)Networking.PacketType.BetPlaced);
+            packet.Serialize(writer);
+
+            NetworkSession.LocalGamers[0].SendData(writer, Microsoft.Xna.Framework.Net.SendDataOptions.Reliable);
+        }
+
+        /// <summary>
+        /// Broadcasts a chip added event to all players.
+        /// </summary>
+        public void BroadcastChipAdded(byte playerIndex, int chipValue)
+        {
+            if (NetworkSession == null || !IsHost)
+                return;
+
+            var packet = new Networking.ChipAddedPacket
+            {
+                PlayerIndex = playerIndex,
+                ChipValue = chipValue
+            };
+
+            var writer = new Microsoft.Xna.Framework.Net.PacketWriter();
+            writer.Write((byte)Networking.PacketType.ChipAdded);
+            packet.Serialize(writer);
+
+            NetworkSession.LocalGamers[0].SendData(writer, Microsoft.Xna.Framework.Net.SendDataOptions.Reliable);
+        }
+
+        /// <summary>
+        /// Sends a chip added event from client to host.
+        /// </summary>
+        public void SendChipAdded(byte playerIndex, int chipValue)
+        {
+            if (NetworkSession == null || NetworkSession.LocalGamers.Count == 0)
+                return;
+
+            var packet = new Networking.ChipAddedPacket
+            {
+                PlayerIndex = playerIndex,
+                ChipValue = chipValue
+            };
+
+            var writer = new Microsoft.Xna.Framework.Net.PacketWriter();
+            writer.Write((byte)Networking.PacketType.ChipAdded);
+            packet.Serialize(writer);
+
+            NetworkSession.LocalGamers[0].SendData(writer, Microsoft.Xna.Framework.Net.SendDataOptions.Reliable);
+        }
+
+        /// <summary>
+        /// Broadcasts a turn change event.
+        /// </summary>
+        private void BroadcastTurnChanged(byte currentPlayerIndex)
+        {
+            if (NetworkSession == null || !IsHost)
+                return;
+
+            var packet = new Networking.TurnChangedPacket { CurrentPlayerIndex = currentPlayerIndex };
+            var writer = new Microsoft.Xna.Framework.Net.PacketWriter();
+            writer.Write((byte)Networking.PacketType.TurnChanged);
+            packet.Serialize(writer);
+
+            NetworkSession.LocalGamers[0].SendData(writer, Microsoft.Xna.Framework.Net.SendDataOptions.Reliable);
+        }
+
+        // Phase 5: Gameplay Action Broadcasting
+        private void BroadcastHitAction(byte playerIndex)
+        {
+            if (NetworkSession == null || !IsHost)
+                return;
+
+            var packet = new Networking.HitActionPacket { PlayerIndex = playerIndex };
+            var writer = new Microsoft.Xna.Framework.Net.PacketWriter();
+            writer.Write((byte)Networking.PacketType.HitAction);
+            packet.Serialize(writer);
+
+            NetworkSession.LocalGamers[0].SendData(writer, Microsoft.Xna.Framework.Net.SendDataOptions.Reliable);
+        }
+
+        private void BroadcastStandAction(byte playerIndex)
+        {
+            if (NetworkSession == null || !IsHost)
+                return;
+
+            var packet = new Networking.StandActionPacket { PlayerIndex = playerIndex };
+            var writer = new Microsoft.Xna.Framework.Net.PacketWriter();
+            writer.Write((byte)Networking.PacketType.StandAction);
+            packet.Serialize(writer);
+
+            NetworkSession.LocalGamers[0].SendData(writer, Microsoft.Xna.Framework.Net.SendDataOptions.Reliable);
+        }
+
+        private void BroadcastDoubleAction(byte playerIndex)
+        {
+            if (NetworkSession == null || !IsHost)
+                return;
+
+            var packet = new Networking.DoubleActionPacket { PlayerIndex = playerIndex };
+            var writer = new Microsoft.Xna.Framework.Net.PacketWriter();
+            writer.Write((byte)Networking.PacketType.DoubleAction);
+            packet.Serialize(writer);
+
+            NetworkSession.LocalGamers[0].SendData(writer, Microsoft.Xna.Framework.Net.SendDataOptions.Reliable);
+        }
+
+        private void BroadcastSplitAction(byte playerIndex)
+        {
+            if (NetworkSession == null || !IsHost)
+                return;
+
+            var packet = new Networking.SplitActionPacket { PlayerIndex = playerIndex };
+            var writer = new Microsoft.Xna.Framework.Net.PacketWriter();
+            writer.Write((byte)Networking.PacketType.SplitAction);
+            packet.Serialize(writer);
+
+            NetworkSession.LocalGamers[0].SendData(writer, Microsoft.Xna.Framework.Net.SendDataOptions.Reliable);
+        }
+
+        private void BroadcastInsuranceAction(byte playerIndex)
+        {
+            if (NetworkSession == null || !IsHost)
+                return;
+
+            var packet = new Networking.InsuranceActionPacket { PlayerIndex = playerIndex };
+            var writer = new Microsoft.Xna.Framework.Net.PacketWriter();
+            writer.Write((byte)Networking.PacketType.InsuranceAction);
+            packet.Serialize(writer);
+
+            NetworkSession.LocalGamers[0].SendData(writer, Microsoft.Xna.Framework.Net.SendDataOptions.Reliable);
+        }
+
+        /// <summary>
+        /// Sends a player action to the host.
+        /// </summary>
+        public void SendPlayerAction(Networking.BlackjackAction action)
+        {
+            if (NetworkSession == null || NetworkSession.LocalGamers.Count == 0)
+                return;
+
+            var packet = new Networking.PlayerActionPacket { Action = action };
+            var writer = new Microsoft.Xna.Framework.Net.PacketWriter();
+            writer.Write((byte)Networking.PacketType.PlayerAction);
+            packet.Serialize(writer);
+
+            NetworkSession.LocalGamers[0].SendData(writer, Microsoft.Xna.Framework.Net.SendDataOptions.Reliable);
+        }
+
+        /// <summary>
+        /// Handles a card dealt packet received from the host (client-side).
+        /// Recreates the dealing action that happened on the host.
+        /// </summary>
+        // Track the sequence of cards dealt for proper animation timing on clients
+        private int cardSequenceCounter = 0;
+        private DateTime dealStartTime = DateTime.MinValue;
+
+        public void HandleReceivedCardDealt(TraditionalCard card, byte playerIndex, bool faceDown, HandTypes handType)
+        {
+            // This method is called on clients when they receive a CardDealt packet from the host
+            // The deck is already synchronized via the shuffle seed, so cards are dealt in the same order
+
+            // Reset sequence counter at the start of a new deal sequence
+            if (dealStartTime == DateTime.MinValue || (DateTime.Now - dealStartTime).TotalSeconds > 5)
+            {
+                dealStartTime = DateTime.Now;
+                cardSequenceCounter = 0;
+            }
+
+            // Calculate staggered start time based on card sequence
+            // This matches the timing logic in Deal() method
+            DateTime startTime = dealStartTime + TimeSpan.FromSeconds(DealDuration.TotalSeconds * cardSequenceCounter);
+            cardSequenceCounter++;
+
+            if (playerIndex == 255)
+            {
+                // Dealer card
+                var dealtCard = dealer.DealCardToHand(dealerPlayer.Hand);
+
+                if (dealerHandComponent != null)
+                {
+                    AddDealAnimation(dealtCard, dealerHandComponent, faceDown, DealDuration, startTime);
+                }
+                else
+                {
+                    System.Console.WriteLine($"[CardDealt] Warning: dealerHandComponent is null, skipping animation");
+                }
+            }
+            else if (playerIndex < players.Count)
+            {
+                // Player card
+                var player = (BlackjackPlayer)players[playerIndex];
+                Hand targetHand = (handType == HandTypes.First) ? player.Hand : player.SecondHand;
+
+                var dealtCard = dealer.DealCardToHand(targetHand);
+
+                // Only add animation if the animated hand component exists for this player
+                if (animatedHands != null && playerIndex < animatedHands.Length && animatedHands[playerIndex] != null)
+                {
+                    AddDealAnimation(dealtCard, animatedHands[playerIndex], !faceDown, DealDuration, startTime);
+                }
+                else
+                {
+                    System.Console.WriteLine($"[CardDealt] Warning: animatedHands[{playerIndex}] is null, skipping animation");
+                }
+            }
+        }
+
+        /// <summary>
+        /// Handles a bet placed packet received from the host (client-side).
+        /// Updates the player's bet state to match the host.
+        /// </summary>
+        public void HandleReceivedBetPlaced(byte playerIndex, int betAmount)
+        {
+            // This method is called on clients when they receive a BetPlaced packet from the host
+            if (playerIndex < players.Count)
+            {
+                var player = (BlackjackPlayer)players[playerIndex];
+
+                if (betAmount == 0)
+                {
+                    // Player passed
+                    ShowPlayerPass(playerIndex);
+                }
+                else
+                {
+                    // Apply the bet (this updates balance and bet amount)
+                    player.Bet(betAmount);
+                }
+
+                player.IsDoneBetting = true;
+            }
+        }
+
+        /// <summary>
+        /// Handles a chip added packet received over the network.
+        /// Adds the chip with animation on the receiving machine.
+        /// </summary>
+        public void HandleReceivedChipAdded(byte playerIndex, int chipValue)
+        {
+            // This method is called when receiving a ChipAdded packet
+            // We add the chip with animation but don't re-send to network (sendToNetwork: false)
+            if (playerIndex < players.Count && betGameComponent != null)
+            {
+                // Add the visual chip component with animation
+                // The sendToNetwork parameter is false to prevent infinite loop
+                betGameComponent.AddChip(playerIndex, chipValue, false, sendToNetwork: false);
+            }
+        }
+
+        // Phase 5: Gameplay Action Handlers
+        /// <summary>
+        /// Handles a Hit action received from the network.
+        /// Executes the Hit move for the specified player.
+        /// NOTE: Does NOT deal cards - cards are dealt via CardDealt packets.
+        /// </summary>
+        public void HandleReceivedHitAction(byte playerIndex)
+        {
+            // This handler is for game state synchronization only
+            // The actual card dealing is handled by CardDealt packets
+            // which are sent separately by the host
+
+            // No action needed here - the CardDealt packet will handle the card
+        }
+
+        /// <summary>
+        /// Handles a Stand action received from the network.
+        /// Executes the Stand move for the specified player.
+        /// </summary>
+        public void HandleReceivedStandAction(byte playerIndex)
+        {
+            if (playerIndex >= players.Count)
+                return;
+
+            var player = (BlackjackPlayer)players[playerIndex];
+
+            // Execute Stand logic
+            if (player.IsSplit == false)
+            {
+                turnFinishedByPlayer[playerIndex] = true;
+            }
+            else
+            {
+                switch (player.CurrentHandType)
+                {
+                    case HandTypes.First:
+                        if (player.SecondBlackJack)
+                        {
+                            turnFinishedByPlayer[playerIndex] = true;
+                        }
+                        else
+                        {
+                            player.CurrentHandType = HandTypes.Second;
+                        }
+                        break;
+                    case HandTypes.Second:
+                        turnFinishedByPlayer[playerIndex] = true;
+                        break;
+                    default:
+                        throw new System.Exception("Player has an unsupported hand type.");
+                }
+            }
+        }
+
+        /// <summary>
+        /// Handles a Double action received from the network.
+        /// Executes the Double move for the specified player.
+        /// NOTE: Does NOT deal cards - cards are dealt via CardDealt packets.
+        /// </summary>
+        public void HandleReceivedDoubleAction(byte playerIndex)
+        {
+            if (playerIndex >= players.Count)
+                return;
+
+            var player = (BlackjackPlayer)players[playerIndex];
+
+            // Execute Double logic - update chip stacks and flags
+            switch (player.CurrentHandType)
+            {
+                case HandTypes.First:
+                    player.Double = true;
+                    betGameComponent.AddChips(playerIndex, player.BetAmount, false, false);
+                    break;
+                case HandTypes.Second:
+                    player.SecondDouble = true;
+                    if (player.Double == false)
+                    {
+                        betGameComponent.AddChips(playerIndex, player.BetAmount / 2f, false, true);
+                    }
+                    else
+                    {
+                        betGameComponent.AddChips(playerIndex, player.BetAmount / 3f, false, true);
+                    }
+                    break;
+                default:
+                    throw new System.Exception("Player has an unsupported hand type.");
+            }
+
+            // Update turn state (card dealing is handled by CardDealt packet)
+            // Automatically stand after double
+            if (player.IsSplit == false)
+            {
+                turnFinishedByPlayer[playerIndex] = true;
+            }
+            else
+            {
+                switch (player.CurrentHandType)
+                {
+                    case HandTypes.First:
+                        if (player.SecondBlackJack)
+                        {
+                            turnFinishedByPlayer[playerIndex] = true;
+                        }
+                        else
+                        {
+                            player.CurrentHandType = HandTypes.Second;
+                        }
+                        break;
+                    case HandTypes.Second:
+                        turnFinishedByPlayer[playerIndex] = true;
+                        break;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Handles a Split action received from the network.
+        /// Executes the Split move for the specified player.
+        /// NOTE: Does NOT deal new cards - cards are dealt via CardDealt packets.
+        /// </summary>
+        public void HandleReceivedSplitAction(byte playerIndex)
+        {
+            if (playerIndex >= players.Count)
+                return;
+
+            var player = (BlackjackPlayer)players[playerIndex];
+
+            player.InitializeSecondHand();
+
+            Vector2 sourcePosition = animatedHands[playerIndex].GetCardGameComponent(1).CurrentPosition;
+            Vector2 targetPosition = animatedHands[playerIndex].GetCardGameComponent(0).CurrentPosition +
+                secondHandOffset;
+
+            var animation = new TransitionGameComponentAnimation(sourcePosition, targetPosition)
+            {
+                StartTime = DateTime.Now,
+                Duration = TimeSpan.FromSeconds(0.5f)
+            };
+
+            player.SplitHand();
+
+            betGameComponent.AddChips(playerIndex, player.BetAmount, false, true);
+
+            animatedSecondHands[playerIndex] =
+                new BlackjackAnimatedPlayerHandComponent(playerIndex, secondHandOffset,
+                    player.SecondHand, this, screenManager.SpriteBatch, screenManager.GlobalTransformation);
+            Game.Components.Add(animatedSecondHands[playerIndex]);
+
+            AnimatedCardsGameComponent animatedGameComponent = animatedSecondHands[playerIndex].GetCardGameComponent(0);
+            animatedGameComponent.IsFaceDown = false;
+            animatedGameComponent.AddAnimation(animation);
+
+            // Note: Additional cards will be dealt via CardDealt packets from the host
+        }
+
+        /// <summary>
+        /// Handles an Insurance action received from the network.
+        /// Executes the Insurance move for the specified player.
+        /// </summary>
+        public void HandleReceivedInsuranceAction(byte playerIndex)
+        {
+            if (playerIndex >= players.Count)
+                return;
+
+            var player = (BlackjackPlayer)players[playerIndex];
+
+            player.IsInsurance = true;
+            player.Balance -= player.BetAmount / 2f;
+            betGameComponent.AddChips(playerIndex, player.BetAmount / 2, true, false);
+            showInsurance = false;
+        }
+
+        /// <summary>
+        /// Handles a turn changed notification received from the network.
+        /// Updates UI and button state to reflect the new active player.
+        /// </summary>
+        public void HandleReceivedTurnChanged(byte currentPlayerIndex)
+        {
+            // Value 255 indicates no active player (all players finished)
+            if (currentPlayerIndex == 255)
+            {
+                System.Console.WriteLine("[TurnChanged] All players have finished their turns");
+                return;
+            }
+
+            if (currentPlayerIndex >= players.Count)
+            {
+                System.Console.WriteLine($"[TurnChanged] Invalid player index: {currentPlayerIndex}");
+                return;
+            }
+
+            var currentPlayer = (BlackjackPlayer)players[currentPlayerIndex];
+            System.Console.WriteLine($"[TurnChanged] Turn changed to player {currentPlayerIndex}: {currentPlayer.Name}");
+
+            // The button availability will be updated in the next Update() cycle
+            // via SetButtonAvailability(), which checks GetCurrentPlayer()
+        }
+
+        private void LayoutVisibleButtons()
+        {
+            // Gather all visible buttons (including "New Hand" if it's not in the dictionary)
+            List<Button> visibleButtons = new List<Button>();
+            foreach (var btn in buttons.Values)
+            {
+                if (btn.Visible)
+                    visibleButtons.Add(btn);
+            }
+            if (newGame != null && newGame.Visible && !visibleButtons.Contains(newGame))
+                visibleButtons.Add(newGame);
+
+            if (visibleButtons.Count == 0)
+                return;
+
+            // Get UI constants
+            int screenWidth = screenManager.SafeArea.Width;
+            int screenHeight = screenManager.SafeArea.Height;
+            int smallPadding = UIConstants.GetSmallPadding(screenWidth);
+            int buttonHeight = UIConstants.GetButtonHeight(screenHeight);
+
+            // Get actual chip height from bet component for accurate positioning
+            int chipHeight = betGameComponent?.ChipHeight ?? 50;
+
+            // Calculate button Y position using shared helper for consistency with betting phase
+            int buttonY = UIConstants.GetGameplayButtonYPosition(chipHeight, ScreenManager.BASE_BUFFER_WIDTH, ScreenManager.BASE_BUFFER_HEIGHT);
+
+            // Calculate total width of all visible buttons (accounting for "New Hand" being wide)
+            int totalWidth = 0;
+            for (int i = 0; i < visibleButtons.Count; i++)
+            {
+                var btn = visibleButtons[i];
+                int btnWidth = (btn == newGame)
+                    ? UIConstants.GetWideButtonWidth(screenWidth)
+                    : UIConstants.GetButtonWidth(screenWidth);
+                totalWidth += btnWidth;
+                if (i < visibleButtons.Count - 1)
+                    totalWidth += smallPadding;
+            }
+
+            // Center the row horizontally
+            int startX = (ScreenManager.BASE_BUFFER_WIDTH - totalWidth) / 2;
+
+            // Position each button
+            int currentX = startX;
+            foreach (var btn in visibleButtons)
+            {
+                int btnWidth = (btn == newGame)
+                    ? UIConstants.GetWideButtonWidth(screenWidth)
+                    : UIConstants.GetButtonWidth(screenWidth);
+                // Fixed: Use calculated btnWidth and buttonHeight instead of existing btn.Bounds dimensions
+                btn.Bounds = new Rectangle(currentX, buttonY, btnWidth, buttonHeight);
+                currentX += btnWidth + smallPadding;
+            }
         }
     }
 }

@@ -1,0 +1,352 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Back" xml:space="preserve">
+    <value>戻る</value>
+  </data>
+  <data name="ConfirmEndSession" xml:space="preserve">
+    <value>このセッションを終了してもよろしいですか？</value>
+  </data>
+  <data name="ConfirmExitSample" xml:space="preserve">
+    <value>このサンプルを終了してもよろしいですか？</value>
+  </data>
+  <data name="ConfirmForceStartGame" xml:space="preserve">
+    <value>すべてのプレイヤーが準備できていませんが、
+ゲームを開始してもよろしいですか？</value>
+  </data>
+  <data name="ConfirmLeaveSession" xml:space="preserve">
+    <value>このセッションから退出してもよろしいですか？</value>
+  </data>
+  <data name="ConfirmMarketplace" xml:space="preserve">
+    <value>試用版ではオンラインゲームプレイは利用できません。
+このゲームを購入しますか？</value>
+  </data>
+  <data name="ConfirmQuitGame" xml:space="preserve">
+    <value>このゲームを終了してもよろしいですか？</value>
+  </data>
+  <data name="CreateSession" xml:space="preserve">
+    <value>セッション作成</value>
+  </data>
+  <data name="EndSession" xml:space="preserve">
+    <value>セッション終了</value>
+  </data>
+  <data name="ErrorDisconnected" xml:space="preserve">
+    <value>ネットワークセッションとの接続が切断されました</value>
+  </data>
+  <data name="ErrorGamerPrivilege" xml:space="preserve">
+    <value>この機能にアクセスするには、
+適切なゲーマープロファイルでサインインする必要があります</value>
+  </data>
+  <data name="ErrorHostEndedSession" xml:space="preserve">
+    <value>ホストがセッションを終了しました</value>
+  </data>
+  <data name="ErrorNetwork" xml:space="preserve">
+    <value>ネットワークへのアクセス中に
+エラーが発生しました</value>
+  </data>
+  <data name="ErrorNetworkNotAvailable" xml:space="preserve">
+    <value>ネットワークがオフになっているか
+接続されていません</value>
+  </data>
+  <data name="ErrorRemovedByHost" xml:space="preserve">
+    <value>ホストによってセッションから追放されました</value>
+  </data>
+  <data name="ErrorSessionFull" xml:space="preserve">
+    <value>このセッションは既に満員です</value>
+  </data>
+  <data name="ErrorSessionNotFound" xml:space="preserve">
+    <value>セッションが見つかりません。終了したか、
+ローカルマシンとセッションホスト間に
+ネットワーク接続がない可能性があります</value>
+  </data>
+  <data name="ErrorSessionNotJoinable" xml:space="preserve">
+    <value>ホストがロビーに戻るまで待つ必要があります。
+その後、このセッションに参加できます</value>
+  </data>
+  <data name="ErrorTrialMode" xml:space="preserve">
+    <value>この機能は試用版では利用できません</value>
+  </data>
+  <data name="ErrorUnknown" xml:space="preserve">
+    <value>不明なエラーが発生しました</value>
+  </data>
+  <data name="Exit" xml:space="preserve">
+    <value>終了</value>
+  </data>
+  <data name="FindSessions" xml:space="preserve">
+    <value>セッション検索</value>
+  </data>
+  <data name="HostSuffix" xml:space="preserve">
+    <value>（ホスト）</value>
+  </data>
+  <data name="JoinSession" xml:space="preserve">
+    <value>セッション参加</value>
+  </data>
+  <data name="LeaveSession" xml:space="preserve">
+    <value>セッション退出</value>
+  </data>
+  <data name="Loading" xml:space="preserve">
+    <value>読み込み中</value>
+  </data>
+  <data name="Lobby" xml:space="preserve">
+    <value>ロビー</value>
+  </data>
+  <data name="MainMenu" xml:space="preserve">
+    <value>メインメニュー</value>
+  </data>
+  <data name="MessageBoxUsage" xml:space="preserve">
+    <value>Aボタン、スペース、Enter = OK
+Bボタン、Esc = キャンセル</value>
+  </data>
+  <data name="MessageGamerJoined" xml:space="preserve">
+    <value>{0}が参加しました</value>
+  </data>
+  <data name="MessageGamerLeft" xml:space="preserve">
+    <value>{0}が退出しました</value>
+  </data>
+  <data name="NetworkBusy" xml:space="preserve">
+    <value>検索中...</value>
+  </data>
+  <data name="NoSessionsFound" xml:space="preserve">
+    <value>セッションが見つかりません</value>
+  </data>
+  <data name="Paused" xml:space="preserve">
+    <value>一時停止</value>
+  </data>
+  <data name="PlayerMatch" xml:space="preserve">
+    <value>ライブ</value>
+  </data>
+  <data name="QuitGame" xml:space="preserve">
+    <value>ゲーム終了</value>
+  </data>
+  <data name="ResumeGame" xml:space="preserve">
+    <value>再開</value>
+  </data>
+  <data name="ReturnToLobby" xml:space="preserve">
+    <value>ロビーに戻る</value>
+  </data>
+  <data name="SinglePlayer" xml:space="preserve">
+    <value>シングルプレイヤー</value>
+  </data>
+  <data name="SystemLink" xml:space="preserve">
+    <value>LANセッション</value>
+  </data>
+  <data name="Play" xml:space="preserve">
+    <value>プレイ</value>
+  </data>
+  <data name="Theme" xml:space="preserve">
+    <value>テーマ</value>
+  </data>
+  <data name="Settings" xml:space="preserve">
+    <value>設定</value>
+  </data>
+  <data name="Quit" xml:space="preserve">
+    <value>終了</value>
+  </data>
+  <data name="HostNewGame" xml:space="preserve">
+    <value>新しいゲーム</value>
+  </data>
+  <data name="Refresh" xml:space="preserve">
+    <value>更新</value>
+  </data>
+  <data name="StartGame" xml:space="preserve">
+    <value>開始</value>
+  </data>
+  <data name="AvailableGames" xml:space="preserve">
+    <value>利用可能なゲーム </value>
+  </data>
+  <data name="Players" xml:space="preserve">
+    <value>プレイヤー </value>
+  </data>
+  <data name="Deck" xml:space="preserve">
+    <value>デッキ</value>
+  </data>
+  <data name="Return" xml:space="preserve">
+    <value>戻る</value>
+  </data>
+  <data name="SearchingForGames" xml:space="preserve">
+    <value>ゲームを検索中...</value>
+  </data>
+  <data name="FoundGames" xml:space="preserve">
+    <value>{0}個のゲームが見つかりました</value>
+  </data>
+  <data name="AutoRefreshIn" xml:space="preserve">
+    <value>{0}秒後に自動更新</value>
+  </data>
+  <data name="Dealer" xml:space="preserve">
+    <value>ディーラー ハウス</value>
+  </data>
+  <data name="Host" xml:space="preserve">
+    <value>ホスト</value>
+  </data>
+  <data name="Slot" xml:space="preserve">
+    <value>スロット{0} {1}</value>
+  </data>
+  <data name="JoinOrHostGame" xml:space="preserve">
+    <value>ゲームに参加またはホスト</value>
+  </data>
+  <data name="FailedToCreateSession" xml:space="preserve">
+    <value>セッションの作成に失敗しました</value>
+  </data>
+  <data name="FailedToJoinSession" xml:space="preserve">
+    <value>セッションへの参加に失敗しました</value>
+  </data>
+  <data name="OK" xml:space="preserve">
+    <value>OK</value>
+  </data>
+  <data name="SettingsTitle" xml:space="preserve">
+    <value>設定</value>
+  </data>
+  <data name="SettingsDisplay" xml:space="preserve">
+    <value>表示</value>
+  </data>
+  <data name="SettingsAudio" xml:space="preserve">
+    <value>オーディオ</value>
+  </data>
+  <data name="SettingsAIPlayers" xml:space="preserve">
+    <value>AIプレイヤー</value>
+  </data>
+  <data name="SettingsGameplay" xml:space="preserve">
+    <value>ゲームプレイ</value>
+  </data>
+  <data name="SettingsLanguage" xml:space="preserve">
+    <value>言語</value>
+  </data>
+  <data name="SettingsCardBackTheme" xml:space="preserve">
+    <value>カード裏面テーマ</value>
+  </data>
+  <data name="SettingsCurrency" xml:space="preserve">
+    <value>通貨</value>
+  </data>
+  <data name="SettingsSoundVolume" xml:space="preserve">
+    <value>効果音の音量</value>
+  </data>
+  <data name="SettingsMusicVolume" xml:space="preserve">
+    <value>音楽の音量</value>
+  </data>
+  <data name="SettingsMaxAIPlayers" xml:space="preserve">
+    <value>最大AIプレイヤー数</value>
+  </data>
+  <data name="SettingsFillEmptySlots" xml:space="preserve">
+    <value>空きスロットを埋める</value>
+  </data>
+  <data name="SettingsAnimationSpeed" xml:space="preserve">
+    <value>アニメーション速度</value>
+  </data>
+  <data name="SettingsAutoStandOn21" xml:space="preserve">
+    <value>21で自動スタンド</value>
+  </data>
+  <data name="SettingsShowCardCount" xml:space="preserve">
+    <value>カードカウントを表示</value>
+  </data>
+  <data name="SettingsPersistWinnings" xml:space="preserve">
+    <value>賞金を保持</value>
+  </data>
+  <data name="Previous" xml:space="preserve">
+    <value>前へ</value>
+  </data>
+  <data name="Next" xml:space="preserve">
+    <value>次へ</value>
+  </data>
+  <data name="PageIndicator" xml:space="preserve">
+    <value>ページ{0}/{1}</value>
+  </data>
+  <data name="Deal" xml:space="preserve">
+    <value>配る</value>
+  </data>
+  <data name="Clear" xml:space="preserve">
+    <value>クリア</value>
+  </data>
+  <data name="Hit" xml:space="preserve">
+    <value>ヒット</value>
+  </data>
+  <data name="Stand" xml:space="preserve">
+    <value>スタンド</value>
+  </data>
+  <data name="Double" xml:space="preserve">
+    <value>ダブル</value>
+  </data>
+  <data name="Split" xml:space="preserve">
+    <value>スプリット</value>
+  </data>
+  <data name="Insurance" xml:space="preserve">
+    <value>インシュランス</value>
+  </data>
+  <data name="NewHand" xml:space="preserve">
+    <value>新しい手</value>
+  </data>
+  <data name="AIPlayer1" xml:space="preserve">
+    <value>健太</value>
+  </data>
+  <data name="AIPlayer2" xml:space="preserve">
+    <value>大輔</value>
+  </data>
+  <data name="AIPlayer3" xml:space="preserve">
+    <value>恵美</value>
+  </data>
+  <data name="AIPlayer4" xml:space="preserve">
+    <value>一郎</value>
+  </data>
+  <data name="AIPlayer5" xml:space="preserve">
+    <value>花子</value>
+  </data>
+  <data name="AIPlayer6" xml:space="preserve">
+    <value>剛</value>
+  </data>
+</root>

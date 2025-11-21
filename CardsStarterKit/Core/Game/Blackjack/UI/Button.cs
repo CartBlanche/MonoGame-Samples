@@ -201,7 +201,7 @@ namespace Blackjack
             spriteBatch.Begin(SpriteSortMode.Deferred, null, null, null, null, null, globalTransformation);
 
             spriteBatch.Draw(isPressed ? PressedTexture : RegularTexture, Bounds, Color.White);
-            if (Font != null)
+            if (Font != null && !string.IsNullOrEmpty(Text))
             {
                 Vector2 textPosition = Font.MeasureString(Text);
                 textPosition = new Vector2(Bounds.Width - textPosition.X,

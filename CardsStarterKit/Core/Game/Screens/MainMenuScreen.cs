@@ -16,8 +16,8 @@ namespace Blackjack
 {
     class MainMenuScreen : MenuScreen
     {
-        public static string Theme = "Red";
-
+        public static string Theme { get; set; } = "Red";
+        private bool needsRefresh = false;
 
         /// <summary>
         /// Initializes a new instance of the screen.
@@ -25,26 +25,52 @@ namespace Blackjack
         public MainMenuScreen()
             : base("")
         {
+            // Load theme from settings
+            Theme = GameSettings.Instance.Theme;
         }
 
         public override void LoadContent()
         {
+            BuildMenuEntries();
+            base.LoadContent();
+        }
+
+        public override void Update(GameTime gameTime, bool otherScreenHasFocus, bool coveredByOtherScreen)
+        {
+            // If we were covered and now we're not, refresh the menu entries
+            // to pick up any language changes from the settings screen
+            if (!coveredByOtherScreen && needsRefresh)
+            {
+                BuildMenuEntries();
+                needsRefresh = false;
+            }
+            else if (coveredByOtherScreen)
+            {
+                needsRefresh = true;
+            }
+
+            base.Update(gameTime, otherScreenHasFocus, coveredByOtherScreen);
+        }
+
+        private void BuildMenuEntries()
+        {
+            // Clear existing entries
+            MenuEntries.Clear();
+
             // Create our menu entries.
-            MenuEntry startGameMenuEntry = new MenuEntry("Play");
-            MenuEntry themeGameMenuEntry = new MenuEntry("Theme");
-            MenuEntry exitMenuEntry = new MenuEntry("Exit");
+            MenuEntry startGameMenuEntry = new MenuEntry(Resources.Play);
+            MenuEntry settingsMenuEntry = new MenuEntry(Resources.Settings);
+            MenuEntry exitMenuEntry = new MenuEntry(Resources.Exit);
 
             // Hook up menu event handlers.
             startGameMenuEntry.Selected += StartGameMenuEntrySelected;
-            themeGameMenuEntry.Selected += ThemeGameMenuEntrySelected;
+            settingsMenuEntry.Selected += SettingsMenuEntrySelected;
             exitMenuEntry.Selected += OnCancel;
 
             // Add entries to the menu.
             MenuEntries.Add(startGameMenuEntry);
-            MenuEntries.Add(themeGameMenuEntry);
+            MenuEntries.Add(settingsMenuEntry);
             MenuEntries.Add(exitMenuEntry);
-
-            base.LoadContent();
         }
 
         /// <summary>
@@ -57,17 +83,18 @@ namespace Blackjack
             foreach (GameScreen screen in ScreenManager.GetScreens())
                 screen.ExitScreen();
 
-            ScreenManager.AddScreen(new GameplayScreen(Theme), null);
+            // Don't add BackgroundScreen - we don't want the logo on the session browser
+            ScreenManager.AddScreen(new SessionBrowserScreen(), null);
         }
 
         /// <summary>
-        /// Respond to "Theme" Item Selection
+        /// Respond to "Settings" Item Selection
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        void ThemeGameMenuEntrySelected(object sender, EventArgs e)
+        void SettingsMenuEntrySelected(object sender, EventArgs e)
         {
-            ScreenManager.AddScreen(new OptionsMenu(), null);
+            ScreenManager.AddScreen(new SettingsScreen(), null);
         }
 
         /// <summary>

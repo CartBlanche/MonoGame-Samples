@@ -1,0 +1,352 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Back" xml:space="preserve">
+    <value>返回</value>
+  </data>
+  <data name="ConfirmEndSession" xml:space="preserve">
+    <value>确定要结束此会话吗？</value>
+  </data>
+  <data name="ConfirmExitSample" xml:space="preserve">
+    <value>确定要退出此示例吗？</value>
+  </data>
+  <data name="ConfirmForceStartGame" xml:space="preserve">
+    <value>确定要开始游戏吗？
+即使并非所有玩家都已准备好</value>
+  </data>
+  <data name="ConfirmLeaveSession" xml:space="preserve">
+    <value>确定要离开此会话吗？</value>
+  </data>
+  <data name="ConfirmMarketplace" xml:space="preserve">
+    <value>试用版中不提供在线游戏功能。
+是否购买此游戏？</value>
+  </data>
+  <data name="ConfirmQuitGame" xml:space="preserve">
+    <value>确定要退出此游戏吗？</value>
+  </data>
+  <data name="CreateSession" xml:space="preserve">
+    <value>创建会话</value>
+  </data>
+  <data name="EndSession" xml:space="preserve">
+    <value>结束会话</value>
+  </data>
+  <data name="ErrorDisconnected" xml:space="preserve">
+    <value>失去与网络会话的连接</value>
+  </data>
+  <data name="ErrorGamerPrivilege" xml:space="preserve">
+    <value>您必须登录合适的玩家配置文件
+才能访问此功能</value>
+  </data>
+  <data name="ErrorHostEndedSession" xml:space="preserve">
+    <value>主机已结束会话</value>
+  </data>
+  <data name="ErrorNetwork" xml:space="preserve">
+    <value>访问网络时
+发生错误</value>
+  </data>
+  <data name="ErrorNetworkNotAvailable" xml:space="preserve">
+    <value>网络已关闭或
+未连接</value>
+  </data>
+  <data name="ErrorRemovedByHost" xml:space="preserve">
+    <value>主机将您踢出会话</value>
+  </data>
+  <data name="ErrorSessionFull" xml:space="preserve">
+    <value>此会话已满</value>
+  </data>
+  <data name="ErrorSessionNotFound" xml:space="preserve">
+    <value>未找到会话。它可能已结束，
+或者本地计算机与会话主机之间
+没有网络连接</value>
+  </data>
+  <data name="ErrorSessionNotJoinable" xml:space="preserve">
+    <value>您必须等待主机返回大厅
+才能加入此会话</value>
+  </data>
+  <data name="ErrorTrialMode" xml:space="preserve">
+    <value>试用版中不提供此功能</value>
+  </data>
+  <data name="ErrorUnknown" xml:space="preserve">
+    <value>发生未知错误</value>
+  </data>
+  <data name="Exit" xml:space="preserve">
+    <value>退出</value>
+  </data>
+  <data name="FindSessions" xml:space="preserve">
+    <value>查找会话</value>
+  </data>
+  <data name="HostSuffix" xml:space="preserve">
+    <value>（主机）</value>
+  </data>
+  <data name="JoinSession" xml:space="preserve">
+    <value>加入会话</value>
+  </data>
+  <data name="LeaveSession" xml:space="preserve">
+    <value>离开会话</value>
+  </data>
+  <data name="Loading" xml:space="preserve">
+    <value>加载中</value>
+  </data>
+  <data name="Lobby" xml:space="preserve">
+    <value>大厅</value>
+  </data>
+  <data name="MainMenu" xml:space="preserve">
+    <value>主菜单</value>
+  </data>
+  <data name="MessageBoxUsage" xml:space="preserve">
+    <value>A按钮、空格、回车 = 确定
+B按钮、Esc = 取消</value>
+  </data>
+  <data name="MessageGamerJoined" xml:space="preserve">
+    <value>{0}已加入</value>
+  </data>
+  <data name="MessageGamerLeft" xml:space="preserve">
+    <value>{0}已离开</value>
+  </data>
+  <data name="NetworkBusy" xml:space="preserve">
+    <value>搜索中...</value>
+  </data>
+  <data name="NoSessionsFound" xml:space="preserve">
+    <value>未找到会话</value>
+  </data>
+  <data name="Paused" xml:space="preserve">
+    <value>已暂停</value>
+  </data>
+  <data name="PlayerMatch" xml:space="preserve">
+    <value>在线</value>
+  </data>
+  <data name="QuitGame" xml:space="preserve">
+    <value>退出游戏</value>
+  </data>
+  <data name="ResumeGame" xml:space="preserve">
+    <value>继续</value>
+  </data>
+  <data name="ReturnToLobby" xml:space="preserve">
+    <value>返回大厅</value>
+  </data>
+  <data name="SinglePlayer" xml:space="preserve">
+    <value>单人游戏</value>
+  </data>
+  <data name="SystemLink" xml:space="preserve">
+    <value>局域网会话</value>
+  </data>
+  <data name="Play" xml:space="preserve">
+    <value>开始</value>
+  </data>
+  <data name="Theme" xml:space="preserve">
+    <value>主题</value>
+  </data>
+  <data name="Settings" xml:space="preserve">
+    <value>设置</value>
+  </data>
+  <data name="Quit" xml:space="preserve">
+    <value>退出</value>
+  </data>
+  <data name="HostNewGame" xml:space="preserve">
+    <value>新游戏</value>
+  </data>
+  <data name="Refresh" xml:space="preserve">
+    <value>刷新</value>
+  </data>
+  <data name="StartGame" xml:space="preserve">
+    <value>开始</value>
+  </data>
+  <data name="AvailableGames" xml:space="preserve">
+    <value>可用游戏 </value>
+  </data>
+  <data name="Players" xml:space="preserve">
+    <value>玩家 </value>
+  </data>
+  <data name="Deck" xml:space="preserve">
+    <value>牌组</value>
+  </data>
+  <data name="Return" xml:space="preserve">
+    <value>返回</value>
+  </data>
+  <data name="SearchingForGames" xml:space="preserve">
+    <value>正在搜索游戏...</value>
+  </data>
+  <data name="FoundGames" xml:space="preserve">
+    <value>找到{0}个游戏</value>
+  </data>
+  <data name="AutoRefreshIn" xml:space="preserve">
+    <value>{0}秒后自动刷新</value>
+  </data>
+  <data name="Dealer" xml:space="preserve">
+    <value>庄家 赌场</value>
+  </data>
+  <data name="Host" xml:space="preserve">
+    <value>主机</value>
+  </data>
+  <data name="Slot" xml:space="preserve">
+    <value>槽位{0} {1}</value>
+  </data>
+  <data name="JoinOrHostGame" xml:space="preserve">
+    <value>加入或主持游戏</value>
+  </data>
+  <data name="FailedToCreateSession" xml:space="preserve">
+    <value>创建会话失败</value>
+  </data>
+  <data name="FailedToJoinSession" xml:space="preserve">
+    <value>加入会话失败</value>
+  </data>
+  <data name="OK" xml:space="preserve">
+    <value>确定</value>
+  </data>
+  <data name="SettingsTitle" xml:space="preserve">
+    <value>设置</value>
+  </data>
+  <data name="SettingsDisplay" xml:space="preserve">
+    <value>显示</value>
+  </data>
+  <data name="SettingsAudio" xml:space="preserve">
+    <value>音频</value>
+  </data>
+  <data name="SettingsAIPlayers" xml:space="preserve">
+    <value>AI玩家</value>
+  </data>
+  <data name="SettingsGameplay" xml:space="preserve">
+    <value>游戏玩法</value>
+  </data>
+  <data name="SettingsLanguage" xml:space="preserve">
+    <value>语言</value>
+  </data>
+  <data name="SettingsCardBackTheme" xml:space="preserve">
+    <value>卡背主题</value>
+  </data>
+  <data name="SettingsCurrency" xml:space="preserve">
+    <value>货币</value>
+  </data>
+  <data name="SettingsSoundVolume" xml:space="preserve">
+    <value>音效音量</value>
+  </data>
+  <data name="SettingsMusicVolume" xml:space="preserve">
+    <value>音乐音量</value>
+  </data>
+  <data name="SettingsMaxAIPlayers" xml:space="preserve">
+    <value>最大AI玩家数</value>
+  </data>
+  <data name="SettingsFillEmptySlots" xml:space="preserve">
+    <value>填充空位</value>
+  </data>
+  <data name="SettingsAnimationSpeed" xml:space="preserve">
+    <value>动画速度</value>
+  </data>
+  <data name="SettingsAutoStandOn21" xml:space="preserve">
+    <value>21点自动停牌</value>
+  </data>
+  <data name="SettingsShowCardCount" xml:space="preserve">
+    <value>显示牌数</value>
+  </data>
+  <data name="SettingsPersistWinnings" xml:space="preserve">
+    <value>保持奖金</value>
+  </data>
+  <data name="Previous" xml:space="preserve">
+    <value>上一页</value>
+  </data>
+  <data name="Next" xml:space="preserve">
+    <value>下一页</value>
+  </data>
+  <data name="PageIndicator" xml:space="preserve">
+    <value>第{0}页 共{1}页</value>
+  </data>
+  <data name="Deal" xml:space="preserve">
+    <value>发牌</value>
+  </data>
+  <data name="Clear" xml:space="preserve">
+    <value>清除</value>
+  </data>
+  <data name="Hit" xml:space="preserve">
+    <value>要牌</value>
+  </data>
+  <data name="Stand" xml:space="preserve">
+    <value>停牌</value>
+  </data>
+  <data name="Double" xml:space="preserve">
+    <value>加倍</value>
+  </data>
+  <data name="Split" xml:space="preserve">
+    <value>分牌</value>
+  </data>
+  <data name="Insurance" xml:space="preserve">
+    <value>保险</value>
+  </data>
+  <data name="NewHand" xml:space="preserve">
+    <value>新手牌</value>
+  </data>
+  <data name="AIPlayer1" xml:space="preserve">
+    <value>明浩</value>
+  </data>
+  <data name="AIPlayer2" xml:space="preserve">
+    <value>志强</value>
+  </data>
+  <data name="AIPlayer3" xml:space="preserve">
+    <value>丹妮</value>
+  </data>
+  <data name="AIPlayer4" xml:space="preserve">
+    <value>建国</value>
+  </data>
+  <data name="AIPlayer5" xml:space="preserve">
+    <value>芳芳</value>
+  </data>
+  <data name="AIPlayer6" xml:space="preserve">
+    <value>国强</value>
+  </data>
+</root>

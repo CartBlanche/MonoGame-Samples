@@ -7,12 +7,15 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using GameStateManagement;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 using CardsFramework;
 using Microsoft.Xna.Framework.Input.Touch;
+using System.Globalization;
+using Microsoft.Xna.Framework.Net;
 
 namespace Blackjack
 {
@@ -29,10 +32,12 @@ namespace Blackjack
 
         Vector2[] playerCardOffset;
 
+        NetworkSession networkSession;
+
         /// <summary>
         /// Initializes a new instance of the screen.
         /// </summary>
-        public GameplayScreen(string theme)
+        public GameplayScreen(string theme, List<string> joinedPlayers = null, NetworkSession networkSession = null)
         {
             TransitionOnTime = TimeSpan.FromSeconds(0.0);
             TransitionOffTime = TimeSpan.FromSeconds(0.5);
@@ -40,7 +45,11 @@ namespace Blackjack
             EnabledGestures = GestureType.Tap;
 
             this.theme = theme;
+            this.joinedPlayers = joinedPlayers;
+            this.networkSession = networkSession;
         }
+
+        private List<string> joinedPlayers;
 
         /// <summary>
         /// Load content and initializes the actual game.
@@ -49,17 +58,7 @@ namespace Blackjack
         {
             safeArea = ScreenManager.SafeArea;
 
-            // Calculate proportional player positions (better centered and spread out)
-            // These positions should space the three player areas evenly across the table
-            float playerY = safeArea.Height * 0.29f; // ~210px at 720px
-            float centerY = safeArea.Height * 0.26f; // ~190px at 720px - slightly higher for side players
-
-            playerCardOffset = new Vector2[]
-            {
-                new Vector2(safeArea.Width * 0.18f, centerY),   // Left player - moved right (~230px at 1280px)
-                new Vector2(safeArea.Width * 0.42f, playerY),   // Center player - truly centered (~537px at 1280px)
-                new Vector2(safeArea.Width * 0.66f, centerY)    // Right player - balanced (~845px at 1280px)
-            };
+            // Player positions will be calculated dynamically after we know how many players there are
 
             // Initialize virtual cursor
             inputHelper = new InputHelper(ScreenManager);
@@ -74,8 +73,24 @@ namespace Blackjack
             blackJackGame = new BlackjackCardGame(safeArea, new Vector2(safeArea.Left + safeArea.Width / 2 - 50, safeArea.Top + 20),
                 GetPlayerCardPosition, ScreenManager, theme);
 
+            // Wire up network session if in multiplayer mode
+            // Only treat as network game if there are actually multiple human players
+            if (networkSession != null && networkSession.AllGamers.Count > 1)
+            {
+                blackJackGame.NetworkSession = networkSession;
+                blackJackGame.IsNetworkGame = true;
+                blackJackGame.IsHost = networkSession.IsHost;
+                System.Console.WriteLine($"[LoadContent] Network game detected with {networkSession.AllGamers.Count} gamers, IsNetworkGame=true");
+            }
+            else
+            {
+                System.Console.WriteLine($"[LoadContent] Single-player game, IsNetworkGame={blackJackGame.IsNetworkGame}, networkSession={(networkSession == null ? "null" : $"exists with {networkSession.AllGamers.Count} gamers")}");
+            }
 
             InitializeGame();
+
+            // Update button text/fonts to match current language
+            UpdateButtonText();
 
             base.LoadContent();
         }
@@ -127,7 +142,240 @@ namespace Blackjack
                 blackJackGame.Update(gameTime);
             }
 
+            // Centralized network packet dispatcher
+            ProcessNetworkPackets();
+
             base.Update(gameTime, otherScreenHasFocus, coveredByOtherScreen);
+        }
+
+        // Centralized network packet dispatcher
+        private void ProcessNetworkPackets()
+        {
+            if (networkSession == null || networkSession.LocalGamers.Count == 0)
+                return;
+
+            var localGamer = networkSession.LocalGamers[0];
+            var packetReader = new PacketReader();
+            while (localGamer.IsDataAvailable)
+            {
+                NetworkGamer sender;
+                localGamer.ReceiveData(packetReader, out sender);
+
+                try
+                {
+                    // Read packet type (assume PacketType is a byte)
+                    var packetType = (Blackjack.Networking.PacketType)packetReader.ReadByte();
+                    System.Console.WriteLine($"[PACKET] Received {packetType} from {sender.Gamertag}");
+
+                    switch (packetType)
+                    {
+                        case Blackjack.Networking.PacketType.PlayerListSync:
+                            HandlePlayerListSyncPacket(sender, packetReader);
+                            break;
+                        case Blackjack.Networking.PacketType.CardDealt:
+                            HandleCardDealtPacket(sender, packetReader);
+                            break;
+                        case Blackjack.Networking.PacketType.BetPlaced:
+                            HandleBetPlacedPacket(sender, packetReader);
+                            break;
+                        case Blackjack.Networking.PacketType.ChipAdded:
+                            HandleChipAddedPacket(sender, packetReader);
+                            break;
+                        case Blackjack.Networking.PacketType.PlayerAction:
+                            HandlePlayerActionPacket(sender, packetReader);
+                            break;
+                        case Blackjack.Networking.PacketType.ShuffleSeed:
+                            HandleShuffleSeedPacket(sender, packetReader);
+                            break;
+                        // Phase 5: Gameplay action packets
+                        case Blackjack.Networking.PacketType.HitAction:
+                            HandleHitActionPacket(sender, packetReader);
+                            break;
+                        case Blackjack.Networking.PacketType.StandAction:
+                            HandleStandActionPacket(sender, packetReader);
+                            break;
+                        case Blackjack.Networking.PacketType.DoubleAction:
+                            HandleDoubleActionPacket(sender, packetReader);
+                            break;
+                        case Blackjack.Networking.PacketType.SplitAction:
+                            HandleSplitActionPacket(sender, packetReader);
+                            break;
+                        case Blackjack.Networking.PacketType.InsuranceAction:
+                            HandleInsuranceActionPacket(sender, packetReader);
+                            break;
+                        case Blackjack.Networking.PacketType.TurnChanged:
+                            HandleTurnChangedPacket(sender, packetReader);
+                            break;
+                        // Add more cases for other packet types as needed
+                        default:
+                            System.Console.WriteLine($"[PACKET] Unknown packet type: {(byte)packetType}");
+                            break;
+                    }
+                }
+                catch (System.IO.EndOfStreamException ex)
+                {
+                    System.Console.WriteLine($"[PACKET ERROR] EndOfStreamException while processing packet from {sender.Gamertag}: {ex.Message}");
+                    System.Console.WriteLine($"[PACKET ERROR] Stack trace: {ex.StackTrace}");
+                }
+                catch (System.Exception ex)
+                {
+                    System.Console.WriteLine($"[PACKET ERROR] Exception while processing packet from {sender.Gamertag}: {ex.GetType().Name} - {ex.Message}");
+                }
+            }
+        }
+
+        // Packet handlers
+        private void HandlePlayerListSyncPacket(NetworkGamer sender, PacketReader reader)
+        {
+            var packet = Blackjack.Networking.PlayerListSyncPacket.Deserialize(reader);
+
+            // Only clients should process this - host already has the correct player list
+            if (networkSession != null && !networkSession.IsHost)
+            {
+                // Clear existing AI players (clients shouldn't have created any)
+                // But we need to recreate the full player list to match the host
+
+                // The client should have already added human players in InitializeGame
+                // Now we need to add AI players to match the host's list
+
+                System.Globalization.TextInfo myTI = new System.Globalization.CultureInfo("en-GB", false).TextInfo;
+
+                // Get current player count (should be just human players)
+                int currentPlayerCount = blackJackGame.Players.Count;
+
+                // Add any missing players from the packet
+                for (int i = currentPlayerCount; i < packet.Players.Count; i++)
+                {
+                    var playerInfo = packet.Players[i];
+                    if (playerInfo.IsAI)
+                    {
+                        // Add AI player (but don't wire up events - host controls AI)
+                        BlackjackAIPlayer aiPlayer = new BlackjackAIPlayer(playerInfo.Name, blackJackGame);
+                        blackJackGame.AddPlayer(aiPlayer);
+                    }
+                    else
+                    {
+                        // Add human player (shouldn't normally happen, but handle it)
+                        blackJackGame.AddPlayer(new BlackjackPlayer(myTI.ToTitleCase(playerInfo.Name), blackJackGame));
+                    }
+                }
+
+                // CRITICAL: Recalculate player positions now that we have the full player list
+                int totalPlayers = blackJackGame.Players.Count;
+                CalculatePlayerPositions(totalPlayers);
+
+                // Update the table to show the correct number of player spots
+                blackJackGame.GameTable.SetPlaces(totalPlayers);
+
+                // Now that we have the complete player list, start the round
+                // This ensures DisplayPlayingHands() creates animatedHands for all players including AI
+                System.Console.WriteLine($"[PlayerListSync] Client received {packet.Players.Count} players, starting round now");
+                blackJackGame.StartRound();
+            }
+        }
+
+        // Example packet handlers (implement actual logic as needed)
+        private void HandleCardDealtPacket(NetworkGamer sender, PacketReader reader)
+        {
+            var packet = Blackjack.Networking.CardDealtPacket.Deserialize(reader);
+
+            // Only clients should process this - host already dealt the card locally
+            if (networkSession != null && !networkSession.IsHost)
+            {
+                // Forward to the game to handle the card dealing
+                blackJackGame.HandleReceivedCardDealt(packet.Card, packet.PlayerIndex, packet.FaceDown, packet.HandType);
+            }
+        }
+
+        private void HandleBetPlacedPacket(NetworkGamer sender, PacketReader reader)
+        {
+            var packet = Blackjack.Networking.BetPlacedPacket.Deserialize(reader);
+
+            if (networkSession != null)
+            {
+                if (networkSession.IsHost)
+                {
+                    // Host receives bet from a client
+                    // Don't process if this is from the local host machine (to avoid processing our own broadcast)
+                    if (!sender.IsLocal)
+                    {
+                        // Apply the bet locally on the host
+                        blackJackGame.HandleReceivedBetPlaced(packet.PlayerIndex, packet.BetAmount);
+
+                        // Broadcast to all other clients (so all clients stay in sync)
+                        blackJackGame.BroadcastBetPlaced(packet.PlayerIndex, packet.BetAmount);
+                    }
+                }
+                else
+                {
+                    // Client receives bet broadcast from host
+                    blackJackGame.HandleReceivedBetPlaced(packet.PlayerIndex, packet.BetAmount);
+                }
+            }
+        }
+
+        private void HandleChipAddedPacket(NetworkGamer sender, PacketReader reader)
+        {
+            var packet = Blackjack.Networking.ChipAddedPacket.Deserialize(reader);
+
+            if (networkSession != null)
+            {
+                if (networkSession.IsHost)
+                {
+                    // Host receives chip addition from a client
+                    // Don't process if this is from the local host machine (to avoid processing our own broadcast)
+                    if (!sender.IsLocal)
+                    {
+                        // Apply the chip locally on the host (this will trigger the animation and update bet)
+                        blackJackGame.HandleReceivedChipAdded(packet.PlayerIndex, packet.ChipValue);
+
+                        // Broadcast to all other clients (so all clients stay in sync)
+                        blackJackGame.BroadcastChipAdded(packet.PlayerIndex, packet.ChipValue);
+                    }
+                }
+                else
+                {
+                    // Client receives chip addition broadcast from host
+                    blackJackGame.HandleReceivedChipAdded(packet.PlayerIndex, packet.ChipValue);
+                }
+            }
+        }
+
+        private void HandlePlayerActionPacket(NetworkGamer sender, PacketReader reader)
+        {
+            var packet = Blackjack.Networking.PlayerActionPacket.Deserialize(reader);
+            // Host receives action from client and processes it
+            if (networkSession != null && networkSession.IsHost)
+            {
+                switch (packet.Action)
+                {
+                    case Blackjack.Networking.BlackjackAction.Hit:
+                        blackJackGame.Hit();
+                        break;
+                    case Blackjack.Networking.BlackjackAction.Stand:
+                        blackJackGame.Stand();
+                        break;
+                    case Blackjack.Networking.BlackjackAction.Double:
+                        blackJackGame.Double();
+                        break;
+                    case Blackjack.Networking.BlackjackAction.Split:
+                        blackJackGame.Split();
+                        break;
+                    case Blackjack.Networking.BlackjackAction.Insurance:
+                        blackJackGame.Insurance();
+                        break;
+                }
+            }
+        }
+
+        private void HandleShuffleSeedPacket(NetworkGamer sender, PacketReader reader)
+        {
+            var packet = Blackjack.Networking.ShuffleSeedPacket.Deserialize(reader);
+            // Client receives shuffle seed from host
+            if (networkSession != null && !networkSession.IsHost)
+            {
+                blackJackGame.ReceiveShuffleSeed(packet.Seed);
+            }
         }
 
         /// <summary>
@@ -151,19 +399,117 @@ namespace Blackjack
         private void InitializeGame()
         {
             blackJackGame.Initialize();
-            // Add human player
-            blackJackGame.AddPlayer(new BlackjackPlayer("Abe", blackJackGame));
 
-            // Add AI players
-            BlackjackAIPlayer player = new BlackjackAIPlayer("Benny", blackJackGame);
-            blackJackGame.AddPlayer(player);
-            player.Hit += player_Hit;
-            player.Stand += player_Stand;
+            blackJackGame.UpdateButtonText();
 
-            player = new BlackjackAIPlayer("Chuck", blackJackGame);
-            blackJackGame.AddPlayer(player);
-            player.Hit += player_Hit;
-            player.Stand += player_Stand;
+            TextInfo myTI = new CultureInfo("en-GB", false).TextInfo;
+
+            System.Console.WriteLine($"[InitializeGame] joinedPlayers={(joinedPlayers == null ? "null" : joinedPlayers.Count.ToString())}, networkSession={(networkSession == null ? "null" : "not null")}");
+
+            // Add players from lobby
+            if (joinedPlayers != null && joinedPlayers.Count > 0)
+            {
+                // Determine how many are human players (from network session)
+                int humanPlayerCount = joinedPlayers.Count;
+                if (networkSession != null)
+                {
+                    // In network games, only count actual network gamers as human players
+                    humanPlayerCount = networkSession.AllGamers.Count;
+                }
+
+                // Add human players
+                for (int i = 0; i < humanPlayerCount; i++)
+                {
+                    var player = new BlackjackPlayer(myTI.ToTitleCase(joinedPlayers[i]), blackJackGame);
+
+                    // Load saved balance if persistent winnings is enabled (single-player only, first player)
+                    if (i == 0 && !blackJackGame.IsNetworkGame && GameSettings.Instance.PersistWinnings)
+                    {
+                        // Reset to default if saved balance is 0 or negative
+                        if (GameSettings.Instance.SavedPlayerBalance <= 0)
+                        {
+                            GameSettings.Instance.SavedPlayerBalance = 500f;
+                            GameSettings.Save();
+                            System.Console.WriteLine($"[PersistWinnings] (Path 1) Reset negative/zero balance to default: 500");
+                        }
+                        player.Balance = GameSettings.Instance.SavedPlayerBalance;
+                        System.Console.WriteLine($"[PersistWinnings] (Path 1) Loaded balance: {player.Balance}");
+                    }
+                    else
+                    {
+                        System.Console.WriteLine($"[PersistWinnings] (Path 1) Using default balance: {player.Balance} (i={i}, IsNetworkGame={blackJackGame.IsNetworkGame}, PersistWinnings={GameSettings.Instance.PersistWinnings})");
+                    }
+
+                    blackJackGame.AddPlayer(player);
+                }
+
+                // Only the host creates AI players in network games
+                // In local games, always create AI players
+                if (networkSession == null || networkSession.IsHost)
+                {
+                    // Fill remaining slots with AI based on settings
+                    int maxAI = GameSettings.Instance.MaxAIPlayers;
+                    int aiSlotsToFill = GameSettings.Instance.FillEmptySlotsWithAI
+                        ? Math.Min(BlackjackConstants.MaxPlayers - humanPlayerCount, maxAI)
+                        : Math.Min(maxAI, BlackjackConstants.MaxPlayers - humanPlayerCount);
+
+                    for (int i = 0; i < aiSlotsToFill && i < BlackjackConstants.DefaultAINames.Length; i++)
+                    {
+                        BlackjackAIPlayer player = new BlackjackAIPlayer(BlackjackConstants.DefaultAINames[i], blackJackGame);
+                        blackJackGame.AddPlayer(player);
+                        player.Hit += player_Hit;
+                        player.Stand += player_Stand;
+                    }
+                }
+            }
+            else
+            {
+                // Fallback: single player + 6 AI (local game only)
+                var defaultPlayerName = Environment.UserName;
+                if (string.IsNullOrEmpty(defaultPlayerName))
+                {
+                    defaultPlayerName = "You";
+                }
+
+                var humanPlayer = new BlackjackPlayer(myTI.ToTitleCase(defaultPlayerName), blackJackGame);
+
+                // Load saved balance if persistent winnings is enabled (single-player only)
+                if (GameSettings.Instance.PersistWinnings)
+                {
+                    // Reset to default if saved balance is 0 or negative
+                    if (GameSettings.Instance.SavedPlayerBalance <= 0)
+                    {
+                        GameSettings.Instance.SavedPlayerBalance = 500f;
+                        GameSettings.Save();
+                        System.Console.WriteLine($"[PersistWinnings] (Path 2 - Fallback) Reset negative/zero balance to default: 500");
+                    }
+                    humanPlayer.Balance = GameSettings.Instance.SavedPlayerBalance;
+                    System.Console.WriteLine($"[PersistWinnings] (Path 2 - Fallback) Loaded balance: {humanPlayer.Balance}");
+                }
+                else
+                {
+                    System.Console.WriteLine($"[PersistWinnings] (Path 2 - Fallback) Using default balance: {humanPlayer.Balance}");
+                }
+
+                blackJackGame.AddPlayer(humanPlayer);
+
+                // Add AI players based on settings
+                int maxAI = GameSettings.Instance.MaxAIPlayers;
+                for (int i = 0; i < maxAI && i < BlackjackConstants.DefaultAINames.Length; i++)
+                {
+                    BlackjackAIPlayer player = new BlackjackAIPlayer(BlackjackConstants.DefaultAINames[i], blackJackGame);
+                    blackJackGame.AddPlayer(player);
+                    player.Hit += player_Hit;
+                    player.Stand += player_Stand;
+                }
+            }
+
+            // Calculate player positions now that we know the actual number of players
+            int totalPlayers = blackJackGame.Players.Count;
+            CalculatePlayerPositions(totalPlayers);
+
+            // Update the table to show only the actual number of player spots
+            blackJackGame.GameTable.SetPlaces(totalPlayers);
 
             // Load UI assets
             string[] assets = { "blackjack", "bust", "lose", "push", "win", "pass", "Shuffle_" + theme };
@@ -173,7 +519,87 @@ namespace Blackjack
                 blackJackGame.LoadUITexture("UI", assets[chipIndex]);
             }
 
-            blackJackGame.StartRound();
+            // Host broadcasts the full player list to clients so they know about AI players
+            if (networkSession != null && networkSession.IsHost)
+            {
+                blackJackGame.BroadcastPlayerList();
+            }
+
+            // In network games, determine which player index belongs to the local user
+            if (networkSession != null && networkSession.LocalGamers.Count > 0)
+            {
+                string localGamerTag = networkSession.LocalGamers[0].Gamertag;
+
+                // Find which player in the game matches the local gamer's tag
+                for (int i = 0; i < blackJackGame.Players.Count; i++)
+                {
+                    if (blackJackGame.Players[i].Name.Equals(localGamerTag, StringComparison.OrdinalIgnoreCase))
+                    {
+                        // Found the local player - tell BetGameComponent
+                        var betComponent = blackJackGame.Game.Components.OfType<BetGameComponent>().FirstOrDefault();
+                        if (betComponent != null)
+                        {
+                            betComponent.LocalPlayerIndex = i;
+                        }
+                        break;
+                    }
+                }
+            }
+
+            // Only start the round immediately if we're the host or in a local game
+            // Clients need to wait for the PlayerListSync packet first
+            if (networkSession == null || networkSession.IsHost)
+            {
+                blackJackGame.StartRound();
+            }
+            // Note: Clients will call StartRound() after receiving PlayerListSync packet
+        }
+
+        /// <summary>
+        /// Calculates player positions dynamically based on the actual number of players.
+        /// Centers and spreads them evenly across the table.
+        /// </summary>
+        /// <param name="playerCount">The actual number of players in the game.</param>
+        private void CalculatePlayerPositions(int playerCount)
+        {
+            if (playerCount <= 0)
+            {
+                playerCardOffset = new Vector2[0];
+                return;
+            }
+
+            playerCardOffset = new Vector2[playerCount];
+
+            float bottomY = safeArea.Height * 0.41f;  // ~302px - bottom positions (moved down more)
+            float topY = safeArea.Height * 0.36f;     // ~266px - top positions (alternating arc, moved down more)
+
+            // Calculate spacing based on number of players
+            // More players = tighter spacing, fewer players = more spread out
+            float leftMargin = safeArea.Width * 0.10f;
+            float rightMargin = safeArea.Width * 0.10f;
+            float usableWidth = safeArea.Width - leftMargin - rightMargin;
+
+            // Distribute players evenly across the usable width
+            for (int i = 0; i < playerCount; i++)
+            {
+                float xPosition;
+                if (playerCount == 1)
+                {
+                    // Single player: center
+                    xPosition = safeArea.Width * 0.5f;
+                }
+                else
+                {
+                    // Multiple players: spread evenly
+                    float spacing = usableWidth / (playerCount - 1);
+                    xPosition = leftMargin + (i * spacing);
+                }
+
+                // Alternate between bottom and top Y positions for visual variety
+                float yPosition = (i % 2 == 0) ? bottomY : topY;
+
+                playerCardOffset[i] = new Vector2(xPosition, yPosition);
+            }
         }
 
         /// <summary>
@@ -183,15 +609,15 @@ namespace Blackjack
         /// <returns>The position for the player's hand on the game table.</returns>
         private Vector2 GetPlayerCardPosition(int player)
         {
-            switch (player)
+            // Support dynamic number of players
+            if (playerCardOffset != null && player >= 0 && player < playerCardOffset.Length)
             {
-                case 0:
-                case 1:
-                case 2:
-                    return playerCardOffset[player];
-                default:
-                    throw new ArgumentException(
-                        "Player index should be between 0 and 2", "player");
+                return playerCardOffset[player];
+            }
+            else
+            {
+                // Fallback to center if positions haven't been calculated yet
+                return new Vector2(safeArea.Width * 0.5f, safeArea.Height * 0.30f);
             }
         }
 
@@ -285,6 +711,83 @@ namespace Blackjack
         void player_Double(object sender, EventArgs e)
         {
             blackJackGame.Double();
+        }
+
+        // Phase 5: Gameplay Action Packet Handlers
+        private void HandleHitActionPacket(NetworkGamer sender, PacketReader reader)
+        {
+            var packet = Blackjack.Networking.HitActionPacket.Deserialize(reader);
+
+            // Only clients should process this - host already executed the action locally
+            if (networkSession != null && !networkSession.IsHost)
+            {
+                blackJackGame.HandleReceivedHitAction(packet.PlayerIndex);
+            }
+        }
+
+        private void HandleStandActionPacket(NetworkGamer sender, PacketReader reader)
+        {
+            var packet = Blackjack.Networking.StandActionPacket.Deserialize(reader);
+
+            // Only clients should process this - host already executed the action locally
+            if (networkSession != null && !networkSession.IsHost)
+            {
+                blackJackGame.HandleReceivedStandAction(packet.PlayerIndex);
+            }
+        }
+
+        private void HandleDoubleActionPacket(NetworkGamer sender, PacketReader reader)
+        {
+            var packet = Blackjack.Networking.DoubleActionPacket.Deserialize(reader);
+
+            // Only clients should process this - host already executed the action locally
+            if (networkSession != null && !networkSession.IsHost)
+            {
+                blackJackGame.HandleReceivedDoubleAction(packet.PlayerIndex);
+            }
+        }
+
+        private void HandleSplitActionPacket(NetworkGamer sender, PacketReader reader)
+        {
+            var packet = Blackjack.Networking.SplitActionPacket.Deserialize(reader);
+
+            // Only clients should process this - host already executed the action locally
+            if (networkSession != null && !networkSession.IsHost)
+            {
+                blackJackGame.HandleReceivedSplitAction(packet.PlayerIndex);
+            }
+        }
+
+        private void HandleInsuranceActionPacket(NetworkGamer sender, PacketReader reader)
+        {
+            var packet = Blackjack.Networking.InsuranceActionPacket.Deserialize(reader);
+
+            // Only clients should process this - host already executed the action locally
+            if (networkSession != null && !networkSession.IsHost)
+            {
+                blackJackGame.HandleReceivedInsuranceAction(packet.PlayerIndex);
+            }
+        }
+
+        private void HandleTurnChangedPacket(NetworkGamer sender, PacketReader reader)
+        {
+            var packet = Blackjack.Networking.TurnChangedPacket.Deserialize(reader);
+            System.Console.WriteLine($"[PACKET] Turn changed from {sender.Gamertag}, current player index: {packet.CurrentPlayerIndex}");
+
+            blackJackGame.HandleReceivedTurnChanged(packet.CurrentPlayerIndex);
+        }
+
+        /// <summary>
+        /// Updates button text after language change
+        /// </summary>
+        public void UpdateButtonText()
+        {
+            if (blackJackGame != null)
+            {
+                blackJackGame.UpdateButtonText();
+                var betComponent = blackJackGame.Game.Components.OfType<BetGameComponent>().FirstOrDefault();
+                betComponent?.UpdateButtonText();
+            }
         }
     }
 }

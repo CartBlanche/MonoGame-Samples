@@ -10,9 +10,30 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Blackjack;
 using CardsFramework;
+using Microsoft.Xna.Framework.Net;
 
 namespace GameStateManagement
 {
+    /// <summary>
+    /// MenuEntry subclass for displaying AvailableNetworkSession info.
+    /// </summary>
+    class AvailableSessionMenuEntry : MenuEntry
+    {
+        public AvailableNetworkSession AvailableSession { get; }
+
+        public AvailableSessionMenuEntry(AvailableNetworkSession session)
+            : base(GetMenuItemText(session))
+        {
+            AvailableSession = session;
+        }
+
+        static string GetMenuItemText(AvailableNetworkSession session)
+        {
+            int totalSlots = session.CurrentGamerCount + session.OpenPublicGamerSlots;
+            return $"{session.HostGamertag} ({session.CurrentGamerCount}/{totalSlots})";
+        }
+    }
+
     /// <summary>
     /// Helper class represents a single entry in a MenuScreen. By default this
     /// just draws the entry text string, but it can be customized to display menu
@@ -58,6 +79,11 @@ namespace GameStateManagement
         public float Scale { get; set; }
 
         public float Rotation { get; set; }
+
+        /// <summary>
+        /// Optional tag for storing custom data (e.g., session reference).
+        /// </summary>
+        public object Tag { get; set; }
 
         /// <summary>
         /// Event raised when the menu entry is selected.
@@ -115,15 +141,16 @@ namespace GameStateManagement
         public virtual void Draw(MenuScreen screen, bool isSelected, GameTime gameTime)
         {
             Color textColor = isSelected ? Color.White : Color.Black;
-            Color tintColor = isSelected ? Color.White : Color.Gray;
+
+            // Check if this menu entry is currently being pressed
+            bool isPressed = screen.IsMouseDown && isSelected;
 
             if (UIUtility.IsMobile)
             {
                 // there is no such thing as a selected item on Windows Phone, so we always
                 // force isSelected to be false
-
                 isSelected = false;
-                tintColor = Color.White;
+                isPressed = false;
                 textColor = Color.Black;
             }
 
@@ -132,7 +159,9 @@ namespace GameStateManagement
             SpriteBatch spriteBatch = screenManager.SpriteBatch;
             SpriteFont font = screenManager.Font;
 
-            spriteBatch.Draw(screenManager.ButtonBackground, destination, tintColor);
+            // Use pressed texture when button is being pressed, otherwise use regular texture
+            Texture2D buttonTexture = isPressed ? screenManager.ButtonPressed : screenManager.ButtonBackground;
+            spriteBatch.Draw(buttonTexture, destination, Color.White);
 
             spriteBatch.DrawString(screenManager.Font, text, getTextPosition(screen),
                 textColor, Rotation, Vector2.Zero, Scale, SpriteEffects.None, 0);
@@ -158,17 +187,14 @@ namespace GameStateManagement
         private Vector2 getTextPosition(MenuScreen screen)
         {
             Vector2 textPosition = Vector2.Zero;
-            if (Scale == 1f)
-            {
-                textPosition = new Vector2((int)destination.X + destination.Width / 2 - GetWidth(screen) / 2,
-                                   (int)destination.Y);
-            }
-            else
-            {
-                textPosition = new Vector2(
-                    (int)destination.X + (destination.Width / 2 - ((GetWidth(screen) / 2) * Scale)),
-                                 (int)destination.Y + (GetHeight(screen) - GetHeight(screen) * Scale) / 2);
-            }
+
+            // Calculate horizontal centering
+            float centeredX = destination.X + (destination.Width / 2.0f) - (GetWidth(screen) / 2.0f) * Scale;
+
+            // Calculate vertical centering
+            float centeredY = destination.Y + (destination.Height / 2.0f) - (GetHeight(screen) / 2.0f) * Scale;
+
+            textPosition = new Vector2(centeredX, centeredY);
 
             return textPosition;
         }

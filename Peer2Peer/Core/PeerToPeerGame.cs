@@ -32,7 +32,9 @@ namespace PeerToPeer
 		SpriteBatch spriteBatch;
 		SpriteFont font;
 		KeyboardState currentKeyboardState;
+		KeyboardState previousKeyboardState;
 		GamePadState currentGamePadState;
+		GamePadState previousGamePadState;
 		TouchCollection currentTouchState;
 		NetworkSession networkSession;
 		PacketWriter packetWriter = new PacketWriter();
@@ -431,6 +433,9 @@ namespace PeerToPeer
 		/// </summary>
 		private void HandleInput()
 		{
+			previousKeyboardState = currentKeyboardState;
+			previousGamePadState = currentGamePadState;
+			
 			currentKeyboardState = Keyboard.GetState();
 			currentGamePadState = GamePad.GetState(PlayerIndex.One);
 			currentTouchState = TouchPanel.GetState();
@@ -438,6 +443,13 @@ namespace PeerToPeer
 			// Check for exit.
 			if (IsActive && IsPressed(Keys.Escape, Buttons.Back))
 			{
+				// Phase 2: Gracefully leave session before exiting
+				if (networkSession != null)
+				{
+					Console.WriteLine("[GAME] Gracefully leaving session...");
+					networkSession.Leave("User quit");
+					networkSession = null;
+				}
 				Exit();
 			}
 
@@ -477,12 +489,15 @@ namespace PeerToPeer
 		}
 
 		/// <summary>
-		/// Checks if the specified button is pressed on either keyboard or gamepad.
+		/// Checks if the specified button was just pressed (not held) on either keyboard or gamepad.
 		/// </summary>
 		bool IsPressed(Keys key, Buttons button)
 		{
-			return (currentKeyboardState.IsKeyDown(key) ||
-			currentGamePadState.IsButtonDown(button));
+			// Check for key/button transition: was up last frame, is down this frame
+			bool keyJustPressed = currentKeyboardState.IsKeyDown(key) && !previousKeyboardState.IsKeyDown(key);
+			bool buttonJustPressed = currentGamePadState.IsButtonDown(button) && !previousGamePadState.IsButtonDown(button);
+			
+			return keyJustPressed || buttonJustPressed;
 		}
 
 
