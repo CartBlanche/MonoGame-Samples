@@ -332,4 +332,22 @@ Botón B, Esc = Cancelar</value>
   <data name="NewHand" xml:space="preserve">
     <value>Nueva mano</value>
   </data>
+  <data name="AIPlayer1" xml:space="preserve">
+    <value>Benito</value>
+  </data>
+  <data name="AIPlayer2" xml:space="preserve">
+    <value>Carlos</value>
+  </data>
+  <data name="AIPlayer3" xml:space="preserve">
+    <value>Diana</value>
+  </data>
+  <data name="AIPlayer4" xml:space="preserve">
+    <value>Eduardo</value>
+  </data>
+  <data name="AIPlayer5" xml:space="preserve">
+    <value>Fernanda</value>
+  </data>
+  <data name="AIPlayer6" xml:space="preserve">
+    <value>Gerardo</value>
+  </data>
 </root>

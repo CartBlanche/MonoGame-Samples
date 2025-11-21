@@ -331,4 +331,22 @@ Bボタン、Esc = キャンセル</value>
   <data name="NewHand" xml:space="preserve">
     <value>新しい手</value>
   </data>
+  <data name="AIPlayer1" xml:space="preserve">
+    <value>健太</value>
+  </data>
+  <data name="AIPlayer2" xml:space="preserve">
+    <value>大輔</value>
+  </data>
+  <data name="AIPlayer3" xml:space="preserve">
+    <value>恵美</value>
+  </data>
+  <data name="AIPlayer4" xml:space="preserve">
+    <value>一郎</value>
+  </data>
+  <data name="AIPlayer5" xml:space="preserve">
+    <value>花子</value>
+  </data>
+  <data name="AIPlayer6" xml:space="preserve">
+    <value>剛</value>
+  </data>
 </root>

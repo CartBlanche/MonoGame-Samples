@@ -1046,5 +1046,71 @@ namespace Blackjack
                 return ResourceManager.GetString("NewHand", resourceCulture);
             }
         }
+
+        /// <summary>
+        ///   Looks up a localized AI player name 1.
+        /// </summary>
+        internal static string AIPlayer1
+        {
+            get
+            {
+                return ResourceManager.GetString("AIPlayer1", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized AI player name 2.
+        /// </summary>
+        internal static string AIPlayer2
+        {
+            get
+            {
+                return ResourceManager.GetString("AIPlayer2", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized AI player name 3.
+        /// </summary>
+        internal static string AIPlayer3
+        {
+            get
+            {
+                return ResourceManager.GetString("AIPlayer3", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized AI player name 4.
+        /// </summary>
+        internal static string AIPlayer4
+        {
+            get
+            {
+                return ResourceManager.GetString("AIPlayer4", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized AI player name 5.
+        /// </summary>
+        internal static string AIPlayer5
+        {
+            get
+            {
+                return ResourceManager.GetString("AIPlayer5", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized AI player name 6.
+        /// </summary>
+        internal static string AIPlayer6
+        {
+            get
+            {
+                return ResourceManager.GetString("AIPlayer6", resourceCulture);
+            }
+        }
     }
 }

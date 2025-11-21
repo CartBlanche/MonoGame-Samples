@@ -59,7 +59,7 @@
     <Start>&#x30BB;</Start>
     <End>&#x30BB;</End>
     <Start>&#x30BF;</Start>
-    <End>&#x30BF;</End>
+    <End>&#x30C0;</End>
     <Start>&#x30C3;</Start>
     <End>&#x30C3;</End>
     <Start>&#x30C6;</Start>
@@ -70,7 +70,7 @@
     <End>&#x30CD;</End>
     <Start>&#x30CF;</Start>
     <End>&#x30CF;</End>
-    <Start>&#x30D3;</Start>
+    <Start>&#x30D2;</Start>
     <End>&#x30D3;</End>
     <Start>&#x30D5;</Start>
     <End>&#x30D7;</End>
@@ -85,8 +85,6 @@
     <Start>&#x30E7;</Start>
     <End>&#x30E7;</End>
     <Start>&#x30E9;</Start>
-    <End>&#x30E9;</End>
-    <Start>&#x30EB;</Start>
     <End>&#x30ED;</End>
     <Start>&#x30EF;</Start>
     <End>&#x30EF;</End>
@@ -110,6 +108,8 @@
     <End>&#x500B;</End>
     <Start>&#x505C;</Start>
     <End>&#x505C;</End>
+    <Start>&#x5065;</Start>
+    <End>&#x5065;</End>
     <Start>&#x5099;</Start>
     <End>&#x5099;</End>
     <Start>&#x5165;</Start>
@@ -124,6 +124,8 @@
     <End>&#x5229;</End>
     <Start>&#x524D;</Start>
     <End>&#x524D;</End>
+    <Start>&#x525B;</Start>
+    <End>&#x525B;</End>
     <Start>&#x52A0;</Start>
     <End>&#x52A0;</End>
     <Start>&#x52B9;</Start>
@@ -140,10 +142,14 @@
     <End>&#x57CB;</End>
     <Start>&#x5927;</Start>
     <End>&#x5927;</End>
+    <Start>&#x592A;</Start>
+    <End>&#x592A;</End>
     <Start>&#x5931;</Start>
     <End>&#x5931;</End>
     <Start>&#x59CB;</Start>
     <End>&#x59CB;</End>
+    <Start>&#x5B50;</Start>
+    <End>&#x5B50;</End>
     <Start>&#x5B9A;</Start>
     <End>&#x5B9A;</End>
     <Start>&#x5EA6;</Start>
@@ -156,10 +162,14 @@
     <End>&#x5FC5;</End>
     <Start>&#x6027;</Start>
     <End>&#x6027;</End>
+    <Start>&#x6075;</Start>
+    <End>&#x6075;</End>
     <Start>&#x6210;</Start>
     <End>&#x6210;</End>
     <Start>&#x623B;</Start>
     <End>&#x623B;</End>
+    <Start>&#x624B;</Start>
+    <End>&#x624B;</End>
     <Start>&#x6301;</Start>
     <End>&#x6301;</End>
     <Start>&#x63A5;</Start>
@@ -220,10 +230,14 @@
     <End>&#x7D42;</End>
     <Start>&#x7D9A;</Start>
     <End>&#x7D9A;</End>
+    <Start>&#x7F8E;</Start>
+    <End>&#x7F8E;</End>
     <Start>&#x80FD;</Start>
     <End>&#x80FD;</End>
     <Start>&#x81EA;</Start>
     <End>&#x81EA;</End>
+    <Start>&#x82B1;</Start>
+    <End>&#x82B1;</End>
     <Start>&#x8868;</Start>
     <End>&#x8868;</End>
     <Start>&#x88CF;</Start>
@@ -242,20 +256,30 @@
     <End>&#x8A9E;</End>
     <Start>&#x8AAD;</Start>
     <End>&#x8AAD;</End>
+    <Start>&#x8CA8;</Start>
+    <End>&#x8CA8;</End>
     <Start>&#x8CDE;</Start>
     <End>&#x8CDE;</End>
     <Start>&#x8CFC;</Start>
     <End>&#x8CFC;</End>
+    <Start>&#x8F14;</Start>
+    <End>&#x8F14;</End>
     <Start>&#x8FBC;</Start>
     <End>&#x8FBC;</End>
     <Start>&#x8FFD;</Start>
     <End>&#x8FFD;</End>
     <Start>&#x9000;</Start>
     <End>&#x9000;</End>
+    <Start>&#x901A;</Start>
+    <End>&#x901A;</End>
     <Start>&#x901F;</Start>
     <End>&#x901F;</End>
     <Start>&#x9069;</Start>
     <End>&#x9069;</End>
+    <Start>&#x90CE;</Start>
+    <End>&#x90CE;</End>
+    <Start>&#x914D;</Start>
+    <End>&#x914D;</End>
     <Start>&#x91CF;</Start>
     <End>&#x91CF;</End>
     <Start>&#x91D1;</Start>
