@@ -10,8 +10,9 @@ with.
 
     <!--
     Modify this string to change the font that will be imported.
+    Using Arial Unicode for better currency symbol support
     -->
-    <FontName>Arial</FontName>
+    <FontName>Arial Unicode</FontName>
 
     <!--
     Size is a float value, measured in points. Modify this value to change
@@ -60,12 +61,7 @@ with.
         <Start>&#x0400;</Start>
         <End>&#x04FF;</End>
       </CharacterRegion>
-      <!-- Ruble sign (₽) Unicode U+20BD / decimal 8381 -->
-      <CharacterRegion>
-        <Start>&#8381;</Start>
-        <End>&#8381;</End>
-      </CharacterRegion>
-      <!-- Other currency symbols -->
+      <!-- Currency symbols (includes €, £, ¥, ₽, etc.) -->
       <CharacterRegion>
         <Start>&#x20A0;</Start>
         <End>&#x20CF;</End>

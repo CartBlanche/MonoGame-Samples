@@ -195,7 +195,7 @@ namespace Blackjack
                         break;
                     case "ru":
                         instance.language = "Русский";
-                        instance.Currency = "₽";
+                        instance.Currency = "R";
                         break;
                     default:
                         instance.language = "English";

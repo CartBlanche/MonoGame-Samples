@@ -281,8 +281,8 @@ namespace Blackjack
                 "$" => "€",
                 "€" => "£",
                 "£" => "¥",
-                "¥" => "₽",
-                "₽" => "$",
+                "¥" => "R",
+                "R" => "$",
                 _ => "$"
             };
             GameSettings.Save();
@@ -292,8 +292,8 @@ namespace Blackjack
         {
             settings.Currency = settings.Currency switch
             {
-                "$" => "₽",
-                "₽" => "¥",
+                "$" => "R",
+                "R" => "¥",
                 "¥" => "£",
                 "£" => "€",
                 "€" => "$",

@@ -8,9 +8,10 @@ Includes optimized character ranges for Japanese and Chinese translations
 
     <!--
     Modify this string to change the font that will be imported.
+    Using Arial Unicode for better currency symbol support
     -->
-    <FontName>/System/Library/Fonts/Supplemental/Arial Unicode.ttf</FontName>
-
+    <FontName>Arial Unicode</FontName>
+    
     <!--
     Size is a float value, measured in points. Modify this value to change
     the size of the font.
