@@ -128,6 +128,11 @@ namespace Blackjack
                 networkSession.GamerLeft -= OnGamerLeft;
             }
 
+            // Exit all current screens before returning to main menu
+            foreach (GameScreen screen in ScreenManager.GetScreens())
+                screen.ExitScreen();
+
+            ScreenManager.AddScreen(new BackgroundScreen(), null);
             ScreenManager.AddScreen(new MainMenuScreen(), null);
         }
 
