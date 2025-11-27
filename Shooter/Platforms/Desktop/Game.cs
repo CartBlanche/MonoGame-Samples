@@ -365,39 +365,126 @@ public class ShooterGame : Game
     /// - Rotation: Slightly tilted for visual interest
     /// - Scale: Often enlarged because camera is so close
     /// </summary>
+    // Store weapon viewmodel entities for switching
+    private Core.Entities.Entity? _primaryWeaponViewModel;
+    private Core.Entities.Entity? _secondaryWeaponViewModel;
+    private int _lastWeaponIndex = -1;
+
     private void LoadWeaponModel(Core.Entities.Entity playerEntity)
     {
         try
         {
-            // Create a weapon entity as a "child" of the player
-            var weaponEntity = new Core.Entities.Entity("PlayerWeaponViewModel");
-            var weaponTransform = weaponEntity.AddComponent<Core.Components.Transform3D>();
-
-            // Position weapon in front of camera (right, down, forward relative to view)
-            // These values are tuned to match Unity FPS Microgame's weapon position
-            // Note: This is a static position for now - Phase 3 will attach to camera transform
-            // Camera at (0, 2, 10) looks toward -Z, so weapon at Z=9 is in front
-            weaponTransform.Position = playerEntity.Transform.Position + new System.Numerics.Vector3(0.5f, -0.5f, -1.5f);
-
-            // Add ModelMeshRenderer and load the weapon model
-            var weaponRenderer = weaponEntity.AddComponent<Core.Components.ModelMeshRenderer>();
-            weaponRenderer.LoadModel(Content, "Models/Mesh_Weapon_Primary");
-            weaponRenderer.Scale = 0.3f; // Much smaller - Unity models are often too large
-            weaponRenderer.TintColor = new System.Numerics.Vector4(1, 1, 1, 1); // No tint
-
-            // Add to scene
             var scene = _sceneManager?.ActiveScene;
+
+            // The camera is on the player entity, not a separate entity
+            var cameraEntity = playerEntity;
+
+            // Load PRIMARY weapon viewmodel (Pistol - slot 0)
+            _primaryWeaponViewModel = CreateWeaponViewModel(
+                "PrimaryWeaponViewModel",
+                "Models/Mesh_Weapon_Primary",
+                cameraEntity,
+                new System.Numerics.Vector3(0.5f, -0.5f, -1.5f),
+                0.3f);
+
+            // Load SECONDARY weapon viewmodel (Assault Rifle - slot 1)
+            _secondaryWeaponViewModel = CreateWeaponViewModel(
+                "SecondaryWeaponViewModel",
+                "Models/Mesh_Weapon_Secondary",
+                cameraEntity,
+                new System.Numerics.Vector3(0.5f, -0.5f, -1.5f),
+                0.3f);
+
+            // Add both to scene
             if (scene != null)
             {
-                scene.AddEntity(weaponEntity);
-                weaponEntity.Initialize();
-                Console.WriteLine("[LoadContent] Loaded weapon model 'Mesh_Weapon_Primary' for player view");
+                scene.AddEntity(_primaryWeaponViewModel);
+                _primaryWeaponViewModel.Initialize();
+
+                scene.AddEntity(_secondaryWeaponViewModel);
+                _secondaryWeaponViewModel.Initialize();
+
+                // Start with primary weapon visible
+                SetActiveWeaponViewModel(0);
+
+                Console.WriteLine("[LoadContent] Loaded both weapon viewmodels with camera tracking");
             }
         }
         catch (Exception ex)
         {
-            Console.WriteLine($"[LoadContent] Failed to load weapon model: {ex.Message}");
-            Console.WriteLine("  Make sure Content.mgcb has been built and Models/Mesh_Weapon_Primary.fbx is included");
+            Console.WriteLine($"[LoadContent] Failed to load weapon models: {ex.Message}");
+            Console.WriteLine("  Make sure Content.mgcb has been built and weapon FBX files are included");
+        }
+    }
+
+    /// <summary>
+    /// Helper to create a weapon viewmodel entity
+    /// </summary>
+    private Core.Entities.Entity CreateWeaponViewModel(
+        string name,
+        string modelPath,
+        Core.Entities.Entity? cameraEntity,
+        System.Numerics.Vector3 offset,
+        float scale)
+    {
+        var weaponEntity = new Core.Entities.Entity(name);
+        weaponEntity.AddComponent<Core.Components.Transform3D>();
+
+        var viewModel = weaponEntity.AddComponent<Gameplay.Components.WeaponViewModel>();
+        if (viewModel != null)
+        {
+            viewModel.CameraEntity = cameraEntity;
+            viewModel.ViewmodelOffset = offset;
+        }
+
+        var weaponRenderer = weaponEntity.AddComponent<Core.Components.ModelMeshRenderer>();
+        weaponRenderer.LoadModel(Content, modelPath);
+        weaponRenderer.Scale = scale;
+        weaponRenderer.TintColor = new System.Numerics.Vector4(1, 1, 1, 1);
+
+        return weaponEntity;
+    }
+
+    /// <summary>
+    /// Switch which weapon viewmodel is visible based on equipped weapon slot
+    /// </summary>
+    private void SetActiveWeaponViewModel(int weaponIndex)
+    {
+        // Hide all viewmodels first
+        if (_primaryWeaponViewModel != null)
+        {
+            var primaryRenderer = _primaryWeaponViewModel.GetComponent<Core.Components.ModelMeshRenderer>();
+            if (primaryRenderer != null)
+                primaryRenderer.Visible = false;
+        }
+
+        if (_secondaryWeaponViewModel != null)
+        {
+            var secondaryRenderer = _secondaryWeaponViewModel.GetComponent<Core.Components.ModelMeshRenderer>();
+            if (secondaryRenderer != null)
+                secondaryRenderer.Visible = false;
+        }
+
+        // Show the active weapon viewmodel
+        switch (weaponIndex)
+        {
+            case 0: // Primary weapon (Pistol)
+                if (_primaryWeaponViewModel != null)
+                {
+                    var primaryRenderer = _primaryWeaponViewModel.GetComponent<Core.Components.ModelMeshRenderer>();
+                    if (primaryRenderer != null)
+                        primaryRenderer.Visible = true;
+                }
+                break;
+
+            case 1: // Secondary weapon (Assault Rifle)
+                if (_secondaryWeaponViewModel != null)
+                {
+                    var secondaryRenderer = _secondaryWeaponViewModel.GetComponent<Core.Components.ModelMeshRenderer>();
+                    if (secondaryRenderer != null)
+                        secondaryRenderer.Visible = true;
+                }
+                break;
         }
     }
 
@@ -492,7 +579,19 @@ public class ShooterGame : Game
         );
         
         _sceneManager?.Update(coreGameTime);
-        
+
+        // Check for weapon switching (update viewmodel visibility)
+        var playerEntity = _sceneManager?.ActiveScene?.FindEntitiesByTag("Player").FirstOrDefault();
+        if (playerEntity != null)
+        {
+            var weaponController = playerEntity.GetComponent<Gameplay.Components.WeaponController>();
+            if (weaponController != null && weaponController.CurrentWeaponIndex != _lastWeaponIndex)
+            {
+                SetActiveWeaponViewModel(weaponController.CurrentWeaponIndex);
+                _lastWeaponIndex = weaponController.CurrentWeaponIndex;
+            }
+        }
+
         // Step physics simulation with fixed timestep
         // We use the scaled delta time from TimeService to support slow-motion/time effects
         // Guard against zero/negative timestep on first frame
@@ -567,15 +666,10 @@ public class ShooterGame : Game
                     var modelRenderer = entity.GetComponent<Core.Components.ModelMeshRenderer>();
                     if (modelRenderer != null)
                     {
-                        var pos = entity.Transform.Position;
-                        Console.WriteLine($"[Render] Found ModelMeshRenderer on '{entity.Name}' at ({pos.X:F2}, {pos.Y:F2}, {pos.Z:F2})");
                         modelRenderers.Add(modelRenderer);
                     }
                 }
             }
-
-            // Debug: Log what we're about to render
-            Console.WriteLine($"[Render] Found {renderables.Count} procedural meshes, {modelRenderers.Count} models");
 
             // Render the scene (procedural meshes first)
             graphics.RenderScene(camera, renderables);

@@ -231,19 +231,8 @@ public class ForwardGraphicsProvider : IGraphicsProvider
         // Draw each model
         foreach (var modelRenderer in modelRenderers)
         {
-            if (!modelRenderer.Visible)
-            {
-                Console.WriteLine($"[RenderModels] Skipping invisible model");
+            if (!modelRenderer.Visible || modelRenderer.Model == null)
                 continue;
-            }
-
-            if (modelRenderer.Model == null)
-            {
-                Console.WriteLine($"[RenderModels] Skipping null model");
-                continue;
-            }
-
-            Console.WriteLine($"[RenderModels] Drawing model with {modelRenderer.Model.Meshes.Count} meshes, scale={modelRenderer.Scale}");
 
             // ModelMeshRenderer handles its own drawing (it has MonoGame's BasicEffect embedded)
             modelRenderer.Draw(_graphicsDevice, Matrix.Identity, camera.ViewMatrix, camera.ProjectionMatrix);
