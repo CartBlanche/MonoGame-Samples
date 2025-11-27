@@ -160,66 +160,96 @@ public class ForwardGraphicsProvider : IGraphicsProvider
     
     /// <summary>
     /// Render all objects in the scene.
-    /// 
+    ///
     /// EDUCATIONAL NOTE - RENDERING LOOP:
-    /// 
+    ///
     /// For each object we want to draw:
     /// 1. Calculate world matrix (position/rotation/scale)
     /// 2. Set material properties (color, lighting)
     /// 3. Set transformation matrices on shader
     /// 4. Draw the mesh (send vertices to GPU)
-    /// 
+    ///
     /// Unity hides this loop inside Camera.Render() and handles:
     /// - Frustum culling (only draw visible objects)
     /// - Sorting (transparent objects last)
     /// - Batching (combine similar objects)
-    /// 
+    ///
     /// We're doing a simple version for education.
     /// Phase 2 will add culling and sorting.
+    ///
+    /// PHASE 2 UPDATE - MODEL RENDERING:
+    /// Now supports both:
+    /// - IRenderable (custom procedural meshes - cubes, spheres)
+    /// - ModelMeshRenderer (FBX models from Content Pipeline)
     /// </summary>
     public void RenderScene(ICamera camera, IEnumerable<IRenderable> renderables)
     {
         if (_graphicsDevice == null || _basicEffect == null)
             return;
-            
+
         _currentCamera = camera;
-        
+
         // Set up camera matrices on the effect
         // These transform vertices from world space to screen space
         _basicEffect.View = ToXnaMatrix(camera.ViewMatrix);
         _basicEffect.Projection = ToXnaMatrix(camera.ProjectionMatrix);
-        
+
         // Set up lighting
         ConfigureLighting(_basicEffect, _lighting);
-        
-        // Draw each renderable object
+
+        // Draw each renderable object (custom meshes)
         foreach (var renderable in renderables)
         {
             if (!renderable.Visible)
                 continue;
-                
+
             DrawRenderable(renderable);
         }
+    }
 
-        // Draw HUD overlay (ammo/reload status)
-        if (_hudFont != null && _playerWeaponController != null)
+    /// <summary>
+    /// Render all ModelMeshRenderer components in the scene.
+    /// This is called after RenderScene() to draw FBX models.
+    ///
+    /// EDUCATIONAL NOTE - WHY SEPARATE RENDERING?
+    /// We separate procedural meshes (cubes/spheres) from imported models because:
+    /// - Different data structures (Mesh vs Model)
+    /// - Different effects (our BasicEffect vs Model's embedded effects)
+    /// - Different optimization strategies
+    ///
+    /// Unity combines these automatically.
+    /// MonoGame exposes the distinction for more control.
+    /// </summary>
+    public void RenderModels(ICamera camera, IEnumerable<Core.Components.ModelMeshRenderer> modelRenderers)
+    {
+        if (_graphicsDevice == null)
         {
-            var weapon = _playerWeaponController.CurrentWeapon;
-            if (weapon != null && _graphicsDevice != null)
-            {
-                string hudText = $"{weapon.Name} | Ammo: {weapon.CurrentAmmoInMag}/{weapon.CurrentReserveAmmo}";
-                if (weapon.IsReloading)
-                    hudText += " | Reloading...";
-                else if (weapon.CurrentAmmoInMag == 0)
-                    hudText += " | OUT OF AMMO!";
+            Console.WriteLine("[RenderModels] ERROR: GraphicsDevice is null!");
+            return;
+        }
 
-                SpriteBatch spriteBatch = new SpriteBatch(_graphicsDevice);
-                spriteBatch.Begin();
-                spriteBatch.DrawString(_hudFont, hudText, new Microsoft.Xna.Framework.Vector2(20, 20), Microsoft.Xna.Framework.Color.White);
-                spriteBatch.End();
+        // Draw each model
+        foreach (var modelRenderer in modelRenderers)
+        {
+            if (!modelRenderer.Visible)
+            {
+                Console.WriteLine($"[RenderModels] Skipping invisible model");
+                continue;
             }
+
+            if (modelRenderer.Model == null)
+            {
+                Console.WriteLine($"[RenderModels] Skipping null model");
+                continue;
+            }
+
+            Console.WriteLine($"[RenderModels] Drawing model with {modelRenderer.Model.Meshes.Count} meshes, scale={modelRenderer.Scale}");
+
+            // ModelMeshRenderer handles its own drawing (it has MonoGame's BasicEffect embedded)
+            modelRenderer.Draw(_graphicsDevice, Matrix.Identity, camera.ViewMatrix, camera.ProjectionMatrix);
         }
     }
+
     
     /// <summary>
     /// Draw a single renderable object.

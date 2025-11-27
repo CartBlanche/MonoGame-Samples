@@ -494,6 +494,161 @@ audio.PlaySound("Shoot", transform.Position);
 
 ## Graphics & Rendering
 
+### ⚠️ CRITICAL: Transform Matrices Are Manual
+
+**This is the #1 porting issue from Unity to MonoGame!**
+
+| Unity | MonoGame |
+|-------|----------|
+| **Automatic** - Unity applies `GameObject.transform` to all renderers | **Manual** - YOU must build and apply world matrices |
+
+**The Problem:**
+
+In Unity, when you set `transform.position = new Vector3(10, 5, 2)`, the renderer **automatically** uses that position. In MonoGame, setting the entity's position does **nothing** unless you explicitly build a world matrix and pass it to the renderer.
+
+**Symptom:**
+- ✅ Models load successfully
+- ✅ Models appear in render loop
+- ❌ **All models render at world origin (0,0,0)** regardless of entity position
+
+**Unity (Automatic):**
+```csharp
+// Unity
+GameObject enemy = new GameObject("Enemy");
+enemy.transform.position = new Vector3(10, 5, 2);
+var renderer = enemy.AddComponent<MeshRenderer>();
+// ↑ Renderer AUTOMATICALLY uses transform.position = (10, 5, 2)
+```
+
+**MonoGame (Manual):**
+```csharp
+// MonoGame - WRONG (will render at origin!)
+Entity enemy = new Entity("Enemy");
+enemy.Transform.Position = new Vector3(10, 5, 2);
+var renderer = enemy.AddComponent<ModelMeshRenderer>();
+// ↑ Position is set, but renderer doesn't know about it!
+
+// MonoGame - CORRECT (builds SRT matrix)
+public void Draw(GraphicsDevice device, Matrix4x4 world, Matrix4x4 view, Matrix4x4 projection)
+{
+    // Get entity's transform
+    var transform = Owner.GetComponent<Transform3D>();
+
+    // Build SRT (Scale-Rotation-Translation) matrix
+    var scaleMatrix = Matrix4x4.CreateScale(_scale);
+    var rotationMatrix = Matrix4x4.CreateFromQuaternion(transform.Rotation);
+    var translationMatrix = Matrix4x4.CreateTranslation(transform.Position);
+
+    // Combine matrices (order matters: S * R * T)
+    var entityWorld = scaleMatrix * rotationMatrix * translationMatrix;
+    var finalWorld = entityWorld * world;
+
+    // Now the model renders at the correct position!
+    effect.World = ToXnaMatrix(finalWorld);
+    effect.View = ToXnaMatrix(view);
+    effect.Projection = ToXnaMatrix(projection);
+}
+```
+
+**Matrix Multiplication Order:**
+
+MonoGame uses **row-major** matrices. The transformation order is:
+```
+Final Position = Scale × Rotation × Translation × Vertex
+```
+
+**Common Mistakes:**
+
+❌ **Forgetting to use Position:**
+```csharp
+// WRONG - only applies scale
+var finalWorld = Matrix4x4.CreateScale(_scale) * world;
+```
+
+❌ **Wrong multiplication order:**
+```csharp
+// WRONG - translation happens before rotation!
+var finalWorld = translationMatrix * rotationMatrix * scaleMatrix;
+```
+
+❌ **Not combining with parent transform:**
+```csharp
+// WRONG - ignores parent entity's transform
+var finalWorld = scaleMatrix * rotationMatrix * translationMatrix;
+// Should be: finalWorld = (S * R * T) * parentWorld
+```
+
+✅ **CORRECT:**
+```csharp
+// Build entity's local transform
+var entityLocal = scaleMatrix * rotationMatrix * translationMatrix;
+
+// Combine with parent/world transform
+var finalWorld = entityLocal * world;
+```
+
+**Why Unity Hides This:**
+
+Unity's GameObject system automatically:
+1. Builds the SRT matrix from `transform.position`, `transform.rotation`, `transform.localScale`
+2. Handles parent-child hierarchy matrices
+3. Passes the final world matrix to all renderers
+4. Updates matrices when transform changes
+
+**Why MonoGame Exposes This:**
+
+MonoGame gives you control to:
+1. Optimize matrix calculations (update only when needed)
+2. Use custom transformation logic
+3. Implement instanced rendering efficiently
+4. Understand exactly what's happening
+
+**Real-World Example from This Project:**
+
+Before fix (models at origin):
+```csharp
+public void Draw(GraphicsDevice device, Matrix4x4 world, ...)
+{
+    var transform = Owner.GetComponent<Transform3D>(); // Read transform
+    var scaleMatrix = Matrix4x4.CreateScale(_scale);
+    var finalWorld = scaleMatrix * world; // ← BUG: Didn't use position!
+    // Result: All models render at (0,0,0)
+}
+```
+
+After fix (models at correct positions):
+```csharp
+public void Draw(GraphicsDevice device, Matrix4x4 world, ...)
+{
+    var transform = Owner.GetComponent<Transform3D>();
+
+    // Build complete SRT matrix
+    var scaleMatrix = Matrix4x4.CreateScale(_scale);
+    var rotationMatrix = Matrix4x4.CreateFromQuaternion(transform.Rotation);
+    var translationMatrix = Matrix4x4.CreateTranslation(transform.Position);
+
+    var entityWorld = scaleMatrix * rotationMatrix * translationMatrix;
+    var finalWorld = entityWorld * world;
+    // Result: Models render at their entity positions ✓
+}
+```
+
+**Quick Reference:**
+
+| Transformation | Matrix Function |
+|----------------|-----------------|
+| Scale | `Matrix4x4.CreateScale(scale)` |
+| Rotation (Quaternion) | `Matrix4x4.CreateFromQuaternion(rotation)` |
+| Rotation (Euler) | `Matrix4x4.CreateRotationX/Y/Z(angle)` |
+| Translation | `Matrix4x4.CreateTranslation(position)` |
+| Full SRT | `S * R * T` (in that order!) |
+
+**See Also:**
+- [Core/Components/ModelMeshRenderer.cs](../Core/Components/ModelMeshRenderer.cs) - Full implementation with educational comments
+- [Graphics/ForwardGraphicsProvider.cs](../Graphics/ForwardGraphicsProvider.cs) - Rendering pipeline
+
+---
+
 ### Materials & Rendering
 
 | Unity | MonoGame (This Project) |

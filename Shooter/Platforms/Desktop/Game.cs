@@ -182,8 +182,9 @@ public class ShooterGame : Game
     CreateCube(scene, "YellowCube", new System.Numerics.Vector3(3, 3, 0), 2.0f, Color.Yellow);
         
         // Create enemy entities for AI testing (bright red, taller/skinnier to distinguish from cubes)
-        CreateEnemy(scene, playerEntity, "Enemy1", new System.Numerics.Vector3(-5, 2, -5), 1.0f, 0.0f, 0.0f);
-        CreateEnemy(scene, playerEntity, "Enemy2", new System.Numerics.Vector3(5, 2, -5), 1.0f, 0.0f, 0.0f);
+        // Position them right next to the weapon for visibility testing
+        CreateEnemy(scene, playerEntity, "Enemy1", new System.Numerics.Vector3(-1, 1.5f, 2), 1.0f, 0.0f, 0.0f);
+        CreateEnemy(scene, playerEntity, "Enemy2", new System.Numerics.Vector3(1, 1.5f, 2), 1.0f, 0.0f, 0.0f);
         
         // Initialize the scene
         scene.Initialize();
@@ -290,13 +291,28 @@ public class ShooterGame : Game
     /// <summary>
     /// Load content (textures, models, sounds).
     /// Similar to Unity's resource loading but more manual.
+    ///
+    /// EDUCATIONAL NOTE - CONTENT LOADING:
+    /// Unity automatically loads assets when you reference them in prefabs.
+    /// MonoGame requires explicit loading via Content.Load<T>(assetName).
+    ///
+    /// The Content Manager:
+    /// - Loads .xnb files (compiled assets from Content.mgcb)
+    /// - Caches loaded assets (calling Load twice returns the same instance)
+    /// - Handles asset dependencies automatically
+    ///
+    /// Common asset types:
+    /// - Model: 3D models from FBX files
+    /// - Texture2D: Images (PNG, JPG)
+    /// - SpriteFont: Fonts for text rendering
+    /// - SoundEffect: Audio files
     /// </summary>
     protected override void LoadContent()
     {
         _spriteBatch = new SpriteBatch(GraphicsDevice);
 
         // Load SpriteFont for HUD
-        SpriteFont hudFont = Content.Load<SpriteFont>("DefaultFont");
+        SpriteFont hudFont = Content.Load<SpriteFont>("font");
 
         // Create Phase 2 test scene AFTER all services are initialized
         CreateTestScene();
@@ -313,7 +329,133 @@ public class ShooterGame : Game
                 graphicsProvider.SetPlayerWeaponController(weaponController);
                 Console.WriteLine("[Game] HUD overlay wired up");
             }
+
+            // Load and attach weapon model to player's view
+            LoadWeaponModel(playerEntity);
+
+            Console.WriteLine("[Game] Weapon model loaded and attached to player camera");
         }
+
+        // Load enemy models for all enemy entities
+        LoadEnemyModels();
+    }
+
+    /// <summary>
+    /// Load and attach a weapon model to the player's camera for first-person view.
+    ///
+    /// UNITY COMPARISON - WEAPON VIEW MODEL:
+    /// In Unity FPS games, weapons are typically:
+    /// 1. Child objects of the camera GameObject
+    /// 2. Use a separate "Weapon" layer rendered by a second camera
+    /// 3. Have custom FOV to prevent distortion
+    ///
+    /// In MonoGame, we:
+    /// 1. Create a child entity of the player
+    /// 2. Position it relative to the camera's view
+    /// 3. Render it in the normal scene (no separate camera needed for this demo)
+    ///
+    /// EDUCATIONAL NOTE - FPS WEAPON POSITIONING:
+    /// The weapon model needs careful positioning:
+    /// - Too close: fills the screen
+    /// - Too far: looks tiny
+    /// - Wrong rotation: points at weird angles
+    ///
+    /// Unity's values (from FPS Microgame):
+    /// - Position: (0.3, -0.2, 0.5) relative to camera
+    /// - Rotation: Slightly tilted for visual interest
+    /// - Scale: Often enlarged because camera is so close
+    /// </summary>
+    private void LoadWeaponModel(Core.Entities.Entity playerEntity)
+    {
+        try
+        {
+            // Create a weapon entity as a "child" of the player
+            var weaponEntity = new Core.Entities.Entity("PlayerWeaponViewModel");
+            var weaponTransform = weaponEntity.AddComponent<Core.Components.Transform3D>();
+
+            // Position weapon in front of camera (right, down, forward relative to view)
+            // These values are tuned to match Unity FPS Microgame's weapon position
+            // Note: This is a static position for now - Phase 3 will attach to camera transform
+            // Camera at (0, 2, 10) looks toward -Z, so weapon at Z=9 is in front
+            weaponTransform.Position = playerEntity.Transform.Position + new System.Numerics.Vector3(0.5f, -0.5f, -1.5f);
+
+            // Add ModelMeshRenderer and load the weapon model
+            var weaponRenderer = weaponEntity.AddComponent<Core.Components.ModelMeshRenderer>();
+            weaponRenderer.LoadModel(Content, "Models/Mesh_Weapon_Primary");
+            weaponRenderer.Scale = 0.3f; // Much smaller - Unity models are often too large
+            weaponRenderer.TintColor = new System.Numerics.Vector4(1, 1, 1, 1); // No tint
+
+            // Add to scene
+            var scene = _sceneManager?.ActiveScene;
+            if (scene != null)
+            {
+                scene.AddEntity(weaponEntity);
+                weaponEntity.Initialize();
+                Console.WriteLine("[LoadContent] Loaded weapon model 'Mesh_Weapon_Primary' for player view");
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"[LoadContent] Failed to load weapon model: {ex.Message}");
+            Console.WriteLine("  Make sure Content.mgcb has been built and Models/Mesh_Weapon_Primary.fbx is included");
+        }
+    }
+
+    /// <summary>
+    /// Load 3D models for all enemy entities in the scene.
+    ///
+    /// EDUCATIONAL NOTE - REPLACING PLACEHOLDER MESHES:
+    /// During development, we use colored cubes as placeholders.
+    /// Now we replace the MeshRenderer (cubes) with ModelMeshRenderer (FBX models).
+    ///
+    /// This is a common pattern:
+    /// 1. Phase 1: Get gameplay working with primitives (cubes, spheres)
+    /// 2. Phase 2: Replace with actual art assets
+    /// 3. Phase 3: Add animations, effects, polish
+    ///
+    /// Unity hides this process because you usually import FBX files directly.
+    /// In MonoGame, we make it explicit for learning purposes.
+    /// </summary>
+    private void LoadEnemyModels()
+    {
+        var scene = _sceneManager?.ActiveScene;
+        if (scene == null)
+            return;
+
+        // Find all enemy entities (tagged as "Enemy")
+        var enemies = scene.FindEntitiesByTag("Enemy");
+
+        foreach (var enemy in enemies)
+        {
+            try
+            {
+                // Remove the old MeshRenderer (colored cube placeholder)
+                var oldRenderer = enemy.GetComponent<Core.Components.MeshRenderer>();
+                if (oldRenderer != null)
+                {
+                    enemy.RemoveComponent<Core.Components.MeshRenderer>();
+                }
+
+                // Add ModelMeshRenderer with HoverBot model
+                var modelRenderer = enemy.AddComponent<Core.Components.ModelMeshRenderer>();
+                modelRenderer.LoadModel(Content, "Models/HoverBot_Fixed");
+                modelRenderer.Scale = 0.015f; // Scale down from Unity size (Unity units ~= 1m, adjust to fit MonoGame scene)
+                modelRenderer.TintColor = new System.Numerics.Vector4(1, 0, 0, 1); // Red tint to distinguish enemies
+
+                // Re-initialize the component
+                modelRenderer.Initialize();
+
+                var enemyPos = enemy.Transform.Position;
+                Console.WriteLine($"[LoadContent] Loaded HoverBot model for enemy '{enemy.Name}' at position ({enemyPos.X}, {enemyPos.Y}, {enemyPos.Z})");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"[LoadContent] Failed to load model for enemy '{enemy.Name}': {ex.Message}");
+                Console.WriteLine("  Enemy will remain as colored cube placeholder");
+            }
+        }
+
+        Console.WriteLine($"[LoadContent] Loaded models for {enemies.Count()} enemy entities");
     }
 
     /// <summary>
@@ -408,22 +550,41 @@ public class ShooterGame : Game
         {
             // Collect all renderable entities from the scene
             var renderables = new System.Collections.Generic.List<IRenderable>();
-            
+            var modelRenderers = new System.Collections.Generic.List<Core.Components.ModelMeshRenderer>();
+
             if (_sceneManager?.ActiveScene != null)
             {
                 foreach (var entity in _sceneManager.ActiveScene.Entities)
                 {
-                    // MeshRenderer implements IRenderable
+                    // MeshRenderer implements IRenderable (procedural cubes/spheres)
                     var meshRenderer = entity.GetComponent<Core.Components.MeshRenderer>();
                     if (meshRenderer != null)
                     {
                         renderables.Add(meshRenderer);
                     }
+
+                    // ModelMeshRenderer for FBX models from Content Pipeline
+                    var modelRenderer = entity.GetComponent<Core.Components.ModelMeshRenderer>();
+                    if (modelRenderer != null)
+                    {
+                        var pos = entity.Transform.Position;
+                        Console.WriteLine($"[Render] Found ModelMeshRenderer on '{entity.Name}' at ({pos.X:F2}, {pos.Y:F2}, {pos.Z:F2})");
+                        modelRenderers.Add(modelRenderer);
+                    }
                 }
             }
-            
-            // Render the scene
+
+            // Debug: Log what we're about to render
+            Console.WriteLine($"[Render] Found {renderables.Count} procedural meshes, {modelRenderers.Count} models");
+
+            // Render the scene (procedural meshes first)
             graphics.RenderScene(camera, renderables);
+
+            // Render FBX models
+            if (graphics is ForwardGraphicsProvider forwardGraphics)
+            {
+                forwardGraphics.RenderModels(camera, modelRenderers);
+            }
         }
         else
         {
