@@ -6,7 +6,7 @@
             "type": "coreclr",
             "request": "launch",
             "preLaunchTask": "build-desktop",
-            "program": "${workspaceFolder}/Platforms/Desktop/bin/Debug/net8.0/Blackjack.dll",
+            "program": "${workspaceFolder}/Platforms/Desktop/bin/Debug/net9.0/Blackjack.dll",
             "args": [],
             "cwd": "${workspaceFolder}/Platforms/Desktop",
             "console": "internalConsole",
@@ -17,7 +17,7 @@
             "type": "coreclr",
             "request": "launch",
             "preLaunchTask": "build-windows",
-            "program": "${workspaceFolder}/Platforms/Windows/bin/Debug/net8.0/Blackjack.dll",
+            "program": "${workspaceFolder}/Platforms/Windows/bin/Debug/net9.0/Blackjack.dll",
             "args": [],
             "cwd": "${workspaceFolder}/Platforms/Windows",
             "console": "internalConsole",
@@ -25,25 +25,19 @@
         },
         {
             "name": "Launch Android",
-            "type": "coreclr",
-            "request": "launch",
+            "type": "mono",
+            "request": "attach",
             "preLaunchTask": "build-android",
-            "program": "${workspaceFolder}/Platforms/Android/bin/Debug/net8.0/Blackjack.dll",
-            "args": [],
-            "cwd": "${workspaceFolder}/Platforms/Android",
-            "console": "internalConsole",
-            "stopAtEntry": false
+            "address": "localhost",
+            "port": 10000,
         },
         {
             "name": "Launch iOS",
-            "type": "coreclr",
-            "request": "launch",
+            "type": "mono",
+            "request": "attach",
             "preLaunchTask": "build-ios",
-            "program": "${workspaceFolder}/Platforms/iOS/bin/Debug/net8.0/Blackjack.dll",
-            "args": [],
-            "cwd": "${workspaceFolder}/Platforms/iOS",
-            "console": "internalConsole",
-            "stopAtEntry": false
+            "address": "localhost",
+            "port": 10001,
         }
     ]
 }

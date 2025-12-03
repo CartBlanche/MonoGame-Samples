@@ -11,6 +11,15 @@
     <Company>MonoGame Foundation</Company>
     <GenerateAssemblyInfo>true</GenerateAssemblyInfo>
   </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)' == 'Debug'">
+    <MtouchLink>None</MtouchLink>
+    <UseInterpreter>true</UseInterpreter>
+    <EnableAssemblyILStripping>false</EnableAssemblyILStripping>
+    <UseMonoRuntime>true</UseMonoRuntime>
+    <_IsAotCompatible>false</_IsAotCompatible>
+    <EnableSGenConc>true</EnableSGenConc>
+  </PropertyGroup>
   
   <ItemGroup>
     <ProjectReference Include="..\..\Core\Game\BlackJack.Core.csproj" />
