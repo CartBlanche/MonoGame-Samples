@@ -79,8 +79,7 @@ namespace Blackjack
             // Initialize input helper
             inputHelper = new InputHelper(ScreenManager);
 
-            Viewport viewport = ScreenManager.GraphicsDevice.Viewport;
-            safeArea = viewport.TitleSafeArea;
+            safeArea = ScreenManager.SafeArea;
 
             // Calculate proportional spacing and sizes based on screen height
             float heightScale = safeArea.Height / 720f; // Scale based on 720p baseline
@@ -418,25 +417,23 @@ namespace Blackjack
             }
         }
 
-        private MouseState previousMouseState;
-        private KeyboardState previousKeyboardState;
-
         private void HandleInput()
         {
-            KeyboardState keyboardState = Keyboard.GetState();
-            MouseState mouseState = Mouse.GetState();
+            // Use ScreenManager's centralized input state with proper coordinate transformation
+            KeyboardState keyboardState = ScreenManager.InputState.CurrentKeyboardStates[0];
+            KeyboardState previousKeyboardState = ScreenManager.InputState.LastKeyboardStates[0];
+
+            // Get transformed cursor position (handles scaling/letterboxing on mobile)
+            Vector2 cursorPos = ScreenManager.InputState.CurrentCursorLocation;
+            Point mousePos = new Point((int)cursorPos.X, (int)cursorPos.Y);
 
             // Check for escape/back
             if ((keyboardState.IsKeyDown(Keys.Escape) && !previousKeyboardState.IsKeyDown(Keys.Escape)) ||
                 inputHelper.IsEscape)
             {
                 ExitScreen();
-                previousKeyboardState = keyboardState;
                 return;
             }
-
-            // Get mouse position
-            Point mousePos = new Point(mouseState.X, mouseState.Y);
 
             // Track button press state
             pressedButtonIndex = -1;
@@ -444,9 +441,12 @@ namespace Blackjack
             isPrevButtonPressed = false;
             isBackButtonPressed = false;
 
-            // Check for mouse click (left button just pressed)
-            if (mouseState.LeftButton == ButtonState.Pressed &&
-                previousMouseState.LeftButton == ButtonState.Released)
+            // Check for mouse click (left button just clicked - pressed then released)
+            MouseState currentMouseState = ScreenManager.InputState.CurrentMouseState;
+            MouseState lastMouseState = ScreenManager.InputState.LastMouseState;
+
+            if (currentMouseState.LeftButton == ButtonState.Released &&
+                lastMouseState.LeftButton == ButtonState.Pressed)
             {
                 // Check back button
                 if (backButtonBounds.Contains(mousePos))
@@ -454,8 +454,6 @@ namespace Blackjack
                     isBackButtonPressed = true;
                     AudioManager.PlaySound("menu_select");
                     ExitScreen();
-                    previousMouseState = mouseState;
-                    previousKeyboardState = keyboardState;
                     return;
                 }
 
@@ -466,8 +464,6 @@ namespace Blackjack
                     currentPage++;
                     BuildSettingItems();
                     AudioManager.PlaySound("menu_select");
-                    previousMouseState = mouseState;
-                    previousKeyboardState = keyboardState;
                     return;
                 }
                 else if (currentPage > 0 && prevButtonBounds.Contains(mousePos))
@@ -476,8 +472,6 @@ namespace Blackjack
                     currentPage--;
                     BuildSettingItems();
                     AudioManager.PlaySound("menu_select");
-                    previousMouseState = mouseState;
-                    previousKeyboardState = keyboardState;
                     return;
                 }
 
@@ -530,9 +524,6 @@ namespace Blackjack
                     break;
                 }
             }
-
-            previousMouseState = mouseState;
-            previousKeyboardState = keyboardState;
         }
 
         private Rectangle GetLeftButtonBounds(Rectangle itemBounds)

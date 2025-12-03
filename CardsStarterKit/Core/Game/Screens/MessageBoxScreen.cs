@@ -45,8 +45,8 @@ namespace Blackjack
             SpriteBatch spriteBatch = ScreenManager.SpriteBatch;
             SpriteFont font = ScreenManager.Font;
             Vector2 viewportSize = new Vector2(
-                ScreenManager.GraphicsDevice.Viewport.Width,
-                ScreenManager.GraphicsDevice.Viewport.Height);
+                ScreenManager.BaseScreenSize.X,
+                ScreenManager.BaseScreenSize.Y);
             Vector2 textSize = font.MeasureString(message);
             Vector2 position = (viewportSize - textSize) / 2;
             spriteBatch.Begin();

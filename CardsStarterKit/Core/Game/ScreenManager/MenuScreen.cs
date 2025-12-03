@@ -76,7 +76,7 @@ namespace GameStateManagement
             return new Rectangle(
                 0,
                 (int)entry.Destination.Y - menuEntryPadding,
-                ScreenManager.GraphicsDevice.Viewport.Width,
+                (int)ScreenManager.BaseScreenSize.X,
                 entry.GetHeight(this) + (menuEntryPadding * 2));
         }
 
@@ -114,13 +114,14 @@ namespace GameStateManagement
                     OnSelectEntry(selectedEntry, player);
                 }
 
-                // Handle mouse input using InputState
+                // Handle mouse input using transformed coordinates
                 if (input.CurrentMouseState.LeftButton == ButtonState.Released)
                 {
                     if (isMouseDown)
                     {
                         isMouseDown = false;
-                        Point clickLocation = new Point(input.CurrentMouseState.X, input.CurrentMouseState.Y);
+                        // Use transformed cursor location for proper scaling/letterboxing
+                        Point clickLocation = new Point((int)input.CurrentCursorLocation.X, (int)input.CurrentCursorLocation.Y);
 
                         for (int i = 0; i < menuEntries.Count; i++)
                         {
@@ -135,7 +136,8 @@ namespace GameStateManagement
                 else if (input.CurrentMouseState.LeftButton == ButtonState.Pressed)
                 {
                     isMouseDown = true;
-                    Point clickLocation = new Point(input.CurrentMouseState.X, input.CurrentMouseState.Y);
+                    // Use transformed cursor location for proper scaling/letterboxing
+                    Point clickLocation = new Point((int)input.CurrentCursorLocation.X, (int)input.CurrentCursorLocation.Y);
 
                     for (int i = 0; i < menuEntries.Count; i++)
                     {
@@ -147,12 +149,13 @@ namespace GameStateManagement
             }
             else if (UIUtility.IsMobile)
             {
-                // Handle touch input
+                // Handle touch input with transformed coordinates
                 foreach (GestureSample gesture in input.Gestures)
                 {
                     if (gesture.GestureType == GestureType.Tap)
                     {
-                        Point tapLocation = new Point((int)gesture.Position.X, (int)gesture.Position.Y);
+                        // Use transformed cursor location (InputState already transforms gesture position)
+                        Point tapLocation = new Point((int)input.CurrentCursorLocation.X, (int)input.CurrentCursorLocation.Y);
 
                         for (int i = 0; i < menuEntries.Count; i++)
                         {
@@ -287,7 +290,7 @@ namespace GameStateManagement
             // make sure our entries are in the right place before we draw them
             //UpdateMenuEntryLocations();
 
-            GraphicsDevice graphics = ScreenManager.GraphicsDevice;
+            GraphicsDevice graphicsDevice = ScreenManager.GraphicsDevice;
             SpriteBatch spriteBatch = ScreenManager.SpriteBatch;
             SpriteFont font = ScreenManager.Font;
 
@@ -310,7 +313,7 @@ namespace GameStateManagement
 
             // Draw the menu title in the top third of the screen
             Vector2 titlePosition = new Vector2(
-                graphics.Viewport.Width / 2,
+                ScreenManager.BaseScreenSize.X / 2,
                 ScreenManager.SafeArea.Top + 80); // Position in top third instead of center
             Vector2 titleOrigin = font.MeasureString(menuTitle) / 2;
             Color titleColor = new Color(192, 192, 192) * TransitionAlpha;
