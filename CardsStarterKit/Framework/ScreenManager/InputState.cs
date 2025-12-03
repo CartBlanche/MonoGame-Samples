@@ -142,7 +142,16 @@ namespace CardsFramework
             Gestures.Clear();
             while (TouchPanel.IsGestureAvailable)
             {
-                Gestures.Add(TouchPanel.ReadGesture());
+                GestureSample gesture = TouchPanel.ReadGesture();
+                Gestures.Add(gesture);
+                
+                // Update cursor location from gesture position (for tap and other gestures)
+                if (gesture.GestureType == GestureType.Tap)
+                {
+                    lastCursorLocation = currentCursorLocation;
+                    // Transform gesture position to game coordinates
+                    currentCursorLocation = TransformCursorLocation(gesture.Position);
+                }
             }
 
             // Process touch inputs

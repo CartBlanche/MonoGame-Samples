@@ -9,6 +9,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Net;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using Microsoft.Xna.Framework.Input.Touch;
 using GameStateManagement;
 using CardsFramework;
 
@@ -29,6 +30,8 @@ namespace Blackjack
         public SessionBrowserScreen()
             : base(Resources.JoinOrHostGame)
         {
+            // Enable tap gestures for mobile input
+            EnabledGestures = GestureType.Tap;
         }
 
         public override void LoadContent()
@@ -156,41 +159,61 @@ namespace Blackjack
 
         public override void HandleInput(InputState input)
         {
-            // Handle input for session entries (manual click detection)
-            // Check if mouse button was clicked (pressed then released)
-            if (input.CurrentMouseState.LeftButton == ButtonState.Released &&
-                input.LastMouseState.LeftButton == ButtonState.Pressed)
+            // Handle input for session entries using platform-specific input handling
+            bool isClicked = false;
+            Vector2 clickPosition = Vector2.Zero;
+
+            // Use transformed cursor location for all input types (handles scaling/letterboxing)
+            Vector2 transformedCursorPos = input.CurrentCursorLocation;
+
+            if (UIUtility.IsDesktop)
             {
-                Vector2 mousePosition = new Vector2(input.CurrentMouseState.X, input.CurrentMouseState.Y);
-                SpriteFont font = ScreenManager.Font;
-
-                // Check if clicked on a session entry
-                if (availableSessions.Count > 0)
+                // Handle mouse click (button was pressed last frame, released this frame)
+                if (input.CurrentMouseState.LeftButton == ButtonState.Released &&
+                    input.LastMouseState.LeftButton == ButtonState.Pressed)
                 {
-                    Vector2 headerPosition = new Vector2(ScreenManager.SafeArea.Left + 100, ScreenManager.SafeArea.Top + 150);
-                    Vector2 sessionPosition = new Vector2(ScreenManager.SafeArea.Left + 120, headerPosition.Y + font.LineSpacing * 1.5f);
-                    float scale = 0.85f;
+                    isClicked = true;
+                    clickPosition = transformedCursorPos;
+                }
+            }
+            else if (UIUtility.IsMobile)
+            {
+                // Handle touch input with gestures
+                if (input.Gestures.Count > 0 && input.Gestures[0].GestureType == Microsoft.Xna.Framework.Input.Touch.GestureType.Tap)
+                {
+                    isClicked = true;
+                    // Use transformed cursor position (already set by InputState)
+                    clickPosition = transformedCursorPos;
+                }
+            }
 
-                    for (int i = 0; i < sessionEntries.Count; i++)
+            // Handle session selection if clicked
+            if (isClicked && availableSessions.Count > 0)
+            {
+                SpriteFont font = ScreenManager.Font;
+                Vector2 headerPosition = new Vector2(ScreenManager.SafeArea.Left + 100, ScreenManager.SafeArea.Top + 150);
+                Vector2 sessionPosition = new Vector2(ScreenManager.SafeArea.Left + 120, headerPosition.Y + font.LineSpacing * 1.5f);
+                float scale = 0.85f;
+
+                for (int i = 0; i < sessionEntries.Count; i++)
+                {
+                    var sessionEntry = sessionEntries[i];
+                    Vector2 textSize = font.MeasureString(sessionEntry.Text) * scale;
+                    Rectangle hitBox = new Rectangle(
+                        (int)sessionPosition.X,
+                        (int)sessionPosition.Y,
+                        (int)textSize.X,
+                        (int)(font.LineSpacing * scale)
+                    );
+
+                    if (hitBox.Contains((int)clickPosition.X, (int)clickPosition.Y))
                     {
-                        var sessionEntry = sessionEntries[i];
-                        Vector2 textSize = font.MeasureString(sessionEntry.Text) * scale;
-                        Rectangle hitBox = new Rectangle(
-                            (int)sessionPosition.X,
-                            (int)sessionPosition.Y,
-                            (int)textSize.X,
-                            (int)(font.LineSpacing * scale)
-                        );
-
-                        if (hitBox.Contains(mousePosition))
-                        {
-                            // Clicked on this session - join it
-                            JoinSessionMenuEntrySelected(sessionEntry, EventArgs.Empty);
-                            return;
-                        }
-
-                        sessionPosition.Y += font.LineSpacing * scale + 10;
+                        // Clicked on this session - join it
+                        JoinSessionMenuEntrySelected(sessionEntry, EventArgs.Empty);
+                        return;
                     }
+
+                    sessionPosition.Y += font.LineSpacing * scale + 10;
                 }
             }
 
