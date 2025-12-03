@@ -84,11 +84,11 @@ namespace GameStateManagement
         /// Responds to user input, changing the selected entry and accepting
         /// or cancelling the menu.
         /// </summary>
-        public override void HandleInput(InputState input)
+        public override void HandleInput(InputState inputState)
         {
             // Cancel the current menu screen if the user presses the back button
             PlayerIndex player;
-            if (input.IsNewButtonPress(Buttons.Back, ControllingPlayer, out player))
+            if (inputState.IsNewButtonPress(Buttons.Back, ControllingPlayer, out player))
             {
                 OnCancel(player);
             }
@@ -96,32 +96,32 @@ namespace GameStateManagement
             if (UIUtility.IsDesktop)
             {
                 // Handle keyboard input
-                if (input.IsMenuUp(ControllingPlayer))
+                if (inputState.IsMenuUp(ControllingPlayer))
                 {
                     selectedEntry--;
                     if (selectedEntry < 0)
                         selectedEntry = menuEntries.Count - 1;
                 }
-                else if (input.IsMenuDown(ControllingPlayer))
+                else if (inputState.IsMenuDown(ControllingPlayer))
                 {
                     selectedEntry++;
                     if (selectedEntry >= menuEntries.Count)
                         selectedEntry = 0;
                 }
-                else if (input.IsNewKeyPress(Keys.Enter, ControllingPlayer, out player) ||
-                         input.IsNewKeyPress(Keys.Space, ControllingPlayer, out player))
+                else if (inputState.IsNewKeyPress(Keys.Enter, ControllingPlayer, out player) ||
+                         inputState.IsNewKeyPress(Keys.Space, ControllingPlayer, out player))
                 {
                     OnSelectEntry(selectedEntry, player);
                 }
 
                 // Handle mouse input using transformed coordinates
-                if (input.CurrentMouseState.LeftButton == ButtonState.Released)
+                if (inputState.CurrentMouseState.LeftButton == ButtonState.Released)
                 {
                     if (isMouseDown)
                     {
                         isMouseDown = false;
                         // Use transformed cursor location for proper scaling/letterboxing
-                        Point clickLocation = new Point((int)input.CurrentCursorLocation.X, (int)input.CurrentCursorLocation.Y);
+                        Point clickLocation = new Point((int)inputState.CurrentCursorLocation.X, (int)inputState.CurrentCursorLocation.Y);
 
                         for (int i = 0; i < menuEntries.Count; i++)
                         {
@@ -133,11 +133,11 @@ namespace GameStateManagement
                         }
                     }
                 }
-                else if (input.CurrentMouseState.LeftButton == ButtonState.Pressed)
+                else if (inputState.CurrentMouseState.LeftButton == ButtonState.Pressed)
                 {
                     isMouseDown = true;
                     // Use transformed cursor location for proper scaling/letterboxing
-                    Point clickLocation = new Point((int)input.CurrentCursorLocation.X, (int)input.CurrentCursorLocation.Y);
+                    Point clickLocation = new Point((int)inputState.CurrentCursorLocation.X, (int)inputState.CurrentCursorLocation.Y);
 
                     for (int i = 0; i < menuEntries.Count; i++)
                     {
@@ -150,12 +150,12 @@ namespace GameStateManagement
             else if (UIUtility.IsMobile)
             {
                 // Handle touch input with transformed coordinates
-                foreach (GestureSample gesture in input.Gestures)
+                foreach (GestureSample gesture in inputState.Gestures)
                 {
                     if (gesture.GestureType == GestureType.Tap)
                     {
                         // Use transformed cursor location (InputState already transforms gesture position)
-                        Point tapLocation = new Point((int)input.CurrentCursorLocation.X, (int)input.CurrentCursorLocation.Y);
+                        Point tapLocation = new Point((int)inputState.CurrentCursorLocation.X, (int)inputState.CurrentCursorLocation.Y);
 
                         for (int i = 0; i < menuEntries.Count; i++)
                         {
@@ -171,19 +171,19 @@ namespace GameStateManagement
             else
             {
                 // Handle gamepad input
-                if (input.IsMenuUp(ControllingPlayer))
+                if (inputState.IsMenuUp(ControllingPlayer))
                 {
                     selectedEntry--;
                     if (selectedEntry < 0)
                         selectedEntry = menuEntries.Count - 1;
                 }
-                else if (input.IsMenuDown(ControllingPlayer))
+                else if (inputState.IsMenuDown(ControllingPlayer))
                 {
                     selectedEntry++;
                     if (selectedEntry >= menuEntries.Count)
                         selectedEntry = 0;
                 }
-                else if (input.IsNewButtonPress(Buttons.A, ControllingPlayer, out player))
+                else if (inputState.IsNewButtonPress(Buttons.A, ControllingPlayer, out player))
                 {
                     OnSelectEntry(selectedEntry, player);
                 }

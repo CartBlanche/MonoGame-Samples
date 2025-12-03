@@ -125,46 +125,51 @@ namespace Blackjack
             bool pressed = false;
             Vector2 position = Vector2.Zero;
 
-            // Check for tap gestures
-            if (input.Gestures.Count > 0 && input.Gestures[0].GestureType == GestureType.Tap)
-            {
-                pressed = true;
-                position = input.Gestures[0].Position;
-            }
+            // Use transformed cursor location for all input types (handles scaling/letterboxing)
+            Vector2 transformedCursorPos = input.CurrentCursorLocation;
 
-            // Check for mouse input
-            if (input.CurrentMouseState.LeftButton == ButtonState.Pressed)
+            if (UIUtility.IsDesktop)
             {
-                pressed = true;
-                position = new Vector2(input.CurrentMouseState.X, input.CurrentMouseState.Y);
-            }
-
-            // Handle button press logic
-            if (pressed)
-            {
-                if (!isKeyDown && IntersectWith(position))
+                // Handle mouse input - detect click (press + release)
+                if (input.CurrentMouseState.LeftButton == ButtonState.Pressed)
                 {
-                    isPressed = true;
+                    pressed = true;
+                    position = transformedCursorPos;
+                }
 
-                    if (UIUtility.IsMobile)
+                // Handle button press logic for desktop
+                if (pressed)
+                {
+                    if (!isKeyDown && IntersectWith(position))
+                    {
+                        isPressed = true;
+                        isKeyDown = true;
+                    }
+                }
+                else
+                {
+                    if (isPressed && IntersectWith(transformedCursorPos))
                     {
                         FireClick();
-                        isPressed = false;
                     }
 
-                    isKeyDown = true;
+                    isPressed = false;
+                    isKeyDown = false;
                 }
             }
-            else
+            else if (UIUtility.IsMobile)
             {
-                if (isPressed && (IntersectWith(new Vector2(input.CurrentMouseState.X, input.CurrentMouseState.Y)) ||
-                                  IntersectWith(inputHelper?.PointPosition ?? Vector2.Zero)))
+                // Handle touch input with gestures
+                if (input.Gestures.Count > 0 && input.Gestures[0].GestureType == GestureType.Tap)
                 {
-                    FireClick();
-                }
+                    // Use transformed cursor location (already set by InputState)
+                    position = transformedCursorPos;
 
-                isPressed = false;
-                isKeyDown = false;
+                    if (IntersectWith(position))
+                    {
+                        FireClick();
+                    }
+                }
             }
         }
 

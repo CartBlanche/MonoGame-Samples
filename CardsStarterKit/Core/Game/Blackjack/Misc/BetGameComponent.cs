@@ -344,21 +344,31 @@ namespace Blackjack
             bool isClicked = false;
             Vector2 position = Vector2.Zero;
 
-            // Check for tap gestures (touch release)
-            if (input.Gestures.Count > 0 && input.Gestures[0].GestureType == GestureType.Tap)
+            // Use transformed cursor location for all input types (handles scaling/letterboxing)
+            Vector2 transformedCursorPos = input.CurrentCursorLocation;
+
+            if (UIUtility.IsMobile)
             {
-                isClicked = true;
-                position = input.Gestures[0].Position;
+                // Handle touch input with gestures
+                if (input.Gestures.Count > 0 && input.Gestures[0].GestureType == GestureType.Tap)
+                {
+                    isClicked = true;
+                    // Use transformed cursor position (already set by InputState)
+                    position = transformedCursorPos;
+                }
             }
-
-            // Check for mouse click (button was pressed last frame, released this frame)
-            bool wasPressed = input.LastMouseState.LeftButton == ButtonState.Pressed;
-            bool isReleased = input.CurrentMouseState.LeftButton == ButtonState.Released;
-
-            if (wasPressed && isReleased)
+            else if (UIUtility.IsDesktop)
             {
-                isClicked = true;
-                position = new Vector2(input.CurrentMouseState.X, input.CurrentMouseState.Y);
+                // Handle mouse click (button was pressed last frame, released this frame)
+                bool wasPressed = input.LastMouseState.LeftButton == ButtonState.Pressed;
+                bool isReleased = input.CurrentMouseState.LeftButton == ButtonState.Released;
+
+                if (wasPressed && isReleased)
+                {
+                    isClicked = true;
+                    // Use transformed cursor position
+                    position = transformedCursorPos;
+                }
             }
 
             // Handle chip interaction logic only on click/tap completion

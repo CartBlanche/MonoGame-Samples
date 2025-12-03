@@ -10,8 +10,10 @@ using GameStateManagement;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using Microsoft.Xna.Framework.Input.Touch;
 using Microsoft.Xna.Framework.Content;
 using System.IO;
+using CardsFramework;
 
 namespace Blackjack
 {
@@ -46,6 +48,8 @@ namespace Blackjack
         private Rectangle backButtonBounds;
         private bool isBackButtonPressed = false;
 
+        private bool isMouseDown = false;
+
         private InputHelper inputHelper;
         private float itemSpacing;
         private float groupSpacing;
@@ -56,6 +60,9 @@ namespace Blackjack
 
         public SettingsScreen()
         {
+            // Settings screen needs Tap gestures for mobile
+            EnabledGestures = GestureType.Tap;
+            
             TransitionOnTime = TimeSpan.FromSeconds(0.5);
             TransitionOffTime = TimeSpan.FromSeconds(0.5);
             settings = GameSettings.Instance;
@@ -411,29 +418,32 @@ namespace Blackjack
         {
             base.Update(gameTime, otherScreenHasFocus, coveredByOtherScreen);
 
-            if (IsActive && !coveredByOtherScreen)
-            {
-                HandleInput();
-            }
+
         }
 
-        private void HandleInput()
+        /// <summary>
+        /// Responds to user input.
+        /// </summary>
+        public override void HandleInput(InputState inputState)
         {
-            // Use ScreenManager's centralized input state with proper coordinate transformation
-            KeyboardState keyboardState = ScreenManager.InputState.CurrentKeyboardStates[0];
-            KeyboardState previousKeyboardState = ScreenManager.InputState.LastKeyboardStates[0];
-
-            // Get transformed cursor position (handles scaling/letterboxing on mobile)
-            Vector2 cursorPos = ScreenManager.InputState.CurrentCursorLocation;
-            Point mousePos = new Point((int)cursorPos.X, (int)cursorPos.Y);
-
-            // Check for escape/back
-            if ((keyboardState.IsKeyDown(Keys.Escape) && !previousKeyboardState.IsKeyDown(Keys.Escape)) ||
-                inputHelper.IsEscape)
+            // Cancel the settings screen if the user presses the back button
+            PlayerIndex player;
+            if (inputState.IsNewButtonPress(Buttons.Back, ControllingPlayer, out player))
             {
                 ExitScreen();
                 return;
             }
+
+            // Check for escape key
+            if (inputState.IsNewKeyPress(Keys.Escape, ControllingPlayer, out player))
+            {
+                ExitScreen();
+                return;
+            }
+
+            // Get transformed cursor position (handles scaling/letterboxing on mobile)
+            Vector2 cursorPos = inputState.CurrentCursorLocation;
+            Point mousePos = new Point((int)cursorPos.X, (int)cursorPos.Y);
 
             // Track button press state
             pressedButtonIndex = -1;
@@ -441,78 +451,113 @@ namespace Blackjack
             isPrevButtonPressed = false;
             isBackButtonPressed = false;
 
-            // Check for mouse click (left button just clicked - pressed then released)
-            MouseState currentMouseState = ScreenManager.InputState.CurrentMouseState;
-            MouseState lastMouseState = ScreenManager.InputState.LastMouseState;
-
-            if (currentMouseState.LeftButton == ButtonState.Released &&
-                lastMouseState.LeftButton == ButtonState.Pressed)
+            if (UIUtility.IsDesktop)
             {
-                // Check back button
-                if (backButtonBounds.Contains(mousePos))
+                // Handle mouse input - detect click (press + release)
+                if (inputState.CurrentMouseState.LeftButton == ButtonState.Released)
                 {
-                    isBackButtonPressed = true;
-                    AudioManager.PlaySound("menu_select");
-                    ExitScreen();
-                    return;
-                }
-
-                // Check navigation buttons
-                if (currentPage < TotalPages - 1 && nextButtonBounds.Contains(mousePos))
-                {
-                    isNextButtonPressed = true;
-                    currentPage++;
-                    BuildSettingItems();
-                    AudioManager.PlaySound("menu_select");
-                    return;
-                }
-                else if (currentPage > 0 && prevButtonBounds.Contains(mousePos))
-                {
-                    isPrevButtonPressed = true;
-                    currentPage--;
-                    BuildSettingItems();
-                    AudioManager.PlaySound("menu_select");
-                    return;
-                }
-
-                for (int i = 0; i < settingItems.Count; i++)
-                {
-                    SettingItem item = settingItems[i];
-                    if (item.Type == SettingType.Header) continue;
-
-                    if (item.Bounds.Contains(mousePos))
+                    if (isMouseDown)
                     {
-                        // Button bounds
-                        Rectangle leftButton = GetLeftButtonBounds(item.Bounds);
-                        Rectangle rightButton = GetRightButtonBounds(item.Bounds);
-
-                        if (item.Type == SettingType.Checkbox)
-                        {
-                            // Get checkbox bounds (centered in value column)
-                            Rectangle checkboxBounds = GetCheckboxButtonBounds(item.Bounds);
-                            if (checkboxBounds.Contains(mousePos))
-                            {
-                                item.OnClick?.Invoke();
-                                AudioManager.PlaySound("menu_select");
-                            }
-                        }
-                        else if (leftButton.Contains(mousePos))
-                        {
-                            item.OnDecrease?.Invoke();
-                            AudioManager.PlaySound("menu_select");
-                            pressedButtonIndex = i * 2; // Even indices for left buttons
-                        }
-                        else if (rightButton.Contains(mousePos))
-                        {
-                            item.OnIncrease?.Invoke();
-                            AudioManager.PlaySound("menu_select");
-                            pressedButtonIndex = i * 2 + 1; // Odd indices for right buttons
-                        }
-                        break;
+                        isMouseDown = false;
+                        HandleSettingItemClick(mousePos);
+                    }
+                }
+                else if (inputState.CurrentMouseState.LeftButton == ButtonState.Pressed)
+                {
+                    isMouseDown = true;
+                    // Track hover on press
+                    TrackHoverState(mousePos);
+                }
+            }
+            else if (UIUtility.IsMobile)
+            {
+                // Handle touch input with gestures (like MenuScreen does)
+                foreach (GestureSample gesture in inputState.Gestures)
+                {
+                    if (gesture.GestureType == GestureType.Tap)
+                    {
+                        HandleSettingItemClick(mousePos);
                     }
                 }
             }
 
+            // Track hover state for visual feedback on desktop
+            if (UIUtility.IsDesktop && inputState.CurrentMouseState.LeftButton == ButtonState.Released)
+            {
+                TrackHoverState(mousePos);
+            }
+        }
+
+        private void HandleSettingItemClick(Point clickLocation)
+        {
+            // Check back button
+            if (backButtonBounds.Contains(clickLocation))
+            {
+                isBackButtonPressed = true;
+                AudioManager.PlaySound("menu_select");
+                ExitScreen();
+                return;
+            }
+
+            // Check navigation buttons
+            if (currentPage < TotalPages - 1 && nextButtonBounds.Contains(clickLocation))
+            {
+                isNextButtonPressed = true;
+                currentPage++;
+                BuildSettingItems();
+                AudioManager.PlaySound("menu_select");
+                return;
+            }
+            else if (currentPage > 0 && prevButtonBounds.Contains(clickLocation))
+            {
+                isPrevButtonPressed = true;
+                currentPage--;
+                BuildSettingItems();
+                AudioManager.PlaySound("menu_select");
+                return;
+            }
+
+            // Check setting items
+            for (int i = 0; i < settingItems.Count; i++)
+            {
+                SettingItem item = settingItems[i];
+                if (item.Type == SettingType.Header) continue;
+
+                if (item.Bounds.Contains(clickLocation))
+                {
+                    // Button bounds
+                    Rectangle leftButton = GetLeftButtonBounds(item.Bounds);
+                    Rectangle rightButton = GetRightButtonBounds(item.Bounds);
+
+                    if (item.Type == SettingType.Checkbox)
+                    {
+                        // Get checkbox bounds (centered in value column)
+                        Rectangle checkboxBounds = GetCheckboxButtonBounds(item.Bounds);
+                        if (checkboxBounds.Contains(clickLocation))
+                        {
+                            item.OnClick?.Invoke();
+                            AudioManager.PlaySound("menu_select");
+                        }
+                    }
+                    else if (leftButton.Contains(clickLocation))
+                    {
+                        item.OnDecrease?.Invoke();
+                        AudioManager.PlaySound("menu_select");
+                        pressedButtonIndex = i * 2; // Even indices for left buttons
+                    }
+                    else if (rightButton.Contains(clickLocation))
+                    {
+                        item.OnIncrease?.Invoke();
+                        AudioManager.PlaySound("menu_select");
+                        pressedButtonIndex = i * 2 + 1; // Odd indices for right buttons
+                    }
+                    break;
+                }
+            }
+        }
+
+        private void TrackHoverState(Point mousePos)
+        {
             // Track hover state for visual feedback
             hoveredIndex = -1;
             for (int i = 0; i < settingItems.Count; i++)
