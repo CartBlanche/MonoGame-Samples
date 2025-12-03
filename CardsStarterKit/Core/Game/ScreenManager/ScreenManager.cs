@@ -398,7 +398,7 @@ namespace GameStateManagement
             spriteBatch.Begin(SpriteSortMode.Deferred, null, null, null, null, null, GlobalTransformation);
 
             spriteBatch.Draw(blankTexture,
-                             new Rectangle(0, 0, BASE_BUFFER_WIDTH, BASE_BUFFER_HEIGHT),
+                             new Rectangle(0, 0, backbufferWidth, backbufferHeight),
                              Color.Black * alpha);
 
             spriteBatch.End();

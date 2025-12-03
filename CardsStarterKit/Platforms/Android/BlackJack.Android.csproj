@@ -12,6 +12,9 @@
     <GenerateAssemblyInfo>true</GenerateAssemblyInfo>
     <AndroidApplication>True</AndroidApplication>
     <SupportedOSPlatformVersion>28.0</SupportedOSPlatformVersion>
+    <ApplicationId>com.cartblanche.blackjack</ApplicationId>
+    <ApplicationVersion>1</ApplicationVersion>
+    <ApplicationDisplayVersion>1.0</ApplicationDisplayVersion>
   </PropertyGroup>
   
   <ItemGroup>

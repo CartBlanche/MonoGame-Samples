@@ -11,6 +11,7 @@ namespace BlackJack.Android
         Label = "@string/app_name",
         MainLauncher = true,
         Icon = "@drawable/icon",
+        Theme = "@style/Theme.Splash",
         AlwaysRetainTaskState = true,
         LaunchMode = LaunchMode.SingleInstance,
         ScreenOrientation = ScreenOrientation.SensorLandscape,

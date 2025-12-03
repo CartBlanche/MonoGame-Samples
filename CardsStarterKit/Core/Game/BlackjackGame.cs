@@ -45,6 +45,8 @@ namespace Blackjack
             else if (UIUtility.IsDesktop)
             {
                 graphicsDeviceManager.IsFullScreen = false;
+                graphicsDeviceManager.PreferredBackBufferWidth = ScreenManager.BASE_BUFFER_WIDTH;
+                graphicsDeviceManager.PreferredBackBufferHeight = ScreenManager.BASE_BUFFER_HEIGHT;
                 IsMouseVisible = true;
             }
             else
@@ -66,10 +68,6 @@ namespace Blackjack
         protected override void Initialize()
         {
             base.Initialize();
-
-            graphicsDeviceManager.PreferredBackBufferWidth = ScreenManager.BASE_BUFFER_WIDTH;
-            graphicsDeviceManager.PreferredBackBufferHeight = ScreenManager.BASE_BUFFER_HEIGHT;
-            graphicsDeviceManager.ApplyChanges();
         }
 
         /// <summary>
