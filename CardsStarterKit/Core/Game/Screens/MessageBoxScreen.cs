@@ -49,7 +49,7 @@ namespace Blackjack
                 ScreenManager.BaseScreenSize.Y);
             Vector2 textSize = font.MeasureString(message);
             Vector2 position = (viewportSize - textSize) / 2;
-            spriteBatch.Begin();
+            spriteBatch.Begin(SpriteSortMode.Deferred, null, null, null, null, null, ScreenManager.GlobalTransformation);
             spriteBatch.DrawString(font, message, position, Color.White);
             spriteBatch.End();
         }

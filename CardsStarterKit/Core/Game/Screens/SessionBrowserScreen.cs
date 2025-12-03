@@ -219,7 +219,7 @@ namespace Blackjack
             SpriteBatch spriteBatch = ScreenManager.SpriteBatch;
             SpriteFont font = ScreenManager.Font;
 
-            spriteBatch.Begin();
+            spriteBatch.Begin(SpriteSortMode.Deferred, null, null, null, null, null, ScreenManager.GlobalTransformation);
 
             // Draw "Available Games:" section header and session list
             if (availableSessions.Count > 0)

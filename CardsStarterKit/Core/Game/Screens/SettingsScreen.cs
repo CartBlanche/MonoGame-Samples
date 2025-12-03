@@ -559,7 +559,7 @@ namespace Blackjack
         {
             SpriteBatch spriteBatch = ScreenManager.SpriteBatch;
 
-            spriteBatch.Begin();
+            spriteBatch.Begin(SpriteSortMode.Deferred, null, null, null, null, null, ScreenManager.GlobalTransformation);
 
             // Draw background
             spriteBatch.Draw(background, safeArea, Color.White * TransitionAlpha);

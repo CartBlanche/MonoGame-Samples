@@ -77,7 +77,7 @@ namespace Blackjack
             SpriteFont font = ScreenManager.Font;
             Vector2 position = new Vector2(ScreenManager.SafeArea.Left + 50, ScreenManager.SafeArea.Top + 100);
 
-            spriteBatch.Begin();
+            spriteBatch.Begin(SpriteSortMode.Deferred, null, null, null, null, null, ScreenManager.GlobalTransformation);
             spriteBatch.DrawString(font, Resources.Players, position, Color.White);
             position.Y += font.LineSpacing * 2;
 
