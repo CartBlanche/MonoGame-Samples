@@ -9,11 +9,11 @@ namespace Blackjack.Networking
         public string Name { get; set; }
         public bool IsAI { get; set; }
     }
-    
+
     public class PlayerListSyncPacket
     {
         public List<PlayerInfo> Players { get; set; }
-        
+
         public void Serialize(PacketWriter writer)
         {
             writer.Write((byte)Players.Count);
@@ -23,7 +23,7 @@ namespace Blackjack.Networking
                 writer.Write(player.IsAI);
             }
         }
-        
+
         public static PlayerListSyncPacket Deserialize(PacketReader reader)
         {
             var packet = new PlayerListSyncPacket { Players = new List<PlayerInfo>() };
@@ -43,15 +43,18 @@ namespace Blackjack.Networking
     public class PlayerActionPacket
     {
         public BlackjackAction Action { get; set; }
+        public byte PlayerIndex { get; set; }
         public void Serialize(PacketWriter writer)
         {
             writer.Write((byte)Action);
+            writer.Write(PlayerIndex);
         }
         public static PlayerActionPacket Deserialize(PacketReader reader)
         {
             return new PlayerActionPacket
             {
-                Action = (BlackjackAction)reader.ReadByte()
+                Action = (BlackjackAction)reader.ReadByte(),
+                PlayerIndex = reader.ReadByte()
             };
         }
     }
@@ -60,13 +63,13 @@ namespace Blackjack.Networking
     {
         public byte PlayerIndex { get; set; }
         public int BetAmount { get; set; }
-        
+
         public void Serialize(PacketWriter writer)
         {
             writer.Write(PlayerIndex);
             writer.Write(BetAmount);
         }
-        
+
         public static BetPlacedPacket Deserialize(PacketReader reader)
         {
             return new BetPlacedPacket
@@ -81,13 +84,13 @@ namespace Blackjack.Networking
     {
         public byte PlayerIndex { get; set; }
         public int ChipValue { get; set; }
-        
+
         public void Serialize(PacketWriter writer)
         {
             writer.Write(PlayerIndex);
             writer.Write(ChipValue);
         }
-        
+
         public static ChipAddedPacket Deserialize(PacketReader reader)
         {
             return new ChipAddedPacket
@@ -117,16 +120,16 @@ namespace Blackjack.Networking
             {
                 var playerIndex = reader.ReadByte();
                 System.Console.WriteLine($"[CardDealtPacket] PlayerIndex: {playerIndex}");
-                
+
                 var card = reader.ReadCard();
                 System.Console.WriteLine($"[CardDealtPacket] Card: {card.Type} {card.Value}");
-                
+
                 var faceDown = reader.ReadBoolean();
                 System.Console.WriteLine($"[CardDealtPacket] FaceDown: {faceDown}");
-                
+
                 var handType = (HandTypes)reader.ReadByte();
                 System.Console.WriteLine($"[CardDealtPacket] HandType: {handType}");
-                
+
                 return new CardDealtPacket
                 {
                     PlayerIndex = playerIndex,

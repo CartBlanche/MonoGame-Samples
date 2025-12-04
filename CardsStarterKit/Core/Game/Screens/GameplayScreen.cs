@@ -347,22 +347,23 @@ namespace Blackjack
             // Host receives action from client and processes it
             if (networkSession != null && networkSession.IsHost)
             {
+                // Execute the action for the specific player
                 switch (packet.Action)
                 {
                     case Blackjack.Networking.BlackjackAction.Hit:
-                        blackJackGame.Hit();
+                        blackJackGame.HitForPlayer(packet.PlayerIndex);
                         break;
                     case Blackjack.Networking.BlackjackAction.Stand:
-                        blackJackGame.Stand();
+                        blackJackGame.StandForPlayer(packet.PlayerIndex);
                         break;
                     case Blackjack.Networking.BlackjackAction.Double:
-                        blackJackGame.Double();
+                        blackJackGame.DoubleForPlayer(packet.PlayerIndex);
                         break;
                     case Blackjack.Networking.BlackjackAction.Split:
-                        blackJackGame.Split();
+                        blackJackGame.SplitForPlayer(packet.PlayerIndex);
                         break;
                     case Blackjack.Networking.BlackjackAction.Insurance:
-                        blackJackGame.Insurance();
+                        blackJackGame.InsuranceForPlayer(packet.PlayerIndex);
                         break;
                 }
             }
@@ -535,12 +536,13 @@ namespace Blackjack
                 {
                     if (blackJackGame.Players[i].Name.Equals(localGamerTag, StringComparison.OrdinalIgnoreCase))
                     {
-                        // Found the local player - tell BetGameComponent
+                        // Found the local player - tell BetGameComponent and BlackjackCardGame
                         var betComponent = blackJackGame.Game.Components.OfType<BetGameComponent>().FirstOrDefault();
                         if (betComponent != null)
                         {
                             betComponent.LocalPlayerIndex = i;
                         }
+                        blackJackGame.LocalPlayerIndex = i;
                         break;
                     }
                 }
