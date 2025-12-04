@@ -41,7 +41,6 @@ public class EnemyController : EntityComponent
     public void SetWeapon(Weapon weapon)
     {
         _weapon = weapon;
-        Console.WriteLine($"[EnemyController] {Owner?.Name} equipped with {weapon?.Name}");
     }
 
     /// <summary>
@@ -75,8 +74,11 @@ public class EnemyController : EntityComponent
         OrientTowards(targetPosition);
 
         // Calculate firing direction
-        Vector3 origin = _transform.Position + new Vector3(0, 0.5f, 0); // Offset for weapon height
-        Vector3 direction = Vector3.Normalize(targetPosition - origin);
+        Vector3 direction = Vector3.Normalize(targetPosition - _transform.Position);
+
+        // Offset origin up for weapon height and forward to avoid hitting self
+        // Same offset as line-of-sight check (1.5 units forward)
+        Vector3 origin = _transform.Position + new Vector3(0, 0.5f, 0) + (direction * 1.5f);
 
         // Attempt to fire
         bool didFire = _weapon.TryFire(origin, direction);

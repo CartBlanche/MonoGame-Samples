@@ -112,14 +112,6 @@ public class ShooterGame : Game
         // _sceneManager.RegisterComponentType<PlayerController>("PlayerController");
         
         base.Initialize();
-        
-        Console.WriteLine("MonoGame FPS initialized!");
-        Console.WriteLine("Phase 1 services registered:");
-        Console.WriteLine("  - InputService (keyboard, mouse, gamepad)");
-        Console.WriteLine("  - TimeService (delta time, time scaling)");
-        Console.WriteLine("  - AudioService (placeholder for Phase 4)");
-        Console.WriteLine("  - BepuPhysicsProvider (multi-threaded physics)");
-        Console.WriteLine("  - ForwardGraphicsProvider (BasicEffect rendering)");
     }
     
     /// <summary>
@@ -184,9 +176,7 @@ public class ShooterGame : Game
         // Store player entity reference for later (for weapon firing events)
         _playerEntity = playerEntity;
 
-        Console.WriteLine("[Phase 2 Test Scene] Player created with FirstPersonController");
-        Console.WriteLine("  Controls: WASD = Move, Mouse = Look, Space = Jump, Shift = Sprint, Escape = Release Mouse");
-        Console.WriteLine("  Weapons: 1 = Pistol, 2 = Assault Rifle, LMB = Fire, R = Reload");
+        // Player setup complete
         
         // Create Ground Plane (large flat box)
         var groundEntity = new Core.Entities.Entity("Ground");
@@ -195,7 +185,6 @@ public class ShooterGame : Game
         groundTransform.LocalScale = new System.Numerics.Vector3(20, 0.5f, 20); // Wide and flat
         var groundRenderer = groundEntity.AddComponent<Core.Components.MeshRenderer>();
         groundRenderer.SetCube(1.0f, new System.Numerics.Vector4(0.3f, 0.5f, 0.3f, 1.0f)); // Green ground
-        Console.WriteLine($"[DEBUG] Ground cube material color: {groundRenderer.Material.Color}");
         var groundRigid = groundEntity.AddComponent<Core.Components.Rigidbody>();
         groundRigid.BodyType = Core.Plugins.Physics.BodyType.Static;
         groundRigid.Shape = new Core.Plugins.Physics.BoxShape(20, 0.5f, 20);
@@ -217,24 +206,10 @@ public class ShooterGame : Game
         // Initialize the scene
         scene.Initialize();
         
-        Console.WriteLine($"[DEBUG] Scene has {scene.Entities.Count} entities after initialization");
-        foreach (var ent in scene.Entities)
-        {
-            Console.WriteLine($"[DEBUG]   - {ent.Name}: Active={ent.Active}, ComponentCount={ent.GetType().GetProperty("Components")?.GetValue(ent)}");
-        }
-        
         // Make it the active scene (hacky but works for testing)
         var activeSceneField = typeof(SceneManager).GetField("_activeScene", 
             System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
         activeSceneField?.SetValue(_sceneManager, scene);
-        
-        Console.WriteLine("[Phase 2 Test Scene] Created:");
-        Console.WriteLine("  - Player with FPS controller, weapons, health (100 HP), and HUD at (0, 2, 10)");
-        Console.WriteLine("  - Ground plane (20x0.5x20 static box)");
-        Console.WriteLine("  - 2 enemy entities with AI (20 HP, 10 damage melee attacks)");
-        Console.WriteLine("  - 3 pickups (2 health, 1 ammo) with auto-collect");
-        Console.WriteLine("  - Controls: WASD=Move, Mouse=Look, Space=Jump, Shift=Sprint, Esc=Pause");
-        Console.WriteLine("  - Weapons: 1=Pistol, 2=Assault Rifle, LMB=Fire, R=Reload");
     }
     
     /// <summary>
@@ -311,7 +286,6 @@ public class ShooterGame : Game
 
         // Add EnemyController for weapon management
         var enemyController = entity.AddComponent<Gameplay.Components.EnemyController>();
-        enemyController.SetWeapon(eyeLazers);
 
         // Add EnemyAI component
         var enemyAI = entity.AddComponent<Gameplay.Components.EnemyAI>();
@@ -342,10 +316,11 @@ public class ShooterGame : Game
             // Death effect: disable rigidbody collisions (corpse shouldn't block movement)
             rigidbody.BodyType = Core.Plugins.Physics.BodyType.Static;
         };
-        
+
         scene.AddEntity(entity);
-        
-        Console.WriteLine($"[Test Scene] Created enemy '{name}' at {position} targeting player");
+
+        // Set weapon AFTER entity is added and initialized
+        enemyController.SetWeapon(eyeLazers);
     }
 
     /// <summary>
@@ -371,7 +346,6 @@ public class ShooterGame : Game
         pickup.PickupRadius = 2.0f;
 
         scene.AddEntity(entity);
-        Console.WriteLine($"[Test Scene] Created health pickup '{name}' (+{healAmount} HP) at {position}");
     }
 
     /// <summary>
@@ -395,7 +369,6 @@ public class ShooterGame : Game
         pickup.PickupRadius = 2.0f;
 
         scene.AddEntity(entity);
-        Console.WriteLine($"[Test Scene] Created ammo pickup '{name}' (+{ammoAmount} rounds) at {position}");
     }
 
     /// <summary>
@@ -1099,8 +1072,6 @@ public class ShooterGame : Game
         ServiceLocator.Get<IGraphicsProvider>()?.Shutdown();
         
         ServiceLocator.Clear();
-        
-        Console.WriteLine("MonoGame FPS shutdown complete");
         
         base.UnloadContent();
     }

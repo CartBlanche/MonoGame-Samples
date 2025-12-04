@@ -162,12 +162,11 @@ public class EnemyAI : EntityComponent
             _health.OnDeath += OnDeath;
         }
 
+        // Reduced logging - only show critical warnings
         if (_enemyController == null)
         {
-            Console.WriteLine($"[EnemyAI] WARNING: {Owner?.Name} has no EnemyController - ranged attacks disabled");
+            Console.WriteLine($"[EnemyAI] WARNING: {Owner?.Name} has no EnemyController");
         }
-
-        Console.WriteLine($"[EnemyAI] {Owner?.Name} initialized in {_currentState} state (Range: {_detectionRange}, Attack: {_attackRange})");
     }
 
     /// <summary>
@@ -176,10 +175,28 @@ public class EnemyAI : EntityComponent
     public override void Update(GameTime gameTime)
     {
         base.Update(gameTime);
-        
+
+        // Lazy-load target transform if we have a target but no transform cached
+        if (_target != null && _targetTransform == null)
+        {
+            _targetTransform = _target.GetComponent<Transform3D>();
+            if (_targetTransform != null)
+            {
+                Console.WriteLine($"[EnemyAI] {Owner?.Name} successfully loaded target transform");
+            }
+        }
+
         if (_transform == null || _target == null || _targetTransform == null)
+        {
+            // DEBUG: Log why update is skipped (only once per second to avoid spam)
+            if (_stateTimer == 0f || _stateTimer > 1f)
+            {
+                Console.WriteLine($"[EnemyAI] {Owner?.Name} Update skipped - Transform:{_transform != null}, Target:{_target != null}, TargetTransform:{_targetTransform != null}");
+                _stateTimer = 0.01f; // Reset to avoid immediate re-log
+            }
             return;
-        
+        }
+
         float deltaTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
         _stateTimer += deltaTime;
         
@@ -216,9 +233,16 @@ public class EnemyAI : EntityComponent
     {
         if (_targetTransform == null || _transform == null)
             return;
-        
+
         float distanceToTarget = Vector3.Distance(_transform.Position, _targetTransform.Position);
-        
+
+        // DEBUG: Log detection checks every 2 seconds
+        if (_stateTimer > 2f)
+        {
+            Console.WriteLine($"[EnemyAI] {Owner?.Name} Idle - Distance:{distanceToTarget:F1}, LOS:{_hasLineOfSight}, Range:{_detectionRange}");
+            _stateTimer = 0f;
+        }
+
         // If player is in range and visible, start chasing
         if (distanceToTarget <= _detectionRange && _hasLineOfSight)
         {
@@ -316,28 +340,42 @@ public class EnemyAI : EntityComponent
     {
         if (_transform == null || _targetTransform == null)
             return false;
-        
+
         var physicsProvider = ServiceLocator.Get<Core.Plugins.Physics.IPhysicsProvider>();
         if (physicsProvider == null)
             return false;
-        
-        Vector3 origin = _transform.Position;
-        Vector3 targetPos = _targetTransform.Position;
-        Vector3 direction = Vector3.Normalize(targetPos - origin);
-        float distance = Vector3.Distance(origin, targetPos);
-        
-        // Raycast toward target
-        if (physicsProvider.Raycast(origin, direction, distance, out var hit))
+
+        // Calculate direction to target
+        Vector3 targetPos = _targetTransform.Position + new Vector3(0, 0.5f, 0);
+        Vector3 toTarget = targetPos - _transform.Position;
+        Vector3 direction = Vector3.Normalize(toTarget);
+        float distance = toTarget.Length();
+
+        // Start raycast from slightly in front of enemy to avoid hitting self
+        // Offset by 1.5 units forward to clear the enemy's collider
+        Vector3 origin = _transform.Position + new Vector3(0, 0.5f, 0) + (direction * 1.5f);
+
+        // Reduce distance by the offset amount
+        float adjustedDistance = distance - 1.5f;
+        if (adjustedDistance <= 0f)
         {
-            // Check if we hit the target or something else
+            // Target is too close to raycast offset, assume we can see them
+            return true;
+        }
+
+        // Raycast toward target
+        if (physicsProvider.Raycast(origin, direction, adjustedDistance, out var hit))
+        {
+            // We hit something - check if it's the target or an obstacle
             if (hit.Body?.UserData is Entity hitEntity)
             {
                 return hitEntity == _target;
             }
+            // Hit something that's not an entity (terrain, etc)
             return false;
         }
-        
-        // No obstacle in the way
+
+        // No obstacle in the way - clear line of sight
         return true;
     }
 
@@ -407,7 +445,8 @@ public class EnemyAI : EntityComponent
     /// </summary>
     private void OnStateEnter(AIState state)
     {
-        Console.WriteLine($"[EnemyAI] {Owner?.Name} entered {state} state");
+        // DEBUG: Track AI state changes
+        Console.WriteLine($"[EnemyAI] {Owner?.Name} -> {state}");
     }
 
     /// <summary>
@@ -424,7 +463,6 @@ public class EnemyAI : EntityComponent
     private void OnDeath(DamageInfo killingBlow)
     {
         CurrentState = AIState.Dead;
-        Console.WriteLine($"[EnemyAI] {Owner?.Name} AI disabled (dead)");
     }
 
     /// <summary>
