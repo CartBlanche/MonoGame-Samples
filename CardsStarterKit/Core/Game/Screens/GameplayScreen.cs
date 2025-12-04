@@ -229,34 +229,51 @@ namespace Blackjack
         {
             var packet = Blackjack.Networking.PlayerListSyncPacket.Deserialize(reader);
 
-            // Only clients should process this - host already has the correct player list
+            // Only clients should process this
             if (networkSession != null && !networkSession.IsHost)
             {
-                // Clear existing AI players (clients shouldn't have created any)
-                // But we need to recreate the full player list to match the host
-
-                // The client should have already added human players in InitializeGame
-                // Now we need to add AI players to match the host's list
-
                 System.Globalization.TextInfo myTI = new System.Globalization.CultureInfo("en-GB", false).TextInfo;
 
-                // Get current player count (should be just human players)
+                // If client hasn't created any players yet (because we're waiting for this packet)
+                // OR if we need to rebuild the player list to match the host's order exactly
                 int currentPlayerCount = blackJackGame.Players.Count;
-
-                // Add any missing players from the packet
-                for (int i = currentPlayerCount; i < packet.Players.Count; i++)
+                
+                if (currentPlayerCount == 0)
                 {
-                    var playerInfo = packet.Players[i];
-                    if (playerInfo.IsAI)
+                    // Client has no players yet - build the complete list from the packet
+                    for (int i = 0; i < packet.Players.Count; i++)
                     {
-                        // Add AI player (but don't wire up events - host controls AI)
-                        BlackjackAIPlayer aiPlayer = new BlackjackAIPlayer(playerInfo.Name, blackJackGame);
-                        blackJackGame.AddPlayer(aiPlayer);
+                        var playerInfo = packet.Players[i];
+                        if (playerInfo.IsAI)
+                        {
+                            // Add AI player
+                            BlackjackAIPlayer aiPlayer = new BlackjackAIPlayer(playerInfo.Name, blackJackGame);
+                            blackJackGame.AddPlayer(aiPlayer);
+                        }
+                        else
+                        {
+                            // Add human player
+                            blackJackGame.AddPlayer(new BlackjackPlayer(myTI.ToTitleCase(playerInfo.Name), blackJackGame));
+                        }
                     }
-                    else
+                }
+                else
+                {
+                    // Client already has some players - just add any missing AI players
+                    for (int i = currentPlayerCount; i < packet.Players.Count; i++)
                     {
-                        // Add human player (shouldn't normally happen, but handle it)
-                        blackJackGame.AddPlayer(new BlackjackPlayer(myTI.ToTitleCase(playerInfo.Name), blackJackGame));
+                        var playerInfo = packet.Players[i];
+                        if (playerInfo.IsAI)
+                        {
+                            // Add AI player (but don't wire up events - host controls AI)
+                            BlackjackAIPlayer aiPlayer = new BlackjackAIPlayer(playerInfo.Name, blackJackGame);
+                            blackJackGame.AddPlayer(aiPlayer);
+                        }
+                        else
+                        {
+                            // Add human player (shouldn't normally happen, but handle it)
+                            blackJackGame.AddPlayer(new BlackjackPlayer(myTI.ToTitleCase(playerInfo.Name), blackJackGame));
+                        }
                     }
                 }
 
@@ -267,9 +284,40 @@ namespace Blackjack
                 // Update the table to show the correct number of player spots
                 blackJackGame.GameTable.SetPlaces(totalPlayers);
 
+                // CRITICAL: Calculate LocalPlayerIndex based on the final, authoritative player list from host
+                // This must match the host's player indices exactly
+                if (networkSession.LocalGamers.Count > 0)
+                {
+                    string localGamerTag = networkSession.LocalGamers[0].Gamertag;
+                    bool foundLocalPlayer = false;
+                    
+                    for (int i = 0; i < blackJackGame.Players.Count; i++)
+                    {
+                        if (blackJackGame.Players[i].Name.Equals(localGamerTag, StringComparison.OrdinalIgnoreCase))
+                        {
+                            // Update LocalPlayerIndex in both components
+                            var betComponent = blackJackGame.Game.Components.OfType<BetGameComponent>().FirstOrDefault();
+                            if (betComponent != null)
+                            {
+                                betComponent.LocalPlayerIndex = i;
+                            }
+                            blackJackGame.LocalPlayerIndex = i;
+                            System.Console.WriteLine($"[PlayerListSync] Client set LocalPlayerIndex to {i} (player: {localGamerTag})");
+                            foundLocalPlayer = true;
+                            break;
+                        }
+                    }
+                    
+                    if (!foundLocalPlayer)
+                    {
+                        System.Console.WriteLine($"[PlayerListSync] WARNING: Could not find local player '{localGamerTag}' in the synced player list!");
+                        System.Console.WriteLine($"[PlayerListSync] Available players: {string.Join(", ", blackJackGame.Players.Select(p => p.Name))}");
+                    }
+                }
+
                 // Now that we have the complete player list, start the round
                 // This ensures DisplayPlayingHands() creates animatedHands for all players including AI
-                System.Console.WriteLine($"[PlayerListSync] Client received {packet.Players.Count} players, starting round now");
+                System.Console.WriteLine($"[PlayerListSync] Client received {packet.Players.Count} players from host, starting round now");
                 blackJackGame.StartRound();
             }
         }
@@ -405,61 +453,75 @@ namespace Blackjack
 
             TextInfo myTI = new CultureInfo("en-GB", false).TextInfo;
 
-            System.Console.WriteLine($"[InitializeGame] joinedPlayers={(joinedPlayers == null ? "null" : joinedPlayers.Count.ToString())}, networkSession={(networkSession == null ? "null" : "not null")}");
+            System.Console.WriteLine($"[InitializeGame] joinedPlayers={(joinedPlayers == null ? "null" : joinedPlayers.Count.ToString())}, networkSession={(networkSession == null ? "null" : "not null")}, IsHost={(networkSession?.IsHost ?? false)}");
 
             // Add players from lobby
             if (joinedPlayers != null && joinedPlayers.Count > 0)
             {
-                // Determine how many are human players (from network session)
-                int humanPlayerCount = joinedPlayers.Count;
-                if (networkSession != null)
+                // NETWORK GAME SYNCHRONIZATION:
+                // Host creates full player list immediately and broadcasts it
+                // Clients wait to receive the host's player list for consistency
+                if (networkSession != null && !networkSession.IsHost)
                 {
-                    // In network games, only count actual network gamers as human players
-                    humanPlayerCount = networkSession.AllGamers.Count;
+                    // Client: Don't create players yet, wait for PlayerListSync from host
+                    // The host will send the player list soon
+                    System.Console.WriteLine("[InitializeGame] Client waiting for PlayerListSync from host...");
+                    // Don't add any players yet
                 }
-
-                // Add human players
-                for (int i = 0; i < humanPlayerCount; i++)
+                else
                 {
-                    var player = new BlackjackPlayer(myTI.ToTitleCase(joinedPlayers[i]), blackJackGame);
-
-                    // Load saved balance if persistent winnings is enabled (single-player only, first player)
-                    if (i == 0 && !blackJackGame.IsNetworkGame && GameSettings.Instance.PersistWinnings)
+                    // Host or local game: Create player list now
+                    // Determine how many are human players (from network session)
+                    int humanPlayerCount = joinedPlayers.Count;
+                    if (networkSession != null)
                     {
-                        // Reset to default if saved balance is 0 or negative
-                        if (GameSettings.Instance.SavedPlayerBalance <= 0)
+                        // In network games, only count actual network gamers as human players
+                        humanPlayerCount = networkSession.AllGamers.Count;
+                    }
+
+                    // Add human players
+                    for (int i = 0; i < humanPlayerCount; i++)
+                    {
+                        var player = new BlackjackPlayer(myTI.ToTitleCase(joinedPlayers[i]), blackJackGame);
+
+                        // Load saved balance if persistent winnings is enabled (single-player only, first player)
+                        if (i == 0 && !blackJackGame.IsNetworkGame && GameSettings.Instance.PersistWinnings)
                         {
-                            GameSettings.Instance.SavedPlayerBalance = 500f;
-                            GameSettings.Save();
-                            System.Console.WriteLine($"[PersistWinnings] (Path 1) Reset negative/zero balance to default: 500");
+                            // Reset to default if saved balance is 0 or negative
+                            if (GameSettings.Instance.SavedPlayerBalance <= 0)
+                            {
+                                GameSettings.Instance.SavedPlayerBalance = 500f;
+                                GameSettings.Save();
+                                System.Console.WriteLine($"[PersistWinnings] (Path 1) Reset negative/zero balance to default: 500");
+                            }
+                            player.Balance = GameSettings.Instance.SavedPlayerBalance;
+                            System.Console.WriteLine($"[PersistWinnings] (Path 1) Loaded balance: {player.Balance}");
                         }
-                        player.Balance = GameSettings.Instance.SavedPlayerBalance;
-                        System.Console.WriteLine($"[PersistWinnings] (Path 1) Loaded balance: {player.Balance}");
-                    }
-                    else
-                    {
-                        System.Console.WriteLine($"[PersistWinnings] (Path 1) Using default balance: {player.Balance} (i={i}, IsNetworkGame={blackJackGame.IsNetworkGame}, PersistWinnings={GameSettings.Instance.PersistWinnings})");
-                    }
+                        else
+                        {
+                            System.Console.WriteLine($"[PersistWinnings] (Path 1) Using default balance: {player.Balance} (i={i}, IsNetworkGame={blackJackGame.IsNetworkGame}, PersistWinnings={GameSettings.Instance.PersistWinnings})");
+                        }
 
-                    blackJackGame.AddPlayer(player);
-                }
-
-                // Only the host creates AI players in network games
-                // In local games, always create AI players
-                if (networkSession == null || networkSession.IsHost)
-                {
-                    // Fill remaining slots with AI based on settings
-                    int maxAI = GameSettings.Instance.MaxAIPlayers;
-                    int aiSlotsToFill = GameSettings.Instance.FillEmptySlotsWithAI
-                        ? Math.Min(BlackjackConstants.MaxPlayers - humanPlayerCount, maxAI)
-                        : Math.Min(maxAI, BlackjackConstants.MaxPlayers - humanPlayerCount);
-
-                    for (int i = 0; i < aiSlotsToFill && i < BlackjackConstants.DefaultAINames.Length; i++)
-                    {
-                        BlackjackAIPlayer player = new BlackjackAIPlayer(BlackjackConstants.DefaultAINames[i], blackJackGame);
                         blackJackGame.AddPlayer(player);
-                        player.Hit += player_Hit;
-                        player.Stand += player_Stand;
+                    }
+
+                    // Only the host creates AI players in network games
+                    // In local games, always create AI players
+                    if (networkSession == null || networkSession.IsHost)
+                    {
+                        // Fill remaining slots with AI based on settings
+                        int maxAI = GameSettings.Instance.MaxAIPlayers;
+                        int aiSlotsToFill = GameSettings.Instance.FillEmptySlotsWithAI
+                            ? Math.Min(BlackjackConstants.MaxPlayers - humanPlayerCount, maxAI)
+                            : Math.Min(maxAI, BlackjackConstants.MaxPlayers - humanPlayerCount);
+
+                        for (int i = 0; i < aiSlotsToFill && i < BlackjackConstants.DefaultAINames.Length; i++)
+                        {
+                            BlackjackAIPlayer player = new BlackjackAIPlayer(BlackjackConstants.DefaultAINames[i], blackJackGame);
+                            blackJackGame.AddPlayer(player);
+                            player.Hit += player_Hit;
+                            player.Stand += player_Stand;
+                        }
                     }
                 }
             }
