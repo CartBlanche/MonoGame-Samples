@@ -4,9 +4,6 @@
 			"path": "../../.."
 		},
 		{
-			"path": "../../../../NetworkStateManagement"
-		},
-		{
 			"path": "../../../../MonoGame.Xna.Framework.Net"
 		}
 	],
