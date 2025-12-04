@@ -28,6 +28,16 @@ public class ShooterGame : Game
     private GraphicsDeviceManager _graphics;
     private SpriteBatch? _spriteBatch;
     private SceneManager? _sceneManager;
+    private Gameplay.Systems.PickupSystem? _pickupSystem;
+
+    // Hit marker state
+    private bool _showHitMarker = false;
+    private float _hitMarkerTimer = 0f;
+    private const float HIT_MARKER_DURATION = 0.15f; // 150ms
+
+    // Pause state
+    private bool _isPaused = false;
+    private bool _escapeWasPressed = false;
 
     public ShooterGame()
     {
@@ -62,7 +72,19 @@ public class ShooterGame : Game
         
         // Phase 2: Register gameplay systems
         var projectileSystem = new Gameplay.Systems.ProjectileSystem(physicsProvider);
-        
+
+        // Subscribe to hit events for hit markers
+        projectileSystem.OnHitEntity += (hitEntity) =>
+        {
+            TriggerHitMarker();
+        };
+
+        // Subscribe to impact events for particle effects
+        projectileSystem.OnImpact += (position, normal) =>
+        {
+            SpawnImpactParticles(position, normal);
+        };
+
         // Initialize input service with screen center for mouse locking
         var screenCenter = new Microsoft.Xna.Framework.Point(
             _graphics.PreferredBackBufferWidth / 2,
@@ -158,7 +180,10 @@ public class ShooterGame : Game
         var rifle = Gameplay.Weapons.Gun.CreateAssaultRifle();
         weaponController.EquipWeapon(pistol, 0);   // Slot 1 (press '1' to select)
         weaponController.EquipWeapon(rifle, 1);    // Slot 2 (press '2' to select)
-        
+
+        // Store player entity reference for later (for weapon firing events)
+        _playerEntity = playerEntity;
+
         Console.WriteLine("[Phase 2 Test Scene] Player created with FirstPersonController");
         Console.WriteLine("  Controls: WASD = Move, Mouse = Look, Space = Jump, Shift = Sprint, Escape = Release Mouse");
         Console.WriteLine("  Weapons: 1 = Pistol, 2 = Assault Rifle, LMB = Fire, R = Reload");
@@ -175,17 +200,20 @@ public class ShooterGame : Game
         groundRigid.BodyType = Core.Plugins.Physics.BodyType.Static;
         groundRigid.Shape = new Core.Plugins.Physics.BoxShape(20, 0.5f, 20);
         scene.AddEntity(groundEntity);
-        
-        // Create a few colored cubes (larger for easier targeting)
-    CreateCube(scene, "RedCube", new System.Numerics.Vector3(-3, 2, 0), 2.0f, Color.Red);
-    CreateCube(scene, "BlueCube", new System.Numerics.Vector3(0, 4, 0), 2.0f, Color.Blue);
-    CreateCube(scene, "YellowCube", new System.Numerics.Vector3(3, 3, 0), 2.0f, Color.Yellow);
-        
-        // Create enemy entities for AI testing (bright red, taller/skinnier to distinguish from cubes)
+
+        // Create enemy entities for AI testing (bright red, taller/skinnier)
         // Position them right next to the weapon for visibility testing
         CreateEnemy(scene, playerEntity, "Enemy1", new System.Numerics.Vector3(-1, 1.5f, 2), 1.0f, 0.0f, 0.0f);
         CreateEnemy(scene, playerEntity, "Enemy2", new System.Numerics.Vector3(1, 1.5f, 2), 1.0f, 0.0f, 0.0f);
-        
+
+        // Create pickups for testing
+        CreateHealthPickup(scene, "HealthPickup1", new System.Numerics.Vector3(-5, 1.5f, 0), 25f);
+        CreateHealthPickup(scene, "HealthPickup2", new System.Numerics.Vector3(5, 1.5f, 0), 50f);
+        CreateAmmoPickup(scene, "AmmoPickup1", new System.Numerics.Vector3(0, 1.5f, -5), 30);
+
+        // Create pickup system
+        _pickupSystem = new Gameplay.Systems.PickupSystem(playerEntity);
+
         // Initialize the scene
         scene.Initialize();
         
@@ -203,9 +231,9 @@ public class ShooterGame : Game
         Console.WriteLine("[Phase 2 Test Scene] Created:");
         Console.WriteLine("  - Player with FPS controller, weapons, health (100 HP), and HUD at (0, 2, 10)");
         Console.WriteLine("  - Ground plane (20x0.5x20 static box)");
-        Console.WriteLine("  - 3 colored cubes with Health (50 HP each) for target practice");
         Console.WriteLine("  - 2 enemy entities with AI (20 HP, 10 damage melee attacks)");
-        Console.WriteLine("  - Controls: WASD=Move, Mouse=Look, Space=Jump, Shift=Sprint, Esc=Menu");
+        Console.WriteLine("  - 3 pickups (2 health, 1 ammo) with auto-collect");
+        Console.WriteLine("  - Controls: WASD=Move, Mouse=Look, Space=Jump, Shift=Sprint, Esc=Pause");
         Console.WriteLine("  - Weapons: 1=Pistol, 2=Assault Rifle, LMB=Fire, R=Reload");
     }
     
@@ -265,27 +293,109 @@ public class ShooterGame : Game
         
         // Add Health component
         var health = entity.AddComponent<Gameplay.Components.Health>();
-        health.MaxHealth = 20f;
+        health.MaxHealth = 100f; // Unity HoverBot health
         health.DestroyOnDeath = false; // Keep visible after death for testing
-        
-        // Subscribe to death event
-        health.OnDeath += (damageInfo) =>
+
+        // Create weapon for enemy (Eye Lazers)
+        var eyeLazers = Gameplay.Weapons.Gun.CreateEnemyEyeLazers();
+
+        // Hook up weapon firing to projectile system
+        if (eyeLazers is Gameplay.Weapons.Gun gun)
         {
-            Console.WriteLine($"[Test Scene] {name} was killed by {damageInfo.Attacker?.Name ?? "unknown"}!");
-        };
-        
+            gun.OnHitscanFired += (origin, direction, damage) =>
+            {
+                var projectileSystem = ServiceLocator.Get<Gameplay.Systems.ProjectileSystem>();
+                projectileSystem?.FireHitscan(origin, direction, damage, 100f, entity);
+            };
+        }
+
+        // Add EnemyController for weapon management
+        var enemyController = entity.AddComponent<Gameplay.Components.EnemyController>();
+        enemyController.SetWeapon(eyeLazers);
+
         // Add EnemyAI component
         var enemyAI = entity.AddComponent<Gameplay.Components.EnemyAI>();
         enemyAI.Target = player; // Set player as target
-        enemyAI.DetectionRange = 15f;
-        enemyAI.AttackRange = 2.5f;
+        enemyAI.DetectionRange = 20f; // Unity default
+        enemyAI.AttackRange = 10f; // Unity default
+        enemyAI.AttackStopDistanceRatio = 0.5f; // Stop at 50% of attack range
         enemyAI.MoveSpeed = 2.5f;
-        enemyAI.AttackDamage = 10f;
-        enemyAI.AttackCooldown = 2.0f;
+
+        // Subscribe to death event (after enemyAI is created so we can reference it)
+        health.OnDeath += (damageInfo) =>
+        {
+            Console.WriteLine($"[Test Scene] {name} was killed by {damageInfo.Attacker?.Name ?? "unknown"}!");
+
+            // Death effect: change color to dark gray (corpse color)
+            renderer.Material.Color = new System.Numerics.Vector4(0.3f, 0.3f, 0.3f, 1.0f);
+
+            // Death effect: rotate/fall down (tilt forward)
+            transform.LocalRotation = System.Numerics.Quaternion.CreateFromAxisAngle(
+                new System.Numerics.Vector3(1, 0, 0), // Rotate around X-axis
+                (float)(System.Math.PI / 2) // 90 degrees forward
+            );
+
+            // Death effect: lower to ground (half height)
+            var currentPos = transform.Position;
+            transform.Position = new System.Numerics.Vector3(currentPos.X, currentPos.Y - 0.9f, currentPos.Z);
+
+            // Death effect: disable rigidbody collisions (corpse shouldn't block movement)
+            rigidbody.BodyType = Core.Plugins.Physics.BodyType.Static;
+        };
         
         scene.AddEntity(entity);
         
         Console.WriteLine($"[Test Scene] Created enemy '{name}' at {position} targeting player");
+    }
+
+    /// <summary>
+    /// Helper to create a health pickup
+    /// </summary>
+    private void CreateHealthPickup(Core.Scenes.Scene scene, string name, System.Numerics.Vector3 position, float healAmount)
+    {
+        var entity = new Core.Entities.Entity(name);
+        entity.Tag = "Pickup";
+
+        var transform = entity.AddComponent<Core.Components.Transform3D>();
+        transform.Position = position;
+        transform.LocalScale = new System.Numerics.Vector3(0.5f, 0.5f, 0.5f);
+
+        var renderer = entity.AddComponent<Core.Components.MeshRenderer>();
+        renderer.SetCube(1.0f, new System.Numerics.Vector4(0.0f, 1.0f, 0.0f, 1.0f)); // Green for health
+
+        // No physics collider needed - proximity detection handled by PickupSystem
+
+        var pickup = entity.AddComponent<Gameplay.Components.Pickup>();
+        pickup.Type = Gameplay.Components.PickupType.Health;
+        pickup.Value = healAmount;
+        pickup.PickupRadius = 2.0f;
+
+        scene.AddEntity(entity);
+        Console.WriteLine($"[Test Scene] Created health pickup '{name}' (+{healAmount} HP) at {position}");
+    }
+
+    /// <summary>
+    /// Helper to create an ammo pickup
+    /// </summary>
+    private void CreateAmmoPickup(Core.Scenes.Scene scene, string name, System.Numerics.Vector3 position, int ammoAmount)
+    {
+        var entity = new Core.Entities.Entity(name);
+        entity.Tag = "Pickup";
+
+        var transform = entity.AddComponent<Core.Components.Transform3D>();
+        transform.Position = position;
+        transform.LocalScale = new System.Numerics.Vector3(0.5f, 0.5f, 0.5f);
+
+        var renderer = entity.AddComponent<Core.Components.MeshRenderer>();
+        renderer.SetCube(1.0f, new System.Numerics.Vector4(1.0f, 0.8f, 0.0f, 1.0f)); // Yellow/gold for ammo
+
+        var pickup = entity.AddComponent<Gameplay.Components.Pickup>();
+        pickup.Type = Gameplay.Components.PickupType.Ammo;
+        pickup.Value = ammoAmount;
+        pickup.PickupRadius = 2.0f;
+
+        scene.AddEntity(entity);
+        Console.WriteLine($"[Test Scene] Created ammo pickup '{name}' (+{ammoAmount} rounds) at {position}");
     }
 
     /// <summary>
@@ -313,6 +423,22 @@ public class ShooterGame : Game
 
         // Load SpriteFont for HUD
         SpriteFont hudFont = Content.Load<SpriteFont>("font");
+
+        // Initialize AudioService with ContentManager
+        var audioService = ServiceLocator.Get<IAudioService>() as AudioService;
+        if (audioService != null)
+        {
+            audioService.Initialize(Content);
+
+            // Pre-load commonly used sounds to avoid first-shot delay
+            audioService.LoadSound("Audio/SFX/Weapons/Blaster_Shot");
+            audioService.LoadSound("Audio/SFX/Weapons/Shotgun_Shot");
+            audioService.LoadSound("Audio/SFX/Pickups/Pickup_Health");
+            audioService.LoadSound("Audio/SFX/Pickups/Pickup_Weapon_Small");
+            audioService.LoadSound("Audio/SFX/Player/Damage_Tick");
+
+            Console.WriteLine("[Game] AudioService initialized with ContentManager");
+        }
 
         // Create Phase 2 test scene AFTER all services are initialized
         CreateTestScene();
@@ -369,6 +495,7 @@ public class ShooterGame : Game
     private Core.Entities.Entity? _primaryWeaponViewModel;
     private Core.Entities.Entity? _secondaryWeaponViewModel;
     private int _lastWeaponIndex = -1;
+    private Core.Entities.Entity? _playerEntity;
 
     private void LoadWeaponModel(Core.Entities.Entity playerEntity)
     {
@@ -407,13 +534,55 @@ public class ShooterGame : Game
                 // Start with primary weapon visible
                 SetActiveWeaponViewModel(0);
 
-                Console.WriteLine("[LoadContent] Loaded both weapon viewmodels with camera tracking");
+                // Hook up muzzle flash to weapon firing
+                HookupMuzzleFlashEvents(playerEntity);
+
+                Console.WriteLine("[LoadContent] Loaded both weapon viewmodels with camera tracking and muzzle flash");
             }
         }
         catch (Exception ex)
         {
             Console.WriteLine($"[LoadContent] Failed to load weapon models: {ex.Message}");
             Console.WriteLine("  Make sure Content.mgcb has been built and weapon FBX files are included");
+        }
+    }
+
+    /// <summary>
+    /// Hook up weapon firing events to trigger muzzle flash on viewmodels
+    /// </summary>
+    private void HookupMuzzleFlashEvents(Core.Entities.Entity playerEntity)
+    {
+        var weaponController = playerEntity.GetComponent<Gameplay.Components.WeaponController>();
+        if (weaponController == null) return;
+
+        // Get the weapons and hook up their firing events
+        var pistol = weaponController.GetWeapon(0);
+        var rifle = weaponController.GetWeapon(1);
+
+        if (pistol is Gameplay.Weapons.Gun pistolGun)
+        {
+            pistolGun.OnHitscanFired += (origin, direction, damage) =>
+            {
+                // Trigger muzzle flash on primary viewmodel
+                var muzzleFlash = _primaryWeaponViewModel?.GetComponent<Gameplay.Components.MuzzleFlash>();
+                muzzleFlash?.Flash();
+
+                // Add muzzle flash particles
+                SpawnMuzzleFlashParticles(origin, direction);
+            };
+        }
+
+        if (rifle is Gameplay.Weapons.Gun rifleGun)
+        {
+            rifleGun.OnHitscanFired += (origin, direction, damage) =>
+            {
+                // Trigger muzzle flash on secondary viewmodel
+                var muzzleFlash = _secondaryWeaponViewModel?.GetComponent<Gameplay.Components.MuzzleFlash>();
+                muzzleFlash?.Flash();
+
+                // Add muzzle flash particles
+                SpawnMuzzleFlashParticles(origin, direction);
+            };
         }
     }
 
@@ -441,6 +610,14 @@ public class ShooterGame : Game
         weaponRenderer.LoadModel(Content, modelPath);
         weaponRenderer.Scale = scale;
         weaponRenderer.TintColor = new System.Numerics.Vector4(1, 1, 1, 1);
+
+        // Add muzzle flash effect
+        var muzzleFlash = weaponEntity.AddComponent<Gameplay.Components.MuzzleFlash>();
+        if (muzzleFlash != null)
+        {
+            muzzleFlash.BarrelOffset = new System.Numerics.Vector3(0f, -0.2f, -1.2f);
+            muzzleFlash.FlashScale = 0.2f;
+        }
 
         return weaponEntity;
     }
@@ -560,25 +737,56 @@ public class ShooterGame : Game
     /// <param name="gameTime">Provides timing information</param>
     protected override void Update(GameTime gameTime)
     {
-        // Exit on Escape (temporary - will be replaced with proper menu)
-        if (Keyboard.GetState().IsKeyDown(Keys.Escape))
-            Exit();
+        // Handle pause toggle with Escape key
+        bool escapePressed = Keyboard.GetState().IsKeyDown(Keys.Escape);
+        if (escapePressed && !_escapeWasPressed)
+        {
+            _isPaused = !_isPaused;
+            IsMouseVisible = _isPaused; // Show cursor when paused
+        }
+        _escapeWasPressed = escapePressed;
 
-        // Update core services
+        // Update core services (always update input/time even when paused)
         var timeService = ServiceLocator.Get<ITimeService>();
         var inputService = ServiceLocator.Get<IInputService>();
         var physicsProvider = ServiceLocator.Get<IPhysicsProvider>();
-        
+
         timeService.Update(gameTime);
         inputService.Update();
-        
+
+        // Skip game updates when paused
+        if (_isPaused)
+        {
+            base.Update(gameTime);
+            return;
+        }
+
         // Update active scene
         var coreGameTime = new Core.Components.GameTime(
             gameTime.TotalGameTime,
             gameTime.ElapsedGameTime
         );
-        
+
         _sceneManager?.Update(coreGameTime);
+
+        // Update pickup system
+        if (_pickupSystem != null && _sceneManager?.ActiveScene != null)
+        {
+            var pickups = _sceneManager.ActiveScene.Entities
+                .SelectMany(e => e.GetComponents<Gameplay.Components.Pickup>())
+                .Where(p => !p.IsCollected);
+            _pickupSystem.Update(coreGameTime, pickups);
+        }
+
+        // Update hit marker timer
+        if (_showHitMarker)
+        {
+            _hitMarkerTimer -= (float)gameTime.ElapsedGameTime.TotalSeconds;
+            if (_hitMarkerTimer <= 0f)
+            {
+                _showHitMarker = false;
+            }
+        }
 
         // Check for weapon switching (update viewmodel visibility)
         var playerEntity = _sceneManager?.ActiveScene?.FindEntitiesByTag("Player").FirstOrDefault();
@@ -678,6 +886,20 @@ public class ShooterGame : Game
             if (graphics is ForwardGraphicsProvider forwardGraphics)
             {
                 forwardGraphics.RenderModels(camera, modelRenderers);
+
+                // Render muzzle flashes (after models, with additive blending)
+                if (_sceneManager?.ActiveScene != null)
+                {
+                    var muzzleFlashes = _sceneManager.ActiveScene.Entities
+                        .SelectMany(e => e.GetComponents<Gameplay.Components.MuzzleFlash>())
+                        .Where(m => m.IsVisible);
+                    forwardGraphics.RenderMuzzleFlashes(camera, muzzleFlashes);
+
+                    // Render particles (after muzzle flashes, also additive)
+                    var particleEmitters = _sceneManager.ActiveScene.Entities
+                        .SelectMany(e => e.GetComponents<Gameplay.Components.ParticleEmitter>());
+                    forwardGraphics.RenderParticles(camera, particleEmitters);
+                }
             }
         }
         else
@@ -689,8 +911,17 @@ public class ShooterGame : Game
         graphics.EndFrame();
         
         // Draw crosshair (simple 2D overlay)
-        DrawCrosshair();
-        
+        if (!_isPaused)
+        {
+            DrawCrosshair();
+        }
+
+        // Draw pause menu if paused
+        if (_isPaused)
+        {
+            DrawPauseMenu();
+        }
+
         // Draw scene entities (UI/debug overlay - Phase 5)
         var coreGameTime = new Core.Components.GameTime(
             gameTime.TotalGameTime,
@@ -706,38 +937,154 @@ public class ShooterGame : Game
     /// Draw a simple crosshair in the center of the screen.
     /// This helps with aiming when the mouse cursor is hidden.
     /// </summary>
+    /// <summary>
+    /// Trigger hit marker feedback (call when player hits an enemy)
+    /// </summary>
+    public void TriggerHitMarker()
+    {
+        _showHitMarker = true;
+        _hitMarkerTimer = HIT_MARKER_DURATION;
+    }
+
+    /// <summary>
+    /// Spawn impact particles when bullets hit surfaces
+    /// </summary>
+    private void SpawnImpactParticles(System.Numerics.Vector3 position, System.Numerics.Vector3 normal)
+    {
+        if (_sceneManager?.ActiveScene == null)
+            return;
+
+        // Create a new entity for the particle effect
+        var particleEntity = new Core.Entities.Entity("ImpactParticles");
+
+        var transform = particleEntity.AddComponent<Core.Components.Transform3D>();
+        transform.Position = position;
+
+        // Add particle emitter
+        var emitter = particleEntity.AddComponent<Gameplay.Components.ParticleEmitter>();
+        emitter.EmissionPosition = position;
+        emitter.StartColor = new System.Numerics.Vector4(1.0f, 0.8f, 0.3f, 1.0f); // Orange/yellow
+        emitter.EndColor = new System.Numerics.Vector4(0.3f, 0.3f, 0.3f, 0.0f); // Fade to gray
+        emitter.StartSize = 0.15f;
+        emitter.EndSize = 0.05f;
+        emitter.Lifetime = 0.3f;
+        emitter.EmissionSpeed = 3f;
+        emitter.Gravity = -5f;
+        emitter.OneShot = true;
+
+        // Emit particles in direction of surface normal
+        emitter.Emit(15, position, normal);
+
+        // Add to scene
+        _sceneManager.ActiveScene.AddEntity(particleEntity);
+    }
+
+    /// <summary>
+    /// Spawn muzzle flash particles when weapons fire
+    /// </summary>
+    private void SpawnMuzzleFlashParticles(System.Numerics.Vector3 position, System.Numerics.Vector3 direction)
+    {
+        if (_sceneManager?.ActiveScene == null)
+            return;
+
+        // Create a new entity for the particle effect
+        var particleEntity = new Core.Entities.Entity("MuzzleFlashParticles");
+
+        var transform = particleEntity.AddComponent<Core.Components.Transform3D>();
+        transform.Position = position;
+
+        // Add particle emitter
+        var emitter = particleEntity.AddComponent<Gameplay.Components.ParticleEmitter>();
+        emitter.EmissionPosition = position;
+        emitter.StartColor = new System.Numerics.Vector4(1.0f, 0.9f, 0.5f, 1.0f); // Bright yellow/white
+        emitter.EndColor = new System.Numerics.Vector4(1.0f, 0.3f, 0.0f, 0.0f); // Fade to orange
+        emitter.StartSize = 0.2f;
+        emitter.EndSize = 0.02f;
+        emitter.Lifetime = 0.15f; // Short-lived flash
+        emitter.EmissionSpeed = 8f; // Fast particles
+        emitter.Gravity = 0f; // No gravity for muzzle flash
+        emitter.OneShot = true;
+
+        // Emit particles forward in firing direction (cone spread)
+        emitter.Emit(20, position, direction);
+
+        // Add to scene
+        _sceneManager.ActiveScene.AddEntity(particleEntity);
+    }
+
     private void DrawCrosshair()
     {
         if (_spriteBatch == null) return;
 
         _spriteBatch.Begin();
-        
+
         // Get screen center
         int centerX = _graphics.PreferredBackBufferWidth / 2;
         int centerY = _graphics.PreferredBackBufferHeight / 2;
-        
-        // Crosshair size
+
+        // Crosshair size and color (changes when hitting)
         int crosshairSize = 10;
         int thickness = 2;
         int gap = 3;
-        
+        Color crosshairColor = Color.White;
+
+        // Hit marker effect: red color and larger size
+        if (_showHitMarker)
+        {
+            float progress = _hitMarkerTimer / HIT_MARKER_DURATION;
+            crosshairColor = Color.Lerp(Color.White, Color.OrangeRed, progress);
+            crosshairSize = (int)(10 + 4 * progress); // Grows from 10 to 14
+            gap = (int)(3 + 2 * progress); // Gap grows too
+        }
+
         // Create a 1x1 white pixel texture for drawing lines
         Texture2D pixel = new Texture2D(GraphicsDevice, 1, 1);
         pixel.SetData(new[] { Color.White });
-        
+
         // Draw horizontal line (left and right from center)
-        _spriteBatch.Draw(pixel, new Rectangle(centerX - crosshairSize - gap, centerY - thickness / 2, crosshairSize, thickness), Color.White);
-        _spriteBatch.Draw(pixel, new Rectangle(centerX + gap, centerY - thickness / 2, crosshairSize, thickness), Color.White);
-        
+        _spriteBatch.Draw(pixel, new Rectangle(centerX - crosshairSize - gap, centerY - thickness / 2, crosshairSize, thickness), crosshairColor);
+        _spriteBatch.Draw(pixel, new Rectangle(centerX + gap, centerY - thickness / 2, crosshairSize, thickness), crosshairColor);
+
         // Draw vertical line (top and bottom from center)
-        _spriteBatch.Draw(pixel, new Rectangle(centerX - thickness / 2, centerY - crosshairSize - gap, thickness, crosshairSize), Color.White);
-        _spriteBatch.Draw(pixel, new Rectangle(centerX - thickness / 2, centerY + gap, thickness, crosshairSize), Color.White);
-        
+        _spriteBatch.Draw(pixel, new Rectangle(centerX - thickness / 2, centerY - crosshairSize - gap, thickness, crosshairSize), crosshairColor);
+        _spriteBatch.Draw(pixel, new Rectangle(centerX - thickness / 2, centerY + gap, thickness, crosshairSize), crosshairColor);
+
         _spriteBatch.End();
-        
+
         pixel.Dispose();
     }
-    
+
+    /// <summary>
+    /// Draw the pause menu overlay
+    /// </summary>
+    private void DrawPauseMenu()
+    {
+        if (_spriteBatch == null)
+            return;
+
+        _spriteBatch.Begin();
+
+        int screenWidth = GraphicsDevice.Viewport.Width;
+        int screenHeight = GraphicsDevice.Viewport.Height;
+
+        // Draw semi-transparent black overlay
+        var overlayTexture = new Texture2D(GraphicsDevice, 1, 1);
+        overlayTexture.SetData(new[] { Color.Black });
+        _spriteBatch.Draw(
+            overlayTexture,
+            new Rectangle(0, 0, screenWidth, screenHeight),
+            Color.Black * 0.7f // 70% opacity
+        );
+
+        // Note: For a full pause menu with text, we'd need to load a SpriteFont
+        // For now, we just show the dark overlay as visual feedback that the game is paused
+        // The user can see the mouse cursor appears when paused
+
+        _spriteBatch.End();
+
+        overlayTexture.Dispose();
+    }
+
     /// <summary>
     /// Cleanup when game exits.
     /// Similar to Unity's OnApplicationQuit() or OnDestroy().

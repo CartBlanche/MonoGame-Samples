@@ -293,11 +293,71 @@ public class ForwardGraphicsProvider : IGraphicsProvider
             );
         }
     }
-    
+
+    /// <summary>
+    /// Render all active muzzle flashes in the scene.
+    /// Called after models to render with additive blending on top.
+    /// </summary>
+    public void RenderMuzzleFlashes(ICamera camera, IEnumerable<MuzzleFlash> muzzleFlashes)
+    {
+        if (_graphicsDevice == null || _basicEffect == null)
+            return;
+
+        _currentCamera = camera;
+
+        // Set up camera matrices
+        _basicEffect.View = ToXnaMatrix(camera.ViewMatrix);
+        _basicEffect.Projection = ToXnaMatrix(camera.ProjectionMatrix);
+
+        foreach (var flash in muzzleFlashes)
+        {
+            if (!flash.IsVisible)
+                continue;
+
+            // Get flash position and properties
+            var cameraTarget = camera.Position + camera.Forward;
+            var position = flash.GetWorldPosition(camera.Position, cameraTarget);
+            var rotation = flash.GetRotation();
+            var size = flash.FlashScale;
+            var color = flash.FlashColor;
+
+            // Render billboard
+            DrawBillboard(position, size, color, rotation);
+        }
+    }
+
+    /// <summary>
+    /// Render particle emitters in the scene
+    /// </summary>
+    public void RenderParticles(ICamera camera, IEnumerable<Gameplay.Components.ParticleEmitter> emitters)
+    {
+        if (_graphicsDevice == null || _basicEffect == null)
+            return;
+
+        _currentCamera = camera;
+
+        // Set up camera matrices
+        _basicEffect.View = ToXnaMatrix(camera.ViewMatrix);
+        _basicEffect.Projection = ToXnaMatrix(camera.ProjectionMatrix);
+
+        foreach (var emitter in emitters)
+        {
+            var particles = emitter.GetActiveParticles();
+            foreach (var particle in particles)
+            {
+                if (!particle.Active)
+                    continue;
+
+                // Render each particle as a billboard
+                DrawBillboard(particle.Position, particle.Size, particle.Color, 0f);
+            }
+        }
+    }
+
     /// <summary>
     /// Draw a debug primitive for visualization.
     /// Useful during development to see physics shapes, AI paths, etc.
-    /// 
+    ///
     /// UNITY COMPARISON:
     /// Similar to Unity's Debug.DrawLine(), Debug.DrawRay(), Gizmos.DrawSphere()
     /// Unity also has OnDrawGizmos() for editor visualization.
@@ -582,13 +642,98 @@ public class ForwardGraphicsProvider : IGraphicsProvider
     {
         return new Microsoft.Xna.Framework.Vector3(v.X, v.Y, v.Z);
     }
-    
+
     private Microsoft.Xna.Framework.Vector3 ToXnaVector3(Vector3 v)
     {
         return new Microsoft.Xna.Framework.Vector3(v.X, v.Y, v.Z);
     }
-    
+
     #endregion
+
+    /// <summary>
+    /// Render a camera-facing billboard (muzzle flash, particles, etc.)
+    ///
+    /// EDUCATIONAL NOTE - BILLBOARDS:
+    ///
+    /// A billboard is a quad (rectangle) that always faces the camera.
+    /// Used for: muzzle flashes, particles, sprites in 3D, health bars, etc.
+    ///
+    /// Unity's ParticleSystem uses billboards internally.
+    /// Here we implement a simple version manually.
+    ///
+    /// How it works:
+    /// 1. Get camera's right and up vectors
+    /// 2. Create quad corners using: position + (right * x + up * y)
+    /// 3. Apply rotation around the camera's forward axis (optional)
+    /// 4. Render with additive blending for "glow" effect
+    /// </summary>
+    public void DrawBillboard(Vector3 worldPosition, float size, Vector4 color, float rotation = 0f)
+    {
+        if (_graphicsDevice == null || _basicEffect == null || _currentCamera == null)
+            return;
+
+        // Get camera basis vectors
+        var cameraForward = Vector3.Normalize(_currentCamera.Forward);
+        var worldUp = new Vector3(0, 1, 0);
+        var cameraRight = Vector3.Normalize(Vector3.Cross(worldUp, cameraForward));
+        var cameraUp = Vector3.Normalize(Vector3.Cross(cameraForward, cameraRight));
+
+        // Apply rotation around camera forward axis
+        if (rotation != 0f)
+        {
+            float cos = MathF.Cos(rotation);
+            float sin = MathF.Sin(rotation);
+            var rotatedRight = cameraRight * cos - cameraUp * sin;
+            var rotatedUp = cameraRight * sin + cameraUp * cos;
+            cameraRight = rotatedRight;
+            cameraUp = rotatedUp;
+        }
+
+        // Create simple billboard quad vertices (solid color for now)
+        var halfSize = size * 0.5f;
+        var vertices = new VertexPositionColor[4];
+
+        vertices[0].Position = ToXnaVector3(worldPosition - cameraRight * halfSize - cameraUp * halfSize);
+        vertices[1].Position = ToXnaVector3(worldPosition + cameraRight * halfSize - cameraUp * halfSize);
+        vertices[2].Position = ToXnaVector3(worldPosition - cameraRight * halfSize + cameraUp * halfSize);
+        vertices[3].Position = ToXnaVector3(worldPosition + cameraRight * halfSize + cameraUp * halfSize);
+
+        var xnaColor = new Color(color.X, color.Y, color.Z, color.W);
+        vertices[0].Color = xnaColor;
+        vertices[1].Color = xnaColor;
+        vertices[2].Color = xnaColor;
+        vertices[3].Color = xnaColor;
+
+        // Set up rendering state for additive blending (glow effect)
+        var oldBlendState = _graphicsDevice.BlendState;
+        var oldDepthStencilState = _graphicsDevice.DepthStencilState;
+
+        _graphicsDevice.BlendState = BlendState.Additive; // Colors add together (bright!)
+        _graphicsDevice.DepthStencilState = DepthStencilState.DepthRead; // Read depth but don't write
+
+        // Configure effect for unlit, vertex-colored rendering
+        _basicEffect.LightingEnabled = false;
+        _basicEffect.VertexColorEnabled = true;
+        _basicEffect.World = Microsoft.Xna.Framework.Matrix.Identity;
+
+        // Draw the billboard quad
+        foreach (var pass in _basicEffect.CurrentTechnique.Passes)
+        {
+            pass.Apply();
+            _graphicsDevice.DrawUserPrimitives(
+                PrimitiveType.TriangleStrip,
+                vertices,
+                0,
+                2 // 2 triangles = 1 quad
+            );
+        }
+
+        // Restore rendering state
+        _graphicsDevice.BlendState = oldBlendState;
+        _graphicsDevice.DepthStencilState = oldDepthStencilState;
+        _basicEffect.LightingEnabled = true;
+        _basicEffect.VertexColorEnabled = false;
+    }
 }
 
 /// <summary>

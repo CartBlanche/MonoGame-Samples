@@ -63,15 +63,14 @@ public class EnemyAI : EntityComponent
     private Transform3D? _targetTransform;
     private Transform3D? _transform;
     private Health? _health;
-    
+    private EnemyController? _enemyController;
+
     // AI parameters
     private float _detectionRange = 20f;
-    private float _attackRange = 2f;
+    private float _attackRange = 10f; // Ranged attack range (Unity default)
+    private float _attackStopDistanceRatio = 0.5f; // Stop at 50% of attack range (Unity default)
     private float _moveSpeed = 3f;
     private float _turnSpeed = 5f;
-    private float _attackDamage = 10f;
-    private float _attackCooldown = 1.5f;
-    private float _lastAttackTime = 0f;
     
     // Line of sight
     private float _losCheckInterval = 0.5f;
@@ -137,21 +136,13 @@ public class EnemyAI : EntityComponent
     }
 
     /// <summary>
-    /// Damage dealt per attack
+    /// Stop distance ratio (0.0-1.0) relative to attack range.
+    /// Unity default: 0.5 (stop at 50% of attack range)
     /// </summary>
-    public float AttackDamage
+    public float AttackStopDistanceRatio
     {
-        get => _attackDamage;
-        set => _attackDamage = value;
-    }
-
-    /// <summary>
-    /// Time between attacks in seconds
-    /// </summary>
-    public float AttackCooldown
-    {
-        get => _attackCooldown;
-        set => _attackCooldown = value;
+        get => _attackStopDistanceRatio;
+        set => _attackStopDistanceRatio = Math.Clamp(value, 0f, 1f);
     }
 
     /// <summary>
@@ -160,21 +151,23 @@ public class EnemyAI : EntityComponent
     public override void Initialize()
     {
         base.Initialize();
-        
+
         _transform = Owner?.GetComponent<Transform3D>();
         _health = Owner?.GetComponent<Health>();
-        
+        _enemyController = Owner?.GetComponent<EnemyController>();
+
         // Subscribe to death event
         if (_health != null)
         {
             _health.OnDeath += OnDeath;
         }
-        
-        // Auto-find player as target if not set
-        // For now, we'll need to manually set the target
-        // TODO: Add scene reference to Entity class or use a global entity manager
-        
-        Console.WriteLine($"[EnemyAI] {Owner?.Name} initialized in {_currentState} state");
+
+        if (_enemyController == null)
+        {
+            Console.WriteLine($"[EnemyAI] WARNING: {Owner?.Name} has no EnemyController - ranged attacks disabled");
+        }
+
+        Console.WriteLine($"[EnemyAI] {Owner?.Name} initialized in {_currentState} state (Range: {_detectionRange}, Attack: {_attackRange})");
     }
 
     /// <summary>
@@ -266,67 +259,54 @@ public class EnemyAI : EntityComponent
     }
 
     /// <summary>
-    /// Update attack state - deal damage to player
+    /// Update attack state - shoot at player
     /// </summary>
     private void UpdateAttack(float deltaTime)
     {
         if (_targetTransform == null || _transform == null || _target == null)
             return;
-        
+
         float distanceToTarget = Vector3.Distance(_transform.Position, _targetTransform.Position);
-        
-        // If player moved out of range, chase again
-        if (distanceToTarget > _attackRange * 1.2f) // Small buffer to prevent state flickering
+
+        // If player moved out of range or lost line of sight, chase again
+        if (distanceToTarget > _attackRange * 1.2f || !_hasLineOfSight) // Small buffer to prevent state flickering
         {
             CurrentState = AIState.Chase;
             return;
         }
-        
-        // Rotate toward target while attacking
-        LookAt(_targetTransform.Position, deltaTime);
-        
-        // Attack on cooldown
-        var timeService = ServiceLocator.Get<Core.Services.ITimeService>();
-        float currentTime = timeService.TotalTime;
-        if (currentTime - _lastAttackTime >= _attackCooldown)
+
+        // Calculate stop distance based on attack range ratio
+        float stopDistance = _attackRange * _attackStopDistanceRatio;
+
+        // Move toward or away to maintain optimal attack distance
+        if (distanceToTarget > stopDistance)
         {
-            _lastAttackTime = currentTime;
-            PerformAttack();
+            // Move closer
+            Vector3 direction = Vector3.Normalize(_targetTransform.Position - _transform.Position);
+            _transform.Position += direction * _moveSpeed * deltaTime;
+        }
+        else if (distanceToTarget < stopDistance * 0.8f)
+        {
+            // Back away slightly (too close)
+            Vector3 direction = Vector3.Normalize(_transform.Position - _targetTransform.Position);
+            _transform.Position += direction * _moveSpeed * 0.5f * deltaTime;
+        }
+
+        // Aim and fire at target
+        if (_enemyController != null)
+        {
+            // Calculate aim point (target's center mass)
+            Vector3 aimPoint = _targetTransform.Position + new Vector3(0, 0.5f, 0);
+
+            // Orient toward target
+            _enemyController.OrientTowards(aimPoint);
+            _enemyController.OrientWeaponsTowards(aimPoint);
+
+            // Try to shoot (weapon handles its own fire rate)
+            _enemyController.TryAttack(aimPoint);
         }
     }
 
-    /// <summary>
-    /// Perform an attack on the target
-    /// </summary>
-    private void PerformAttack()
-    {
-        if (_target == null || _transform == null)
-            return;
-        
-        var targetHealth = _target.GetComponent<Health>();
-        if (targetHealth != null && !targetHealth.IsDead)
-        {
-            // Calculate hit direction and point
-            var targetTransform = _target.GetComponent<Transform3D>();
-            Vector3 hitDirection = Vector3.Normalize(targetTransform?.Position - _transform.Position ?? Vector3.UnitX);
-            Vector3 hitPoint = targetTransform?.Position ?? Vector3.Zero;
-            Vector3 hitNormal = -hitDirection; // Normal points back toward attacker
-            
-            // Create damage info
-            var damageInfo = DamageInfo.CreateFromHit(
-                _attackDamage, 
-                DamageType.Melee, 
-                Owner, 
-                hitPoint,
-                hitDirection,
-                hitNormal);
-            
-            // Deal damage
-            targetHealth.TakeDamage(damageInfo);
-            
-            Console.WriteLine($"[EnemyAI] {Owner?.Name} attacked {_target.Name} for {_attackDamage} damage!");
-        }
-    }
 
     /// <summary>
     /// Check if enemy has line of sight to target
@@ -428,15 +408,6 @@ public class EnemyAI : EntityComponent
     private void OnStateEnter(AIState state)
     {
         Console.WriteLine($"[EnemyAI] {Owner?.Name} entered {state} state");
-        
-        switch (state)
-        {
-            case AIState.Attack:
-                // Reset attack timer when entering attack state
-                var timeService = ServiceLocator.Get<Core.Services.ITimeService>();
-                _lastAttackTime = timeService.TotalTime - _attackCooldown;
-                break;
-        }
     }
 
     /// <summary>

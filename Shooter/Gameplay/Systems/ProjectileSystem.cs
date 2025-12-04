@@ -26,10 +26,16 @@ namespace Shooter.Gameplay.Systems
     public class ProjectileSystem
     {
         private readonly IPhysicsProvider _physicsProvider;
-        
+
         // Visual feedback for debugging (optional)
         private readonly List<DebugRay> _debugRays = new();
         private const float DEBUG_RAY_DURATION = 0.1f; // seconds
+
+        // Event fired when a hitscan successfully hits an entity with Health
+        public event Action<Entity>? OnHitEntity;
+
+        // Event fired when any hitscan impact occurs (for particles, decals, etc.)
+        public event Action<Vector3, Vector3>? OnImpact; // position, normal
 
         public ProjectileSystem(IPhysicsProvider physicsProvider)
         {
@@ -92,6 +98,9 @@ namespace Shooter.Gameplay.Systems
             {
                 Console.WriteLine($"[Projectile] Hitscan hit at distance {hit.Distance:F2}");
 
+                // Trigger impact event for visual effects (particles, decals)
+                OnImpact?.Invoke(hit.Point, hit.Normal);
+
                 // Try to get the entity from the physics body's user data
                 Entity? hitEntity = hit.UserData as Entity;
                 
@@ -113,6 +122,9 @@ namespace Shooter.Gameplay.Systems
 
                         // Apply damage
                         healthComponent.TakeDamage(damageInfo);
+
+                        // Trigger hit event for feedback (hit markers, sounds, etc.)
+                        OnHitEntity?.Invoke(hitEntity);
                     }
                     else
                     {

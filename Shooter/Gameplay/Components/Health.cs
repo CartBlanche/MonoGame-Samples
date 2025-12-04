@@ -1,5 +1,6 @@
 using System;
 using Shooter.Core.Components;
+using Shooter.Core.Services;
 using Shooter.Gameplay.Systems;
 
 namespace Shooter.Gameplay.Components
@@ -150,6 +151,13 @@ namespace Shooter.Gameplay.Components
             _lastDamageTime = _currentGameTime;
 
             Console.WriteLine($"[Health] {Owner?.Name} took {actualDamage:F1} damage ({_currentHealth:F1}/{_maxHealth:F1} HP remaining)");
+
+            // Play damage sound (only for player)
+            if (Owner?.Tag == "Player")
+            {
+                var audioService = ServiceLocator.Get<IAudioService>();
+                audioService?.PlaySound("Audio/SFX/Player/Damage_Tick", null, 0.5f);
+            }
 
             // Trigger damage event
             OnDamaged?.Invoke(damageInfo, _currentHealth);

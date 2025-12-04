@@ -104,7 +104,7 @@ namespace Shooter.Gameplay.Weapons
         /// </summary>
         public static Gun CreatePistol()
         {
-            return new Gun(
+            var pistol = new Gun(
                 name: "Pistol",
                 damage: 25f,
                 fireRate: 3f,        // 3 rounds per second
@@ -116,6 +116,8 @@ namespace Shooter.Gameplay.Weapons
                 recoilAmount: 0.3f,
                 spread: 0.0f         // No spread for testing
             );
+            pistol.FireSound = "Audio/SFX/Weapons/Blaster_Shot";
+            return pistol;
         }
 
         /// <summary>
@@ -123,7 +125,7 @@ namespace Shooter.Gameplay.Weapons
         /// </summary>
         public static Gun CreateAssaultRifle()
         {
-            return new Gun(
+            var rifle = new Gun(
                 name: "Assault Rifle",
                 damage: 20f,
                 fireRate: 10f,       // 10 rounds per second
@@ -135,6 +137,8 @@ namespace Shooter.Gameplay.Weapons
                 recoilAmount: 0.5f,
                 spread: 2.0f
             );
+            rifle.FireSound = "Audio/SFX/Weapons/Shotgun_Shot";
+            return rifle;
         }
 
         /// <summary>
@@ -154,6 +158,48 @@ namespace Shooter.Gameplay.Weapons
                 recoilAmount: 1.5f,
                 spread: 10.0f        // Wide spread
             );
+        }
+
+        /// <summary>
+        /// Create enemy HoverBot "Eye Lazers" weapon (Unity specs)
+        /// </summary>
+        public static Gun CreateEnemyEyeLazers()
+        {
+            var weapon = new Gun(
+                name: "Eye Lazers",
+                damage: 15f,         // Moderate damage
+                fireRate: 1.25f,     // 0.8s between shots = 1.25 shots/sec
+                magazineSize: 999,   // Infinite ammo for enemies
+                maxAmmo: 999,
+                reloadTime: 0f,      // No reload for enemies
+                range: 100f,
+                firingMode: FiringMode.SemiAutomatic,
+                recoilAmount: 0f,
+                spread: 3.0f         // Some inaccuracy for gameplay balance
+            );
+            weapon.FireSound = "Audio/SFX/Weapons/Blaster_Shot";
+            return weapon;
+        }
+
+        /// <summary>
+        /// Create enemy Turret "Machine Gun" weapon (Unity specs)
+        /// </summary>
+        public static Gun CreateEnemyMachineGun()
+        {
+            var weapon = new Gun(
+                name: "Machine Gun",
+                damage: 10f,         // Lower damage but rapid fire
+                fireRate: 16.67f,    // 0.06s between shots = ~16.67 shots/sec
+                magazineSize: 999,   // Infinite ammo for enemies
+                maxAmmo: 999,
+                reloadTime: 0f,      // No reload for enemies
+                range: 100f,
+                firingMode: FiringMode.FullyAutomatic,
+                recoilAmount: 0f,
+                spread: 5.0f         // Higher spread for balance (very fast fire rate)
+            );
+            weapon.FireSound = "Audio/SFX/Weapons/Shotgun_Shot";
+            return weapon;
         }
     }
 }

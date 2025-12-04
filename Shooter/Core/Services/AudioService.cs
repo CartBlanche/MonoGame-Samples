@@ -1,4 +1,6 @@
 using System.Numerics;
+using Microsoft.Xna.Framework.Audio;
+using Microsoft.Xna.Framework.Content;
 
 namespace Shooter.Core.Services;
 
@@ -35,9 +37,18 @@ namespace Shooter.Core.Services;
 public class AudioService : IAudioService
 {
     private float _masterVolume = 1.0f;
-    private Dictionary<string, object> _loadedSounds = new(); // Will be SoundEffect objects
-    private Dictionary<string, object> _loadedMusic = new(); // Will be Song objects
+    private Dictionary<string, SoundEffect> _loadedSounds = new();
+    private ContentManager? _contentManager;
     
+    /// <summary>
+    /// Initialize the audio service with a ContentManager
+    /// </summary>
+    public void Initialize(ContentManager contentManager)
+    {
+        _contentManager = contentManager;
+        Console.WriteLine("[AudioService] Initialized");
+    }
+
     /// <summary>
     /// Master volume control (0.0 to 1.0).
     /// Similar to AudioListener.volume in Unity.
@@ -60,30 +71,32 @@ public class AudioService : IAudioService
     /// <param name="volume">Volume multiplier (0.0 to 1.0)</param>
     public void PlaySound(string soundName, Vector3? position = null, float volume = 1.0f)
     {
-        // TODO Phase 4: Implement with MonoGame's SoundEffect
-        // For now, just log for debugging
-        Console.WriteLine($"[Audio] PlaySound: {soundName} at {position} (volume: {volume * MasterVolume})");
-        
-        // Future implementation:
-        // if (_loadedSounds.TryGetValue(soundName, out var soundEffect))
-        // {
-        //     var instance = soundEffect.CreateInstance();
-        //     instance.Volume = volume * MasterVolume;
-        //     
-        //     if (position.HasValue)
-        //     {
-        //         // Calculate 3D audio positioning
-        //         var listener = ServiceLocator.Get<ICamera>().Position;
-        //         var distance = Vector3.Distance(listener, position.Value);
-        //         var attenuation = 1.0f / (1.0f + distance * 0.1f);
-        //         instance.Volume *= attenuation;
-        //         
-        //         // Calculate panning based on left/right position
-        //         // Pan: -1 (left) to +1 (right)
-        //     }
-        //     
-        //     instance.Play();
-        // }
+        try
+        {
+            // Try to get already loaded sound
+            if (!_loadedSounds.TryGetValue(soundName, out var soundEffect))
+            {
+                // Try to load it on-demand
+                if (_contentManager != null)
+                {
+                    soundEffect = _contentManager.Load<SoundEffect>(soundName);
+                    _loadedSounds[soundName] = soundEffect;
+                }
+                else
+                {
+                    Console.WriteLine($"[Audio] WARNING: Cannot load sound '{soundName}' - ContentManager not initialized");
+                    return;
+                }
+            }
+
+            // Play the sound (simple 2D playback for now, 3D audio in Phase 4)
+            float finalVolume = volume * MasterVolume;
+            soundEffect.Play(finalVolume, 0f, 0f); // volume, pitch, pan
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"[Audio] ERROR playing sound '{soundName}': {ex.Message}");
+        }
     }
     
     /// <summary>
@@ -128,24 +141,27 @@ public class AudioService : IAudioService
     }
     
     /// <summary>
-    /// Load a sound effect from the content pipeline.
-    /// Call this during initialization for sounds you'll use.
+    /// Pre-load a sound effect from the content pipeline.
+    /// Optional - sounds are loaded on-demand if not pre-loaded.
     /// </summary>
-    /// <param name="soundName">Sound name (matches .xnb file)</param>
+    /// <param name="soundName">Sound name (path in Content folder without extension)</param>
     public void LoadSound(string soundName)
     {
-        // TODO Phase 4:
-        // var sound = ServiceLocator.Get<ContentManager>().Load<SoundEffect>(soundName);
-        // _loadedSounds[soundName] = sound;
-    }
-    
-    /// <summary>
-    /// Load music from the content pipeline.
-    /// </summary>
-    public void LoadMusic(string musicName)
-    {
-        // TODO Phase 4:
-        // var song = ServiceLocator.Get<ContentManager>().Load<Song>(musicName);
-        // _loadedMusic[musicName] = song;
+        if (_contentManager == null)
+        {
+            Console.WriteLine($"[Audio] WARNING: Cannot load sound '{soundName}' - ContentManager not initialized");
+            return;
+        }
+
+        try
+        {
+            var soundEffect = _contentManager.Load<SoundEffect>(soundName);
+            _loadedSounds[soundName] = soundEffect;
+            Console.WriteLine($"[Audio] Loaded sound: {soundName}");
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"[Audio] ERROR loading sound '{soundName}': {ex.Message}");
+        }
     }
 }

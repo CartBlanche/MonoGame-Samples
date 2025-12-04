@@ -1,5 +1,6 @@
 using System.Numerics;
 using Shooter.Core.Components;
+using Shooter.Core.Services;
 
 namespace Shooter.Gameplay.Weapons
 {
@@ -17,6 +18,7 @@ namespace Shooter.Gameplay.Weapons
         public int MaxAmmo { get; protected set; }
         public float ReloadTime { get; protected set; }
         public float Range { get; protected set; }
+        public string? FireSound { get; set; } // Audio path for weapon fire sound
 
         // Current State
         public int CurrentAmmoInMag { get; protected set; }
@@ -71,6 +73,13 @@ namespace Shooter.Gameplay.Weapons
 
             // Set next fire time based on fire rate
             _nextFireTime = _currentTime + (1f / FireRate);
+
+            // Play fire sound
+            if (!string.IsNullOrEmpty(FireSound))
+            {
+                var audioService = ServiceLocator.Get<IAudioService>();
+                audioService?.PlaySound(FireSound, origin, 0.7f);
+            }
 
             // Perform the actual firing logic (implemented by derived classes)
             OnFire(origin, direction);
