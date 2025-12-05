@@ -18,11 +18,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Shooter.Core\Shooter.Core.csproj" />
-    <ProjectReference Include="..\..\Shooter.Physics\Shooter.Physics.csproj" />
-    <ProjectReference Include="..\..\Shooter.Graphics\Shooter.Graphics.csproj" />
-    <ProjectReference Include="..\..\Shooter.Gameplay\Shooter.Gameplay.csproj" />
-    <ProjectReference Include="..\..\Shooter.UI\Shooter.UI.csproj" />
+    <ProjectReference Include="..\..\Core\Shooter.Core.csproj" />
+    <ProjectReference Include="..\..\Physics\Shooter.Physics.csproj" />
+    <ProjectReference Include="..\..\Graphics\Shooter.Graphics.csproj" />
+    <ProjectReference Include="..\..\Gameplay\Shooter.Gameplay.csproj" />
+    <ProjectReference Include="..\..\UI\Shooter.UI.csproj" />
   </ItemGroup>
 
   <ItemGroup>
@@ -32,6 +32,14 @@
 
   <ItemGroup>
     <MonoGameContentReference Include="..\..\Core\Content\Content.mgcb" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- Exclude old Game.cs, use new partial class structure -->
+    <Compile Remove="Game.cs" />
+    <!-- Include shared Game logic from Core -->
+    <Compile Include="..\..\Core\Game.cs" Link="Game.cs" />
+    <!-- Game.Platform.cs is automatically included by SDK -->
   </ItemGroup>
 
 </Project>

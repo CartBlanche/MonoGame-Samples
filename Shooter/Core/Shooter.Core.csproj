@@ -13,4 +13,9 @@
     <PackageReference Include="MonoGame.Framework.DesktopGL" Version="3.8.2.1105" />
   </ItemGroup>
 
+  <ItemGroup>
+    <!-- Exclude Game.cs from Core - it's only compiled by platform projects -->
+    <Compile Remove="Game.cs" />
+  </ItemGroup>
+
 </Project>

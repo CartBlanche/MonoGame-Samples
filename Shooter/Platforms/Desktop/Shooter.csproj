@@ -27,4 +27,12 @@
     <MonoGameContentReference Include="..\..\Core\Content\Content.mgcb" />
   </ItemGroup>
 
+  <ItemGroup>
+    <!-- Exclude old Game.cs, use new partial class structure -->
+    <Compile Remove="Game.cs" />
+    <!-- Include shared Game logic from Core -->
+    <Compile Include="..\..\Core\Game.cs" Link="Game.cs" />
+    <!-- Game.Platform.cs is automatically included by SDK -->
+  </ItemGroup>
+
 </Project>
