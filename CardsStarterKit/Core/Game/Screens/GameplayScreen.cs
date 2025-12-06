@@ -244,11 +244,11 @@ namespace Blackjack
                     for (int i = 0; i < packet.Players.Count; i++)
                     {
                         var playerInfo = packet.Players[i];
-                        if (playerInfo.IsAI)
+                        if (playerInfo.IsNPC)
                         {
-                            // Add AI player
-                            BlackjackAIPlayer aiPlayer = new BlackjackAIPlayer(playerInfo.Name, blackJackGame);
-                            blackJackGame.AddPlayer(aiPlayer);
+                            // Add NPC player
+                            BlackjackNPCPlayer NPCPlayer = new BlackjackNPCPlayer(playerInfo.Name, blackJackGame);
+                            blackJackGame.AddPlayer(NPCPlayer);
                         }
                         else
                         {
@@ -259,15 +259,15 @@ namespace Blackjack
                 }
                 else
                 {
-                    // Client already has some players - just add any missing AI players
+                    // Client already has some players - just add any missing NPC Players
                     for (int i = currentPlayerCount; i < packet.Players.Count; i++)
                     {
                         var playerInfo = packet.Players[i];
-                        if (playerInfo.IsAI)
+                        if (playerInfo.IsNPC)
                         {
-                            // Add AI player (but don't wire up events - host controls AI)
-                            BlackjackAIPlayer aiPlayer = new BlackjackAIPlayer(playerInfo.Name, blackJackGame);
-                            blackJackGame.AddPlayer(aiPlayer);
+                            // Add NPC player (but don't wire up events - host controls NPC)
+                            BlackjackNPCPlayer NPCPlayer = new BlackjackNPCPlayer(playerInfo.Name, blackJackGame);
+                            blackJackGame.AddPlayer(NPCPlayer);
                         }
                         else
                         {
@@ -316,7 +316,7 @@ namespace Blackjack
                 }
 
                 // Now that we have the complete player list, start the round
-                // This ensures DisplayPlayingHands() creates animatedHands for all players including AI
+                // This ensures DisplayPlayingHands() creates animatedHands for all players including NPCs
                 System.Console.WriteLine($"[PlayerListSync] Client received {packet.Players.Count} players from host, starting round now");
                 blackJackGame.StartRound();
             }
@@ -505,19 +505,19 @@ namespace Blackjack
                         blackJackGame.AddPlayer(player);
                     }
 
-                    // Only the host creates AI players in network games
-                    // In local games, always create AI players
+                    // Only the host creates NPC Players in network games
+                    // In local games, always create NPC Players
                     if (networkSession == null || networkSession.IsHost)
                     {
-                        // Fill remaining slots with AI based on settings
-                        int maxAI = GameSettings.Instance.MaxAIPlayers;
-                        int aiSlotsToFill = GameSettings.Instance.FillEmptySlotsWithAI
-                            ? Math.Min(BlackjackConstants.MaxPlayers - humanPlayerCount, maxAI)
-                            : Math.Min(maxAI, BlackjackConstants.MaxPlayers - humanPlayerCount);
+                        // Fill remaining slots with NPC based on settings
+                        int maxNPC = GameSettings.Instance.MaxNPCPlayers;
+                        int npcSlotsToFill = GameSettings.Instance.FillEmptySlotsWithNPC
+                            ? Math.Min(BlackjackConstants.MaxPlayers - humanPlayerCount, maxNPC)
+                            : Math.Min(maxNPC, BlackjackConstants.MaxPlayers - humanPlayerCount);
 
-                        for (int i = 0; i < aiSlotsToFill && i < BlackjackConstants.DefaultAINames.Length; i++)
+                        for (int i = 0; i < npcSlotsToFill && i < BlackjackConstants.DefaultAINames.Length; i++)
                         {
-                            BlackjackAIPlayer player = new BlackjackAIPlayer(BlackjackConstants.DefaultAINames[i], blackJackGame);
+                            BlackjackNPCPlayer player = new BlackjackNPCPlayer(BlackjackConstants.DefaultAINames[i], blackJackGame);
                             blackJackGame.AddPlayer(player);
                             player.Hit += player_Hit;
                             player.Stand += player_Stand;
@@ -527,7 +527,7 @@ namespace Blackjack
             }
             else
             {
-                // Fallback: single player + 6 AI (local game only)
+                // Fallback: single player + 6 NPC (local game only)
                 var defaultPlayerName = Environment.UserName;
                 if (string.IsNullOrEmpty(defaultPlayerName))
                 {
@@ -556,11 +556,11 @@ namespace Blackjack
 
                 blackJackGame.AddPlayer(humanPlayer);
 
-                // Add AI players based on settings
-                int maxAI = GameSettings.Instance.MaxAIPlayers;
-                for (int i = 0; i < maxAI && i < BlackjackConstants.DefaultAINames.Length; i++)
+                // Add NPC Players based on settings
+                int maxNPC = GameSettings.Instance.MaxNPCPlayers;
+                for (int i = 0; i < maxNPC && i < BlackjackConstants.DefaultAINames.Length; i++)
                 {
-                    BlackjackAIPlayer player = new BlackjackAIPlayer(BlackjackConstants.DefaultAINames[i], blackJackGame);
+                    BlackjackNPCPlayer player = new BlackjackNPCPlayer(BlackjackConstants.DefaultAINames[i], blackJackGame);
                     blackJackGame.AddPlayer(player);
                     player.Hit += player_Hit;
                     player.Stand += player_Stand;
@@ -582,7 +582,7 @@ namespace Blackjack
                 blackJackGame.LoadUITexture("UI", assets[chipIndex]);
             }
 
-            // Host broadcasts the full player list to clients so they know about AI players
+            // Host broadcasts the full player list to clients so they know about NPC Players
             if (networkSession != null && networkSession.IsHost)
             {
                 blackJackGame.BroadcastPlayerList();
@@ -736,7 +736,7 @@ namespace Blackjack
         }
 
         /// <summary>
-        /// Responds to the event sent when AI player's choose to "Stand".
+        /// Responds to the event sent when NPC player's choose to "Stand".
         /// </summary>
         /// <param name="sender">The source of the event.</param>
         /// <param name="e">The 
@@ -747,7 +747,7 @@ namespace Blackjack
         }
 
         /// <summary>
-        /// Responds to the event sent when AI player's choose to "Split".
+        /// Responds to the event sent when NPC player's choose to "Split".
         /// </summary>
         /// <param name="sender">The source of the event.</param>
         /// <param name="e">The 
@@ -758,7 +758,7 @@ namespace Blackjack
         }
 
         /// <summary>
-        /// Responds to the event sent when AI player's choose to "Hit".
+        /// Responds to the event sent when NPC player's choose to "Hit".
         /// </summary>
         /// <param name="sender">The source of the event.</param>
         /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
@@ -768,7 +768,7 @@ namespace Blackjack
         }
 
         /// <summary>
-        /// Responds to the event sent when AI player's choose to "Double".
+        /// Responds to the event sent when NPC player's choose to "Double".
         /// </summary>
         /// <param name="sender">The source of the event.</param>
         /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>

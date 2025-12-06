@@ -6,7 +6,7 @@ In this tutorial, you'll build a complete Gin Rummy card game using the CardsSta
 
 - Managing larger hands (10 cards vs 2)
 - Implementing meld detection (sets and runs)
-- Creating intermediate AI opponents
+- Creating intermediate NPC opponents
 - Turn-based gameplay with draw/discard mechanics
 - Calculating deadwood and scoring
 - Multi-player support
@@ -81,15 +81,15 @@ Core/Game/GinRummy/
 │   └── MeldDetector.cs
 ├── Players/
 │   ├── GinRummyPlayer.cs
-│   └── GinRummyAIPlayer.cs
+│   └── GinRummyNPCPlayer.cs
 ├── Rules/
 │   ├── KnockRule.cs
 │   ├── GinRule.cs
 │   └── TurnCompleteRule.cs
 ├── UI/
 │   └── HandOrganizer.cs
-└── AI/
-    └── GinRummyAI.cs
+└── NPC/
+    └── GinRummyNPC.cs
 ```
 
 ---
@@ -744,9 +744,9 @@ namespace CardsFramework.GinRummy
 - `CanKnock()`: Checks if knock is legal
 - `ResetForNewRound()`: Prepares for next round
 
-### Step 3.2: GinRummyAIPlayer
+### Step 3.2: GinRummyNPCPlayer
 
-**Create:** `Core/Game/GinRummy/Players/GinRummyAIPlayer.cs`
+**Create:** `Core/Game/GinRummy/Players/GinRummyNPCPlayer.cs`
 
 ```csharp
 using CardsFramework.Game;
@@ -754,33 +754,33 @@ using CardsFramework.Game;
 namespace CardsFramework.GinRummy
 {
     /// <summary>
-    /// AI-controlled Gin Rummy player
+    /// NPC-controlled Gin Rummy player
     /// </summary>
-    public class GinRummyAIPlayer : GinRummyPlayer
+    public class GinRummyNPCPlayer : GinRummyPlayer
     {
         /// <summary>
-        /// AI decision-making component
+        /// NPC decision-making component
         /// </summary>
-        public GinRummyAI AI { get; private set; }
+        public GinRummyNPC NPC { get; private set; }
 
-        public GinRummyAIPlayer(string name, CardsGame game)
+        public GinRummyNPCPlayer(string name, CardsGame game)
             : base(name, game)
         {
-            AI = new GinRummyAI(this);
+            NPC = new GinRummyNPC(this);
         }
     }
 }
 ```
 
-Simple wrapper - the AI logic will be in a separate class.
+Simple wrapper - the NPC logic will be in a separate class.
 
 ---
 
-## Part 4: AI Implementation
+## Part 4: NPC Implementation
 
-### Step 4.1: Intermediate AI
+### Step 4.1: Intermediate NPC
 
-**Create:** `Core/Game/GinRummy/AI/GinRummyAI.cs`
+**Create:** `Core/Game/GinRummy/AI/GinRummyNPC.cs`
 
 ```csharp
 using System;
@@ -791,14 +791,14 @@ using CardsFramework.Cards;
 namespace CardsFramework.GinRummy
 {
     /// <summary>
-    /// Intermediate AI for Gin Rummy
+    /// Intermediat NPC for Gin Rummy
     /// </summary>
-    public class GinRummyAI
+    public class GinRummyNPC
     {
         private GinRummyPlayer player;
         private Random random;
 
-        public GinRummyAI(GinRummyPlayer player)
+        public GinRummyNPC(GinRummyPlayer player)
         {
             this.player = player;
             this.random = new Random();
@@ -972,7 +972,7 @@ namespace CardsFramework.GinRummy
 }
 ```
 
-**AI Strategy:**
+**NPC Intelligence Strategy:**
 1. **Drawing:** Takes discard if it reduces deadwood
 2. **Discarding:** Discards highest-value deadwood card
 3. **Knocking:** Knocks with Gin or very low deadwood, probabilistic for medium deadwood
@@ -1568,7 +1568,7 @@ namespace CardsFramework.GinRummy
             {
                 case GinRummyGameState.Drawing:
                     // Only show draw buttons for human player
-                    if (currentPlayer != null && !(currentPlayer is GinRummyAIPlayer))
+                    if (currentPlayer != null && !(currentPlayer is GinRummyNPCPlayer))
                     {
                         buttonDrawStock.Visible = true;
                         buttonDrawDiscard.Visible = (TopDiscard != null);
@@ -1577,7 +1577,7 @@ namespace CardsFramework.GinRummy
 
                 case GinRummyGameState.Discarding:
                     // Show knock/gin buttons if eligible
-                    if (currentPlayer != null && !(currentPlayer is GinRummyAIPlayer))
+                    if (currentPlayer != null && !(currentPlayer is GinRummyNPCPlayer))
                     {
                         if (currentPlayer.HasGin)
                         {
@@ -1602,18 +1602,18 @@ namespace CardsFramework.GinRummy
         {
             var currentPlayer = GetCurrentGinRummyPlayer();
 
-            if (currentPlayer == null || !(currentPlayer is GinRummyAIPlayer))
+            if (currentPlayer == null || !(currentPlayer is GinRummyNPCPlayer))
                 return;
 
-            GinRummyAIPlayer aiPlayer = (GinRummyAIPlayer)currentPlayer;
+            GinRummyNPCPlayer NPCPlayer = (GinRummyNPCPlayer)currentPlayer;
 
-            // AI drawing phase
+            // NPC drawing phase
             if (currentState == GinRummyGameState.Drawing)
             {
                 // Small delay for realism
                 System.Threading.Tasks.Task.Delay(1000).ContinueWith(t =>
                 {
-                    if (aiPlayer.AI.ShouldDrawFromDiscard(TopDiscard))
+                    if (NPCPlayer.AI.ShouldDrawFromDiscard(TopDiscard))
                     {
                         DrawFromDiscard();
                     }
@@ -1623,20 +1623,20 @@ namespace CardsFramework.GinRummy
                     }
                 });
             }
-            // AI discarding phase
+            // NPC discarding phase
             else if (currentState == GinRummyGameState.Discarding)
             {
-                // Check if AI should knock
-                if (aiPlayer.AI.ShouldKnock())
+                // Check if NPC should knock
+                if (NPCPlayer.AI.ShouldKnock())
                 {
-                    if (aiPlayer.HasGin)
+                    if (NPCPlayer.HasGin)
                     {
-                        aiPlayer.HasGin = true;
+                        NPCPlayer.HasGin = true;
                         currentState = GinRummyGameState.Gin;
                     }
                     else
                     {
-                        aiPlayer.HasKnocked = true;
+                        NPCPlayer.HasKnocked = true;
                         currentState = GinRummyGameState.Knocked;
                     }
                     return;
@@ -1645,7 +1645,7 @@ namespace CardsFramework.GinRummy
                 // Select card to discard
                 System.Threading.Tasks.Task.Delay(1000).ContinueWith(t =>
                 {
-                    TraditionalCard cardToDiscard = aiPlayer.AI.SelectCardToDiscard();
+                    TraditionalCard cardToDiscard = NPCPlayer.AI.SelectCardToDiscard();
                     DiscardCard(cardToDiscard);
                 });
             }
@@ -1997,10 +1997,10 @@ namespace CardsStarterKit
             GinRummyPlayer humanPlayer = new GinRummyPlayer("You", ginRummyGame);
             ginRummyGame.AddPlayer(humanPlayer);
 
-            GinRummyAIPlayer ai1 = new GinRummyAIPlayer("AI 1", ginRummyGame);
+            GinRummyNPCPlayer xpc1 = new GinRummyNPCPlayer("NPC 1", ginRummyGame);
             ginRummyGame.AddPlayer(ai1);
 
-            GinRummyAIPlayer ai2 = new GinRummyAIPlayer("AI 2", ginRummyGame);
+            GinRummyNPCPlayer npc2 = new GinRummyNPCPlayer("NPC 2", ginRummyGame);
             ginRummyGame.AddPlayer(ai2);
 
             // Start game
@@ -2027,7 +2027,7 @@ namespace CardsStarterKit
 
             var currentPlayer = ginRummyGame.GetCurrentGinRummyPlayer();
 
-            if (currentPlayer == null || currentPlayer is GinRummyAIPlayer)
+            if (currentPlayer == null || currentPlayer is GinRummyNPCPlayer)
                 return;
 
             // Check for tap on cards in hand
@@ -2096,9 +2096,9 @@ dotnet run --project Platforms/Desktop/CardsStarterKit.Desktop.csproj
    - Form all melds (0 deadwood)
    - Verify Gin declaration and bonus
 
-5. **AI Behavior:**
-   - Watch AI draw and discard decisions
-   - Verify AI knocks appropriately
+5. **NPC Behavior:**
+   - Watch NPC draw and discard decisions
+   - Verify NPC knocks appropriately
 
 ---
 
@@ -2176,9 +2176,9 @@ public class LayOffPhase
 }
 ```
 
-### Enhancement 5: Better AI
+### Enhancement 5: Better NPC Intelligence
 
-Advanced AI improvements:
+Advanced NPC improvements:
 - Track discarded cards (card counting)
 - Infer opponent hands from discards
 - Calculate probability of completing melds
@@ -2200,7 +2200,7 @@ Advanced AI improvements:
    - Combinatorial optimization to minimize deadwood
    - Backtracking algorithm
 
-3. **AI Implementation:**
+3. **NPC Implementation:**
    - Evaluating card usefulness
    - Making draw/discard decisions
    - Probabilistic knocking strategy
@@ -2213,12 +2213,12 @@ Advanced AI improvements:
 5. **Multi-Player Support:**
    - Turn management
    - Player indexing
-   - Mixed human/AI players
+   - Mixed human/NPC Players
 
 ### Design Patterns Used
 
 1. **State Machine:** GinRummyGameState controls game flow
-2. **Strategy Pattern:** AI decision-making in separate class
+2. **Strategy Pattern:** NPC decision-making in separate class
 3. **Rule Pattern:** Knock, Gin, TurnComplete rules
 4. **Component Pattern:** Animated hands, cards, deck display
 5. **Observer Pattern:** Event-driven rule matching
@@ -2232,8 +2232,8 @@ Advanced AI improvements:
 - Print all possible melds before optimization
 - Check card sorting logic
 
-### AI Makes Bad Moves
-- Add logging to AI decision methods
+### NPC Makes Bad Moves
+- Add logging to NPC decision methods
 - Print deadwood calculations
 - Verify card evaluation logic
 
@@ -2314,8 +2314,8 @@ Want to explore other variants? Here are some links:
 - [ ] `Core/Game/GinRummy/Game/MeldDetector.cs`
 - [ ] `Core/Game/GinRummy/Game/GinRummyCardGame.cs`
 - [ ] `Core/Game/GinRummy/Players/GinRummyPlayer.cs`
-- [ ] `Core/Game/GinRummy/Players/GinRummyAIPlayer.cs`
-- [ ] `Core/Game/GinRummy/AI/GinRummyAI.cs`
+- [ ] `Core/Game/GinRummy/Players/GinRummyNPCPlayer.cs`
+- [ ] `Core/Game/GinRummy/AI/GinRummyNPC.cs`
 - [ ] `Core/Game/GinRummy/Rules/KnockRule.cs`
 - [ ] `Core/Game/GinRummy/Rules/GinRule.cs`
 - [ ] `Core/Game/GinRummy/Rules/TurnCompleteRule.cs`
@@ -2330,12 +2330,12 @@ Want to explore other variants? Here are some links:
 Congratulations! You've built a complete Gin Rummy implementation with:
 
 - Full game rules (melds, knocking, gin)
-- Intelligent AI opponents
+- Intelligent NPC opponents
 - Multi-player support
 - Proper scoring
 - Turn-based gameplay
 
-This tutorial demonstrated advanced card game concepts including meld detection algorithms, AI decision-making, and complex game state management. You're now equipped to build any card game using the CardsStarterKit framework!
+This tutorial demonstrated advanced card game concepts including meld detection algorithms, NPC decision-making, and complex game state management. You're now equipped to build any card game using the CardsStarterKit framework!
 
 **Next challenges to try:**
 - Implement other Rummy variants (Rummy 500, Canasta)

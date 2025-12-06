@@ -6,17 +6,17 @@ namespace Blackjack
         public const int MinPlayers = 1;
 
         /// <summary>
-        /// Default AI player names used to fill empty player slots.
+        /// Default NPC player names used to fill empty player slots.
         /// Now uses localized names from Resources.
         /// </summary>
         public static string[] DefaultAINames => new string[]
         {
-            Resources.AIPlayer1,
-            Resources.AIPlayer2,
-            Resources.AIPlayer3,
-            Resources.AIPlayer4,
-            Resources.AIPlayer5,
-            Resources.AIPlayer6
+            Resources.NPCPlayer1,
+            Resources.NPCPlayer2,
+            Resources.NPCPlayer3,
+            Resources.NPCPlayer4,
+            Resources.NPCPlayer5,
+            Resources.NPCPlayer6
         };
 
         // Add other game logic constants here as needed

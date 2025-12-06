@@ -159,7 +159,7 @@ namespace Blackjack
             }
             else if (currentPage == 1)
             {
-                // Page 2: GAMEPLAY and AI PLAYERS
+                // Page 2: GAMEPLAY and NPC Players
                 AddHeader(Resources.SettingsGameplay, ref yPos);
                 AddCycleSetting(Resources.SettingsAnimationSpeed, () => settings.AnimationSpeed.ToString(),
                     () =>
@@ -190,12 +190,12 @@ namespace Blackjack
 
                 yPos += groupSpacing - itemSpacing; // Extra space before next group
 
-                // AI PLAYERS section
-                AddHeader(Resources.SettingsAIPlayers, ref yPos);
-                AddCounterSetting(Resources.SettingsMaxAIPlayers, () => settings.MaxAIPlayers, 0, GameSettings.GetPlatformMaxAIPlayers(),
-                    (v) => settings.MaxAIPlayers = (byte)v, ref yPos);
-                AddCheckboxSetting(Resources.SettingsFillEmptySlots, () => settings.FillEmptySlotsWithAI,
-                    (v) => settings.FillEmptySlotsWithAI = v, ref yPos);
+                // NPC Players section
+                AddHeader(Resources.SettingsNPCPlayers, ref yPos);
+                AddCounterSetting(Resources.SettingsMaxNPCPlayers, () => settings.MaxNPCPlayers, 0, GameSettings.GetPlatformMaxNPCPlayers(),
+                    (v) => settings.MaxNPCPlayers = (byte)v, ref yPos);
+                AddCheckboxSetting(Resources.SettingsFillEmptySlots, () => settings.FillEmptySlotsWithNPC,
+                    (v) => settings.FillEmptySlotsWithNPC = v, ref yPos);
             }
 
             // Calculate navigation button bounds at bottom (proportional to screen)

@@ -1,5 +1,5 @@
 //-----------------------------------------------------------------------------
-// BlackjackAIPlayer.cs
+// BlackjackNPCPlayer.cs
 //
 // Microsoft XNA Community Game Platform
 // Copyright (C) Microsoft Corporation. All rights reserved.
@@ -12,7 +12,7 @@ using CardsFramework;
 
 namespace Blackjack
 {
-    class BlackjackAIPlayer : BlackjackPlayer
+    class BlackjackNPCPlayer : BlackjackPlayer
     {
         static Random random = new Random();
 
@@ -20,11 +20,11 @@ namespace Blackjack
         public event EventHandler Stand;
 
         /// <summary>
-        /// Creates a new instance of the <see cref="BlackjackAIPlayer"/> class.
+        /// Creates a new instance of the <see cref="BlackjackNPCPlayer"/> class.
         /// </summary>
         /// <param name="name">The name.</param>
         /// <param name="game">The game.</param>
-        public BlackjackAIPlayer(string name, CardsGame game)
+        public BlackjackNPCPlayer(string name, CardsGame game)
             : base(name, game)
         {
         }
@@ -32,7 +32,7 @@ namespace Blackjack
         /// <summary>
         /// Performs a move during a round.
         /// </summary>
-        public void AIPlay()
+        public void NPCPlay()
         {
             int value = FirstValue;
             if (FirstValueConsiderAce && value + 10 <= 21)
@@ -51,10 +51,10 @@ namespace Blackjack
         }
 
         /// <summary>
-        /// Returns the amount which the AI player decides to bet.
+        /// Returns the amount which the NPC player decides to bet.
         /// </summary>
-        /// <returns>The AI player's bet.</returns>
-        public int AIBet()
+        /// <returns>The NPC player's bet.</returns>
+        public int NPCBet()
         {
             int[] chips = { 0, 5, 25, 100, 500 };
             int bet = chips[random.Next(0, chips.Length)];

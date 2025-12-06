@@ -94,7 +94,7 @@ namespace Blackjack
                 position.Y += font.LineSpacing;
                 slotIndex++;
             }
-            // Do NOT show AI players until Start Game is clicked
+            // Do NOT show NPC Players until Start Game is clicked
             // Dealer
             position.Y += font.LineSpacing;
             spriteBatch.DrawString(font, Resources.Dealer, position, Color.Yellow);
@@ -175,7 +175,7 @@ namespace Blackjack
                 if (networkSession.SessionState == NetworkSessionState.Playing)
                 {
                     // Host started the game, transition all players
-                    // Only pass human player names - GameplayScreen will add AI players on host only
+                    // Only pass human player names - GameplayScreen will add NPC Players on host only
                     var allPlayers = new List<string>(joinedPlayers);
 
                     // Exit all screens to clear the background and lobby screens

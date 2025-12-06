@@ -259,11 +259,11 @@ namespace Blackjack
 
                     BlackjackPlayer player = (BlackjackPlayer)players[playerIndex];
 
-                    // If the player is an AI player, have it bet
-                    if (player is BlackjackAIPlayer)
+                    // If the player is an NPC player, have it bet
+                    if (player is BlackjackNPCPlayer)
                     {
                         ShowAndEnableButtons(false);
-                        int bet = ((BlackjackAIPlayer)player).AIBet();
+                        int bet = ((BlackjackNPCPlayer)player).NPCBet();
 
                         BlackjackCardGame blackjackGame = cardGame as BlackjackCardGame;
 
@@ -277,10 +277,10 @@ namespace Blackjack
                             blackjackGame?.ShowPlayerPass(playerIndex);
                         }
 
-                        // Mark AI player as done betting
+                        // Mark NPC player as done betting
                         player.IsDoneBetting = true;
 
-                        // Broadcast the AI's bet to network
+                        // Broadcast the NPC's bet to network
                         if (blackjackGame != null && blackjackGame.IsNetworkGame && blackjackGame.IsHost)
                         {
                             blackjackGame.BroadcastBetPlaced((byte)playerIndex, bet);
@@ -466,18 +466,18 @@ namespace Blackjack
                 spriteBatch.DrawString(cardGame.Font, GameSettings.Instance.Currency + player.Balance.ToString(),
                     basePosition + new Vector2(0, 20), Color.White, 0f, Vector2.Zero, 0.75f, SpriteEffects.None, 0f);
 
-                // Draw player name with AI indicator (bottom line)
+                // Draw player name with NPC indicator (bottom line)
                 string playerName = player.Name;
-                bool isAI = player is BlackjackAIPlayer;
-                Color nameColor = isAI ? Color.Yellow : Color.Cyan; // Yellow for AI, Cyan for human
+                bool isNPC = player is BlackjackNPCPlayer;
+                Color nameColor = isNPC ? Color.Yellow : Color.Cyan; // Yellow for NPC, Cyan for human
 
                 // Strip GUID suffix from human player names for display (but keep full name for network identification)
                 string displayName = CardsFramework.UIUtility.StripGuidSuffix(playerName);
 
-                // Add (AI) suffix for AI players
-                if (isAI)
+                // Add (NPC) suffix for NPC players
+                if (isNPC)
                 {
-                    displayName = $"{displayName} (AI)";
+                    displayName = $"{displayName} (NPC)";
                 }
                 // Add (Host) suffix for the first human player in network games
                 else if (cardGame is BlackjackCardGame blackjackGame &&
@@ -784,7 +784,7 @@ namespace Blackjack
 
         /// <summary>
         /// Animates winning chips returning to the chip selector and updates player balance incrementally.
-        /// For local players, chips fly to selector. For remote/AI players, chips fly to name text.
+        /// For local players, chips fly to selector. For remote/NPC Players, chips fly to name text.
         /// </summary>
         /// <param name="playerIndex">Index of the player who won.</param>
         /// <param name="winAmount">Amount won (used to determine which chips to animate).</param>
@@ -807,7 +807,7 @@ namespace Blackjack
             }
             else
             {
-                // Remote/AI player: chips fly to name text and disappear
+                // Remote/NPC player: chips fly to name text and disappear
                 AnimateChipsToNameText(playerIndex, winAmount, callback);
             }
         }
@@ -859,7 +859,7 @@ namespace Blackjack
         }
 
         /// <summary>
-        /// Animates chips to the player's name text position with shrink/fade effect (for remote/AI players).
+        /// Animates chips to the player's name text position with shrink/fade effect (for remote/NPC Players).
         /// </summary>
         private void AnimateChipsToNameText(int playerIndex, float winAmount, Action callback = null)
         {
@@ -1049,7 +1049,7 @@ namespace Blackjack
 
         /// <summary>
         /// Calculates the position where player name text is rendered.
-        /// This is used as the target for chip animations for remote/AI players.
+        /// This is used as the target for chip animations for remote/NPC Players.
         /// </summary>
         private Vector2 GetPlayerNameTextPosition(int playerIndex)
         {

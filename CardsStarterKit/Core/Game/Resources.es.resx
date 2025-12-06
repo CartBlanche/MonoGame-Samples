@@ -260,7 +260,7 @@ Botón B, Esc = Cancelar</value>
   <data name="SettingsAudio" xml:space="preserve">
     <value>AUDIO</value>
   </data>
-  <data name="SettingsAIPlayers" xml:space="preserve">
+  <data name="SettingsNPCPlayers" xml:space="preserve">
     <value>JUGADORES IA</value>
   </data>
   <data name="SettingsGameplay" xml:space="preserve">
@@ -281,7 +281,7 @@ Botón B, Esc = Cancelar</value>
   <data name="SettingsMusicVolume" xml:space="preserve">
     <value>Volumen de música</value>
   </data>
-  <data name="SettingsMaxAIPlayers" xml:space="preserve">
+  <data name="SettingsMaxNPCPlayers" xml:space="preserve">
     <value>Jugadores IA máximos</value>
   </data>
   <data name="SettingsFillEmptySlots" xml:space="preserve">
@@ -332,22 +332,22 @@ Botón B, Esc = Cancelar</value>
   <data name="NewHand" xml:space="preserve">
     <value>Nueva mano</value>
   </data>
-  <data name="AIPlayer1" xml:space="preserve">
+  <data name="NPCPlayer1" xml:space="preserve">
     <value>Benito</value>
   </data>
-  <data name="AIPlayer2" xml:space="preserve">
+  <data name="NPCPlayer2" xml:space="preserve">
     <value>Carlos</value>
   </data>
-  <data name="AIPlayer3" xml:space="preserve">
+  <data name="NPCPlayer3" xml:space="preserve">
     <value>Diana</value>
   </data>
-  <data name="AIPlayer4" xml:space="preserve">
+  <data name="NPCPlayer4" xml:space="preserve">
     <value>Eduardo</value>
   </data>
-  <data name="AIPlayer5" xml:space="preserve">
+  <data name="NPCPlayer5" xml:space="preserve">
     <value>Fernanda</value>
   </data>
-  <data name="AIPlayer6" xml:space="preserve">
+  <data name="NPCPlayer6" xml:space="preserve">
     <value>Gerardo</value>
   </data>
 </root>

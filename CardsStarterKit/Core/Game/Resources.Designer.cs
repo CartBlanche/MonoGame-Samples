@@ -784,13 +784,13 @@ namespace Blackjack
         }
 
         /// <summary>
-        ///   Looks up a localized string similar to AI PLAYERS.
+        ///   Looks up a localized string similar to NPC Players.
         /// </summary>
-        internal static string SettingsAIPlayers
+        internal static string SettingsNPCPlayers
         {
             get
             {
-                return ResourceManager.GetString("SettingsAIPlayers", resourceCulture);
+                return ResourceManager.GetString("SettingsNPCPlayers", resourceCulture);
             }
         }
 
@@ -861,13 +861,13 @@ namespace Blackjack
         }
 
         /// <summary>
-        ///   Looks up a localized string similar to Max AI Players.
+        ///   Looks up a localized string similar to Max NPC Players.
         /// </summary>
-        internal static string SettingsMaxAIPlayers
+        internal static string SettingsMaxNPCPlayers
         {
             get
             {
-                return ResourceManager.GetString("SettingsMaxAIPlayers", resourceCulture);
+                return ResourceManager.GetString("SettingsMaxNPCPlayers", resourceCulture);
             }
         }
 
@@ -1048,68 +1048,68 @@ namespace Blackjack
         }
 
         /// <summary>
-        ///   Looks up a localized AI player name 1.
+        ///   Looks up a localized NPC player name 1.
         /// </summary>
-        internal static string AIPlayer1
+        internal static string NPCPlayer1
         {
             get
             {
-                return ResourceManager.GetString("AIPlayer1", resourceCulture);
+                return ResourceManager.GetString("NPCPlayer1", resourceCulture);
             }
         }
 
         /// <summary>
-        ///   Looks up a localized AI player name 2.
+        ///   Looks up a localized NPC player name 2.
         /// </summary>
-        internal static string AIPlayer2
+        internal static string NPCPlayer2
         {
             get
             {
-                return ResourceManager.GetString("AIPlayer2", resourceCulture);
+                return ResourceManager.GetString("NPCPlayer2", resourceCulture);
             }
         }
 
         /// <summary>
-        ///   Looks up a localized AI player name 3.
+        ///   Looks up a localized NPC player name 3.
         /// </summary>
-        internal static string AIPlayer3
+        internal static string NPCPlayer3
         {
             get
             {
-                return ResourceManager.GetString("AIPlayer3", resourceCulture);
+                return ResourceManager.GetString("NPCPlayer3", resourceCulture);
             }
         }
 
         /// <summary>
-        ///   Looks up a localized AI player name 4.
+        ///   Looks up a localized NPC player name 4.
         /// </summary>
-        internal static string AIPlayer4
+        internal static string NPCPlayer4
         {
             get
             {
-                return ResourceManager.GetString("AIPlayer4", resourceCulture);
+                return ResourceManager.GetString("NPCPlayer4", resourceCulture);
             }
         }
 
         /// <summary>
-        ///   Looks up a localized AI player name 5.
+        ///   Looks up a localized NPC player name 5.
         /// </summary>
-        internal static string AIPlayer5
+        internal static string NPCPlayer5
         {
             get
             {
-                return ResourceManager.GetString("AIPlayer5", resourceCulture);
+                return ResourceManager.GetString("NPCPlayer5", resourceCulture);
             }
         }
 
         /// <summary>
-        ///   Looks up a localized AI player name 6.
+        ///   Looks up a localized NPC player name 6.
         /// </summary>
-        internal static string AIPlayer6
+        internal static string NPCPlayer6
         {
             get
             {
-                return ResourceManager.GetString("AIPlayer6", resourceCulture);
+                return ResourceManager.GetString("NPCPlayer6", resourceCulture);
             }
         }
     }

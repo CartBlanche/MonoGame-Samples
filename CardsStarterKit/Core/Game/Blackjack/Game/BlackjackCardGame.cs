@@ -342,12 +342,12 @@ namespace Blackjack
                             BlackjackPlayer player =
                                 (BlackjackPlayer)GetCurrentPlayer();
 
-                            // If the current player is an AI player, make it play
-                            if (player is BlackjackAIPlayer aiPlayer)
+                            // If the current player is an NPC player, make it play
+                            if (player is BlackjackNPCPlayer NPCPlayer)
                             {
                                 if (!IsNetworkGame || IsHost)
                                 {
-                                    aiPlayer.AIPlay();
+                                    NPCPlayer.NPCPlay();
                                 }
                             }
 
@@ -1312,8 +1312,8 @@ namespace Blackjack
         private void SetButtonAvailability()
         {
             BlackjackPlayer player = (BlackjackPlayer)GetCurrentPlayer();
-            // Hide all buttons if no player is in play or the player is an AI player
-            if (player == null || player is BlackjackAIPlayer)
+            // Hide all buttons if no player is in play or the player is an NPC player
+            if (player == null || player is BlackjackNPCPlayer)
             {
                 ChangeButtonsEnablement(false);
                 ChangeButtonsVisiblility(false);
@@ -2385,8 +2385,8 @@ namespace Blackjack
         }
 
         /// <summary>
-        /// Broadcasts the complete player list (including AI players) to all clients.
-        /// Should be called by the host after all players (human + AI) have been added.
+        /// Broadcasts the complete player list (including NPC players) to all clients.
+        /// Should be called by the host after all players (human + NPC) have been added.
         /// </summary>
         public void BroadcastPlayerList()
         {
@@ -2399,7 +2399,7 @@ namespace Blackjack
                 playerInfoList.Add(new Networking.PlayerInfo
                 {
                     Name = player.Name,
-                    IsAI = player is BlackjackAIPlayer
+                    IsNPC = player is BlackjackNPCPlayer
                 });
             }
 

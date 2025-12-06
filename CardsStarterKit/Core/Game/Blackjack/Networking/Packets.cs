@@ -7,7 +7,7 @@ namespace Blackjack.Networking
     public class PlayerInfo
     {
         public string Name { get; set; }
-        public bool IsAI { get; set; }
+        public bool IsNPC { get; set; }
     }
 
     public class PlayerListSyncPacket
@@ -20,7 +20,7 @@ namespace Blackjack.Networking
             foreach (var player in Players)
             {
                 writer.Write(player.Name);
-                writer.Write(player.IsAI);
+                writer.Write(player.IsNPC);
             }
         }
 
@@ -33,7 +33,7 @@ namespace Blackjack.Networking
                 packet.Players.Add(new PlayerInfo
                 {
                     Name = reader.ReadString(),
-                    IsAI = reader.ReadBoolean()
+                    IsNPC = reader.ReadBoolean()
                 });
             }
             return packet;

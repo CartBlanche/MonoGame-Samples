@@ -37,9 +37,9 @@ namespace Blackjack
         public string Theme { get; set; } = "Red";
         public string Currency { get; set; } = "$";
 
-        // AI settings
-        public byte MaxAIPlayers { get; set; } = GetPlatformMaxAIPlayers();
-        public bool FillEmptySlotsWithAI { get; set; } = true;
+        // NPC settings
+        public byte MaxNPCPlayers { get; set; } = GetPlatformMaxNPCPlayers();
+        public bool FillEmptySlotsWithNPC { get; set; } = true;
 
         // Audio settings
         public float SoundVolume { get; set; } = 1.0f;
@@ -68,9 +68,9 @@ namespace Blackjack
         }
 
         /// <summary>
-        /// Gets the maximum allowed AI players based on the current platform.
+        /// Gets the maximum allowed NPC Players based on the current platform.
         /// </summary>
-        public static byte GetPlatformMaxAIPlayers()
+        public static byte GetPlatformMaxNPCPlayers()
         {
             if (UIUtility.IsMobile)
             {
@@ -148,11 +148,11 @@ namespace Blackjack
                 instance = new GameSettings(); // Use defaults on error
             }
 
-            // Ensure MaxAIPlayers doesn't exceed platform limit
-            byte platformMax = GetPlatformMaxAIPlayers();
-            if (instance.MaxAIPlayers > platformMax)
+            // Ensure MaxNPClayers doesn't exceed platform limit
+            byte platformMax = GetPlatformMaxNPCPlayers();
+            if (instance.MaxNPCPlayers > platformMax)
             {
-                instance.MaxAIPlayers = platformMax;
+                instance.MaxNPCPlayers = platformMax;
             }
 
             // Apply language setting
@@ -276,15 +276,15 @@ namespace Blackjack
             SoundVolume = MathHelper.Clamp(SoundVolume, 0f, 1f);
             MusicVolume = MathHelper.Clamp(MusicVolume, 0f, 1f);
 
-            // Clamp MaxAIPlayers to platform limit
-            byte platformMax = GetPlatformMaxAIPlayers();
-            if (MaxAIPlayers > platformMax)
+            // Clamp MaxNPCPlayers to platform limit
+            byte platformMax = GetPlatformMaxNPCPlayers();
+            if (MaxNPCPlayers > platformMax)
             {
-                MaxAIPlayers = platformMax;
+                MaxNPCPlayers = platformMax;
             }
-            if (MaxAIPlayers < 0)
+            if (MaxNPCPlayers < 0)
             {
-                MaxAIPlayers = 0;
+                MaxNPCPlayers = 0;
             }
         }
     }

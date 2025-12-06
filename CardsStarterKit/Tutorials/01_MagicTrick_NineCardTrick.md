@@ -1387,6 +1387,6 @@ Congratulations! You've built a complete interactive magic trick using the Cards
 - How to create interactive UI with buttons
 - How card animations work
 
-This foundation prepares you to build more complex card games. The next tutorial covers **Gin Rummy**, which introduces multi-phase gameplay, meld detection, scoring, and AI opponents.
+This foundation prepares you to build more complex card games. The next tutorial covers **Gin Rummy**, which introduces multi-phase gameplay, meld detection, scoring, and NPC opponents.
 
 **Happy coding and enjoy amazing your friends with your magic trick!**
