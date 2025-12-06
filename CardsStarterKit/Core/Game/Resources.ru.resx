@@ -349,4 +349,10 @@
   <data name="NPCPlayer6" xml:space="preserve">
     <value>Георгий</value>
   </data>
+  <data name="CardBackColorRed" xml:space="preserve">
+    <value>Красный</value>
+  </data>
+  <data name="CardBackColorBlue" xml:space="preserve">
+    <value>Синий</value>
+  </data>
 </root>

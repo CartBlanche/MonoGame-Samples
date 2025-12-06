@@ -1112,5 +1112,27 @@ namespace Blackjack
                 return ResourceManager.GetString("NPCPlayer6", resourceCulture);
             }
         }
+
+        /// <summary>
+        ///   Looks up a localized card back color name (Red).
+        /// </summary>
+        internal static string CardBackColorRed
+        {
+            get
+            {
+                return ResourceManager.GetString("CardBackColorRed", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized card back color name (Blue).
+        /// </summary>
+        internal static string CardBackColorBlue
+        {
+            get
+            {
+                return ResourceManager.GetString("CardBackColorBlue", resourceCulture);
+            }
+        }
     }
 }

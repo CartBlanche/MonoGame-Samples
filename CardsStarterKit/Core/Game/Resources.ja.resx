@@ -349,4 +349,10 @@ Bボタン、Esc = キャンセル</value>
   <data name="NPCPlayer6" xml:space="preserve">
     <value>剛</value>
   </data>
+  <data name="CardBackColorRed" xml:space="preserve">
+    <value>赤</value>
+  </data>
+  <data name="CardBackColorBlue" xml:space="preserve">
+    <value>青</value>
+  </data>
 </root>

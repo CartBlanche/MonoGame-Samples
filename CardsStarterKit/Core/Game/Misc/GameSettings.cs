@@ -34,7 +34,7 @@ namespace Blackjack
                 ApplyLanguage(value);
             }
         }
-        public string Theme { get; set; } = "Red";
+        public string Theme { get; set; } = Resources.CardBackColorRed;
         public string Currency { get; set; } = "$";
 
         // NPC settings

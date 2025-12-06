@@ -409,4 +409,10 @@ B button, Esc = Cancel</value>
   <data name="NPCPlayer6" xml:space="preserve">
     <value>George</value>
   </data>
+  <data name="CardBackColorRed" xml:space="preserve">
+    <value>Red</value>
+  </data>
+  <data name="CardBackColorBlue" xml:space="preserve">
+    <value>Blue</value>
+  </data>
 </root>

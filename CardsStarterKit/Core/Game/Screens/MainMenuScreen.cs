@@ -16,7 +16,7 @@ namespace Blackjack
 {
     class MainMenuScreen : MenuScreen
     {
-        public static string Theme { get; set; } = "Red";
+        public static string Theme { get; set; } = Resources.CardBackColorRed;
         private bool needsRefresh = false;
 
         /// <summary>
