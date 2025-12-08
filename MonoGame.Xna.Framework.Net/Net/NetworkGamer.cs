@@ -9,7 +9,7 @@ namespace Microsoft.Xna.Framework.Net
     /// <summary>
     /// Represents a player in a network session.
     /// </summary>
-    public class NetworkGamer
+    public class NetworkGamer : INetworkGamer
     {
         private static NetworkGamer localGamer;
         private readonly NetworkSession session;
