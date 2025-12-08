@@ -783,8 +783,9 @@ namespace Blackjack
         }
 
         /// <summary>
-        /// Animates winning chips returning to the chip selector and updates player balance incrementally.
-        /// For local players, chips fly to selector. For remote/NPC Players, chips fly to name text.
+        /// Animates winning chips in two steps:
+        /// Step 1: Winning chips fly from dealer to player's bet circle
+        /// Step 2: All chips (bet + winnings) fly to chip selector
         /// </summary>
         /// <param name="playerIndex">Index of the player who won.</param>
         /// <param name="winAmount">Amount won (used to determine which chips to animate).</param>
@@ -797,18 +798,149 @@ namespace Blackjack
                 return;
             }
 
-            BlackjackPlayer player = (BlackjackPlayer)players[playerIndex];
-            bool isLocal = IsLocalPlayer(playerIndex);
+            // Step 1: Animate winnings from dealer to bet circle
+            // When complete, Step 2 will animate all chips to selector
+            AnimateWinningsFromDealer(playerIndex, winAmount, () =>
+            {
+                // Step 2: Animate all chips (original bet + winnings) to selector
+                AnimateAllChipsToSelector(playerIndex, callback);
+            });
+        }
 
-            if (isLocal)
+        /// <summary>
+        /// Step 1: Animates winning chips from dealer position to player's bet circle.
+        /// Creates new chip components for the winnings (rounded to whole chip amounts).
+        /// Updates player balance when animation completes.
+        /// </summary>
+        private void AnimateWinningsFromDealer(int playerIndex, float winAmount, Action callback = null)
+        {
+            BlackjackPlayer player = (BlackjackPlayer)players[playerIndex];
+            BlackJackTable table = (BlackJackTable)cardGame.GameTable;
+
+            // Get dealer and player bet positions
+            Vector2 dealerPosition = cardGame.GameTable.DealerPosition;
+
+            // Calculate the proper chip position (centered in the ring)
+            Vector2 chipOffset = GetChipOffset(playerIndex, false);
+            Vector2 playerBetPosition = table[playerIndex] + chipOffset;
+
+            // Calculate rounded winnings for chip animation (ignore fractional amounts)
+            float roundedWinAmount = (float)Math.Floor(winAmount);
+
+            if (roundedWinAmount < 5)
             {
-                // Local player: chips fly to selector positions
-                AnimateChipsToSelector(playerIndex, winAmount, callback);
+                // No chips to animate, just update balance and proceed
+                player.Balance += winAmount;
+                SavePlayerBalanceIfNeeded(playerIndex);
+                callback?.Invoke();
+                return;
             }
-            else
+
+            // Create chip components for the winnings
+            List<AnimatedGameComponent> winningChips = new List<AnimatedGameComponent>();
+            float remainingAmount = roundedWinAmount;
+            int[] chipValues = { 500, 100, 25, 5 }; // Descending order for greedy algorithm
+
+            foreach (int chipValue in chipValues)
             {
-                // Remote/NPC player: chips fly to name text and disappear
-                AnimateChipsToNameText(playerIndex, winAmount, callback);
+                while (remainingAmount >= chipValue)
+                {
+                    AnimatedGameComponent chipComponent = new AnimatedGameComponent(cardGame,
+                        chipsAssets[chipValue], spriteBatch, globalTransformation)
+                    {
+                        Visible = false,
+                        CurrentPosition = dealerPosition
+                    };
+
+                    Game.Components.Add(chipComponent);
+                    winningChips.Add(chipComponent);
+
+                    // Add to player's chip tracking
+                    if (!playerChipComponents.ContainsKey(playerIndex))
+                    {
+                        playerChipComponents[playerIndex] = new List<AnimatedGameComponent>();
+                    }
+                    playerChipComponents[playerIndex].Add(chipComponent);
+
+                    remainingAmount -= chipValue;
+                }
+            }
+
+            // Animate each winning chip from dealer to bet circle
+            TimeSpan delayBetweenChips = TimeSpan.FromMilliseconds(100);
+            DateTime startTime = DateTime.Now;
+
+            for (int i = 0; i < winningChips.Count; i++)
+            {
+                var chip = winningChips[i];
+                bool isLastChip = (i == winningChips.Count - 1);
+
+                chip.AddAnimation(new TransitionGameComponentAnimation(
+                    dealerPosition, playerBetPosition)
+                {
+                    Duration = TimeSpan.FromSeconds(0.6),
+                    StartTime = startTime + (delayBetweenChips * i),
+                    PerformBeforeStart = ShowComponent,
+                    PerformBeforSartArgs = chip,
+                    PerformWhenDone = isLastChip ? (object obj) =>
+                    {
+                        PlayBetSound(obj);
+                        // Update balance with FULL winnings (including fractional amounts)
+                        player.Balance += winAmount;
+                        SavePlayerBalanceIfNeeded(playerIndex);
+                        callback?.Invoke();
+                    }
+                    : PlayBetSound
+                });
+            }
+        }
+
+        /// <summary>
+        /// Step 2: Animates all chips in bet circle to the chip selector.
+        /// This includes both the original bet chips and the winning chips.
+        /// </summary>
+        private void AnimateAllChipsToSelector(int playerIndex, Action callback = null)
+        {
+            if (!playerChipComponents.ContainsKey(playerIndex) || playerChipComponents[playerIndex].Count == 0)
+            {
+                callback?.Invoke();
+                return;
+            }
+
+            var chips = playerChipComponents[playerIndex];
+
+            // Animate chips one by one back to their selector positions
+            TimeSpan delayBetweenChips = TimeSpan.FromMilliseconds(100);
+            DateTime startTime = DateTime.Now;
+
+            for (int i = 0; i < chips.Count; i++)
+            {
+                var chip = chips[i];
+
+                // Determine which chip value this is based on texture
+                int chipValue = GetChipValueFromComponent(chip);
+                int chipIndex = GetChipSelectorIndex(chipValue);
+
+                if (chipIndex >= 0 && chipIndex < positions.Length)
+                {
+                    bool isLastChip = (i == chips.Count - 1);
+
+                    // Animate chip back to selector position
+                    chip.AddAnimation(new TransitionGameComponentAnimation(
+                        chip.CurrentPosition, positions[chipIndex])
+                    {
+                        Duration = TimeSpan.FromSeconds(0.5),
+                        StartTime = startTime + (delayBetweenChips * i),
+                        PerformWhenDone = isLastChip ? (object obj) =>
+                        {
+                            PlayBetSound(obj);
+                            // Clean up all chips
+                            CleanupPlayerChips(playerIndex);
+                            callback?.Invoke();
+                        }
+                        : PlayBetSound
+                    });
+                }
             }
         }
 
