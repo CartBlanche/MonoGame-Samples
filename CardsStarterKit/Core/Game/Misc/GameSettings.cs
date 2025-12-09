@@ -7,6 +7,7 @@
 using System;
 using System.Globalization;
 using System.IO;
+using System.Linq;
 using System.Text.Json;
 using CardsFramework;
 using Microsoft.Xna.Framework;
@@ -34,7 +35,8 @@ namespace Blackjack
                 ApplyLanguage(value);
             }
         }
-        public string Theme { get; set; } = Resources.CardBackColorRed;
+        // Store theme as invariant English value ("Red" or "Blue") to avoid asset loading issues
+        public string Theme { get; set; } = "Red";
         public string Currency { get; set; } = "$";
 
         // NPC settings
@@ -129,6 +131,10 @@ namespace Blackjack
                 {
                     string json = File.ReadAllText(settingsFilePath);
                     instance = JsonSerializer.Deserialize<GameSettings>(json);
+
+                    // Migrate old localized theme values to invariant English values
+                    MigrateThemeToInvariant();
+
                     System.Console.WriteLine($"[Settings] Loaded from {settingsFilePath}");
                     System.Console.WriteLine($"[Settings] PersistWinnings={instance.PersistWinnings}, SavedPlayerBalance={instance.SavedPlayerBalance}");
                 }
@@ -285,6 +291,37 @@ namespace Blackjack
             if (MaxNPCPlayers < 0)
             {
                 MaxNPCPlayers = 0;
+            }
+        }
+
+        /// <summary>
+        /// Migrates old localized theme values (e.g., "Rouge", "Bleu") to invariant English values.
+        /// This fixes crashes when changing languages with non-English card back names.
+        /// </summary>
+        private static void MigrateThemeToInvariant()
+        {
+            if (instance == null) return;
+
+            // List of known localized values that mean "Red"
+            string[] redVariants = { "Red", "Rouge", "Rojo", "Rosso", "Vermelho", "赤", "红色", "Красный" };
+            // List of known localized values that mean "Blue"
+            string[] blueVariants = { "Blue", "Bleu", "Azul", "Blu", "Azul", "青", "蓝色", "Синий" };
+
+            if (redVariants.Contains(instance.Theme, StringComparer.OrdinalIgnoreCase))
+            {
+                instance.Theme = "Red";
+                System.Console.WriteLine($"[Settings] Migrated theme to invariant value: Red");
+            }
+            else if (blueVariants.Contains(instance.Theme, StringComparer.OrdinalIgnoreCase))
+            {
+                instance.Theme = "Blue";
+                System.Console.WriteLine($"[Settings] Migrated theme to invariant value: Blue");
+            }
+            // If neither matches, default to Red
+            else if (instance.Theme != "Red" && instance.Theme != "Blue")
+            {
+                System.Console.WriteLine($"[Settings] Unknown theme value '{instance.Theme}', defaulting to Red");
+                instance.Theme = "Red";
             }
         }
     }

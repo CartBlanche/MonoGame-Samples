@@ -79,8 +79,8 @@ namespace Blackjack
             buttonRegularTexture = content.Load<Texture2D>("Images/ButtonRegular");
             buttonPressedTexture = content.Load<Texture2D>("Images/ButtonPressed");
 
-            // Load current theme card back
-            string themeCardBack = settings.Theme == Resources.CardBackColorRed ? "CardBack_Red" : "CardBack_Blue";
+            // Load current theme card back using invariant theme value
+            string themeCardBack = $"CardBack_{settings.Theme}";
             cardBackTexture = content.Load<Texture2D>($"Images/Cards/{themeCardBack}");
 
             // Initialize input helper
@@ -133,12 +133,12 @@ namespace Blackjack
                     CycleToNextLanguage,
                     null, ref yPos);
                 AddCycleSetting(Resources.SettingsCardBackTheme, GetThemeDisplay,
-                    () => settings.Theme = settings.Theme == Resources.CardBackColorRed ? Resources.CardBackColorBlue : Resources.CardBackColorRed,
-                    () => settings.Theme = settings.Theme == Resources.CardBackColorRed ? Resources.CardBackColorBlue : Resources.CardBackColorRed,
+                    () => settings.Theme = settings.Theme == "Red" ? "Blue" : "Red",
+                    () => settings.Theme = settings.Theme == "Red" ? "Blue" : "Red",
                     () =>
                     {
-                        // Reload card back texture
-                        string themeCardBack = settings.Theme == Resources.CardBackColorRed ? "CardBack_Red" : "CardBack_Blue";
+                        // Reload card back texture using invariant theme value
+                        string themeCardBack = $"CardBack_{settings.Theme}";
                         cardBackTexture = ScreenManager.Game.Content.Load<Texture2D>($"Images/Cards/{themeCardBack}");
                         MainMenuScreen.Theme = settings.Theme;
                     },
@@ -231,7 +231,8 @@ namespace Blackjack
         private string GetThemeDisplay()
         {
             // Return the localized theme name based on current language
-            return settings.Theme == Resources.CardBackColorRed ? Resources.CardBackColorRed : Resources.CardBackColorBlue;
+            // Theme is stored as invariant "Red" or "Blue" but displayed in user's language
+            return settings.Theme == "Red" ? Resources.CardBackColorRed : Resources.CardBackColorBlue;
         }
 
         private void CycleToNextLanguage()
