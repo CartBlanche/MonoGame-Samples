@@ -2,6 +2,7 @@ using Shooter.Core.Components;
 using Shooter.Core.Entities;
 using Shooter.Core.Services;
 using Shooter.Gameplay.Systems;
+using Shooter.Gameplay.AI;
 using System.Numerics;
 using System.Linq;
 
@@ -57,13 +58,14 @@ public class EnemyAI : EntityComponent
     // State machine
     private AIState _currentState = AIState.Idle;
     private float _stateTimer = 0f;
-    
+
     // Target tracking
     private Entity? _target;
     private Transform3D? _targetTransform;
     private Transform3D? _transform;
     private Health? _health;
     private EnemyController? _enemyController;
+    private NavigationModule? _navigationModule;
 
     // AI parameters
     private float _detectionRange = 20f;
@@ -71,11 +73,16 @@ public class EnemyAI : EntityComponent
     private float _attackStopDistanceRatio = 0.5f; // Stop at 50% of attack range (Unity default)
     private float _moveSpeed = 3f;
     private float _turnSpeed = 5f;
-    
+
     // Line of sight
     private float _losCheckInterval = 0.5f;
     private float _losCheckTimer = 0f;
     private bool _hasLineOfSight = false;
+
+    // Steering and orientation
+    private float _currentYaw = 0f; // Current rotation in radians
+    private Vector3 _wanderDirection = Vector3.UnitZ; // Current wander heading
+    private Vector3 _spawnPosition = Vector3.Zero; // For wander center point
 
     /// <summary>
     /// Current AI state
@@ -155,6 +162,25 @@ public class EnemyAI : EntityComponent
         _transform = Owner?.GetComponent<Transform3D>();
         _health = Owner?.GetComponent<Health>();
         _enemyController = Owner?.GetComponent<EnemyController>();
+        _navigationModule = Owner?.GetComponent<NavigationModule>();
+
+        // Store spawn position for wander behavior
+        if (_transform != null)
+        {
+            _spawnPosition = _transform.Position;
+
+            // Initialize yaw from current rotation
+            var rotation = _transform.Rotation;
+            _currentYaw = MathF.Atan2(2 * (rotation.W * rotation.Y + rotation.X * rotation.Z),
+                1 - 2 * (rotation.Y * rotation.Y + rotation.Z * rotation.Z));
+        }
+
+        // Use NavigationModule movement speed if available
+        if (_navigationModule != null)
+        {
+            _moveSpeed = _navigationModule.MoveSpeed;
+            _turnSpeed = _navigationModule.AngularSpeed * (MathF.PI / 180f); // Convert degrees to radians
+        }
 
         // Subscribe to death event
         if (_health != null)
@@ -227,7 +253,7 @@ public class EnemyAI : EntityComponent
     }
 
     /// <summary>
-    /// Update idle state - look for player
+    /// Update idle state - wander around spawn point and look for player
     /// </summary>
     private void UpdateIdle(float deltaTime)
     {
@@ -247,43 +273,80 @@ public class EnemyAI : EntityComponent
         if (distanceToTarget <= _detectionRange && _hasLineOfSight)
         {
             CurrentState = AIState.Chase;
+            return;
         }
+
+        // Wander behavior - patrol around spawn point
+        _wanderDirection = SteeringBehaviors.Wander(
+            _transform.Position,
+            _wanderDirection,
+            _spawnPosition,
+            0.25f,  // Wander strength
+            deltaTime
+        );
+
+        // Smooth turn toward wander direction
+        Vector3 wanderTarget = _transform.Position + _wanderDirection * 10f;
+        _currentYaw = SteeringBehaviors.TurnToFace(
+            _transform.Position,
+            wanderTarget,
+            _currentYaw,
+            _turnSpeed,
+            deltaTime
+        );
+
+        // Move in current direction
+        Vector3 heading = new Vector3(MathF.Sin(_currentYaw), 0, MathF.Cos(_currentYaw));
+        float wanderSpeed = _moveSpeed * 0.5f; // Move slower when wandering
+        _transform.Position += heading * wanderSpeed * deltaTime;
+
+        // Update rotation
+        _transform.Rotation = Quaternion.CreateFromYawPitchRoll(_currentYaw, 0, 0);
     }
 
     /// <summary>
-    /// Update chase state - move toward player
+    /// Update chase state - move toward player with smooth rotation
     /// </summary>
     private void UpdateChase(float deltaTime)
     {
         if (_targetTransform == null || _transform == null)
             return;
-        
+
         float distanceToTarget = Vector3.Distance(_transform.Position, _targetTransform.Position);
-        
+
         // If player is in attack range, switch to attack
         if (distanceToTarget <= _attackRange)
         {
             CurrentState = AIState.Attack;
             return;
         }
-        
+
         // If player is too far or not visible, return to idle
         if (distanceToTarget > _detectionRange || !_hasLineOfSight)
         {
             CurrentState = AIState.Idle;
             return;
         }
-        
-        // Move toward target
-        Vector3 direction = Vector3.Normalize(_targetTransform.Position - _transform.Position);
-        _transform.Position += direction * _moveSpeed * deltaTime;
-        
-        // Rotate toward target
-        LookAt(_targetTransform.Position, deltaTime);
+
+        // Smooth turn toward player using steering behavior
+        _currentYaw = SteeringBehaviors.TurnToFace(
+            _transform.Position,
+            _targetTransform.Position,
+            _currentYaw,
+            _turnSpeed,
+            deltaTime
+        );
+
+        // Move toward target with acceleration
+        Vector3 heading = new Vector3(MathF.Sin(_currentYaw), 0, MathF.Cos(_currentYaw));
+        _transform.Position += heading * _moveSpeed * deltaTime;
+
+        // Update rotation
+        _transform.Rotation = Quaternion.CreateFromYawPitchRoll(_currentYaw, 0, 0);
     }
 
     /// <summary>
-    /// Update attack state - shoot at player
+    /// Update attack state - shoot at player with smooth rotation
     /// </summary>
     private void UpdateAttack(float deltaTime)
     {
@@ -302,29 +365,37 @@ public class EnemyAI : EntityComponent
         // Calculate stop distance based on attack range ratio
         float stopDistance = _attackRange * _attackStopDistanceRatio;
 
+        // Smooth turn toward player using steering behavior (faster when attacking)
+        _currentYaw = SteeringBehaviors.TurnToFace(
+            _transform.Position,
+            _targetTransform.Position,
+            _currentYaw,
+            _turnSpeed * 2f, // Turn faster when attacking
+            deltaTime
+        );
+
         // Move toward or away to maintain optimal attack distance
+        Vector3 heading = new Vector3(MathF.Sin(_currentYaw), 0, MathF.Cos(_currentYaw));
+
         if (distanceToTarget > stopDistance)
         {
             // Move closer
-            Vector3 direction = Vector3.Normalize(_targetTransform.Position - _transform.Position);
-            _transform.Position += direction * _moveSpeed * deltaTime;
+            _transform.Position += heading * _moveSpeed * deltaTime;
         }
         else if (distanceToTarget < stopDistance * 0.8f)
         {
             // Back away slightly (too close)
-            Vector3 direction = Vector3.Normalize(_transform.Position - _targetTransform.Position);
-            _transform.Position += direction * _moveSpeed * 0.5f * deltaTime;
+            _transform.Position -= heading * _moveSpeed * 0.5f * deltaTime;
         }
+
+        // Update rotation
+        _transform.Rotation = Quaternion.CreateFromYawPitchRoll(_currentYaw, 0, 0);
 
         // Aim and fire at target
         if (_enemyController != null)
         {
             // Calculate aim point (target's center mass)
             Vector3 aimPoint = _targetTransform.Position + new Vector3(0, 0.5f, 0);
-
-            // Orient toward target
-            _enemyController.OrientTowards(aimPoint);
-            _enemyController.OrientWeaponsTowards(aimPoint);
 
             // Try to shoot (weapon handles its own fire rate)
             _enemyController.TryAttack(aimPoint);

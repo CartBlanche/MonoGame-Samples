@@ -157,10 +157,16 @@ public class ShooterGame : Game
         // Add Health to player
         var playerHealth = playerEntity.AddComponent<Gameplay.Components.Health>();
         playerHealth.MaxHealth = 100f;
-        
+
+        // Add Rigidbody for physics collision (so enemies can hit the player)
+        var playerRigidbody = playerEntity.AddComponent<Core.Components.Rigidbody>();
+        playerRigidbody.BodyType = Core.Plugins.Physics.BodyType.Kinematic; // Kinematic so FPS controller handles movement
+        playerRigidbody.Shape = new Core.Plugins.Physics.CapsuleShape(0.5f, 1.8f); // Capsule: radius 0.5, height 1.8
+        playerRigidbody.Mass = 70.0f;
+
         // Add HUD component to player
         var hud = playerEntity.AddComponent<Gameplay.Components.HUD>();
-        
+
         scene.AddEntity(playerEntity);
         
         // Initialize camera AFTER entity is added and components are initialized
@@ -284,6 +290,13 @@ public class ShooterGame : Game
             };
         }
 
+        // Add NavigationModule for movement parameters (Unity pattern)
+        var navigationModule = entity.AddComponent<Gameplay.Components.NavigationModule>();
+        navigationModule.MoveSpeed = 5.0f; // Unity HoverBot default
+        navigationModule.AngularSpeed = 120f; // Unity default rotation speed
+        navigationModule.Acceleration = 50.0f; // Unity default
+        navigationModule.PathReachingRadius = 2.0f; // Unity default
+
         // Add EnemyController for weapon management
         var enemyController = entity.AddComponent<Gameplay.Components.EnemyController>();
 
@@ -293,7 +306,7 @@ public class ShooterGame : Game
         enemyAI.DetectionRange = 20f; // Unity default
         enemyAI.AttackRange = 10f; // Unity default
         enemyAI.AttackStopDistanceRatio = 0.5f; // Stop at 50% of attack range
-        enemyAI.MoveSpeed = 2.5f;
+        enemyAI.MoveSpeed = 5.0f; // Will be overridden by NavigationModule
 
         // Subscribe to death event (after enemyAI is created so we can reference it)
         health.OnDeath += (damageInfo) =>
