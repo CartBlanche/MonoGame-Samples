@@ -1,0 +1,29 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Desktop Shooter",
+            "type": "coreclr",
+            "request": "launch",
+            "preLaunchTask": "build-desktop",
+            "program": "${workspaceFolder}/Platforms/Desktop/bin/Debug/net9.0/Shooter.dll",
+            "args": [],
+            "cwd": "${workspaceFolder}/Platforms/Desktop/",
+            "console": "internalConsole",
+            "stopAtEntry": false,
+            "internalConsoleOptions": "openOnSessionStart"
+        },
+        {
+            "name": "Windows Shooter",
+            "type": "coreclr",
+            "request": "launch",
+            "preLaunchTask": "build-windows",
+            "program": "${workspaceFolder}/Platforms/Windows/bin/Debug/net9.0-windows/Shooter.dll",
+            "args": [],
+            "cwd": "${workspaceFolder}/Platforms/Windows/",
+            "console": "internalConsole",
+            "stopAtEntry": false,
+            "internalConsoleOptions": "openOnSessionStart"
+        }
+    ]
+}
