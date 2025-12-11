@@ -2,7 +2,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
-    <TargetFramework>net8.0-windows</TargetFramework>
+    <TargetFramework>net9.0-windows</TargetFramework>
     <RootNamespace>NetworkStateManagement</RootNamespace>
     <AssemblyName>NetworkStateManagement</AssemblyName>
     <GenerateAssemblyInfo>true</GenerateAssemblyInfo>

@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <TargetFramework>net8.0</TargetFramework>
+    <TargetFramework>net9.0</TargetFramework>
     <RootNamespace>StencilCratersTutorial.DesktopGL</RootNamespace>
     <AssemblyName>StencilCraters.DesktopGL</AssemblyName>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>

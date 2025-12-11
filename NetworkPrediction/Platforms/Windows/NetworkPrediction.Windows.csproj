@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
-    <TargetFramework>net8.0-windows</TargetFramework>
+    <TargetFramework>net9.0-windows</TargetFramework>
     <RootNamespace>NetworkPrediction</RootNamespace>
     <AssemblyName>NetworkPrediction</AssemblyName>
     <UseWindowsForms>true</UseWindowsForms>

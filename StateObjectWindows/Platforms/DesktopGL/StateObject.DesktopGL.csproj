@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <TargetFramework>net8.0</TargetFramework>
+    <TargetFramework>net9.0</TargetFramework>
     <RootNamespace>StateObject.DesktopGL</RootNamespace>
     <AssemblyName>StateObjectDesktopGL</AssemblyName>
     <Description>DesktopGL platform for StateObject sample</Description>

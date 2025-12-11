@@ -1,6 +1,6 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>net8.0-android</TargetFramework>
+    <TargetFramework>net9.0-android</TargetFramework>
     <RootNamespace>Draw2D.Android</RootNamespace>
     <AssemblyName>Draw2D.Android</AssemblyName>
     <GenerateAssemblyInfo>true</GenerateAssemblyInfo>

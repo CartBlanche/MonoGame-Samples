@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
-    <TargetFramework>net8.0-windows</TargetFramework>
+    <TargetFramework>net9.0-windows</TargetFramework>
     <RootNamespace>PeerToPeer</RootNamespace>
     <AssemblyName>Peer2PeerSample</AssemblyName>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>

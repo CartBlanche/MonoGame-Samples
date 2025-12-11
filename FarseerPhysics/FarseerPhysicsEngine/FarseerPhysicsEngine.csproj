@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net8.0</TargetFramework>
+    <TargetFramework>net9.0</TargetFramework>
     <RootNamespace>FarseerPhysicsEngine</RootNamespace>
     <AssemblyName>FarseerPhysicsEngine</AssemblyName>
     <OutputType>Library</OutputType>

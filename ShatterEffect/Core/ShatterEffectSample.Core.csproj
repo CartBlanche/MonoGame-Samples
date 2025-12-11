@@ -1,6 +1,6 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>net8.0</TargetFramework>
+    <TargetFramework>net9.0</TargetFramework>
     <RootNamespace>ShatterEffect.Core</RootNamespace>
     <AssemblyProduct>ShatterEffect.Core</AssemblyProduct>
     <Description>This sample shows how you can apply an effect on any model in your game to shatter it apart. The effect is simulated with a vertex shader.</Description>
