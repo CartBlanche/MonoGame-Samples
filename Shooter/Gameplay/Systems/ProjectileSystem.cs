@@ -49,9 +49,7 @@ namespace Shooter.Gameplay.Systems
         public RaycastHit Raycast(Vector3 origin, Vector3 direction, float maxDistance = 1000f)
         {
             direction = Vector3.Normalize(direction);
-            
-            Console.WriteLine($"[Projectile] Raycast from {origin} in direction {direction}, maxDist={maxDistance}");
-            
+
             // Perform physics raycast
             bool didHit = _physicsProvider.Raycast(origin, direction, maxDistance, out RaycastHit hit);
 
@@ -63,25 +61,6 @@ namespace Shooter.Gameplay.Systems
                 ExpiryTime = DateTime.Now.AddSeconds(DEBUG_RAY_DURATION),
                 DidHit = didHit
             });
-
-            if (didHit)
-            {
-                Console.WriteLine($"[Projectile] Raycast HIT at distance {hit.Distance:F2}, point={hit.Point}");
-                
-                // Debug: What did we hit?
-                if (hit.UserData is Entity hitEntity)
-                {
-                    Console.WriteLine($"[Projectile] Hit entity: {hitEntity.Name}");
-                }
-                else
-                {
-                    Console.WriteLine($"[Projectile] Hit physics body but UserData is not an Entity (type: {hit.UserData?.GetType().Name ?? "null"})");
-                }
-            }
-            else
-            {
-                Console.WriteLine($"[Projectile] Raycast MISS - no hit detected");
-            }
 
             return hit;
         }

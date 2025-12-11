@@ -60,9 +60,6 @@ namespace Shooter.Gameplay.Weapons
 
             // Fire the hitscan event (other systems like ProjectileSystem will handle the actual raycast)
             OnHitscanFired?.Invoke(origin, finalDirection, Damage);
-
-            // Debug output
-            Console.WriteLine($"{Name} fired! Ammo: {CurrentAmmoInMag}/{CurrentReserveAmmo}");
         }
 
         /// <summary>

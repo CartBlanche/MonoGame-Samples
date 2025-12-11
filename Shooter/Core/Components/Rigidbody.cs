@@ -220,7 +220,13 @@ public class Rigidbody : EntityComponent
     public override void Initialize()
     {
         base.Initialize();
-        
+
+        // Guard against double initialization
+        if (_physicsBody != null)
+        {
+            return; // Already initialized
+        }
+
         // Get physics provider from service locator
         var physics = ServiceLocator.Get<IPhysicsProvider>();
         if (physics == null)
@@ -228,7 +234,7 @@ public class Rigidbody : EntityComponent
             Console.WriteLine("[Rigidbody] Warning: No physics provider registered");
             return;
         }
-        
+
         // Create the physics body
         CreatePhysicsBody(physics);
     }

@@ -80,15 +80,13 @@ public class EnemyController : EntityComponent
         // Same offset as line-of-sight check (1.5 units forward)
         Vector3 origin = _transform.Position + new Vector3(0, 0.5f, 0) + (direction * 1.5f);
 
-        // Attempt to fire
-        bool didFire = _weapon.TryFire(origin, direction);
-
-        if (didFire)
+        if (_weapon.TryFire(origin, direction))
         {
             OnAttack?.Invoke();
+            return true;
         }
 
-        return didFire;
+        return false;
     }
 
     /// <summary>

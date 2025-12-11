@@ -158,6 +158,12 @@ public partial class ShooterGame : Game
         var playerHealth = playerEntity.AddComponent<Gameplay.Components.Health>();
         playerHealth.MaxHealth = 100f;
 
+        // Add Rigidbody for physics collision (so enemies can hit the player)
+        var playerRigidbody = playerEntity.AddComponent<Core.Components.Rigidbody>();
+        playerRigidbody.BodyType = Core.Plugins.Physics.BodyType.Kinematic; // Kinematic so FPS controller handles movement
+        playerRigidbody.Shape = new Core.Plugins.Physics.BoxShape(1.0f, 1.8f, 1.0f); // Box: width 1.0, height 1.8, depth 1.0
+        playerRigidbody.Mass = 70.0f;
+
         // Add HUD component to player
         var hud = playerEntity.AddComponent<Gameplay.Components.HUD>();
 
