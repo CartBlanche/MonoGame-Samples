@@ -233,7 +233,7 @@ namespace NetworkPrediction
         /// </summary>
         void GamerJoinedEventHandler(object sender, GamerJoinedEventArgs e)
         {
-            int gamerIndex = networkSession.AllGamers.IndexOf(e.Gamer);
+            int gamerIndex = networkSession.AllGamers.IndexOf(e.Gamer as NetworkGamer);
 
             e.Gamer.Tag = new Tank(gamerIndex, Content, screenWidth, screenHeight);
         }

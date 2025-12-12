@@ -224,7 +224,7 @@ namespace PeerToPeer
 		/// </summary>
 		void GamerJoinedEventHandler(object sender, GamerJoinedEventArgs e)
 		{
-			int gamerIndex = networkSession.AllGamers.IndexOf(e.Gamer);
+			int gamerIndex = networkSession.AllGamers.IndexOf((NetworkGamer)e.Gamer);
 
 			e.Gamer.Tag = new Tank(gamerIndex, Content, screenWidth, screenHeight);
 		}
@@ -372,7 +372,7 @@ namespace PeerToPeer
 			spriteBatch.Begin();
 
 			// For each person in the session...
-			foreach (NetworkGamer gamer in networkSession.AllGamers)
+			foreach (INetworkGamer gamer in networkSession.AllGamers)
 			{
 				// Look up the tank object belonging to this network gamer.
 				Tank tank = gamer.Tag as Tank;
@@ -391,7 +391,7 @@ namespace PeerToPeer
 						label += " (host)";
 
 					// Flash the gamertag to yellow when the player is talking.
-					if (gamer.IsTalking)
+					if (gamer is NetworkGamer networkGamer && networkGamer.IsTalking)
 						labelColor = Color.Yellow;
 
 					spriteBatch.DrawString(font, label, tank.Position, labelColor, 0,

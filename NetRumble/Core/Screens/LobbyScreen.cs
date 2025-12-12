@@ -472,7 +472,7 @@ namespace NetRumble
                     playerData.Serialize(packetWriter);
 
                     networkSession.LocalGamers[0].SendData(packetWriter,
-                        SendDataOptions.ReliableInOrder, e.Gamer);
+                        SendDataOptions.ReliableInOrder, e.Gamer as NetworkGamer);
                 }
             }
         }
