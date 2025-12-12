@@ -435,6 +435,14 @@ public partial class ShooterGame : Game
                 Console.WriteLine("[Game] HUD overlay wired up");
             }
 
+            // Load HUD content (SpriteBatch, textures, font)
+            var hud = playerEntity.GetComponent<Gameplay.Components.HUD>();
+            if (hud != null && _spriteBatch != null)
+            {
+                hud.LoadContent(GraphicsDevice, _spriteBatch, hudFont);
+                Console.WriteLine("[Game] HUD content loaded");
+            }
+
             // Load and attach weapon model to player's view
             LoadWeaponModel(playerEntity);
 
