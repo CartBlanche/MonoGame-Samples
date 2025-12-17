@@ -25,14 +25,12 @@ public class HUD : EntityComponent
     private GraphicsDevice? _graphicsDevice;
 
     // HUD element positions and sizes
-    // Move HUD to top left for debug visibility
-    private Vector2 _healthBarSize = new Vector2(200, 30);
-    private Vector2 _ammoBarSize = new Vector2(200, 18);
-    private Vector2 _weaponBarSize = new Vector2(200, 18);
+    // Match Unity layout: health bottom-left, ammo bottom-right
+    private Vector2 _healthBarSize = new Vector2(250, 35);  // Larger to match Unity
+    private Vector2 _ammoBarSize = new Vector2(150, 30);    // Compact ammo display
     private int _margin = 20;
-    private Vector2 _healthBarPosition = new Vector2(20, 20);
-    private Vector2 _ammoBarPosition = new Vector2(20, 60);
-    private Vector2 _weaponBarPosition = new Vector2(20, 85);
+    private Vector2 _healthBarPosition = new Vector2(20, 20);  // Placeholder, set in LoadContent
+    private Vector2 _ammoBarPosition = new Vector2(20, 60);    // Placeholder, set in LoadContent
 
     // References to player components
     private Health? _playerHealth;
@@ -81,12 +79,15 @@ public class HUD : EntityComponent
         _pixel = new Texture2D(graphicsDevice, 1, 1);
         _pixel.SetData(new[] { Color.White });
 
-        // Position bars at lower right after graphics device is available
+        // Position bars to match Unity layout
         int screenW = _graphicsDevice.Viewport.Width;
         int screenH = _graphicsDevice.Viewport.Height;
-        _healthBarPosition = new Vector2(screenW - _healthBarSize.X - _margin, screenH - _healthBarSize.Y - _ammoBarSize.Y - _weaponBarSize.Y - _margin);
-        _ammoBarPosition = new Vector2(screenW - _ammoBarSize.X - _margin, screenH - _ammoBarSize.Y - _weaponBarSize.Y - _margin);
-        _weaponBarPosition = new Vector2(screenW - _weaponBarSize.X - _margin, screenH - _weaponBarSize.Y - _margin);
+
+        // Health bar: bottom-left corner
+        _healthBarPosition = new Vector2(_margin, screenH - _healthBarSize.Y - _margin);
+
+        // Ammo bar: bottom-right corner
+        _ammoBarPosition = new Vector2(screenW - _ammoBarSize.X - _margin, screenH - _ammoBarSize.Y - _margin);
 
         Console.WriteLine("[HUD] Content loaded");
     }
@@ -104,37 +105,14 @@ public class HUD : EntityComponent
         _spriteBatch.Begin();
 
         DrawHealthBar();
-        
-        // Debug: Check weapon status
-        if (_weaponController == null)
-        {
-            // Draw debug text
-            if (_font != null)
-            {
-                _spriteBatch.DrawString(_font, "NO WEAPON CONTROLLER", new Vector2(20, 100), Color.Red);
-            }
-        }
-        else if (_weaponController.CurrentWeapon == null)
-        {
-            // Draw debug text
-            if (_font != null)
-            {
-                _spriteBatch.DrawString(_font, $"WEAPON CONTROLLER OK, NO CURRENT WEAPON (Index: {_weaponController.CurrentWeaponIndex})", new Vector2(20, 100), Color.Yellow);
-            }
-        }
-        else
-        {
-            DrawAmmoBar();
-            DrawWeaponBar();
-        }
+        DrawAmmoBar();
 
         _spriteBatch.End();
     }
 
     /// <summary>
-    /// Draw the ammo counter
+    /// Draw the ammo counter (Unity style - text based with background)
     /// </summary>
-    // Rectangle-based ammo bar
     private void DrawAmmoBar()
     {
         if (_spriteBatch == null || _pixel == null || _weaponController == null)
@@ -144,57 +122,37 @@ public class HUD : EntityComponent
         if (weapon == null)
             return;
 
-        float ammoPercent = weapon.CurrentAmmoInMag / (float)Math.Max(weapon.MagazineSize, 1);
-        ammoPercent = Math.Clamp(ammoPercent, 0f, 1f);
-
         Rectangle backgroundRect = new Rectangle((int)_ammoBarPosition.X, (int)_ammoBarPosition.Y, (int)_ammoBarSize.X, (int)_ammoBarSize.Y);
-        Rectangle fillRect = new Rectangle((int)_ammoBarPosition.X + 2, (int)_ammoBarPosition.Y + 2, (int)((_ammoBarSize.X - 4) * ammoPercent), (int)_ammoBarSize.Y - 4);
-        Rectangle borderRect = new Rectangle((int)_ammoBarPosition.X, (int)_ammoBarPosition.Y, (int)_ammoBarSize.X, (int)_ammoBarSize.Y);
-
-        Color ammoBarBackground = new Color(30, 30, 60, 200);
-        Color ammoBarFill = weapon.IsReloading ? new Color(255, 220, 40, 255) : (weapon.CurrentAmmoInMag == 0 ? new Color(220, 50, 50, 255) : new Color(40, 180, 255, 255));
+        Color ammoBarBackground = new Color(40, 40, 40, 200);
         Color ammoBarBorder = new Color(255, 255, 255, 255);
 
         // Draw background
         _spriteBatch.Draw(_pixel, backgroundRect, ammoBarBackground);
-        // Draw fill
-        _spriteBatch.Draw(_pixel, fillRect, ammoBarFill);
         // Draw border
-        DrawRectangleBorder(borderRect, 2, ammoBarBorder);
-    }
+        DrawRectangleBorder(backgroundRect, 2, ammoBarBorder);
 
-    /// <summary>
-    /// Draw the weapon name
-    /// </summary>
-    // Rectangle-based weapon bar
-    private void DrawWeaponBar()
-    {
-        if (_spriteBatch == null || _pixel == null || _weaponController == null)
-            return;
-
-        var weapon = _weaponController.CurrentWeapon;
-        if (weapon == null)
-            return;
-
-        Rectangle backgroundRect = new Rectangle((int)_weaponBarPosition.X, (int)_weaponBarPosition.Y, (int)_weaponBarSize.X, (int)_weaponBarSize.Y);
-        Rectangle borderRect = new Rectangle((int)_weaponBarPosition.X, (int)_weaponBarPosition.Y, (int)_weaponBarSize.X, (int)_weaponBarSize.Y);
-
-        Color weaponBarBackground = new Color(40, 40, 40, 200);
-        Color weaponBarBorder = new Color(255, 255, 255, 255);
-
-        // Draw background
-        _spriteBatch.Draw(_pixel, backgroundRect, weaponBarBackground);
-        // Draw border
-        DrawRectangleBorder(borderRect, 2, weaponBarBorder);
-
-        // Draw weapon name text (if font available)
+        // Draw ammo text (similar to Unity: "32 / 90" format)
         if (_font != null)
         {
-            string weaponText = weapon.Name.ToUpper();
-            Vector2 textSize = _font.MeasureString(weaponText);
-            Vector2 textPos = new Vector2(_weaponBarPosition.X + (_weaponBarSize.X - textSize.X) / 2, _weaponBarPosition.Y + (_weaponBarSize.Y - textSize.Y) / 2);
-            _spriteBatch.DrawString(_font, weaponText, textPos + new Vector2(1, 1), _textShadowColor);
-            _spriteBatch.DrawString(_font, weaponText, textPos, _textColor);
+            string ammoText = weapon.IsReloading
+                ? "RELOADING"
+                : $"{weapon.CurrentAmmoInMag} / {weapon.CurrentReserveAmmo}";
+
+            Vector2 textSize = _font.MeasureString(ammoText);
+            Vector2 textPos = new Vector2(
+                _ammoBarPosition.X + (_ammoBarSize.X - textSize.X) / 2,
+                _ammoBarPosition.Y + (_ammoBarSize.Y - textSize.Y) / 2
+            );
+
+            // Color based on ammo status
+            Color ammoColor = weapon.IsReloading
+                ? new Color(255, 220, 40)
+                : (weapon.CurrentAmmoInMag == 0 ? new Color(220, 50, 50) : Color.White);
+
+            // Draw shadow
+            _spriteBatch.DrawString(_font, ammoText, textPos + new Vector2(1, 1), _textShadowColor);
+            // Draw text
+            _spriteBatch.DrawString(_font, ammoText, textPos, ammoColor);
         }
     }
 

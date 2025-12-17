@@ -29,6 +29,8 @@ public partial class ShooterGame : Game
     private SpriteBatch? _spriteBatch;
     private SceneManager? _sceneManager;
     private Gameplay.Systems.PickupSystem? _pickupSystem;
+    private Gameplay.Components.GameFlowManager? _gameFlowManager;
+    private Texture2D? _pauseOverlayTexture; // Reusable 1x1 texture for pause overlay
 
     // Hit marker state
     private bool _showHitMarker = false;
@@ -107,6 +109,7 @@ public partial class ShooterGame : Game
 
         // Create scene manager
         _sceneManager = new SceneManager();
+        ServiceLocator.Register<SceneManager>(_sceneManager);
 
         // TODO: Register custom component types
         // _sceneManager.RegisterComponentType<PlayerController>("PlayerController");
@@ -167,6 +170,9 @@ public partial class ShooterGame : Game
         // Add HUD component to player
         var hud = playerEntity.AddComponent<Gameplay.Components.HUD>();
 
+        // Add GameFlowManager to player (for game state management)
+        _gameFlowManager = playerEntity.AddComponent<Gameplay.Components.GameFlowManager>();
+
         scene.AddEntity(playerEntity);
 
         // Initialize camera AFTER entity is added and components are initialized
@@ -184,27 +190,8 @@ public partial class ShooterGame : Game
 
         // Player setup complete
 
-        // Create Ground Plane (large flat box)
-        var groundEntity = new Core.Entities.Entity("Ground");
-        var groundTransform = groundEntity.AddComponent<Core.Components.Transform3D>();
-        groundTransform.Position = new System.Numerics.Vector3(0, -1, 0);
-        groundTransform.LocalScale = new System.Numerics.Vector3(20, 0.5f, 20); // Wide and flat
-        var groundRenderer = groundEntity.AddComponent<Core.Components.MeshRenderer>();
-        groundRenderer.SetCube(1.0f, new System.Numerics.Vector4(0.3f, 0.5f, 0.3f, 1.0f)); // Green ground
-        var groundRigid = groundEntity.AddComponent<Core.Components.Rigidbody>();
-        groundRigid.BodyType = Core.Plugins.Physics.BodyType.Static;
-        groundRigid.Shape = new Core.Plugins.Physics.BoxShape(20, 0.5f, 20);
-        scene.AddEntity(groundEntity);
-
-        // Create enemy entities for AI testing (bright red, taller/skinnier)
-        // Position them right next to the weapon for visibility testing
-        CreateEnemy(scene, playerEntity, "Enemy1", new System.Numerics.Vector3(-1, 1.5f, 2), 1.0f, 0.0f, 0.0f);
-        CreateEnemy(scene, playerEntity, "Enemy2", new System.Numerics.Vector3(1, 1.5f, 2), 1.0f, 0.0f, 0.0f);
-
-        // Create pickups for testing
-        CreateHealthPickup(scene, "HealthPickup1", new System.Numerics.Vector3(-5, 1.5f, 0), 25f);
-        CreateHealthPickup(scene, "HealthPickup2", new System.Numerics.Vector3(5, 1.5f, 0), 50f);
-        CreateAmmoPickup(scene, "AmmoPickup1", new System.Numerics.Vector3(0, 1.5f, -5), 30);
+        // Build multi-room level (inspired by Unity's Room_01, Room_02, Room_03 structure)
+        BuildMultiRoomLevel(scene, playerEntity);
 
         // Create pickup system
         _pickupSystem = new Gameplay.Systems.PickupSystem(playerEntity);
@@ -216,6 +203,124 @@ public partial class ShooterGame : Game
         var activeSceneField = typeof(SceneManager).GetField("_activeScene",
             System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
         activeSceneField?.SetValue(_sceneManager, scene);
+    }
+
+
+    /// <summary>
+    /// Build a multi-room dungeon level inspired by Unity's Room_01, Room_02, Room_03 structure.
+    /// Creates 3 connected rooms with walls, floors, doorways, enemies, and pickups.
+    /// </summary>
+    private void BuildMultiRoomLevel(Core.Scenes.Scene scene, Core.Entities.Entity playerEntity)
+    {
+        // Colors for visual distinction
+        var floorColor = new System.Numerics.Vector4(0.3f, 0.4f, 0.5f, 1.0f);   // Bluish-gray floor
+        var wallColor = new System.Numerics.Vector4(0.5f, 0.3f, 0.3f, 1.0f);    // Reddish-brown walls
+        var doorFrameColor = new System.Numerics.Vector4(0.4f, 0.4f, 0.4f, 1.0f); // Dark gray doorframes
+
+        // ROOM 01 - Starting room (6x6 units, similar to Unity's Floor_6x6)
+        // Player starts here at (0, 2, 10)
+        CreateFloor(scene, "Room01_Floor", new System.Numerics.Vector3(0, -1, 0), 6f, 6f, floorColor);
+
+        // Room 01 walls (4 sides, with opening on north side)
+        CreateWall(scene, "Room01_Wall_South", new System.Numerics.Vector3(0, 1, 3), 6f, 3f, 0.5f, wallColor); // South wall
+        CreateWall(scene, "Room01_Wall_West", new System.Numerics.Vector3(-3, 1, 0), 0.5f, 3f, 6f, wallColor); // West wall
+        CreateWall(scene, "Room01_Wall_East", new System.Numerics.Vector3(3, 1, 0), 0.5f, 3f, 6f, wallColor);  // East wall
+        // North wall split into two pieces with doorway in center
+        CreateWall(scene, "Room01_Wall_North_Left", new System.Numerics.Vector3(-1.75f, 1, -3), 2.5f, 3f, 0.5f, wallColor);
+        CreateWall(scene, "Room01_Wall_North_Right", new System.Numerics.Vector3(1.75f, 1, -3), 2.5f, 3f, 0.5f, wallColor);
+
+        // Room 01 enemies (2 starting enemies close to player)
+        CreateEnemy(scene, playerEntity, "Room01_Enemy1", new System.Numerics.Vector3(-2, 1.5f, 2), 1.0f, 0.0f, 0.0f);
+        CreateEnemy(scene, playerEntity, "Room01_Enemy2", new System.Numerics.Vector3(2, 1.5f, 2), 1.0f, 0.0f, 0.0f);
+
+        // ROOM 02 - Medium room (9x9 units, connected via Opening_01)
+        // Center at (0, 0, -12) so it's north of Room 01
+        CreateFloor(scene, "Room02_Floor", new System.Numerics.Vector3(0, -1, -12), 9f, 9f, floorColor);
+
+        // Room 02 walls
+        CreateWall(scene, "Room02_Wall_South_Left", new System.Numerics.Vector3(-3f, 1, -7.5f), 3f, 3f, 0.5f, wallColor); // South wall left
+        CreateWall(scene, "Room02_Wall_South_Right", new System.Numerics.Vector3(3f, 1, -7.5f), 3f, 3f, 0.5f, wallColor); // South wall right
+        CreateWall(scene, "Room02_Wall_West", new System.Numerics.Vector3(-4.5f, 1, -12), 0.5f, 3f, 9f, wallColor); // West wall
+        CreateWall(scene, "Room02_Wall_East", new System.Numerics.Vector3(4.5f, 1, -12), 0.5f, 3f, 9f, wallColor); // East wall
+        // North wall with opening on east side
+        CreateWall(scene, "Room02_Wall_North_Left", new System.Numerics.Vector3(-2.5f, 1, -16.5f), 4f, 3f, 0.5f, wallColor);
+        CreateWall(scene, "Room02_Wall_North_Center", new System.Numerics.Vector3(2f, 1, -16.5f), 3f, 3f, 0.5f, wallColor);
+
+        // Room 02 enemies (3 enemies spread across the room)
+        CreateEnemy(scene, playerEntity, "Room02_Enemy1", new System.Numerics.Vector3(-2, 1.5f, -10), 1.0f, 0.5f, 0.0f); // Orange
+        CreateEnemy(scene, playerEntity, "Room02_Enemy2", new System.Numerics.Vector3(2, 1.5f, -14), 1.0f, 0.5f, 0.0f);
+        CreateEnemy(scene, playerEntity, "Room02_Enemy3", new System.Numerics.Vector3(0, 1.5f, -12), 1.0f, 0.5f, 0.0f);
+
+        // Room 02 pickups
+        CreateHealthPickup(scene, "Room02_HealthPickup", new System.Numerics.Vector3(-3, 1.5f, -12), 25f);
+
+        // ROOM 03 - Large room (15x15 units, final challenge room)
+        // Center at (12, 0, -28) so it's northeast of Room 02
+        CreateFloor(scene, "Room03_Floor", new System.Numerics.Vector3(12, -1, -28), 15f, 15f, floorColor);
+
+        // Room 03 walls (fully enclosed for final battle)
+        CreateWall(scene, "Room03_Wall_South", new System.Numerics.Vector3(12, 1, -20.5f), 15f, 3f, 0.5f, wallColor);
+        CreateWall(scene, "Room03_Wall_North", new System.Numerics.Vector3(12, 1, -35.5f), 15f, 3f, 0.5f, wallColor);
+        CreateWall(scene, "Room03_Wall_West_Upper", new System.Numerics.Vector3(4.5f, 1, -30), 0.5f, 3f, 7f, wallColor);
+        CreateWall(scene, "Room03_Wall_West_Lower", new System.Numerics.Vector3(4.5f, 1, -24), 0.5f, 3f, 6f, wallColor);
+        CreateWall(scene, "Room03_Wall_East", new System.Numerics.Vector3(19.5f, 1, -28), 0.5f, 3f, 15f, wallColor);
+
+        // Room 03 enemies (5 enemies - harder final room)
+        CreateEnemy(scene, playerEntity, "Room03_Enemy1", new System.Numerics.Vector3(8, 1.5f, -24), 1.0f, 0.0f, 0.0f);
+        CreateEnemy(scene, playerEntity, "Room03_Enemy2", new System.Numerics.Vector3(16, 1.5f, -24), 1.0f, 0.0f, 0.0f);
+        CreateEnemy(scene, playerEntity, "Room03_Enemy3", new System.Numerics.Vector3(8, 1.5f, -32), 1.0f, 0.0f, 0.0f);
+        CreateEnemy(scene, playerEntity, "Room03_Enemy4", new System.Numerics.Vector3(16, 1.5f, -32), 1.0f, 0.0f, 0.0f);
+        CreateEnemy(scene, playerEntity, "Room03_Enemy5", new System.Numerics.Vector3(12, 1.5f, -28), 1.0f, 0.0f, 0.0f); // Center enemy
+
+        // Room 03 pickups (health and ammo for final room)
+        CreateHealthPickup(scene, "Room03_HealthPickup1", new System.Numerics.Vector3(10, 1.5f, -26), 50f);
+        CreateHealthPickup(scene, "Room03_HealthPickup2", new System.Numerics.Vector3(14, 1.5f, -30), 50f);
+        CreateAmmoPickup(scene, "Room03_AmmoPickup", new System.Numerics.Vector3(12, 1.5f, -34), 50);
+
+        Console.WriteLine("[Game] Multi-room level created: Room 01 (6x6), Room 02 (9x9), Room 03 (15x15)");
+        Console.WriteLine("[Game] Total enemies: 10 | Total health pickups: 3 | Total ammo pickups: 1");
+    }
+
+    /// <summary>
+    /// Create a floor plane for a room
+    /// </summary>
+    private void CreateFloor(Core.Scenes.Scene scene, string name, System.Numerics.Vector3 position,
+        float width, float depth, System.Numerics.Vector4 color)
+    {
+        var entity = new Core.Entities.Entity(name);
+        var transform = entity.AddComponent<Core.Components.Transform3D>();
+        transform.Position = position;
+        transform.LocalScale = new System.Numerics.Vector3(width, 0.5f, depth);
+
+        var renderer = entity.AddComponent<Core.Components.MeshRenderer>();
+        renderer.SetCube(1.0f, color);
+
+        var rigidbody = entity.AddComponent<Core.Components.Rigidbody>();
+        rigidbody.BodyType = Core.Plugins.Physics.BodyType.Static;
+        rigidbody.Shape = new Core.Plugins.Physics.BoxShape(width, 0.5f, depth);
+
+        scene.AddEntity(entity);
+    }
+
+    /// <summary>
+    /// Create a wall section
+    /// </summary>
+    private void CreateWall(Core.Scenes.Scene scene, string name, System.Numerics.Vector3 position,
+        float width, float height, float depth, System.Numerics.Vector4 color)
+    {
+        var entity = new Core.Entities.Entity(name);
+        var transform = entity.AddComponent<Core.Components.Transform3D>();
+        transform.Position = position;
+        transform.LocalScale = new System.Numerics.Vector3(width, height, depth);
+
+        var renderer = entity.AddComponent<Core.Components.MeshRenderer>();
+        renderer.SetCube(1.0f, color);
+
+        var rigidbody = entity.AddComponent<Core.Components.Rigidbody>();
+        rigidbody.BodyType = Core.Plugins.Physics.BodyType.Static;
+        rigidbody.Shape = new Core.Plugins.Physics.BoxShape(width, height, depth);
+
+        scene.AddEntity(entity);
     }
 
     /// <summary>
@@ -400,6 +505,10 @@ public partial class ShooterGame : Game
     {
         _spriteBatch = new SpriteBatch(GraphicsDevice);
 
+        // Create 1x1 white texture for pause overlay (reusable)
+        _pauseOverlayTexture = new Texture2D(GraphicsDevice, 1, 1);
+        _pauseOverlayTexture.SetData(new[] { Color.White });
+
         // Load SpriteFont for HUD
         SpriteFont hudFont = Content.Load<SpriteFont>("font");
 
@@ -441,6 +550,13 @@ public partial class ShooterGame : Game
             {
                 hud.LoadContent(GraphicsDevice, _spriteBatch, hudFont);
                 Console.WriteLine("[Game] HUD content loaded");
+            }
+
+            // Load GameFlowManager content (for fade transitions and "You Died" message)
+            if (_gameFlowManager != null && _spriteBatch != null)
+            {
+                _gameFlowManager.LoadContent(GraphicsDevice, _spriteBatch, hudFont);
+                Console.WriteLine("[Game] GameFlowManager content loaded");
             }
 
             // Load and attach weapon model to player's view
@@ -741,20 +857,34 @@ public partial class ShooterGame : Game
         timeService.Update(gameTime);
         inputService.Update();
 
-        // Skip game updates when paused
+        // Skip game updates when paused or during scene transition
         if (_isPaused)
         {
             base.Update(gameTime);
             return;
         }
 
+        // Skip scene updates during fade transitions (but allow GameFlowManager to update for fade animation)
+        if (_gameFlowManager != null && _gameFlowManager.IsTransitioning)
+        {
+            // Only update the GameFlowManager during transitions
+            var coreGameTime = new Core.Components.GameTime(
+                gameTime.TotalGameTime,
+                gameTime.ElapsedGameTime
+            );
+            _gameFlowManager.Update(coreGameTime);
+
+            base.Update(gameTime);
+            return;
+        }
+
         // Update active scene
-        var coreGameTime = new Core.Components.GameTime(
+        var coreGameTime2 = new Core.Components.GameTime(
             gameTime.TotalGameTime,
             gameTime.ElapsedGameTime
         );
 
-        _sceneManager?.Update(coreGameTime);
+        _sceneManager?.Update(coreGameTime2);
 
         // Update pickup system
         if (_pickupSystem != null && _sceneManager?.ActiveScene != null)
@@ -762,7 +892,7 @@ public partial class ShooterGame : Game
             var pickups = _sceneManager.ActiveScene.Entities
                 .SelectMany(e => e.GetComponents<Gameplay.Components.Pickup>())
                 .Where(p => !p.IsCollected);
-            _pickupSystem.Update(coreGameTime, pickups);
+            _pickupSystem.Update(coreGameTime2, pickups);
         }
 
         // Update hit marker timer
@@ -917,6 +1047,12 @@ public partial class ShooterGame : Game
 
         _sceneManager?.Draw(coreGameTime);
 
+        // Draw fade overlay (MUST be last so it's on top of everything)
+        if (_gameFlowManager != null)
+        {
+            _gameFlowManager.Draw(coreGameTime);
+        }
+
         base.Draw(gameTime);
     }
 
@@ -1046,30 +1182,60 @@ public partial class ShooterGame : Game
     /// </summary>
     private void DrawPauseMenu()
     {
-        if (_spriteBatch == null)
+        if (_spriteBatch == null || _pauseOverlayTexture == null)
             return;
 
-        _spriteBatch.Begin();
+        // Use AlphaBlend to ensure proper transparency (not accumulative)
+        _spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend);
 
         int screenWidth = GraphicsDevice.Viewport.Width;
         int screenHeight = GraphicsDevice.Viewport.Height;
 
-        // Draw semi-transparent black overlay
-        var overlayTexture = new Texture2D(GraphicsDevice, 1, 1);
-        overlayTexture.SetData(new[] { Color.Black });
+        // Draw semi-transparent black overlay using persistent texture
         _spriteBatch.Draw(
-            overlayTexture,
+            _pauseOverlayTexture,
             new Rectangle(0, 0, screenWidth, screenHeight),
             Color.Black * 0.7f // 70% opacity
         );
 
-        // Note: For a full pause menu with text, we'd need to load a SpriteFont
-        // For now, we just show the dark overlay as visual feedback that the game is paused
-        // The user can see the mouse cursor appears when paused
+        // Draw pause menu text
+        try
+        {
+            var font = Content.Load<SpriteFont>("font");
+            string pauseTitle = "PAUSED";
+            string resumeText = "Press ESC to Resume";
+
+            var titleSize = font.MeasureString(pauseTitle);
+            var resumeSize = font.MeasureString(resumeText);
+
+            // Draw centered title
+            _spriteBatch.DrawString(
+                font,
+                pauseTitle,
+                new Microsoft.Xna.Framework.Vector2(
+                    screenWidth / 2 - titleSize.X / 2,
+                    screenHeight / 2 - 30
+                ),
+                Color.White
+            );
+
+            // Draw resume instruction
+            _spriteBatch.DrawString(
+                font,
+                resumeText,
+                new Microsoft.Xna.Framework.Vector2(
+                    screenWidth / 2 - resumeSize.X / 2,
+                    screenHeight / 2 + 20
+                ),
+                Color.LightGray
+            );
+        }
+        catch
+        {
+            // Font not loaded, skip text rendering
+        }
 
         _spriteBatch.End();
-
-        overlayTexture.Dispose();
     }
 
     /// <summary>

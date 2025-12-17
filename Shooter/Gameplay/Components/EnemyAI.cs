@@ -187,12 +187,6 @@ public class EnemyAI : EntityComponent
         {
             _health.OnDeath += OnDeath;
         }
-
-        // Reduced logging - only show critical warnings
-        if (_enemyController == null)
-        {
-            Console.WriteLine($"[EnemyAI] WARNING: {Owner?.Name} has no EnemyController");
-        }
     }
 
     /// <summary>
@@ -202,24 +196,24 @@ public class EnemyAI : EntityComponent
     {
         base.Update(gameTime);
 
+        // Don't update AI during scene transitions (death, reload, etc.)
+        if (_target != null)
+        {
+            var gameFlowManager = _target.GetComponent<GameFlowManager>();
+            if (gameFlowManager != null && gameFlowManager.IsTransitioning)
+            {
+                return; // Skip AI updates during fade transitions
+            }
+        }
+
         // Lazy-load target transform if we have a target but no transform cached
         if (_target != null && _targetTransform == null)
         {
             _targetTransform = _target.GetComponent<Transform3D>();
-            if (_targetTransform != null)
-            {
-                Console.WriteLine($"[EnemyAI] {Owner?.Name} successfully loaded target transform");
-            }
         }
 
         if (_transform == null || _target == null || _targetTransform == null)
         {
-            // DEBUG: Log why update is skipped (only once per second to avoid spam)
-            if (_stateTimer == 0f || _stateTimer > 1f)
-            {
-                Console.WriteLine($"[EnemyAI] {Owner?.Name} Update skipped - Transform:{_transform != null}, Target:{_target != null}, TargetTransform:{_targetTransform != null}");
-                _stateTimer = 0.01f; // Reset to avoid immediate re-log
-            }
             return;
         }
 
@@ -261,13 +255,6 @@ public class EnemyAI : EntityComponent
             return;
 
         float distanceToTarget = Vector3.Distance(_transform.Position, _targetTransform.Position);
-
-        // DEBUG: Log detection checks every 2 seconds
-        if (_stateTimer > 2f)
-        {
-            Console.WriteLine($"[EnemyAI] {Owner?.Name} Idle - Distance:{distanceToTarget:F1}, LOS:{_hasLineOfSight}, Range:{_detectionRange}");
-            _stateTimer = 0f;
-        }
 
         // If player is in range and visible, start chasing
         if (distanceToTarget <= _detectionRange && _hasLineOfSight)
@@ -516,8 +503,7 @@ public class EnemyAI : EntityComponent
     /// </summary>
     private void OnStateEnter(AIState state)
     {
-        // DEBUG: Track AI state changes
-        Console.WriteLine($"[EnemyAI] {Owner?.Name} -> {state}");
+        // Could add state entry logic here
     }
 
     /// <summary>
