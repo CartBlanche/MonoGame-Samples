@@ -18,6 +18,26 @@ namespace CardsFramework
     /// </summary>
     public class RiffleShuffleAnimation : ShuffleAnimation
     {
+        // Animation timing ratios (must sum to 1.0)
+        private const float SplitPhaseRatio = 0.2f;
+        private const float CascadePhaseRatio = 0.6f;
+        private const float GatherPhaseRatio = 0.2f;
+
+        // Card display settings
+        private const int MaxVisibleCards = 18;
+        private const int CardDisplayStep = 3; // Show every 3rd card
+        private const float CardDepthSpacing = 0.5f;
+
+        // Cascade animation settings
+        private const float CascadeArcRatio = 0.2f; // Arc up takes 20% of cascade time
+        private const float CascadeDownRatio = 0.3f; // Arc down takes 30% of cascade time
+        private const float CascadeStaggerRatio = 0.7f; // Cards stagger over 70% of cascade phase
+
+        // Randomization ranges
+        private const int FinalPositionRandomX = 8; // ±8 pixels horizontal
+        private const int FinalPositionRandomY = 3; // ±3 pixels vertical
+        private const int FinalOffsetX = 10; // Offset between left/right halves
+
         /// <summary>
         /// How far apart the two halves split (in pixels)
         /// </summary>
@@ -55,18 +75,18 @@ namespace CardsFramework
             Matrix globalTransformation)
         {
             var animatedCards = new List<AnimatedCardsGameComponent>();
-            
-            // Only show a subset of cards for a clear visual effect (every 3rd card)
-            int cardsToShow = Math.Min(18, deck.Count / 3); // Show ~18 cards max
+
+            // Only show a subset of cards for a clear visual effect
+            int cardsToShow = Math.Min(MaxVisibleCards, deck.Count / CardDisplayStep);
             int step = deck.Count / cardsToShow;
-            
+
             // Split into two halves
             int halfPoint = cardsToShow / 2;
-            
+
             // Time calculations for animation phases
-            TimeSpan splitDuration = TimeSpan.FromMilliseconds(Duration.TotalMilliseconds * 0.2);
-            TimeSpan cascadeDuration = TimeSpan.FromMilliseconds(Duration.TotalMilliseconds * 0.6);
-            TimeSpan gatherDuration = TimeSpan.FromMilliseconds(Duration.TotalMilliseconds * 0.2);
+            TimeSpan splitDuration = TimeSpan.FromMilliseconds(Duration.TotalMilliseconds * SplitPhaseRatio);
+            TimeSpan cascadeDuration = TimeSpan.FromMilliseconds(Duration.TotalMilliseconds * CascadePhaseRatio);
+            TimeSpan gatherDuration = TimeSpan.FromMilliseconds(Duration.TotalMilliseconds * GatherPhaseRatio);
 
             for (int i = 0; i < cardsToShow; i++)
             {
@@ -79,8 +99,8 @@ namespace CardsFramework
                 int totalInHalf = halfPoint;
                 
                 // Create card component with slight vertical offset for depth
-                float depthOffset = i * 0.5f;
-                var cardComponent = CreateCardComponent(deck[deckIndex], spriteBatch, globalTransformation, 
+                float depthOffset = i * CardDepthSpacing;
+                var cardComponent = CreateCardComponent(deck[deckIndex], spriteBatch, globalTransformation,
                     Position + new Vector2(0, depthOffset), true);
                 animatedCards.Add(cardComponent);
 
@@ -88,7 +108,7 @@ namespace CardsFramework
                 Vector2 splitPosition = Position + new Vector2(
                     isLeftHalf ? -SplitDistance : SplitDistance,
                     depthOffset);
-                
+
                 AddTransition(
                     cardComponent,
                     splitPosition,
@@ -98,31 +118,31 @@ namespace CardsFramework
                 // Phase 2: Cascade/riffle together with visible arc
                 // Stagger the cascade timing so cards drop one by one
                 double cascadeProgress = (double)cardIndexInHalf / totalInHalf;
-                TimeSpan cascadeDelay = splitDuration + 
-                    TimeSpan.FromMilliseconds(cascadeDuration.TotalMilliseconds * cascadeProgress * 0.7);
-                
+                TimeSpan cascadeDelay = splitDuration +
+                    TimeSpan.FromMilliseconds(cascadeDuration.TotalMilliseconds * cascadeProgress * CascadeStaggerRatio);
+
                 // Create a high arc path for visibility
                 Vector2 midPoint = Position + new Vector2(
                     isLeftHalf ? -SplitDistance / 2 : SplitDistance / 2,
                     -CascadeHeight);
-                
+
                 Vector2 finalPosition = Position + new Vector2(
-                    (isLeftHalf ? -10 : 10) + Random.Next(-8, 8), // Slight spread
-                    depthOffset + Random.Next(-3, 3));
+                    (isLeftHalf ? -FinalOffsetX : FinalOffsetX) + Random.Next(-FinalPositionRandomX, FinalPositionRandomX),
+                    depthOffset + Random.Next(-FinalPositionRandomY, FinalPositionRandomY));
 
                 // Arc up
                 AddTransition(
                     cardComponent,
                     midPoint,
                     cascadeDelay,
-                    TimeSpan.FromMilliseconds(cascadeDuration.TotalMilliseconds * 0.2));
-                
+                    TimeSpan.FromMilliseconds(cascadeDuration.TotalMilliseconds * CascadeArcRatio));
+
                 // Arc down to center
                 AddTransition(
                     cardComponent,
                     finalPosition,
-                    cascadeDelay + TimeSpan.FromMilliseconds(cascadeDuration.TotalMilliseconds * 0.2),
-                    TimeSpan.FromMilliseconds(cascadeDuration.TotalMilliseconds * 0.3));
+                    cascadeDelay + TimeSpan.FromMilliseconds(cascadeDuration.TotalMilliseconds * CascadeArcRatio),
+                    TimeSpan.FromMilliseconds(cascadeDuration.TotalMilliseconds * CascadeDownRatio));
 
                 // Phase 3: Gather into neat pile
                 TimeSpan gatherDelay = splitDuration + cascadeDuration;

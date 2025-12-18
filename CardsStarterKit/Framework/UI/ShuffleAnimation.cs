@@ -85,8 +85,8 @@ namespace CardsFramework
         /// Helper method to create a standard card component
         /// </summary>
         protected AnimatedCardsGameComponent CreateCardComponent(
-            TraditionalCard card, 
-            SpriteBatch spriteBatch, 
+            TraditionalCard card,
+            SpriteBatch spriteBatch,
             Matrix globalTransformation,
             Vector2 startPosition,
             bool faceDown = true)
@@ -95,7 +95,8 @@ namespace CardsFramework
             {
                 CurrentPosition = startPosition,
                 IsFaceDown = faceDown,
-                Visible = true
+                Visible = true,
+                UseManagedBatch = true  // Shuffle animations use managed batching
             };
             return cardComponent;
         }
@@ -111,7 +112,7 @@ namespace CardsFramework
         {
             var transition = new TransitionGameComponentAnimation(card.CurrentPosition, destination)
             {
-                StartTime = DateTime.Now + startDelay,
+                StartDelay = startDelay,
                 Duration = duration
             };
             card.AddAnimation(transition);
@@ -129,7 +130,7 @@ namespace CardsFramework
         {
             var scale = new ScaleGameComponentAnimation(startScale, endScale)
             {
-                StartTime = DateTime.Now + startDelay,
+                StartDelay = startDelay,
                 Duration = duration
             };
             card.AddAnimation(scale);

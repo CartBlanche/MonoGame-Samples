@@ -300,6 +300,9 @@ namespace Blackjack
         /// this method.</param>
         public void Update(GameTime gameTime)
         {
+            // Track total game time for animation timing
+            currentGameTime += gameTime.ElapsedGameTime;
+
             switch (State)
             {
                 case BlackjackGameState.Shuffling:
@@ -776,7 +779,7 @@ namespace Blackjack
                             card = dealer.DealCardToHand(players[playerIndex].Hand);
 
                             AddDealAnimation(card, animatedHands[playerIndex], true, DealDuration,
-                                DateTime.Now + TimeSpan.FromSeconds(
+                                TimeSpan.FromSeconds(
                                 DealDuration.TotalSeconds * (dealIndex * players.Count + playerIndex)));
 
                             // Broadcast card dealt in network games (host only)
@@ -789,7 +792,7 @@ namespace Blackjack
                     // Deal a card to the dealer
                     card = dealer.DealCardToHand(dealerPlayer.Hand);
                     bool isHoleCard = (dealIndex == 0); // First dealer card is the hole card
-                    AddDealAnimation(card, dealerHandComponent, isHoleCard, DealDuration, DateTime.Now);
+                    AddDealAnimation(card, dealerHandComponent, isHoleCard, DealDuration, TimeSpan.Zero);
 
                     // Broadcast dealer card in network games (host only)
                     if (IsNetworkGame && IsHost)
@@ -851,14 +854,13 @@ namespace Blackjack
         /// Display an animation when a card is dealt.
         /// </summary>
         /// <param name="card">The card being dealt.</param>
-        /// <param name="animatedHand">The animated hand into which the card 
+        /// <param name="animatedHand">The animated hand into which the card
         /// is dealt.</param>
         /// <param name="flipCard">Should the card be flipped after dealing it.</param>
         /// <param name="duration">The animations desired duration.</param>
-        /// <param name="startTime">The time at which the animation should 
-        /// start.</param>
+        /// <param name="startDelay">The delay before the animation should start.</param>
         public void AddDealAnimation(TraditionalCard card, AnimatedHandGameComponent
-            animatedHand, bool flipCard, TimeSpan duration, DateTime startTime)
+            animatedHand, bool flipCard, TimeSpan duration, TimeSpan startDelay)
         {
             // Safety check: if animatedHand is null, we can't create animations
             if (animatedHand == null)
@@ -883,7 +885,7 @@ namespace Blackjack
                 animatedHand.CurrentPosition +
                 animatedHand.GetCardRelativePosition(cardLocationInHand))
             {
-                StartTime = startTime,
+                StartDelay = startDelay,
                 PerformBeforeStart = ShowComponent,
                 PerformBeforSartArgs = cardComponent,
                 PerformWhenDone = PlayDealSound
@@ -900,7 +902,7 @@ namespace Blackjack
                 {
                     IsFromFaceDownToFaceUp = true,
                     Duration = duration,
-                    StartTime = startTime + duration,
+                    StartDelay = startDelay + duration,
                     PerformWhenDone = PlayFlipSound
                 });
             }
@@ -989,8 +991,7 @@ namespace Blackjack
             // Add a scale effect animation
             animationComponent.AddAnimation(new ScaleGameComponentAnimation(2.0f, 1.0f)
             {
-                StartTime =
-                    DateTime.Now + estimatedTimeToCompleteAnimations,
+                StartDelay = estimatedTimeToCompleteAnimations,
                 Duration = TimeSpan.FromSeconds(1f * AnimationSpeedMultiplier),
                 PerformBeforeStart = ShowComponent,
                 PerformBeforSartArgs = animationComponent
@@ -1028,7 +1029,7 @@ namespace Blackjack
             cardComponent.AddAnimation(new FlipGameComponentAnimation()
             {
                 Duration = TimeSpan.FromSeconds(0.5 * AnimationSpeedMultiplier),
-                StartTime = DateTime.Now
+                StartDelay = TimeSpan.Zero
             });
         }
 
@@ -1186,7 +1187,7 @@ namespace Blackjack
             {
                 TraditionalCard card = dealer.DealCardToHand(dealerPlayer.Hand);
                 AddDealAnimation(card, dealerHandComponent, true, DealDuration,
-                    DateTime.Now.AddMilliseconds(1000 * AnimationSpeedMultiplier * (cardsDealed + 1)));
+                    TimeSpan.FromMilliseconds(1000 * AnimationSpeedMultiplier * (cardsDealed + 1)));
                 cardsDealed++;
                 dealerPlayer.CalculateValues();
                 dealerValue = dealerPlayer.FirstValue;
@@ -1231,7 +1232,7 @@ namespace Blackjack
 
             // Reset card dealing sequence tracking for network synchronization
             cardSequenceCounter = 0;
-            dealStartTime = DateTime.MinValue;
+            lastDealTime = TimeSpan.FromSeconds(-10);
 
             // Generate shuffle seed (host only) or wait for it (clients)
             if (IsNetworkGame && IsHost)
@@ -1623,7 +1624,7 @@ namespace Blackjack
             AnimatedGameComponentAnimation animation = new TransitionGameComponentAnimation(sourcePosition,
                     targetPosition)
             {
-                StartTime = DateTime.Now,
+                StartDelay = TimeSpan.Zero,
                 Duration = TimeSpan.FromSeconds(0.5f)
             };
 
@@ -1647,7 +1648,7 @@ namespace Blackjack
             // Deal an additional cards to each of the new hands
             TraditionalCard card = dealer.DealCardToHand(player.Hand);
             AddDealAnimation(card, animatedHands[playerIndex], true, DealDuration,
-                DateTime.Now + animation.EstimatedTimeForAnimationCompletion);
+                animation.EstimatedTimeForAnimationCompletion);
 
             // Broadcast first card dealt in network games
             if (IsNetworkGame && IsHost)
@@ -1657,7 +1658,7 @@ namespace Blackjack
 
             card = dealer.DealCardToHand(player.SecondHand);
             AddDealAnimation(card, animatedSecondHands[playerIndex], true, DealDuration,
-                DateTime.Now + animation.EstimatedTimeForAnimationCompletion +
+                animation.EstimatedTimeForAnimationCompletion +
                 DealDuration);
 
             // Broadcast second card dealt in network games
@@ -1742,7 +1743,7 @@ namespace Blackjack
                 case HandTypes.First:
                     card = dealer.DealCardToHand(player.Hand);
                     AddDealAnimation(card, animatedHands[playerIndex], true,
-                        DealDuration, DateTime.Now);
+                        DealDuration, TimeSpan.Zero);
 
                     // Broadcast card dealt in network games
                     if (IsNetworkGame && IsHost)
@@ -1753,7 +1754,7 @@ namespace Blackjack
                 case HandTypes.Second:
                     card = dealer.DealCardToHand(player.SecondHand);
                     AddDealAnimation(card, animatedSecondHands[playerIndex], true,
-                        DealDuration, DateTime.Now);
+                        DealDuration, TimeSpan.Zero);
 
                     // Broadcast card dealt in network games
                     if (IsNetworkGame && IsHost)
@@ -1815,7 +1816,7 @@ namespace Blackjack
                 case HandTypes.First:
                     card = dealer.DealCardToHand(player.Hand);
                     AddDealAnimation(card, animatedHands[playerIndex], true,
-                        DealDuration, DateTime.Now);
+                        DealDuration, TimeSpan.Zero);
 
                     // Broadcast card dealt in network games
                     if (IsNetworkGame && IsHost)
@@ -1826,7 +1827,7 @@ namespace Blackjack
                 case HandTypes.Second:
                     card = dealer.DealCardToHand(player.SecondHand);
                     AddDealAnimation(card, animatedSecondHands[playerIndex], true,
-                        DealDuration, DateTime.Now);
+                        DealDuration, TimeSpan.Zero);
 
                     // Broadcast card dealt in network games
                     if (IsNetworkGame && IsHost)
@@ -1967,7 +1968,7 @@ namespace Blackjack
             AnimatedGameComponentAnimation animation = new TransitionGameComponentAnimation(sourcePosition,
                     targetPosition)
             {
-                StartTime = DateTime.Now,
+                StartDelay = TimeSpan.Zero,
                 Duration = TimeSpan.FromSeconds(0.5f)
             };
 
@@ -1991,7 +1992,7 @@ namespace Blackjack
             // Deal an additional card to each of the new hands
             TraditionalCard card = dealer.DealCardToHand(player.Hand);
             AddDealAnimation(card, animatedHands[playerIndex], true, DealDuration,
-                DateTime.Now + animation.EstimatedTimeForAnimationCompletion);
+                animation.EstimatedTimeForAnimationCompletion);
 
             // Broadcast first card dealt in network games
             if (IsNetworkGame && IsHost)
@@ -2001,7 +2002,7 @@ namespace Blackjack
 
             card = dealer.DealCardToHand(player.SecondHand);
             AddDealAnimation(card, animatedSecondHands[playerIndex], true, DealDuration,
-                DateTime.Now + animation.EstimatedTimeForAnimationCompletion +
+                animation.EstimatedTimeForAnimationCompletion +
                 DealDuration);
 
             // Broadcast second card dealt in network games
@@ -2090,7 +2091,7 @@ namespace Blackjack
                 AnimationCycles = 1,
                 PerformBeforeStart = ShowComponent,
                 PerformBeforSartArgs = passComponent,
-                StartTime = DateTime.Now,
+                StartDelay = TimeSpan.Zero,
                 Duration = TimeSpan.FromSeconds(1),
                 PerformWhenDone = performWhenDone
             });
@@ -2623,7 +2624,8 @@ namespace Blackjack
         /// </summary>
         // Track the sequence of cards dealt for proper animation timing on clients
         private int cardSequenceCounter = 0;
-        private DateTime dealStartTime = DateTime.MinValue;
+        private TimeSpan lastDealTime = TimeSpan.FromSeconds(-10);
+        private TimeSpan currentGameTime = TimeSpan.Zero;
 
         public void HandleReceivedCardDealt(TraditionalCard card, byte playerIndex, bool faceDown, HandTypes handType)
         {
@@ -2631,15 +2633,15 @@ namespace Blackjack
             // The deck is already synchronized via the shuffle seed, so cards are dealt in the same order
 
             // Reset sequence counter at the start of a new deal sequence
-            if (dealStartTime == DateTime.MinValue || (DateTime.Now - dealStartTime).TotalSeconds > 5)
+            if ((currentGameTime - lastDealTime).TotalSeconds > 5)
             {
-                dealStartTime = DateTime.Now;
+                lastDealTime = currentGameTime;
                 cardSequenceCounter = 0;
             }
 
-            // Calculate staggered start time based on card sequence
+            // Calculate staggered delay based on card sequence
             // This matches the timing logic in Deal() method
-            DateTime startTime = dealStartTime + TimeSpan.FromSeconds(DealDuration.TotalSeconds * cardSequenceCounter);
+            TimeSpan startDelay = TimeSpan.FromSeconds(DealDuration.TotalSeconds * cardSequenceCounter);
             cardSequenceCounter++;
 
             if (playerIndex == 255)
@@ -2649,7 +2651,7 @@ namespace Blackjack
 
                 if (dealerHandComponent != null)
                 {
-                    AddDealAnimation(dealtCard, dealerHandComponent, faceDown, DealDuration, startTime);
+                    AddDealAnimation(dealtCard, dealerHandComponent, faceDown, DealDuration, startDelay);
                 }
                 else
                 {
@@ -2667,7 +2669,7 @@ namespace Blackjack
                 // Only add animation if the animated hand component exists for this player
                 if (animatedHands != null && playerIndex < animatedHands.Length && animatedHands[playerIndex] != null)
                 {
-                    AddDealAnimation(dealtCard, animatedHands[playerIndex], !faceDown, DealDuration, startTime);
+                    AddDealAnimation(dealtCard, animatedHands[playerIndex], !faceDown, DealDuration, startDelay);
                 }
                 else
                 {
@@ -2853,7 +2855,7 @@ namespace Blackjack
 
             var animation = new TransitionGameComponentAnimation(sourcePosition, targetPosition)
             {
-                StartTime = DateTime.Now,
+                StartDelay = TimeSpan.Zero,
                 Duration = TimeSpan.FromSeconds(0.5f)
             };
 

@@ -66,11 +66,12 @@ namespace CardsFramework
             
             // Create all animated cards
             animatedCards = shuffleAnimation.CreateAnimatedCards(deck, spriteBatch, globalTransformation);
-            
-            // Add all card components to the game
+
+            // Initialize cards but don't add to Game.Components
+            // (we'll update and draw them manually for better batching)
             foreach (var card in animatedCards)
             {
-                Game.Components.Add(card);
+                card.Initialize();
             }
             
             // Make component visible and trigger start callback
@@ -91,11 +92,44 @@ namespace CardsFramework
 
             elapsedTime += gameTime.ElapsedGameTime;
 
+            // Update all animated cards
+            if (animatedCards != null)
+            {
+                foreach (var card in animatedCards)
+                {
+                    if (card.Enabled)
+                        card.Update(gameTime);
+                }
+            }
+
             // Check if animation duration has elapsed
             if (elapsedTime >= shuffleAnimation.Duration && !animationCompleted)
             {
                 CompleteAnimation();
             }
+        }
+
+        /// <summary>
+        /// Draw all cards in a single batched draw call
+        /// </summary>
+        public override void Draw(GameTime gameTime)
+        {
+            base.Draw(gameTime);
+
+            if (!animationStarted || animatedCards == null)
+                return;
+
+            // Begin batch once for all cards
+            spriteBatch.Begin(SpriteSortMode.Deferred, null, null, null, null, null, globalTransformation);
+
+            // Draw all visible cards
+            foreach (var card in animatedCards)
+            {
+                if (card.Visible)
+                    card.Draw(gameTime);
+            }
+
+            spriteBatch.End();
         }
 
         /// <summary>
@@ -132,19 +166,11 @@ namespace CardsFramework
         {
             if (animatedCards != null)
             {
-                // First make all cards invisible
+                // Dispose all cards
                 foreach (var card in animatedCards)
                 {
                     card.Visible = false;
-                }
-
-                // Then remove them from the game
-                foreach (var card in animatedCards)
-                {
-                    if (Game.Components.Contains(card))
-                    {
-                        Game.Components.Remove(card);
-                    }
+                    card.Dispose();
                 }
                 animatedCards.Clear();
             }

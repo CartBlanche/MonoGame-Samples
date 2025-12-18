@@ -48,7 +48,7 @@ namespace CardsFramework
                 }
             }
         }
-        public DateTime StartTime { get; set; }
+        public TimeSpan StartDelay { get; set; }
         public TimeSpan Duration { get; set; }
 
         /// <summary>
@@ -64,7 +64,7 @@ namespace CardsFramework
                 }
                 else
                 {
-                    return StartTime - DateTime.Now + Duration;
+                    return StartDelay + Duration;
                 }
             }
         }
@@ -74,6 +74,7 @@ namespace CardsFramework
         private bool isDone = false;
 
         private bool isStarted = false;
+        private TimeSpan totalElapsed = TimeSpan.Zero;
 
         /// <summary>
         /// Initializes a new instance of the class. Be default, an animation starts
@@ -81,7 +82,7 @@ namespace CardsFramework
         /// </summary>
         public AnimatedGameComponentAnimation()
         {
-            StartTime = DateTime.Now;
+            StartDelay = TimeSpan.Zero;
             Duration = TimeSpan.FromMilliseconds(150);
         }
 
@@ -113,14 +114,13 @@ namespace CardsFramework
         {
             if (!isStarted)
             {
-                if (StartTime <= DateTime.Now)
+                if (totalElapsed >= StartDelay)
                 {
                     if (PerformBeforeStart != null)
                     {
                         PerformBeforeStart(PerformBeforSartArgs);
                         PerformBeforeStart = null;
                     }
-                    StartTime = DateTime.Now;
                     isStarted = true;
                 }
             }
@@ -135,6 +135,7 @@ namespace CardsFramework
         /// elapsed time.</param>
         internal void AccumulateElapsedTime(TimeSpan elapsedTime)
         {
+            totalElapsed += elapsedTime;
             if (isStarted)
             {
                 Elapsed += elapsedTime;

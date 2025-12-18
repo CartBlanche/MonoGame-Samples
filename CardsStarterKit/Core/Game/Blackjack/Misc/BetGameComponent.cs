@@ -868,7 +868,6 @@ namespace Blackjack
 
             // Animate each winning chip from dealer to bet circle
             TimeSpan delayBetweenChips = TimeSpan.FromMilliseconds(100);
-            DateTime startTime = DateTime.Now;
 
             for (int i = 0; i < winningChips.Count; i++)
             {
@@ -879,7 +878,7 @@ namespace Blackjack
                     dealerPosition, playerBetPosition)
                 {
                     Duration = TimeSpan.FromSeconds(0.6),
-                    StartTime = startTime + (delayBetweenChips * i),
+                    StartDelay = delayBetweenChips * i,
                     PerformBeforeStart = ShowComponent,
                     PerformBeforSartArgs = chip,
                     PerformWhenDone = isLastChip ? (object obj) =>
@@ -911,7 +910,6 @@ namespace Blackjack
 
             // Animate chips one by one back to their selector positions
             TimeSpan delayBetweenChips = TimeSpan.FromMilliseconds(100);
-            DateTime startTime = DateTime.Now;
 
             for (int i = 0; i < chips.Count; i++)
             {
@@ -930,7 +928,7 @@ namespace Blackjack
                         chip.CurrentPosition, positions[chipIndex])
                     {
                         Duration = TimeSpan.FromSeconds(0.5),
-                        StartTime = startTime + (delayBetweenChips * i),
+                        StartDelay = delayBetweenChips * i,
                         PerformWhenDone = isLastChip ? (object obj) =>
                         {
                             PlayBetSound(obj);
@@ -954,7 +952,6 @@ namespace Blackjack
 
             // Animate chips one by one back to their selector positions
             TimeSpan delayBetweenChips = TimeSpan.FromMilliseconds(100);
-            DateTime startTime = DateTime.Now;
 
             for (int i = 0; i < chips.Count; i++)
             {
@@ -973,7 +970,7 @@ namespace Blackjack
                         chip.CurrentPosition, positions[chipIndex])
                     {
                         Duration = TimeSpan.FromSeconds(0.5),
-                        StartTime = startTime + (delayBetweenChips * i),
+                        StartDelay = delayBetweenChips * i,
                         PerformWhenDone = isLastChip ? (object obj) =>
                         {
                             PlayBetSound(obj);
@@ -1002,7 +999,6 @@ namespace Blackjack
 
             // Animate chips one by one to name text
             TimeSpan delayBetweenChips = TimeSpan.FromMilliseconds(100);
-            DateTime startTime = DateTime.Now;
 
             for (int i = 0; i < chips.Count; i++)
             {
@@ -1014,7 +1010,7 @@ namespace Blackjack
                     chip.CurrentPosition, targetPosition)
                 {
                     Duration = TimeSpan.FromSeconds(0.5),
-                    StartTime = startTime + (delayBetweenChips * i),
+                    StartDelay = delayBetweenChips * i,
                     PerformWhenDone = (object obj) =>
                     {
                         PlayBetSound(obj);
@@ -1035,7 +1031,7 @@ namespace Blackjack
                 chip.AddAnimation(new ScaleGameComponentAnimation(1.0f, 0.0f)
                 {
                     Duration = TimeSpan.FromSeconds(0.5),
-                    StartTime = startTime + (delayBetweenChips * i)
+                    StartDelay = delayBetweenChips * i
                 });
             }
         }
@@ -1062,7 +1058,6 @@ namespace Blackjack
 
             // Animate all chips simultaneously to dealer
             TimeSpan delayBetweenChips = TimeSpan.FromMilliseconds(50);
-            DateTime startTime = DateTime.Now;
 
             for (int i = 0; i < chips.Count; i++)
             {
@@ -1073,7 +1068,7 @@ namespace Blackjack
                     chip.CurrentPosition, dealerPosition)
                 {
                     Duration = TimeSpan.FromSeconds(0.6),
-                    StartTime = startTime + (delayBetweenChips * i),
+                    StartDelay = delayBetweenChips * i,
                     PerformWhenDone = isLastChip ? (object obj) =>
                     {
                         // Deduct loss from balance when last chip reaches dealer (lossAmount is negative)
@@ -1257,7 +1252,7 @@ namespace Blackjack
                 PerformWhenDone = ShowChipAmountAndPlayBetSound,
                 PerformWhenDoneArgs = new object[] { chipComponent, amount },
                 Duration = TimeSpan.FromSeconds(1),
-                StartTime = DateTime.Now
+                StartDelay = TimeSpan.Zero
             });
 
             // Add flip animation

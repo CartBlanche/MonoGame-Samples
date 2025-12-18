@@ -24,6 +24,14 @@ namespace CardsFramework
 
         private SpriteBatch spriteBatch;
         private Matrix globalTransformation;
+        private Texture2D cachedFaceUpTexture;
+        private Texture2D cachedFaceDownTexture;
+
+        /// <summary>
+        /// When true, assumes SpriteBatch.Begin() has already been called by parent.
+        /// When false, manages its own Begin/End (legacy behavior for Game.Components).
+        /// </summary>
+        public bool UseManagedBatch { get; set; } = false;
 
         /// <summary>
         /// Initializes a new instance of the class.
@@ -46,9 +54,19 @@ namespace CardsFramework
         {
             base.Update(gameTime);
 
+            // Cache both face-up and face-down textures on first access
+            // Then switch between them based on IsFaceDown state
+            if (cachedFaceDownTexture == null)
+            {
+                cachedFaceDownTexture = CardGame.cardsAssets["CardBack_" + CardGame.Theme];
+            }
+            if (cachedFaceUpTexture == null)
+            {
+                cachedFaceUpTexture = CardGame.cardsAssets[UIUtility.GetCardAssetName(Card)];
+            }
 
-            CurrentFrame = IsFaceDown ? CardGame.cardsAssets["CardBack_" + CardGame.Theme] :
-                CardGame.cardsAssets[UIUtility.GetCardAssetName(Card)];
+            // Use the appropriate cached texture based on current state
+            CurrentFrame = IsFaceDown ? cachedFaceDownTexture : cachedFaceUpTexture;
         }
 
         /// <summary>
@@ -57,27 +75,29 @@ namespace CardsFramework
         /// <param name="gameTime">The game time.</param>
         public override void Draw(GameTime gameTime)
         {
-            spriteBatch.Begin(SpriteSortMode.Deferred, null, null, null, null, null, globalTransformation);
-
-            // Draw the current at the designated destination, or at the initial 
-            // position if a destination has not been set
-            if (CurrentFrame != null)
+            if (UseManagedBatch)
             {
-                if (CurrentDestination.HasValue)
+                // Optimized path: Parent manages the batch (e.g., ShuffleAnimationComponent)
+                // Draw directly without Begin/End for better performance
+                if (CurrentFrame != null)
                 {
-                    spriteBatch.Draw(CurrentFrame,
-                        CurrentDestination.Value, Color.White);
-                }
-                else
-                {
-                    spriteBatch.Draw(CurrentFrame,
-                        CurrentPosition, Color.White);
+                    if (CurrentDestination.HasValue)
+                    {
+                        spriteBatch.Draw(CurrentFrame,
+                            CurrentDestination.Value, Color.White);
+                    }
+                    else
+                    {
+                        spriteBatch.Draw(CurrentFrame,
+                            CurrentPosition, Color.White);
+                    }
                 }
             }
-
-            spriteBatch.End();
-
-            base.Draw(gameTime);
+            else
+            {
+                // Legacy path: Manage our own batch (for Game.Components usage)
+                base.Draw(gameTime);
+            }
         }
     }
 }
