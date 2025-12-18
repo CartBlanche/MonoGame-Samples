@@ -776,7 +776,7 @@ namespace Blackjack
         /// <param name="callback">Callback to invoke when all animations complete.</param>
         public void AnimateWinningChips(int playerIndex, float winAmount, Action callback = null)
         {
-            if (!playerChipComponents.ContainsKey(playerIndex) || playerChipComponents[playerIndex].Count == 0)
+            if (!playerChipComponents.TryGetValue(playerIndex, out var chips) || chips.Count == 0)
             {
                 callback?.Invoke();
                 return;
@@ -884,13 +884,11 @@ namespace Blackjack
         /// </summary>
         private void AnimateAllChipsToSelector(int playerIndex, Action callback = null)
         {
-            if (!playerChipComponents.ContainsKey(playerIndex) || playerChipComponents[playerIndex].Count == 0)
+            if (!playerChipComponents.TryGetValue(playerIndex, out var chips) || chips.Count == 0)
             {
                 callback?.Invoke();
                 return;
             }
-
-            var chips = playerChipComponents[playerIndex];
 
             // Animate chips one by one back to their selector positions
             TimeSpan delayBetweenChips = TimeSpan.FromMilliseconds(100);
@@ -932,7 +930,14 @@ namespace Blackjack
         private void AnimateChipsToSelector(int playerIndex, float winAmount, Action callback = null)
         {
             BlackjackPlayer player = (BlackjackPlayer)players[playerIndex];
-            var chips = playerChipComponents[playerIndex];
+
+            // Check if player has any chips to animate
+            if (!playerChipComponents.TryGetValue(playerIndex, out var chips) || chips.Count == 0)
+            {
+                // No chips to animate, just invoke callback
+                callback?.Invoke();
+                return;
+            }
 
             // Animate chips one by one back to their selector positions
             TimeSpan delayBetweenChips = TimeSpan.FromMilliseconds(100);
@@ -977,7 +982,12 @@ namespace Blackjack
         private void AnimateChipsToNameText(int playerIndex, float winAmount, Action callback = null)
         {
             BlackjackPlayer player = (BlackjackPlayer)players[playerIndex];
-            var chips = playerChipComponents[playerIndex];
+
+            if (!playerChipComponents.TryGetValue(playerIndex, out var chips) || chips.Count == 0)
+            {
+                callback?.Invoke();
+                return;
+            }
 
             Vector2 targetPosition = GetPlayerNameTextPosition(playerIndex);
 
@@ -1028,14 +1038,13 @@ namespace Blackjack
         /// <param name="callback">Callback to invoke when all animations complete.</param>
         public void AnimateLosingChips(int playerIndex, float lossAmount, Action callback = null)
         {
-            if (!playerChipComponents.ContainsKey(playerIndex) || playerChipComponents[playerIndex].Count == 0)
+            if (!playerChipComponents.TryGetValue(playerIndex, out var chips) || chips.Count == 0)
             {
                 callback?.Invoke();
                 return;
             }
 
             BlackjackPlayer player = (BlackjackPlayer)players[playerIndex];
-            var chips = playerChipComponents[playerIndex];
 
             // Get dealer position (center top of screen)
             Vector2 dealerPosition = cardGame.GameTable.DealerPosition;
@@ -1106,13 +1115,13 @@ namespace Blackjack
         /// </summary>
         private void CleanupPlayerChips(int playerIndex)
         {
-            if (playerChipComponents.ContainsKey(playerIndex))
+            if (playerChipComponents.TryGetValue(playerIndex, out var chips))
             {
-                foreach (var chip in playerChipComponents[playerIndex])
+                foreach (var chip in chips)
                 {
                     Game.Components.Remove(chip);
                 }
-                playerChipComponents[playerIndex].Clear();
+                chips.Clear();
                 playerChipComponents.Remove(playerIndex);
             }
         }
