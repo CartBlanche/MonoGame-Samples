@@ -132,8 +132,6 @@ namespace Blackjack
         /// <summary>
         /// Handle the input of adding chip on all platform
         /// </summary>
-        /// <param name="mouseState">Mouse input information.</param>
-        /// <param name="inputHelper">Input of Xbox simulated cursor.</param>
         private void HandleInput()
         {
             bool clicked = false;

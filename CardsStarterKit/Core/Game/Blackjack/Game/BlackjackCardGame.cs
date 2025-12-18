@@ -1488,8 +1488,7 @@ namespace Blackjack
                     Game.Components[componentIndex] is BlackjackCardGame ||
                     Game.Components[componentIndex] is BetGameComponent ||
                     Game.Components[componentIndex] is Button ||
-                    Game.Components[componentIndex] is ScreenManager ||
-                    Game.Components[componentIndex] is InputHelper))
+                    Game.Components[componentIndex] is ScreenManager))
                 {
                     if (Game.Components[componentIndex] is AnimatedCardsGameComponent)
                     {
