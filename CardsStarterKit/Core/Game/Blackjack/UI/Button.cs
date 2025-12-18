@@ -20,7 +20,6 @@ namespace Blackjack
 {
     public class Button : AnimatedGameComponent
     {
-        bool isKeyDown = false;
         bool isPressed = false;
         SpriteBatch spriteBatch;
 
@@ -44,8 +43,6 @@ namespace Blackjack
 
         public event EventHandler Click;
         InputState input;
-
-        InputHelper inputHelper;
 
         private Matrix globalTransformation;
 
@@ -95,24 +92,6 @@ namespace Blackjack
             this.globalTransformation = globalTransformation;
         }
 
-        /// <summary>
-        /// Initializes the button.
-        /// </summary>
-        public override void Initialize()
-        {
-            // Get Xbox cursor
-            inputHelper = null;
-            for (int componentIndex = 0; componentIndex < Game.Components.Count; componentIndex++)
-            {
-                if (Game.Components[componentIndex] is InputHelper)
-                {
-                    inputHelper = (InputHelper)Game.Components[componentIndex];
-                    break;
-                }
-            }
-
-            base.Initialize();
-        }
 
         /// <summary>
         /// Loads the content required by the button.
@@ -157,54 +136,62 @@ namespace Blackjack
         /// <param name="inputHelper">Input of Xbox simulated cursor.</param>
         private void HandleInput()
         {
-            bool pressed = false;
-            Vector2 position = Vector2.Zero;
-
-            // Use transformed cursor location for all input types (handles scaling/letterboxing)
-            Vector2 transformedCursorPos = input.CurrentCursorLocation;
+            bool clicked = false;
 
             if (UIUtility.IsDesktop)
             {
-                // Handle mouse input - detect click (press + release)
-                if (input.CurrentMouseState.LeftButton == ButtonState.Pressed)
+                // For desktop, check for a click at the unified cursor position (mouse or gamepad)
+                if (IntersectWith(input.CurrentCursorLocation))
                 {
-                    pressed = true;
-                    position = transformedCursorPos;
-                }
-
-                // Handle button press logic for desktop
-                if (pressed)
-                {
-                    if (!isKeyDown && IntersectWith(position))
+                    PlayerIndex playerIndex;
+                    // A "MenuSelect" can be a gamepad A button, or keyboard Enter/Space.
+                    // We also check for a raw mouse click.
+                    if (input.IsMenuSelect(null, out playerIndex) || input.IsLeftMouseButtonClicked())
                     {
-                        isPressed = true;
-                        isKeyDown = true;
+                        clicked = true;
                     }
                 }
-                else
-                {
-                    if (isPressed && IntersectWith(transformedCursorPos))
-                    {
-                        FireClick();
-                    }
 
-                    isPressed = false;
-                    isKeyDown = false;
-                }
+                // The button's visual "pressed" state is determined by whether the mouse button 
+                // is held down, or if the gamepad 'A' button is held down over the button.
+                isPressed = IntersectWith(input.CurrentCursorLocation) &&
+                            (input.CurrentMouseState.LeftButton == ButtonState.Pressed ||
+                            (input.CurrentGamePadStates.Length > 0 && input.CurrentGamePadStates[0].IsButtonDown(Buttons.A)));
             }
             else if (UIUtility.IsMobile)
             {
-                // Handle touch input with gestures
-                if (input.Gestures.Count > 0 && input.Gestures[0].GestureType == GestureType.Tap)
+                // For mobile, we rely on the simple Tap gesture for the click event.
+                foreach (var gesture in input.Gestures)
                 {
-                    // Use transformed cursor location (already set by InputState)
-                    position = transformedCursorPos;
-
-                    if (IntersectWith(position))
+                    if (gesture.GestureType == GestureType.Tap)
                     {
-                        FireClick();
+                        // Use the gesture's position for the intersection test
+                        if (IntersectWith(input.TransformCursorLocation(gesture.Position)))
+                        {
+                            clicked = true;
+                            // One click is enough per frame.
+                            break;
+                        }
                     }
                 }
+
+                // The visual "pressed" state is determined by whether a finger is currently 
+                // touching the button.
+                isPressed = false;
+                foreach (var touch in input.CurrentTouchState)
+                {
+                    if ((touch.State == TouchLocationState.Pressed || touch.State == TouchLocationState.Moved) &&
+                        IntersectWith(input.TransformCursorLocation(touch.Position)))
+                    {
+                        isPressed = true;
+                        break;
+                    }
+                }
+            }
+
+            if (clicked)
+            {
+                FireClick();
             }
         }
 

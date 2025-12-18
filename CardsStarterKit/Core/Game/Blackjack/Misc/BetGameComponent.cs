@@ -53,7 +53,6 @@ namespace Blackjack
         Dictionary<int, List<AnimatedGameComponent>> playerChipComponents = new Dictionary<int, List<AnimatedGameComponent>>();
         int currentBet = 0;
         InputState input;
-        InputHelper inputHelper;
 
         /// <summary>
         /// Creates a new instance of the <see cref="BetGameComponent"/> class.
@@ -92,87 +91,6 @@ namespace Blackjack
                 secondHandOffset = new Vector2(25, 30);
                 insuranceYPosition = 120;
             }
-        }
-
-
-        /// <summary>
-        /// Initializes the component.
-        /// </summary>
-        public override void Initialize()
-        {
-            // Get xbox cursor
-            inputHelper = null;
-            for (int componentIndex = 0; componentIndex < Game.Components.Count; componentIndex++)
-            {
-                if (Game.Components[componentIndex] is InputHelper)
-                {
-                    inputHelper = (InputHelper)Game.Components[componentIndex];
-                    break;
-                }
-            }
-
-            // Show mouse
-            Game.IsMouseVisible = true;
-            base.Initialize();
-
-            // Calculate chips position for the chip buttons which allow placing the bet
-            Rectangle size = chipsAssets[assetNames[0]].Bounds;
-
-            Rectangle bounds = new Rectangle(0, 0, ScreenManager.BASE_BUFFER_WIDTH, ScreenManager.BASE_BUFFER_HEIGHT);
-
-            int smallPadding = UIConstants.GetSmallPadding(bounds.Width);
-            int chipSpacing = UIConstants.GetChipSpacing(bounds.Height);
-            int mediumPadding = UIConstants.GetMediumPadding(bounds.Height);
-            int buttonWidth = UIConstants.GetButtonWidth(bounds.Width);
-            int buttonHeight = UIConstants.GetButtonHeight(bounds.Height);
-            int buttonSpacing = UIConstants.GetButtonSpacing(bounds.Width);
-
-            // Calculate total width of all chips side by side
-            int totalChipWidth = 0;
-            for (int i = 0; i < assetNames.Length; i++)
-            {
-                totalChipWidth += chipsAssets[assetNames[i]].Bounds.Width;
-            }
-            totalChipWidth += smallPadding * (assetNames.Length - 1); // Spacing between chips
-
-            // Position chips horizontally centered at bottom
-            int startX = (bounds.Width - totalChipWidth) / 2;
-            int chipY = bounds.Bottom - size.Height - smallPadding;
-
-            positions[0] = new Vector2(startX, chipY);
-            for (int chipIndex = 1; chipIndex < chipsAssets.Count; chipIndex++)
-            {
-                int prevChipWidth = chipsAssets[assetNames[chipIndex - 1]].Bounds.Width;
-                positions[chipIndex] = positions[chipIndex - 1] + new Vector2(prevChipWidth + smallPadding, 0);
-            }
-
-            // Calculate button Y position using shared helper for consistency
-            int buttonY = UIConstants.GetGameplayButtonYPosition(size.Height, bounds.Width, bounds.Height);
-
-            // Calculate total width of both buttons side by side
-            int totalButtonWidth = (buttonWidth * 2) + smallPadding;
-            int buttonStartX = (bounds.Width - totalButtonWidth) / 2;
-
-            // Initialize bet button (centered above chips)
-            bet = new Button("ButtonRegular", "ButtonPressed", input, cardGame, spriteBatch, globalTransformation)
-            {
-                Bounds = new Rectangle(buttonStartX, buttonY, buttonWidth, buttonHeight),
-                Font = cardGame.Font,
-                Text = Resources.Deal,
-            };
-            bet.Click += Bet_Click;
-            Game.Components.Add(bet);
-
-            // Initialize clear button (to the right of bet button)
-            clear = new Button("ButtonRegular", "ButtonPressed", input, cardGame, spriteBatch, globalTransformation)
-            {
-                Bounds = new Rectangle(buttonStartX + buttonWidth + smallPadding, buttonY, buttonWidth, buttonHeight),
-                Font = cardGame.Font,
-                Text = Resources.Clear,
-            };
-            clear.Click += Clear_Click;
-            Game.Components.Add(clear);
-            ShowAndEnableButtons(false);
         }
 
         /// <summary>
@@ -239,7 +157,74 @@ namespace Blackjack
             }
             positions = new Vector2[assetNames.Length];
 
+            CreateButtons();
+
             base.LoadContent();
+        }
+
+        private void CreateButtons()
+        {
+            // Show mouse
+            Game.IsMouseVisible = true;
+
+            // Calculate chips position for the chip buttons which allow placing the bet
+            Rectangle size = chipsAssets[assetNames[0]].Bounds;
+
+            Rectangle bounds = new Rectangle(0, 0, ScreenManager.BASE_BUFFER_WIDTH, ScreenManager.BASE_BUFFER_HEIGHT);
+
+            int smallPadding = UIConstants.GetSmallPadding(bounds.Width);
+            int chipSpacing = UIConstants.GetChipSpacing(bounds.Height);
+            int mediumPadding = UIConstants.GetMediumPadding(bounds.Height);
+            int buttonWidth = UIConstants.GetButtonWidth(bounds.Width);
+            int buttonHeight = UIConstants.GetButtonHeight(bounds.Height);
+            int buttonSpacing = UIConstants.GetButtonSpacing(bounds.Width);
+
+            // Calculate total width of all chips side by side
+            int totalChipWidth = 0;
+            for (int i = 0; i < assetNames.Length; i++)
+            {
+                totalChipWidth += chipsAssets[assetNames[i]].Bounds.Width;
+            }
+            totalChipWidth += smallPadding * (assetNames.Length - 1); // Spacing between chips
+
+            // Position chips horizontally centered at bottom
+            int startX = (bounds.Width - totalChipWidth) / 2;
+            int chipY = bounds.Bottom - size.Height - smallPadding;
+
+            positions[0] = new Vector2(startX, chipY);
+            for (int chipIndex = 1; chipIndex < chipsAssets.Count; chipIndex++)
+            {
+                int prevChipWidth = chipsAssets[assetNames[chipIndex - 1]].Bounds.Width;
+                positions[chipIndex] = positions[chipIndex - 1] + new Vector2(prevChipWidth + smallPadding, 0);
+            }
+
+            // Calculate button Y position using shared helper for consistency
+            int buttonY = UIConstants.GetGameplayButtonYPosition(size.Height, bounds.Width, bounds.Height);
+
+            // Calculate total width of both buttons side by side
+            int totalButtonWidth = (buttonWidth * 2) + smallPadding;
+            int buttonStartX = (bounds.Width - totalButtonWidth) / 2;
+
+            // Initialize bet button (centered above chips)
+            bet = new Button("ButtonRegular", "ButtonPressed", input, cardGame, spriteBatch, globalTransformation)
+            {
+                Bounds = new Rectangle(buttonStartX, buttonY, buttonWidth, buttonHeight),
+                Font = cardGame.Font,
+                Text = Resources.Deal,
+            };
+            bet.Click += Bet_Click;
+            Game.Components.Add(bet);
+
+            // Initialize clear button (to the right of bet button)
+            clear = new Button("ButtonRegular", "ButtonPressed", input, cardGame, spriteBatch, globalTransformation)
+            {
+                Bounds = new Rectangle(buttonStartX + buttonWidth + smallPadding, buttonY, buttonWidth, buttonHeight),
+                Font = cardGame.Font,
+                Text = Resources.Clear,
+            };
+            clear.Click += Clear_Click;
+            Game.Components.Add(clear);
+            ShowAndEnableButtons(false);
         }
 
         /// <summary>
@@ -344,34 +329,30 @@ namespace Blackjack
             bool isClicked = false;
             Vector2 position = Vector2.Zero;
 
-            // Use transformed cursor location for all input types (handles scaling/letterboxing)
-            Vector2 transformedCursorPos = input.CurrentCursorLocation;
-
-            if (UIUtility.IsMobile)
+            if (UIUtility.IsDesktop)
             {
-                // Handle touch input with gestures
-                if (input.Gestures.Count > 0 && input.Gestures[0].GestureType == GestureType.Tap)
+                position = input.CurrentCursorLocation;
+                PlayerIndex playerIndex;
+                // Check for a click from either gamepad/keyboard or mouse
+                if (input.IsMenuSelect(null, out playerIndex) || input.IsLeftMouseButtonClicked())
                 {
                     isClicked = true;
-                    // Use transformed cursor position (already set by InputState)
-                    position = transformedCursorPos;
                 }
             }
-            else if (UIUtility.IsDesktop)
+            else if (UIUtility.IsMobile)
             {
-                // Handle mouse click (button was pressed last frame, released this frame)
-                bool wasPressed = input.LastMouseState.LeftButton == ButtonState.Pressed;
-                bool isReleased = input.CurrentMouseState.LeftButton == ButtonState.Released;
-
-                if (wasPressed && isReleased)
+                // On mobile, check for a tap gesture
+                foreach (var gesture in input.Gestures)
                 {
-                    isClicked = true;
-                    // Use transformed cursor position
-                    position = transformedCursorPos;
+                    if (gesture.GestureType == GestureType.Tap)
+                    {
+                        position = input.TransformCursorLocation(gesture.Position);
+                        isClicked = true;
+                        break; // Process one tap per frame
+                    }
                 }
             }
 
-            // Handle chip interaction logic only on click/tap completion
             if (isClicked)
             {
                 int chipValue = GetIntersectingChipValue(position);
@@ -392,7 +373,10 @@ namespace Blackjack
                         targetPlayerIndex = GetCurrentPlayer();
                     }
 
-                    AddChip(targetPlayerIndex, chipValue, false);
+                    if (targetPlayerIndex >= 0)
+                    {
+                        AddChip(targetPlayerIndex, chipValue, false);
+                    }
                 }
             }
         }

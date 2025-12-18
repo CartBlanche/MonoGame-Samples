@@ -23,8 +23,6 @@ namespace Blackjack
     {
         BlackjackCardGame blackJackGame;
 
-        InputHelper inputHelper;
-
         string theme;
         List<DrawableGameComponent> pauseEnabledComponents = new List<DrawableGameComponent>();
         List<DrawableGameComponent> pauseVisibleComponents = new List<DrawableGameComponent>();
@@ -60,16 +58,6 @@ namespace Blackjack
 
             // Player positions will be calculated dynamically after we know how many players there are
 
-            // Initialize virtual cursor
-            inputHelper = new InputHelper(ScreenManager);
-            inputHelper.DrawOrder = 1000;
-            ScreenManager.Game.Components.Add(inputHelper);
-            // Ignore the curser when not run in Xbox
-#if !XBOX
-            inputHelper.Visible = false;
-            inputHelper.Enabled = false;
-#endif
-
             blackJackGame = new BlackjackCardGame(safeArea, new Vector2(safeArea.Left + safeArea.Width / 2 - 50, safeArea.Top + 20),
                 GetPlayerCardPosition, ScreenManager, theme);
 
@@ -100,8 +88,6 @@ namespace Blackjack
         /// </summary>
         public override void UnloadContent()
         {
-            ScreenManager.Game.Components.Remove(inputHelper);
-
             base.UnloadContent();
         }
 
@@ -701,8 +687,7 @@ namespace Blackjack
             {
                 if (component is BetGameComponent ||
                     component is AnimatedGameComponent ||
-                    component is GameTable ||
-                    component is InputHelper)
+                    component is GameTable)
                 {
                     DrawableGameComponent pauseComponent = (DrawableGameComponent)component;
                     if (pauseComponent.Enabled)

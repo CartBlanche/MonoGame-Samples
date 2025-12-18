@@ -50,7 +50,6 @@ namespace Blackjack
 
         private bool isMouseDown = false;
 
-        private InputHelper inputHelper;
         private float itemSpacing;
         private float groupSpacing;
         private float leftMargin;
@@ -82,9 +81,6 @@ namespace Blackjack
             // Load current theme card back using invariant theme value
             string themeCardBack = $"CardBack_{settings.Theme}";
             cardBackTexture = content.Load<Texture2D>($"Images/Cards/{themeCardBack}");
-
-            // Initialize input helper
-            inputHelper = new InputHelper(ScreenManager);
 
             safeArea = ScreenManager.SafeArea;
 

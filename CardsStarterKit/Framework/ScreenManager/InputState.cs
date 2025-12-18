@@ -186,7 +186,7 @@ namespace CardsFramework
                 touchCount = 2; // Treat middle mouse click as double touch
             }
 
-            if (IsRightMoustButtonClicked())
+            if (IsRightMouseButtonClicked())
             {
                 touchCount = 3; // Treat right mouse click as triple touch
             }
@@ -234,7 +234,7 @@ namespace CardsFramework
         /// Checks if left mouse button was clicked (pressed and then released)
         /// </summary>
         /// <returns>True if left mouse button was clicked, false otherwise.</returns>
-        internal bool IsLeftMouseButtonClicked()
+        public bool IsLeftMouseButtonClicked()
         {
             return CurrentMouseState.LeftButton == ButtonState.Released && LastMouseState.LeftButton == ButtonState.Pressed;
         }
@@ -252,7 +252,7 @@ namespace CardsFramework
         /// Checks if right mouse button was clicked (pressed and then released)
         /// </summary>
         /// <returns>True if right mouse button was clicked, false otherwise.</returns>
-        internal bool IsRightMoustButtonClicked()
+        internal bool IsRightMouseButtonClicked()
         {
             return CurrentMouseState.RightButton == ButtonState.Released && LastMouseState.RightButton == ButtonState.Pressed;
         }
