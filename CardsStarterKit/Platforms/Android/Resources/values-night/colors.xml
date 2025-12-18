@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <!-- Dark mode colors - maroon stays the same for consistency -->
+  <color name="background_maroon">#800000</color>
+  <color name="background_burgundy">#800020</color>
+</resources>
