@@ -137,10 +137,27 @@ namespace CardsFramework
                     cascadeDelay,
                     TimeSpan.FromMilliseconds(cascadeDuration.TotalMilliseconds * CascadeArcRatio));
 
+                // Rotate during arc up - left cards tilt left, right cards tilt right
+                float targetRotation = isLeftHalf ? -MaxRotation : MaxRotation;
+                AddRotation(
+                    cardComponent,
+                    0f,
+                    targetRotation,
+                    cascadeDelay,
+                    TimeSpan.FromMilliseconds(cascadeDuration.TotalMilliseconds * CascadeArcRatio));
+
                 // Arc down to center
                 AddTransition(
                     cardComponent,
                     finalPosition,
+                    cascadeDelay + TimeSpan.FromMilliseconds(cascadeDuration.TotalMilliseconds * CascadeArcRatio),
+                    TimeSpan.FromMilliseconds(cascadeDuration.TotalMilliseconds * CascadeDownRatio));
+
+                // Rotate back to flat during arc down
+                AddRotation(
+                    cardComponent,
+                    targetRotation,
+                    0f,
                     cascadeDelay + TimeSpan.FromMilliseconds(cascadeDuration.TotalMilliseconds * CascadeArcRatio),
                     TimeSpan.FromMilliseconds(cascadeDuration.TotalMilliseconds * CascadeDownRatio));
 

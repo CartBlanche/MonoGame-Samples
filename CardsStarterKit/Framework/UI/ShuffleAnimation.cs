@@ -135,5 +135,23 @@ namespace CardsFramework
             };
             card.AddAnimation(scale);
         }
+
+        /// <summary>
+        /// Helper to add a rotation animation to a card
+        /// </summary>
+        protected void AddRotation(
+            AnimatedCardsGameComponent card,
+            float startRotation,
+            float endRotation,
+            TimeSpan startDelay,
+            TimeSpan duration)
+        {
+            var rotation = new RotationGameComponentAnimation(startRotation, endRotation)
+            {
+                StartDelay = startDelay,
+                Duration = duration
+            };
+            card.AddAnimation(rotation);
+        }
     }
 }

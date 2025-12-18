@@ -81,15 +81,31 @@ namespace CardsFramework
                 // Draw directly without Begin/End for better performance
                 if (CurrentFrame != null)
                 {
+                    // Calculate origin point (center of texture for rotation)
+                    Vector2 origin = new Vector2(CurrentFrame.Width / 2f, CurrentFrame.Height / 2f);
+
                     if (CurrentDestination.HasValue)
                     {
-                        spriteBatch.Draw(CurrentFrame,
-                            CurrentDestination.Value, Color.White);
+                        // When using destination rectangle with rotation, we need center position
+                        Vector2 centerPosition = new Vector2(
+                            CurrentDestination.Value.X + CurrentDestination.Value.Width / 2f,
+                            CurrentDestination.Value.Y + CurrentDestination.Value.Height / 2f);
+
+                        // Calculate scale to match destination size
+                        Vector2 scale = new Vector2(
+                            CurrentDestination.Value.Width / (float)CurrentFrame.Width,
+                            CurrentDestination.Value.Height / (float)CurrentFrame.Height);
+
+                        spriteBatch.Draw(CurrentFrame, centerPosition, null, Color.White,
+                            CurrentRotation, origin, scale, SpriteEffects.None, 0f);
                     }
                     else
                     {
-                        spriteBatch.Draw(CurrentFrame,
-                            CurrentPosition, Color.White);
+                        // Position + origin to center the rotation point
+                        Vector2 centerPosition = CurrentPosition + origin;
+
+                        spriteBatch.Draw(CurrentFrame, centerPosition, null, Color.White,
+                            CurrentRotation, origin, 1f, SpriteEffects.None, 0f);
                     }
                 }
             }

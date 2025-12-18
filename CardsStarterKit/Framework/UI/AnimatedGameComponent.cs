@@ -29,6 +29,7 @@ namespace CardsFramework
         public bool IsFaceDown = true;
         public Vector2 CurrentPosition { get; set; }
         public Rectangle? CurrentDestination { get; set; }
+        public float CurrentRotation { get; set; } = 0f;
 
         List<AnimatedGameComponentAnimation> runningAnimations =
             new List<AnimatedGameComponentAnimation>();
@@ -71,16 +72,15 @@ namespace CardsFramework
         {
             base.Update(gameTime);
 
-            for (int animationIndex = 0; animationIndex < runningAnimations.Count; animationIndex++)
+            // Iterate backwards to safely remove completed animations
+            for (int animationIndex = runningAnimations.Count - 1; animationIndex >= 0; animationIndex--)
             {
                 runningAnimations[animationIndex].AccumulateElapsedTime(gameTime.ElapsedGameTime);
                 runningAnimations[animationIndex].Run(gameTime);
                 if (runningAnimations[animationIndex].IsDone())
                 {
                     runningAnimations.RemoveAt(animationIndex);
-                    animationIndex--;
                 }
-
             }
         }
 
@@ -95,36 +95,49 @@ namespace CardsFramework
         {
             spriteBatch.Begin(SpriteSortMode.Deferred, null, null, null, null, null, globalTransformation);
 
-            // Draw at the destination if one is set
-            if (CurrentDestination.HasValue)
+            if (CurrentFrame != null)
             {
-                if (CurrentFrame != null)
+                // Calculate origin point (center of texture for rotation)
+                Vector2 origin = new Vector2(CurrentFrame.Width / 2f, CurrentFrame.Height / 2f);
+
+                // Draw at the destination if one is set
+                if (CurrentDestination.HasValue)
                 {
-                    spriteBatch.Draw(CurrentFrame, CurrentDestination.Value, CurrentSegment, Color.White);
+                    // When using destination rectangle with rotation, we need center position
+                    Vector2 centerPosition = new Vector2(
+                        CurrentDestination.Value.X + CurrentDestination.Value.Width / 2f,
+                        CurrentDestination.Value.Y + CurrentDestination.Value.Height / 2f);
+
+                    // Calculate scale to match destination size
+                    Vector2 scale = new Vector2(
+                        CurrentDestination.Value.Width / (float)CurrentFrame.Width,
+                        CurrentDestination.Value.Height / (float)CurrentFrame.Height);
+
+                    spriteBatch.Draw(CurrentFrame, centerPosition, CurrentSegment, Color.White,
+                        CurrentRotation, origin, scale, SpriteEffects.None, 0f);
+
                     if (Text != null)
                     {
                         Vector2 size = CardGame.Font.MeasureString(Text);
-                        Vector2 textPosition = new Vector2(CurrentDestination.Value.X +
-                            CurrentDestination.Value.Width / 2 - size.X / 2,
-                            CurrentDestination.Value.Y + CurrentDestination.Value.Height / 2 - size.Y / 2);
-
+                        Vector2 textPosition = new Vector2(centerPosition.X - size.X / 2,
+                            centerPosition.Y - size.Y / 2);
                         spriteBatch.DrawString(CardGame.Font, Text, textPosition, TextColor);
                     }
                 }
-            }
-            // Draw at the component's position if there is no destination
-            else
-            {
-                if (CurrentFrame != null)
+                // Draw at the component's position if there is no destination
+                else
                 {
-                    spriteBatch.Draw(CurrentFrame, CurrentPosition, CurrentSegment, Color.White);
+                    // Position + origin to center the rotation point
+                    Vector2 centerPosition = CurrentPosition + origin;
+
+                    spriteBatch.Draw(CurrentFrame, centerPosition, CurrentSegment, Color.White,
+                        CurrentRotation, origin, 1f, SpriteEffects.None, 0f);
+
                     if (Text != null)
                     {
                         Vector2 size = CardGame.Font.MeasureString(Text);
-                        Vector2 textPosition = new Vector2(CurrentPosition.X +
-                            CurrentFrame.Bounds.Width / 2 - size.X / 2,
-                            CurrentPosition.Y + CurrentFrame.Bounds.Height / 2 - size.Y / 2);
-
+                        Vector2 textPosition = new Vector2(centerPosition.X - size.X / 2,
+                            centerPosition.Y - size.Y / 2);
                         spriteBatch.DrawString(CardGame.Font, Text, textPosition, TextColor);
                     }
                 }

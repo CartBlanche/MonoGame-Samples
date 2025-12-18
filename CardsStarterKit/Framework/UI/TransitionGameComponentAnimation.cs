@@ -64,7 +64,7 @@ namespace CardsFramework
         /// </summary>
         private float EaseOutCubic(float t)
         {
-            return 1f - (float)Math.Pow(1f - t, 2);
+            return 1f - (float)Math.Pow(1f - t, 3);
         }
     }
 }
