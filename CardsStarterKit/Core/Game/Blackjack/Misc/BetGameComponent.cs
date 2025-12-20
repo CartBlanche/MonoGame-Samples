@@ -382,6 +382,36 @@ namespace Blackjack
         }
 
         /// <summary>
+        /// Check if the current player can afford a chip with the given value.
+        /// </summary>
+        /// <param name="chipValue">The value of the chip to check.</param>
+        /// <returns>True if the player has enough balance to bet this chip.</returns>
+        private bool CanAffordChip(int chipValue)
+        {
+            // Get the current player
+            int playerIndex;
+            BlackjackCardGame blackjackGame = cardGame as BlackjackCardGame;
+
+            if (blackjackGame != null && blackjackGame.IsNetworkGame && LocalPlayerIndex >= 0)
+            {
+                playerIndex = LocalPlayerIndex;
+            }
+            else
+            {
+                playerIndex = GetCurrentPlayer();
+            }
+
+            // Check if we have a valid player
+            if (playerIndex < 0 || playerIndex >= players.Count)
+            {
+                return false;
+            }
+
+            BlackjackPlayer player = (BlackjackPlayer)players[playerIndex];
+            return player.Balance >= chipValue;
+        }
+
+        /// <summary>
         /// Get which chip intersects with a given position.
         /// </summary>
         /// <param name="position">The position to check for intersection.</param>
@@ -395,13 +425,21 @@ namespace Blackjack
                 (int)position.Y - 1, 2, 2);
             for (int chipIndex = 0; chipIndex < chipsAssets.Count; chipIndex++)
             {
+                int chipValue = assetNames[chipIndex];
+
+                // Skip chips the player cannot afford
+                if (!CanAffordChip(chipValue))
+                {
+                    continue;
+                }
+
                 // Calculate the bounds of the asset
-                size = chipsAssets[assetNames[chipIndex]].Bounds;
+                size = chipsAssets[chipValue].Bounds;
                 size.X = (int)positions[chipIndex].X;
                 size.Y = (int)positions[chipIndex].Y;
                 if (size.Intersects(touchTap))
                 {
-                    return assetNames[chipIndex];
+                    return chipValue;
                 }
             }
 
@@ -420,8 +458,11 @@ namespace Blackjack
             // Draws the chips
             for (int chipIndex = 0; chipIndex < chipsAssets.Count; chipIndex++)
             {
-                spriteBatch.Draw(chipsAssets[assetNames[chipIndex]], positions[chipIndex],
-                    Color.White);
+                int chipValue = assetNames[chipIndex];
+                // Grey out chips the player cannot afford
+                Color chipColor = CanAffordChip(chipValue) ? Color.White : new Color(128, 128, 128, 180);
+
+                spriteBatch.Draw(chipsAssets[chipValue], positions[chipIndex], chipColor);
             }
 
             BlackjackPlayer player;
