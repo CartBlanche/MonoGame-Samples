@@ -133,6 +133,14 @@ namespace CardsFramework
             LastMouseState = CurrentMouseState;
             CurrentMouseState = Mouse.GetState();
 
+            // Update mouse cursor location every frame (like touch does)
+            if (UIUtility.IsDesktop)
+            {
+                // Always track the current mouse cursor position
+                // Note: lastCursorLocation is NOT updated here - it's only updated on actual clicks/taps
+                currentCursorLocation = TransformCursorLocation(new Vector2(CurrentMouseState.X, CurrentMouseState.Y));
+            }
+
             // Update touch state
             touchCount = 0;
             LastTouchState = CurrentTouchState;
@@ -176,18 +184,18 @@ namespace CardsFramework
             if (IsLeftMouseButtonClicked())
             {
                 lastCursorLocation = currentCursorLocation;
-                // Transform mouse position to game coordinates
-                currentCursorLocation = TransformCursorLocation(new Vector2(CurrentMouseState.X, CurrentMouseState.Y));
                 touchCount = 1;
             }
 
             if (IsMiddleMouseButtonClicked())
             {
+                lastCursorLocation = currentCursorLocation;
                 touchCount = 2; // Treat middle mouse click as double touch
             }
 
             if (IsRightMouseButtonClicked())
             {
+                lastCursorLocation = currentCursorLocation;
                 touchCount = 3; // Treat right mouse click as triple touch
             }
 

@@ -157,20 +157,19 @@ namespace Blackjack
             }
         }
 
-        public override void HandleInput(InputState input)
+        public override void HandleInput(InputState inputState)
         {
             // Handle input for session entries using platform-specific input handling
             bool isClicked = false;
             Vector2 clickPosition = Vector2.Zero;
 
             // Use transformed cursor location for all input types (handles scaling/letterboxing)
-            Vector2 transformedCursorPos = input.CurrentCursorLocation;
+            Vector2 transformedCursorPos = inputState.CurrentCursorLocation;
 
             if (UIUtility.IsDesktop)
             {
                 // Handle mouse click (button was pressed last frame, released this frame)
-                if (input.CurrentMouseState.LeftButton == ButtonState.Released &&
-                    input.LastMouseState.LeftButton == ButtonState.Pressed)
+                if (inputState.IsLeftMouseButtonClicked())
                 {
                     isClicked = true;
                     clickPosition = transformedCursorPos;
@@ -179,7 +178,7 @@ namespace Blackjack
             else if (UIUtility.IsMobile)
             {
                 // Handle touch input with gestures
-                if (input.Gestures.Count > 0 && input.Gestures[0].GestureType == Microsoft.Xna.Framework.Input.Touch.GestureType.Tap)
+                if (inputState.Gestures.Count > 0 && inputState.Gestures[0].GestureType == Microsoft.Xna.Framework.Input.Touch.GestureType.Tap)
                 {
                     isClicked = true;
                     // Use transformed cursor position (already set by InputState)
@@ -218,7 +217,7 @@ namespace Blackjack
             }
 
             // Let base class handle button input
-            base.HandleInput(input);
+            base.HandleInput(inputState);
         }
 
         protected override void OnCancel(PlayerIndex playerIndex)
