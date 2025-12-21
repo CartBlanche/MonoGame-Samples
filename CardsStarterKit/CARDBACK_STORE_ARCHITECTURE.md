@@ -45,24 +45,24 @@
 │  │ ├─ CardBackUploadScreen                                     │ │
 │  │ └─ SettingsScreen (Card Back selection)                     │ │
 │  └─────────────────────────────────────────────────────────────┘ │
-│                            ↓ Uses                                 │
+│                            ↓ Uses                                │
 │  ┌─────────────────────────────────────────────────────────────┐ │
 │  │ Business Logic Layer (CardBackManager)                      │ │
 │  │ ├─ Inventory Management (CRUD)                              │ │
 │  │ ├─ Custom Photo Processing (resize, validate)               │ │
 │  │ └─ Selection & Persistence                                  │ │
 │  └─────────────────────────────────────────────────────────────┘ │
-│                            ↓ Uses                                 │
+│                            ↓ Uses                                │
 │  ┌─────────────────────────────────────────────────────────────┐ │
 │  │ Service Abstraction Layer (ICardBackStore)                  │ │
 │  │ Enables backend-agnostic code                               │ │
 │  └─────────────────────────────────────────────────────────────┘ │
-│         ↓ Implemented By (Dependency Injection)                   │
+│         ↓ Implemented By (Dependency Injection)                  │
 │  ┌──────────────────┬──────────────────┬──────────────────┐      │
 │  │ AzureCardBack    │ FirebaseCardBack │ LocalOnlyCardBack│      │
 │  │ Store            │ Store            │ Store            │      │
 │  └──────────────────┴──────────────────┴──────────────────┘      │
-│                                                                   │
+│                                                                  │
 │  ┌─────────────────────────────────────────────────────────────┐ │
 │  │ Local Storage                                               │ │
 │  │ ├─ CardBacksInventory.json                                  │ │
@@ -80,15 +80,15 @@
          │ HTTP/HTTPS
          ↓
 ┌──────────────────────────────────────────────────────────────────┐
-│                    CLOUD BACKEND (Azure/Firebase)                │
-│                                                                   │
+│                CLOUD BACKEND (Azure/Firebase)                    │
+│                                                                  │
 │  ┌─────────────────────────────────────────────────────────────┐ │
 │  │ Static Content Delivery (CDN)                               │ │
 │  │ ├─ CardBackStore.json (catalog)                             │ │
 │  │ ├─ Categories.json (metadata)                               │ │
 │  │ └─ Official Card Back Images                                │ │
 │  └─────────────────────────────────────────────────────────────┘ │
-│                                                                   │
+│                                                                  │
 │  ┌─────────────────────────────────────────────────────────────┐ │
 │  │ IAP Validation (API)                                        │ │
 │  │ ├─ Validate Apple Store receipts                            │ │
