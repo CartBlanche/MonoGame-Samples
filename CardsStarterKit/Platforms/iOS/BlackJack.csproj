@@ -30,5 +30,18 @@
   <ItemGroup>
     <MonoGameContentReference Include="..\..\Core\Content\Content.mgcb" />
   </ItemGroup>
-  
+
+  <!-- Centralized Icon Resources -->
+  <ItemGroup>
+    <!-- Link all iOS icons from centralized location -->
+    <BundleResource Include="..\..\Core\Resources\Icons\iOS\*.png">
+      <Link>AppIcon.xcassets\AppIcon.appiconset\%(Filename)%(Extension)</Link>
+    </BundleResource>
+
+    <!-- Local launch screen icon -->
+    <BundleResource Include="..\..\Core\Resources\Icons\iOS\Icon-60@3x.png">
+      <Link>LaunchIcon.png</Link>
+    </BundleResource>
+  </ItemGroup>
+
 </Project>

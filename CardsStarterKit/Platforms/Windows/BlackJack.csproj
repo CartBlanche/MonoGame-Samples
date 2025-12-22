@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>net9.0</TargetFramework>
+    <TargetFramework>net9.0-windows</TargetFramework>
     <OutputType>WinExe</OutputType>
     <RootNamespace>Blackjack.Windows</RootNamespace>
     <AssemblyName>Blackjack</AssemblyName>
@@ -10,6 +10,15 @@
     <Authors>CartBlanche</Authors>
     <Company>MonoGame Foundation</Company>
     <GenerateAssemblyInfo>true</GenerateAssemblyInfo>
+    <RollForward>Major</RollForward>
+    <PublishReadyToRun>false</PublishReadyToRun>
+    <TieredCompilation>false</TieredCompilation>
+    <UseWindowsForms>true</UseWindowsForms>
+    <EnableWindowsTargeting>true</EnableWindowsTargeting>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
+    <ApplicationIcon>..\..\Core\Resources\Icons\Windows\Icon.ico</ApplicationIcon>
   </PropertyGroup>
   
   <ItemGroup>
@@ -21,5 +30,16 @@
   <ItemGroup>
     <MonoGameContentReference Include="..\..\Core\Content\Content.mgcb" />
   </ItemGroup>
-  
+
+  <!-- Centralized Icon Resources -->
+  <ItemGroup>
+    <None Include="..\..\Core\Resources\Icons\Windows\Icon.ico">
+      <Link>Icon.ico</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <EmbeddedResource Include="..\..\Core\Resources\Icons\Windows\Icon.ico">
+      <LogicalName>Icon.ico</LogicalName>
+    </EmbeddedResource>
+  </ItemGroup>
+
 </Project>

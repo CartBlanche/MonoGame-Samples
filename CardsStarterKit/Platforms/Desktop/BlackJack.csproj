@@ -2,7 +2,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>net9.0</TargetFramework>
-    <OutputType>Exe</OutputType>
+    <OutputType>WinExe</OutputType>
     <RootNamespace>Blackjack.DesktopGL</RootNamespace>
     <AssemblyName>Blackjack</AssemblyName>
     <AssemblyTitle>Blackjack</AssemblyTitle>
@@ -11,6 +11,23 @@
     <Company>MonoGame Foundation</Company>
     <GenerateAssemblyInfo>true</GenerateAssemblyInfo>
   </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
+    <ApplicationIcon>..\..\Core\Resources\Icons\Windows\Icon.ico</ApplicationIcon>
+  </PropertyGroup>
+  <!-- Centralized Icon Resources -->
+  <ItemGroup>
+    <None Include="..\..\Core\Resources\Icons\Windows\Icon.ico">
+      <Link>Icon.ico</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <EmbeddedResource Include="..\..\Core\Resources\Icons\Windows\Icon.ico">
+      <LogicalName>Icon.ico</LogicalName>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\..\Core\Resources\Icons\macOS\Icon.bmp">
+      <LogicalName>Icon.bmp</LogicalName>
+    </EmbeddedResource>
+  </ItemGroup>
   
   <ItemGroup>
     <ProjectReference Include="..\..\Core\Game\BlackJack.Core.csproj" />
