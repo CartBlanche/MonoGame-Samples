@@ -626,7 +626,7 @@ namespace Blackjack
             // Calculate spacing based on number of players
             // More players = tighter spacing, fewer players = more spread out
             float leftMargin = safeArea.Width * 0.10f;
-            float rightMargin = safeArea.Width * 0.10f;
+            float rightMargin = safeArea.Width * 0.15f;
             float usableWidth = safeArea.Width - leftMargin - rightMargin;
 
             // Distribute players evenly across the usable width

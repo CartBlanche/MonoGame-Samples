@@ -2,7 +2,7 @@ namespace Blackjack
 {
     public static class BlackjackConstants
     {
-        public const int MaxPlayers = 7;
+        public const int MaxPlayers = 6;
         public const int MinPlayers = 1;
 
         /// <summary>
