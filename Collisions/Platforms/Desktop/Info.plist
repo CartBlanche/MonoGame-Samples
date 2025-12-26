@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>CFBundleName</key>
+    <string>CollisionSample.DesktopGL</string>
+    <key>CFBundleDisplayName</key>
+    <string>CollisionSample.DesktopGL</string>
+    <key>CFBundleIdentifier</key>
+    <string>com.cartblanche.collisionsample.desktopgl</string>
+    <key>CFBundleVersion</key>
+    <string>1.0</string>
+    <key>CFBundlePackageType</key>
+    <string>APPL</string>
+    <key>CFBundleExecutable</key>
+    <string>CollisionSample.DesktopGL</string>
+    <key>CFBundleIconFile</key>
+    <string>CollisionSample.DesktopGL.icns</string>
+    <key>NSHighResolutionCapable</key>
+    <true/>
+</dict>
+</plist>

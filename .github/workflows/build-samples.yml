@@ -114,20 +114,50 @@ jobs:
           set -e
           PROJ="${{ matrix.project }}"
           NAME=$(basename "$PROJ" .csproj)
+          PROJ_DIR=$(dirname "$PROJ")
           ARTIFACTS_DIR="./artifacts/$NAME"
+
+          echo "Project path: $PROJ"
+          echo "Project name: $NAME"
+          echo "Project directory: $PROJ_DIR"
+          echo "Output directory: $ARTIFACTS_DIR"
 
           echo "Building $PROJ in Release mode"
           dotnet build "$PROJ" -c Release
 
+          # Check for macOS assets
+          INFO_PLIST="$PROJ_DIR/Info.plist"
+          ICNS_FILE="$PROJ_DIR/${NAME}.icns"
+
+          if [ ! -f "$INFO_PLIST" ]; then
+            echo "Error: Info.plist not found at $INFO_PLIST"
+            echo "Please run ./generate-macos-assets.sh to generate macOS assets"
+            exit 1
+          fi
+
           echo "Packaging $NAME for all desktop platforms"
-          monopack -p "$PROJ" \
-            -e "$NAME" \
-            -o "$ARTIFACTS_DIR" \
-            -rids win-x64,linux-x64,osx-x64,osx-arm64 \
-            -z -v
+          if [ -f "$ICNS_FILE" ]; then
+            echo "Using icon file: $ICNS_FILE"
+            monopack -p "$PROJ" \
+              -e "$NAME" \
+              -o "$ARTIFACTS_DIR" \
+              -rids win-x64,linux-x64,osx-x64,osx-arm64 \
+              -i "$INFO_PLIST" \
+              -c "$ICNS_FILE" \
+              -z -v
+          else
+            echo "No .icns file found, packaging without custom icon"
+            monopack -p "$PROJ" \
+              -e "$NAME" \
+              -o "$ARTIFACTS_DIR" \
+              -rids win-x64,linux-x64,osx-x64,osx-arm64 \
+              -i "$INFO_PLIST" \
+              -z -v
+          fi
 
           echo "Generated artifacts:"
-          find "$ARTIFACTS_DIR" -type f -name "*.zip"
+          find "$ARTIFACTS_DIR" -type f -name "*.zip" || echo "No zip files found"
+          ls -la "$ARTIFACTS_DIR" || echo "Artifacts directory not found"
           echo "name=$NAME" >> "$GITHUB_OUTPUT"
 
       - name: Upload Windows Bundle
