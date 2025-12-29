@@ -1,21 +1,12 @@
 //-----------------------------------------------------------------------------
-// BlackjackGame.cs
+// BlankGame.cs
 //
-// Microsoft XNA Community Game Platform
-// Copyright (C) Microsoft Corporation. All rights reserved.
+// Main game class for Blank card game template
 //-----------------------------------------------------------------------------
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Audio;
-using Microsoft.Xna.Framework.Content;
-using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
-using Microsoft.Xna.Framework.Media;
 using CardsFramework;
-using System.Globalization;
 using GameStateManagement;
 
 namespace Blank
@@ -56,13 +47,10 @@ namespace Blank
 
             screenManager = new ScreenManager(this);
 
-            screenManager.AddScreen(new BackgroundScreen(), null);
+            // Add screens - start with main menu
             screenManager.AddScreen(new MainMenuScreen(), null);
 
             Components.Add(screenManager);
-
-            // Initialize sound system
-            AudioManager.Initialize(this);
         }
 
         protected override void Initialize()
@@ -76,8 +64,6 @@ namespace Blank
         /// </summary>
         protected override void LoadContent()
         {
-            AudioManager.LoadSounds();
-
             base.LoadContent();
         }
     }

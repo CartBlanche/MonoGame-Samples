@@ -21,13 +21,12 @@
     <ProjectReference Include="..\..\..\..\MonoGame.Xna.Framework.Net\MonoGame.Xna.Framework.Net.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <!-- Shared Core Framework -->
-    <Compile Include="..\..\..\2-Core\ScreenManager\*.cs" Link="ScreenManager\%(Filename)%(Extension)" />
-    <Compile Include="..\..\..\2-Core\Screens\*.cs" Link="Screens\%(Filename)%(Extension)" />
-    <Compile Include="..\..\..\2-Core\Misc\*.cs" Link="Misc\%(Filename)%(Extension)" />
+    <!-- Blank-specific ScreenManager (copied from 2-Core to remove Blackjack dependencies) -->
+    <Compile Include="..\ScreenManager\*.cs" Link="ScreenManager\%(Filename)%(Extension)" />
 
     <!-- Game-Specific Code -->
     <Compile Include="..\Players\*.cs" />
+    <Compile Include="..\Screens\*.cs" />
   </ItemGroup>
 
   <ItemGroup>
