@@ -18,11 +18,11 @@
   </PropertyGroup>
   <PropertyGroup>
     <ApplicationManifest>app.manifest</ApplicationManifest>
-    <ApplicationIcon>..\..\..\..\..\2-Core\Resources\Icons\Windows\Icon.ico</ApplicationIcon>
+    <ApplicationIcon>..\..\..\..\2-Core\Resources\Icons\Windows\Icon.ico</ApplicationIcon>
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Blackjack.Core.csproj" />
+    <ProjectReference Include="..\..\Core\Blackjack.Core.csproj" />
     <PackageReference Include="MonoGame.Framework.WindowsDX" Version="3.8.*" />
     <PackageReference Include="MonoGame.Content.Builder.Task" Version="3.8.*" />
   </ItemGroup>
@@ -33,11 +33,11 @@
 
   <!-- Centralized Icon Resources -->
   <ItemGroup>
-    <None Include="..\..\..\..\..\2-Core\Resources\Icons\Windows\Icon.ico">
+    <None Include="..\..\..\..\2-Core\Resources\Icons\Windows\Icon.ico">
       <Link>Icon.ico</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <EmbeddedResource Include="..\..\..\..\..\2-Core\Resources\Icons\Windows\Icon.ico">
+    <EmbeddedResource Include="..\..\..\..\2-Core\Resources\Icons\Windows\Icon.ico">
       <LogicalName>Icon.ico</LogicalName>
     </EmbeddedResource>
   </ItemGroup>

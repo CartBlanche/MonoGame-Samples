@@ -211,6 +211,7 @@ namespace Blackjack
                 Bounds = new Rectangle(buttonStartX, buttonY, buttonWidth, buttonHeight),
                 Font = cardGame.Font,
                 Text = Resources.Deal,
+                Color = Color.Lime
             };
             bet.Click += Bet_Click;
             Game.Components.Add(bet);
@@ -221,6 +222,7 @@ namespace Blackjack
                 Bounds = new Rectangle(buttonStartX + buttonWidth + smallPadding, buttonY, buttonWidth, buttonHeight),
                 Font = cardGame.Font,
                 Text = Resources.Clear,
+                Color = Color.Red
             };
             clear.Click += Clear_Click;
             Game.Components.Add(clear);

@@ -1,20 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>net9.0</TargetFramework>
+    <TargetFramework>net9.0-windows</TargetFramework>
     <OutputType>WinExe</OutputType>
-    <RootNamespace>Blackjack.DesktopGL</RootNamespace>
-    <AssemblyName>Blackjack</AssemblyName>
-    <AssemblyTitle>Blackjack</AssemblyTitle>
-    <Description>DesktopGL platform for Blackjack Game.</Description>
+    <RootNamespace>Blank.Windows</RootNamespace>
+    <AssemblyName>Blank</AssemblyName>
+    <AssemblyTitle>Blank</AssemblyTitle>
+    <Description>Windows platform for Blank Game.</Description>
     <Authors>CartBlanche</Authors>
     <Company>MonoGame Foundation</Company>
     <GenerateAssemblyInfo>true</GenerateAssemblyInfo>
+    <RollForward>Major</RollForward>
+    <PublishReadyToRun>false</PublishReadyToRun>
+    <TieredCompilation>false</TieredCompilation>
+    <UseWindowsForms>true</UseWindowsForms>
+    <EnableWindowsTargeting>true</EnableWindowsTargeting>
   </PropertyGroup>
   <PropertyGroup>
     <ApplicationManifest>app.manifest</ApplicationManifest>
     <ApplicationIcon>..\..\..\..\2-Core\Resources\Icons\Windows\Icon.ico</ApplicationIcon>
   </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Core\Blank.Core.csproj" />
+    <PackageReference Include="MonoGame.Framework.WindowsDX" Version="3.8.*" />
+    <PackageReference Include="MonoGame.Content.Builder.Task" Version="3.8.*" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <MonoGameContentReference Include="..\..\Content\Content.mgcb" />
+  </ItemGroup>
+
   <!-- Centralized Icon Resources -->
   <ItemGroup>
     <None Include="..\..\..\..\2-Core\Resources\Icons\Windows\Icon.ico">
@@ -24,19 +40,6 @@
     <EmbeddedResource Include="..\..\..\..\2-Core\Resources\Icons\Windows\Icon.ico">
       <LogicalName>Icon.ico</LogicalName>
     </EmbeddedResource>
-    <EmbeddedResource Include="..\..\..\..\2-Core\Resources\Icons\macOS\Icon.bmp">
-      <LogicalName>Icon.bmp</LogicalName>
-    </EmbeddedResource>
   </ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\..\Core\Blackjack.Core.csproj" />
-    <PackageReference Include="MonoGame.Framework.DesktopGL" Version="3.8.*" />
-    <PackageReference Include="MonoGame.Content.Builder.Task" Version="3.8.*" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <MonoGameContentReference Include="..\..\Content\Content.mgcb" />
-  </ItemGroup>
-  
 </Project>

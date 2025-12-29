@@ -189,6 +189,13 @@ namespace Blackjack
             buttons["Split"].Click += Split_Click;
             buttons["Insurance"].Click += Insurance_Click;
             newGame.Click += newGame_Click;
+
+            // Set button colors - green for positive actions, red for negative actions
+            buttons["Hit"].Color = Color.Lime;
+            buttons["Stand"].Color = Color.Red;
+            buttons["Double"].Color = Color.Cyan;
+            buttons["Split"].Color = Color.Yellow;
+            newGame.Color = Color.Lime;
         }
 
         /// <summary>
@@ -1299,8 +1306,9 @@ namespace Blackjack
                 screenManager.SpriteBatch,
                 screenManager.GlobalTransformation)
             {
+                LayerOffset = layerOffset, // Scaled offset for depth
+                Rotation = MathHelper.ToRadians(-40), // Casino-style rotation
                 StackLayers = 4, // Show 4 layers for a nice thick deck
-                LayerOffset = layerOffset // Scaled offset for depth
             };
 
             Game.Components.Add(deckDisplay);

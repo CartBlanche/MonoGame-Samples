@@ -36,6 +36,7 @@ namespace Blackjack
         public Color IconTint { get; set; } = Color.White;
         public Color IconPressedTint { get; set; } = new Color(200, 200, 200);
         public Rectangle? IconSourceRect { get; set; } = null;
+        public Color Color { get; set; } = Color.White;
 
         string regularTexture;
         string pressedTexture;
@@ -226,7 +227,7 @@ namespace Blackjack
             spriteBatch.Begin(SpriteSortMode.Deferred, null, null, null, null, null, globalTransformation);
 
             // Draw button background
-            spriteBatch.Draw(isPressed ? PressedTexture : RegularTexture, Bounds, Color.White);
+            spriteBatch.Draw(isPressed ? PressedTexture : RegularTexture, Bounds, this.Color);
 
             // Calculate if we have icon and/or text
             bool hasIcon = IconTexture != null;

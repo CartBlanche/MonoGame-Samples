@@ -2,11 +2,11 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>net9.0</TargetFramework>
-    <OutputType>WinExe</OutputType>
-    <RootNamespace>Blackjack.DesktopGL</RootNamespace>
-    <AssemblyName>Blackjack</AssemblyName>
-    <AssemblyTitle>Blackjack</AssemblyTitle>
-    <Description>DesktopGL platform for Blackjack Game.</Description>
+    <OutputType>Exe</OutputType>
+    <RootNamespace>Blank.DesktopGL</RootNamespace>
+    <AssemblyName>Blank</AssemblyName>
+    <AssemblyTitle>Blank</AssemblyTitle>
+    <Description>DesktopGL platform for Blank Game.</Description>
     <Authors>CartBlanche</Authors>
     <Company>MonoGame Foundation</Company>
     <GenerateAssemblyInfo>true</GenerateAssemblyInfo>
@@ -30,7 +30,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Core\Blackjack.Core.csproj" />
+    <ProjectReference Include="..\..\Core\Blank.Core.csproj" />
     <PackageReference Include="MonoGame.Framework.DesktopGL" Version="3.8.*" />
     <PackageReference Include="MonoGame.Content.Builder.Task" Version="3.8.*" />
   </ItemGroup>

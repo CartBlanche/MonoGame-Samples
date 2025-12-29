@@ -3,10 +3,10 @@
   <PropertyGroup>
     <TargetFramework>net9.0-ios</TargetFramework>
     <OutputType>Exe</OutputType>
-    <RootNamespace>Blackjack.iOS</RootNamespace>
-    <AssemblyName>Blackjack</AssemblyName>
-    <AssemblyTitle>Blackjack</AssemblyTitle>
-    <Description>iOS platform for Blackjack Game.</Description>
+    <RootNamespace>Blank.iOS</RootNamespace>
+    <AssemblyName>Blank</AssemblyName>
+    <AssemblyTitle>Blank</AssemblyTitle>
+    <Description>iOS platform for Blank Game.</Description>
     <Authors>CartBlanche</Authors>
     <Company>MonoGame Foundation</Company>
     <GenerateAssemblyInfo>true</GenerateAssemblyInfo>
@@ -20,9 +20,9 @@
     <_IsAotCompatible>false</_IsAotCompatible>
     <EnableSGenConc>true</EnableSGenConc>
   </PropertyGroup>
-  
+
   <ItemGroup>
-    <ProjectReference Include="..\..\Core\Blackjack.Core.csproj" />
+    <ProjectReference Include="..\..\Core\Blank.Core.csproj" />
     <PackageReference Include="MonoGame.Framework.iOS" Version="3.8.*" />
     <PackageReference Include="MonoGame.Content.Builder.Task" Version="3.8.*" />
   </ItemGroup>

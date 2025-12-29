@@ -3,22 +3,22 @@
   <PropertyGroup>
     <TargetFramework>net9.0-android</TargetFramework>
     <OutputType>Exe</OutputType>
-    <RootNamespace>Blackjack.Android</RootNamespace>
-    <AssemblyName>Blackjack</AssemblyName>
-    <AssemblyTitle>Blackjack</AssemblyTitle>
-    <Description>Android platform for Blackjack Game.</Description>
+    <RootNamespace>Blank.Android</RootNamespace>
+    <AssemblyName>Blank</AssemblyName>
+    <AssemblyTitle>Blank</AssemblyTitle>
+    <Description>Android platform for Blank Game.</Description>
     <Authors>CartBlanche</Authors>
     <Company>MonoGame Foundation</Company>
     <GenerateAssemblyInfo>true</GenerateAssemblyInfo>
     <AndroidApplication>True</AndroidApplication>
     <SupportedOSPlatformVersion>28.0</SupportedOSPlatformVersion>
-    <ApplicationId>com.cartblanche.blackjack</ApplicationId>
+    <ApplicationId>com.cartblanche.blank</ApplicationId>
     <ApplicationVersion>1</ApplicationVersion>
     <ApplicationDisplayVersion>1.0</ApplicationDisplayVersion>
   </PropertyGroup>
-  
+
   <ItemGroup>
-    <ProjectReference Include="..\..\Core\Blackjack.Core.Android.csproj" />
+    <ProjectReference Include="..\..\Core\Blank.Core.csproj" />
     <PackageReference Include="MonoGame.Framework.Android" Version="3.8.*" />
     <PackageReference Include="MonoGame.Content.Builder.Task" Version="3.8.*" />
   </ItemGroup>

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <!-- Android 12+ Native Splash Screen API (no AndroidX dependency required) -->
+  <style name="Theme.Splash" parent="android:Theme.Material.Light.NoActionBar">
+    <!-- Set the splash screen background color to maroon -->
+    <item name="android:windowSplashScreenBackground">@color/background_maroon</item>
+
+    <!-- Set the icon displayed in the splash screen -->
+    <item name="android:windowSplashScreenAnimatedIcon">@drawable/icon</item>
+
+    <!-- Icon background color (makes icon stand out on maroon) -->
+    <item name="android:windowSplashScreenIconBackgroundColor">@android:color/transparent</item>
+
+    <!-- Duration the splash screen stays visible (max 1000ms) -->
+    <item name="android:windowSplashScreenAnimationDuration">1000</item>
+
+    <!-- Status and navigation bars -->
+    <item name="android:statusBarColor">@color/background_maroon</item>
+    <item name="android:navigationBarColor">@color/background_maroon</item>
+    <item name="android:windowNoTitle">true</item>
+  </style>
+</resources>

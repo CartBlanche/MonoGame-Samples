@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Monochrome icon for Android 13+ themed icons -->
+<!-- This provides a simplified single-color version for Material You dynamic theming -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+
+    <!-- Simple playing card and chip stack silhouette -->
+    <!-- Card 1 (back left) -->
+    <path
+        android:fillColor="#000000"
+        android:pathData="M30,35 L45,30 L50,50 L35,55 Z" />
+
+    <!-- Card 2 (front center) -->
+    <path
+        android:fillColor="#000000"
+        android:pathData="M45,30 L65,30 L65,60 L45,60 Z" />
+
+    <!-- Chip stack (simplified circles) -->
+    <path
+        android:fillColor="#000000"
+        android:pathData="M54,52 C60,52 65,56 65,61 C65,66 60,70 54,70 C48,70 43,66 43,61 C43,56 48,52 54,52 Z M54,57 C57,57 59,59 59,61 C59,63 57,65 54,65 C51,65 49,63 49,61 C49,59 51,57 54,57 Z" />
+</vector>
