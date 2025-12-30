@@ -275,6 +275,7 @@ namespace Blackjack
 
                         currentChipComponent.Clear();
                         currentBet = 0;
+                        UpdateClearButtonState();
                     }
                     else
                     {
@@ -616,6 +617,9 @@ namespace Blackjack
                         }
                     }
                 }
+
+                // Update Clear button state now that a chip has been added
+                UpdateClearButtonState();
             }
         }
 
@@ -663,8 +667,8 @@ namespace Blackjack
         /// </summary>
         public void Reset()
         {
-            ShowAndEnableButtons(true);
             currentChipComponent.Clear();
+            ShowAndEnableButtons(true);
         }
 
         /// <summary>
@@ -1351,7 +1355,27 @@ namespace Blackjack
             bet.Visible = visibleEnabled;
             bet.Enabled = visibleEnabled;
             clear.Visible = visibleEnabled;
-            clear.Enabled = visibleEnabled;
+
+            // Clear button should only be enabled if chips have been placed
+            if (visibleEnabled)
+            {
+                UpdateClearButtonState();
+            }
+            else
+            {
+                clear.Enabled = false;
+            }
+        }
+
+        /// <summary>
+        /// Updates the Clear button's enabled state and visual appearance based on whether chips have been placed.
+        /// </summary>
+        private void UpdateClearButtonState()
+        {
+            bool hasChips = currentChipComponent.Count > 0;
+            clear.Enabled = hasChips;
+            // Darken the button when disabled, similar to unaffordable chips
+            clear.Color = hasChips ? Color.White : new Color(128, 128, 128, 180);
         }
 
         /// <summary>
@@ -1473,6 +1497,9 @@ namespace Blackjack
                 // Clear the bet after animation completes
                 player.ClearBet();
                 currentChipComponent.Clear();
+
+                // Update Clear button state now that chips have been cleared
+                UpdateClearButtonState();
             });
         }
 
@@ -1526,6 +1553,7 @@ namespace Blackjack
 
             currentChipComponent.Clear();
             currentBet = 0;
+            UpdateClearButtonState();
         }
     }
 }
