@@ -1318,8 +1318,8 @@ namespace Blackjack
             // Position in top-right area with some padding from edges
             int cardWidth = UIConstants.GetCardWidth(screenManager.SafeArea.Width);
             int cardHeight = UIConstants.GetCardHeight(screenManager.SafeArea.Height);
-            float deckX = tableBounds.Right - cardWidth - 40; // 40px padding from right edge
-            float deckY = tableBounds.Top + 40; // 40px padding from top edge
+            float deckX = tableBounds.Right - cardWidth - 35; // 40px padding from right edge
+            float deckY = tableBounds.Top + 65; // 40px padding from top edge
             Vector2 deckPosition = new Vector2(deckX, deckY);
 
             // Get scaled layer offset
