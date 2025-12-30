@@ -80,12 +80,12 @@ namespace CardsFramework
                 CurrentPosition = CardGame.GameTable[place];
             }
 
-            // Create and initialize animated cards according to the cards in the 
+            // Create and initialize animated cards according to the cards in the
             // associated hand
             for (int cardIndex = 0; cardIndex < hand.Count; cardIndex++)
             {
                 AnimatedCardsGameComponent animatedCardGameComponent =
-                    new AnimatedCardsGameComponent(hand[cardIndex], CardGame)
+                    new AnimatedCardsGameComponent(hand[cardIndex], CardGame, spriteBatch, globalTransformation)
                     {
                         CurrentPosition = CurrentPosition + new Vector2(30 * cardIndex, 0)
                     };

@@ -1643,6 +1643,9 @@ namespace Blackjack
                 false, true);
 
             // Initialize visual representation of the second hand
+            if (screenManager?.SpriteBatch == null)
+                throw new InvalidOperationException("ScreenManager.SpriteBatch is null. Ensure ScreenManager.LoadContent() has been called before attempting to split.");
+
             animatedSecondHands[playerIndex] =
                 new BlackjackAnimatedPlayerHandComponent(playerIndex, secondHandOffset,
                     player.SecondHand, this, screenManager.SpriteBatch, screenManager.GlobalTransformation);
@@ -1987,6 +1990,9 @@ namespace Blackjack
                 false, true);
 
             // Initialize visual representation of the second hand
+            if (screenManager?.SpriteBatch == null)
+                throw new InvalidOperationException("ScreenManager.SpriteBatch is null. Ensure ScreenManager.LoadContent() has been called before attempting to split.");
+
             animatedSecondHands[playerIndex] =
                 new BlackjackAnimatedPlayerHandComponent(playerIndex, secondHandOffset,
                     player.SecondHand, this, screenManager.SpriteBatch, screenManager.GlobalTransformation);
