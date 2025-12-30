@@ -92,7 +92,7 @@ namespace Blackjack
         /// <param name="theme">The game's deck theme name.</param>
         public BlackjackCardGame(Rectangle tableBounds, Vector2 dealerPosition,
             Func<int, Vector2> placeOrder, ScreenManager screenManager, string theme)
-            : base(6, 0, CardSuit.AllSuits, CardsFramework.CardValue.NonJokers,
+            : base(2, 0, CardSuit.AllSuits, CardsFramework.CardValue.NonJokers,
             BlackjackConstants.MinPlayers, BlackjackConstants.MaxPlayers, new BlackJackTable(UIConstants.GetRingOffset(screenManager.SafeArea.Height), tableBounds,
                 dealerPosition, BlackjackConstants.MaxPlayers, placeOrder, theme, screenManager.Game, screenManager.SpriteBatch, screenManager.GlobalTransformation),
             theme, screenManager.Game)
@@ -1230,42 +1230,69 @@ namespace Blackjack
         }
 
         /// <summary>
+        /// Reinitializes the dealer with the correct number of decks based on player count.
+        /// Formula: numberOfDecks = totalPlayers + 1 (minimum of 2)
+        /// </summary>
+        private void ReinitializeDealerWithDynamicDeckCount()
+        {
+            // Calculate required deck count: total players + 1
+            int totalPlayers = players.Count;
+            int requiredDecks = Math.Max(2, totalPlayers + 1);
+
+            // Reinitialize the dealer with the new deck count
+            dealer = new CardPacket(requiredDecks, 0, CardSuit.AllSuits, CardsFramework.CardValue.NonJokers);
+        }
+
+        /// <summary>
         /// Starts a new game round.
         /// </summary>
         public void StartRound()
         {
             playerHandValueTexts.Clear();
-            AudioManager.PlaySound("Shuffle");
 
             // Reset card dealing sequence tracking for network synchronization
             cardSequenceCounter = 0;
             lastDealTime = TimeSpan.FromSeconds(-10);
 
-            // Generate shuffle seed (host only) or wait for it (clients)
-            if (IsNetworkGame && IsHost)
-            {
-                // Host generates a deterministic seed
-                currentShuffleSeed = Environment.TickCount;
-                dealer.Shuffle(currentShuffleSeed);
+            // Reinitialize dealer with correct deck count on first round or when needed
+            // Only reinitialize if shuffling (cards are low), to preserve remaining cards between rounds
+            bool needsShuffle = dealer.Count < 20;
 
-                // Broadcast shuffle seed to all clients
-                BroadcastShuffleSeed(currentShuffleSeed);
-            }
-            else if (IsNetworkGame && !IsHost)
+            if (needsShuffle)
             {
-                // Client waits for shuffle seed from host
-                // The shuffle will be performed when the ShuffleSeedPacket is received
-                // For now, just mark that we're waiting
+                ReinitializeDealerWithDynamicDeckCount();
             }
-            else
+
+            if (needsShuffle)
             {
-                // Local game - shuffle normally
-                dealer.Shuffle();
+                AudioManager.PlaySound("Shuffle");
+
+                // Generate shuffle seed (host only) or wait for it (clients)
+                if (IsNetworkGame && IsHost)
+                {
+                    // Host generates a deterministic seed
+                    currentShuffleSeed = Environment.TickCount;
+                    dealer.Shuffle(currentShuffleSeed);
+
+                    // Broadcast shuffle seed to all clients
+                    BroadcastShuffleSeed(currentShuffleSeed);
+                }
+                else if (IsNetworkGame && !IsHost)
+                {
+                    // Client waits for shuffle seed from host
+                    // The shuffle will be performed when the ShuffleSeedPacket is received
+                    // For now, just mark that we're waiting
+                }
+                else
+                {
+                    // Local game - shuffle normally
+                    dealer.Shuffle();
+                }
             }
 
             DisplayPlayingHands();
             ShowDeckDisplay();
-            State = BlackjackGameState.Shuffling;
+            State = needsShuffle ? BlackjackGameState.Shuffling : BlackjackGameState.Betting;
         }
 
         /// <summary>
