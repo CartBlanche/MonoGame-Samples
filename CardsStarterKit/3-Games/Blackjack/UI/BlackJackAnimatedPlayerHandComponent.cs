@@ -20,6 +20,15 @@ namespace Blackjack
         private int verticalSpacing;
 
         /// <summary>
+        /// Applies an additional offset to this hand component.
+        /// Used during split to reposition existing hands.
+        /// </summary>
+        public void ApplyAdditionalOffset(Vector2 additionalOffset)
+        {
+            offset += additionalOffset;
+        }
+
+        /// <summary>
         /// Creates a new instance of the 
         /// <see cref="BlackjackAnimatedPlayerHandComponent"/> class.
         /// </summary>
@@ -59,16 +68,17 @@ namespace Blackjack
             Hand hand, CardsGame cardGame, Microsoft.Xna.Framework.Graphics.SpriteBatch spriteBatch, Microsoft.Xna.Framework.Matrix globalTransformation)
             : base(place, hand, cardGame, spriteBatch, globalTransformation)
         {
-            // Apply additional Y offset to move cards above chip circle, keeping provided X offset
+            // Apply Y offset to move cards above chip circle, keeping provided X offset
+            // Use same Y offset formula as the no-offset constructor for consistent alignment
             var blackjackGame = cardGame as BlackjackCardGame;
             if (blackjackGame != null)
             {
                 int cardHeight = UIConstants.GetCardHeight(blackjackGame.ScreenManager.SafeArea.Height);
-                this.offset = new Vector2(offset.X, offset.Y - cardHeight - 15); // Above chip circle
+                this.offset = new Vector2(offset.X, -(cardHeight / 2)); // Above chip circle, same height as first hand
             }
             else
             {
-                this.offset = new Vector2(offset.X, offset.Y - 120); // Fallback offset
+                this.offset = new Vector2(offset.X, -120); // Fallback offset
             }
             InitializeSpacing(cardGame);
         }

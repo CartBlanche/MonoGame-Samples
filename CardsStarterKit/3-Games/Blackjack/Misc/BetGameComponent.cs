@@ -1486,6 +1486,11 @@ namespace Blackjack
         {
             // Clear current player chips from screen and resets his bet
             int playerIndex = GetCurrentPlayer();
+
+            // Guard against invalid player index
+            if (playerIndex < 0 || playerIndex >= players.Count)
+                return;
+
             BlackjackPlayer player = (BlackjackPlayer)players[playerIndex];
 
             currentBet = 0;

@@ -40,6 +40,11 @@ namespace CardsFramework
         public int Count { get { return cards.Count; } }
 
         /// <summary>
+        /// Tracks whether this card packet has been shuffled at least once.
+        /// </summary>
+        public bool HasBeenShuffled { get; private set; } = false;
+
+        /// <summary>
         /// Initializes a card collection by simply allocating a new card list.
         /// </summary>
         protected CardPacket()
@@ -216,6 +221,7 @@ namespace CardsFramework
             }
 
             cards = shuffledDeck;
+            HasBeenShuffled = true;
         }
 
         /// <summary>
@@ -235,6 +241,7 @@ namespace CardsFramework
             }
 
             cards = shuffledDeck;
+            HasBeenShuffled = true;
         }
 
         /// <summary>

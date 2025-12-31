@@ -670,7 +670,7 @@ namespace Blackjack
 
                     if (playerHandValueText != null)
                     {
-                        DrawValue(animatedHands[playerIndex], playerIndex, playerHandValueText, color);
+                        DrawValue(animatedHands[playerIndex], playerIndex, playerHandValueText, color, true);
                     }
 
                     color = player.CurrentHandType == HandTypes.Second &&
@@ -679,7 +679,7 @@ namespace Blackjack
                     if (playerSecondHandValueText != null)
                     {
                         DrawValue(animatedSecondHands[playerIndex], playerIndex, playerSecondHandValueText,
-                            color);
+                            color, false);
                     }
                 }
                 else
@@ -703,7 +703,7 @@ namespace Blackjack
         /// <param name="value">The value to draw.</param>
         /// <param name="valueColor">The color in which to draw the value.</param>
         private void DrawValue(AnimatedHandGameComponent animatedHand, int place,
-            string value, Color valueColor)
+            string value, Color valueColor, bool isFirstHandInSplit = false)
         {
             Hand hand = animatedHand.Hand;
 
@@ -717,6 +717,15 @@ namespace Blackjack
             // Position at bottom-right corner of first card, below the card edge
             position.X += cardWidth - (measure.X / 2); // Right edge of card, centered
             position.Y += cardHeight + 5; // Below the card, with small padding
+
+            // During split, compensate for the hand offset to keep score visible
+            // The hand was shifted left by secondHandOffset, but the score should stay readable
+            if (isFirstHandInSplit)
+            {
+                // The position already includes the hand's left offset via GetCardRelativePosition
+                // We don't want the score to follow that offset completely, so move it back toward center
+                position.X -= secondHandOffset.X; // Compensate by moving right
+            }
 
             screenManager.SpriteBatch.Draw(screenManager.BlankTexture,
                 new Rectangle((int)position.X - 4, (int)position.Y,
@@ -960,8 +969,8 @@ namespace Blackjack
                         break;
                     case HandTypes.Second:
                         currentAnimatedHand = animatedSecondHands[playerIndex];
-                        currentPosition = currentAnimatedHand.CurrentPosition +
-                            secondHandOffset;
+                        // CurrentPosition already includes the hand's offset, so don't add secondHandOffset again
+                        currentPosition = currentAnimatedHand.CurrentPosition;
                         break;
                     default:
                         throw new Exception(
@@ -1254,17 +1263,19 @@ namespace Blackjack
             cardSequenceCounter = 0;
             lastDealTime = TimeSpan.FromSeconds(-10);
 
-            // Reinitialize dealer with correct deck count on first round or when needed
-            // Only reinitialize if shuffling (cards are low), to preserve remaining cards between rounds
-            bool needsShuffle = dealer.Count < 20;
+            // Check if we need to shuffle: either cards are low (<20) OR dealer has never been shuffled
+            // (A freshly created dealer is sequential and needs initial shuffle)
+            bool needsShuffle = dealer.Count < 20 || !dealer.HasBeenShuffled;
 
             if (needsShuffle)
             {
-                ReinitializeDealerWithDynamicDeckCount();
-            }
+                // Only reinitialize with new decks if we're actually low on cards
+                // Don't reinitialize if this is just the first shuffle of a fresh deck
+                if (dealer.Count < 20)
+                {
+                    ReinitializeDealerWithDynamicDeckCount();
+                }
 
-            if (needsShuffle)
-            {
                 AudioManager.PlaySound("Shuffle");
 
                 // Generate shuffle seed (host only) or wait for it (clients)
@@ -1651,16 +1662,38 @@ namespace Blackjack
 
             player.InitializeSecondHand();
 
-            Vector2 sourcePosition = animatedHands[playerIndex].GetCardGameComponent(1).CurrentPosition;
-            Vector2 targetPosition = animatedHands[playerIndex].GetCardGameComponent(0).CurrentPosition +
-                secondHandOffset;
-            // Create an animation moving the top card to the second hand location
-            AnimatedGameComponentAnimation animation = new TransitionGameComponentAnimation(sourcePosition,
-                    targetPosition)
+            // Calculate symmetric offsets: first hand moves left, second hand moves right
+            Vector2 firstHandOffset = new Vector2(-secondHandOffset.X, secondHandOffset.Y);
+            Vector2 secondHandOffsetPositive = new Vector2(secondHandOffset.X, secondHandOffset.Y);
+
+            // Apply offset to the first hand component so all future cards respect it
+            ((BlackjackAnimatedPlayerHandComponent)animatedHands[playerIndex]).ApplyAdditionalOffset(firstHandOffset);
+
+            // Animate the first hand's remaining card (after split) to move left
+            Vector2 firstCardSourcePosition = animatedHands[playerIndex].GetCardGameComponent(0).CurrentPosition;
+            Vector2 firstCardTargetPosition = firstCardSourcePosition + firstHandOffset;
+
+            AnimatedGameComponentAnimation firstHandAnimation = new TransitionGameComponentAnimation(
+                firstCardSourcePosition, firstCardTargetPosition)
             {
                 StartDelay = TimeSpan.Zero,
                 Duration = TimeSpan.FromSeconds(0.5f)
             };
+
+            // Animate the second card (being split off) to move right
+            Vector2 secondCardSourcePosition = animatedHands[playerIndex].GetCardGameComponent(1).CurrentPosition;
+            Vector2 secondCardTargetPosition = animatedHands[playerIndex].GetCardGameComponent(0).CurrentPosition +
+                secondHandOffsetPositive;
+
+            AnimatedGameComponentAnimation secondHandAnimation = new TransitionGameComponentAnimation(
+                secondCardSourcePosition, secondCardTargetPosition)
+            {
+                StartDelay = TimeSpan.Zero,
+                Duration = TimeSpan.FromSeconds(0.5f)
+            };
+
+            // Apply animation to first hand's card
+            animatedHands[playerIndex].GetCardGameComponent(0).AddAnimation(firstHandAnimation);
 
             // Actually perform the split
             player.SplitHand();
@@ -1674,18 +1707,18 @@ namespace Blackjack
                 throw new InvalidOperationException("ScreenManager.SpriteBatch is null. Ensure ScreenManager.LoadContent() has been called before attempting to split.");
 
             animatedSecondHands[playerIndex] =
-                new BlackjackAnimatedPlayerHandComponent(playerIndex, secondHandOffset,
+                new BlackjackAnimatedPlayerHandComponent(playerIndex, secondHandOffsetPositive,
                     player.SecondHand, this, screenManager.SpriteBatch, screenManager.GlobalTransformation);
             Game.Components.Add(animatedSecondHands[playerIndex]);
 
-            AnimatedCardsGameComponent animatedGameComponet = animatedSecondHands[playerIndex].GetCardGameComponent(0);
-            animatedGameComponet.IsFaceDown = false;
-            animatedGameComponet.AddAnimation(animation);
+            AnimatedCardsGameComponent animatedSecondCardComponent = animatedSecondHands[playerIndex].GetCardGameComponent(0);
+            animatedSecondCardComponent.IsFaceDown = false;
+            animatedSecondCardComponent.AddAnimation(secondHandAnimation);
 
             // Deal an additional cards to each of the new hands
             TraditionalCard card = dealer.DealCardToHand(player.Hand);
             AddDealAnimation(card, animatedHands[playerIndex], true, DealDuration,
-                animation.EstimatedTimeForAnimationCompletion);
+                firstHandAnimation.EstimatedTimeForAnimationCompletion);
 
             // Broadcast first card dealt in network games
             if (IsNetworkGame && IsHost)
@@ -1695,7 +1728,7 @@ namespace Blackjack
 
             card = dealer.DealCardToHand(player.SecondHand);
             AddDealAnimation(card, animatedSecondHands[playerIndex], true, DealDuration,
-                animation.EstimatedTimeForAnimationCompletion +
+                secondHandAnimation.EstimatedTimeForAnimationCompletion +
                 DealDuration);
 
             // Broadcast second card dealt in network games
