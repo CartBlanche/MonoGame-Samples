@@ -359,7 +359,7 @@ using CardsFramework.Game;
 using CardsFramework.Players;
 using CardsFramework.UI;
 using CardsFramework.Rules;
-using GameStateManagement;
+using CardsFramework.Core;
 
 namespace MagicTrick
 {
@@ -1124,7 +1124,7 @@ using System;
 using Microsoft.Xna.Framework;
 using CardsFramework.MagicTrick;
 using CardsFramework.UI;
-using GameStateManagement;
+using CardsFramework.Core;
 
 namespace CardsStarterKit
 {

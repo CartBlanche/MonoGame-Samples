@@ -1150,7 +1150,7 @@ using CardsFramework.Game;
 using CardsFramework.Players;
 using CardsFramework.UI;
 using CardsFramework.Rules;
-using GameStateManagement;
+using CardsFramework.Core;
 
 namespace GinRummy
 {
@@ -2004,7 +2004,7 @@ using System;
 using Microsoft.Xna.Framework;
 using GinRummy;
 using CardsFramework.UI;
-using GameStateManagement;
+using CardsFramework.Core;
 
 namespace CardsStarterKit
 {
