@@ -170,15 +170,23 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: ${{ steps.package.outputs.name }}-Linux
-          path: artifacts/${{ steps.package.outputs.name }}/*-linux-x64.zip
+          path: artifacts/${{ steps.package.outputs.name }}/*-linux-x64.tar.gz
           if-no-files-found: error
           retention-days: 14
 
-      - name: Upload macOS Bundle
+      - name: Upload macOS Intel Bundle
         uses: actions/upload-artifact@v4
         with:
-          name: ${{ steps.package.outputs.name }}-macOS
-          path: artifacts/${{ steps.package.outputs.name }}/*-universal.zip
+          name: ${{ steps.package.outputs.name }}-macOS-Intel
+          path: artifacts/${{ steps.package.outputs.name }}/*-osx-x64.tar.gz
+          if-no-files-found: error
+          retention-days: 14
+
+      - name: Upload macOS Apple Silicon Bundle
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ steps.package.outputs.name }}-macOS-AppleSilicon
+          path: artifacts/${{ steps.package.outputs.name }}/*-osx-arm64.tar.gz
           if-no-files-found: error
           retention-days: 14
 
