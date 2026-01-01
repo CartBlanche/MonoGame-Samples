@@ -25,7 +25,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Include="$(AssemblyName).icns">
+    <None Include="Particle3DSample.DesktopGL.icns">
       <Link>$(AssemblyName).icns</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>

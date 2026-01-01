@@ -27,7 +27,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Include="$(AssemblyName).icns">
+    <None Include="Primitives.DesktopGL.icns">
       <Link>$(AssemblyName).icns</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>

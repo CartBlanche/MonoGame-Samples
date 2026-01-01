@@ -24,7 +24,7 @@
 
 
   <ItemGroup>
-    <None Include="$(AssemblyName).icns">
+    <None Include="Peer2PeerSample.icns">
       <Link>$(AssemblyName).icns</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>

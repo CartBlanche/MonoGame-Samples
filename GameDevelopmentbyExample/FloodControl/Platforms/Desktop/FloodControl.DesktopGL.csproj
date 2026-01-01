@@ -24,7 +24,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Include="$(AssemblyName).icns">
+    <None Include="FloodControl.icns">
       <Link>$(AssemblyName).icns</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>

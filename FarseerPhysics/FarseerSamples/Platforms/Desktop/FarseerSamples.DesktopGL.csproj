@@ -40,7 +40,7 @@
 
 
   <ItemGroup>
-    <None Include="$(AssemblyName).icns">
+    <None Include="FarseerSamples.DesktopGL.icns">
       <Link>$(AssemblyName).icns</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
