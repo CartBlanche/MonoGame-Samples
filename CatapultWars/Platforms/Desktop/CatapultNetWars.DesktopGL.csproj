@@ -21,4 +21,12 @@
     <MonoGameContentReference Include="..\..\Core\Content\Content.mgcb" />
   </ItemGroup>
 
+
+  <ItemGroup>
+    <None Include="$(AssemblyName).icns">
+      <Link>$(AssemblyName).icns</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>
