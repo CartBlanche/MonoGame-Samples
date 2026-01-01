@@ -21,6 +21,10 @@
       <Link>Icon.ico</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Include="..\..\..\..\2-Core\Resources\Icons\macOS\Icon.icns">
+      <Link>BlackJack.icns</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <EmbeddedResource Include="..\..\..\..\2-Core\Resources\Icons\Windows\Icon.ico">
       <LogicalName>Icon.ico</LogicalName>
     </EmbeddedResource>
