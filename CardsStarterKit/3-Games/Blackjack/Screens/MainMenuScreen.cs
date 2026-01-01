@@ -1,6 +1,4 @@
 //-----------------------------------------------------------------------------
-// MainMenuScreen.cs
-//
 // Microsoft XNA Community Game Platform
 // Copyright (C) Microsoft Corporation. All rights reserved.
 //-----------------------------------------------------------------------------
@@ -8,9 +6,9 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
-using GameStateManagement;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using GameStateManagement;
 
 namespace Blackjack
 {
