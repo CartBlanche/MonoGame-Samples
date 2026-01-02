@@ -77,10 +77,15 @@ jobs:
           echo "Skipped projects:"; cat "$skipped_tmp" || true
           rm -f "$desktop_projects_tmp" "$success_tmp" "$skipped_tmp"
 
-  build:
+  build-desktop-bundles:
     needs: discover
     if: ${{ needs.discover.outputs.projects != '[]' && needs.discover.outputs.projects != '' }}
     runs-on: macos-latest
+
+    env:
+      MGFXC_WINE_PATH: /Users/runner/.winemonogame
+      DYLD_LIBRARY_PATH: /usr/lib:/usr/local/lib:/opt/homebrew/lib:/usr/local/bin
+
     strategy:
       fail-fast: false
       matrix:
@@ -96,35 +101,97 @@ jobs:
           dotnet-version: |
             8.0.x
 
-      - name: Restore project
-        run: dotnet restore "${{ matrix.project }}"
+      - name: Setup for MonoGame
+        uses: infinitespace-studios/monogame-actions/install-wine@v1.0
 
-      - name: Publish sample
-        id: publish
+      - name: Install MonoPack
+        run: dotnet tool install --global MonoPack
+
+      - name: Build and Package Desktop Bundle
+        id: package
         shell: bash
         run: |
           set -e
           PROJ="${{ matrix.project }}"
           NAME=$(basename "$PROJ" .csproj)
-          OUTDIR="publish/$NAME"
-          echo "Publishing $PROJ -> $OUTDIR"
-          dotnet publish "$PROJ" -c "$CONFIGURATION" -o "$OUTDIR"
-          echo "Published files:"
-          # Portable listing (macOS BSD find lacks -printf)
-          find "$OUTDIR" -type f | sed "s|$OUTDIR/|  |"
-          echo "outdir=$OUTDIR" >> "$GITHUB_OUTPUT"
+          PROJ_DIR=$(dirname "$PROJ")
+          ARTIFACTS_DIR="./artifacts/$NAME"
+
+          echo "Project path: $PROJ"
+          echo "Project name: $NAME"
+          echo "Project directory: $PROJ_DIR"
+          echo "Output directory: $ARTIFACTS_DIR"
+
+          echo "Building $PROJ in Release mode"
+          dotnet build "$PROJ" -c Release
+
+          # Check for macOS assets
+          INFO_PLIST="$PROJ_DIR/Info.plist"
+          ICNS_FILE="$PROJ_DIR/${NAME}.icns"
+
+          if [ ! -f "$INFO_PLIST" ]; then
+            echo "Error: Info.plist not found at $INFO_PLIST"
+            echo "Please run ./generate-macos-assets.sh to generate macOS assets"
+            exit 1
+          fi
+
+          echo "Packaging $NAME for all desktop platforms"
+          if [ -f "$ICNS_FILE" ]; then
+            echo "Using icon file: $ICNS_FILE"
+            monopack -p "$PROJ" \
+              -o "$ARTIFACTS_DIR" \
+              -rids win-x64,linux-x64,osx-x64,osx-arm64 \
+              -i "$INFO_PLIST" \
+              -c "$ICNS_FILE" \
+              -v
+          else
+            echo "No .icns file found, packaging without custom icon"
+            monopack -p "$PROJ" \
+              -o "$ARTIFACTS_DIR" \
+              -rids win-x64,linux-x64,osx-x64,osx-arm64 \
+              -i "$INFO_PLIST" \
+              -v
+          fi
+
+          echo "Generated artifacts:"
+          find "$ARTIFACTS_DIR" -type f -name "*.zip" || echo "No zip files found"
+          ls -la "$ARTIFACTS_DIR" || echo "Artifacts directory not found"
           echo "name=$NAME" >> "$GITHUB_OUTPUT"
-      - name: Upload artifact
+
+      - name: Upload Windows Bundle
         uses: actions/upload-artifact@v4
         with:
-          name: ${{ steps.publish.outputs.name }}
-          # Upload the published output directory directly (no nested zip)
-          path: ${{ steps.publish.outputs.outdir }}
+          name: ${{ steps.package.outputs.name }}-Windows
+          path: artifacts/${{ steps.package.outputs.name }}/*-win-x64.zip
+          if-no-files-found: error
+          retention-days: 14
+
+      - name: Upload Linux Bundle
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ steps.package.outputs.name }}-Linux
+          path: artifacts/${{ steps.package.outputs.name }}/*-linux-x64.tar.gz
+          if-no-files-found: error
+          retention-days: 14
+
+      - name: Upload macOS Intel Bundle
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ steps.package.outputs.name }}-macOS-Intel
+          path: artifacts/${{ steps.package.outputs.name }}/*-osx-x64.tar.gz
+          if-no-files-found: error
+          retention-days: 14
+
+      - name: Upload macOS Apple Silicon Bundle
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ steps.package.outputs.name }}-macOS-AppleSilicon
+          path: artifacts/${{ steps.package.outputs.name }}/*-osx-arm64.tar.gz
           if-no-files-found: error
           retention-days: 14
 
   summary:
-    needs: [discover, build]
+    needs: [discover, build-desktop-bundles]
     if: always()
     runs-on: macos-latest
     steps:
@@ -134,9 +201,9 @@ jobs:
           if [ "${{ needs.discover.outputs.projects }}" = "[]" ] || [ -z "${{ needs.discover.outputs.projects }}" ]; then
             echo "- No Desktop platform projects were built (no successful restores)." >> $GITHUB_STEP_SUMMARY
           else
-            echo "- Projects built: ${{ needs.discover.outputs.projects }}" >> $GITHUB_STEP_SUMMARY
+            echo "- Projects bundled: ${{ needs.discover.outputs.projects }}" >> $GITHUB_STEP_SUMMARY
           fi
           if [ -n "${{ needs.discover.outputs.skipped }}" ] && [ "${{ needs.discover.outputs.skipped }}" != "[]" ]; then
             echo "- Skipped (restore failed): ${{ needs.discover.outputs.skipped }}" >> $GITHUB_STEP_SUMMARY
           fi
-          echo "- Individual zipped artifacts are available under the workflow run artifacts section." >> $GITHUB_STEP_SUMMARY
+          echo "- Cross-platform bundles (Windows, Linux, macOS) are available as separate artifacts." >> $GITHUB_STEP_SUMMARY

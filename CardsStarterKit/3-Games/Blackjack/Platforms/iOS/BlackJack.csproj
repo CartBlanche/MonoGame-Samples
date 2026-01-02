@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net9.0-ios</TargetFramework>
+    <OutputType>Exe</OutputType>
+    <RootNamespace>Blackjack.iOS</RootNamespace>
+    <AssemblyName>Blackjack</AssemblyName>
+    <AssemblyTitle>Blackjack</AssemblyTitle>
+    <Description>iOS platform for Blackjack Game.</Description>
+    <Authors>CartBlanche</Authors>
+    <Company>MonoGame Foundation</Company>
+    <GenerateAssemblyInfo>true</GenerateAssemblyInfo>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)' == 'Debug'">
+    <MtouchLink>None</MtouchLink>
+    <UseInterpreter>true</UseInterpreter>
+    <EnableAssemblyILStripping>false</EnableAssemblyILStripping>
+    <UseMonoRuntime>true</UseMonoRuntime>
+    <_IsAotCompatible>false</_IsAotCompatible>
+    <EnableSGenConc>true</EnableSGenConc>
+  </PropertyGroup>
+  
+  <ItemGroup>
+    <ProjectReference Include="..\..\Core\Blackjack.Core.csproj" />
+    <PackageReference Include="MonoGame.Framework.iOS" Version="3.8.*" />
+    <PackageReference Include="MonoGame.Content.Builder.Task" Version="3.8.*" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <MonoGameContentReference Include="..\..\Content\Content.mgcb" />
+  </ItemGroup>
+
+  <!-- Centralized Icon Resources -->
+  <ItemGroup>
+    <!-- Icons are symlinked in AppIcon.xcassets/AppIcon.appiconset/ -->
+    <!-- Local launch screen icon -->
+    <BundleResource Include="..\..\..\..\2-Core\Resources\Icons\iOS\Icon-60@3x.png">
+      <Link>LaunchIcon.png</Link>
+    </BundleResource>
+  </ItemGroup>
+
+</Project>

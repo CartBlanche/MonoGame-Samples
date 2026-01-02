@@ -29,4 +29,12 @@
     <PackageReference Include="MonoGame.Content.Builder.Task" Version="3.8.*" />
   </ItemGroup>
 
+
+  <ItemGroup>
+    <None Include="RockRain.DesktopGL.icns">
+      <Link>$(AssemblyName).icns</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>

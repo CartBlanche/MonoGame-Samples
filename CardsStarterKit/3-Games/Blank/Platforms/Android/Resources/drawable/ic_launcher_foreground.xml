@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Use existing PNG icon as foreground, scaled down to 66dp to allow maroon background to show -->
+    <!-- Adaptive icons use 108dp canvas, with 66dp safe zone for foreground content -->
+    <item
+        android:drawable="@drawable/icon"
+        android:width="66dp"
+        android:height="66dp"
+        android:gravity="center" />
+</layer-list>

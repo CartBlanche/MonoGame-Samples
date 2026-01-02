@@ -1,0 +1,44 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <RootNamespace>Blackjack.Core</RootNamespace>
+    <AssemblyTitle>Blackjack</AssemblyTitle>
+    <AssemblyProduct>Blackjack</AssemblyProduct>
+    <AssemblyDescription></AssemblyDescription>
+    <AssemblyCompany>Microsoft</AssemblyCompany>
+    <AssemblyCopyright>Copyright © Microsoft 2010</AssemblyCopyright>
+    <AssemblyVersion>1.0.0.0</AssemblyVersion>
+    <Authors>CartBlanche</Authors>
+    <Company>MonoGame Foundation</Company>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="MonoGame.Framework.DesktopGL" Version="3.8.*" PrivateAssets="all" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\1-Framework\Cards.Framework.csproj" />
+    <ProjectReference Include="..\..\..\..\MonoGame.Xna.Framework.Net\MonoGame.Xna.Framework.Net.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <!-- Shared Core Framework -->
+    <Compile Include="..\..\..\2-Core\ScreenManager\*.cs" Link="ScreenManager\%(Filename)%(Extension)" />
+    <Compile Include="..\..\..\2-Core\Screens\*.cs" Link="Screens\%(Filename)%(Extension)" />
+    <Compile Include="..\..\..\2-Core\Misc\*.cs" Link="Misc\%(Filename)%(Extension)" />
+
+    <!-- Game-Specific Code -->
+    <Compile Include="..\Misc\*.cs" />
+    <Compile Include="..\UI\*.cs" />
+    <Compile Include="..\Players\*.cs" />
+    <Compile Include="..\Networking\*.cs" />
+    <Compile Include="..\Screens\*.cs" />
+    <Compile Include="..\Rules\*.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- Exclude platform-specific files -->
+    <Compile Remove="Platforms\**\*.cs" />
+    <EmbeddedResource Remove="Platforms\**\*" />
+    <None Remove="Platforms\**\*" />
+  </ItemGroup>
+</Project>

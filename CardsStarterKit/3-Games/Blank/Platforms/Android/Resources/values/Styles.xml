@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <style name="Theme.Splash" parent="android:Theme.Material.Light.NoActionBar">
+    <!-- Simple maroon background for API 28-30 (Android 12+ uses values-v31/themes.xml) -->
+    <item name="android:windowBackground">@color/background_maroon</item>
+    <item name="android:windowNoTitle">true</item>
+    <item name="android:statusBarColor">@color/background_maroon</item>
+    <item name="android:navigationBarColor">@color/background_maroon</item>
+  </style>
+  <style name="MainTheme" parent="android:Theme.Material.Light.NoActionBar">
+    <!-- Maroon color theme for blackjack app -->
+    <item name="android:colorPrimary">@color/background_maroon</item>
+    <item name="android:colorPrimaryDark">@color/background_maroon</item>
+    <item name="android:colorAccent">@color/background_burgundy</item>
+    <item name="android:statusBarColor">@color/background_maroon</item>
+    <item name="android:navigationBarColor">@color/background_maroon</item>
+  </style>
+</resources>

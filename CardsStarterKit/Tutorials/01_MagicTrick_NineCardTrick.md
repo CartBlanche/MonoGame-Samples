@@ -45,8 +45,8 @@ By placing the selected pile in the middle position twice, the card always ends 
 We'll organize our magic trick code similarly to the Blackjack implementation:
 
 ```
-Core/Game/MagicTrick/
-├── Game/
+3-Games/MagicTrick/
+├── Core/
 │   ├── MagicTrickCardGame.cs
 │   ├── MagicTrickGameState.cs
 ├── Players/
@@ -55,16 +55,16 @@ Core/Game/MagicTrick/
 │   ├── CardSelectionRule.cs
 │   └── RevealRule.cs
 └── UI/
-    └── (We'll use existing Button class)
+    └── (We'll use existing Button class from Blackjack)
 ```
 
 Create these directories:
 
 ```bash
-mkdir -p Core/Game/MagicTrick/Game
-mkdir -p Core/Game/MagicTrick/Players
-mkdir -p Core/Game/MagicTrick/Rules
-mkdir -p Core/Game/MagicTrick/UI
+mkdir -p 3-Games/MagicTrick/Core
+mkdir -p 3-Games/MagicTrick/Players
+mkdir -p 3-Games/MagicTrick/Rules
+mkdir -p 3-Games/MagicTrick/UI
 ```
 
 ---
@@ -75,10 +75,10 @@ mkdir -p Core/Game/MagicTrick/UI
 
 The magic trick has distinct phases, so we'll use a state machine to control flow.
 
-**Create:** `Core/Game/MagicTrick/Game/MagicTrickGameState.cs`
+**Create:** `3-Games/MagicTrick/Core/MagicTrickGameState.cs`
 
 ```csharp
-namespace CardsFramework.MagicTrick
+namespace MagicTrick
 {
     /// <summary>
     /// Represents the various states of the magic trick game
@@ -142,13 +142,13 @@ namespace CardsFramework.MagicTrick
 
 Our player needs minimal state - just tracking which pile they selected.
 
-**Create:** `Core/Game/MagicTrick/Players/MagicTrickPlayer.cs`
+**Create:** `3-Games/MagicTrick/Players/MagicTrickPlayer.cs`
 
 ```csharp
 using CardsFramework.Players;
 using CardsFramework.Game;
 
-namespace CardsFramework.MagicTrick
+namespace MagicTrick
 {
     /// <summary>
     /// Represents the spectator in the magic trick
@@ -203,13 +203,13 @@ namespace CardsFramework.MagicTrick
 
 This rule checks if the player has made their pile selection and triggers the next phase.
 
-**Create:** `Core/Game/MagicTrick/Rules/CardSelectionRule.cs`
+**Create:** `3-Games/MagicTrick/Rules/CardSelectionRule.cs`
 
 ```csharp
 using System;
 using CardsFramework.Rules;
 
-namespace CardsFramework.MagicTrick
+namespace MagicTrick
 {
     /// <summary>
     /// Event arguments for card selection events
@@ -273,14 +273,14 @@ namespace CardsFramework.MagicTrick
 
 This rule determines when we're ready to reveal the selected card.
 
-**Create:** `Core/Game/MagicTrick/Rules/RevealRule.cs`
+**Create:** `3-Games/MagicTrick/Rules/RevealRule.cs`
 
 ```csharp
 using System;
 using CardsFramework.Rules;
 using CardsFramework.Cards;
 
-namespace CardsFramework.MagicTrick
+namespace MagicTrick
 {
     /// <summary>
     /// Event arguments for reveal events
@@ -347,7 +347,7 @@ namespace CardsFramework.MagicTrick
 
 This is the core of our implementation. We'll build it in sections.
 
-**Create:** `Core/Game/MagicTrick/Game/MagicTrickCardGame.cs`
+**Create:** `3-Games/MagicTrick/Core/MagicTrickCardGame.cs`
 
 ```csharp
 using System;
@@ -359,9 +359,9 @@ using CardsFramework.Game;
 using CardsFramework.Players;
 using CardsFramework.UI;
 using CardsFramework.Rules;
-using GameStateManagement;
+using CardsFramework.Core;
 
-namespace CardsFramework.MagicTrick
+namespace MagicTrick
 {
     /// <summary>
     /// Main game class for the 9-card magic trick
@@ -410,15 +410,24 @@ namespace CardsFramework.MagicTrick
         private const float CardSpacingY = 160f;
         private Vector2 gridStartPosition;
 
+        // State transition timer
+        private float stateTransitionTimer;
+        private float stateTransitionDelay;
+        private MagicTrickGameState nextState;
+        private bool waitingForStateTransition;
+
         #endregion
 
         #region Initialization
+
+        private ScreenManager screenManager;
 
         /// <summary>
         /// Creates a new magic trick game
         /// </summary>
         /// <param name="gameTable">The game table for layout</param>
-        public MagicTrickCardGame(GameTable gameTable)
+        /// <param name="screenManager">The screen manager for SpriteBatch and Content</param>
+        public MagicTrickCardGame(GameTable gameTable, ScreenManager screenManager)
             : base(
                 decks: 1,                           // Only need 1 deck
                 jokersInDeck: 0,                    // No jokers
@@ -429,6 +438,7 @@ namespace CardsFramework.MagicTrick
                 gameTable: gameTable,
                 theme: "Default")
         {
+            this.screenManager = screenManager;
             TableCards = new List<TraditionalCard>();
             animatedCards = new List<AnimatedCardsGameComponent>();
             instructionText = "";
@@ -464,26 +474,22 @@ namespace CardsFramework.MagicTrick
             base.LoadContent();
 
             // Load instruction font
-            instructionFont = Game.Content.Load<SpriteFont>(@"Fonts\Regular");
+            instructionFont = screenManager.Font;
 
-            // Create buttons for pile selection
-            Texture2D buttonTexture = Game.Content.Load<Texture2D>(@"Images\UI\ButtonRegular");
-            Texture2D buttonPressedTexture = Game.Content.Load<Texture2D>(@"Images\UI\ButtonPressed");
+            // Get input state from screenManager
+            InputState input = new InputState();
 
-            int screenWidth = GraphicsDevice.Viewport.Width;
-            int screenHeight = GraphicsDevice.Viewport.Height;
-            int buttonWidth = 200;
-            int buttonHeight = 60;
-            int buttonY = screenHeight - 250;
+            // Create buttons using the actual Button constructor
+            // Buttons use texture names, not Texture2D objects
 
             // Pile 1 button (left)
             buttonPile1 = new Button(
-                new Rectangle((screenWidth / 2) - buttonWidth - 120, buttonY, buttonWidth, buttonHeight),
-                buttonTexture,
-                buttonPressedTexture,
-                instructionFont,
-                "Left Pile",
-                Color.White
+                "ButtonRegular",          // Regular texture
+                "ButtonPressed",          // Pressed texture
+                input,                    // Input state
+                this,                     // CardsGame
+                screenManager.SpriteBatch,
+                screenManager.GlobalTransformation
             );
             buttonPile1.Click += ButtonPile1_Click;
             buttonPile1.Visible = false;
@@ -491,12 +497,12 @@ namespace CardsFramework.MagicTrick
 
             // Pile 2 button (middle)
             buttonPile2 = new Button(
-                new Rectangle((screenWidth / 2) - buttonWidth / 2, buttonY, buttonWidth, buttonHeight),
-                buttonTexture,
-                buttonPressedTexture,
-                instructionFont,
-                "Middle Pile",
-                Color.White
+                "ButtonRegular",
+                "ButtonPressed",
+                input,
+                this,
+                screenManager.SpriteBatch,
+                screenManager.GlobalTransformation
             );
             buttonPile2.Click += ButtonPile2_Click;
             buttonPile2.Visible = false;
@@ -504,38 +510,38 @@ namespace CardsFramework.MagicTrick
 
             // Pile 3 button (right)
             buttonPile3 = new Button(
-                new Rectangle((screenWidth / 2) + 120, buttonY, buttonWidth, buttonHeight),
-                buttonTexture,
-                buttonPressedTexture,
-                instructionFont,
-                "Right Pile",
-                Color.White
+                "ButtonRegular",
+                "ButtonPressed",
+                input,
+                this,
+                screenManager.SpriteBatch,
+                screenManager.GlobalTransformation
             );
             buttonPile3.Click += ButtonPile3_Click;
             buttonPile3.Visible = false;
             Game.Components.Add(buttonPile3);
 
-            // Continue button (for advancing through states)
+            // Continue button
             buttonContinue = new Button(
-                new Rectangle((screenWidth / 2) - buttonWidth / 2, buttonY + 80, buttonWidth, buttonHeight),
-                buttonTexture,
-                buttonPressedTexture,
-                instructionFont,
-                "Continue",
-                Color.LightGreen
+                "ButtonRegular",
+                "ButtonPressed",
+                input,
+                this,
+                screenManager.SpriteBatch,
+                screenManager.GlobalTransformation
             );
             buttonContinue.Click += ButtonContinue_Click;
             buttonContinue.Visible = false;
             Game.Components.Add(buttonContinue);
 
-            // New Trick button (restart)
+            // New Trick button
             buttonNewTrick = new Button(
-                new Rectangle((screenWidth / 2) - buttonWidth / 2, buttonY + 160, buttonWidth, buttonHeight),
-                buttonTexture,
-                buttonPressedTexture,
-                instructionFont,
-                "New Trick",
-                Color.LightBlue
+                "ButtonRegular",
+                "ButtonPressed",
+                input,
+                this,
+                screenManager.SpriteBatch,
+                screenManager.GlobalTransformation
             );
             buttonNewTrick.Click += ButtonNewTrick_Click;
             buttonNewTrick.Visible = false;
@@ -620,7 +626,12 @@ Add these methods to handle players:
                 TableCards.Add(card);
 
                 // Create animated component for this card
-                AnimatedCardsGameComponent animatedCard = new AnimatedCardsGameComponent(card, Game);
+                AnimatedCardsGameComponent animatedCard = new AnimatedCardsGameComponent(
+                    card,
+                    this,
+                    screenManager.SpriteBatch,
+                    screenManager.GlobalTransformation
+                );
                 animatedCard.LoadContent();
 
                 // Calculate position in 3x3 grid
@@ -725,7 +736,12 @@ Add these methods to handle players:
             // Create new animated components in new positions
             for (int i = 0; i < TableCards.Count; i++)
             {
-                AnimatedCardsGameComponent animatedCard = new AnimatedCardsGameComponent(TableCards[i], Game);
+                AnimatedCardsGameComponent animatedCard = new AnimatedCardsGameComponent(
+                    TableCards[i],
+                    this,
+                    screenManager.SpriteBatch,
+                    screenManager.GlobalTransformation
+                );
                 animatedCard.LoadContent();
 
                 // Calculate position in 3x3 grid
@@ -768,10 +784,20 @@ Add these methods to handle players:
             Deal();
 
             // Move to selection phase after brief delay
-            System.Threading.Tasks.Task.Delay(1000).ContinueWith(t =>
-            {
-                currentState = MagicTrickGameState.PlayerSelecting;
-            });
+            ScheduleStateTransition(MagicTrickGameState.PlayerSelecting, 1000f);
+        }
+
+        /// <summary>
+        /// Schedules a state transition after a delay
+        /// </summary>
+        /// <param name="newState">The state to transition to</param>
+        /// <param name="delayMs">Delay in milliseconds</param>
+        private void ScheduleStateTransition(MagicTrickGameState newState, float delayMs)
+        {
+            nextState = newState;
+            stateTransitionDelay = delayMs;
+            stateTransitionTimer = 0;
+            waitingForStateTransition = true;
         }
 
         /// <summary>
@@ -780,6 +806,17 @@ Add these methods to handle players:
         public override void Update(GameTime gameTime)
         {
             base.Update(gameTime);
+
+            // Handle state transition timer
+            if (waitingForStateTransition)
+            {
+                stateTransitionTimer += (float)gameTime.ElapsedGameTime.TotalMilliseconds;
+                if (stateTransitionTimer >= stateTransitionDelay)
+                {
+                    currentState = nextState;
+                    waitingForStateTransition = false;
+                }
+            }
 
             // Check rules
             CheckRules();
@@ -937,10 +974,7 @@ Add these methods to handle players:
                 player.ResetSelection();
 
                 // Move to second selection after delay
-                System.Threading.Tasks.Task.Delay(1500).ContinueWith(t =>
-                {
-                    currentState = MagicTrickGameState.SecondPileSelection;
-                });
+                ScheduleStateTransition(MagicTrickGameState.SecondPileSelection, 1500f);
             }
             else if (currentState == MagicTrickGameState.SecondPileSelection)
             {
@@ -951,10 +985,7 @@ Add these methods to handle players:
                 RearrangeCards(args.SelectedPile);
 
                 // Move to reveal after delay
-                System.Threading.Tasks.Task.Delay(1500).ContinueWith(t =>
-                {
-                    currentState = MagicTrickGameState.Revealing;
-                });
+                ScheduleStateTransition(MagicTrickGameState.Revealing, 1500f);
             }
         }
 
@@ -1030,9 +1061,16 @@ Add these methods to handle players:
         /// <summary>
         /// Gets the value of a card (not used in magic trick, but required by base class)
         /// </summary>
+        /// <remarks>
+        /// IMPORTANT: The CardsGame base class declares CardValue() as an abstract method,
+        /// so every game MUST override it. Even though the magic trick doesn't need card
+        /// values for scoring, we provide a standard implementation here. Games like Blackjack
+        /// and Gin Rummy use this for actual scoring logic.
+        /// </remarks>
         public override int CardValue(TraditionalCard card)
         {
             // Magic trick doesn't need card values, but we implement for completeness
+            // This is a standard card value mapping (Aces=1, Face cards=10)
             switch (card.Value)
             {
                 case CardValue.Ace:
@@ -1079,14 +1117,14 @@ Add these methods to handle players:
 
 ### Step 6.1: Create a Screen for the Magic Trick
 
-**Create:** `Core/Game/Screens/MagicTrickGameplayScreen.cs`
+**Create:** `2-Core/Screens/MagicTrickGameplayScreen.cs`
 
 ```csharp
 using System;
 using Microsoft.Xna.Framework;
 using CardsFramework.MagicTrick;
 using CardsFramework.UI;
-using GameStateManagement;
+using CardsFramework.Core;
 
 namespace CardsStarterKit
 {
@@ -1173,7 +1211,7 @@ namespace CardsStarterKit
 
 ### Step 6.2: Add Menu Entry
 
-**Modify:** `Core/Game/Screens/MainMenuScreen.cs`
+**Modify:** `2-Core/Screens/MainMenuScreen.cs`
 
 Find the constructor where menu entries are added and add:
 
@@ -1204,7 +1242,10 @@ private void MagicTrickMenuEntrySelected(object sender, EventArgs e)
 
 ```bash
 dotnet build
-dotnet run --project Platforms/Desktop/CardsStarterKit.Desktop.csproj
+# For macOS/Linux
+dotnet run --project Platforms/DesktopGL/CardsStarterKit.DesktopGL.csproj
+# For Windows
+dotnet run --project Platforms/WindowsDX/CardsStarterKit.WindowsDX.csproj
 ```
 
 ### Step 7.2: Test the Flow
@@ -1367,13 +1408,13 @@ This framework makes it easy to experiment with card logic without worrying abou
 
 ## Complete File Checklist
 
-- [ ] `Core/Game/MagicTrick/Game/MagicTrickGameState.cs`
-- [ ] `Core/Game/MagicTrick/Game/MagicTrickCardGame.cs`
-- [ ] `Core/Game/MagicTrick/Players/MagicTrickPlayer.cs`
-- [ ] `Core/Game/MagicTrick/Rules/CardSelectionRule.cs`
-- [ ] `Core/Game/MagicTrick/Rules/RevealRule.cs`
-- [ ] `Core/Game/Screens/MagicTrickGameplayScreen.cs`
-- [ ] Modified `Core/Game/Screens/MainMenuScreen.cs`
+- [ ] `3-Games/MagicTrick/Core/MagicTrickGameState.cs`
+- [ ] `3-Games/MagicTrick/Core/MagicTrickCardGame.cs`
+- [ ] `3-Games/MagicTrick/Players/MagicTrickPlayer.cs`
+- [ ] `3-Games/MagicTrick/Rules/CardSelectionRule.cs`
+- [ ] `3-Games/MagicTrick/Rules/RevealRule.cs`
+- [ ] `2-Core/Screens/MagicTrickGameplayScreen.cs`
+- [ ] Modified `2-Core/Screens/MainMenuScreen.cs`
 
 ---
 

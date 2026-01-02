@@ -27,4 +27,12 @@
     </Content>
   </ItemGroup>
 
+
+  <ItemGroup>
+    <None Include="HoneycombRush.DesktopGL.icns">
+      <Link>$(AssemblyName).icns</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>

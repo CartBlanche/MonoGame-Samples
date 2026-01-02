@@ -1,0 +1,79 @@
+
+#----------------------------- Global Properties ----------------------------#
+
+/outputDir:bin/$(Platform)
+/intermediateDir:obj/$(Platform)
+/platform:DesktopGL
+/config:
+/profile:Reach
+/compress:False
+
+#-------------------------------- References --------------------------------#
+
+/reference:../../../2-Core/Content/bin/DesktopGL/CardsFrameworkContent.dll
+
+#---------------------------------- Content ---------------------------------#
+
+#begin ../../../2-Core/Content/Fonts/MenuFont.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:../../../2-Core/Content/Fonts/MenuFont.spritefont
+/copy:../../../2-Core/Content/Fonts/MenuFont.spritefont
+
+#begin ../../../2-Core/Content/Fonts/Regular.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:../../../2-Core/Content/Fonts/Regular.spritefont
+/copy:../../../2-Core/Content/Fonts/Regular.spritefont
+
+#begin ../../../2-Core/Content/Fonts/Bold.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:../../../2-Core/Content/Fonts/Bold.spritefont
+/copy:../../../2-Core/Content/Fonts/Bold.spritefont
+
+#begin ../../../2-Core/Content/Images/blank.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:../../../2-Core/Content/Images/blank.png
+/copy:../../../2-Core/Content/Images/blank.png
+
+#begin ../../../2-Core/Content/Images/ButtonRegular.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:../../../2-Core/Content/Images/ButtonRegular.png
+/copy:../../../2-Core/Content/Images/ButtonRegular.png
+
+#begin ../../../2-Core/Content/Images/ButtonPressed.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:../../../2-Core/Content/Images/ButtonPressed.png
+/copy:../../../2-Core/Content/Images/ButtonPressed.png
+

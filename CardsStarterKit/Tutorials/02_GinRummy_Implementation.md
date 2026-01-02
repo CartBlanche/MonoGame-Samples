@@ -63,18 +63,18 @@ This tutorial focuses on **single-round gameplay** to keep it manageable. At the
 ### Step 1.1: Create Directory Structure
 
 ```bash
-mkdir -p Core/Game/GinRummy/Game
-mkdir -p Core/Game/GinRummy/Players
-mkdir -p Core/Game/GinRummy/Rules
-mkdir -p Core/Game/GinRummy/UI
-mkdir -p Core/Game/GinRummy/AI
+mkdir -p 3-Games/GinRummy/Core
+mkdir -p 3-Games/GinRummy/Players
+mkdir -p 3-Games/GinRummy/Rules
+mkdir -p 3-Games/GinRummy/UI
+mkdir -p 3-Games/GinRummy/AI
 ```
 
 Your structure will look like:
 
 ```
-Core/Game/GinRummy/
-├── Game/
+3-Games/GinRummy/
+├── Core/
 │   ├── GinRummyCardGame.cs
 │   ├── GinRummyGameState.cs
 │   ├── Meld.cs
@@ -88,8 +88,8 @@ Core/Game/GinRummy/
 │   └── TurnCompleteRule.cs
 ├── UI/
 │   └── HandOrganizer.cs
-└── NPC/
-    └── GinRummyNPC.cs
+└── AI/
+    └── GinRummyAI.cs
 ```
 
 ---
@@ -101,7 +101,7 @@ Core/Game/GinRummy/
 **Create:** `Core/Game/GinRummy/Game/GinRummyGameState.cs`
 
 ```csharp
-namespace CardsFramework.GinRummy
+namespace GinRummy
 {
     /// <summary>
     /// States of a Gin Rummy game
@@ -160,7 +160,7 @@ using System.Collections.Generic;
 using System.Linq;
 using CardsFramework.Cards;
 
-namespace CardsFramework.GinRummy
+namespace GinRummy
 {
     /// <summary>
     /// Types of melds in Gin Rummy
@@ -360,7 +360,7 @@ using System.Collections.Generic;
 using System.Linq;
 using CardsFramework.Cards;
 
-namespace CardsFramework.GinRummy
+namespace GinRummy
 {
     /// <summary>
     /// Detects valid melds in a hand and calculates deadwood
@@ -620,7 +620,7 @@ using CardsFramework.Cards;
 using CardsFramework.Players;
 using CardsFramework.Game;
 
-namespace CardsFramework.GinRummy
+namespace GinRummy
 {
     /// <summary>
     /// Represents a player in Gin Rummy
@@ -751,7 +751,7 @@ namespace CardsFramework.GinRummy
 ```csharp
 using CardsFramework.Game;
 
-namespace CardsFramework.GinRummy
+namespace GinRummy
 {
     /// <summary>
     /// NPC-controlled Gin Rummy player
@@ -788,7 +788,7 @@ using System.Collections.Generic;
 using System.Linq;
 using CardsFramework.Cards;
 
-namespace CardsFramework.GinRummy
+namespace GinRummy
 {
     /// <summary>
     /// Intermediat NPC for Gin Rummy
@@ -991,7 +991,7 @@ This creates a competent but not unbeatable opponent.
 using System;
 using CardsFramework.Rules;
 
-namespace CardsFramework.GinRummy
+namespace GinRummy
 {
     public class KnockEventArgs : EventArgs
     {
@@ -1036,7 +1036,7 @@ namespace CardsFramework.GinRummy
 using System;
 using CardsFramework.Rules;
 
-namespace CardsFramework.GinRummy
+namespace GinRummy
 {
     public class GinEventArgs : EventArgs
     {
@@ -1081,7 +1081,7 @@ namespace CardsFramework.GinRummy
 using System;
 using CardsFramework.Rules;
 
-namespace CardsFramework.GinRummy
+namespace GinRummy
 {
     public class TurnCompleteEventArgs : EventArgs
     {
@@ -1150,9 +1150,9 @@ using CardsFramework.Game;
 using CardsFramework.Players;
 using CardsFramework.UI;
 using CardsFramework.Rules;
-using GameStateManagement;
+using CardsFramework.Core;
 
-namespace CardsFramework.GinRummy
+namespace GinRummy
 {
     public class GinRummyCardGame : CardsGame
     {
@@ -1196,11 +1196,19 @@ namespace CardsFramework.GinRummy
         private SpriteFont gameFont;
         private string statusText;
 
+        // Screen management
+        private ScreenManager screenManager;
+
         #endregion
 
         #region Initialization
 
-        public GinRummyCardGame(GameTable gameTable)
+        /// <summary>
+        /// Creates a new Gin Rummy game
+        /// </summary>
+        /// <param name="gameTable">The game table for layout</param>
+        /// <param name="screenManager">The screen manager for SpriteBatch and Content</param>
+        public GinRummyCardGame(GameTable gameTable, ScreenManager screenManager)
             : base(
                 decks: 1,
                 jokersInDeck: 0,
@@ -1211,6 +1219,7 @@ namespace CardsFramework.GinRummy
                 gameTable: gameTable,
                 theme: "Default")
         {
+            this.screenManager = screenManager;
             discardPile = new List<TraditionalCard>();
             animatedHands = new List<AnimatedHandGameComponent>();
             currentPlayerIndex = 0;
@@ -1227,78 +1236,99 @@ namespace CardsFramework.GinRummy
         {
             base.LoadContent();
 
-            gameFont = Game.Content.Load<SpriteFont>(@"Fonts\Regular");
+            // Use font from ScreenManager
+            gameFont = screenManager.Font;
 
-            // Load button textures
-            Texture2D buttonTexture = Game.Content.Load<Texture2D>(@"Images\UI\ButtonRegular");
-            Texture2D buttonPressedTexture = Game.Content.Load<Texture2D>(@"Images\UI\ButtonPressed");
+            // Get input state for buttons
+            InputState input = new InputState();
 
             int screenWidth = GraphicsDevice.Viewport.Width;
             int screenHeight = GraphicsDevice.Viewport.Height;
             int buttonWidth = 200;
             int buttonHeight = 60;
 
+            // Create buttons using the actual Button constructor
+            // Buttons use texture names, not Texture2D objects
+
             // Draw Stock button
             buttonDrawStock = new Button(
-                new Rectangle(screenWidth / 2 - buttonWidth - 120, screenHeight - 150, buttonWidth, buttonHeight),
-                buttonTexture,
-                buttonPressedTexture,
-                gameFont,
-                "Draw from Stock",
-                Color.White
+                "ButtonRegular",
+                "ButtonPressed",
+                input,
+                this,
+                screenManager.SpriteBatch,
+                screenManager.GlobalTransformation
             );
+            buttonDrawStock.Text = "Draw from Stock";
+            buttonDrawStock.Font = gameFont;
+            buttonDrawStock.Bounds = new Rectangle(screenWidth / 2 - buttonWidth - 120, screenHeight - 150, buttonWidth, buttonHeight);
             buttonDrawStock.Click += ButtonDrawStock_Click;
             buttonDrawStock.Visible = false;
             Game.Components.Add(buttonDrawStock);
 
             // Draw Discard button
             buttonDrawDiscard = new Button(
-                new Rectangle(screenWidth / 2 + 120 - buttonWidth, screenHeight - 150, buttonWidth, buttonHeight),
-                buttonTexture,
-                buttonPressedTexture,
-                gameFont,
-                "Draw from Discard",
-                Color.White
+                "ButtonRegular",
+                "ButtonPressed",
+                input,
+                this,
+                screenManager.SpriteBatch,
+                screenManager.GlobalTransformation
             );
+            buttonDrawDiscard.Text = "Draw from Discard";
+            buttonDrawDiscard.Font = gameFont;
+            buttonDrawDiscard.Bounds = new Rectangle(screenWidth / 2 + 120 - buttonWidth, screenHeight - 150, buttonWidth, buttonHeight);
             buttonDrawDiscard.Click += ButtonDrawDiscard_Click;
             buttonDrawDiscard.Visible = false;
             Game.Components.Add(buttonDrawDiscard);
 
             // Knock button
             buttonKnock = new Button(
-                new Rectangle(screenWidth / 2 - buttonWidth / 2, screenHeight - 230, buttonWidth, buttonHeight),
-                buttonTexture,
-                buttonPressedTexture,
-                gameFont,
-                "Knock",
-                Color.Yellow
+                "ButtonRegular",
+                "ButtonPressed",
+                input,
+                this,
+                screenManager.SpriteBatch,
+                screenManager.GlobalTransformation
             );
+            buttonKnock.Text = "Knock";
+            buttonKnock.Font = gameFont;
+            buttonKnock.Bounds = new Rectangle(screenWidth / 2 - buttonWidth / 2, screenHeight - 230, buttonWidth, buttonHeight);
+            buttonKnock.Color = Color.Yellow;
             buttonKnock.Click += ButtonKnock_Click;
             buttonKnock.Visible = false;
             Game.Components.Add(buttonKnock);
 
             // Gin button
             buttonGin = new Button(
-                new Rectangle(screenWidth / 2 - buttonWidth / 2, screenHeight - 310, buttonWidth, buttonHeight),
-                buttonTexture,
-                buttonPressedTexture,
-                gameFont,
-                "Gin!",
-                Color.Green
+                "ButtonRegular",
+                "ButtonPressed",
+                input,
+                this,
+                screenManager.SpriteBatch,
+                screenManager.GlobalTransformation
             );
+            buttonGin.Text = "Gin!";
+            buttonGin.Font = gameFont;
+            buttonGin.Bounds = new Rectangle(screenWidth / 2 - buttonWidth / 2, screenHeight - 310, buttonWidth, buttonHeight);
+            buttonGin.Color = Color.Green;
             buttonGin.Click += ButtonGin_Click;
             buttonGin.Visible = false;
             Game.Components.Add(buttonGin);
 
             // New Round button
             buttonNewRound = new Button(
-                new Rectangle(screenWidth / 2 - buttonWidth / 2, screenHeight - 150, buttonWidth, buttonHeight),
-                buttonTexture,
-                buttonPressedTexture,
-                gameFont,
-                "New Round",
-                Color.LightBlue
+                "ButtonRegular",
+                "ButtonPressed",
+                input,
+                this,
+                screenManager.SpriteBatch,
+                screenManager.GlobalTransformation
             );
+            buttonNewRound.Text = "New Round";
+            buttonNewRound.Font = gameFont;
+            buttonNewRound.Bounds = new Rectangle(screenWidth / 2 - buttonWidth / 2, screenHeight - 150, buttonWidth, buttonHeight);
+            buttonNewRound.Color = Color.LightBlue;
             buttonNewRound.Click += ButtonNewRound_Click;
             buttonNewRound.Visible = false;
             Game.Components.Add(buttonNewRound);
@@ -1341,9 +1371,11 @@ namespace CardsFramework.GinRummy
 
             // Create animated hand for this player
             AnimatedHandGameComponent animatedHand = new AnimatedHandGameComponent(
+                Players.Count - 1,           // Place/position index
                 newPlayer.Hand,
-                gameTable[Players.Count - 1],
-                Game
+                this,                        // CardsGame
+                screenManager.SpriteBatch,
+                screenManager.GlobalTransformation
             );
             animatedHand.LoadContent();
             animatedHands.Add(animatedHand);
@@ -1415,7 +1447,12 @@ namespace CardsFramework.GinRummy
                 GraphicsDevice.Viewport.Height / 2
             );
 
-            discardPileComponent = new AnimatedCardsGameComponent(topCard, Game);
+            discardPileComponent = new AnimatedCardsGameComponent(
+                topCard,
+                this,
+                screenManager.SpriteBatch,
+                screenManager.GlobalTransformation
+            );
             discardPileComponent.CurrentPosition = discardPosition;
             discardPileComponent.IsFaceDown = false;
             discardPileComponent.LoadContent();
@@ -1856,7 +1893,7 @@ using System.Linq;
 using Microsoft.Xna.Framework;
 using CardsFramework.Cards;
 
-namespace CardsFramework.GinRummy
+namespace GinRummy
 {
     /// <summary>
     /// Organizes cards in hand for better visualization
@@ -1965,9 +2002,9 @@ This helper organizes cards visually, grouping melds together and separating dea
 ```csharp
 using System;
 using Microsoft.Xna.Framework;
-using CardsFramework.GinRummy;
+using GinRummy;
 using CardsFramework.UI;
-using GameStateManagement;
+using CardsFramework.Core;
 
 namespace CardsStarterKit
 {
@@ -1988,7 +2025,7 @@ namespace CardsStarterKit
             GameTable gameTable = new GameTable(ScreenManager.Game, 4);
 
             // Create game
-            ginRummyGame = new GinRummyCardGame(gameTable);
+            ginRummyGame = new GinRummyCardGame(gameTable, ScreenManager);
             ScreenManager.Game.Components.Add(ginRummyGame);
             ginRummyGame.Initialize();
             ginRummyGame.LoadContent();
@@ -1997,11 +2034,11 @@ namespace CardsStarterKit
             GinRummyPlayer humanPlayer = new GinRummyPlayer("You", ginRummyGame);
             ginRummyGame.AddPlayer(humanPlayer);
 
-            GinRummyNPCPlayer xpc1 = new GinRummyNPCPlayer("NPC 1", ginRummyGame);
-            ginRummyGame.AddPlayer(ai1);
+            GinRummyNPCPlayer npc1 = new GinRummyNPCPlayer("NPC 1", ginRummyGame);
+            ginRummyGame.AddPlayer(npc1);
 
             GinRummyNPCPlayer npc2 = new GinRummyNPCPlayer("NPC 2", ginRummyGame);
-            ginRummyGame.AddPlayer(ai2);
+            ginRummyGame.AddPlayer(npc2);
 
             // Start game
             ginRummyGame.StartPlaying();
@@ -2073,7 +2110,10 @@ private void GinRummyMenuEntrySelected(object sender, EventArgs e)
 
 ```bash
 dotnet build
-dotnet run --project Platforms/Desktop/CardsStarterKit.Desktop.csproj
+# For macOS/Linux
+dotnet run --project Platforms/DesktopGL/CardsStarterKit.DesktopGL.csproj
+# For Windows
+dotnet run --project Platforms/WindowsDX/CardsStarterKit.WindowsDX.csproj
 ```
 
 ### Step 11.2: Test Scenarios

@@ -25,4 +25,12 @@
   <ItemGroup>
     <MonoGameContentReference Include="..\..\Core\Content\Content.mgcb" />
   </ItemGroup>
+
+  <ItemGroup>
+    <None Include="NetworkStateManagement.DesktopGL.icns">
+      <Link>$(AssemblyName).icns</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>
