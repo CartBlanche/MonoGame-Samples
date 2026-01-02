@@ -31,7 +31,7 @@
 
 
   <ItemGroup>
-    <None Include="InputReporter.icns">
+    <None Include="InputReporter.DesktopGL.icns">
       <Link>$(AssemblyName).icns</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>

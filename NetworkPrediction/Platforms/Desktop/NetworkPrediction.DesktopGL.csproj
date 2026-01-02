@@ -30,7 +30,7 @@
 
 
   <ItemGroup>
-    <None Include="NetworkPrediction.icns">
+    <None Include="NetworkPrediction.DesktopGL.icns">
       <Link>$(AssemblyName).icns</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>

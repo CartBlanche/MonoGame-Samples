@@ -31,7 +31,7 @@
 
 
   <ItemGroup>
-    <None Include="RockRain.icns">
+    <None Include="RockRain.DesktopGL.icns">
       <Link>$(AssemblyName).icns</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>

@@ -25,7 +25,7 @@
 
 
   <ItemGroup>
-    <None Include="RectangleCollisionSample.icns">
+    <None Include="RectangleCollisionSample.DesktopGL.icns">
       <Link>$(AssemblyName).icns</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
