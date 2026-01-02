@@ -13,7 +13,7 @@
     <key>CFBundlePackageType</key>
     <string>APPL</string>
     <key>CFBundleExecutable</key>
-    <string>FarseerSamples.DesktopGL</string>
+    <string>FarseerSamples</string>
     <key>CFBundleIconFile</key>
     <string>FarseerSamples.DesktopGL.icns</string>
     <key>NSHighResolutionCapable</key>

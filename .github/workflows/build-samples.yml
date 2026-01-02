@@ -179,7 +179,7 @@ jobs:
       - name: Upload macOS App Bundle
         uses: actions/upload-artifact@v4
         with:
-          name: ${{ steps.package.outputs.name }}-macOS-Intel
+          name: ${{ steps.package.outputs.name }}-macOS-Universal
           path: artifacts/${{ steps.package.outputs.name }}/*-universal.tar.gz
           if-no-files-found: error
           retention-days: 14

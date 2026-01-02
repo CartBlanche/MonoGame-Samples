@@ -13,7 +13,7 @@
     <key>CFBundlePackageType</key>
     <string>APPL</string>
     <key>CFBundleExecutable</key>
-    <string>CollisionSample.DesktopGL</string>
+    <string>Collision</string>
     <key>CFBundleIconFile</key>
     <string>CollisionSample.DesktopGL.icns</string>
     <key>NSHighResolutionCapable</key>

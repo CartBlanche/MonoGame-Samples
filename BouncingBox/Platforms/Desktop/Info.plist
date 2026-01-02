@@ -13,7 +13,7 @@
     <key>CFBundlePackageType</key>
     <string>APPL</string>
     <key>CFBundleExecutable</key>
-    <string>BouncingBox.DesktopGL</string>
+    <string>BouncingBox</string>
     <key>CFBundleIconFile</key>
     <string>BouncingBox.DesktopGL.icns</string>
     <key>NSHighResolutionCapable</key>
