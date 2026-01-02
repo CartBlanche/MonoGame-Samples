@@ -143,14 +143,16 @@ jobs:
               -rids win-x64,linux-x64,osx-x64,osx-arm64 \
               -i "$INFO_PLIST" \
               -c "$ICNS_FILE" \
-              -v
+              -v \
+              --macos-universal
           else
             echo "No .icns file found, packaging without custom icon"
             monopack -p "$PROJ" \
               -o "$ARTIFACTS_DIR" \
               -rids win-x64,linux-x64,osx-x64,osx-arm64 \
               -i "$INFO_PLIST" \
-              -v
+              -v \
+              --macos-universal
           fi
 
           echo "Generated artifacts:"
@@ -174,19 +176,11 @@ jobs:
           if-no-files-found: error
           retention-days: 14
 
-      - name: Upload macOS Intel Bundle
+      - name: Upload macOS App Bundle
         uses: actions/upload-artifact@v4
         with:
           name: ${{ steps.package.outputs.name }}-macOS-Intel
-          path: artifacts/${{ steps.package.outputs.name }}/*-osx-x64.tar.gz
-          if-no-files-found: error
-          retention-days: 14
-
-      - name: Upload macOS Apple Silicon Bundle
-        uses: actions/upload-artifact@v4
-        with:
-          name: ${{ steps.package.outputs.name }}-macOS-AppleSilicon
-          path: artifacts/${{ steps.package.outputs.name }}/*-osx-arm64.tar.gz
+          path: artifacts/${{ steps.package.outputs.name }}/*-universal.tar.gz
           if-no-files-found: error
           retention-days: 14
 
