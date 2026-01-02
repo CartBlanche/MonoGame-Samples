@@ -29,7 +29,7 @@
 
 
   <ItemGroup>
-    <None Include="RobotRampage.icns">
+    <None Include="RobotRampage.DesktopGL.icns">
       <Link>$(AssemblyName).icns</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
