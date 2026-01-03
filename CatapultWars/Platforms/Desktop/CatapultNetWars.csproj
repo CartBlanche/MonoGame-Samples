@@ -1,17 +1,18 @@
 <Project Sdk="Microsoft.NET.Sdk">
+
   <PropertyGroup>
-    <TargetFramework>net9.0</TargetFramework>
     <OutputType>Exe</OutputType>
-    <RootNamespace>RolePlaying.Desktop</RootNamespace>
-    <AssemblyName>RolePlayingGame</AssemblyName>
+    <TargetFramework>net9.0</TargetFramework>
+    <RootNamespace>CatapultGame</RootNamespace>
+    <AssemblyName>CatapultNetWars</AssemblyName>
+    <PublishReadyToRun>false</PublishReadyToRun>
+    <TieredCompilation>false</TieredCompilation>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
-    <ApplicationIcon>..\..\Core\Content\Game.ico</ApplicationIcon>
     <MonoGamePlatform>DesktopGL</MonoGamePlatform>
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Core\RolePlaying.Core.csproj" />
-    <ProjectReference Include="..\..\RolePlayingGameData\RolePlaying.Data.csproj" />
+    <ProjectReference Include="..\..\Core\CatapultNetWars.Core.csproj" />
     <PackageReference Include="MonoGame.Framework.DesktopGL" Version="3.8.*" />
     <PackageReference Include="MonoGame.Content.Builder.Task" Version="3.8.*" />
   </ItemGroup>
@@ -20,8 +21,9 @@
     <MonoGameContentReference Include="..\..\Core\Content\Content.mgcb" />
   </ItemGroup>
 
+
   <ItemGroup>
-    <None Include="RolePlayingGame.DesktopGL.icns">
+    <None Include="CatapultNetWars.icns">
       <Link>$(AssemblyName).icns</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>

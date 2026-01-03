@@ -13,9 +13,9 @@
     <key>CFBundlePackageType</key>
     <string>APPL</string>
     <key>CFBundleExecutable</key>
-    <string>ShadowMapping.DesktopGL</string>
+    <string>ShadowMapping</string>
     <key>CFBundleIconFile</key>
-    <string>ShadowMapping.DesktopGL.icns</string>
+    <string>ShadowMapping.icns</string>
     <key>NSHighResolutionCapable</key>
     <true/>
 </dict>

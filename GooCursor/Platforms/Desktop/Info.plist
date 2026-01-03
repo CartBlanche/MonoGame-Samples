@@ -13,9 +13,9 @@
     <key>CFBundlePackageType</key>
     <string>APPL</string>
     <key>CFBundleExecutable</key>
-    <string>GooCursor.DesktopGL</string>
+    <string>GooCursor</string>
     <key>CFBundleIconFile</key>
-    <string>GooCursor.DesktopGL.icns</string>
+    <string>GooCursor.icns</string>
     <key>NSHighResolutionCapable</key>
     <true/>
 </dict>

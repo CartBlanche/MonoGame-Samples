@@ -1,16 +1,11 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <OutputType>WinExe</OutputType>
+    <OutputType>Exe</OutputType>
     <TargetFramework>net9.0</TargetFramework>
-    <RootNamespace>NetworkPrediction</RootNamespace>
-    <AssemblyName>NetworkPrediction</AssemblyName>
+    <AssemblyTitle>Graphics3DSample</AssemblyTitle>
+    <Product>Graphics3DSample</Product>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
-    <Title>Network Prediction</Title>
-    <Product>NetworkPrediction</Product>
-    <Description>This sample shows how to use prediction and smoothing algorithms to compensate for network lag, making remotely controlled objects appear to move smoothly even when there is a significant delay in packets being delivered over the network.</Description>
-    <Company>Microsoft</Company>
-    <Copyright>Copyright © Microsoft 2007</Copyright>
   </PropertyGroup>
 
   <ItemGroup>
@@ -19,18 +14,21 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Core\NetworkPrediction.Core.csproj" />
+    <ProjectReference Include="..\..\Core\Graphics3DSample.Core.csproj" />
   </ItemGroup>
 
   <ItemGroup>
     <Content Include="..\..\Core\Content\**\*.xnb" Link="Content\%(RecursiveDir)%(Filename)%(Extension)">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="..\..\Core\Content\**\*.xml" Link="Content\%(RecursiveDir)%(Filename)%(Extension)">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
 
 
   <ItemGroup>
-    <None Include="NetworkPrediction.DesktopGL.icns">
+    <None Include="Graphics3DSample.icns">
       <Link>$(AssemblyName).icns</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>

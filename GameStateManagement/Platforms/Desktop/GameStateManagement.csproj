@@ -47,7 +47,7 @@
 
 
   <ItemGroup>
-    <None Include="GameStateManagement.DesktopGL.icns">
+    <None Include="GameStateManagement.icns">
       <Link>$(AssemblyName).icns</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>

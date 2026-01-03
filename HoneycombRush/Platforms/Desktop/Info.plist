@@ -13,9 +13,9 @@
     <key>CFBundlePackageType</key>
     <string>APPL</string>
     <key>CFBundleExecutable</key>
-    <string>HoneycombRush.DesktopGL</string>
+    <string>HoneycombRush</string>
     <key>CFBundleIconFile</key>
-    <string>HoneycombRush.DesktopGL.icns</string>
+    <string>HoneycombRush.icns</string>
     <key>NSHighResolutionCapable</key>
     <true/>
 </dict>

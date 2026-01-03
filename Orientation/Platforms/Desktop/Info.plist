@@ -13,9 +13,9 @@
     <key>CFBundlePackageType</key>
     <string>APPL</string>
     <key>CFBundleExecutable</key>
-    <string>Orientation.DesktopGL</string>
+    <string>Orientation</string>
     <key>CFBundleIconFile</key>
-    <string>Orientation.DesktopGL.icns</string>
+    <string>Orientation.icns</string>
     <key>NSHighResolutionCapable</key>
     <true/>
 </dict>

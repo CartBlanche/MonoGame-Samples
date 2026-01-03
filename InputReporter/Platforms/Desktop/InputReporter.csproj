@@ -1,30 +1,37 @@
 <Project Sdk="Microsoft.NET.Sdk">
+
   <PropertyGroup>
-    <OutputType>Exe</OutputType>
     <TargetFramework>net9.0</TargetFramework>
-    <AssemblyName>FloodControl</AssemblyName>
-    <RootNamespace>Flood_Control</RootNamespace>
-    <UseWindowsForms>false</UseWindowsForms>
-    <PublishReadyToRun>false</PublishReadyToRun>
-    <TieredCompilation>false</TieredCompilation>
+    <OutputType>Exe</OutputType>
+    <RootNamespace>InputReporter</RootNamespace>
+    <AssemblyName>InputReporter</AssemblyName>
     <ApplicationIcon>..\..\Core\Content\Game.ico</ApplicationIcon>
-    <ApplicationManifest>..\..\Core\Content\app.manifest</ApplicationManifest>
+    <UseWindowsForms>false</UseWindowsForms>
+    <ImplicitUsings>false</ImplicitUsings>
+    <Nullable>disable</Nullable>
   </PropertyGroup>
-  
+
   <ItemGroup>
     <PackageReference Include="MonoGame.Framework.DesktopGL" Version="3.8.*" />
     <PackageReference Include="MonoGame.Content.Builder.Task" Version="3.8.*" />
-    <ProjectReference Include="..\..\Core\FloodControl.Core.csproj" />
   </ItemGroup>
-  
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Core\InputReporter.Core.csproj" />
+  </ItemGroup>
+
   <ItemGroup>
     <Content Include="..\..\Core\Content\**\*.xnb" Link="Content\%(RecursiveDir)%(Filename)%(Extension)">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="..\..\Core\Content\**\*.xml" Link="Content\%(RecursiveDir)%(Filename)%(Extension)">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
 
+
   <ItemGroup>
-    <None Include="FloodControl.DesktopGL.icns">
+    <None Include="InputReporter.icns">
       <Link>$(AssemblyName).icns</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>

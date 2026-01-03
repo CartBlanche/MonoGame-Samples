@@ -13,9 +13,9 @@
     <key>CFBundlePackageType</key>
     <string>APPL</string>
     <key>CFBundleExecutable</key>
-    <string>GameStateManagement.DesktopGL</string>
+    <string>GameStateManagement</string>
     <key>CFBundleIconFile</key>
-    <string>GameStateManagement.DesktopGL.icns</string>
+    <string>GameStateManagement.icns</string>
     <key>NSHighResolutionCapable</key>
     <true/>
 </dict>

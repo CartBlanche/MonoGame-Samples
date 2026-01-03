@@ -13,9 +13,9 @@
     <key>CFBundlePackageType</key>
     <string>APPL</string>
     <key>CFBundleExecutable</key>
-    <string>MultiTouch.DesktopGL</string>
+    <string>MultiTouch</string>
     <key>CFBundleIconFile</key>
-    <string>MultiTouch.DesktopGL.icns</string>
+    <string>MultiTouch.icns</string>
     <key>NSHighResolutionCapable</key>
     <true/>
 </dict>

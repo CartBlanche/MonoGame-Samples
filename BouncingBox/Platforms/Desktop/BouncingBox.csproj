@@ -21,7 +21,7 @@
 
 
   <ItemGroup>
-    <None Include="BouncingBox.DesktopGL.icns">
+    <None Include="BouncingBox.icns">
       <Link>$(AssemblyName).icns</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
