@@ -15,7 +15,7 @@
     <key>CFBundleExecutable</key>
     <string>CatapultNetWars</string>
     <key>CFBundleIconFile</key>
-    <string>CatapultNetWars.DesktopGL.icns</string>
+    <string>CatapultNetWars.icns</string>
     <key>NSHighResolutionCapable</key>
     <true/>
 </dict>

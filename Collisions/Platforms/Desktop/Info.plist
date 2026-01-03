@@ -15,7 +15,7 @@
     <key>CFBundleExecutable</key>
     <string>Collision</string>
     <key>CFBundleIconFile</key>
-    <string>CollisionSample.DesktopGL.icns</string>
+    <string>Collision.icns</string>
     <key>NSHighResolutionCapable</key>
     <true/>
 </dict>

@@ -15,7 +15,7 @@
     <key>CFBundleExecutable</key>
     <string>BouncingBox</string>
     <key>CFBundleIconFile</key>
-    <string>BouncingBox.DesktopGL.icns</string>
+    <string>BouncingBox.icns</string>
     <key>NSHighResolutionCapable</key>
     <true/>
 </dict>

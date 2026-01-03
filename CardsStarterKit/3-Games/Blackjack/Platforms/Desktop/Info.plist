@@ -15,7 +15,7 @@
     <key>CFBundleExecutable</key>
     <string>Blackjack</string>
     <key>CFBundleIconFile</key>
-    <string>BlackJack.icns</string>
+    <string>Blackjack.icns</string>
     <key>NSHighResolutionCapable</key>
     <true/>
 </dict>
