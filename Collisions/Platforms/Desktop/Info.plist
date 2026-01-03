@@ -3,11 +3,11 @@
 <plist version="1.0">
 <dict>
     <key>CFBundleName</key>
-    <string>CollisionSample.DesktopGL</string>
+    <string>Collision</string>
     <key>CFBundleDisplayName</key>
-    <string>CollisionSample.DesktopGL</string>
+    <string>Collision</string>
     <key>CFBundleIdentifier</key>
-    <string>com.cartblanche.collisionsample.desktopgl</string>
+    <string>com.cartblanche.collision</string>
     <key>CFBundleVersion</key>
     <string>1.0</string>
     <key>CFBundlePackageType</key>

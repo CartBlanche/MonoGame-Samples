@@ -20,7 +20,7 @@
 
 
   <ItemGroup>
-    <None Include="Flocking.DesktopGL.icns">
+    <None Include="Flocking.icns">
       <Link>$(AssemblyName).icns</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
