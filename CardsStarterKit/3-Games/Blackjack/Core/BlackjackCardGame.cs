@@ -569,11 +569,7 @@ namespace Blackjack
             Vector2 measure = Font.MeasureString(dealerValue);
             Vector2 position = GameTable.DealerPosition - new Vector2(measure.X + 20, 0);
 
-            screenManager.SpriteBatch.Draw(screenManager.BlankTexture,
-                new Rectangle((int)position.X - 4, (int)position.Y,
-                (int)measure.X + 8, (int)measure.Y), Color.Black);
-
-            screenManager.SpriteBatch.DrawString(Font, dealerValue, position, Color.White);
+            DrawTextWithBackground(dealerValue, position, Color.White);
         }
 
         /// <summary>
@@ -727,11 +723,65 @@ namespace Blackjack
                 position.X -= secondHandOffset.X; // Compensate by moving right
             }
 
-            screenManager.SpriteBatch.Draw(screenManager.BlankTexture,
-                new Rectangle((int)position.X - 4, (int)position.Y,
-                (int)measure.X + 8, (int)measure.Y), Color.Black);
-            screenManager.SpriteBatch.DrawString(Font, value, position, valueColor);
+            DrawTextWithBackground(value, position, valueColor);
 
+        }
+
+        /// <summary>
+        /// Draws text with a black background rectangle and gold border.
+        /// </summary>
+        /// <param name="text">The text to draw.</param>
+        /// <param name="position">The position to draw at.</param>
+        /// <param name="textColor">The color of the text.</param>
+        private void DrawTextWithBackground(string text, Vector2 position, Color textColor)
+        {
+            DrawTextWithBackground(text, position, textColor, Color.Black, Color.Gold);
+        }
+
+        /// <summary>
+        /// Draws text with a background rectangle and optional border.
+        /// </summary>
+        /// <param name="text">The text to draw.</param>
+        /// <param name="position">The position to draw at.</param>
+        /// <param name="textColor">The color of the text.</param>
+        /// <param name="backgroundColor">The color of the background rectangle.</param>
+        /// <param name="borderColor">The color of the 2-pixel border.</param>
+        private void DrawTextWithBackground(string text, Vector2 position, Color textColor, Color backgroundColor, Color borderColor)
+        {
+            Vector2 measure = Font.MeasureString(text);
+            const int borderWidth = 2;
+            const int padding = 2; // Padding around text
+            const int verticalOffset = -1; // Fine-tune vertical centering (negative = move up)
+
+            // Calculate box dimensions based on text size
+            int boxWidth = (int)measure.X + (padding * 2);
+            int boxHeight = (int)measure.Y + (padding * 2);
+
+            // Position is the top-left corner where text should start (for backward compatibility)
+            // Calculate the box top-left to add padding around the text
+            Vector2 boxTopLeft = new Vector2(position.X - padding, position.Y - padding);
+
+            // Draw border rectangle (outer)
+            screenManager.SpriteBatch.Draw(screenManager.BlankTexture,
+                new Rectangle(
+                    (int)boxTopLeft.X - borderWidth,
+                    (int)boxTopLeft.Y - borderWidth,
+                    boxWidth + (borderWidth * 2),
+                    boxHeight + (borderWidth * 2)),
+                borderColor);
+
+            // Draw background rectangle (inner)
+            screenManager.SpriteBatch.Draw(screenManager.BlankTexture,
+                new Rectangle(
+                    (int)boxTopLeft.X,
+                    (int)boxTopLeft.Y,
+                    boxWidth,
+                    boxHeight),
+                backgroundColor);
+
+            // Draw text at the original position with vertical offset for fine-tuning
+            Vector2 adjustedPosition = new Vector2(position.X, position.Y + verticalOffset);
+            screenManager.SpriteBatch.DrawString(Font, text, adjustedPosition, textColor);
         }
 
         /// <summary>
