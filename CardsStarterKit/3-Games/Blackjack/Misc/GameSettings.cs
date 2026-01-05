@@ -54,6 +54,11 @@ namespace Blackjack
         public bool PersistWinnings { get; set; } = false;
         public float SavedPlayerBalance { get; set; } = 500f;
 
+        // TODO v2.x: Add strict casino rules setting
+        // public bool StrictCasinoRules { get; set; } = true;
+        // When true: Only allow splitting identical ranks (J-J, Q-Q, K-K, 10-10)
+        // When false: Allow splitting any 10-value cards (J-Q, J-K, Q-K, 10-J, etc.)
+
         /// <summary>
         /// Gets the singleton instance of GameSettings.
         /// </summary>

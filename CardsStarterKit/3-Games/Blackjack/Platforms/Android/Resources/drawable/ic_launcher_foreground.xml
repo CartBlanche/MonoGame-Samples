@@ -4,7 +4,7 @@
     <!-- Adaptive icons use 108dp canvas, with 66dp safe zone for foreground content -->
     <item
         android:drawable="@drawable/icon"
-        android:width="66dp"
-        android:height="66dp"
+        android:width="90dp"
+        android:height="90dp"
         android:gravity="center" />
 </layer-list>

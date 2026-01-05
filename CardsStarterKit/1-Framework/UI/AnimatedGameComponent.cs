@@ -26,6 +26,7 @@ namespace CardsFramework
         public Rectangle? CurrentSegment { get; set; }
         public string Text { get; set; }
         public Color TextColor { get; set; }
+        public Color Color { get; set; } = Color.White; // Tint color for the sprite
         public bool IsFaceDown = true;
         public Vector2 CurrentPosition { get; set; }
         public Rectangle? CurrentDestination { get; set; }
@@ -113,7 +114,7 @@ namespace CardsFramework
                         CurrentDestination.Value.Width / (float)CurrentFrame.Width,
                         CurrentDestination.Value.Height / (float)CurrentFrame.Height);
 
-                    spriteBatch.Draw(CurrentFrame, centerPosition, CurrentSegment, Color.White,
+                    spriteBatch.Draw(CurrentFrame, centerPosition, CurrentSegment, Color,
                         CurrentRotation, origin, scale, SpriteEffects.None, 0f);
 
                     if (Text != null)
@@ -130,7 +131,7 @@ namespace CardsFramework
                     // Position + origin to center the rotation point
                     Vector2 centerPosition = CurrentPosition + origin;
 
-                    spriteBatch.Draw(CurrentFrame, centerPosition, CurrentSegment, Color.White,
+                    spriteBatch.Draw(CurrentFrame, centerPosition, CurrentSegment, Color,
                         CurrentRotation, origin, 1f, SpriteEffects.None, 0f);
 
                     if (Text != null)

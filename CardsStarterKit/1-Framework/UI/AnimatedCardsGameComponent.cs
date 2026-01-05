@@ -96,7 +96,7 @@ namespace CardsFramework
                             CurrentDestination.Value.Width / (float)CurrentFrame.Width,
                             CurrentDestination.Value.Height / (float)CurrentFrame.Height);
 
-                        spriteBatch.Draw(CurrentFrame, centerPosition, null, Color.White,
+                        spriteBatch.Draw(CurrentFrame, centerPosition, null, Color,
                             CurrentRotation, origin, scale, SpriteEffects.None, 0f);
                     }
                     else
@@ -104,7 +104,7 @@ namespace CardsFramework
                         // Position + origin to center the rotation point
                         Vector2 centerPosition = CurrentPosition + origin;
 
-                        spriteBatch.Draw(CurrentFrame, centerPosition, null, Color.White,
+                        spriteBatch.Draw(CurrentFrame, centerPosition, null, Color,
                             CurrentRotation, origin, 1f, SpriteEffects.None, 0f);
                     }
                 }

@@ -677,6 +677,40 @@ namespace Blackjack
                         DrawValue(animatedSecondHands[playerIndex], playerIndex, playerSecondHandValueText,
                             color, false);
                     }
+
+                    // Grey out inactive split hand cards (only for human/local players during their turn)
+                    // AI players should not split yet, so this should only affect human players
+                    if (player == currentPlayer)
+                    {
+                        Color inactiveCardColor = new Color(128, 128, 128, 180); // Same as disabled chips
+                        Color activeCardColor = Color.White;
+
+                        // Update first hand cards
+                        Color firstHandColor = player.CurrentHandType == HandTypes.First ? activeCardColor : inactiveCardColor;
+                        foreach (var card in animatedHands[playerIndex].AnimatedCards)
+                        {
+                            card.Color = firstHandColor;
+                        }
+
+                        // Update second hand cards
+                        Color secondHandColor = player.CurrentHandType == HandTypes.Second ? activeCardColor : inactiveCardColor;
+                        foreach (var card in animatedSecondHands[playerIndex].AnimatedCards)
+                        {
+                            card.Color = secondHandColor;
+                        }
+                    }
+                    else
+                    {
+                        // Reset colors for non-current players
+                        foreach (var card in animatedHands[playerIndex].AnimatedCards)
+                        {
+                            card.Color = Color.White;
+                        }
+                        foreach (var card in animatedSecondHands[playerIndex].AnimatedCards)
+                        {
+                            card.Color = Color.White;
+                        }
+                    }
                 }
                 else
                 {
@@ -1438,6 +1472,9 @@ namespace Blackjack
                     buttons["Double"].Enabled = false;
                 }
 
+                // TODO v2.x: Add "Strict Casino Rules" setting to allow splitting any 10-value cards (10/J/Q/K)
+                // Currently only allows splitting identical ranks (strict casino rules)
+                // For lenient rules, check Blackjack point values instead: GetBlackJackValue(card1) == GetBlackJackValue(card2) && both == 10
                 if (player.Hand.Count != 2 ||
                     player.Hand[0].Value != player.Hand[1].Value ||
                     player.BetAmount > player.Balance)

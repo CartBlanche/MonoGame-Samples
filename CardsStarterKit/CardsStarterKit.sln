@@ -4,7 +4,7 @@ VisualStudioVersion = 17.5.2.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cards.Framework", "1-Framework\Cards.Framework.csproj", "{89781445-5440-49D1-AB1B-67C6667D43DC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlackJack.Core", "3-Games\Blackjack\BlackJack.Core.csproj", "{80C61169-FFE2-4335-BCE6-F0A4722FA419}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlackJack.Core", "3-Games\Blackjack\Core\Blackjack.Core.csproj", "{80C61169-FFE2-4335-BCE6-F0A4722FA419}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlackJack.Windows", "3-Games\Blackjack\Platforms\Windows\BlackJack.csproj", "{92B782FF-2679-431D-B095-9BB86D09ED59}"
 EndProject
@@ -14,15 +14,15 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlackJack.DesktopGL", "3-Ga
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlackJack.Android", "3-Games\Blackjack\Platforms\Android\BlackJack.csproj", "{B767C86E-EAB0-4ACF-B2DE-687828BB949B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StarterGame.Core", "4-Starter-Template\StarterGame.Core.csproj", "{C1D12345-1234-4567-89AB-CDEF01234567}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Blank.Core", "3-Games\Blank\Core\Blank.Core.csproj", "{C1D12345-1234-4567-89AB-CDEF01234567}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StarterGame.Windows", "4-Starter-Template\Platforms\Windows\StarterGame.csproj", "{C2D12345-1234-4567-89AB-CDEF01234567}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Blank.Windows", "3-Games\Blank\Platforms\Windows\Blank.csproj", "{C2D12345-1234-4567-89AB-CDEF01234567}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StarterGame.iOS", "4-Starter-Template\Platforms\iOS\StarterGame.csproj", "{C3D12345-1234-4567-89AB-CDEF01234567}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Blank.iOS", "3-Games\Blank\Platforms\iOS\Blank.csproj", "{C3D12345-1234-4567-89AB-CDEF01234567}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StarterGame.DesktopGL", "4-Starter-Template\Platforms\Desktop\StarterGame.csproj", "{C4D12345-1234-4567-89AB-CDEF01234567}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Blank.DesktopGL", "3-Games\Blank\Platforms\Desktop\Blank.csproj", "{C4D12345-1234-4567-89AB-CDEF01234567}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StarterGame.Android", "4-Starter-Template\Platforms\Android\StarterGame.csproj", "{C5D12345-1234-4567-89AB-CDEF01234567}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Blank.Android", "3-Games\Blank\Platforms\Android\Blank.csproj", "{C5D12345-1234-4567-89AB-CDEF01234567}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
