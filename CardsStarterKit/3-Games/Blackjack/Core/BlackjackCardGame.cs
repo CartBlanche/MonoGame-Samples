@@ -754,11 +754,10 @@ namespace Blackjack
             {
                 // The position already includes the hand's left offset via GetCardRelativePosition
                 // We don't want the score to follow that offset completely, so move it back toward center
-                position.X -= secondHandOffset.X; // Compensate by moving right
+                position.X -= secondHandOffset.X - 5.0f; // Compensate by moving right
             }
 
             DrawTextWithBackground(value, position, valueColor);
-
         }
 
         /// <summary>

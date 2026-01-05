@@ -40,7 +40,7 @@ namespace Blackjack
         public const float PlayerCardHorizontalSpacingRatio = 0.020f; // ~25px at 1280px width
         public const float PlayerCardVerticalSpacingRatio = 0.042f;   // ~30px at 720px height
         // Split hand offsets - hands are positioned symmetrically around original position
-        public const float SecondHandOffsetXRatio = 0.078f;   // ~100px at 1280px width - half of total separation (200px)
+        public const float SecondHandOffsetXRatio = 0.05f;   // ~100px at 1280px width - half of total separation (200px)
         public const float SecondHandOffsetYRatio = 0.0f;     // 0px - keep both hands at same height
         public const float BetSecondHandOffsetXRatio = 0.078f; // ~100px at 1280px width - matches card offset
         public const float BetSecondHandOffsetYRatio = 0.0f;   // 0px - keep both chip stacks at same height
