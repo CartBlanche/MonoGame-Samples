@@ -3,7 +3,7 @@
     <TargetFramework>net9.0</TargetFramework>
     <OutputType>Exe</OutputType>
     <RootNamespace>BloomSample.DesktopGL</RootNamespace>
-    <AssemblyName>BloomSample.DesktopGL</AssemblyName>
+    <AssemblyName>BloomSample</AssemblyName>
     <MonoGamePlatform>DesktopGL</MonoGamePlatform>
   </PropertyGroup>
   <ItemGroup>
@@ -13,5 +13,11 @@
   </ItemGroup>
   <ItemGroup>
     <MonoGameContentReference Include="..\..\Core\Content\Content.mgcb" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="BloomSample.icns">
+      <Link>$(AssemblyName).icns</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 </Project>

@@ -26,4 +26,12 @@
     </MonoGameContentReference>
   </ItemGroup>
   
+
+  <ItemGroup>
+    <None Include="Sound.DesktopGL.icns">
+      <Link>$(AssemblyName).icns</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>

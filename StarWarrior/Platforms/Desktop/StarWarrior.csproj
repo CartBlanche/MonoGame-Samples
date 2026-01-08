@@ -20,4 +20,12 @@
       <Link>Content\Content.mgcb</Link>
     </MonoGameContentReference>
   </ItemGroup>
+
+  <ItemGroup>
+    <None Include="StarWarrior.DesktopGL.icns">
+      <Link>$(AssemblyName).icns</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>

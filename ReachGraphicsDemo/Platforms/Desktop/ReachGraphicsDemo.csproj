@@ -24,4 +24,12 @@
     </Content>
   </ItemGroup>
 
+
+  <ItemGroup>
+    <None Include="XnaGraphicsDemo.icns">
+      <Link>$(AssemblyName).icns</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>

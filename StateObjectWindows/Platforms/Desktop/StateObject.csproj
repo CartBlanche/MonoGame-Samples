@@ -22,4 +22,12 @@
       <Link>Content\Content.mgcb</Link>
     </MonoGameContentReference>
   </ItemGroup>
+
+  <ItemGroup>
+    <None Include="StateObjectDesktopGL.icns">
+      <Link>$(AssemblyName).icns</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>

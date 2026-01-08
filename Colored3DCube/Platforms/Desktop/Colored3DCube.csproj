@@ -11,4 +11,12 @@
     <ProjectReference Include="..\..\Core\Colored3DCube.Core.csproj" />
     <PackageReference Include="MonoGame.Framework.DesktopGL" Version="3.8.*" />
   </ItemGroup>
+
+  <ItemGroup>
+    <None Include="Colored3DCube.DesktopGL.icns">
+      <Link>$(AssemblyName).icns</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>
