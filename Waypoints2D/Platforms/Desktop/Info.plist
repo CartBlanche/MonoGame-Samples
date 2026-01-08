@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>CFBundleName</key>
+    <string>Waypoint</string>
+    <key>CFBundleDisplayName</key>
+    <string>Waypoint</string>
+    <key>CFBundleIdentifier</key>
+    <string>com.cartblanche.waypoint</string>
+    <key>CFBundleVersion</key>
+    <string>1.0</string>
+    <key>CFBundlePackageType</key>
+    <string>APPL</string>
+    <key>CFBundleExecutable</key>
+    <string>Waypoint</string>
+    <key>CFBundleIconFile</key>
+    <string>Waypoint.icns</string>
+    <key>NSHighResolutionCapable</key>
+    <true/>
+</dict>
+</plist>
