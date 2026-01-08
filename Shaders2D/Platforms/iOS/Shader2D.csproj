@@ -1,15 +1,15 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <TargetFramework>net9.0</TargetFramework>
+    <TargetFramework>net9.0-ios</TargetFramework>
     <Nullable>enable</Nullable>
-    <RootNamespace>ShaderTest.DesktopGL</RootNamespace>
-    <AssemblyName>2DShaderSample</AssemblyName>
-    <MonoGamePlatform>DesktopGL</MonoGamePlatform>
+    <RootNamespace>ShaderTests</RootNamespace>
+    <AssemblyName>2DShaderSample.iOS</AssemblyName>
+    <MonoGamePlatform>iOS</MonoGamePlatform>
   </PropertyGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Core\2DShaderSample.Core.csproj" />
-    <PackageReference Include="MonoGame.Framework.DesktopGL" Version="3.8.*" />
+    <ProjectReference Include="..\..\Core\Shader2D.Core.csproj" />
+    <PackageReference Include="MonoGame.Framework.iOS" Version="3.8.*" />
     <PackageReference Include="MonoGame.Content.Builder.Task" Version="3.8.*" />
   </ItemGroup>
   <ItemGroup>
@@ -21,12 +21,4 @@
     <Message Text="Restoring dotnet tools (this might take a while depending on your internet speed and should only happen upon building your project for the first time, or after upgrading MonoGame, or clearing your nuget cache)" Importance="High" />
     <Exec Command="dotnet tool restore" />
   </Target>
-
-  <ItemGroup>
-    <None Include="2DShaderSample.icns">
-      <Link>$(AssemblyName).icns</Link>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
-
 </Project>

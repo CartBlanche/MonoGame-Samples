@@ -1,15 +1,16 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <OutputType>Exe</OutputType>
-    <TargetFramework>net9.0-ios</TargetFramework>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net9.0-windows</TargetFramework>
+    <UseWindowsForms>false</UseWindowsForms>
     <Nullable>enable</Nullable>
-    <RootNamespace>ShaderTests</RootNamespace>
-    <AssemblyName>2DShaderSample.iOS</AssemblyName>
-    <MonoGamePlatform>iOS</MonoGamePlatform>
+    <RootNamespace>ShaderTest.Windows</RootNamespace>
+    <AssemblyName>2DShaderSample.Windows</AssemblyName>
+    <MonoGamePlatform>Windows</MonoGamePlatform>
   </PropertyGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Core\2DShaderSample.Core.csproj" />
-    <PackageReference Include="MonoGame.Framework.iOS" Version="3.8.*" />
+    <ProjectReference Include="..\..\Core\Shader2D.Core.csproj" />
+    <PackageReference Include="MonoGame.Framework.WindowsDX" Version="3.8.*" />
     <PackageReference Include="MonoGame.Content.Builder.Task" Version="3.8.*" />
   </ItemGroup>
   <ItemGroup>

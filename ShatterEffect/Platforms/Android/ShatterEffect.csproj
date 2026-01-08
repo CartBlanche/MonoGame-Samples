@@ -13,7 +13,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Core\ShatterEffectSample.Core.csproj" />
+    <ProjectReference Include="..\..\Core\ShatterEffect.Core.csproj" />
     <PackageReference Include="MonoGame.Framework.Android" Version="3.8.*" />
     <PackageReference Include="MonoGame.Content.Builder.Task" Version="3.8.*" />
   </ItemGroup>

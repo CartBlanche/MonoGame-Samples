@@ -1,16 +1,15 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <OutputType>WinExe</OutputType>
-    <TargetFramework>net9.0-windows</TargetFramework>
-    <UseWindowsForms>false</UseWindowsForms>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net9.0-android</TargetFramework>
     <Nullable>enable</Nullable>
-    <RootNamespace>ShaderTest.Windows</RootNamespace>
-    <AssemblyName>2DShaderSample.Windows</AssemblyName>
-    <MonoGamePlatform>Windows</MonoGamePlatform>
+    <RootNamespace>ShaderTest.Android</RootNamespace>
+    <AssemblyName>2DShaderSample.Android</AssemblyName>
+    <MonoGamePlatform>Android</MonoGamePlatform>
   </PropertyGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Core\2DShaderSample.Core.csproj" />
-    <PackageReference Include="MonoGame.Framework.WindowsDX" Version="3.8.*" />
+    <ProjectReference Include="..\..\Core\Shader2D.Core.csproj" />
+    <PackageReference Include="MonoGame.Framework.Android" Version="3.8.*" />
     <PackageReference Include="MonoGame.Content.Builder.Task" Version="3.8.*" />
   </ItemGroup>
   <ItemGroup>

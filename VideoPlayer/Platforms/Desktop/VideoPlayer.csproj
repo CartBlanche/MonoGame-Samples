@@ -5,6 +5,7 @@
     <RootNamespace>VideoPlayer.DesktopGL</RootNamespace>
     <AssemblyTitle>VideoPlayer.DesktopGL</AssemblyTitle>
     <Version>1.0.0</Version>
+    <AssemblyName>VideoPlayer</AssemblyName>
     <MonoGamePlatform>DesktopGL</MonoGamePlatform>
   </PropertyGroup>
   <ItemGroup>
