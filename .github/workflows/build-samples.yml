@@ -168,10 +168,12 @@ jobs:
           mkdir -p "$RESULT_DIR"
 
           if [ "${{ steps.package.outcome }}" = "success" ]; then
-            echo '{"project":"'"$NAME"'","status":"success","error":""}' > "$RESULT_DIR/$NAME.json"
+            jq -n --arg project "$NAME" --arg status "success" --arg error "" \
+              '{project: $project, status: $status, error: $error}' > "$RESULT_DIR/$NAME.json"
           else
             # Capture the error - this is a simplified version, actual error would be in logs
-            echo '{"project":"'"$NAME"'","status":"failure","error":"Build or packaging failed - see job logs for details"}' > "$RESULT_DIR/$NAME.json"
+            jq -n --arg project "$NAME" --arg status "failure" --arg error "Build or packaging failed - see job logs for details" \
+              '{project: $project, status: $status, error: $error}' > "$RESULT_DIR/$NAME.json"
           fi
 
       - name: Upload Build Result
