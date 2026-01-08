@@ -15,7 +15,7 @@
     <key>CFBundleExecutable</key>
     <string>StarWarrior.DesktopGL</string>
     <key>CFBundleIconFile</key>
-    <string>StarWarrior.DesktopGL.icns</string>
+    <string>StarWarrior.icns</string>
     <key>NSHighResolutionCapable</key>
     <true/>
 </dict>

@@ -15,7 +15,7 @@
     <key>CFBundleExecutable</key>
     <string>Tetris.DesktopGL</string>
     <key>CFBundleIconFile</key>
-    <string>Tetris.DesktopGL.icns</string>
+    <string>Tetris.icns</string>
     <key>NSHighResolutionCapable</key>
     <true/>
 </dict>

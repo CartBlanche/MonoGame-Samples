@@ -15,7 +15,7 @@
     <key>CFBundleExecutable</key>
     <string>TouchGesture.DesktopGL</string>
     <key>CFBundleIconFile</key>
-    <string>TouchGesture.DesktopGL.icns</string>
+    <string>TouchGesture.icns</string>
     <key>NSHighResolutionCapable</key>
     <true/>
 </dict>

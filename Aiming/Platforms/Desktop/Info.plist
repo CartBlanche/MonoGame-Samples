@@ -15,7 +15,7 @@
     <key>CFBundleExecutable</key>
     <string>Aiming.DesktopGL</string>
     <key>CFBundleIconFile</key>
-    <string>Aiming.DesktopGL.icns</string>
+    <string>Aiming.icns</string>
     <key>NSHighResolutionCapable</key>
     <true/>
 </dict>

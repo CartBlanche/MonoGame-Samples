@@ -15,7 +15,7 @@
     <key>CFBundleExecutable</key>
     <string>Colored3DCube.DesktopGL</string>
     <key>CFBundleIconFile</key>
-    <string>Colored3DCube.DesktopGL.icns</string>
+    <string>Colored3DCube.icns</string>
     <key>NSHighResolutionCapable</key>
     <true/>
 </dict>

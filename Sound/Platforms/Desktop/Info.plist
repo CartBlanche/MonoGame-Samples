@@ -15,7 +15,7 @@
     <key>CFBundleExecutable</key>
     <string>Sound.DesktopGL</string>
     <key>CFBundleIconFile</key>
-    <string>Sound.DesktopGL.icns</string>
+    <string>Sound.icns</string>
     <key>NSHighResolutionCapable</key>
     <true/>
 </dict>
