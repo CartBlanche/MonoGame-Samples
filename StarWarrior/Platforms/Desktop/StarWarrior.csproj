@@ -4,7 +4,7 @@
     <TargetFramework>net9.0</TargetFramework>
     <OutputType>WinExe</OutputType>
     <RootNamespace>StarWarrior.DesktopGL</RootNamespace>
-    <AssemblyName>StarWarrior.DesktopGL</AssemblyName>
+    <AssemblyName>StarWarrior</AssemblyName>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <MonoGamePlatform>DesktopGL</MonoGamePlatform>
   </PropertyGroup>
@@ -22,7 +22,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Include="StarWarrior.DesktopGL.icns">
+    <None Include="StarWarrior.icns">
       <Link>$(AssemblyName).icns</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>

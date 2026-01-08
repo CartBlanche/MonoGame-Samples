@@ -3,7 +3,7 @@
     <OutputType>Exe</OutputType>
     <TargetFramework>net9.0</TargetFramework>
     <RootNamespace>BackgroundThreadTester.DesktopGL</RootNamespace>
-    <AssemblyName>BackgroundThreadTester.DesktopGL</AssemblyName>
+    <AssemblyName>BackgroundThreadTester</AssemblyName>
     <Nullable>enable</Nullable>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
   </PropertyGroup>
@@ -16,7 +16,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Include="BackgroundThreadTester.DesktopGL.icns">
+    <None Include="BackgroundThreadTester.icns">
       <Link>$(AssemblyName).icns</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>

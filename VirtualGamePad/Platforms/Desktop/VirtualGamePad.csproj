@@ -3,7 +3,7 @@
     <TargetFramework>net9.0</TargetFramework>
     <OutputType>Exe</OutputType>
     <RootNamespace>VirtualGamePad.DesktopGL</RootNamespace>
-    <AssemblyName>VirtualGamePad.DesktopGL</AssemblyName>
+    <AssemblyName>VirtualGamePad</AssemblyName>
     <MonoGamePlatform>DesktopGL</MonoGamePlatform>
   </PropertyGroup>
   <ItemGroup>
@@ -22,7 +22,7 @@
   </Target>
 
   <ItemGroup>
-    <None Include="VirtualGamePad.DesktopGL.icns">
+    <None Include="VirtualGamePad.icns">
       <Link>$(AssemblyName).icns</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>

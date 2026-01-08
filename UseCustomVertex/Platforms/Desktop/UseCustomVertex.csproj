@@ -3,14 +3,15 @@
     <TargetFramework>net9.0</TargetFramework>
     <OutputType>Exe</OutputType>
     <RootNamespace>UseCustomVertex.DesktopGL</RootNamespace>
-    <AssemblyTitle>UseCustomVertexDesktopGL</AssemblyTitle>
-    <AssemblyProduct>UseCustomVertexDesktopGL</AssemblyProduct>
+    <AssemblyTitle>UseCustomVertex</AssemblyTitle>
+    <AssemblyProduct>UseCustomVertex</AssemblyProduct>
+    <AssemblyName>UseCustomVertex</AssemblyName>
+    <MonoGamePlatform>DesktopGL</MonoGamePlatform>
     <AssemblyDescription></AssemblyDescription>
     <Company>Microsoft</Company>
     <Copyright>Copyright © Microsoft 2010</Copyright>
     <Version>1.0.0.0</Version>
     <GenerateAssemblyInfo>true</GenerateAssemblyInfo>
-    <MonoGamePlatform>DesktopGL</MonoGamePlatform>
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Core\UseCustomVertex.Core.csproj" />

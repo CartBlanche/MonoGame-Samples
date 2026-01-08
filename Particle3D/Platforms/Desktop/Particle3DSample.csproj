@@ -2,7 +2,7 @@
   <PropertyGroup>
     <TargetFramework>net9.0</TargetFramework>
     <OutputType>Exe</OutputType>
-    <AssemblyName>Particle3DSample.DesktopGL</AssemblyName>
+    <AssemblyName>Particle3DSample</AssemblyName>
     <RootNamespace>Particle3DSample.DesktopGL</RootNamespace>
     <Nullable>enable</Nullable>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
@@ -25,7 +25,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Include="Particle3DSample.DesktopGL.icns">
+    <None Include="Particle3DSample.icns">
       <Link>$(AssemblyName).icns</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>

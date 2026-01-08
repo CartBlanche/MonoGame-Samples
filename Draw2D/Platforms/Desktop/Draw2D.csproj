@@ -2,7 +2,7 @@
   <PropertyGroup>
     <TargetFramework>net9.0</TargetFramework>
     <RootNamespace>Draw2D.DesktopGL</RootNamespace>
-    <AssemblyName>Draw2D.DesktopGL</AssemblyName>
+    <AssemblyName>Draw2D</AssemblyName>
     <GenerateAssemblyInfo>true</GenerateAssemblyInfo>
     <OutputType>Exe</OutputType>
   </PropertyGroup>
@@ -22,7 +22,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Include="Draw2D.DesktopGL.icns">
+    <None Include="Draw2D.icns">
       <Link>$(AssemblyName).icns</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>

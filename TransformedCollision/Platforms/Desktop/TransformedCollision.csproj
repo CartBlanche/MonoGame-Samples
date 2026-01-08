@@ -3,7 +3,7 @@
     <TargetFramework>net9.0</TargetFramework>
     <OutputType>Exe</OutputType>
     <RootNamespace>TransformedCollision.DesktopGL</RootNamespace>
-    <AssemblyName>TransformedCollision.DesktopGL</AssemblyName>
+    <AssemblyName>TransformedCollision</AssemblyName>
     <MonoGamePlatform>DesktopGL</MonoGamePlatform>
   </PropertyGroup>
   <ItemGroup>
@@ -22,7 +22,7 @@
   </Target>
 
   <ItemGroup>
-    <None Include="TransformedCollision.DesktopGL.icns">
+    <None Include="TransformedCollision.icns">
       <Link>$(AssemblyName).icns</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>

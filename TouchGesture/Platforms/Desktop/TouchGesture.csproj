@@ -3,7 +3,7 @@
     <TargetFramework>net9.0</TargetFramework>
     <OutputType>Exe</OutputType>
     <RootNamespace>TouchGesture.DesktopGL</RootNamespace>
-    <AssemblyName>TouchGesture.DesktopGL</AssemblyName>
+    <AssemblyName>TouchGesture</AssemblyName>
     <LangVersion>latest</LangVersion>
     <MonoGamePlatform>DesktopGL</MonoGamePlatform>
   </PropertyGroup>
@@ -23,7 +23,7 @@
   </Target>
 
   <ItemGroup>
-    <None Include="TouchGesture.DesktopGL.icns">
+    <None Include="TouchGesture.icns">
       <Link>$(AssemblyName).icns</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>

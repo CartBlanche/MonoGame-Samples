@@ -3,7 +3,7 @@
     <TargetFramework>net9.0</TargetFramework>
     <OutputType>Exe</OutputType>
     <RootNamespace>PacMan.DesktopGL</RootNamespace>
-    <AssemblyName>PacMan.DesktopGL</AssemblyName>
+    <AssemblyName>PacMan</AssemblyName>
     <Nullable>enable</Nullable>
     <UseWindowsForms>false</UseWindowsForms>
     <UseWPF>false</UseWPF>
@@ -37,7 +37,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Include="PacMan.DesktopGL.icns">
+    <None Include="PacMan.icns">
       <Link>$(AssemblyName).icns</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>

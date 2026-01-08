@@ -2,7 +2,7 @@
   <PropertyGroup>
     <TargetFramework>net9.0</TargetFramework>
     <RootNamespace>GameComponents.DesktopGL</RootNamespace>
-    <AssemblyName>GameComponents.DesktopGL</AssemblyName>
+    <AssemblyName>GameComponents</AssemblyName>
     <OutputType>Exe</OutputType>
   </PropertyGroup>
   <ItemGroup>
@@ -21,7 +21,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Include="GameComponents.DesktopGL.icns">
+    <None Include="GameComponents.icns">
       <Link>$(AssemblyName).icns</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>

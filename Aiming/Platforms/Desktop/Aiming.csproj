@@ -3,7 +3,7 @@
     <TargetFramework>net9.0</TargetFramework>
     <OutputType>WinExe</OutputType>
     <RootNamespace>Aiming.DesktopGL</RootNamespace>
-    <AssemblyName>Aiming.DesktopGL</AssemblyName>
+    <AssemblyName>Aiming</AssemblyName>
     <Description>DesktopGL platform for Aiming MonoGame sample.</Description>
     <Authors>CartBlanche</Authors>
     <Company>MonoGame Foundation</Company>
@@ -24,7 +24,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Include="Aiming.DesktopGL.icns">
+    <None Include="Aiming.icns">
       <Link>$(AssemblyName).icns</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>

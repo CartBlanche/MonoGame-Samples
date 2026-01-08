@@ -3,7 +3,7 @@
     <OutputType>Exe</OutputType>
     <TargetFramework>net9.0</TargetFramework>
     <RootNamespace>StencilCratersTutorial.DesktopGL</RootNamespace>
-    <AssemblyName>StencilCraters.DesktopGL</AssemblyName>
+    <AssemblyName>StencilCraters</AssemblyName>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <MonoGamePlatform>DesktopGL</MonoGamePlatform>
   </PropertyGroup>
@@ -23,7 +23,7 @@
   </Target>
 
   <ItemGroup>
-    <None Include="StencilCraters.DesktopGL.icns">
+    <None Include="StencilCraters.icns">
       <Link>$(AssemblyName).icns</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>

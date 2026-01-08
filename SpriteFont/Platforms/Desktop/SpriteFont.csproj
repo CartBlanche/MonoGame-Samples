@@ -3,7 +3,7 @@
     <OutputType>WinExe</OutputType>
     <TargetFramework>net9.0</TargetFramework>
     <RootNamespace>SpriteFont.DesktopGL</RootNamespace>
-    <AssemblyName>SpriteFont.DesktopGL</AssemblyName>
+    <AssemblyName>SpriteFont</AssemblyName>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
   </PropertyGroup>
   <ItemGroup>
@@ -19,7 +19,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Include="SpriteFont.DesktopGL.icns">
+    <None Include="SpriteFont.icns">
       <Link>$(AssemblyName).icns</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>

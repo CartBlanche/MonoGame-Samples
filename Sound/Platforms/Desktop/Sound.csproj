@@ -4,7 +4,7 @@
     <TargetFramework>net9.0</TargetFramework>
     <OutputType>Exe</OutputType>
     <RootNamespace>Sound</RootNamespace>
-    <AssemblyName>Sound.DesktopGL</AssemblyName>
+    <AssemblyName>Sound</AssemblyName>
     <Nullable>enable</Nullable>
     <Description></Description>
     <Company></Company>
@@ -28,7 +28,7 @@
   
 
   <ItemGroup>
-    <None Include="Sound.DesktopGL.icns">
+    <None Include="Sound.icns">
       <Link>$(AssemblyName).icns</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>

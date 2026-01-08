@@ -2,7 +2,7 @@
   <PropertyGroup>
     <TargetFramework>net9.0</TargetFramework>
     <RootNamespace>TexturedQuad.DesktopGL</RootNamespace>
-    <AssemblyName>TexturedQuad.DesktopGL</AssemblyName>
+    <AssemblyName>TexturedQuad</AssemblyName>
     <OutputType>Exe</OutputType>
     <GenerateAssemblyInfo>true</GenerateAssemblyInfo>
     <MonoGamePlatform>DesktopGL</MonoGamePlatform>
@@ -23,7 +23,7 @@
   </Target>
 
   <ItemGroup>
-    <None Include="TexturedQuad.DesktopGL.icns">
+    <None Include="TexturedQuad.icns">
       <Link>$(AssemblyName).icns</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>

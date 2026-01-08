@@ -4,7 +4,7 @@
     <TargetFramework>net9.0</TargetFramework>
     <Nullable>enable</Nullable>
     <RootNamespace>ShaderTest.DesktopGL</RootNamespace>
-    <AssemblyName>2DShaderSample.DesktopGL</AssemblyName>
+    <AssemblyName>2DShaderSample</AssemblyName>
     <MonoGamePlatform>DesktopGL</MonoGamePlatform>
   </PropertyGroup>
   <ItemGroup>
@@ -23,7 +23,7 @@
   </Target>
 
   <ItemGroup>
-    <None Include="2DShaderSample.DesktopGL.icns">
+    <None Include="2DShaderSample.icns">
       <Link>$(AssemblyName).icns</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>

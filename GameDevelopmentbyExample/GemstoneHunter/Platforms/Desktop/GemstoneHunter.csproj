@@ -3,7 +3,7 @@
     <TargetFramework>net9.0</TargetFramework>
     <OutputType>Exe</OutputType>
     <RootNamespace>GemstoneHunter.DesktopGL</RootNamespace>
-    <AssemblyName>GemstoneHunter.DesktopGL</AssemblyName>
+    <AssemblyName>GemstoneHunter</AssemblyName>
     <ApplicationIcon>..\..\Core\Content\Game.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
@@ -21,7 +21,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Include="GemstoneHunter.DesktopGL.icns">
+    <None Include="GemstoneHunter.icns">
       <Link>$(AssemblyName).icns</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>

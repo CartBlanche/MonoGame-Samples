@@ -6,7 +6,7 @@
     <RollForward>Major</RollForward>
     <PublishReadyToRun>false</PublishReadyToRun>
     <TieredCompilation>false</TieredCompilation>
-    <AssemblyName>PerPixelCollisionSample.DesktopGL</AssemblyName>
+    <AssemblyName>PerPixelCollisionSample</AssemblyName>
     <RootNamespace>PerPixelCollision</RootNamespace>
     <ApplicationIcon>..\..\Core\Content\Game.ico</ApplicationIcon>
   </PropertyGroup>
@@ -28,7 +28,7 @@
 
 
   <ItemGroup>
-    <None Include="PerPixelCollisionSample.DesktopGL.icns">
+    <None Include="PerPixelCollisionSample.icns">
       <Link>$(AssemblyName).icns</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>

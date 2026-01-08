@@ -2,7 +2,7 @@
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
     <TargetFramework>net9.0</TargetFramework>
-    <AssemblyName>Primitives.DesktopGL</AssemblyName>
+    <AssemblyName>Primitives</AssemblyName>
     <RootNamespace>PrimitivesSample</RootNamespace>
     <ApplicationIcon>..\..\Core\Content\Game.ico</ApplicationIcon>
     <AssemblyTitle>MonoGame.Samples.Primitives.DesktopGL</AssemblyTitle>
@@ -27,7 +27,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Include="Primitives.DesktopGL.icns">
+    <None Include="Primitives.icns">
       <Link>$(AssemblyName).icns</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>

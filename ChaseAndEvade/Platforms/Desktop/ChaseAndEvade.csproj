@@ -3,7 +3,7 @@
     <OutputType>WinExe</OutputType>
     <TargetFramework>net9.0</TargetFramework>
     <RootNamespace>ChaseAndEvade.DesktopGL</RootNamespace>
-    <AssemblyName>ChaseAndEvade.DesktopGL</AssemblyName>
+    <AssemblyName>ChaseAndEvade</AssemblyName>
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Core\ChaseAndEvade.Core.csproj" />

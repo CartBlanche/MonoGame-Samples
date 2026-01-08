@@ -4,7 +4,7 @@
     <TargetFramework>net9.0</TargetFramework>
     <OutputType>Exe</OutputType>
     <ApplicationIcon>..\..\Core\Content\Game.ico</ApplicationIcon>
-    <AssemblyName>RenderTarget2D.DesktopGL</AssemblyName>
+    <AssemblyName>RenderTarget2D</AssemblyName>
     <RootNamespace>RenderTarget2DSample</RootNamespace>
     <DefineConstants>DESKTOPGL</DefineConstants>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
@@ -32,7 +32,7 @@
 
 
   <ItemGroup>
-    <None Include="RenderTarget2D.DesktopGL.icns">
+    <None Include="RenderTarget2D.icns">
       <Link>$(AssemblyName).icns</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
