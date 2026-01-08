@@ -3,9 +3,9 @@
 <plist version="1.0">
 <dict>
     <key>CFBundleName</key>
-    <string>PacMan.DesktopGL</string>
+    <string>PacMan</string>
     <key>CFBundleDisplayName</key>
-    <string>PacMan.DesktopGL</string>
+    <string>PacMan</string>
     <key>CFBundleIdentifier</key>
     <string>com.cartblanche.pacmandesktopgl</string>
     <key>CFBundleVersion</key>
@@ -13,7 +13,7 @@
     <key>CFBundlePackageType</key>
     <string>APPL</string>
     <key>CFBundleExecutable</key>
-    <string>PacMan.DesktopGL</string>
+    <string>PacMan</string>
     <key>CFBundleIconFile</key>
     <string>PacMan.DesktopGL.icns</string>
     <key>NSHighResolutionCapable</key>

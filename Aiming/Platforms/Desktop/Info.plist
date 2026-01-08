@@ -3,9 +3,9 @@
 <plist version="1.0">
 <dict>
     <key>CFBundleName</key>
-    <string>Aiming.DesktopGL</string>
+    <string>Aiming</string>
     <key>CFBundleDisplayName</key>
-    <string>Aiming.DesktopGL</string>
+    <string>Aiming</string>
     <key>CFBundleIdentifier</key>
     <string>com.cartblanche.aimingdesktopgl</string>
     <key>CFBundleVersion</key>
@@ -13,7 +13,7 @@
     <key>CFBundlePackageType</key>
     <string>APPL</string>
     <key>CFBundleExecutable</key>
-    <string>Aiming.DesktopGL</string>
+    <string>Aiming</string>
     <key>CFBundleIconFile</key>
     <string>Aiming.icns</string>
     <key>NSHighResolutionCapable</key>

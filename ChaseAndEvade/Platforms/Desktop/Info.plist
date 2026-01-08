@@ -3,17 +3,17 @@
 <plist version="1.0">
 <dict>
     <key>CFBundleName</key>
-    <string>ChaseAndEvade.DesktopGL</string>
+    <string>ChaseAndEvade</string>
     <key>CFBundleDisplayName</key>
-    <string>ChaseAndEvade.DesktopGL</string>
+    <string>ChaseAndEvade</string>
     <key>CFBundleIdentifier</key>
-    <string>com.cartblanche.chaseandevade.desktopgl</string>
+    <string>com.cartblanche.chaseandevade</string>
     <key>CFBundleVersion</key>
     <string>1.0</string>
     <key>CFBundlePackageType</key>
     <string>APPL</string>
     <key>CFBundleExecutable</key>
-    <string>ChaseAndEvade.DesktopGL</string>
+    <string>ChaseAndEvade</string>
     <key>CFBundleIconFile</key>
     <string>ChaseAndEvade.DesktopGL.icns</string>
     <key>NSHighResolutionCapable</key>

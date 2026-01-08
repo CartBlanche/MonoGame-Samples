@@ -3,9 +3,9 @@
 <plist version="1.0">
 <dict>
     <key>CFBundleName</key>
-    <string>SpriteFont.DesktopGL</string>
+    <string>SpriteFont</string>
     <key>CFBundleDisplayName</key>
-    <string>SpriteFont.DesktopGL</string>
+    <string>SpriteFont</string>
     <key>CFBundleIdentifier</key>
     <string>com.cartblanche.spritefontdesktopgl</string>
     <key>CFBundleVersion</key>
@@ -13,7 +13,7 @@
     <key>CFBundlePackageType</key>
     <string>APPL</string>
     <key>CFBundleExecutable</key>
-    <string>SpriteFont.DesktopGL</string>
+    <string>SpriteFont</string>
     <key>CFBundleIconFile</key>
     <string>SpriteFont.icns</string>
     <key>NSHighResolutionCapable</key>

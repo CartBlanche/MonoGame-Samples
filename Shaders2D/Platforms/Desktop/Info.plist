@@ -3,9 +3,9 @@
 <plist version="1.0">
 <dict>
     <key>CFBundleName</key>
-    <string>2DShaderSample.DesktopGL</string>
+    <string>2DShaderSample</string>
     <key>CFBundleDisplayName</key>
-    <string>2DShaderSample.DesktopGL</string>
+    <string>2DShaderSample</string>
     <key>CFBundleIdentifier</key>
     <string>com.cartblanche.2dshadersampledesktopgl</string>
     <key>CFBundleVersion</key>
@@ -13,7 +13,7 @@
     <key>CFBundlePackageType</key>
     <string>APPL</string>
     <key>CFBundleExecutable</key>
-    <string>2DShaderSample.DesktopGL</string>
+    <string>2DShaderSample</string>
     <key>CFBundleIconFile</key>
     <string>2DShaderSample.DesktopGL.icns</string>
     <key>NSHighResolutionCapable</key>

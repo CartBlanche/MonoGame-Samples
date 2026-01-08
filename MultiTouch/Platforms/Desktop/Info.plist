@@ -3,11 +3,11 @@
 <plist version="1.0">
 <dict>
     <key>CFBundleName</key>
-    <string>MultiTouch.DesktopGL</string>
+    <string>MultiTouch</string>
     <key>CFBundleDisplayName</key>
-    <string>MultiTouch.DesktopGL</string>
+    <string>MultiTouch</string>
     <key>CFBundleIdentifier</key>
-    <string>com.cartblanche.multitouch.desktopgl</string>
+    <string>com.cartblanche.multitouch</string>
     <key>CFBundleVersion</key>
     <string>1.0</string>
     <key>CFBundlePackageType</key>

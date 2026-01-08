@@ -3,11 +3,11 @@
 <plist version="1.0">
 <dict>
     <key>CFBundleName</key>
-    <string>ShadowMapping.DesktopGL</string>
+    <string>ShadowMapping</string>
     <key>CFBundleDisplayName</key>
-    <string>ShadowMapping.DesktopGL</string>
+    <string>ShadowMapping</string>
     <key>CFBundleIdentifier</key>
-    <string>com.cartblanche.shadowmapping.desktopgl</string>
+    <string>com.cartblanche.shadowmapping</string>
     <key>CFBundleVersion</key>
     <string>1.0</string>
     <key>CFBundlePackageType</key>

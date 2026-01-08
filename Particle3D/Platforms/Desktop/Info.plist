@@ -3,17 +3,17 @@
 <plist version="1.0">
 <dict>
     <key>CFBundleName</key>
-    <string>Particle3DSample.DesktopGL</string>
+    <string>Particle3DSample</string>
     <key>CFBundleDisplayName</key>
-    <string>Particle3DSample.DesktopGL</string>
+    <string>Particle3DSample</string>
     <key>CFBundleIdentifier</key>
-    <string>com.cartblanche.particle3dsample.desktopgl</string>
+    <string>com.cartblanche.particle3dsample</string>
     <key>CFBundleVersion</key>
     <string>1.0</string>
     <key>CFBundlePackageType</key>
     <string>APPL</string>
     <key>CFBundleExecutable</key>
-    <string>Particle3DSample.DesktopGL</string>
+    <string>Particle3DSample</string>
     <key>CFBundleIconFile</key>
     <string>Particle3DSample.DesktopGL.icns</string>
     <key>NSHighResolutionCapable</key>

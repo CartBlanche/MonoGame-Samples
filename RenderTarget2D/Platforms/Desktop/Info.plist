@@ -3,17 +3,17 @@
 <plist version="1.0">
 <dict>
     <key>CFBundleName</key>
-    <string>RenderTarget2D.DesktopGL</string>
+    <string>RenderTarget2D</string>
     <key>CFBundleDisplayName</key>
-    <string>RenderTarget2D.DesktopGL</string>
+    <string>RenderTarget2D</string>
     <key>CFBundleIdentifier</key>
-    <string>com.cartblanche.rendertarget2d.desktopgl</string>
+    <string>com.cartblanche.rendertarget2d</string>
     <key>CFBundleVersion</key>
     <string>1.0</string>
     <key>CFBundlePackageType</key>
     <string>APPL</string>
     <key>CFBundleExecutable</key>
-    <string>RenderTarget2D.DesktopGL</string>
+    <string>RenderTarget2D</string>
     <key>CFBundleIconFile</key>
     <string>RenderTarget2D.DesktopGL.icns</string>
     <key>NSHighResolutionCapable</key>

@@ -3,17 +3,17 @@
 <plist version="1.0">
 <dict>
     <key>CFBundleName</key>
-    <string>PerPixelCollisionSample.DesktopGL</string>
+    <string>PerPixelCollisionSample</string>
     <key>CFBundleDisplayName</key>
-    <string>PerPixelCollisionSample.DesktopGL</string>
+    <string>PerPixelCollisionSample</string>
     <key>CFBundleIdentifier</key>
-    <string>com.cartblanche.perpixelcollisionsample.desktopgl</string>
+    <string>com.cartblanche.perpixelcollisionsample</string>
     <key>CFBundleVersion</key>
     <string>1.0</string>
     <key>CFBundlePackageType</key>
     <string>APPL</string>
     <key>CFBundleExecutable</key>
-    <string>PerPixelCollisionSample.DesktopGL</string>
+    <string>PerPixelCollisionSample</string>
     <key>CFBundleIconFile</key>
     <string>PerPixelCollisionSample.DesktopGL.icns</string>
     <key>NSHighResolutionCapable</key>

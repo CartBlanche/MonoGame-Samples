@@ -3,9 +3,9 @@
 <plist version="1.0">
 <dict>
     <key>CFBundleName</key>
-    <string>TexturedQuad.DesktopGL</string>
+    <string>TexturedQuad</string>
     <key>CFBundleDisplayName</key>
-    <string>TexturedQuad.DesktopGL</string>
+    <string>TexturedQuad</string>
     <key>CFBundleIdentifier</key>
     <string>com.cartblanche.texturedquaddesktopgl</string>
     <key>CFBundleVersion</key>
@@ -13,7 +13,7 @@
     <key>CFBundlePackageType</key>
     <string>APPL</string>
     <key>CFBundleExecutable</key>
-    <string>TexturedQuad.DesktopGL</string>
+    <string>TexturedQuad</string>
     <key>CFBundleIconFile</key>
     <string>TexturedQuad.icns</string>
     <key>NSHighResolutionCapable</key>

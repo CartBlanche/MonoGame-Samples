@@ -3,9 +3,9 @@
 <plist version="1.0">
 <dict>
     <key>CFBundleName</key>
-    <string>TransformedCollision.DesktopGL</string>
+    <string>TransformedCollision</string>
     <key>CFBundleDisplayName</key>
-    <string>TransformedCollision.DesktopGL</string>
+    <string>TransformedCollision</string>
     <key>CFBundleIdentifier</key>
     <string>com.cartblanche.transformedcollisiondesktopgl</string>
     <key>CFBundleVersion</key>
@@ -13,7 +13,7 @@
     <key>CFBundlePackageType</key>
     <string>APPL</string>
     <key>CFBundleExecutable</key>
-    <string>TransformedCollision.DesktopGL</string>
+    <string>TransformedCollision</string>
     <key>CFBundleIconFile</key>
     <string>TransformedCollision.icns</string>
     <key>NSHighResolutionCapable</key>

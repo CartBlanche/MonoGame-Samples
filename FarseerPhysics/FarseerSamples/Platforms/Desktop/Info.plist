@@ -3,11 +3,11 @@
 <plist version="1.0">
 <dict>
     <key>CFBundleName</key>
-    <string>FarseerSamples.DesktopGL</string>
+    <string>FarseerSamples</string>
     <key>CFBundleDisplayName</key>
-    <string>FarseerSamples.DesktopGL</string>
+    <string>FarseerSamples</string>
     <key>CFBundleIdentifier</key>
-    <string>com.cartblanche.farseersamples.desktopgl</string>
+    <string>com.cartblanche.farseersamples</string>
     <key>CFBundleVersion</key>
     <string>1.0</string>
     <key>CFBundlePackageType</key>

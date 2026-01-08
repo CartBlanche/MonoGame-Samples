@@ -3,17 +3,17 @@
 <plist version="1.0">
 <dict>
     <key>CFBundleName</key>
-    <string>GameComponents.DesktopGL</string>
+    <string>GameComponents</string>
     <key>CFBundleDisplayName</key>
-    <string>GameComponents.DesktopGL</string>
+    <string>GameComponents</string>
     <key>CFBundleIdentifier</key>
-    <string>com.cartblanche.gamecomponents.desktopgl</string>
+    <string>com.cartblanche.gamecomponents</string>
     <key>CFBundleVersion</key>
     <string>1.0</string>
     <key>CFBundlePackageType</key>
     <string>APPL</string>
     <key>CFBundleExecutable</key>
-    <string>GameComponents.DesktopGL</string>
+    <string>GameComponents</string>
     <key>CFBundleIconFile</key>
     <string>GameComponents.DesktopGL.icns</string>
     <key>NSHighResolutionCapable</key>

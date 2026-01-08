@@ -3,11 +3,11 @@
 <plist version="1.0">
 <dict>
     <key>CFBundleName</key>
-    <string>Orientation.DesktopGL</string>
+    <string>Orientation</string>
     <key>CFBundleDisplayName</key>
-    <string>Orientation.DesktopGL</string>
+    <string>Orientation</string>
     <key>CFBundleIdentifier</key>
-    <string>com.cartblanche.orientation.desktopgl</string>
+    <string>com.cartblanche.orientation</string>
     <key>CFBundleVersion</key>
     <string>1.0</string>
     <key>CFBundlePackageType</key>

@@ -3,9 +3,9 @@
 <plist version="1.0">
 <dict>
     <key>CFBundleName</key>
-    <string>VirtualGamePad.DesktopGL</string>
+    <string>VirtualGamePad</string>
     <key>CFBundleDisplayName</key>
-    <string>VirtualGamePad.DesktopGL</string>
+    <string>VirtualGamePad</string>
     <key>CFBundleIdentifier</key>
     <string>com.cartblanche.virtualgamepaddesktopgl</string>
     <key>CFBundleVersion</key>
@@ -13,7 +13,7 @@
     <key>CFBundlePackageType</key>
     <string>APPL</string>
     <key>CFBundleExecutable</key>
-    <string>VirtualGamePad.DesktopGL</string>
+    <string>VirtualGamePad</string>
     <key>CFBundleIconFile</key>
     <string>VirtualGamePad.DesktopGL.icns</string>
     <key>NSHighResolutionCapable</key>

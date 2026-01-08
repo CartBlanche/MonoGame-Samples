@@ -3,9 +3,9 @@
 <plist version="1.0">
 <dict>
     <key>CFBundleName</key>
-    <string>StarWarrior.DesktopGL</string>
+    <string>StarWarrior</string>
     <key>CFBundleDisplayName</key>
-    <string>StarWarrior.DesktopGL</string>
+    <string>StarWarrior</string>
     <key>CFBundleIdentifier</key>
     <string>com.cartblanche.starwarriordesktopgl</string>
     <key>CFBundleVersion</key>
@@ -13,7 +13,7 @@
     <key>CFBundlePackageType</key>
     <string>APPL</string>
     <key>CFBundleExecutable</key>
-    <string>StarWarrior.DesktopGL</string>
+    <string>StarWarrior</string>
     <key>CFBundleIconFile</key>
     <string>StarWarrior.icns</string>
     <key>NSHighResolutionCapable</key>

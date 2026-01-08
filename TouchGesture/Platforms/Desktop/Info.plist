@@ -3,9 +3,9 @@
 <plist version="1.0">
 <dict>
     <key>CFBundleName</key>
-    <string>TouchGesture.DesktopGL</string>
+    <string>TouchGesture</string>
     <key>CFBundleDisplayName</key>
-    <string>TouchGesture.DesktopGL</string>
+    <string>TouchGesture</string>
     <key>CFBundleIdentifier</key>
     <string>com.cartblanche.touchgesturedesktopgl</string>
     <key>CFBundleVersion</key>
@@ -13,7 +13,7 @@
     <key>CFBundlePackageType</key>
     <string>APPL</string>
     <key>CFBundleExecutable</key>
-    <string>TouchGesture.DesktopGL</string>
+    <string>TouchGesture</string>
     <key>CFBundleIconFile</key>
     <string>TouchGesture.icns</string>
     <key>NSHighResolutionCapable</key>

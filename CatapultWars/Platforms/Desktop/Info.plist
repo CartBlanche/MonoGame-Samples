@@ -3,11 +3,11 @@
 <plist version="1.0">
 <dict>
     <key>CFBundleName</key>
-    <string>CatapultNetWars.DesktopGL</string>
+    <string>CatapultNetWars</string>
     <key>CFBundleDisplayName</key>
-    <string>CatapultNetWars.DesktopGL</string>
+    <string>CatapultNetWars</string>
     <key>CFBundleIdentifier</key>
-    <string>com.cartblanche.catapultnetwars.desktopgl</string>
+    <string>com.cartblanche.catapultnetwars</string>
     <key>CFBundleVersion</key>
     <string>1.0</string>
     <key>CFBundlePackageType</key>

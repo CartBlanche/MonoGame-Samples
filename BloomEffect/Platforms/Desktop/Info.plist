@@ -3,9 +3,9 @@
 <plist version="1.0">
 <dict>
     <key>CFBundleName</key>
-    <string>BloomSample.DesktopGL</string>
+    <string>BloomSample</string>
     <key>CFBundleDisplayName</key>
-    <string>BloomSample.DesktopGL</string>
+    <string>BloomSample</string>
     <key>CFBundleIdentifier</key>
     <string>com.cartblanche.bloomsampledesktopgl</string>
     <key>CFBundleVersion</key>
@@ -13,7 +13,7 @@
     <key>CFBundlePackageType</key>
     <string>APPL</string>
     <key>CFBundleExecutable</key>
-    <string>BloomSample.DesktopGL</string>
+    <string>BloomSample</string>
     <key>CFBundleIconFile</key>
     <string>BloomSample.DesktopGL.icns</string>
     <key>NSHighResolutionCapable</key>

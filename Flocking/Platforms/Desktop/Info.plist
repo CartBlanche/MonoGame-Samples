@@ -3,17 +3,17 @@
 <plist version="1.0">
 <dict>
     <key>CFBundleName</key>
-    <string>Flocking.DesktopGL</string>
+    <string>Flocking</string>
     <key>CFBundleDisplayName</key>
-    <string>Flocking.DesktopGL</string>
+    <string>Flocking</string>
     <key>CFBundleIdentifier</key>
-    <string>com.cartblanche.flocking.desktopgl</string>
+    <string>com.cartblanche.flocking</string>
     <key>CFBundleVersion</key>
     <string>1.0</string>
     <key>CFBundlePackageType</key>
     <string>APPL</string>
     <key>CFBundleExecutable</key>
-    <string>Flocking.DesktopGL</string>
+    <string>Flocking</string>
     <key>CFBundleIconFile</key>
     <string>Flocking.DesktopGL.icns</string>
     <key>NSHighResolutionCapable</key>

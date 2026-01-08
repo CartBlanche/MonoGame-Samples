@@ -3,9 +3,9 @@
 <plist version="1.0">
 <dict>
     <key>CFBundleName</key>
-    <string>StencilCraters.DesktopGL</string>
+    <string>StencilCraters</string>
     <key>CFBundleDisplayName</key>
-    <string>StencilCraters.DesktopGL</string>
+    <string>StencilCraters</string>
     <key>CFBundleIdentifier</key>
     <string>com.cartblanche.stencilcratersdesktopgl</string>
     <key>CFBundleVersion</key>
@@ -13,7 +13,7 @@
     <key>CFBundlePackageType</key>
     <string>APPL</string>
     <key>CFBundleExecutable</key>
-    <string>StencilCraters.DesktopGL</string>
+    <string>StencilCraters</string>
     <key>CFBundleIconFile</key>
     <string>StencilCraters.icns</string>
     <key>NSHighResolutionCapable</key>

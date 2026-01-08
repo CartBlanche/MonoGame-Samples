@@ -3,11 +3,11 @@
 <plist version="1.0">
 <dict>
     <key>CFBundleName</key>
-    <string>BouncingBox.DesktopGL</string>
+    <string>BouncingBox</string>
     <key>CFBundleDisplayName</key>
-    <string>BouncingBox.DesktopGL</string>
+    <string>BouncingBox</string>
     <key>CFBundleIdentifier</key>
-    <string>com.cartblanche.bouncingbox.desktopgl</string>
+    <string>com.cartblanche.bouncingbox</string>
     <key>CFBundleVersion</key>
     <string>1.0</string>
     <key>CFBundlePackageType</key>

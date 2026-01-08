@@ -3,9 +3,9 @@
 <plist version="1.0">
 <dict>
     <key>CFBundleName</key>
-    <string>Sound.DesktopGL</string>
+    <string>Sound</string>
     <key>CFBundleDisplayName</key>
-    <string>Sound.DesktopGL</string>
+    <string>Sound</string>
     <key>CFBundleIdentifier</key>
     <string>com.cartblanche.sounddesktopgl</string>
     <key>CFBundleVersion</key>
@@ -13,7 +13,7 @@
     <key>CFBundlePackageType</key>
     <string>APPL</string>
     <key>CFBundleExecutable</key>
-    <string>Sound.DesktopGL</string>
+    <string>Sound</string>
     <key>CFBundleIconFile</key>
     <string>Sound.icns</string>
     <key>NSHighResolutionCapable</key>
