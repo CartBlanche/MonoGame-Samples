@@ -123,9 +123,6 @@ jobs:
           echo "Project directory: $PROJ_DIR"
           echo "Output directory: $ARTIFACTS_DIR"
 
-          echo "Building $PROJ in Release mode"
-          dotnet build "$PROJ" -c Release
-
           # Check for macOS assets
           INFO_PLIST="$PROJ_DIR/Info.plist"
           ICNS_FILE="$PROJ_DIR/${NAME}.icns"
