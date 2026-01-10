@@ -211,6 +211,10 @@ namespace Blackjack
         /// </summary>
         public void FireClick()
         {
+            // Play button click sound
+            // TODO: Uncomment when ButtonClick sound file is added to Content/Sounds/
+            // AudioManager.PlaySound("ButtonClick");
+
             if (Click != null)
             {
                 Click(this, EventArgs.Empty);
