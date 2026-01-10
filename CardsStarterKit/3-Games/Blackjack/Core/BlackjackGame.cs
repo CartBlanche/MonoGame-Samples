@@ -80,5 +80,52 @@ namespace Blackjack
 
             base.LoadContent();
         }
+
+        /// <summary>
+        /// Allows the game to run logic such as updating the world,
+        /// checking for collisions, gathering input, and playing audio.
+        /// </summary>
+        /// <param name="gameTime">Provides a snapshot of timing values.</param>
+        protected override void Update(GameTime gameTime)
+        {
+            if (UIUtility.IsDesktop)
+            {
+                KeyboardState keyboardState = Keyboard.GetState();
+
+                // Check if Alt+Enter is pressed
+                if ((keyboardState.IsKeyDown(Keys.LeftAlt) || keyboardState.IsKeyDown(Keys.RightAlt))
+                    && keyboardState.IsKeyDown(Keys.Enter))
+                {
+                    // Use a static flag to prevent multiple toggles on held keys
+                    if (!wasFullscreenTogglePressed)
+                    {
+                        graphicsDeviceManager.ToggleFullScreen();
+
+                        wasFullscreenTogglePressed = true;
+                    }
+                }
+                else
+                {
+                    wasFullscreenTogglePressed = false;
+                }
+            }
+
+            base.Update(gameTime);
+        }
+
+        /// <summary>
+        /// This is called when the game should draw itself.
+        /// </summary>
+        /// <param name="gameTime">Provides a snapshot of timing values.</param>
+        protected override void Draw(GameTime gameTime)
+        {
+            // Clear the screen to prevent rendering artifacts when switching between windowed and fullscreen
+            GraphicsDevice.Clear(Color.Black);
+
+            base.Draw(gameTime);
+        }
+
+        // Flag to prevent multiple fullscreen toggles when keys are held
+        private bool wasFullscreenTogglePressed = false;
     }
 }
