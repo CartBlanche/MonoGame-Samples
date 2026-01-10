@@ -191,8 +191,8 @@ namespace GameStateManagement
             // Calculate horizontal centering
             float centeredX = destination.X + (destination.Width / 2.0f) - (GetWidth(screen) / 2.0f) * Scale;
 
-            // Calculate vertical centering
-            float centeredY = destination.Y + (destination.Height / 2.0f) - (GetHeight(screen) / 2.0f) * Scale;
+            // Calculate vertical centering and move up 2 pixels for better visual centering
+            float centeredY = destination.Y + (destination.Height / 2.0f) - (GetHeight(screen) / 2.0f) * Scale - 2;
 
             textPosition = new Vector2(centeredX, centeredY);
 

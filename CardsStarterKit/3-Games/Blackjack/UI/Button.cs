@@ -293,7 +293,7 @@ namespace Blackjack
                 {
                     Vector2 textPosition = new Vector2(
                         Bounds.X + (Bounds.Width - textSize.X) / 2,
-                        startY
+                        startY - 2  // Move text up 2 pixels for better visual centering
                     );
                     textPosition += pressedOffset;
 
