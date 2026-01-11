@@ -165,6 +165,23 @@ namespace GameStateManagement
 
             spriteBatch.DrawString(screenManager.Font, text, getTextPosition(screen),
                 textColor, Rotation, Vector2.Zero, Scale, SpriteEffects.None, 0);
+
+            // Draw hover border on desktop (bold gold rectangle outline)
+            if (UIUtility.IsDesktop && isSelected && !isPressed)
+            {
+                Texture2D pixel = screenManager.BlankTexture;
+                int borderThickness = 3;
+                Color borderColor = Color.Gold;
+
+                // Top border
+                spriteBatch.Draw(pixel, new Rectangle(destination.X, destination.Y, destination.Width, borderThickness), borderColor);
+                // Bottom border
+                spriteBatch.Draw(pixel, new Rectangle(destination.X, destination.Y + destination.Height - borderThickness, destination.Width, borderThickness), borderColor);
+                // Left border
+                spriteBatch.Draw(pixel, new Rectangle(destination.X, destination.Y, borderThickness, destination.Height), borderColor);
+                // Right border
+                spriteBatch.Draw(pixel, new Rectangle(destination.X + destination.Width - borderThickness, destination.Y, borderThickness, destination.Height), borderColor);
+            }
         }
 
 

@@ -114,6 +114,17 @@ namespace GameStateManagement
                     OnSelectEntry(selectedEntry, player);
                 }
 
+                // Update selectedEntry based on mouse hover (for hover highlight)
+                Point cursorLocation = new Point((int)inputState.CurrentCursorLocation.X, (int)inputState.CurrentCursorLocation.Y);
+                for (int i = 0; i < menuEntries.Count; i++)
+                {
+                    if (menuEntries[i].Destination.Contains(cursorLocation))
+                    {
+                        selectedEntry = i;
+                        break;
+                    }
+                }
+
                 // Handle mouse input using transformed coordinates
                 if (inputState.CurrentMouseState.LeftButton == ButtonState.Released)
                 {

@@ -21,12 +21,15 @@ namespace Blackjack
     public class Button : AnimatedGameComponent
     {
         bool isPressed = false;
+        bool isHovered = false;
         SpriteBatch spriteBatch;
 
         public Texture2D RegularTexture { get; set; }
         public Texture2D PressedTexture { get; set; }
         public SpriteFont Font { get; set; }
         public Rectangle Bounds { get; set; }
+
+        private Texture2D blankTexture; // For drawing hover border
 
         // Icon support properties
         public Texture2D IconTexture { get; set; }
@@ -112,6 +115,9 @@ namespace Blackjack
                 IconTexture = Game.Content.Load<Texture2D>(Path.Combine("Images", iconTexture));
             }
 
+            // Load blank texture for hover border
+            blankTexture = Game.Content.Load<Texture2D>(Path.Combine("Images", "blank"));
+
             base.LoadContent();
         }
 
@@ -139,8 +145,12 @@ namespace Blackjack
 
             if (UIUtility.IsDesktop)
             {
+                // Track hover state for desktop
+                bool cursorOverButton = IntersectWith(input.CurrentCursorLocation);
+                isHovered = cursorOverButton;
+
                 // For desktop, check for a click at the unified cursor position (mouse or gamepad)
-                if (IntersectWith(input.CurrentCursorLocation))
+                if (cursorOverButton)
                 {
                     PlayerIndex playerIndex;
                     // A "MenuSelect" can be a gamepad A button, or keyboard Enter/Space.
@@ -151,14 +161,17 @@ namespace Blackjack
                     }
                 }
 
-                // The button's visual "pressed" state is determined by whether the mouse button 
+                // The button's visual "pressed" state is determined by whether the mouse button
                 // is held down, or if the gamepad 'A' button is held down over the button.
-                isPressed = IntersectWith(input.CurrentCursorLocation) &&
+                isPressed = cursorOverButton &&
                             (input.CurrentMouseState.LeftButton == ButtonState.Pressed ||
                             (input.CurrentGamePadStates.Length > 0 && input.CurrentGamePadStates[0].IsButtonDown(Buttons.A)));
             }
             else if (UIUtility.IsMobile)
             {
+                // No hover on mobile
+                isHovered = false;
+
                 // For mobile, we rely on the simple Tap gesture for the click event.
                 foreach (var gesture in input.Gestures)
                 {
@@ -231,7 +244,7 @@ namespace Blackjack
             spriteBatch.Begin(SpriteSortMode.Deferred, null, null, null, null, null, globalTransformation);
 
             // Draw button background
-            spriteBatch.Draw(isPressed ? PressedTexture : RegularTexture, Bounds, this.Color);
+            spriteBatch.Draw(isPressed ? PressedTexture : RegularTexture, Bounds, Color);
 
             // Calculate if we have icon and/or text
             bool hasIcon = IconTexture != null;
@@ -299,6 +312,22 @@ namespace Blackjack
 
                     spriteBatch.DrawString(Font, Text, textPosition, Color.White);
                 }
+            }
+
+            // Draw hover border (bold gold rectangle outline)
+            if (isHovered && !isPressed && blankTexture != null)
+            {
+                int borderThickness = 3;
+                Color borderColor = Color.Gold;
+
+                // Top border
+                spriteBatch.Draw(blankTexture, new Rectangle(Bounds.X, Bounds.Y, Bounds.Width, borderThickness), borderColor);
+                // Bottom border
+                spriteBatch.Draw(blankTexture, new Rectangle(Bounds.X, Bounds.Y + Bounds.Height - borderThickness, Bounds.Width, borderThickness), borderColor);
+                // Left border
+                spriteBatch.Draw(blankTexture, new Rectangle(Bounds.X, Bounds.Y, borderThickness, Bounds.Height), borderColor);
+                // Right border
+                spriteBatch.Draw(blankTexture, new Rectangle(Bounds.X + Bounds.Width - borderThickness, Bounds.Y, borderThickness, Bounds.Height), borderColor);
             }
 
             spriteBatch.End();
