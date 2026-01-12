@@ -59,16 +59,19 @@ namespace Blackjack
             // Create our menu entries.
             MenuEntry startGameMenuEntry = new MenuEntry(Resources.Play);
             MenuEntry settingsMenuEntry = new MenuEntry(Resources.Settings);
+            MenuEntry aboutMenuEntry = new MenuEntry("About");
             MenuEntry exitMenuEntry = new MenuEntry(Resources.Exit);
 
             // Hook up menu event handlers.
             startGameMenuEntry.Selected += StartGameMenuEntrySelected;
             settingsMenuEntry.Selected += SettingsMenuEntrySelected;
+            aboutMenuEntry.Selected += AboutMenuEntrySelected;
             exitMenuEntry.Selected += OnCancel;
 
             // Add entries to the menu.
             MenuEntries.Add(startGameMenuEntry);
             MenuEntries.Add(settingsMenuEntry);
+            MenuEntries.Add(aboutMenuEntry);
             MenuEntries.Add(exitMenuEntry);
         }
 
@@ -94,6 +97,16 @@ namespace Blackjack
         void SettingsMenuEntrySelected(object sender, EventArgs e)
         {
             ScreenManager.AddScreen(new SettingsScreen(), null);
+        }
+
+        /// <summary>
+        /// Respond to "About" Item Selection
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        void AboutMenuEntrySelected(object sender, EventArgs e)
+        {
+            ScreenManager.AddScreen(new AboutScreen(), null);
         }
 
         /// <summary>
