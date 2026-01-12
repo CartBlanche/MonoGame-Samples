@@ -49,6 +49,8 @@ namespace Blackjack
         Vector2 secondHandOffset;
 
         List<AnimatedGameComponent> currentChipComponent = new List<AnimatedGameComponent>();
+        // Track chip values for the current bet stack (parallel to currentChipComponent)
+        List<int> currentChipValues = new List<int>();
         // Track all chip components for each player (for win/loss animations)
         Dictionary<int, List<AnimatedGameComponent>> playerChipComponents = new Dictionary<int, List<AnimatedGameComponent>>();
         int currentBet = 0;
@@ -274,6 +276,7 @@ namespace Blackjack
                         }
 
                         currentChipComponent.Clear();
+                        currentChipValues.Clear();
                         currentBet = 0;
                         UpdateClearButtonState();
                     }
@@ -358,27 +361,37 @@ namespace Blackjack
 
             if (isClicked)
             {
-                int chipValue = GetIntersectingChipValue(position);
-                if (chipValue != 0)
+                // First check if clicking on the chip stack to remove chips (LIFO)
+                bool clickedOnStack = IsClickOnChipStack(position);
+                if (clickedOnStack && currentChipComponent.Count > 0)
                 {
-                    // Determine which player should receive the chip
-                    int targetPlayerIndex;
-                    BlackjackCardGame blackjackGame = cardGame as BlackjackCardGame;
+                    RemoveLastChip();
+                }
+                else
+                {
+                    // Check if clicking on chip selector circles to add chips
+                    int chipValue = GetIntersectingChipValue(position);
+                    if (chipValue != 0)
+                    {
+                        // Determine which player should receive the chip
+                        int targetPlayerIndex;
+                        BlackjackCardGame blackjackGame = cardGame as BlackjackCardGame;
 
-                    if (blackjackGame != null && blackjackGame.IsNetworkGame && LocalPlayerIndex >= 0)
-                    {
-                        // In network games, always bet for the local player
-                        targetPlayerIndex = LocalPlayerIndex;
-                    }
-                    else
-                    {
-                        // In single-player, bet for the current player
-                        targetPlayerIndex = GetCurrentPlayer();
-                    }
+                        if (blackjackGame != null && blackjackGame.IsNetworkGame && LocalPlayerIndex >= 0)
+                        {
+                            // In network games, always bet for the local player
+                            targetPlayerIndex = LocalPlayerIndex;
+                        }
+                        else
+                        {
+                            // In single-player, bet for the current player
+                            targetPlayerIndex = GetCurrentPlayer();
+                        }
 
-                    if (targetPlayerIndex >= 0)
-                    {
-                        AddChip(targetPlayerIndex, chipValue, false);
+                        if (targetPlayerIndex >= 0)
+                        {
+                            AddChip(targetPlayerIndex, chipValue, false);
+                        }
                     }
                 }
             }
@@ -447,6 +460,117 @@ namespace Blackjack
             }
 
             return 0;
+        }
+
+        /// <summary>
+        /// Check if a click position intersects with the current player's chip stack on the table.
+        /// </summary>
+        /// <param name="position">The click position.</param>
+        /// <returns>True if the click is on the chip stack, false otherwise.</returns>
+        private bool IsClickOnChipStack(Vector2 position)
+        {
+            // Only allow removing chips if there are chips in the current bet
+            if (currentChipComponent.Count == 0)
+            {
+                return false;
+            }
+
+            // Get the current player index
+            int playerIndex = GetCurrentPlayer();
+            if (playerIndex < 0)
+            {
+                return false;
+            }
+
+            // Calculate the chip stack bounds
+            // Use the same logic as AddChip to determine where chips are positioned
+            Vector2 offset = GetChipOffset(playerIndex, false);
+            Vector2 stackCenter = cardGame.GameTable[playerIndex] + offset;
+
+            // Create a hitbox around the stack (use chip texture size + some margin)
+            int chipSize = chipsAssets[assetNames[0]].Width; // Use first chip as reference
+            int margin = 20; // Add margin for easier clicking
+            Rectangle stackBounds = new Rectangle(
+                (int)(stackCenter.X - chipSize / 2 - margin),
+                (int)(stackCenter.Y - chipSize / 2 - margin),
+                chipSize + margin * 2,
+                chipSize + margin * 2
+            );
+
+            // Check intersection
+            Rectangle touchTap = new Rectangle((int)position.X - 1, (int)position.Y - 1, 2, 2);
+            return stackBounds.Intersects(touchTap);
+        }
+
+        /// <summary>
+        /// Remove the last chip from the current bet stack (LIFO).
+        /// </summary>
+        private void RemoveLastChip()
+        {
+            if (currentChipComponent.Count == 0 || currentChipValues.Count == 0)
+            {
+                return;
+            }
+
+            // Get the current player
+            int playerIndex = GetCurrentPlayer();
+            if (playerIndex < 0 || playerIndex >= players.Count)
+            {
+                return;
+            }
+
+            // Get the last chip component and its value
+            int lastIndex = currentChipComponent.Count - 1;
+            AnimatedGameComponent lastChip = currentChipComponent[lastIndex];
+            int chipValue = currentChipValues[lastIndex];
+
+            // Refund the chip value to the player
+            // Clear the bet and re-bet the reduced amount
+            // This is cleaner than using reflection to modify the private BetAmount property
+            BlackjackPlayer player = (BlackjackPlayer)players[playerIndex];
+
+            float newBetAmount = player.BetAmount - chipValue;
+            player.ClearBet(); // Returns all bet to balance and sets BetAmount to 0
+            player.Bet(newBetAmount); // Re-bet the reduced amount
+
+            currentBet -= chipValue;
+
+            // Remove from current chip components and values
+            currentChipComponent.RemoveAt(lastIndex);
+            currentChipValues.RemoveAt(lastIndex);
+
+            // Remove from player chip components
+            if (playerChipComponents.TryGetValue(playerIndex, out var chips))
+            {
+                chips.Remove(lastChip);
+            }
+
+            // Animate the chip returning to its selector position
+            int chipIndex = 0;
+            for (int i = 0; i < assetNames.Length; i++)
+            {
+                if (assetNames[i] == chipValue)
+                {
+                    chipIndex = i;
+                    break;
+                }
+            }
+
+            Vector2 returnPosition = positions[chipIndex];
+            lastChip.AddAnimation(new TransitionGameComponentAnimation(
+                lastChip.CurrentPosition, returnPosition)
+            {
+                Duration = TimeSpan.FromSeconds(0.3f),
+                PerformWhenDone = (sender) =>
+                {
+                    // Hide and remove the chip component after animation
+                    lastChip.Visible = false;
+                    Game.Components.Remove(lastChip);
+                }
+            });
+
+            // Play sound (reverse of bet sound)
+            AudioManager.PlaySound("Bet");
         }
 
         /// <summary>
@@ -591,6 +715,7 @@ namespace Blackjack
                 });
 
                 currentChipComponent.Add(chipComponent);
+                currentChipValues.Add(chipValue); // Track the chip value
 
                 // Track chip for this player (for win/loss animations)
                 if (!playerChipComponents.ContainsKey(playerIndex))
@@ -668,6 +793,7 @@ namespace Blackjack
         public void Reset()
         {
             currentChipComponent.Clear();
+            currentChipValues.Clear();
             ShowAndEnableButtons(true);
         }
 
@@ -1502,6 +1628,7 @@ namespace Blackjack
                 // Clear the bet after animation completes
                 player.ClearBet();
                 currentChipComponent.Clear();
+                currentChipValues.Clear();
 
                 // Update Clear button state now that chips have been cleared
                 UpdateClearButtonState();
@@ -1557,6 +1684,7 @@ namespace Blackjack
             }
 
             currentChipComponent.Clear();
+            currentChipValues.Clear();
             currentBet = 0;
             UpdateClearButtonState();
         }
