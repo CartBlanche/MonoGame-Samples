@@ -56,8 +56,8 @@ namespace Blackjack
 
             screenManager = new ScreenManager(this);
 
-            screenManager.AddScreen(new BackgroundScreen(), null);
-            screenManager.AddScreen(new MainMenuScreen(), null);
+            // Show splash screen on startup (it will add BackgroundScreen and MainMenuScreen after 3 seconds)
+            screenManager.AddScreen(new SplashScreen(), null);
 
             Components.Add(screenManager);
 
