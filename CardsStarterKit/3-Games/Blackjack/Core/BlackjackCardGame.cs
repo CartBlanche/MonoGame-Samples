@@ -7,6 +7,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using CardsFramework;
 using Microsoft.Xna.Framework;
@@ -62,6 +63,7 @@ namespace Blackjack
         DeckDisplayComponent deckDisplay;
         Dictionary<string, Button> buttons = new Dictionary<string, Button>();
         Button newGame;
+        Button backButton;
         bool showInsurance;
         bool balanceAnimationsStarted = false;
 
@@ -196,6 +198,32 @@ namespace Blackjack
             buttons["Double"].Color = Color.Cyan;
             buttons["Split"].Color = Color.Yellow;
             newGame.Color = Color.Lime;
+
+            // Create back button (X) in top-left corner
+            int backButtonSize = (int)(50 * (screenHeight / 720f)); // Scale proportionally
+            int backButtonPadding = (int)(20 * (screenHeight / 720f));
+            backButton = new Button("ButtonRegular", "ButtonPressed",
+                screenManager.InputState, this, screenManager.SpriteBatch, screenManager.GlobalTransformation)
+            {
+                Text = "X",
+                Bounds = new Rectangle(backButtonPadding, backButtonPadding, backButtonSize, backButtonSize),
+                Font = this.Font,
+                Visible = true,
+                Enabled = true,
+                Color = Color.Red
+            };
+            backButton.Click += BackButton_Click;
+            Game.Components.Add(backButton);
+        }
+
+        /// <summary>
+        /// Handler for back button click - opens pause menu
+        /// </summary>
+        private void BackButton_Click(object sender, EventArgs e)
+        {
+            // Leverage the existing pause functionality from GameplayScreen
+            var gameplayScreen = screenManager.GetScreens().OfType<GameplayScreen>().FirstOrDefault();
+            gameplayScreen?.PauseCurrentGame();
         }
 
         /// <summary>

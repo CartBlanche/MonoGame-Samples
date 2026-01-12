@@ -674,7 +674,7 @@ namespace Blackjack
         /// <summary>
         /// Pause the game.
         /// </summary>
-        private void PauseCurrentGame()
+        public void PauseCurrentGame()
         {
             // Move to the pause screen
             ScreenManager.AddScreen(new BackgroundScreen(), null);
