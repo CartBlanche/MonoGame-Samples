@@ -145,13 +145,14 @@ namespace Blackjack
         }
 
         /// <summary>
-        /// Plays a sound by name with optional parameters for looping, volume, and pitch.
+        /// Plays a sound by name with optional parameters for looping, volume, pitch, and stereo panning.
         /// </summary>
         /// <param name="soundName">The name of the sound to play.</param>
         /// <param name="isLooped">Indicates if the sound should loop. Default is false.</param>
         /// <param name="volume">Custom volume (0.0 to 1.0). If null, uses SoundVolume from settings.</param>
         /// <param name="pitch">Pitch adjustment (-1.0 to 1.0, where 0 is normal pitch). Default is 0.</param>
-        public static void PlaySound(string soundName, bool isLooped = false, float? volume = null, float pitch = 0f)
+        /// <param name="pan">Stereo panning (-1.0 = left ear, 0.0 = center, 1.0 = right ear). Default is 0.</param>
+        public static void PlaySound(string soundName, bool isLooped = false, float? volume = null, float pitch = 0f, float pan = 0f)
         {
             // If the sound exists, start it
             if (audioManager.soundBank.ContainsKey(soundName))
@@ -169,6 +170,9 @@ namespace Blackjack
 
                 // Set pitch (clamped to valid range)
                 sound.Pitch = MathHelper.Clamp(pitch, -1.0f, 1.0f);
+
+                // Set stereo panning (clamped to valid range)
+                sound.Pan = MathHelper.Clamp(pan, -1.0f, 1.0f);
 
                 sound.Play();
             }

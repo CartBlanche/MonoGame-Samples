@@ -726,7 +726,8 @@ namespace Blackjack
                     Duration = TimeSpan.FromSeconds(1f),
                     PerformBeforeStart = ShowComponent,
                     PerformBeforeStartArgs = chipComponent,
-                    PerformWhenDone = PlayBetSound
+                    PerformWhenDone = PlayBetSound,
+                    PerformWhenDoneArgs = chipComponent
                 });
 
                 // Add flip animation
@@ -780,30 +781,51 @@ namespace Blackjack
         }
 
         /// <summary>
-        /// Helper method to play bet sound (normal pitch)
+        /// Helper method to play bet sound (normal pitch) with stereo panning based on chip position
         /// </summary>
         /// <param name="obj"></param>
         void PlayBetSound(object obj)
         {
-            AudioManager.PlaySound("Bet");
+            float pan = CalculateChipPan(obj);
+            AudioManager.PlaySound("Bet", pan: pan);
         }
 
         /// <summary>
-        /// Helper method to play winning chip sound (higher pitch)
+        /// Helper method to play winning chip sound (higher pitch) with stereo panning based on chip position
         /// </summary>
         /// <param name="obj"></param>
         void PlayWinningChipSound(object obj)
         {
-            AudioManager.PlaySoundWithPitch("Bet", 0.35f); // Higher pitch for winning
+            float pan = CalculateChipPan(obj);
+            AudioManager.PlaySound("Bet", pitch: 0.35f, pan: pan); // Higher pitch for winning
         }
 
         /// <summary>
-        /// Helper method to play losing chip sound (lower pitch)
+        /// Helper method to play losing chip sound (lower pitch) with stereo panning based on chip position
         /// </summary>
         /// <param name="obj"></param>
         void PlayLosingChipSound(object obj)
         {
-            AudioManager.PlaySoundWithPitch("Bet", -0.4f); // Lower pitch for losing
+            float pan = CalculateChipPan(obj);
+            AudioManager.PlaySound("Bet", pitch: -0.4f, pan: pan); // Lower pitch for losing
+        }
+
+        /// <summary>
+        /// Calculate stereo panning based on chip position on screen
+        /// </summary>
+        /// <param name="obj">The chip component or null</param>
+        /// <returns>Pan value from -0.7 to 0.7 (scaled for subtlety)</returns>
+        float CalculateChipPan(object obj)
+        {
+            // If obj is an AnimatedGameComponent (chip), calculate pan based on its position
+            if (obj is AnimatedGameComponent chipComponent && cardGame is BlackjackCardGame blackjackGame)
+            {
+                float screenCenterX = blackjackGame.ScreenManager.SafeArea.Width / 2f;
+                float pan = (chipComponent.CurrentPosition.X - screenCenterX) / screenCenterX;
+                return MathHelper.Clamp(pan * 0.7f, -0.7f, 0.7f); // Scale to 70% max for subtlety
+            }
+
+            return 0f; // Center if no position available
         }
 
         /// <summary>
@@ -1086,7 +1108,8 @@ namespace Blackjack
                         SavePlayerBalanceIfNeeded(playerIndex);
                         callback?.Invoke();
                     }
-                    : PlayWinningChipSound
+                    : PlayWinningChipSound,
+                    PerformWhenDoneArgs = chip
                 });
             }
         }
@@ -1131,7 +1154,8 @@ namespace Blackjack
                             CleanupPlayerChips(playerIndex);
                             callback?.Invoke();
                         }
-                        : PlayWinningChipSound
+                        : PlayWinningChipSound,
+                        PerformWhenDoneArgs = chip
                     });
                 }
             }
@@ -1183,7 +1207,8 @@ namespace Blackjack
                             CleanupPlayerChips(playerIndex);
                             callback?.Invoke();
                         }
-                        : PlayWinningChipSound
+                        : PlayWinningChipSound,
+                        PerformWhenDoneArgs = chip
                     });
                 }
             }
@@ -1285,7 +1310,8 @@ namespace Blackjack
                         CleanupPlayerChips(playerIndex);
                         callback?.Invoke();
                     }
-                    : PlayLosingChipSound
+                    : PlayLosingChipSound,
+                    PerformWhenDoneArgs = chip
                 });
             }
         }

@@ -1036,7 +1036,7 @@ namespace Blackjack
         }
 
         /// <summary>
-        /// Helper method to show card component and play deal sound with contextual pitch/volume.
+        /// Helper method to show card component and play deal sound with contextual pitch/volume/panning.
         /// Called when card animation starts.
         /// </summary>
         /// <param name="obj">Array containing [cardComponent, animatedHand]</param>
@@ -1085,11 +1085,21 @@ namespace Blackjack
                 }
             }
 
+            // Calculate stereo panning based on card's X position on screen
+            // Get the target position where the card is heading
+            Vector2 targetPosition = animatedHand.CurrentPosition;
+            float screenCenterX = screenManager.SafeArea.Width / 2f;
+
+            // Calculate pan: -1.0 (left) to 1.0 (right), with 0.0 at screen center
+            // We'll use a moderate panning range to keep it subtle
+            float pan = (targetPosition.X - screenCenterX) / screenCenterX;
+            pan = MathHelper.Clamp(pan * 0.7f, -0.7f, 0.7f); // Scale to 70% max for subtlety
+
             // Calculate final volume based on settings
             float volume = GameSettings.Instance.SoundVolume * volumeMultiplier;
             volume = MathHelper.Clamp(volume, 0f, 1f);
 
-            AudioManager.PlaySound("Deal", pitch: pitch, volume: volume);
+            AudioManager.PlaySound("Deal", pitch: pitch, volume: volume, pan: pan);
         }
 
         /// <summary>
