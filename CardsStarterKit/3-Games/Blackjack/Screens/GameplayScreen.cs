@@ -97,6 +97,9 @@ namespace Blackjack
             settings = GameSettings.Instance;
             showHints = settings.ShowHints;
 
+            // TODO: Start gameplay background music when audio asset is available
+            // AudioManager.PlayMusic("InGameSong_Loop");
+
             base.LoadContent();
         }
 

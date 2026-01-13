@@ -109,6 +109,9 @@ namespace Blackjack
 
             // TODO: Add button click sound file to Content/Sounds/ButtonClick.wav or .xnb
             // LoadSound("ButtonClick", "ButtonClick");
+
+            // TODO: Add card removal sound file to Content/Sounds/CardRemoval.wav or .xnb
+            // LoadSound("CardRemoval", "CardRemoval");
         }
 
         /// <summary>

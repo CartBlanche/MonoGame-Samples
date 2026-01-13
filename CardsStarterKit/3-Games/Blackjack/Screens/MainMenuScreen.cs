@@ -32,6 +32,9 @@ namespace Blackjack
         {
             BuildMenuEntries();
             base.LoadContent();
+
+            // TODO: Start menu background music when audio asset is available
+            // AudioManager.PlayMusic("MenuMusic_Loop");
         }
 
         public override void Update(GameTime gameTime, bool otherScreenHasFocus, bool coveredByOtherScreen)

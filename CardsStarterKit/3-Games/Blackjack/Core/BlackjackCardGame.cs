@@ -1102,6 +1102,18 @@ namespace Blackjack
         }
 
         /// <summary>
+        /// Helper method to play card removal sound when cards leave the table.
+        /// Called when cards are animated off-screen at the end of a round.
+        /// </summary>
+        /// <param name="obj"></param>
+        void PlayCardRemovalSound(object obj)
+        {
+            // TODO: Add card removal sound asset to Content/Sounds/CardRemoval.wav or .xnb
+            // Uncomment the line below once the sound asset is added:
+            // AudioManager.PlaySound("CardRemoval", pitch: (float)(random.NextDouble() * 0.1 - 0.05)); // Slight pitch variation
+        }
+
+        /// <summary>
         /// Adds an animation which displays an asset over a player's hand. The asset
         /// will appear above the hand and appear to "fall" on top of it.
         /// </summary>
@@ -1707,6 +1719,7 @@ namespace Blackjack
                             new Vector2(animatedCard.CurrentPosition.X, ScreenManager.BASE_BUFFER_HEIGHT))
                             {
                                 Duration = TimeSpan.FromSeconds(0.40),
+                                PerformBeforeStart = PlayCardRemovalSound,
                                 PerformWhenDone = RemoveComponent,
                                 PerformWhenDoneArgs = animatedCard
                             });
