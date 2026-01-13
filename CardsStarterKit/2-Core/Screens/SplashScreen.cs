@@ -111,7 +111,7 @@ namespace Blackjack
             spriteBatch.Draw(splashTexture, safeArea, backgroundColor * TransitionAlpha);
 
             // Draw placeholder text for now (TODO: replace with actual logo)
-            string splashText = "#Build with MonoGame";
+            string splashText = "#BuiltWithMonoGame";
             SpriteFont font = ScreenManager.Font;
             Vector2 textSize = font.MeasureString(splashText);
             Vector2 textPosition = new Vector2(

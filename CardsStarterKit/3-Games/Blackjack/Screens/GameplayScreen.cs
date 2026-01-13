@@ -12,6 +12,7 @@ using System.Text;
 using GameStateManagement;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
+using Microsoft.Xna.Framework.Graphics;
 using CardsFramework;
 using Microsoft.Xna.Framework.Input.Touch;
 using System.Globalization;
@@ -31,6 +32,15 @@ namespace Blackjack
         Vector2[] playerCardOffset;
 
         NetworkSession networkSession;
+
+        // Hint system
+        private Texture2D gradientTexture;
+        private bool showHints = false;
+        private int currentHintIndex = -1;
+        private TimeSpan timeSinceLastHint;
+        private GameSettings settings;
+        private HashSet<int> shownHints = new HashSet<int>(); // Track which hints have been shown
+        private BlackjackGameState lastGameState = BlackjackGameState.Betting;
 
         /// <summary>
         /// Initializes a new instance of the screen.
@@ -80,6 +90,13 @@ namespace Blackjack
             // Update button text/fonts to match current language
             UpdateButtonText();
 
+            // Load gradient texture for hint boxes
+            gradientTexture = ScreenManager.Game.Content.Load<Texture2D>("Images/UI/gradient");
+
+            // Initialize hint system
+            settings = GameSettings.Instance;
+            showHints = settings.ShowHints;
+
             base.LoadContent();
         }
 
@@ -126,6 +143,12 @@ namespace Blackjack
             if (blackJackGame != null && !coveredByOtherScreen)
             {
                 blackJackGame.Update(gameTime);
+            }
+
+            // Update hint system
+            if (showHints && !coveredByOtherScreen)
+            {
+                UpdateHints(gameTime);
             }
 
             // Centralized network packet dispatcher
@@ -424,6 +447,15 @@ namespace Blackjack
             if (blackJackGame != null)
             {
                 blackJackGame.Draw(gameTime);
+            }
+
+            // Draw hints on top of game
+            if (showHints && currentHintIndex >= 0)
+            {
+                var spriteBatch = ScreenManager.SpriteBatch;
+                spriteBatch.Begin(SpriteSortMode.Deferred, null, null, null, null, null, ScreenManager.GlobalTransformation);
+                DrawHints(spriteBatch);
+                spriteBatch.End();
             }
 
         }
@@ -837,6 +869,171 @@ namespace Blackjack
                 var betComponent = blackJackGame.Game.Components.OfType<BetGameComponent>().FirstOrDefault();
                 betComponent?.UpdateButtonText();
             }
+        }
+
+        /// <summary>
+        /// Updates the hint system, showing context-aware hints based on game state
+        /// </summary>
+        private void UpdateHints(GameTime gameTime)
+        {
+            if (blackJackGame == null) return;
+
+            var currentState = blackJackGame.State;
+            var betComponent = blackJackGame.Game.Components.OfType<BetGameComponent>().FirstOrDefault();
+            if (betComponent == null) return;
+
+            // Check if player has made a bet (first player is typically the human player)
+            var player = blackJackGame.Players.FirstOrDefault() as BlackjackPlayer;
+            bool hasBet = player?.BetAmount > 0;
+
+            // Determine which hint to show based on context
+            int desiredHint = -1;
+
+            if (currentState == BlackjackGameState.Betting)
+            {
+                if (!hasBet && !shownHints.Contains(0))
+                {
+                    // Hint 0: Place a bet
+                    desiredHint = 0;
+                }
+                else if (hasBet && !shownHints.Contains(1))
+                {
+                    // Hint 1: Remove bet
+                    desiredHint = 1;
+                }
+            }
+            else if ((currentState == BlackjackGameState.Playing || currentState == BlackjackGameState.Dealing)
+                     && !shownHints.Contains(2))
+            {
+                // Hint 2: Goal of blackjack
+                desiredHint = 2;
+            }
+
+            // If we have a new hint to show and enough time has passed (or it's immediate state change)
+            bool stateChanged = currentState != lastGameState;
+            bool enoughTimePassed = currentHintIndex == -1 ||
+                                   gameTime.TotalGameTime - timeSinceLastHint > TimeSpan.FromSeconds(5);
+
+            if (desiredHint != -1 && desiredHint != currentHintIndex)
+            {
+                // Show new hint immediately on state change or after enough time has passed
+                if (stateChanged || enoughTimePassed)
+                {
+                    currentHintIndex = desiredHint;
+                    timeSinceLastHint = gameTime.TotalGameTime;
+                    shownHints.Add(desiredHint);
+                }
+            }
+            // Special case: if hint 2 needs to show and we're in Playing/Dealing state, show it immediately
+            else if (desiredHint == 2 && currentHintIndex != 2 &&
+                    (currentState == BlackjackGameState.Playing || currentState == BlackjackGameState.Dealing))
+            {
+                currentHintIndex = desiredHint;
+                timeSinceLastHint = gameTime.TotalGameTime;
+                shownHints.Add(desiredHint);
+            }
+            // Hide hint after 5 seconds only if no new hint is waiting to show
+            else if (currentHintIndex != -1 && desiredHint == -1 &&
+                    gameTime.TotalGameTime - timeSinceLastHint > TimeSpan.FromSeconds(5))
+            {
+                currentHintIndex = -1;
+
+                // If all hints have been shown, disable hints permanently for this session
+                // Only check this AFTER hiding the current hint
+                if (shownHints.Count >= 3)
+                {
+                    showHints = false;
+                }
+            }
+
+            lastGameState = currentState;
+        }
+
+        /// <summary>
+        /// Draws hint boxes with text overlays, positioned near relevant UI elements
+        /// </summary>
+        private void DrawHints(SpriteBatch spriteBatch)
+        {
+            if (currentHintIndex < 0) return;
+
+            SpriteFont font = ScreenManager.RegularFont;
+
+            // Padding for hint boxes
+            const int hPad = 32;
+            const int vPad = 16;
+
+            Rectangle backgroundRectangle = Rectangle.Empty;
+            string message = string.Empty;
+
+            // Get bet component to position hints near betting UI
+            var betComponent = blackJackGame?.Game.Components.OfType<BetGameComponent>().FirstOrDefault();
+            if (betComponent == null) return;
+
+            switch (currentHintIndex)
+            {
+                case 0:
+                    // Hint: Place a bet and hit Deal to join game
+                    // Position to the right of Deal/Clear buttons and chips
+                    message = "Place a bet and hit\nDeal to join a game.";
+                    Vector2 textSize0 = font.MeasureString(message);
+                    Rectangle dealBounds = betComponent.DealButtonBounds;
+
+                    // Position hint to the right of the buttons with some spacing
+                    backgroundRectangle = new Rectangle(
+                        dealBounds.Right + 120,
+                        dealBounds.Y - 20,
+                        (int)(textSize0.X + hPad * 1.5),
+                        (int)(textSize0.Y + vPad * 1.5));
+                    break;
+
+                case 1:
+                    // Hint: Click Clear or chip stack to remove bets
+                    // Position above the chip stack
+                    message = "Hit Clear or your chip stack\nto remove your bets.";
+                    Vector2 textSize1 = font.MeasureString(message);
+                    Vector2 chipStackPos = betComponent.GetHumanPlayerChipStackPosition();
+
+                    // Position hint above the chip stack (avoid overlapping with chip text)
+                    backgroundRectangle = new Rectangle(
+                        (int)chipStackPos.X - (int)(textSize1.X / 2) - hPad + 120,
+                        (int)chipStackPos.Y - (int)textSize1.Y - vPad * 2 - 80, // Above the stack
+                        (int)(textSize1.X + hPad * 1.5),
+                        (int)(textSize1.Y + vPad * 1.5));
+                    break;
+
+                case 2:
+                    // Hint: Goal of blackjack
+                    // Position in center-top area
+                    message = "Get as close to 21 as possible, without going over.";
+                    Vector2 textSize2 = font.MeasureString(message);
+                    backgroundRectangle = new Rectangle(
+                        safeArea.Center.X - (int)(textSize2.X / 2) - hPad,
+                        safeArea.Top + 140,
+                        (int)(textSize2.X + hPad * 1.5),
+                        (int)(textSize2.Y + vPad * 1.5));
+                    break;
+            }
+
+            Vector2 textPosition = new Vector2(backgroundRectangle.X + hPad, backgroundRectangle.Y + vPad);
+
+            // Draw the background rectangle with transparency
+            spriteBatch.Draw(gradientTexture, backgroundRectangle, Color.Black * 0.7f);
+
+            // Draw green border (3 pixels thick)
+            int borderThickness = 3;
+            Color borderColor = Color.LimeGreen;
+
+            // Top border
+            spriteBatch.Draw(gradientTexture, new Rectangle(backgroundRectangle.X, backgroundRectangle.Y, backgroundRectangle.Width, borderThickness), borderColor);
+            // Bottom border
+            spriteBatch.Draw(gradientTexture, new Rectangle(backgroundRectangle.X, backgroundRectangle.Bottom - borderThickness, backgroundRectangle.Width, borderThickness), borderColor);
+            // Left border
+            spriteBatch.Draw(gradientTexture, new Rectangle(backgroundRectangle.X, backgroundRectangle.Y, borderThickness, backgroundRectangle.Height), borderColor);
+            // Right border
+            spriteBatch.Draw(gradientTexture, new Rectangle(backgroundRectangle.Right - borderThickness, backgroundRectangle.Y, borderThickness, backgroundRectangle.Height), borderColor);
+
+            // Draw the hint text
+            spriteBatch.DrawString(font, message, textPosition, Color.White);
         }
     }
 }

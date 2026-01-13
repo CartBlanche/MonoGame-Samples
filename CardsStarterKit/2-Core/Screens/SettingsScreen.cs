@@ -181,6 +181,8 @@ namespace Blackjack
                     (v) => settings.AutoStandOn21 = v, ref yPos);
                 AddCheckboxSetting(Resources.SettingsShowCardCount, () => settings.ShowCardCount,
                     (v) => settings.ShowCardCount = v, ref yPos);
+                AddCheckboxSetting("Show Hints", () => settings.ShowHints,
+                    (v) => settings.ShowHints = v, ref yPos);
                 AddCheckboxSetting(Resources.SettingsPersistWinnings, () => settings.PersistWinnings,
                     (v) => settings.PersistWinnings = v, ref yPos);
 

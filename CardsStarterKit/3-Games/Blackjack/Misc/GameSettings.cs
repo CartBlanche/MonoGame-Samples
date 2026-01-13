@@ -51,6 +51,7 @@ namespace Blackjack
         public AnimationSpeed AnimationSpeed { get; set; } = AnimationSpeed.Normal;
         public bool AutoStandOn21 { get; set; } = false;
         public bool ShowCardCount { get; set; } = true;
+        public bool ShowHints { get; set; } = true;
         public bool PersistWinnings { get; set; } = false;
         public float SavedPlayerBalance { get; set; } = 500f;
 

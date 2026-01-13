@@ -44,6 +44,28 @@ namespace Blackjack
         Button bet;
         Button clear;
 
+        /// <summary>
+        /// Gets the bounds of the Deal button for hint positioning
+        /// </summary>
+        public Rectangle DealButtonBounds => bet?.Bounds ?? Rectangle.Empty;
+
+        /// <summary>
+        /// Gets the bounds of the Clear button for hint positioning
+        /// </summary>
+        public Rectangle ClearButtonBounds => clear?.Bounds ?? Rectangle.Empty;
+
+        /// <summary>
+        /// Gets the position of the human player's chip stack for hint positioning
+        /// </summary>
+        public Vector2 GetHumanPlayerChipStackPosition()
+        {
+            int playerIndex = GetCurrentPlayer();
+            if (playerIndex < 0) return Vector2.Zero;
+
+            Vector2 offset = GetChipOffset(playerIndex, false);
+            return cardGame.GameTable[playerIndex] + offset;
+        }
+
         Vector2 ChipOffset { get; set; }
         float insuranceYPosition;
         Vector2 secondHandOffset;
