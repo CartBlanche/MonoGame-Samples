@@ -1014,7 +1014,7 @@ namespace Blackjack
                     break;
             }
 
-            Vector2 textPosition = new Vector2(backgroundRectangle.X + hPad, backgroundRectangle.Y + vPad);
+            Vector2 textPosition = new Vector2(backgroundRectangle.X + hPad, backgroundRectangle.Y + vPad - 7);
 
             // Draw the background rectangle with transparency
             spriteBatch.Draw(gradientTexture, backgroundRectangle, Color.Black * 0.7f);

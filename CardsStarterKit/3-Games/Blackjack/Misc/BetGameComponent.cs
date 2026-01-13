@@ -780,12 +780,30 @@ namespace Blackjack
         }
 
         /// <summary>
-        /// Helper method to play bet sound
+        /// Helper method to play bet sound (normal pitch)
         /// </summary>
         /// <param name="obj"></param>
         void PlayBetSound(object obj)
         {
             AudioManager.PlaySound("Bet");
+        }
+
+        /// <summary>
+        /// Helper method to play winning chip sound (higher pitch)
+        /// </summary>
+        /// <param name="obj"></param>
+        void PlayWinningChipSound(object obj)
+        {
+            AudioManager.PlaySoundWithPitch("Bet", 0.35f); // Higher pitch for winning
+        }
+
+        /// <summary>
+        /// Helper method to play losing chip sound (lower pitch)
+        /// </summary>
+        /// <param name="obj"></param>
+        void PlayLosingChipSound(object obj)
+        {
+            AudioManager.PlaySoundWithPitch("Bet", -0.4f); // Lower pitch for losing
         }
 
         /// <summary>
@@ -1062,13 +1080,13 @@ namespace Blackjack
                     PerformBeforSartArgs = chip,
                     PerformWhenDone = isLastChip ? (object obj) =>
                     {
-                        PlayBetSound(obj);
+                        PlayWinningChipSound(obj);
                         // Update balance with FULL winnings (including fractional amounts)
                         player.Balance += winAmount;
                         SavePlayerBalanceIfNeeded(playerIndex);
                         callback?.Invoke();
                     }
-                    : PlayBetSound
+                    : PlayWinningChipSound
                 });
             }
         }
@@ -1108,12 +1126,12 @@ namespace Blackjack
                         StartDelay = delayBetweenChips * i,
                         PerformWhenDone = isLastChip ? (object obj) =>
                         {
-                            PlayBetSound(obj);
+                            PlayWinningChipSound(obj);
                             // Clean up all chips
                             CleanupPlayerChips(playerIndex);
                             callback?.Invoke();
                         }
-                        : PlayBetSound
+                        : PlayWinningChipSound
                     });
                 }
             }
@@ -1157,7 +1175,7 @@ namespace Blackjack
                         StartDelay = delayBetweenChips * i,
                         PerformWhenDone = isLastChip ? (object obj) =>
                         {
-                            PlayBetSound(obj);
+                            PlayWinningChipSound(obj);
                             // Update balance after last chip arrives
                             player.Balance += winAmount;
                             SavePlayerBalanceIfNeeded(playerIndex);
@@ -1165,7 +1183,7 @@ namespace Blackjack
                             CleanupPlayerChips(playerIndex);
                             callback?.Invoke();
                         }
-                        : PlayBetSound
+                        : PlayWinningChipSound
                     });
                 }
             }
@@ -1202,7 +1220,7 @@ namespace Blackjack
                     StartDelay = delayBetweenChips * i,
                     PerformWhenDone = (object obj) =>
                     {
-                        PlayBetSound(obj);
+                        PlayWinningChipSound(obj);
 
                         if (isLastChip)
                         {
@@ -1259,6 +1277,7 @@ namespace Blackjack
                     StartDelay = delayBetweenChips * i,
                     PerformWhenDone = isLastChip ? (object obj) =>
                     {
+                        PlayLosingChipSound(obj);
                         // Deduct loss from balance when last chip reaches dealer (lossAmount is negative)
                         player.Balance += lossAmount;
                         SavePlayerBalanceIfNeeded(playerIndex);
@@ -1266,7 +1285,7 @@ namespace Blackjack
                         CleanupPlayerChips(playerIndex);
                         callback?.Invoke();
                     }
-                    : null
+                    : PlayLosingChipSound
                 });
             }
         }

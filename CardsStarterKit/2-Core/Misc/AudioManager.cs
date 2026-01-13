@@ -142,59 +142,44 @@ namespace Blackjack
         }
 
         /// <summary>
-        /// Plays a sound by name.
+        /// Plays a sound by name with optional parameters for looping, volume, and pitch.
         /// </summary>
         /// <param name="soundName">The name of the sound to play.</param>
-        public static void PlaySound(string soundName)
+        /// <param name="isLooped">Indicates if the sound should loop. Default is false.</param>
+        /// <param name="volume">Custom volume (0.0 to 1.0). If null, uses SoundVolume from settings.</param>
+        /// <param name="pitch">Pitch adjustment (-1.0 to 1.0, where 0 is normal pitch). Default is 0.</param>
+        public static void PlaySound(string soundName, bool isLooped = false, float? volume = null, float pitch = 0f)
         {
             // If the sound exists, start it
             if (audioManager.soundBank.ContainsKey(soundName))
             {
-                audioManager.soundBank[soundName].Volume = GameSettings.Instance.SoundVolume;
-                audioManager.soundBank[soundName].Play();
+                var sound = audioManager.soundBank[soundName];
+
+                // Set loop if different from current state
+                if (sound.IsLooped != isLooped)
+                {
+                    sound.IsLooped = isLooped;
+                }
+
+                // Use custom volume or default to settings
+                sound.Volume = volume ?? GameSettings.Instance.SoundVolume;
+
+                // Set pitch (clamped to valid range)
+                sound.Pitch = MathHelper.Clamp(pitch, -1.0f, 1.0f);
+
+                sound.Play();
             }
         }
 
         /// <summary>
-        /// Plays a sound by name.
+        /// Plays a sound by name with pitch adjustment.
         /// </summary>
         /// <param name="soundName">The name of the sound to play.</param>
-        /// <param name="isLooped">Indicates if the sound should loop.</param>
-        public static void PlaySound(string soundName, bool isLooped)
+        /// <param name="pitch">Pitch adjustment (-1.0 to 1.0, where 0 is normal pitch).
+        /// Higher values (0.2-0.5) make the sound higher pitched, lower values (-0.3 to -0.5) make it lower pitched.</param>
+        public static void PlaySoundWithPitch(string soundName, float pitch)
         {
-            // If the sound exists, start it
-            if (audioManager.soundBank.ContainsKey(soundName))
-            {
-                if (audioManager.soundBank[soundName].IsLooped != isLooped)
-                {
-                    audioManager.soundBank[soundName].IsLooped = isLooped;
-                }
-
-                audioManager.soundBank[soundName].Volume = GameSettings.Instance.SoundVolume;
-                audioManager.soundBank[soundName].Play();
-            }
-        }
-
-
-        /// <summary>
-        /// Plays a sound by name.
-        /// </summary>
-        /// <param name="soundName">The name of the sound to play.</param>
-        /// <param name="isLooped">Indicates if the sound should loop.</param>
-        /// <param name="volume">Indicates if the volume</param>
-        public static void PlaySound(string soundName, bool isLooped, float volume)
-        {
-            // If the sound exists, start it
-            if (audioManager.soundBank.ContainsKey(soundName))
-            {
-                if (audioManager.soundBank[soundName].IsLooped != isLooped)
-                {
-                    audioManager.soundBank[soundName].IsLooped = isLooped;
-                }
-
-                audioManager.soundBank[soundName].Volume = volume;
-                audioManager.soundBank[soundName].Play();
-            }
+            PlaySound(soundName, pitch: pitch);
         }
 
         /// <summary>
