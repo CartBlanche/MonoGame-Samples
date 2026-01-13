@@ -725,7 +725,7 @@ namespace Blackjack
                 {
                     Duration = TimeSpan.FromSeconds(1f),
                     PerformBeforeStart = ShowComponent,
-                    PerformBeforSartArgs = chipComponent,
+                    PerformBeforeStartArgs = chipComponent,
                     PerformWhenDone = PlayBetSound
                 });
 
@@ -1077,7 +1077,7 @@ namespace Blackjack
                     Duration = TimeSpan.FromSeconds(0.6),
                     StartDelay = delayBetweenChips * i,
                     PerformBeforeStart = ShowComponent,
-                    PerformBeforSartArgs = chip,
+                    PerformBeforeStartArgs = chip,
                     PerformWhenDone = isLastChip ? (object obj) =>
                     {
                         PlayWinningChipSound(obj);
@@ -1455,7 +1455,7 @@ namespace Blackjack
                 new Vector2(ScreenManager.BASE_BUFFER_WIDTH / 2, insuranceYPosition))
             {
                 PerformBeforeStart = ShowComponent,
-                PerformBeforSartArgs = chipComponent,
+                PerformBeforeStartArgs = chipComponent,
                 PerformWhenDone = ShowChipAmountAndPlayBetSound,
                 PerformWhenDoneArgs = new object[] { chipComponent, amount },
                 Duration = TimeSpan.FromSeconds(1),

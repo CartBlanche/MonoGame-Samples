@@ -30,6 +30,7 @@ namespace Blackjack
         public System.Collections.Generic.List<CardsFramework.Player> Players => players;
 
         private int currentShuffleSeed;
+        private static readonly Random random = new();
 
         Dictionary<Player, string> playerHandValueTexts =
             new Dictionary<Player, string>();
@@ -1013,9 +1014,8 @@ namespace Blackjack
                 animatedHand.GetCardRelativePosition(cardLocationInHand))
             {
                 StartDelay = startDelay,
-                PerformBeforeStart = ShowComponent,
-                PerformBeforSartArgs = cardComponent,
-                PerformWhenDone = PlayDealSound
+                PerformBeforeStart = ShowCardAndPlayDealSound,
+                PerformBeforeStartArgs = new object[] { cardComponent, animatedHand }
             };
             cardAnimation.Duration = duration;
 
@@ -1036,12 +1036,60 @@ namespace Blackjack
         }
 
         /// <summary>
-        /// Helper method to play deal sound
+        /// Helper method to show card component and play deal sound with contextual pitch/volume.
+        /// Called when card animation starts.
         /// </summary>
-        /// <param name="obj"></param>
-        void PlayDealSound(object obj)
+        /// <param name="obj">Array containing [cardComponent, animatedHand]</param>
+        void ShowCardAndPlayDealSound(object obj)
         {
-            AudioManager.PlaySound("Deal");
+            var args = (object[])obj;
+            var cardComponent = (AnimatedCardsGameComponent)args[0];
+            var animatedHand = (AnimatedHandGameComponent)args[1];
+
+            cardComponent.Visible = true;
+
+            // Determine who is receiving the card
+            float pitch = 0f;
+            float volumeMultiplier = 1.0f;
+
+            if (animatedHand == dealerHandComponent)
+            {
+                // Dealer dealing to itself: default pitch and volume
+                pitch = 0f;
+                volumeMultiplier = 1.0f;
+            }
+            else
+            {
+                // Find which player is receiving the card
+                int playerIndex = -1;
+                for (int i = 0; i < animatedHands.Length; i++)
+                {
+                    if (animatedHands[i] == animatedHand || animatedSecondHands[i] == animatedHand)
+                    {
+                        playerIndex = i;
+                        break;
+                    }
+                }
+
+                if (playerIndex == LocalPlayerIndex)
+                {
+                    // Human player: higher pitch and louder
+                    pitch = (float)(random.NextDouble() * 0.15 + 0.15); // Range: 0.15 to 0.30
+                    volumeMultiplier = 1.15f;
+                }
+                else if (playerIndex >= 0)
+                {
+                    // NPC player: slightly higher pitch and medium volume
+                    pitch = (float)(random.NextDouble() * 0.10 + 0.05); // Range: 0.05 to 0.15
+                    volumeMultiplier = 1.08f;
+                }
+            }
+
+            // Calculate final volume based on settings
+            float volume = GameSettings.Instance.SoundVolume * volumeMultiplier;
+            volume = MathHelper.Clamp(volume, 0f, 1f);
+
+            AudioManager.PlaySound("Deal", pitch: pitch, volume: volume);
         }
 
         /// <summary>
@@ -1121,7 +1169,7 @@ namespace Blackjack
                 StartDelay = estimatedTimeToCompleteAnimations,
                 Duration = TimeSpan.FromSeconds(1f * AnimationSpeedMultiplier),
                 PerformBeforeStart = ShowComponent,
-                PerformBeforSartArgs = animationComponent
+                PerformBeforeStartArgs = animationComponent
             });
         }
 
@@ -2277,7 +2325,7 @@ namespace Blackjack
             {
                 AnimationCycles = 1,
                 PerformBeforeStart = ShowComponent,
-                PerformBeforSartArgs = passComponent,
+                PerformBeforeStartArgs = passComponent,
                 StartDelay = TimeSpan.Zero,
                 Duration = TimeSpan.FromSeconds(1),
                 PerformWhenDone = performWhenDone
