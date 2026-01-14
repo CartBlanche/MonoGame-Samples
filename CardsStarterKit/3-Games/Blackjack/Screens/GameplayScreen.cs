@@ -17,6 +17,7 @@ using CardsFramework;
 using Microsoft.Xna.Framework.Input.Touch;
 using System.Globalization;
 using Microsoft.Xna.Framework.Net;
+using Microsoft.Xna.Framework.GamerServices;
 
 namespace Blackjack
 {
@@ -136,12 +137,10 @@ namespace Blackjack
         /// this one.</param>
         public override void Update(GameTime gameTime, bool otherScreenHasFocus, bool coveredByOtherScreen)
         {
-
-            /* TODO: For consoles
             if (Guide.IsVisible)
             {
                 PauseCurrentGame();
-            } */
+            }
 
             if (blackJackGame != null && !coveredByOtherScreen)
             {
