@@ -111,7 +111,10 @@ namespace Blackjack
             }
             else if (networkSession == null)
             {
-                // TODO Display Message that network session is required to start game
+                // Display message that network session is required to start game
+                string message = "A network session is required to start a multiplayer game.";
+                MessageBoxScreen messageBox = new MessageBoxScreen(message);
+                ScreenManager.AddScreen(messageBox, null);
             }
             else
             {
