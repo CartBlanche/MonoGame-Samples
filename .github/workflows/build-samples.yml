@@ -142,7 +142,8 @@ jobs:
               -i "$INFO_PLIST" \
               -c "$ICNS_FILE" \
               -v \
-              --macos-universal
+              --macos-universal \
+              --self-contained
           else
             echo "No .icns file found, packaging without custom icon"
             monopack -p "$PROJ" \
@@ -150,7 +151,8 @@ jobs:
               -rids win-x64,linux-x64,osx-x64,osx-arm64 \
               -i "$INFO_PLIST" \
               -v \
-              --macos-universal
+              --macos-universal \
+              --self-contained
           fi
 
           echo "Generated artifacts:"
