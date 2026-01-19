@@ -30,9 +30,11 @@ namespace CardsFramework
             {
                 if (IsDone())
                 {
-                    // Finish tha animation
+                    // Finish the animation
                     Component.IsFaceDown = !IsFromFaceDownToFaceUp;
                     Component.CurrentDestination = null;
+                    Component.Color = Color.White;
+                    Component.DrawShadow = false;
                 }
                 else
                 {
@@ -63,14 +65,30 @@ namespace CardsFramework
                             currentPercent = 100 - percent;
                             Component.IsFaceDown = !IsFromFaceDownToFaceUp;
                         }
+
+                        // Using trickery and jiggery pokery instead of shaders.
+
                         // Shrink and widen the component to look like it is flipping
-                        Component.CurrentDestination = 
-                            new Rectangle((int)(Component.CurrentPosition.X +
-                                    texture.Width * currentPercent / 100), 
-                                (int)Component.CurrentPosition.Y,
-                                (int)(texture.Width - texture.Width * 
-                                    currentPercent / 100 * 2), 
-                                texture.Height);
+                        float widthPercent = (float)currentPercent / 100f;
+                        int newWidth = (int)(texture.Width - texture.Width * widthPercent * 2);
+                        int xOffset = (int)(Component.CurrentPosition.X + texture.Width * widthPercent);
+
+                        // 1. Add vertical scale bulge at midpoint (5% taller)
+                        float normalizedPercent = (float)percent / 100f;
+                        float verticalBulge = 1f + (0.05f * (1f - Math.Abs(normalizedPercent - 0.5f) * 2f));
+                        int newHeight = (int)(texture.Height * verticalBulge);
+                        int yOffset = (int)(Component.CurrentPosition.Y - (newHeight - texture.Height) / 2f);
+
+                        // 2. Modulate color brightness during flip (darker at edges when "angled away")
+                        float brightness = 1f - (Math.Abs(normalizedPercent - 0.5f) * 0.3f);
+                        Component.Color = Color.White * brightness;
+
+                        // 3. Add shadow beneath card that shifts during flip
+                        Component.DrawShadow = true;
+                        float shadowShift = Math.Abs(normalizedPercent - 0.5f) * 4f;
+                        Component.ShadowOffset = new Vector2(8f + shadowShift, 10f);
+
+                        Component.CurrentDestination = new Rectangle(xOffset, yOffset, newWidth, newHeight);
                     }
                 }
             }

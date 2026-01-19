@@ -51,9 +51,23 @@ namespace CardsFramework
                 float easedPercent = EaseOutCubic(percent);
                 Component.CurrentPosition = sourcePosition + positionDelta * easedPercent;
 
+                // Enable shadow and calculate dynamic offset based on animation progress
+                // Shadow peaks at 50% of animation (halfway through the motion)
+                Component.DrawShadow = true;
+                float shadowIntensity = 1f - Math.Abs(easedPercent - 0.5f) * 2f;
+                float baseOffset = 8f;
+                float shadowOffset = baseOffset + (12f * shadowIntensity); // Ranges from 8 to 20 pixels
+                Component.ShadowOffset = new Vector2(shadowOffset, shadowOffset);
+
+                // Scale card up during motion, peaking at 50% (creates "swooping down" effect)
+                float scaleIntensity = 1f - Math.Abs(easedPercent - 0.5f) * 2f;
+                Component.CurrentScale = 1.0f + (0.4f * scaleIntensity);
+
                 if (IsDone())
                 {
                     Component.CurrentPosition = destinationPosition;
+                    Component.DrawShadow = false; // Disable shadow when animation completes
+                    Component.CurrentScale = 1.0f; // Return to normal size
                 }
             }
 
