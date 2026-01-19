@@ -96,6 +96,8 @@ namespace GameStateManagement
         /// </summary>
         protected internal virtual void OnSelectEntry(PlayerIndex playerIndex)
         {
+            AudioManager.PlaySound("Click");
+
             if (Selected != null)
                 Selected(this, new PlayerIndexEventArgs(playerIndex));
         }
