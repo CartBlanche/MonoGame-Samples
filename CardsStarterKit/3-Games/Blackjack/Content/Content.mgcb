@@ -478,3 +478,8 @@
 /importer:WavImporter
 /processor:SoundEffectProcessor
 /build:Sounds/Deal.wav
+
+#begin Sounds/Click.mp3
+/importer:Mp3Importer
+/processor:SoundEffectProcessor
+/build:Sounds/Click.mp3

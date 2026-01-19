@@ -203,7 +203,7 @@ namespace Blackjack
 
             if (clicked)
             {
-                FireClick();
+                OnClick();
             }
         }
 
@@ -222,11 +222,9 @@ namespace Blackjack
         /// <summary>
         /// Fires the button's click event.
         /// </summary>
-        public void FireClick()
+        public void OnClick()
         {
-            // Play button click sound
-            // TODO: Uncomment when ButtonClick sound file is added to Content/Sounds/
-            // AudioManager.PlaySound("ButtonClick");
+            AudioManager.PlaySound("Click");
 
             if (Click != null)
             {

@@ -7,15 +7,15 @@
 
 using System;
 using System.Collections.Generic;
-
 using System.Text;
+using System.Diagnostics;
+using System.IO;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using Microsoft.Xna.Framework.Input.Touch;
 using CardsFramework;
 using GameStateManagement;
-using Microsoft.Xna.Framework.Input.Touch;
-using System.IO;
 
 namespace Blackjack
 {
@@ -1402,7 +1402,7 @@ namespace Blackjack
                 {
                     GameSettings.Instance.SavedPlayerBalance = player.Balance;
                     GameSettings.Save();
-                    System.Console.WriteLine($"[PersistWinnings] Saved balance: {player.Balance}");
+                    Debug.WriteLine($"[PersistWinnings] Saved balance: {player.Balance}");
                 }
             }
         }

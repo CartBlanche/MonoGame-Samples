@@ -103,22 +103,40 @@ namespace Blackjack
 
         void StartGameMenuEntrySelected(object sender, EventArgs e)
         {
-            if (networkSession != null && isHost)
+            // Check if this is actually a multiplayer game (multiple human players)
+            bool isActualMultiplayer = networkSession != null && networkSession.AllGamers.Count > 1;
+
+            if (isActualMultiplayer && isHost)
             {
-                // In network game, host calls StartGame which will trigger state change
-                // This will cause Update() to detect Playing state and transition all players
+                // In network game with multiple players, host calls StartGame
+                // This will trigger state change and transition all players
                 networkSession.StartGame();
             }
-            else if (networkSession == null)
+            else if (isActualMultiplayer && !isHost)
             {
-                // Display message that network session is required to start game
-                string message = "A network session is required to start a multiplayer game.";
-                MessageBoxScreen messageBox = new MessageBoxScreen(message);
-                ScreenManager.AddScreen(messageBox, null);
+                // Client in network game - do nothing, only host can start
+                // Optionally show message: "Only the host can start the game"
             }
             else
             {
-                // If client in network game, do nothing - only host can start
+                // Single player (either no session or session with only 1 player)
+                // Start game as local single-player
+                var allPlayers = new List<string>(joinedPlayers);
+
+                // If there's an unused network session (only 1 player), dispose it to stop background networking
+                if (networkSession != null)
+                {
+                    networkSession.GamerJoined -= OnGamerJoined;
+                    networkSession.GamerLeft -= OnGamerLeft;
+                    networkSession.Dispose();
+                    networkSession = null;
+                }
+
+                // Exit all screens to clear the background and lobby screens
+                foreach (GameScreen screen in ScreenManager.GetScreens())
+                    screen.ExitScreen();
+
+                ScreenManager.AddScreen(new GameplayScreen(MainMenuScreen.Theme, allPlayers, null), null);
             }
         }
 
