@@ -5,6 +5,7 @@
 //-----------------------------------------------------------------------------
 
 using System;
+using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -141,22 +142,22 @@ namespace Blackjack
                     // Migrate old localized theme values to invariant English values
                     MigrateThemeToInvariant();
 
-                    System.Console.WriteLine($"[Settings] Loaded from {settingsFilePath}");
-                    System.Console.WriteLine($"[Settings] PersistWinnings={instance.PersistWinnings}, SavedPlayerBalance={instance.SavedPlayerBalance}");
+                    Debug.WriteLine($"[Settings] Loaded from {settingsFilePath}");
+                    Debug.WriteLine($"[Settings] PersistWinnings={instance.PersistWinnings}, SavedPlayerBalance={instance.SavedPlayerBalance}");
                 }
                 else
                 {
                     // First launch - detect OS language and set defaults
                     instance = new GameSettings();
                     DetectAndSetOSLanguage();
-                    System.Console.WriteLine("[Settings] Created default settings (first launch)");
-                    System.Console.WriteLine($"[Settings] Detected language: {instance.Language}, Currency: {instance.Currency}");
+                    Debug.WriteLine("[Settings] Created default settings (first launch)");
+                    Debug.WriteLine($"[Settings] Detected language: {instance.Language}, Currency: {instance.Currency}");
                     Save(); // Save default settings
                 }
             }
             catch (Exception ex)
             {
-                System.Console.WriteLine($"[Settings] Error loading: {ex.Message}");
+                Debug.WriteLine($"[Settings] Error loading: {ex.Message}");
                 instance = new GameSettings(); // Use defaults on error
             }
 
@@ -180,7 +181,7 @@ namespace Blackjack
             try
             {
                 string osLanguage = CultureInfo.CurrentUICulture.TwoLetterISOLanguageName.ToLower();
-                System.Console.WriteLine($"[Settings] Detected OS language: {osLanguage} ({CultureInfo.CurrentUICulture.Name})");
+                Debug.WriteLine($"[Settings] Detected OS language: {osLanguage} ({CultureInfo.CurrentUICulture.Name})");
 
                 // Map OS language to game language and set appropriate currency
                 switch (osLanguage)
@@ -220,7 +221,7 @@ namespace Blackjack
             }
             catch (Exception ex)
             {
-                System.Console.WriteLine($"[Settings] Error detecting OS language: {ex.Message}");
+                Debug.WriteLine($"[Settings] Error detecting OS language: {ex.Message}");
                 instance.language = "English";
                 instance.Currency = "$";
             }
@@ -247,11 +248,11 @@ namespace Blackjack
 
                 CultureInfo culture = new CultureInfo(cultureCode);
                 CultureInfo.CurrentUICulture = culture;
-                System.Console.WriteLine($"[Settings] Language changed to {languageName} ({cultureCode})");
+                Debug.WriteLine($"[Settings] Language changed to {languageName} ({cultureCode})");
             }
             catch (Exception ex)
             {
-                System.Console.WriteLine($"[Settings] Error applying language: {ex.Message}");
+                Debug.WriteLine($"[Settings] Error applying language: {ex.Message}");
             }
         }
 
@@ -270,12 +271,12 @@ namespace Blackjack
                 };
                 string json = JsonSerializer.Serialize(instance, options);
                 File.WriteAllText(settingsFilePath, json);
-                System.Console.WriteLine($"[Settings] Saved to {settingsFilePath}");
-                System.Console.WriteLine($"[Settings] PersistWinnings={instance.PersistWinnings}, SavedPlayerBalance={instance.SavedPlayerBalance}");
+                Debug.WriteLine($"[Settings] Saved to {settingsFilePath}");
+                Debug.WriteLine($"[Settings] PersistWinnings={instance.PersistWinnings}, SavedPlayerBalance={instance.SavedPlayerBalance}");
             }
             catch (Exception ex)
             {
-                System.Console.WriteLine($"[Settings] Error saving: {ex.Message}");
+                Debug.WriteLine($"[Settings] Error saving: {ex.Message}");
             }
         }
 
@@ -316,17 +317,17 @@ namespace Blackjack
             if (redVariants.Contains(instance.Theme, StringComparer.OrdinalIgnoreCase))
             {
                 instance.Theme = "Red";
-                System.Console.WriteLine($"[Settings] Migrated theme to invariant value: Red");
+                Debug.WriteLine($"[Settings] Migrated theme to invariant value: Red");
             }
             else if (blueVariants.Contains(instance.Theme, StringComparer.OrdinalIgnoreCase))
             {
                 instance.Theme = "Blue";
-                System.Console.WriteLine($"[Settings] Migrated theme to invariant value: Blue");
+                Debug.WriteLine($"[Settings] Migrated theme to invariant value: Blue");
             }
             // If neither matches, default to Red
             else if (instance.Theme != "Red" && instance.Theme != "Blue")
             {
-                System.Console.WriteLine($"[Settings] Unknown theme value '{instance.Theme}', defaulting to Red");
+                Debug.WriteLine($"[Settings] Unknown theme value '{instance.Theme}', defaulting to Red");
                 instance.Theme = "Red";
             }
         }

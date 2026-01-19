@@ -1,6 +1,7 @@
 using Microsoft.Xna.Framework.Net;
 using CardsFramework;
 using System.Collections.Generic;
+using System.Diagnostics;
 
 namespace Blackjack.Networking
 {
@@ -119,16 +120,16 @@ namespace Blackjack.Networking
             try
             {
                 var playerIndex = reader.ReadByte();
-                System.Console.WriteLine($"[CardDealtPacket] PlayerIndex: {playerIndex}");
+                Debug.WriteLine($"[CardDealtPacket] PlayerIndex: {playerIndex}");
 
                 var card = reader.ReadCard();
-                System.Console.WriteLine($"[CardDealtPacket] Card: {card.Type} {card.Value}");
+                Debug.WriteLine($"[CardDealtPacket] Card: {card.Type} {card.Value}");
 
                 var faceDown = reader.ReadBoolean();
-                System.Console.WriteLine($"[CardDealtPacket] FaceDown: {faceDown}");
+                Debug.WriteLine($"[CardDealtPacket] FaceDown: {faceDown}");
 
                 var handType = (HandTypes)reader.ReadByte();
-                System.Console.WriteLine($"[CardDealtPacket] HandType: {handType}");
+                Debug.WriteLine($"[CardDealtPacket] HandType: {handType}");
 
                 return new CardDealtPacket
                 {
@@ -140,7 +141,7 @@ namespace Blackjack.Networking
             }
             catch (System.Exception ex)
             {
-                System.Console.WriteLine($"[CardDealtPacket ERROR] Failed to deserialize: {ex.Message}");
+                Debug.WriteLine($"[CardDealtPacket ERROR] Failed to deserialize: {ex.Message}");
                 throw;
             }
         }

@@ -7,6 +7,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using GameStateManagement;
@@ -79,11 +80,11 @@ namespace Blackjack
                 blackJackGame.NetworkSession = networkSession;
                 blackJackGame.IsNetworkGame = true;
                 blackJackGame.IsHost = networkSession.IsHost;
-                System.Console.WriteLine($"[LoadContent] Network game detected with {networkSession.AllGamers.Count} gamers, IsNetworkGame=true");
+                Debug.WriteLine($"[LoadContent] Network game detected with {networkSession.AllGamers.Count} gamers, IsNetworkGame=true");
             }
             else
             {
-                System.Console.WriteLine($"[LoadContent] Single-player game, IsNetworkGame={blackJackGame.IsNetworkGame}, networkSession={(networkSession == null ? "null" : $"exists with {networkSession.AllGamers.Count} gamers")}");
+                Debug.WriteLine($"[LoadContent] Single-player game, IsNetworkGame={blackJackGame.IsNetworkGame}, networkSession={(networkSession == null ? "null" : $"exists with {networkSession.AllGamers.Count} gamers")}");
             }
 
             InitializeGame();
@@ -176,7 +177,7 @@ namespace Blackjack
                 {
                     // Read packet type (assume PacketType is a byte)
                     var packetType = (Blackjack.Networking.PacketType)packetReader.ReadByte();
-                    System.Console.WriteLine($"[PACKET] Received {packetType} from {sender.Gamertag}");
+                    Debug.WriteLine($"[PACKET] Received {packetType} from {sender.Gamertag}");
 
                     switch (packetType)
                     {
@@ -219,18 +220,18 @@ namespace Blackjack
                             break;
                         // Add more cases for other packet types as needed
                         default:
-                            System.Console.WriteLine($"[PACKET] Unknown packet type: {(byte)packetType}");
+                            Debug.WriteLine($"[PACKET] Unknown packet type: {(byte)packetType}");
                             break;
                     }
                 }
                 catch (System.IO.EndOfStreamException ex)
                 {
-                    System.Console.WriteLine($"[PACKET ERROR] EndOfStreamException while processing packet from {sender.Gamertag}: {ex.Message}");
-                    System.Console.WriteLine($"[PACKET ERROR] Stack trace: {ex.StackTrace}");
+                    Debug.WriteLine($"[PACKET ERROR] EndOfStreamException while processing packet from {sender.Gamertag}: {ex.Message}");
+                    Debug.WriteLine($"[PACKET ERROR] Stack trace: {ex.StackTrace}");
                 }
                 catch (System.Exception ex)
                 {
-                    System.Console.WriteLine($"[PACKET ERROR] Exception while processing packet from {sender.Gamertag}: {ex.GetType().Name} - {ex.Message}");
+                    Debug.WriteLine($"[PACKET ERROR] Exception while processing packet from {sender.Gamertag}: {ex.GetType().Name} - {ex.Message}");
                 }
             }
         }
@@ -313,7 +314,7 @@ namespace Blackjack
                                 betComponent.LocalPlayerIndex = i;
                             }
                             blackJackGame.LocalPlayerIndex = i;
-                            System.Console.WriteLine($"[PlayerListSync] Client set LocalPlayerIndex to {i} (player: {localGamerTag})");
+                            Debug.WriteLine($"[PlayerListSync] Client set LocalPlayerIndex to {i} (player: {localGamerTag})");
                             foundLocalPlayer = true;
                             break;
                         }
@@ -321,14 +322,14 @@ namespace Blackjack
                     
                     if (!foundLocalPlayer)
                     {
-                        System.Console.WriteLine($"[PlayerListSync] WARNING: Could not find local player '{localGamerTag}' in the synced player list!");
-                        System.Console.WriteLine($"[PlayerListSync] Available players: {string.Join(", ", blackJackGame.Players.Select(p => p.Name))}");
+                        Debug.WriteLine($"[PlayerListSync] WARNING: Could not find local player '{localGamerTag}' in the synced player list!");
+                        Debug.WriteLine($"[PlayerListSync] Available players: {string.Join(", ", blackJackGame.Players.Select(p => p.Name))}");
                     }
                 }
 
                 // Now that we have the complete player list, start the round
                 // This ensures DisplayPlayingHands() creates animatedHands for all players including NPCs
-                System.Console.WriteLine($"[PlayerListSync] Client received {packet.Players.Count} players from host, starting round now");
+                Debug.WriteLine($"[PlayerListSync] Client received {packet.Players.Count} players from host, starting round now");
                 blackJackGame.StartRound();
             }
         }
@@ -473,7 +474,7 @@ namespace Blackjack
 
             TextInfo myTI = new CultureInfo("en-GB", false).TextInfo;
 
-            System.Console.WriteLine($"[InitializeGame] joinedPlayers={(joinedPlayers == null ? "null" : joinedPlayers.Count.ToString())}, networkSession={(networkSession == null ? "null" : "not null")}, IsHost={(networkSession?.IsHost ?? false)}");
+            Debug.WriteLine($"[InitializeGame] joinedPlayers={(joinedPlayers == null ? "null" : joinedPlayers.Count.ToString())}, networkSession={(networkSession == null ? "null" : "not null")}, IsHost={(networkSession?.IsHost ?? false)}");
 
             // Add players from lobby
             if (joinedPlayers != null && joinedPlayers.Count > 0)
@@ -485,7 +486,7 @@ namespace Blackjack
                 {
                     // Client: Don't create players yet, wait for PlayerListSync from host
                     // The host will send the player list soon
-                    System.Console.WriteLine("[InitializeGame] Client waiting for PlayerListSync from host...");
+                    Debug.WriteLine("[InitializeGame] Client waiting for PlayerListSync from host...");
                     // Don't add any players yet
                 }
                 else
@@ -512,14 +513,14 @@ namespace Blackjack
                             {
                                 GameSettings.Instance.SavedPlayerBalance = 500f;
                                 GameSettings.Save();
-                                System.Console.WriteLine($"[PersistWinnings] (Path 1) Reset negative/zero balance to default: 500");
+                                Debug.WriteLine($"[PersistWinnings] (Path 1) Reset negative/zero balance to default: 500");
                             }
                             player.Balance = GameSettings.Instance.SavedPlayerBalance;
-                            System.Console.WriteLine($"[PersistWinnings] (Path 1) Loaded balance: {player.Balance}");
+                            Debug.WriteLine($"[PersistWinnings] (Path 1) Loaded balance: {player.Balance}");
                         }
                         else
                         {
-                            System.Console.WriteLine($"[PersistWinnings] (Path 1) Using default balance: {player.Balance} (i={i}, IsNetworkGame={blackJackGame.IsNetworkGame}, PersistWinnings={GameSettings.Instance.PersistWinnings})");
+                            Debug.WriteLine($"[PersistWinnings] (Path 1) Using default balance: {player.Balance} (i={i}, IsNetworkGame={blackJackGame.IsNetworkGame}, PersistWinnings={GameSettings.Instance.PersistWinnings})");
                         }
 
                         blackJackGame.AddPlayer(player);
@@ -564,14 +565,14 @@ namespace Blackjack
                     {
                         GameSettings.Instance.SavedPlayerBalance = 500f;
                         GameSettings.Save();
-                        System.Console.WriteLine($"[PersistWinnings] (Path 2 - Fallback) Reset negative/zero balance to default: 500");
+                        Debug.WriteLine($"[PersistWinnings] (Path 2 - Fallback) Reset negative/zero balance to default: 500");
                     }
                     humanPlayer.Balance = GameSettings.Instance.SavedPlayerBalance;
-                    System.Console.WriteLine($"[PersistWinnings] (Path 2 - Fallback) Loaded balance: {humanPlayer.Balance}");
+                    Debug.WriteLine($"[PersistWinnings] (Path 2 - Fallback) Loaded balance: {humanPlayer.Balance}");
                 }
                 else
                 {
-                    System.Console.WriteLine($"[PersistWinnings] (Path 2 - Fallback) Using default balance: {humanPlayer.Balance}");
+                    Debug.WriteLine($"[PersistWinnings] (Path 2 - Fallback) Using default balance: {humanPlayer.Balance}");
                 }
 
                 blackJackGame.AddPlayer(humanPlayer);
@@ -855,7 +856,7 @@ namespace Blackjack
         private void HandleTurnChangedPacket(NetworkGamer sender, PacketReader reader)
         {
             var packet = Blackjack.Networking.TurnChangedPacket.Deserialize(reader);
-            System.Console.WriteLine($"[PACKET] Turn changed from {sender.Gamertag}, current player index: {packet.CurrentPlayerIndex}");
+            Debug.WriteLine($"[PACKET] Turn changed from {sender.Gamertag}, current player index: {packet.CurrentPlayerIndex}");
 
             blackJackGame.HandleReceivedTurnChanged(packet.CurrentPlayerIndex);
         }

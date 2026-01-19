@@ -7,6 +7,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using CardsFramework;
@@ -1034,7 +1035,7 @@ namespace Blackjack
                     }
                     else
                     {
-                        System.Console.WriteLine($"[StartPlaying] Warning: animatedHands[{playerIndex}] is null for player {players[playerIndex].Name}");
+                        Debug.WriteLine($"[StartPlaying] Warning: animatedHands[{playerIndex}] is null for player {players[playerIndex].Name}");
                     }
                 }
             }
@@ -1055,7 +1056,7 @@ namespace Blackjack
             // Safety check: if animatedHand is null, we can't create animations
             if (animatedHand == null)
             {
-                System.Console.WriteLine($"[AddDealAnimation] ERROR: animatedHand parameter is null! Cannot create animation.");
+                Debug.WriteLine($"[AddDealAnimation] ERROR: animatedHand parameter is null! Cannot create animation.");
                 return;
             }
 
@@ -2935,7 +2936,7 @@ namespace Blackjack
                 }
                 else
                 {
-                    System.Console.WriteLine($"[CardDealt] Warning: dealerHandComponent is null, skipping animation");
+                    Debug.WriteLine($"[CardDealt] Warning: dealerHandComponent is null, skipping animation");
                 }
             }
             else if (playerIndex < players.Count)
@@ -2953,7 +2954,7 @@ namespace Blackjack
                 }
                 else
                 {
-                    System.Console.WriteLine($"[CardDealt] Warning: animatedHands[{playerIndex}] is null, skipping animation");
+                    Debug.WriteLine($"[CardDealt] Warning: animatedHands[{playerIndex}] is null, skipping animation");
                 }
             }
         }
@@ -3181,18 +3182,18 @@ namespace Blackjack
             // Value 255 indicates no active player (all players finished)
             if (currentPlayerIndex == 255)
             {
-                System.Console.WriteLine("[TurnChanged] All players have finished their turns");
+                Debug.WriteLine("[TurnChanged] All players have finished their turns");
                 return;
             }
 
             if (currentPlayerIndex >= players.Count)
             {
-                System.Console.WriteLine($"[TurnChanged] Invalid player index: {currentPlayerIndex}");
+                Debug.WriteLine($"[TurnChanged] Invalid player index: {currentPlayerIndex}");
                 return;
             }
 
             var currentPlayer = (BlackjackPlayer)players[currentPlayerIndex];
-            System.Console.WriteLine($"[TurnChanged] Turn changed to player {currentPlayerIndex}: {currentPlayer.Name}");
+            Debug.WriteLine($"[TurnChanged] Turn changed to player {currentPlayerIndex}: {currentPlayer.Name}");
 
             // The button availability will be updated in the next Update() cycle
             // via SetButtonAvailability(), which checks GetCurrentPlayer()
