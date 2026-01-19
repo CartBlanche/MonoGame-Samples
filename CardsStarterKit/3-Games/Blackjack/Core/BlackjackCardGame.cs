@@ -61,7 +61,6 @@ namespace Blackjack
         BetGameComponent betGameComponent;
         AnimatedHandGameComponent dealerHandComponent;
         public int LocalPlayerIndex { get; set; } = -1;
-        DeckDisplayComponent deckDisplay;
         Dictionary<string, Button> buttons = new Dictionary<string, Button>();
         Button newGame;
         Button backButton;
@@ -460,12 +459,6 @@ namespace Blackjack
         /// </summary>
         private void ShowShuffleAnimation()
         {
-            // Hide the deck display during shuffle animation
-            if (deckDisplay != null)
-            {
-                deckDisplay.Visible = false;
-            }
-
             // Create a list of cards for the shuffle animation (only show a subset for performance)
             // Using 52 cards (one deck) is enough for a good visual effect
             var deckCards = new List<TraditionalCard>();
@@ -484,8 +477,8 @@ namespace Blackjack
             Vector2 shufflePosition = new Vector2(shuffleCenterX, shuffleY);
 
             // Calculate final deck position (top-right where deck sits for dealing)
-            float finalDeckX = tableBounds.Right - cardWidth - 40;
-            float finalDeckY = tableBounds.Top + 40;
+            float finalDeckX = tableBounds.Right - cardWidth - 65;
+            float finalDeckY = tableBounds.Top + 15;
             Vector2 finalDeckPosition = new Vector2(finalDeckX, finalDeckY);
 
             // Get scaled card size and shuffle parameters
@@ -509,11 +502,9 @@ namespace Blackjack
             {
                 AudioManager.PlaySound("Shuffle");
 
-                // Immediately show deck at top-right position (no slide animation)
-                if (deckDisplay != null && GameSettings.Instance.ShowCardCount)
-                {
-                    deckDisplay.Visible = true;
-                }
+                // Animate 4 cards from center to dealer deck position (top-right)
+                // This creates a nice visual transition instead of the deck magically appearing
+                AnimateDeckToDealerPosition(shufflePosition, finalDeckPosition, deckCards);
 
                 // Transition to betting state
                 State = BlackjackGameState.Betting;
@@ -529,6 +520,62 @@ namespace Blackjack
 
             Game.Components.Add(shuffleComponent);
             shuffleComponent.Initialize();
+        }
+
+        /// <summary>
+        /// Animates 4 cards from the shuffle center position to the dealer deck position.
+        /// This creates a visual transition instead of the deck magically appearing.
+        /// </summary>
+        /// <param name="shufflePosition">Starting position (center of table)</param>
+        /// <param name="dealerPosition">Ending position (top-right dealer deck)</param>
+        /// <param name="deckCards">The deck of cards to animate from</param>
+        private void AnimateDeckToDealerPosition(Vector2 shufflePosition, Vector2 dealerPosition, List<TraditionalCard> deckCards)
+        {
+            // Use 4 cards to represent the deck
+            int cardsToAnimate = Math.Min(4, deckCards.Count);
+            TimeSpan duration = TimeSpan.FromSeconds(0.6);
+            float dealerRotation = MathHelper.ToRadians(-47f); // Match the dealer deck's rotation
+
+            for (int i = 0; i < cardsToAnimate; i++)
+            {
+                TraditionalCard card = deckCards[i];
+
+                // Create an animated card component
+                var animatedCard = new AnimatedCardsGameComponent(
+                    card,
+                    this,
+                    screenManager.SpriteBatch,
+                    screenManager.GlobalTransformation);
+
+                // Position at shuffle center with slight offset for stacking
+                float stackOffsetX = i * 2f;
+                float stackOffsetY = i * 2f;
+                animatedCard.CurrentPosition = shufflePosition + new Vector2(stackOffsetX, stackOffsetY);
+                animatedCard.CurrentRotation = 0f; // Start vertical
+                animatedCard.Visible = true;
+
+                // Add to game components
+                Game.Components.Add(animatedCard);
+
+                // Create transition animation with the swooping effect
+                var transitionAnim = new TransitionGameComponentAnimation(
+                    animatedCard.CurrentPosition,
+                    dealerPosition + new Vector2(stackOffsetX, stackOffsetY))
+                {
+                    Duration = duration
+                };
+
+                // Add animation immediately - all 4 cards animate together
+                // The slight stacking offset creates a cascade visual effect
+                animatedCard.AddAnimation(transitionAnim);
+
+                // Add a rotation animation to rotate to match dealer deck angle
+                var rotationAnim = new RotationGameComponentAnimation(0f, dealerRotation)
+                {
+                    Duration = duration
+                };
+                animatedCard.AddAnimation(rotationAnim);
+            }
         }
 
         /// <summary>
@@ -1483,54 +1530,7 @@ namespace Blackjack
             }
 
             DisplayPlayingHands();
-            ShowDeckDisplay();
             State = needsShuffle ? BlackjackGameState.Shuffling : BlackjackGameState.Betting;
-        }
-
-        /// <summary>
-        /// Shows the visual deck display in center of the right quarter of the table
-        /// </summary>
-        private void ShowDeckDisplay()
-        {
-            // Remove existing deck display if present
-            if (deckDisplay != null && Game.Components.Contains(deckDisplay))
-            {
-                Game.Components.Remove(deckDisplay);
-            }
-
-            // Don't show deck display if card count setting is disabled
-            if (!GameSettings.Instance.ShowCardCount)
-            {
-                return;
-            }
-
-            // Position the deck in top-right corner for a realistic casino look
-            Rectangle tableBounds = GameTable.TableBounds;
-
-            // Position in top-right area with some padding from edges
-            int cardWidth = UIConstants.GetCardWidth(screenManager.SafeArea.Width);
-            int cardHeight = UIConstants.GetCardHeight(screenManager.SafeArea.Height);
-            float deckX = tableBounds.Right - cardWidth - 35; // 40px padding from right edge
-            float deckY = tableBounds.Top + 65; // 40px padding from top edge
-            Vector2 deckPosition = new Vector2(deckX, deckY);
-
-            // Get scaled layer offset
-            Vector2 layerOffset = UIConstants.GetDeckLayerOffset(screenManager.SafeArea.Width);
-
-            // Create new deck display
-            deckDisplay = new DeckDisplayComponent(
-                Game,
-                this,
-                deckPosition,
-                screenManager.SpriteBatch,
-                screenManager.GlobalTransformation)
-            {
-                LayerOffset = layerOffset, // Scaled offset for depth
-                Rotation = MathHelper.ToRadians(-40), // Casino-style rotation
-                StackLayers = 4, // Show 4 layers for a nice thick deck
-            };
-
-            Game.Components.Add(deckDisplay);
         }
 
         /// <summary>
