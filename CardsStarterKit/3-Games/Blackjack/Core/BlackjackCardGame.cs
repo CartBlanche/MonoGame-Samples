@@ -61,6 +61,8 @@ namespace Blackjack
         BetGameComponent betGameComponent;
         AnimatedHandGameComponent dealerHandComponent;
         public int LocalPlayerIndex { get; set; } = -1;
+        // Track the dealer deck cards so they aren't removed during hand cleanup
+        private List<AnimatedCardsGameComponent> dealerDeckCards = new List<AnimatedCardsGameComponent>();
         Dictionary<string, Button> buttons = new Dictionary<string, Button>();
         Button newGame;
         Button backButton;
@@ -459,6 +461,13 @@ namespace Blackjack
         /// </summary>
         private void ShowShuffleAnimation()
         {
+            // Hide dealer deck cards during shuffle (they'll be part of the shuffle animation)
+            foreach (var deckCard in dealerDeckCards)
+            {
+                deckCard.Visible = false;
+            }
+            dealerDeckCards.Clear();
+
             // Create a list of cards for the shuffle animation (only show a subset for performance)
             // Using 52 cards (one deck) is enough for a good visual effect
             var deckCards = new List<TraditionalCard>();
@@ -531,6 +540,9 @@ namespace Blackjack
         /// <param name="deckCards">The deck of cards to animate from</param>
         private void AnimateDeckToDealerPosition(Vector2 shufflePosition, Vector2 dealerPosition, List<TraditionalCard> deckCards)
         {
+            // Clear previous dealer deck cards
+            dealerDeckCards.Clear();
+
             // Use 4 cards to represent the deck
             int cardsToAnimate = Math.Min(4, deckCards.Count);
             TimeSpan duration = TimeSpan.FromSeconds(0.6);
@@ -556,6 +568,9 @@ namespace Blackjack
 
                 // Add to game components
                 Game.Components.Add(animatedCard);
+
+                // Track this as a dealer deck card so it won't be removed during hand cleanup
+                dealerDeckCards.Add(animatedCard);
 
                 // Create transition animation with the swooping effect
                 var transitionAnim = new TransitionGameComponentAnimation(
@@ -1711,7 +1726,7 @@ namespace Blackjack
         /// </summary>
         private void FinishTurn()
         {
-            // Remove all unnecessary components
+            // Remove all unnecessary components EXCEPT dealer deck cards
             for (int componentIndex = 0; componentIndex < Game.Components.Count; componentIndex++)
             {
                 if (!(Game.Components[componentIndex] is GameTable ||
@@ -1724,6 +1739,13 @@ namespace Blackjack
                     {
                         AnimatedCardsGameComponent animatedCard =
                             (Game.Components[componentIndex] as AnimatedCardsGameComponent);
+
+                        // Skip dealer deck cards - they should remain visible
+                        if (dealerDeckCards.Contains(animatedCard))
+                        {
+                            continue;
+                        }
+
                         animatedCard.AddAnimation(
                             new TransitionGameComponentAnimation(animatedCard.CurrentPosition,
                             new Vector2(animatedCard.CurrentPosition.X, ScreenManager.BASE_BUFFER_HEIGHT))
