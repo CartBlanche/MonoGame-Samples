@@ -132,10 +132,8 @@ namespace Blackjack
                     networkSession = null;
                 }
 
-                // Exit all screens to clear the background and lobby screens
-                foreach (GameScreen screen in ScreenManager.GetScreens())
-                    screen.ExitScreen();
-
+                // Start the game by adding GameplayScreen on top of LobbyScreen
+                // Don't exit screens - this keeps LobbyScreen on the stack for returning to when quitting
                 ScreenManager.AddScreen(new GameplayScreen(MainMenuScreen.Theme, allPlayers, null), null);
             }
         }
@@ -199,10 +197,8 @@ namespace Blackjack
                     // Only pass human player names - GameplayScreen will add NPC Players on host only
                     var allPlayers = new List<string>(joinedPlayers);
 
-                    // Exit all screens to clear the background and lobby screens
-                    foreach (GameScreen screen in ScreenManager.GetScreens())
-                        screen.ExitScreen();
-
+                    // Start the game by adding GameplayScreen on top of LobbyScreen
+                    // Don't exit screens - this keeps LobbyScreen on the stack for returning to when quitting
                     ScreenManager.AddScreen(new GameplayScreen(MainMenuScreen.Theme, allPlayers, networkSession), null);
                 }
             }

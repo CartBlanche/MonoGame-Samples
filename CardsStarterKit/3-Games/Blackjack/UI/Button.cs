@@ -39,7 +39,6 @@ namespace Blackjack
         public Color IconTint { get; set; } = Color.White;
         public Color IconPressedTint { get; set; } = new Color(200, 200, 200);
         public Rectangle? IconSourceRect { get; set; } = null;
-        public Color Color { get; set; } = Color.White;
 
         string regularTexture;
         string pressedTexture;
