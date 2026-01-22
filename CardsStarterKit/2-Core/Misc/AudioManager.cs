@@ -7,6 +7,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.IO;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Media;
@@ -32,7 +33,8 @@ namespace Blackjack
             }
         }
 
-        static readonly string soundAssetLocation = "Sounds/";
+        static readonly string soundAssetLocation = "Sounds";
+        static readonly string musicAssetLocation = "Music";
 
         // Audio Data        
         Dictionary<string, SoundEffectInstance> soundBank;
@@ -71,7 +73,7 @@ namespace Blackjack
         /// <remarks>Loading a sound with an alias that is already used will have no effect.</remarks>
         public static void LoadSound(string contentName, string alias)
         {
-            SoundEffect soundEffect = audioManager.Game.Content.Load<SoundEffect>(soundAssetLocation + contentName);
+            SoundEffect soundEffect = audioManager.Game.Content.Load<SoundEffect>(Path.Combine(soundAssetLocation, contentName));
             SoundEffectInstance soundEffectInstance = soundEffect.CreateInstance();
 
             if (!audioManager.soundBank.ContainsKey(alias))
@@ -89,7 +91,7 @@ namespace Blackjack
         /// /// <remarks>Loading a song with an alias that is already used will have no effect.</remarks>
         public static void LoadSong(string contentName, string alias)
         {
-            Song song = audioManager.Game.Content.Load<Song>(soundAssetLocation + contentName);
+            Song song = audioManager.Game.Content.Load<Song>(Path.Combine(musicAssetLocation, contentName));
 
             if (!audioManager.musicBank.ContainsKey(alias))
             {
@@ -109,7 +111,7 @@ namespace Blackjack
 
             LoadSound("Click", "Click");
 
-            // TODO: Add card removal sound file to Content/Sounds/CardRemoval.wav or .xnb
+            // TODO: Add card removal sound file to Content/Sounds/CardRemoval.wav
             // LoadSound("CardRemoval", "CardRemoval");
         }
 
@@ -118,8 +120,11 @@ namespace Blackjack
         /// </summary>
         public static void LoadMusic()
         {
-            LoadSong("InGameSong_Loop","InGameSong_Loop");
-            LoadSong("MenuMusic_Loop","MenuMusic_Loop");
+            // TODO: Add MenuMusic_Loop and InGameSong_Loop assets to Content/Music/
+            // LoadSong("InGameSong_Loop","InGameSong_Loop");
+            // LoadSong("MenuMusic_Loop","MenuMusic_Loop");
+
+            LoadSong("Casino", "Casino");
         }
 
 
@@ -244,8 +249,9 @@ namespace Blackjack
         /// Play music by name. This stops the currently playing music first. Music will loop until stopped.
         /// </summary>
         /// <param name="musicSoundName">The name of the music sound.</param>
+        /// <param name="volumeMultiplier">Optional volume multiplier applied to MusicVolume setting (0.0 to 1.0). Default is 1.0.</param>
         /// <remarks>If the desired music is not in the music bank, nothing will happen.</remarks>
-        public static void PlayMusic(string musicSoundName)
+        public static void PlayMusic(string musicSoundName, float volumeMultiplier = 1.0f)
         {
             // If the music sound exists
             if (audioManager.musicBank.ContainsKey(musicSoundName))
@@ -257,7 +263,7 @@ namespace Blackjack
                 }
 
                 MediaPlayer.IsRepeating = true;
-                MediaPlayer.Volume = GameSettings.Instance.MusicVolume;
+                MediaPlayer.Volume = GameSettings.Instance.MusicVolume * MathHelper.Clamp(volumeMultiplier, 0f, 1f);
 
                 MediaPlayer.Play(audioManager.musicBank[musicSoundName]);
             }
@@ -271,6 +277,28 @@ namespace Blackjack
             if (MediaPlayer.State != MediaState.Stopped)
             {
                 MediaPlayer.Stop();
+            }
+        }
+
+        /// <summary>
+        /// Pauses the currently playing music.
+        /// </summary>
+        public static void PauseMusic()
+        {
+            if (MediaPlayer.State == MediaState.Playing)
+            {
+                MediaPlayer.Pause();
+            }
+        }
+
+        /// <summary>
+        /// Resumes the currently paused music.
+        /// </summary>
+        public static void ResumeMusic()
+        {
+            if (MediaPlayer.State == MediaState.Paused)
+            {
+                MediaPlayer.Resume();
             }
         }
 

@@ -483,3 +483,9 @@
 /importer:Mp3Importer
 /processor:SoundEffectProcessor
 /build:Sounds/Click.mp3
+
+#begin Music/Casino.mp3
+/importer:Mp3Importer
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:Music/Casino.mp3

@@ -77,6 +77,7 @@ namespace Blackjack
         protected override void LoadContent()
         {
             AudioManager.LoadSounds();
+            AudioManager.LoadMusic();
 
             base.LoadContent();
         }

@@ -69,7 +69,6 @@ namespace Blackjack
             safeArea = ScreenManager.SafeArea;
 
             // Player positions will be calculated dynamically after we know how many players there are
-
             blackJackGame = new BlackjackCardGame(safeArea, new Vector2(safeArea.Left + safeArea.Width / 2 - 50, safeArea.Top + 20),
                 GetPlayerCardPosition, ScreenManager, theme);
 
@@ -99,8 +98,8 @@ namespace Blackjack
             settings = GameSettings.Instance;
             showHints = settings.ShowHints;
 
-            // TODO: Start gameplay background music when audio asset is available
-            // AudioManager.PlayMusic("InGameSong_Loop");
+            // Start gameplay background ambience
+            AudioManager.PlayMusic("Casino", volumeMultiplier: 0.25f);
 
             base.LoadContent();
         }
@@ -110,6 +109,9 @@ namespace Blackjack
         /// </summary>
         public override void UnloadContent()
         {
+            // Stop the background music when exiting gameplay
+            AudioManager.StopMusic();
+
             base.UnloadContent();
         }
 
@@ -711,6 +713,9 @@ namespace Blackjack
         /// </summary>
         public void PauseCurrentGame()
         {
+            // Pause the background music
+            AudioManager.PauseMusic();
+
             // Move to the pause screen
             ScreenManager.AddScreen(new BackgroundScreen(), null);
             ScreenManager.AddScreen(new PauseScreen(), null);
@@ -744,6 +749,9 @@ namespace Blackjack
         /// </summary>
         public void ReturnFromPause()
         {
+            // Resume the background music
+            AudioManager.ResumeMusic();
+
             // Reveal and enable all previously hidden components
             foreach (DrawableGameComponent component in pauseEnabledComponents)
             {
