@@ -53,7 +53,7 @@ namespace RacingGame.Helpers
         {
             get
             {
-                return Path.Combine(GameBaseDirectory, "Content\\Audio");
+                return Path.Combine(GameBaseDirectory, "Content", "Audio");
             }
         }
 

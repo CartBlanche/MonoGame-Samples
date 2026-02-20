@@ -187,7 +187,7 @@ namespace RacingGame.Graphics
             // Set content name (cut off extension!)
             texFilename = Path.GetFileNameWithoutExtension(setFilename);
             string fullFilename =
-                Path.Combine(Directories.ContentDirectory + "\\textures", texFilename);
+                Path.Combine(Directories.ContentDirectory, "textures", texFilename);
 
             // Try loading as 2d texture
             internalXnaTexture = BaseGame.Content.Load<Texture2D>(fullFilename);

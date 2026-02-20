@@ -146,7 +146,7 @@ namespace RacingGame.Shaders
 
             // Load noise texture for stripes effect
             noiseMap = effect.Parameters["noiseMap"];
-            noiseMapTexture = new Texture("Noise128x128.dds");
+            noiseMapTexture = new Texture("Noise128x128");
             // Set texture
             noiseMap.SetValue(noiseMapTexture.XnaTexture);
         }

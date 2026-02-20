@@ -85,7 +85,8 @@ namespace RacingGame.Shaders
             
             // Load and set cube map texture
             skyCubeMapTexture = BaseGame.Content.Load<TextureCube>(
-                Path.Combine(Directories.ContentDirectory + "\\textures",
+                Path.Combine(Directories.ContentDirectory,
+                 "textures",
                 SkyCubeMapFilename));
             diffuseTexture.SetValue(skyCubeMapTexture);
 

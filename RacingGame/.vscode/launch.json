@@ -1,0 +1,43 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Launch Desktop",
+            "type": "coreclr",
+            "request": "launch",
+            "preLaunchTask": "build-desktop",
+            "program": "${workspaceFolder}/Desktop/bin/Debug/net9.0/RacingGame.dll",
+            "args": [],
+            "cwd": "${workspaceFolder}/Desktop",
+            "console": "internalConsole",
+            "stopAtEntry": false
+        },
+        {
+            "name": "Launch Windows",
+            "type": "coreclr",
+            "request": "launch",
+            "preLaunchTask": "build-windows",
+            "program": "${workspaceFolder}/Windows/bin/Debug/net9.0-windows/RacingGame.dll",
+            "args": [],
+            "cwd": "${workspaceFolder}/Windows",
+            "console": "internalConsole",
+            "stopAtEntry": false
+        },
+        {
+            "name": "Launch Android",
+            "type": "mono",
+            "request": "attach",
+            "preLaunchTask": "build-android",
+            "address": "localhost",
+            "port": 10000
+        },
+        {
+            "name": "Launch iOS",
+            "type": "mono",
+            "request": "attach",
+            "preLaunchTask": "build-ios",
+            "address": "localhost",
+            "port": 10001
+        }
+    ]
+}
