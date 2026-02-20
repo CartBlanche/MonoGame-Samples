@@ -1,0 +1,36 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net9.0-windows</TargetFramework>
+    <RollForward>Major</RollForward>
+    <PublishReadyToRun>false</PublishReadyToRun>
+    <TieredCompilation>false</TieredCompilation>
+    <UseWindowsForms>true</UseWindowsForms>
+    <RootNamespace>RacingGame</RootNamespace>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
+    <ApplicationIcon>Icon.ico</ApplicationIcon>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DefineConstants>$(DefineConstants);DIRECTX</DefineConstants>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <DefineConstants>$(DefineConstants);DIRECTX</DefineConstants>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Core\Core.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <MonoGameContentReference Include="..\Core\Content\RacingGameContent.mgcb">
+      <Link>Content\RacingGameContent.mgcb</Link>
+      <Platform>Windows</Platform>
+    </MonoGameContentReference>
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="MonoGame.Content.Builder.Task" Version="3.8.5-preview.3" />
+    <PackageReference Include="MonoGame.Framework.WindowsDX" Version="3.8.5-preview.3" />
+  </ItemGroup>
+  <Target Name="RestoreDotnetTools" BeforeTargets="CollectPackageReferences">
+    <Message Text="Restoring dotnet tools..." Importance="High" />
+    <Exec Command="dotnet tool restore" />
+  </Target>
+</Project>
