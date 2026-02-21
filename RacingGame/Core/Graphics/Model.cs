@@ -243,12 +243,15 @@ namespace RacingGame.Graphics
                         effect.CurrentTechnique.Name.Contains("ReflectionSpecular"));
 
                     // Increase ambient value to 0.5, 0.5, 0.5 for signs and banners!
-                    if (isSign)
+                    if (isSign
+                    && effect.Parameters["ambientColor"] != null)
                         effect.Parameters["ambientColor"].SetValue(
                             new Color(128, 128, 128).ToVector4());
 
                     // Car only uses alpha on the glass
-                    if (isCar && !mesh.Name.StartsWith("glass"))
+                    if (isCar
+                    && !mesh.Name.StartsWith("glass")
+                    && effect.Parameters["UseAlpha"] != null)
                         effect.Parameters["UseAlpha"].SetValue(false);
 
                     // Get technique from meshName
