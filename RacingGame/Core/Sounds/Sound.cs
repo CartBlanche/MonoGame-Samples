@@ -20,6 +20,7 @@ using System.Threading;
 using Microsoft.Xna.Framework;
 using System.IO;
 using RacingGame.Properties;
+using System.Threading.Tasks;
 #endregion
 
 namespace RacingGame.Sounds
@@ -168,7 +169,7 @@ namespace RacingGame.Sounds
             Cue musicCue = soundBank.GetCue("MenuMusic");
             musicCue.Play();
             // Wait for a short while to let Xact kick in ^^
-            Thread.Sleep(10);
+            Task.Delay(10).Wait();
             musicCue.Stop(AudioStopOptions.Immediate);
         }
         #endregion

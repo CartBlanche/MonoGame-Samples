@@ -45,7 +45,7 @@ namespace RacingGame.Helpers
 
         public static ManualResetEvent StorageContainerMRE = new ManualResetEvent(true);
 
-		#if GAMERSERVICES
+#if GAMERSERVICES
         /// <summary>
         /// XNA user device, asks for the saving location on the Xbox360,
         /// theirfore remember this device for the time we run the game.
@@ -83,7 +83,7 @@ namespace RacingGame.Helpers
                     }
                     if (Guide.IsVisible)
                     {
-                        Thread.Sleep(10);
+                        Task.Delay(10).Wait();
                         BaseGame.GamerServicesComponent.Update(new GameTime());
                         BaseGame.graphicsManager.GraphicsDevice.Clear(Color.Black);
                         BaseGame.graphicsManager.GraphicsDevice.Present();
@@ -93,7 +93,7 @@ namespace RacingGame.Helpers
                 return xnaUserDevice;
             }
         }
-		#endif
+#endif
 
         #endregion
 

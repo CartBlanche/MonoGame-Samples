@@ -15,14 +15,16 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading;
 using RacingGame.Graphics;
+using System.Threading.Tasks;
+using RacingGame.Helpers;
 #endregion
 
 namespace RacingGame.GameScreens
 {
-    /// <summary>
-    /// Loading screen
-    /// </summary>
-    class LoadingScreen : IGameScreen
+	/// <summary>
+	/// Loading screen
+	/// </summary>
+	class LoadingScreen : IGameScreen
 	{
 		#region Variables
 		private const string loadingText = "Loading...";
@@ -45,8 +47,21 @@ namespace RacingGame.GameScreens
 		/// </summary>
 		public void Update(GameTime gameTime)
 		{
-			if (RacingGameManager.LoadingThread.ThreadState == ThreadState.Unstarted)
-				RacingGameManager.LoadingThread.Start();
+			if (RacingGameManager.LoadingTask == null)
+			{
+				RacingGameManager.LoadingTask = Task.Run(() =>
+					RacingGameManager.LoadResources());
+			}
+
+			if (RacingGameManager.LoadingTask.IsCompleted)
+			{
+				if (RacingGameManager.LoadingTask.IsFaulted)
+				{
+					Log.Write("Content loading failed: " +
+						RacingGameManager.LoadingTask.Exception);
+				}
+				// Proceed to next screen
+			}
 		}
 
 		public void LoadEvent(object sender, EventArgs e)
@@ -57,10 +72,10 @@ namespace RacingGame.GameScreens
 
 		#region RenderLoadingScreen
 		/// <summary>
-        /// Render loading screen
-        /// </summary>
-        public bool Render()
-        {
+		/// Render loading screen
+		/// </summary>
+		public bool Render()
+		{
 			SpriteBatch textBatch = new SpriteBatch(BaseGame.Device);
 			Vector2 position = new Vector2((BaseGame.Width / 2) - 50, (BaseGame.Height / 2) - 20);
 
@@ -76,7 +91,7 @@ namespace RacingGame.GameScreens
 			TextureFont.WriteTextCentered(BaseGame.Width / 2, (int)position.Y + 40, loadingStatus);
 
 			return RacingGameManager.ContentLoaded;
-        }
-        #endregion
+		}
+		#endregion
 	}
 }
