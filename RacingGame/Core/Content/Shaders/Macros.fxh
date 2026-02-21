@@ -126,23 +126,32 @@
 #define BEGIN_CONSTANTS
 #define END_CONSTANTS
 
+// The texture object keeps the bare Name so MojoShader exposes it as
+// effect.Parameters["Name"], matching the DX/SM4 path. The explicit
+// Texture = (Name) binding inside the sampler state is what causes
+// MojoShader to register the texture variable name as the parameter.
+
 #define BEGIN_DECLARE_CUBE_TARGET(Name, target) \
 	texture Name : target; \
 	samplerCUBE Name##Sampler = sampler_state \
-	{
+	{ \
+		Texture = (Name);
 
 #define BEGIN_DECLARE_TEXTURE_TARGET(Name, target) \
 	Texture2D Name : target; \
 	sampler Name##Sampler = sampler_state \
-	{
+	{ \
+		Texture = (Name);
 
 #define DECLARE_TEXTURE(Name, index) \
+    Texture2D Name; \
     sampler Name##Sampler : register(s##index) \
 	{ \
 		Texture = (Name); \
 	}
 
 #define BEGIN_DECLARE_TEXTURE(Name, index) \
+	Texture2D Name; \
 	sampler Name##Sampler : register(s##index) \
 	{ \
 		Texture = (Name);
