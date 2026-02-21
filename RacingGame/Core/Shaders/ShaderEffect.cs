@@ -628,7 +628,7 @@ namespace RacingGame.Shaders
             // Load shader
             effect = BaseGame.Content.Load<Effect>(
                 Path.Combine(Directories.ContentDirectory,
-                "shaders",
+                "Shaders",
                 shaderContentName));
 
             // Reset and get all available parameters.

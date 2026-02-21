@@ -17,6 +17,7 @@ using RacingGame.Helpers;
 using RacingGame.Shaders;
 using RacingGame.Tracks;
 using XnaModel = Microsoft.Xna.Framework.Graphics.Model;
+using System.IO;
 #endregion
 
 namespace RacingGame.Graphics
@@ -167,7 +168,7 @@ namespace RacingGame.Graphics
             name = setModelName;
 
             xnaModel = BaseGame.Content.Load<XnaModel>(
-                @"Content\models\" + name);
+                Path.Combine(Directories.ContentDirectory, "Models", name));
 
             // Get matrix transformations of the model
             // Has to be done only once because we don't use animations in our game.

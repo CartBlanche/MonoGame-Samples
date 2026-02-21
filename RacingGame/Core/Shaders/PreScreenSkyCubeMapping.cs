@@ -71,7 +71,7 @@ namespace RacingGame.Shaders
         public PreScreenSkyCubeMapping()
             : base(Filename)
         {
-            cube = BaseGame.Content.Load<XnaModel>(@"Content\models\Cube");
+            cube = BaseGame.Content.Load<XnaModel>(Path.Combine(Directories.ContentDirectory, "Models", "Cube"));
         }
         #endregion
 
@@ -86,7 +86,7 @@ namespace RacingGame.Shaders
             // Load and set cube map texture
             skyCubeMapTexture = BaseGame.Content.Load<TextureCube>(
                 Path.Combine(Directories.ContentDirectory,
-                 "textures",
+                 "Textures",
                 SkyCubeMapFilename));
             diffuseTexture.SetValue(skyCubeMapTexture);
 
