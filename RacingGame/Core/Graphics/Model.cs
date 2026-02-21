@@ -533,8 +533,7 @@ namespace RacingGame.Graphics
                                 // And render all primitives
                                 BaseGame.Device.DrawIndexedPrimitives(
                                     PrimitiveType.TriangleList,
-                                    part.VertexOffset, 0, part.NumVertices,
-                                    part.StartIndex, part.PrimitiveCount);
+                                    part.VertexOffset, part.StartIndex, part.PrimitiveCount);
                             }
                         }
                     });
@@ -734,8 +733,7 @@ namespace RacingGame.Graphics
                     BaseGame.Device.Indices = part.IndexBuffer;
                     BaseGame.Device.DrawIndexedPrimitives(
                         PrimitiveType.TriangleList,
-                        part.VertexOffset, 0,
-                        part.NumVertices, part.StartIndex, part.PrimitiveCount);
+                        part.VertexOffset, part.StartIndex, part.PrimitiveCount);
                 }
             }
         }
@@ -805,8 +803,7 @@ namespace RacingGame.Graphics
                     BaseGame.Device.Indices = part.IndexBuffer;
                     BaseGame.Device.DrawIndexedPrimitives(
                         PrimitiveType.TriangleList,
-                        part.VertexOffset, 0,
-                        part.NumVertices, part.StartIndex, part.PrimitiveCount);
+                        part.VertexOffset, part.StartIndex, part.PrimitiveCount);
                 }
             }
         }

@@ -445,8 +445,7 @@ namespace RacingGame.Tracks
             BaseGame.Device.Indices = railIb;
             BaseGame.Device.DrawIndexedPrimitives(
                 PrimitiveType.TriangleList,
-                0, 0, railVertices.Length,
-                0, (GuardRailVertices.Length - 1) * (railPoints.Length - 1) * 2);
+                0, 0, (GuardRailVertices.Length - 1) * (railPoints.Length - 1) * 2);
         }
         #endregion
 

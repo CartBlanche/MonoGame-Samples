@@ -1139,8 +1139,7 @@ namespace RacingGame.Landscapes
             BaseGame.Device.SetVertexBuffer(vertexBuffer);
             BaseGame.Device.Indices = indexBuffer;
             BaseGame.Device.DrawIndexedPrimitives(PrimitiveType.TriangleList,
-                0, 0, GridWidth * GridHeight,
-                0, (GridWidth - 1) * (GridHeight - 1) * 2);
+                0, 0, (GridWidth - 1) * (GridHeight - 1) * 2);
         }
         #endregion
         #endregion

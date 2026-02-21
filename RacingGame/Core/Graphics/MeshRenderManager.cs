@@ -155,7 +155,7 @@ namespace RacingGame.Graphics
                 // WriteOnly, we can't combine it or optimize it any more).
                 BaseGame.Device.DrawIndexedPrimitives(
                     PrimitiveType.TriangleList,
-                    baseVertex, 0, numVertices, startIndex, primitiveCount);
+                    baseVertex, startIndex, primitiveCount);
             }
 
             /// <summary>
