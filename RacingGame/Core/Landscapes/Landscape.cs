@@ -837,10 +837,9 @@ namespace RacingGame.Landscapes
             byte[] heights = new byte[GridWidth * GridHeight];
             #region Load map height data
             using (Stream file = TitleContainer.OpenStream(
-                "Content\\LandscapeHeights.data"))
+                Path.Combine("Content", "LandscapeHeights.data")))
             {
-
-                file.Read(heights, 0, GridWidth * GridHeight);
+                file.ReadExactly(heights, 0, GridWidth * GridHeight);
             }
 
             mapHeights = new float[GridWidth, GridHeight];
