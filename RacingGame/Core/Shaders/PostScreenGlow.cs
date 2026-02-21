@@ -164,7 +164,7 @@ namespace RacingGame.Shaders
 
             if (windowSize != null)
                 windowSize.SetValue(
-                    new float[] { sceneMapTexture.Width, sceneMapTexture.Height });
+                    new Vector2(sceneMapTexture.Width, sceneMapTexture.Height));
             if (sceneMap != null)
                 sceneMap.SetValue(sceneMapTexture.XnaTexture);
 
