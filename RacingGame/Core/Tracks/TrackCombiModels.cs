@@ -127,7 +127,7 @@ namespace RacingGame.Tracks
         public TrackCombiModels(string filename)
         {
             using (StreamReader file = new StreamReader(TitleContainer.OpenStream(
-                Directory + "\\" + filename + "." + Extension)))
+                Path.Combine(Directory, filename + "." + Extension))))
             {
 
                 // Load everything into this class with help of the XmlSerializer.

@@ -272,7 +272,7 @@ namespace RacingGame.Tracks
         {
             // Load track data
             using (StreamReader file = new StreamReader(TitleContainer.OpenStream(
-                Directory + "\\" + setFilename + "." + Extension)))
+                Path.Combine(Directory, setFilename + "." + Extension))))
             {
 
                 // Load everything into this class with help of the XmlSerializer.

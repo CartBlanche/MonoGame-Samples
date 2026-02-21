@@ -58,9 +58,9 @@ namespace RacingGame.GameLogic
         /// <returns>String</returns>
         private string ScreenshotNameBuilder(int num)
         {
-            return Directories.ScreenshotsDirectory + "\\" +
+            return Path.Combine(Directories.ScreenshotsDirectory,
                 game.Window.Title + " Screenshot " +
-                num.ToString("0000") + ".jpg";
+                num.ToString("0000") + ".jpg");
         }
         #endregion
 

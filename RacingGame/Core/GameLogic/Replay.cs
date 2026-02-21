@@ -228,7 +228,7 @@ namespace RacingGame.GameLogic
                 Directories.ContentDirectory, ReplayFilenames[trackNum])))
             {
                 using (Stream stream = TitleContainer.OpenStream(
-                    "Content\\" + ReplayFilenames[trackNum]))
+                    Path.Combine("Content", ReplayFilenames[trackNum])))
                 {
                     using (BinaryReader reader = new BinaryReader(stream))
                     {
