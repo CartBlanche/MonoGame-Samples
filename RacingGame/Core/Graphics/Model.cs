@@ -230,18 +230,26 @@ namespace RacingGame.Graphics
                 for (int effectNum = 0; effectNum < mesh.Effects.Count; effectNum++)
                 {
                     Effect effect = mesh.Effects[effectNum];
-                    // Store our 4 effect parameters
-                    cachedEffectParameters.Add(effect.Parameters["diffuseTexture"]);
-                    cachedEffectParameters.Add(effect.Parameters["ambientColor"]);
-                    cachedEffectParameters.Add(effect.Parameters["diffuseColor"]);
-                    cachedEffectParameters.Add(effect.Parameters["world"]);
-                    cachedEffectParameters.Add(effect.Parameters["viewProj"]);
-                    cachedEffectParameters.Add(effect.Parameters["viewInverse"]);
-                    cachedEffectParameters.Add(effect.Parameters["lightDir"]);
+                    // MonoGame's XImporter produces BasicEffect for .x files; in that case
+                    // cache parameters from the NormalMapping shader that actually renders them.
+                    Effect paramSource = (effect is BasicEffect)
+                        ? ShaderEffect.normalMapping.Effect
+                        : effect;
+                    // Store our effect parameters
+                    cachedEffectParameters.Add(paramSource.Parameters["diffuseTexture"]);
+                    cachedEffectParameters.Add(paramSource.Parameters["ambientColor"]);
+                    cachedEffectParameters.Add(paramSource.Parameters["diffuseColor"]);
+                    cachedEffectParameters.Add(paramSource.Parameters["world"]);
+                    cachedEffectParameters.Add(paramSource.Parameters["viewProj"]);
+                    cachedEffectParameters.Add(paramSource.Parameters["viewInverse"]);
+                    cachedEffectParameters.Add(paramSource.Parameters["lightDir"]);
 
-                    // Store if this is a "ReflectionSpecular" technique
+                    // Store if this is a "ReflectionSpecular" technique.
+                    // For BasicEffect fallback, identify glass by mesh name.
                     cachedIsReflectionSpecularTechnique.Add(
-                        effect.CurrentTechnique.Name.Contains("ReflectionSpecular"));
+                        (effect is BasicEffect)
+                            ? mesh.Name.ToLower().StartsWith("glass")
+                            : effect.CurrentTechnique.Name.Contains("ReflectionSpecular"));
 
                     // Increase ambient value to 0.5, 0.5, 0.5 for signs and banners!
                     if (isSign
@@ -565,7 +573,12 @@ namespace RacingGame.Graphics
                     {
                         Effect effect = mesh.Effects[effectNum];
                         if (effectNum == 0)
-                            remCurrentTechnique = effect.CurrentTechnique;
+                        {
+                            // For BasicEffect fallback, remember the normalMapping technique
+                            remCurrentTechnique = (effect is BasicEffect)
+                                ? ShaderEffect.normalMapping.Effect.CurrentTechnique
+                                : effect.CurrentTechnique;
+                        }
 
                         // Find out if this is ReflectionSimpleGlass.fx,
                         // NormalMapping.fx will also use reflection, but the techniques
@@ -607,16 +620,17 @@ namespace RacingGame.Graphics
                             cachedEffectParameters[effectParameterIndex++].SetValue(
                                 diffuseColor.ToVector4());
 
-                            // Change shader to
-                            // VertexOutput_SpecularWithReflectionForCar20
-                            // if we changed the color.
+                            // Change shader to SpecularWithReflectionForCar20 if we changed the color.
                             if (RacingGameManager.currentCarColor != 0 &&
                                 effectNum == 0)
                             {
-                                effect.CurrentTechnique =
-                                    effect.Techniques["SpecularWithReflectionForCar20"];
-                                // And set carHueColorChange
-                                effect.Parameters["carHueColor"].SetValue(
+                                // Route through normalMapping when effect is BasicEffect fallback
+                                Effect carEffect = (effect is BasicEffect)
+                                    ? ShaderEffect.normalMapping.Effect
+                                    : effect;
+                                carEffect.CurrentTechnique =
+                                    carEffect.Techniques["SpecularWithReflectionForCar20"];
+                                carEffect.Parameters["carHueColor"]?.SetValue(
                                     carColor.ToVector3());
                             }
                         }
@@ -664,14 +678,36 @@ namespace RacingGame.Graphics
 
                     // Render
                     if (dontRender == false)
-                        mesh.Draw();
+                    {
+                        // For BasicEffect fallback, render manually through normalMapping shader
+                        if (mesh.Effects.Count > 0 && mesh.Effects[0] is BasicEffect)
+                        {
+                            ShaderEffect.normalMapping.Effect.CurrentTechnique.Passes[0].Apply();
+                            for (int partNum = 0; partNum < mesh.MeshParts.Count; partNum++)
+                            {
+                                ModelMeshPart part = mesh.MeshParts[partNum];
+                                BaseGame.Device.SetVertexBuffer(part.VertexBuffer);
+                                BaseGame.Device.Indices = part.IndexBuffer;
+                                BaseGame.Device.DrawIndexedPrimitives(
+                                    PrimitiveType.TriangleList,
+                                    part.VertexOffset, part.StartIndex, part.PrimitiveCount);
+                            }
+                        }
+                        else
+                        {
+                            mesh.Draw();
+                        }
+                    }
 
                     // Change shader back to default render technique.
                     // We only have to do this if the color was changed
                     if (RacingGameManager.currentCarColor != 0 &&
                         remCurrentTechnique != null)
                     {
-                        mesh.Effects[0].CurrentTechnique = remCurrentTechnique;
+                        Effect restoreEffect = (mesh.Effects.Count > 0 && mesh.Effects[0] is BasicEffect)
+                            ? ShaderEffect.normalMapping.Effect
+                            : mesh.Effects[0];
+                        restoreEffect.CurrentTechnique = remCurrentTechnique;
                     }
                 }
             }

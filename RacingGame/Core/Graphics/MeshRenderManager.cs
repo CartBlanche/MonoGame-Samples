@@ -146,7 +146,7 @@ namespace RacingGame.Graphics
                 {
                     lastVertexBufferSet = vertexBuffer;
                     lastIndexBufferSet = indexBuffer;
-                    BaseGame.Device.SetVertexBuffer( vertexBuffer);
+                    BaseGame.Device.SetVertexBuffer(vertexBuffer);
                     BaseGame.Device.Indices = indexBuffer;
                 }
 
@@ -310,12 +310,14 @@ namespace RacingGame.Graphics
                 get
                 {
                     int ret = 0;
-					try {
-						for (int listNum = 0; listNum < meshesPerMaterials.Count; listNum++)
-							ret += meshesPerMaterials [listNum].NumberOfRenderMatrices;
-					}
-					catch {
-					}
+                    try
+                    {
+                        for (int listNum = 0; listNum < meshesPerMaterials.Count; listNum++)
+                            ret += meshesPerMaterials[listNum].NumberOfRenderMatrices;
+                    }
+                    catch
+                    {
+                    }
                     return ret;
                 }
             }
@@ -422,7 +424,7 @@ namespace RacingGame.Graphics
         {
             string techniqueName = effect.CurrentTechnique.Name;
 
-            // Does this technique already exists?
+            // Does this technique already exist?
             MeshesPerMaterialPerTechniques foundList = null;
             for (int listNum = 0; listNum < sortedMeshes.Count; listNum++)
             {
@@ -438,8 +440,14 @@ namespace RacingGame.Graphics
             // Did not found list? Create new one
             if (foundList == null)
             {
-                foundList = new MeshesPerMaterialPerTechniques(
-                    ShaderEffect.normalMapping.GetTechnique(techniqueName));
+                EffectTechnique technique = ShaderEffect.normalMapping.GetTechnique(techniqueName);
+                if (technique == null)
+                {
+                    // techniqueName came from a BasicEffect (MonoGame XImporter doesn't preserve
+                    // EffectMaterialContent from .x files), so fall back to a valid NormalMapping technique.
+                    technique = ShaderEffect.normalMapping.GetTechnique("DiffuseSpecular20");
+                }
+                foundList = new MeshesPerMaterialPerTechniques(technique);
                 sortedMeshes.Add(foundList);
             }
 
@@ -447,6 +455,14 @@ namespace RacingGame.Graphics
             // This will create duplicate materials if the same material is used
             // multiple times, we check this later.
             Material material = new Material(effect);
+
+            // If the effect is a BasicEffect (MonoGame XImporter fallback), extract
+            // the texture from it since Material(Effect) only reads NormalMapping params.
+            if (material.diffuseTexture == null && effect is BasicEffect basicEffect &&
+                basicEffect.Texture != null)
+            {
+                material.diffuseTexture = new Texture(basicEffect.Texture);
+            }
 
             // Search for material inside foundList.
             for (int innerListNum = 0; innerListNum <
