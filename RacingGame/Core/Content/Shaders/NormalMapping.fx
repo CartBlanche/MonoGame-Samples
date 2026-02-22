@@ -161,10 +161,10 @@ float3x3 ComputeTangentMatrix(float3 tangent, float3 normal)
     // Compute the 3x3 tranform from tangent space to object space
     float3x3 worldToTangentSpace;
     worldToTangentSpace[0] =
-        //left handed: mul(cross(tangent, normal), world);
-        mul(cross(normal, tangent), world);
-    worldToTangentSpace[1] = mul(tangent, world);
-    worldToTangentSpace[2] = mul(normal, world);
+        //left handed: mul(cross(tangent, normal), (float3x3)world);
+        mul(cross(normal, tangent), (float3x3)world);
+    worldToTangentSpace[1] = mul(tangent, (float3x3)world);
+    worldToTangentSpace[2] = mul(normal, (float3x3)world);
     return worldToTangentSpace;
 }
 
@@ -472,10 +472,10 @@ VS_SpecularWithReflection20(VertexInput In)
 	// Transform light vector and pass it as a color (clamped from 0 to 1)
 	// For ps_2_0 we don't need to clamp form 0 to 1
 	Out.lightVec = normalize(mul(worldToTangentSpace, GetLightDir()));
-	Out.viewVec = mul(worldToTangentSpace, worldEyePos - worldVertPos);
+	Out.viewVec = mul(worldToTangentSpace, worldEyePos - worldVertPos.xyz);
 
 	float3 normal = CalcNormalVector(In.normal);
-	float3 viewVec = normalize(worldEyePos - worldVertPos);
+	float3 viewVec = normalize(worldEyePos - worldVertPos.xyz);
 	float3 R = reflect(-viewVec, normal);
 	Out.cubeTexCoord = R;
 
@@ -504,11 +504,11 @@ float4 PS_SpecularWithReflection20(VertexOutput_SpecularWithReflection20 In) : S
 	// Darken down bump factor on back faces
 	float4 reflection = SAMPLE_CUBE(reflectionCubeTexture,
 		In.cubeTexCoord);
-	float3 ambDiffColor = ambientColor + bump * diffuseColor;
+	float4 ambDiffColor = ambientColor + bump * diffuseColor;
 	float4 ret;
-	ret.rgb = diffusePixel * ambDiffColor +
-		bump * spec * specularColor * diffusePixel.a;
-	ret.rgb *= (0.85f + reflection * 0.75f);
+	ret.rgb = diffusePixel.rgb * ambDiffColor.rgb +
+		bump * spec * specularColor.rgb * diffusePixel.a;
+	ret.rgb *= (0.85f + reflection.rgb * 0.75f);
 	// Apply color
 	ret.a = 1.0f;
 	return ret;
@@ -672,10 +672,10 @@ VertexOutput_SpecularWithReflectionForCar20
     float3 worldEyePos = GetCameraPos();
 
     Out.lightVec = mul(worldToTangentSpace, GetLightDir());
-    Out.viewVec = mul(worldToTangentSpace, worldEyePos - worldVertPos);
+    Out.viewVec = mul(worldToTangentSpace, worldEyePos - worldVertPos.xyz);
 
     float3 normal = CalcNormalVector(In.normal);
-    float3 viewVec = normalize(worldEyePos - worldVertPos);
+    float3 viewVec = normalize(worldEyePos - worldVertPos.xyz);
     float3 R = reflect(-viewVec, normal);
     Out.cubeTexCoord = R;
     
@@ -707,12 +707,12 @@ float4 PS_SpecularWithReflectionForCar20(
     // Darken down bump factor on back faces
     float4 reflection = SAMPLE_CUBE(reflectionCubeTexture,
         In.cubeTexCoord);
-    float3 ambDiffColor = ambientColor + bump * diffuseColor;
+    float4 ambDiffColor = ambientColor + bump * diffuseColor;
     float4 ret;
-    ret.rgb = diffusePixel * ambDiffColor +
-        bump * spec * specularColor * diffusePixel.a;
-    ret.rgb *= (0.85f + reflection * 0.75f);    
-    
+    ret.rgb = diffusePixel.rgb * ambDiffColor.rgb +
+        bump * spec * specularColor.rgb * diffusePixel.a;
+    ret.rgb *= (0.85f + reflection.rgb * 0.75f);
+
     // Apply color
     ret.a = 1.0f;
     return ret;

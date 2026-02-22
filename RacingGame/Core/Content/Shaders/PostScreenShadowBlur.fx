@@ -33,21 +33,6 @@ const float BlurWidth = 1.25f;
 // Update: For shadows 2.0 looks much better and smoother :)
 // ps_1_1 can't archive that effect with just 4 samples.
 const float BlurWidth20 = 1.5f;
-
-// 8 Weights for ps_2_0
-const float Weights8[8] =
-{
-	// more strength to middle to reduce effect of lighten up
-	// shadowed areas due mixing and bluring!
-	0.035,
-	0.09,
-	0.125,
-	0.25,
-	0.25,
-	0.125,
-	0.09,
-	0.035,
-};
 END_CONSTANTS
 
 BEGIN_DECLARE_TEXTURE_TARGET (sceneMap, RENDERCOLORTARGET)
@@ -110,6 +95,7 @@ VB_OutputPos8TexCoords VS_AdvancedBlur20Horizontal(
 float4 PS_AdvancedBlur20Scene(
 	VB_OutputPos8TexCoords In) : SV_TARGET
 {
+	const float Weights8[7] = { 0.035, 0.09, 0.125, 0.25, 0.25, 0.125, 0.09 };
 	float4 ret = 0;
 	// This loop will be unrolled by the compiler
 	for (int i = 0; i<7; i++)
@@ -123,6 +109,7 @@ float4 PS_AdvancedBlur20Scene(
 float4 PS_AdvancedBlur20Blur(
 	VB_OutputPos8TexCoords In) : SV_TARGET
 {
+	const float Weights8[7] = { 0.035, 0.09, 0.125, 0.25, 0.25, 0.125, 0.09 };
 	float4 ret = 0;
 	// This loop will be unrolled by the compiler
 	for (int i = 0; i<7; i++)

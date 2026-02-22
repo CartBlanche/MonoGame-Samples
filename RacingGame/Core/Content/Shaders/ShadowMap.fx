@@ -35,21 +35,6 @@ const float3 lightDir : Direction = {1.0f, -1.0f, 1.0f};
 // Shadown Map size
 const float2 shadowMapTexelSize = float2(1.0f/1024.0f, 1.0f/1024);
 
-// Poison filter pseudo random filter positions for PCF with 10 samples
-const float2 FilterTaps[10] =
-{
-    // First test, still the best.
-    {-0.84052f, -0.073954f},
-    {-0.326235f, -0.40583f},
-    {-0.698464f, 0.457259f},
-    {-0.203356f, 0.6205847f},
-    {0.96345f, -0.194353f},
-    {0.473434f, -0.480026f},
-    {0.519454f, 0.767034f},
-    {0.185461f, -0.8945231f},
-    {0.507351f, 0.064963f},
-    {-0.321932f, 0.5954349f}
-};
 END_CONSTANTS
 
 BEGIN_DECLARE_TEXTURE_TARGET (shadowDistanceFadeoutTexture, Diffuse)
@@ -198,6 +183,23 @@ VB_UseShadowMap20 VS_UseShadowMap20(VertexInput In)
 // job faking the penumbra and can look very good when adjusted carefully.
 float4 PS_UseShadowMap20(VB_UseShadowMap20 In) : SV_TARGET
 {
+    // Poison filter pseudo random positions for PCF with 10 samples.
+    // Hardcoded here to avoid GLSL std140 float2 array padding (16 bytes/element
+    // on GPU vs 8 bytes on CPU), which would cause a BlockCopy overrun on DesktopGL.
+    const float2 FilterTaps[10] =
+    {
+        {-0.84052f, -0.073954f},
+        {-0.326235f, -0.40583f},
+        {-0.698464f, 0.457259f},
+        {-0.203356f, 0.6205847f},
+        {0.96345f, -0.194353f},
+        {0.473434f, -0.480026f},
+        {0.519454f, 0.767034f},
+        {0.185461f, -0.8945231f},
+        {0.507351f, 0.064963f},
+        {-0.321932f, 0.5954349f}
+    };
+
     float depth = (In.depth.x/In.depth.y) - depthBias;
 
     float2 shadowTex =

@@ -100,18 +100,9 @@ namespace RacingGame.Shaders
         protected override void SetParameterDefaultValues()
         {
             base.SetParameterDefaultValues();
-            effect.Parameters["Weights8"].SetValue(new float[] {
-	            // more strength to middle to reduce effect of lighten up
-	            // shadowed areas due mixing and bluring!
-	            0.035f,
-                0.09f,
-                0.125f,
-                0.25f,
-                0.25f,
-                0.125f,
-                0.09f,
-                0.035f,
-            });
+            // Weights8 is now hardcoded in the shader to avoid GLSL std140
+            // float-array padding mismatch on DesktopGL (each float element
+            // would be padded to 16 bytes, causing a BlockCopy overrun).
         }
 
         #region Get parameters
@@ -196,12 +187,11 @@ namespace RacingGame.Shaders
                     "This shader should have exactly 2 passes!");
 
             // Just start pass 0
-            
-                blurMapTexture.SetRenderTarget();
+            blurMapTexture.SetRenderTarget();
 
-                EffectPass effectPass = effect.CurrentTechnique.Passes[0];
-                effectPass.Apply();
-                VBScreenHelper.Render();
+            EffectPass effectPass = effect.CurrentTechnique.Passes[0];
+            effectPass.Apply();
+            VBScreenHelper.Render();
 
 
             blurMapTexture.Resolve();
@@ -252,14 +242,14 @@ namespace RacingGame.Shaders
 
             // Use ZeroSourceBlend alpha mode for the final result
             BaseGame.Device.BlendState = ZeroSourceBlend;
-                /*BaseGame.Device.RenderState.AlphaBlendEnable = true;
-                BaseGame.Device.RenderState.AlphaBlendOperation = BlendFunction.Add;
-                BaseGame.Device.RenderState.SourceBlend = Blend.Zero;
-                BaseGame.Device.RenderState.DestinationBlend = Blend.SourceColor;*/
+            /*BaseGame.Device.RenderState.AlphaBlendEnable = true;
+            BaseGame.Device.RenderState.AlphaBlendOperation = BlendFunction.Add;
+            BaseGame.Device.RenderState.SourceBlend = Blend.Zero;
+            BaseGame.Device.RenderState.DestinationBlend = Blend.SourceColor;*/
 
-                EffectPass effectPass = effect.CurrentTechnique.Passes[1];
-                effectPass.Apply();
-                VBScreenHelper.Render();
+            EffectPass effectPass = effect.CurrentTechnique.Passes[1];
+            effectPass.Apply();
+            VBScreenHelper.Render();
 
             // Restore z buffer state
             BaseGame.Device.DepthStencilState = DepthStencilState.Default;

@@ -60,18 +60,6 @@ float radialBlurScaleFactor <
 float2 windowSize : VIEWPORTPIXELSIZE;
 const float downsampleScale = 0.25;
 
-// blur filter weights
-const half weights7[7] =
-{
-    0.05,
-    0.1,
-    0.2,
-    0.3,
-    0.2,
-    0.1,
-    0.05,
-};  
-
 // Blur Width is only used for ps_2_0, ps_1_1 is optimized!
 float BlurWidth <
     string UIName = "Blur width";
@@ -344,6 +332,7 @@ VB_OutputPos7TexCoords VS_Blur20Vertical(
 float4 PS_Blur20DownSampler(
 	VB_OutputPos7TexCoords In) : SV_TARGET0
 {
+	const half weights7[7] = { 0.05, 0.1, 0.2, 0.3, 0.2, 0.1, 0.05 };
 	float4 c = 0;
 
 	// this loop will be unrolled by compiler
@@ -358,6 +347,7 @@ float4 PS_Blur20DownSampler(
 float4 PS_Blur20BlurSampler(
 	VB_OutputPos7TexCoords In) : SV_TARGET0
 {
+	const half weights7[7] = { 0.05, 0.1, 0.2, 0.3, 0.2, 0.1, 0.05 };
 	float4 c = 0;
 
 	// this loop will be unrolled by compiler

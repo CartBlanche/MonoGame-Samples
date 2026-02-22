@@ -65,17 +65,6 @@ float Speed2 = 0.0016f;
 float ScratchIntensity = 0.605f;
 float IS = 0.031f;
 
-// blur filter weights
-const half weights7[7] =
-{
-	0.05,
-	0.1,
-	0.2,
-	0.3,
-	0.2,
-	0.1,
-	0.05,
-};
 END_CONSTANTS
 
 BEGIN_DECLARE_TEXTURE_TARGET(sceneMap, RENDERCOLORTARGET)
@@ -326,6 +315,7 @@ VB_OutputPos7TexCoords VS_Blur20Horizontal(
 float4 PS_Blur20DownSample(
 	VB_OutputPos7TexCoords In) : SV_TARGET
 {
+	const half weights7[7] = { 0.05, 0.1, 0.2, 0.3, 0.2, 0.1, 0.05 };
 	float4 c = 0;
 
 	// this loop will be unrolled by compiler
@@ -339,6 +329,7 @@ float4 PS_Blur20DownSample(
 float4 PS_Blur20BlurSample(
 	VB_OutputPos7TexCoords In) : SV_TARGET
 {
+	const half weights7[7] = { 0.05, 0.1, 0.2, 0.3, 0.2, 0.1, 0.05 };
 	float4 c = 0;
 
 	// this loop will be unrolled by compiler

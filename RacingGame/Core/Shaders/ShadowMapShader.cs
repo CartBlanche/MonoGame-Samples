@@ -130,8 +130,7 @@ namespace RacingGame.Shaders
             shadowMapDepthBias,
             shadowMap,
             shadowMapTexelSize,
-            shadowDistanceFadeoutTexture,
-            filterTaps;
+            shadowDistanceFadeoutTexture;
 
         /// <summary>
         /// Shadow map blur post screen shader, used in RenderShadows
@@ -183,19 +182,9 @@ namespace RacingGame.Shaders
 
         protected override void SetParameterDefaultValues()
         {
-            if (filterTaps != null)
-                filterTaps.SetValue(new Vector2[] {
-                    new Vector2 (-0.84052f, -0.073954f),
-                    new Vector2 (-0.326235f, -0.40583f),
-                    new Vector2 (-0.698464f, 0.457259f),
-                    new Vector2 (-0.203356f, 0.6205847f),
-                    new Vector2 (0.96345f, -0.194353f),
-                    new Vector2 (0.473434f, -0.480026f),
-                    new Vector2 (0.519454f, 0.767034f),
-                    new Vector2 (0.185461f, -0.8945231f),
-                    new Vector2 (0.507351f, 0.064963f),
-                    new Vector2 (-0.321932f, 0.5954349f),
-                });
+            // FilterTaps is hardcoded inside PS_UseShadowMap20 to avoid GLSL std140
+            // float2 array padding (16 bytes/element on GPU vs 8 bytes on CPU),
+            // which caused a BlockCopy overrun on DesktopGL.
         }
 
         #region Get parameters
@@ -211,7 +200,6 @@ namespace RacingGame.Shaders
             base.GetParameters();
 
             // Get additional parameters
-            filterTaps = effect.Parameters["FilterTaps"];
             shadowTexTransform = effect.Parameters["shadowTexTransform"];
             worldViewProjLight = effect.Parameters["worldViewProjLight"];
             nearPlane = effect.Parameters["nearPlane"];
