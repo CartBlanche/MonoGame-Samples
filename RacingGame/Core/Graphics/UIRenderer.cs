@@ -1,13 +1,9 @@
-#region File Description
 //-----------------------------------------------------------------------------
 // UIRenderer.cs
 //
 // Microsoft XNA Community Game Platform
 // Copyright (C) Microsoft Corporation. All rights reserved.
 //-----------------------------------------------------------------------------
-#endregion
-
-#region Using directives
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -20,7 +16,6 @@ using RacingGame.Helpers;
 using RacingGame.Shaders;
 using RacingGame.Tracks;
 using RacingGame.GameScreens;
-#endregion
 
 namespace RacingGame.Graphics
 {
@@ -31,7 +26,6 @@ namespace RacingGame.Graphics
     /// </summary>
     public class UIRenderer : IDisposable
     {
-        #region Constants
         /// <summary>
         /// Graphic rectangles for displaying UI stuff.
         /// </summary>
@@ -89,9 +83,6 @@ namespace RacingGame.Graphics
             BestTimePosGfxRect = new Rectangle(540, 72, 170, 52),
             TrackNameGfxRect = new Rectangle(726, 2, 282, 62),
             Best5GfxRect = new Rectangle(726, 66, 282, 62);
-        #endregion
-
-        #region Variables
         /// <summary>
         /// Background
         /// </summary>
@@ -152,9 +143,6 @@ namespace RacingGame.Graphics
         /// Trophies
         /// </summary>
         Texture[] trophies = new Texture[3];
-        #endregion
-
-        #region Properties
         /// <summary>
         /// Buttons
         /// </summary>
@@ -268,9 +256,6 @@ namespace RacingGame.Graphics
                 return skyCube.SkyCubeMapTexture;
             }
         }
-        #endregion
-
-        #region Constructor
         /// <summary>
         /// Create user interface renderer
         /// </summary>
@@ -299,9 +284,6 @@ namespace RacingGame.Graphics
             lensFlare = new LensFlare(LensFlare.DefaultSunPos);
             BaseGame.LightDirection = LensFlare.DefaultLightPos;
         }
-        #endregion
-
-        #region Dispose
         /// <summary>
         /// Dispose
         /// </summary>
@@ -345,9 +327,6 @@ namespace RacingGame.Graphics
                     ingame.Dispose();
             }
         }
-        #endregion
-
-        #region Add time fadeup effect
         /// <summary>
         /// Time fadeup modes
         /// </summary>
@@ -439,10 +418,6 @@ namespace RacingGame.Graphics
                 }
             }
         }
-        #endregion
-
-        #region Menu UI
-        #region Render game background
         /// <summary>
         /// Render game background
         /// </summary>
@@ -455,9 +430,6 @@ namespace RacingGame.Graphics
             if (Track.disableLensFlareInTunnel == false)
                 lensFlare.Render(Color.White);
         }
-        #endregion
-
-        #region Render menu background
         private Vector3 oldCarForward = Vector3.Zero;
         private Vector3 oldCarUp = Vector3.Zero;
         private float carMenuTime = 0.0f;
@@ -548,9 +520,6 @@ namespace RacingGame.Graphics
                 BaseGame.CalcRectangleWithBounce(362, 36, 601, 218, bounceSize),
                 RacingGameLogoGfxRect);
         }
-        #endregion
-
-        #region RenderBlackBar
         /// <summary>
         /// Render black bar
         /// </summary>
@@ -563,9 +532,6 @@ namespace RacingGame.Graphics
                 BlackBarGfxRect,
                 ColorHelper.ApplyAlphaToColor(Color.White, 0.85f));
         }
-        #endregion
-
-        #region RenderBottomButtons
         public bool backButtonPressed = false;
         /// <summary>
         /// Render bottom buttons (select, back, etc.)
@@ -616,10 +582,6 @@ namespace RacingGame.Graphics
             }
             return false;
         }
-        #endregion
-        #endregion
-
-        #region Game UI
         /// <summary>
         /// Render game user interface
         /// </summary>
@@ -858,9 +820,6 @@ namespace RacingGame.Graphics
                 TachoGearGfxRect.Height,
                 Math.Min(5, gear));
         }
-        #endregion
-
-        #region Render
         bool showFps =
 #if DEBUG
  true;
@@ -940,6 +899,5 @@ namespace RacingGame.Graphics
                 //SpriteHelper.DrawAllSprites();
             }
         }
-        #endregion
     }
 }

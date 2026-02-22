@@ -1,13 +1,9 @@
-#region File Description
 //-----------------------------------------------------------------------------
 // RacingGameManager.cs
 //
 // Microsoft XNA Community Game Platform
 // Copyright (C) Microsoft Corporation. All rights reserved.
 //-----------------------------------------------------------------------------
-#endregion
-
-#region Using directives
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Content;
@@ -27,7 +23,6 @@ using Texture = RacingGame.Graphics.Texture;
 using RacingGame.Properties;
 using RacingGame.Shaders;
 using System.Threading.Tasks;
-#endregion
 
 namespace RacingGame
 {
@@ -38,7 +33,6 @@ namespace RacingGame
     /// </summary>
     public class RacingGameManager : BaseGame
     {
-        #region Variables
         /// <summary>
         /// Game screens stack. We can easily add and remove game screens
         /// and they follow the game logic automatically. Very cool.
@@ -131,9 +125,6 @@ namespace RacingGame
         }
 
         public static event EventHandler<EventArgs> LoadEvent;
-        #endregion
-
-        #region Properties
         /// <summary>
         /// In menu
         /// </summary>
@@ -324,9 +315,6 @@ namespace RacingGame
                 return loadingTask?.IsCompleted == true;
             }
         }
-        #endregion
-
-        #region Constructor
         /// <summary>
         /// Create Racing game
         /// </summary>
@@ -393,9 +381,6 @@ namespace RacingGame
             LoadEvent("All systems go!", null);
             Task.Delay(1000).Wait();
         }
-        #endregion
-
-        #region Add game screen
         /// <summary>
         /// Add game screen
         /// </summary>
@@ -408,9 +393,6 @@ namespace RacingGame
             // Add the game screen
             gameScreens.Push(gameScreen);
         }
-        #endregion
-
-        #region Update
         /// <summary>
         /// Update
         /// </summary>
@@ -431,9 +413,6 @@ namespace RacingGame
                 gameScreens.Peek().Update(gameTime);
             }
         }
-        #endregion
-
-        #region Render
         /// <summary>
         /// Render
         /// </summary>
@@ -489,6 +468,5 @@ namespace RacingGame
             if (BaseGame.UsePostScreenShaders && PostScreenMenu.Started)
                 UI.PostScreenMenuShader.Show();
         }
-        #endregion
     }
 }

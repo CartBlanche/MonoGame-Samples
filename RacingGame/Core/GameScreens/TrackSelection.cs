@@ -1,13 +1,9 @@
-#region File Description
 //-----------------------------------------------------------------------------
 // TrackSelection.cs
 //
 // Microsoft XNA Community Game Platform
 // Copyright (C) Microsoft Corporation. All rights reserved.
 //-----------------------------------------------------------------------------
-#endregion
-
-#region Using directives
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -19,7 +15,6 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using RacingGame.Sounds;
 using RacingGame.Landscapes;
-#endregion
 
 namespace RacingGame.GameScreens
 {
@@ -29,7 +24,6 @@ namespace RacingGame.GameScreens
     /// <returns>IGame screen</returns>
     class TrackSelection : IGameScreen
     {
-        #region Constants
         static readonly Rectangle[] ButtonRects = new Rectangle[]
             {
                 UIRenderer.TrackButtonBeginnerGfxRect,
@@ -46,9 +40,6 @@ namespace RacingGame.GameScreens
             ActiveButtonWidth = 132,
             InactiveButtonWidth = 108,
             DistanceBetweenButtons = 32;
-        #endregion
-
-		#region Update
 		/// <summary>
 		/// Unimplemented
 		/// </summary>
@@ -57,9 +48,6 @@ namespace RacingGame.GameScreens
 		{
 
 		}
-		#endregion
-
-        #region Render
         /// <summary>
         /// Start with button 0 being selected (beginner track)
         /// Update: Now use advanced track as default, looks better in replays.
@@ -235,6 +223,5 @@ namespace RacingGame.GameScreens
 
             return false;
         }
-        #endregion
     }
 }

@@ -1,13 +1,9 @@
-#region File Description
 //-----------------------------------------------------------------------------
 // PreScreenSkyCubeMapping.cs
 //
 // Microsoft XNA Community Game Platform
 // Copyright (C) Microsoft Corporation. All rights reserved.
 //-----------------------------------------------------------------------------
-#endregion
-
-#region Using directives
 using RacingGame.Graphics;
 using RacingGame.Helpers;
 using System;
@@ -19,7 +15,6 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
 using RacingGame.GameScreens;
 using XnaModel = Microsoft.Xna.Framework.Graphics.Model;
-#endregion
 
 namespace RacingGame.Shaders
 {
@@ -28,7 +23,6 @@ namespace RacingGame.Shaders
     /// </summary>
     public class PreScreenSkyCubeMapping : ShaderEffect
     {
-        #region Variables
         /// <summary>
         /// Shader effect filename.
         /// </summary>
@@ -62,9 +56,6 @@ namespace RacingGame.Shaders
         }
 
         private XnaModel cube;
-        #endregion
-
-        #region Constructor
         /// <summary>
         /// Create pre screen sky cube mapping
         /// </summary>
@@ -73,9 +64,6 @@ namespace RacingGame.Shaders
         {
             cube = BaseGame.Content.Load<XnaModel>(Path.Combine(Directories.ContentDirectory, "Models", "Cube"));
         }
-        #endregion
-
-        #region Get parameters
         /// <summary>
         /// Reload
         /// </summary>
@@ -93,9 +81,6 @@ namespace RacingGame.Shaders
             // Set sky color to nearly white
             AmbientColor = DefaultSkyColor;
         }
-        #endregion
-
-        #region Render sky
         /// <summary>
         /// Render sky with help of shader.
         /// </summary>
@@ -135,6 +120,5 @@ namespace RacingGame.Shaders
         {
             RenderSky(lastUsedAmbientColor);
         }
-        #endregion
     }
 }

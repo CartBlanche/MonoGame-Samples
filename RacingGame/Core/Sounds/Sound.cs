@@ -1,13 +1,9 @@
-#region File Description
 //-----------------------------------------------------------------------------
 // Sound.cs
 //
 // Microsoft XNA Community Game Platform
 // Copyright (C) Microsoft Corporation. All rights reserved.
 //-----------------------------------------------------------------------------
-#endregion
-
-#region Using directives
 using Microsoft.Xna.Framework.Audio;
 using System;
 using System.Collections.Generic;
@@ -21,7 +17,6 @@ using Microsoft.Xna.Framework;
 using System.IO;
 using RacingGame.Properties;
 using System.Threading.Tasks;
-#endregion
 
 namespace RacingGame.Sounds
 {
@@ -30,7 +25,6 @@ namespace RacingGame.Sounds
     /// </summary>
     class Sound
     {
-        #region Variables
         /// <summary>
         /// Sound stuff for XAct
         /// </summary>
@@ -55,9 +49,6 @@ namespace RacingGame.Sounds
         /// Music category to change volume of music.
         /// </summary>
         static AudioCategory musicCategory;
-        #endregion
-
-        #region Enums
         /// <summary>
         /// Sounds we use in this game. This are all the sounds and even the
         /// music, only the gear sounds are handled seperately below.
@@ -88,16 +79,12 @@ namespace RacingGame.Sounds
             MenuMusic,
             GameMusic,
         }
-        #endregion
-
-        #region Constructor
         /// <summary>
         /// Private constructor to prevent instantiation.
         /// </summary>
         private Sound()
         {
         }
-        #endregion
 
         /// <summary>
         /// Create sound.
@@ -131,8 +118,6 @@ namespace RacingGame.Sounds
                 Log.Write("Failed to create sound class: " + ex.ToString());
             }
         }
-
-        #region Play
         /// <summary>
         /// Play
         /// </summary>
@@ -153,9 +138,6 @@ namespace RacingGame.Sounds
         {
             Play(sound.ToString());
         }
-        #endregion
-
-        #region StopMusic
         /// <summary>
         /// Stop music
         /// </summary>
@@ -172,9 +154,6 @@ namespace RacingGame.Sounds
             Task.Delay(10).Wait();
             musicCue.Stop(AudioStopOptions.Immediate);
         }
-        #endregion
-
-        #region Play brake sound
         /// <summary>
         /// Prevent playing brake sounds on top of each other with help of this
         /// variable.
@@ -237,9 +216,6 @@ namespace RacingGame.Sounds
 
             return soundBrakeType;
         }
-        #endregion
-
-        #region PlayCrashSound
         /// <summary>
         /// Prevent playing brake sounds on top of each other with help of this
         /// variable.
@@ -262,10 +238,6 @@ namespace RacingGame.Sounds
                 crashSoundStillPlayingMs = totalCrash ? 3456 : 2345;
             }
         }
-        #endregion
-
-        #region Gear Sounds
-        #region Gear Constants
         /// <summary>
         /// Number of gears we got in this game.
         /// </summary>
@@ -307,9 +279,6 @@ namespace RacingGame.Sounds
             //new float[NumberOfGears] { 0.34f, 0.27f, 0.27f, 0.245f, 0.10f };
             //even weaker, sounds better:
             new float[NumberOfGears] { 0.24f, 0.17f, 0.17f, 0.145f, 0.10f };
-        #endregion
-
-        #region Gear Variables
         /// <summary>
         /// Current gear we are playing, this might not be the gear that we
         /// actually have calculated from the speed. It will be the same most
@@ -326,9 +295,6 @@ namespace RacingGame.Sounds
         /// but gears are sound dependant (at least in this game) ^^
         /// </summary>
         static int currentGear = 0;
-        #endregion
-
-        #region PlayGearSound
         static Cue currentGearCue = null;
         static Cue currentGearChangeCue = null;
         static float gearChangeSoundInitiatedMs = 0;
@@ -357,9 +323,6 @@ namespace RacingGame.Sounds
                 currentGearChangeCue = null;
             }
         }
-        #endregion
-
-        #region Change gear volume and pitch
         /// <summary>
         /// Update gear volume and pitch
         /// </summary>
@@ -399,9 +362,6 @@ namespace RacingGame.Sounds
                     55 * MathHelper.Clamp(pitch, -1, 1));
             }
         }
-        #endregion
-
-        #region Start gear sound
         /// <summary>
         /// Start gear sound
         /// </summary>
@@ -411,9 +371,6 @@ namespace RacingGame.Sounds
             Sound.PlayGearSound("Gear1");
             Sound.UpdateGearVolumeAndPitch("Gear1", stayingVol, minPitch[0]);
         }
-        #endregion
-
-        #region Stop gear sound
         /// <summary>
         /// Start gear sound
         /// </summary>
@@ -428,9 +385,6 @@ namespace RacingGame.Sounds
                 currentGearCue.Stop(AudioStopOptions.Immediate);
             currentGearCue = null;
         }
-        #endregion
-
-        #region Update gear sound
         static float lastGearVolume = stayingVol;
         static float lastGearPitch = 0;
         /// <summary>
@@ -520,10 +474,6 @@ namespace RacingGame.Sounds
                 "Gear" + (currentGear + 1), lastGearVolume, lastGearPitch);
 
         }
-        #endregion
-        #endregion
-
-        #region Update
         /// <summary>
         /// Update
         /// </summary>
@@ -548,6 +498,5 @@ namespace RacingGame.Sounds
                 // Volume of gears is updated each frame
             }
         }
-        #endregion
     }
 }

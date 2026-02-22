@@ -1,13 +1,9 @@
-#region File Description
 //-----------------------------------------------------------------------------
 // Options.cs
 //
 // Microsoft XNA Community Game Platform
 // Copyright (C) Microsoft Corporation. All rights reserved.
 //-----------------------------------------------------------------------------
-#endregion
-
-#region Using directives
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
@@ -19,7 +15,6 @@ using RacingGame.Graphics;
 using RacingGame.Helpers;
 using RacingGame.Properties;
 using RacingGame.Sounds;
-#endregion
 
 namespace RacingGame.GameScreens
 {
@@ -29,7 +24,6 @@ namespace RacingGame.GameScreens
     /// <returns>IGame screen</returns>
     class Options : IGameScreen
     {
-        #region Constants
         readonly Rectangle
             Line4ArrowGfxRect = new Rectangle(154, 284, 62, 39),
             Line5ArrowGfxRect = new Rectangle(160, 354, 62, 39),
@@ -46,9 +40,6 @@ namespace RacingGame.GameScreens
             SoundGfxRect = new Rectangle(384, 281, 448, 39),
             MusicGfxRect = new Rectangle(384, 354, 448, 39),
             SensitivityGfxRect = new Rectangle(384, 428, 448, 39);
-        #endregion
-
-        #region Variables
         /// <summary>
         /// Current player name, copied from the settings file.
         /// Can be changed in this screen and will be saved to the settings file.
@@ -56,9 +47,6 @@ namespace RacingGame.GameScreens
         /// because of performance (reading Settings every frame is not good).
         /// </summary>
         string currentPlayerName = GameSettings.Default.PlayerName;
-        #endregion
-
-        #region Constructor
         int currentOptionsNumber = 0;
         int currentResolution = 4;
         bool fullscreen = true;
@@ -97,9 +85,6 @@ namespace RacingGame.GameScreens
             // Get sensitivity
             currentSensitivity = GameSettings.Default.ControllerSensitivity;
         }
-        #endregion
-
-		#region Update
 		/// <summary>
 		/// Unimplemented
 		/// </summary>
@@ -108,15 +93,11 @@ namespace RacingGame.GameScreens
 		{
 
 		}
-		#endregion
-
-        #region Run
         /// <summary>
         /// Render game screen. Called each frame.
         /// </summary>
         public bool Render()
         {
-            #region Background
             // This starts both menu and in game post screen shader!
 			if(BaseGame.UsePostScreenShaders)
             	BaseGame.UI.PostScreenMenuShader.Start();
@@ -139,9 +120,6 @@ namespace RacingGame.GameScreens
             // Options background
             BaseGame.UI.OptionsScreen.RenderOnScreenRelative4To3(
                 0, 125, BaseGame.UI.OptionsScreen.GfxRectangle);
-            #endregion
-
-            #region Edit player name
             // Edit player name
             int xPos = BaseGame.XToRes(352);
             int yPos = BaseGame.YToRes768(125 + 65 - 20);
@@ -150,10 +128,8 @@ namespace RacingGame.GameScreens
                 // Add blinking |
                 ((int)(BaseGame.TotalTime / 0.35f) % 2 == 0 ? "|" : ""));
             Input.HandleKeyboardInput(ref currentPlayerName);
-            #endregion
 
 #if !XBOX360
-            #region Select resolution
             // Select resolution
             // Use inverted color for selection (see below for sprite blend mode)
             Color selColor = new Color(255, 156, 0, 160);
@@ -227,9 +203,6 @@ namespace RacingGame.GameScreens
                 Sound.Play(Sound.Sounds.ButtonClick);
                 currentResolution = 4;
             }
-            #endregion
-
-            #region Graphics options
 
             Rectangle fsRect = BaseGame.CalcRectangleKeep4To3(
                 FullscreenGfxRect);
@@ -286,10 +259,7 @@ namespace RacingGame.GameScreens
                 Sound.Play(Sound.Sounds.ButtonClick);
                 useHighDetail = !useHighDetail;
             }
-            #endregion
 #endif
-
-            #region Sound volume
             Rectangle soundRect = BaseGame.CalcRectangleKeep4To3(
                 SoundGfxRect);
             soundRect.Y += BaseGame.YToRes768(125);
@@ -332,9 +302,6 @@ namespace RacingGame.GameScreens
                 soundRect.Y,
                 BaseGame.XToRes(gfxRect.Width), BaseGame.YToRes768(gfxRect.Height)),
                 gfxRect);
-            #endregion
-
-            #region Music volume
             Rectangle musicRect = BaseGame.CalcRectangleKeep4To3(
                 MusicGfxRect);
             musicRect.Y += BaseGame.YToRes768(125);
@@ -376,11 +343,8 @@ namespace RacingGame.GameScreens
                 musicRect.Y,
                 BaseGame.XToRes(gfxRect.Width), BaseGame.YToRes768(gfxRect.Height)),
                 gfxRect);
-            #endregion
 
             Sound.SetVolumes(currentSoundVolume, currentMusicVolume);
-
-            #region Controller sensitivity
             Rectangle sensitivityRect = BaseGame.CalcRectangleKeep4To3(
                 SensitivityGfxRect);
             sensitivityRect.Y += BaseGame.YToRes768(125);
@@ -424,9 +388,6 @@ namespace RacingGame.GameScreens
                 sensitivityRect.Y,
                 BaseGame.XToRes(gfxRect.Width), BaseGame.YToRes768(gfxRect.Height)),
                 gfxRect);
-            #endregion
-
-            #region Show selected line
             Rectangle[] lineArrowGfxRects = new Rectangle[]
             {
                 Line4ArrowGfxRect,
@@ -462,13 +423,7 @@ namespace RacingGame.GameScreens
                 currentOptionsNumber = (currentOptionsNumber + 1) %
                     lineArrowGfxRects.Length;
             }
-            #endregion
-
-            #region Bottom buttons
             BaseGame.UI.RenderBottomButtons(true);
-            #endregion
-
-            #region Apply settings when quitting
             if (Input.KeyboardEscapeJustPressed ||
                 Input.GamePadBJustPressed ||
                 Input.GamePadBackJustPressed ||
@@ -515,10 +470,8 @@ namespace RacingGame.GameScreens
 
                 return true;
             }
-            #endregion
 
             return false;
         }
-        #endregion
     }
 }

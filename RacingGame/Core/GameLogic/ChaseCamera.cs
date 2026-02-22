@@ -1,13 +1,9 @@
-#region File Description
 //-----------------------------------------------------------------------------
 // ChaseCamera.cs
 //
 // Microsoft XNA Community Game Platform
 // Copyright (C) Microsoft Corporation. All rights reserved.
 //-----------------------------------------------------------------------------
-#endregion
-
-#region Using directives
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 using System;
@@ -18,7 +14,6 @@ using RacingGame.Helpers;
 using RacingGame.Properties;
 using Color = Microsoft.Xna.Framework.Color;
 using Model = RacingGame.Graphics.Model;
-#endregion
 
 namespace RacingGame.GameLogic
 {
@@ -33,7 +28,6 @@ namespace RacingGame.GameLogic
     /// </summary>
     public class ChaseCamera : CarPhysics
     {
-        #region Variables
         /// <summary>
         /// Current camera position.
         /// </summary>
@@ -87,9 +81,6 @@ namespace RacingGame.GameLogic
                 return rotMatrix;
             }
         }
-        #endregion
-
-        #region Camera wobbel
         /// <summary>
         /// Max. value for camera wobbel timeout.
         /// </summary>
@@ -117,9 +108,6 @@ namespace RacingGame.GameLogic
                 (MaxCameraWobbelTimeoutMs);
             cameraWobbelFactor = wobbelFactor;
         }
-        #endregion
-
-        #region Properties
         /// <summary>
         /// Camera position
         /// </summary>
@@ -198,9 +186,6 @@ namespace RacingGame.GameLogic
                     cameraMode = CameraMode.Default;
             }
         }
-        #endregion
-
-        #region Constructor
         /// <summary>
         /// Create chase camera. Sets the car position and the camera position,
         /// which is then used to rotate around the car.
@@ -243,9 +228,6 @@ namespace RacingGame.GameLogic
                 //setCarPosition - new Vector3(0, 0.5f, 1.0f) * carDir);
                 setCarPosition + new Vector3(0, 10.0f, 25.0f));
         }
-        #endregion
-
-        #region Set position
         /// <summary>
         /// Set camera position
         /// </summary>
@@ -283,9 +265,6 @@ namespace RacingGame.GameLogic
                 Vector3.Distance(LookAtPos, setInterpolatedCameraPos);
             wannaCameraLookVector = LookAtPos - setInterpolatedCameraPos;
         }
-        #endregion
-
-        #region Handle free camera
         /// <summary>
         /// Helper values to keep the free camera steady.
         /// </summary>
@@ -354,8 +333,6 @@ namespace RacingGame.GameLogic
             // Mix camera rotation slowly to wanna have rotation
             freeCameraRot = Vector3.Lerp(
                 freeCameraRot, wannaHaveCameraRotation, 0.5f);
-
-            #region fix the "up-rotaion" to 0-180 degrees //old: 180-360 degrees
             // Substract a very small value to make sure we never reach PI,
             // this causes the z rotation to mess everything else up ...
             float minRotationRange = BaseGame.Epsilon;
@@ -368,7 +345,6 @@ namespace RacingGame.GameLogic
             {
                 freeCameraRot.X = maxRotationRange;
             }
-            #endregion
 
             // Calculate cameraPos like in HandleLookPosCamera()
             cameraLookVector = new Vector3(0, 0, cameraDistance);
@@ -429,9 +405,6 @@ namespace RacingGame.GameLogic
             wannaCameraDistance = cameraDistance;
             wannaCameraLookVector = cameraLookVector;
         }
-        #endregion
-
-        #region Update view matrix
         Vector3 lastCameraWobble = Vector3.Zero;
         /// <summary>
         /// Update view matrix
@@ -478,9 +451,6 @@ namespace RacingGame.GameLogic
             // Just set view matrix
             BaseGame.ViewMatrix = rotMatrix;
         }
-        #endregion
-
-        #region Reset
         /// <summary>
         /// Resets just the camera wobbel factor here.
         /// </summary>
@@ -498,9 +468,6 @@ namespace RacingGame.GameLogic
             base.ClearVariablesForGameOver();
             cameraWobbelFactor = 0;
         }
-        #endregion
-
-        #region Update
         /// <summary>
         /// Update camera, should be called every frame to handle all the input.
         /// </summary>
@@ -513,6 +480,5 @@ namespace RacingGame.GameLogic
 
             UpdateViewMatrix();
         }
-        #endregion
     }
 }

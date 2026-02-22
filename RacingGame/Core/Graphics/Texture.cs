@@ -1,13 +1,9 @@
-#region File Description
 //-----------------------------------------------------------------------------
 // Texture.cs
 //
 // Microsoft XNA Community Game Platform
 // Copyright (C) Microsoft Corporation. All rights reserved.
 //-----------------------------------------------------------------------------
-#endregion
-
-#region Using directives
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
@@ -15,7 +11,6 @@ using System.IO;
 using RacingGame;
 using RacingGame.GameLogic;
 using RacingGame.Helpers;
-#endregion
 
 namespace RacingGame.Graphics
 {
@@ -27,7 +22,6 @@ namespace RacingGame.Graphics
     /// </summary>
     public class Texture : IDisposable
     {
-        #region Variables
         public static SpriteBatch alphaSprite;
         public static SpriteBatch additiveSprite;
 
@@ -164,9 +158,6 @@ namespace RacingGame.Graphics
                 return hasAlpha;
             }
         }
-        #endregion
-
-        #region Constructor
         /// <summary>
         /// Create texture from given filename.
         /// </summary>
@@ -241,9 +232,6 @@ namespace RacingGame.Graphics
 
             CalcHalfPixelSize();
         }
-        #endregion
-
-        #region Disposing
         /// <summary>
         /// Dispose
         /// </summary>
@@ -268,9 +256,6 @@ namespace RacingGame.Graphics
 
             loaded = false;
         }
-        #endregion
-
-        #region Render on screen
         /// <summary>
         /// Render texture at rect directly on screen using pixelRect.
         /// </summary>
@@ -406,9 +391,6 @@ namespace RacingGame.Graphics
                 alphaSprite.Draw(internalXnaTexture, rect, pixelRect, color);
             //SpriteHelper.AddSpriteToRender(this, rect, pixelRect, color, blendState);
         }
-        #endregion
-
-        #region Rendering on screen with rotation
         /// <summary>
         /// Render on screen with rotation
         /// </summary>
@@ -422,9 +404,6 @@ namespace RacingGame.Graphics
             alphaSprite.Draw(internalXnaTexture, rect, pixelRect, Color.White, rotation,
                 rotationPoint, SpriteEffects.None, 0);
         }
-        #endregion
-
-        #region To string
         /// <summary>
         /// To string
         /// </summary>
@@ -435,6 +414,5 @@ namespace RacingGame.Graphics
                 ", height=" + texHeight +
                 ", xnaTexture=" + (internalXnaTexture != null ? "valid" : "null") + ")";
         }
-        #endregion
     }
 }

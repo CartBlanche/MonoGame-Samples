@@ -1,13 +1,9 @@
-#region File Description
 //-----------------------------------------------------------------------------
 // ShadowMapShader.cs
 //
 // Microsoft XNA Community Game Platform
 // Copyright (C) Microsoft Corporation. All rights reserved.
 //-----------------------------------------------------------------------------
-#endregion
-
-#region Using directives
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -18,7 +14,6 @@ using RacingGame.Graphics;
 using RacingGame.GameScreens;
 using Model = RacingGame.Graphics.Model;
 using Texture = RacingGame.Graphics.Texture;
-#endregion
 
 namespace RacingGame.Shaders
 {
@@ -27,7 +22,6 @@ namespace RacingGame.Shaders
     /// </summary>
     public class ShadowMapShader : ShaderEffect
     {
-        #region Variables
         /// <summary>
         /// Shadow mapping shader filename
         /// </summary>
@@ -137,9 +131,6 @@ namespace RacingGame.Shaders
         /// to blur the shadow results.
         /// </summary>
         internal ShadowMapBlur shadowMapBlur = null;
-        #endregion
-
-        #region Calc shadow map bias matrix
         /// <summary>
         /// Calculate the texScaleBiasMatrix for converting proj screen
         /// coordinates in the -1..1 range to the shadow depth map
@@ -158,9 +149,6 @@ namespace RacingGame.Shaders
                 0.0f, 0.0f, texExtraScale, 0.0f,
                 texOffsetX, texOffsetY, 0.0f, 1.0f);
         }
-        #endregion
-
-        #region Constructors
         /// <summary>
         /// Shadow map shader
         /// </summary>
@@ -178,7 +166,6 @@ namespace RacingGame.Shaders
 
             shadowMapBlur = new ShadowMapBlur();
         }
-        #endregion
 
         protected override void SetParameterDefaultValues()
         {
@@ -186,8 +173,6 @@ namespace RacingGame.Shaders
             // float2 array padding (16 bytes/element on GPU vs 8 bytes on CPU),
             // which caused a BlockCopy overrun on DesktopGL.
         }
-
-        #region Get parameters
         /// <summary>
         /// Get parameters
         /// </summary>
@@ -215,9 +200,6 @@ namespace RacingGame.Shaders
                 shadowDistanceFadeoutTexture.SetValue(
                     new Texture("ShadowDistanceFadeoutMap").XnaTexture);
         }
-        #endregion
-
-        #region Update parameters
         /// <summary>
         /// Update parameters
         /// </summary>
@@ -246,9 +228,6 @@ namespace RacingGame.Shaders
                 nearPlane.SetValue(shadowNearPlane);
             farPlane.SetValue(shadowFarPlane);
         }
-        #endregion
-
-        #region Create simple directional shadow mapping matrix
         /// <summary>
         /// Calc simple directional shadow mapping matrix
         /// </summary>
@@ -285,9 +264,6 @@ namespace RacingGame.Shaders
             Matrix invView = Matrix.Invert(lightViewMatrix);
             shadowLightPos = new Vector3(invView.M41, invView.M42, invView.M43);
         }
-        #endregion
-
-        #region Generate shadow
         /// <summary>
         /// Update shadow world matrix.
         /// Calling this function is important to keep the shaders
@@ -343,9 +319,6 @@ namespace RacingGame.Shaders
             BaseGame.ViewMatrix = remViewMatrix;
             BaseGame.ProjectionMatrix = remProjMatrix;
         }
-        #endregion
-
-        #region Use shadow
         /// <summary>
         /// Update calc shadow world matrix, has to be done for each object
         /// we want to render in CalcShadows.
@@ -419,9 +392,6 @@ namespace RacingGame.Shaders
             // Kill background z buffer (else glass will not be rendered correctly)
             RacingGameManager.Device.Clear(ClearOptions.DepthBuffer, Color.Black, 1, 0);
         }
-        #endregion
-
-        #region PrepareGameShadows
         /// <summary>
         /// Generates and renders shadows for all game objects
         /// </summary>
@@ -448,9 +418,6 @@ namespace RacingGame.Shaders
                     });
             }
         }
-        #endregion
-
-        #region ShowShadows
         /// <summary>
         /// Show Shadows
         /// </summary>
@@ -458,6 +425,5 @@ namespace RacingGame.Shaders
         {
             shadowMapBlur.ShowShadows();
         }
-        #endregion
     }
 }

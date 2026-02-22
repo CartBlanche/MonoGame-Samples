@@ -1,19 +1,14 @@
-#region File Description
 //-----------------------------------------------------------------------------
 // ColorHelper.cs
 //
 // Microsoft XNA Community Game Platform
 // Copyright (C) Microsoft Corporation. All rights reserved.
 //-----------------------------------------------------------------------------
-#endregion
-
-#region Using directives
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
 using System.Text;
-#endregion
 
 namespace RacingGame.Helpers
 {
@@ -23,7 +18,6 @@ namespace RacingGame.Helpers
     /// </summary>
     public static class ColorHelper
     {
-        #region Constants
         /// <summary>
         /// Empty color, used to mark unused color values.
         /// </summary>
@@ -34,9 +28,6 @@ namespace RacingGame.Helpers
         /// </summary>
         public static readonly Color
             HalfAlpha = new Color(255, 255, 255, 128);
-        #endregion
-
-        #region Stay in range helper
         /// <summary>
         /// Stay in range, val will be set to min if less or to max when bigger.
         /// </summary>
@@ -48,9 +39,6 @@ namespace RacingGame.Helpers
                 return max;
             return val;
         }
-        #endregion
-
-        #region Multiply colors
         /// <summary>
         /// Multiply colors
         /// </summary>
@@ -85,9 +73,6 @@ namespace RacingGame.Helpers
                 (byte)(StayInRange(blueValue1 * blueValue2, 0, 1) * 255.0f),
                 (byte)(StayInRange(alphaValue1 * alphaValue2, 0, 1) * 255.0f));
         }
-        #endregion
-
-        #region Same color check
         /// <summary>
         /// Same color. Helper method for LoadLevel because for some reason
         /// the color compare does not work and causes a lot of errors.
@@ -101,9 +86,6 @@ namespace RacingGame.Helpers
                 color.G == checkColor.G &&
                 color.B == checkColor.B;
         }
-        #endregion
-
-        #region Interpolate color
         /// <summary>
         /// Interpolate color. Used to fade the hud colors from green to red.
         /// </summary>
@@ -115,9 +97,6 @@ namespace RacingGame.Helpers
                 (byte)((float)col1.B * (1.0f - percent) + (float)col2.B * percent),
                 (byte)((float)col1.A * (1.0f - percent) + (float)col2.A * percent));
         }
-        #endregion
-
-        #region ApplyAlphaToColor
         /// <summary>
         /// Apply alpha to color
         /// </summary>
@@ -155,6 +134,5 @@ namespace RacingGame.Helpers
                 (byte)(col.B * newAlpha),
                 (byte)(newAlpha * 255.0f));
         }
-        #endregion
     }
 }

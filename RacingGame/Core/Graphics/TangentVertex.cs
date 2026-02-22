@@ -1,19 +1,14 @@
-#region File Description
 //-----------------------------------------------------------------------------
 // TangentVertex.cs
 //
 // Microsoft XNA Community Game Platform
 // Copyright (C) Microsoft Corporation. All rights reserved.
 //-----------------------------------------------------------------------------
-#endregion
-
-#region Using directives
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections;
 using System.Text;
-#endregion
 
 namespace RacingGame.Graphics
 {
@@ -23,7 +18,6 @@ namespace RacingGame.Graphics
     /// </summary>
     public struct TangentVertex : IVertexType
     {
-        #region Variables
         /// <summary>
         /// Position
         /// </summary>
@@ -91,9 +85,6 @@ namespace RacingGame.Graphics
                 return uv.Y;
             }
         }
-        #endregion
-
-        #region Constructor
         /// <summary>
         /// Create tangent vertex
         /// </summary>
@@ -132,9 +123,6 @@ namespace RacingGame.Graphics
             normal = setNormal;
             tangent = setTangent;
         }
-        #endregion
-
-        #region To string
         /// <summary>
         /// To string
         /// </summary>
@@ -146,9 +134,6 @@ namespace RacingGame.Graphics
                 "normal=" + normal + ", " +
                 "tangent=" + tangent + ")";
         }
-        #endregion
-
-        #region Generate vertex declaration
         /// <summary>
         /// Vertex elements for Mesh.Clone
         /// </summary>
@@ -201,9 +186,6 @@ namespace RacingGame.Graphics
                 };
             return decl;
         }
-        #endregion
-
-        #region Is declaration tangent vertex declaration
         /// <summary>
         /// Returns true if declaration is tangent vertex declaration.
         /// </summary>
@@ -221,6 +203,5 @@ namespace RacingGame.Graphics
                 declaration[2].VertexElementUsage == VertexElementUsage.Normal &&
                 declaration[3].VertexElementUsage == VertexElementUsage.Tangent;
         }
-        #endregion
     }
 }

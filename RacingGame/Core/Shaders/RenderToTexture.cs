@@ -1,13 +1,9 @@
-#region File Description
 //-----------------------------------------------------------------------------
 // RenderToTexture.cs
 //
 // Microsoft XNA Community Game Platform
 // Copyright (C) Microsoft Corporation. All rights reserved.
 //-----------------------------------------------------------------------------
-#endregion
-
-#region Using directives
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections;
@@ -20,7 +16,6 @@ using XnaTexture = Microsoft.Xna.Framework.Graphics.Texture2D;
 using Microsoft.Xna.Framework;
 using RacingGame.GameLogic;
 using Microsoft.Xna.Framework.Input;
-#endregion
 
 namespace RacingGame.Shaders
 {
@@ -32,7 +27,6 @@ namespace RacingGame.Shaders
     /// </summary>
     public class RenderToTexture : Texture
     {
-        #region Variables
         /// <summary>
         /// Our render target we are going to render to. Much easier than in MDX
         /// where you have to use Surfaces, etc. Also supports the Xbox360 model
@@ -129,9 +123,6 @@ namespace RacingGame.Shaders
         /// Does this texture use some high percision format? Better than 8 bit color?
         /// </summary>
         private bool usesHighPercisionFormat = false;
-        #endregion
-
-        #region Properties
         /// <summary>
         /// Render target
         /// </summary>
@@ -170,9 +161,6 @@ namespace RacingGame.Shaders
                 return usesHighPercisionFormat;
             }
         }
-        #endregion
-
-        #region Constructors
         /// <summary>
         /// Id for each created RenderToTexture for the generated filename.
         /// </summary>
@@ -193,9 +181,6 @@ namespace RacingGame.Shaders
 
             BaseGame.AddRemRenderToTexture(this);
         }
-        #endregion
-
-        #region Handle device reset
         /// <summary>
         /// Handle the DeviceReset event, we have to re-create all our render targets.
         /// </summary>
@@ -209,9 +194,6 @@ namespace RacingGame.Shaders
             // Re-create
             Create();
         }
-        #endregion
-
-        #region Create
         /// <summary>
         /// Create
         /// </summary>
@@ -255,9 +237,6 @@ namespace RacingGame.Shaders
 
             loaded = true;
         }
-        #endregion
-
-        #region Clear
         /// <summary>
         /// Clear render target (call SetRenderTarget first)
         /// </summary>
@@ -271,9 +250,6 @@ namespace RacingGame.Shaders
                 ClearOptions.Target | ClearOptions.DepthBuffer,
                 clearColor, 1.0f, 0);
         }
-        #endregion
-
-        #region Set render target
         /// <summary>
         /// Set render target to this texture to render stuff on it.
         /// </summary>
@@ -286,9 +262,6 @@ namespace RacingGame.Shaders
             BaseGame.SetRenderTarget(renderTarget, false);
             return true;
         }
-        #endregion
-
-        #region Resolve
         /// <summary>
         /// Make sure we don't call XnaTexture before resolving for the first time!
         /// </summary>
@@ -316,6 +289,5 @@ namespace RacingGame.Shaders
             //BaseGame.Device.ResolveRenderTarget(0);
             BaseGame.Device.SetRenderTarget(null);
         }
-        #endregion
     }
 }

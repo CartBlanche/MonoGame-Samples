@@ -1,13 +1,9 @@
-#region File Description
 //-----------------------------------------------------------------------------
 // Help.cs
 //
 // Microsoft XNA Community Game Platform
 // Copyright (C) Microsoft Corporation. All rights reserved.
 //-----------------------------------------------------------------------------
-#endregion
-
-#region Using directives
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -15,7 +11,6 @@ using RacingGame.GameLogic;
 using RacingGame.Graphics;
 using RacingGame.Properties;
 using Microsoft.Xna.Framework;
-#endregion
 
 namespace RacingGame.GameScreens
 {
@@ -25,7 +20,6 @@ namespace RacingGame.GameScreens
     /// <returns>IGame screen</returns>
     class Help : IGameScreen
 	{
-		#region Update
 		/// <summary>
 		/// Unimplemented
 		/// </summary>
@@ -34,9 +28,6 @@ namespace RacingGame.GameScreens
 		{
 
 		}
-		#endregion
-
-		#region Render
 		/// <summary>
         /// Render game screen. Called each frame.
         /// </summary>
@@ -87,6 +78,5 @@ namespace RacingGame.GameScreens
 
             return false;
         }
-        #endregion
     }
 }

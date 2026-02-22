@@ -1,13 +1,9 @@
-#region File Description
 //-----------------------------------------------------------------------------
 // Replay.cs
 //
 // Microsoft XNA Community Game Platform
 // Copyright (C) Microsoft Corporation. All rights reserved.
 //-----------------------------------------------------------------------------
-#endregion
-
-#region Using directives
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -16,7 +12,6 @@ using RacingGame.Helpers;
 using System.IO;
 using RacingGame.GameScreens;
 using RacingGame.Tracks;
-#endregion
 
 namespace RacingGame.GameLogic
 {
@@ -29,7 +24,6 @@ namespace RacingGame.GameLogic
     /// </summary>
     public class Replay : ICloneable
     {
-        #region Constants
         /// <summary>
         /// Track matrix intervals between the trackMatrixValues.
         /// </summary>
@@ -44,9 +38,6 @@ namespace RacingGame.GameLogic
                 "TrackAdvanced.Replay",
                 "TrackExpert.Replay",
             };
-        #endregion
-
-        #region Variables
         /// <summary>
         /// Track number for this replay: 0 (beginner), 1 (advanced) or 2 (expert)
         /// </summary>
@@ -69,9 +60,6 @@ namespace RacingGame.GameLogic
         /// better or worse than the best time.
         /// </summary>
         List<float> checkpointTimes = new List<float>();
-        #endregion
-
-        #region Properties
         /// <summary>
         /// Track number
         /// </summary>
@@ -154,9 +142,6 @@ namespace RacingGame.GameLogic
                 trackMatrixValues[trackNum + 1],
                 trackIntervalPercent);
         }
-        #endregion
-
-        #region Constructor
         /// <summary>
         /// Create new replay for a specific track number.
         /// </summary>
@@ -315,9 +300,6 @@ namespace RacingGame.GameLogic
                 checkpointTimes.Add(lapTime);
             }
         }
-        #endregion
-
-        #region Save
         /// <summary>
         /// Save this replay, will be saved to
         /// TrackBeginner.replay, TrackAdvanced.replay or TrackExpert.replay.
@@ -382,9 +364,6 @@ namespace RacingGame.GameLogic
 
             return clone;
         }
-        #endregion
-
-        #region Add car matrix
         /// <summary>
         /// Add car matrix to trackMatrixValues.
         /// </summary>
@@ -393,6 +372,5 @@ namespace RacingGame.GameLogic
         {
             trackMatrixValues.Add(addMatrix);
         }
-        #endregion
     }
 }

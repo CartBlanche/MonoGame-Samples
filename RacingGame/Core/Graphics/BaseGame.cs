@@ -1,13 +1,9 @@
-#region File Description
 //-----------------------------------------------------------------------------
 // BaseGame.cs
 //
 // Microsoft XNA Community Game Platform
 // Copyright (C) Microsoft Corporation. All rights reserved.
 //-----------------------------------------------------------------------------
-#endregion
-
-#region Using directives
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Content;
@@ -25,7 +21,6 @@ using RacingGame.Sounds;
 using Microsoft.Xna.Framework.GamerServices;
 #endif
 using RacingGame.GameScreens;
-#endregion
 
 namespace RacingGame.Graphics
 {
@@ -40,7 +35,6 @@ namespace RacingGame.Graphics
     /// </summary>
     public partial class BaseGame : Microsoft.Xna.Framework.Game
     {
-        #region Constants
         /// <summary>
         /// Background color
         /// </summary>
@@ -57,9 +51,6 @@ namespace RacingGame.Graphics
         /// Viewable field of view for object visibility testing (see Model class)
         /// </summary>
         public const float ViewableFieldOfView = FieldOfView / 1.125f;
-        #endregion
-
-        #region Variables
 
         // UWP COMMENT OUT
        // public static PlatformID CurrentPlatform = Environment.OSVersion.Platform;
@@ -198,11 +189,6 @@ namespace RacingGame.Graphics
             get { return gamerServicesComponent; }
         }
 		#endif
-
-        #endregion
-
-        #region Properties
-        #region Device
         static public GraphicsDevice Device
         {
             get
@@ -340,9 +326,6 @@ namespace RacingGame.Graphics
             mustApplyDeviceChanges = true;
 #endif
         }
-        #endregion
-
-        #region Content manager
         /// <summary>
         /// Content
         /// </summary>
@@ -354,9 +337,6 @@ namespace RacingGame.Graphics
                 return content;
             }
         }
-        #endregion
-
-        #region UI
         /// <summary>
         /// User interface renderer helper ^^
         /// </summary>
@@ -368,9 +348,6 @@ namespace RacingGame.Graphics
                 return ui;
             }
         }
-        #endregion
-
-        #region MeshRenderManager
         /// <summary>
         /// Mesh render manager to render meshes of models in a highly
         /// optimized manner.
@@ -383,9 +360,6 @@ namespace RacingGame.Graphics
                 return meshRenderManager;
             }
         }
-        #endregion
-
-        #region Resolution and stuff
         /// <summary>
         /// Width
         /// </summary>
@@ -432,9 +406,6 @@ namespace RacingGame.Graphics
                 return new Rectangle(0, 0, width, height);
             }
         }
-        #endregion
-
-        #region Calc rectangle helpers
         /// <summary>
         /// XToRes helper method to convert 1024x640 to the current
         /// screen resolution. Used to position UI elements.
@@ -710,9 +681,6 @@ namespace RacingGame.Graphics
                 Math.Max(0, (int)Math.Round(relY * heightFactor) - rectHeight / 2),
                 rectWidth, rectHeight);
         }
-        #endregion
-
-        #region Frames per second
         /// <summary>
         /// Fps
         /// </summary>
@@ -742,9 +710,6 @@ namespace RacingGame.Graphics
                 return totalFrameCount;
             }
         }
-        #endregion
-
-        #region Timing stuff
         /// <summary>
         /// Elapsed time this frame in ms
         /// </summary>
@@ -792,9 +757,6 @@ namespace RacingGame.Graphics
                 return elapsedTimeThisFrameInMs / 1000.0f;
             }
         }
-        #endregion
-
-        #region Camera
         /// <summary>
         /// World matrix
         /// </summary>
@@ -929,9 +891,6 @@ namespace RacingGame.Graphics
                 return WorldMatrix * ViewMatrix * ProjectionMatrix;
             }
         }
-        #endregion
-
-        #region Render states
         /// <summary>
         /// Alpha blending
         /// </summary>
@@ -1010,10 +969,6 @@ namespace RacingGame.Graphics
                     break;
             }
         }
-        #endregion
-        #endregion
-
-        #region Constructor
         /// <summary>
         /// Create base game
         /// </summary>
@@ -1164,10 +1119,6 @@ namespace RacingGame.Graphics
             foreach (RenderToTexture renderToTexture in remRenderToTextures)
                 renderToTexture.HandleDeviceReset();
         }
-
-        #endregion
-
-        #region Helper methods for 3d-calculations
         /// <summary>
         /// Epsilon (1/1000000) for comparing stuff which is nearly equal.
         /// </summary>
@@ -1255,9 +1206,6 @@ namespace RacingGame.Graphics
             // Point is not in front of camera, return false.
             return false;
         }
-        #endregion
-
-        #region Line helper methods
         /// <summary>
         /// Draw line
         /// </summary>
@@ -1330,9 +1278,6 @@ namespace RacingGame.Graphics
         {
             lineManager3D.Render();
         }
-        #endregion
-
-        #region Update
         /// <summary>
         /// Update
         /// </summary>
@@ -1390,9 +1335,6 @@ namespace RacingGame.Graphics
             // Update sound and music
             Sound.Update();
         }
-        #endregion
-
-        #region On activated and on deactivated
         // Check if app is currently active
         static bool isAppActive = true;
         /// <summary>
@@ -1428,9 +1370,6 @@ namespace RacingGame.Graphics
             base.OnDeactivated(sender, args);
             isAppActive = false;
         }
-        #endregion
-
-        #region Draw
 #if !DEBUG
         int renderLoopErrorCount = 0;
 #endif
@@ -1516,9 +1455,6 @@ namespace RacingGame.Graphics
                 mustApplyDeviceChanges = false;
             }
         }
-        #endregion
-
-        #region Render
         /// <summary>
         /// Render delegate for rendering methods, also used for many other
         /// methods.
@@ -1551,9 +1487,6 @@ namespace RacingGame.Graphics
             Device.Clear(ClearOptions.Target | ClearOptions.DepthBuffer,
                 BackgroundColor, 1.0f, 0);
         }
-        #endregion
-
-        #region Set and reset render targets
         /// <summary>
         /// Remember scene render target. This is very important because
         /// for our post screen shaders we have to render our whole scene
@@ -1636,6 +1569,5 @@ namespace RacingGame.Graphics
                 lastSetRenderTarget = remSceneRenderTarget;
             }
         }
-        #endregion
     }
 }

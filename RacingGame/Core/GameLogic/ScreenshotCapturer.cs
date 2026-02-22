@@ -1,16 +1,12 @@
-#region File Description
 //-----------------------------------------------------------------------------
 // ScreenshotCapturer.cs
 //
 // Microsoft XNA Community Game Platform
 // Copyright (C) Microsoft Corporation. All rights reserved.
 //-----------------------------------------------------------------------------
-#endregion
 
 // Does not work on the Xbox360, no Save method in the Texture class!
 #if !XBOX360
-
-#region Using Statements
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -19,7 +15,6 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Graphics;
 using RacingGame.Graphics;
-#endregion
 
 namespace RacingGame.GameLogic
 {
@@ -28,7 +23,6 @@ namespace RacingGame.GameLogic
     /// </summary>
     public partial class ScreenshotCapturer : GameComponent
     {
-        #region Variables
         /// <summary>
         /// Internal screenshot number (will increase by one each screenshot)
         /// </summary>
@@ -38,19 +32,12 @@ namespace RacingGame.GameLogic
         /// which is used instead of Application.ProgramName.
         /// </summary>
         BaseGame game;
-        #endregion
-
-        #region Constructor
         public ScreenshotCapturer(BaseGame setGame)
             : base(setGame)
         {
             game = setGame;
             screenshotNum = GetCurrentScreenshotNum();
         }
-        #endregion
-
-        #region Make screenshot
-        #region Screenshot name builder
         /// <summary>
         /// Screenshot name builder
         /// </summary>
@@ -62,9 +49,6 @@ namespace RacingGame.GameLogic
                 game.Window.Title + " Screenshot " +
                 num.ToString("0000") + ".jpg");
         }
-        #endregion
-
-        #region Get current screenshot num
         /// <summary>
         /// Get current screenshot num
         /// </summary>
@@ -120,11 +104,6 @@ namespace RacingGame.GameLogic
 
             return i * 1000 + j * 100 + k * 10 + l;
         }
-        #endregion
-
-        #endregion
-
-        #region Update
         /// <summary>
         /// Allows the game component to update itself.
         /// </summary>
@@ -133,7 +112,6 @@ namespace RacingGame.GameLogic
 		{
             base.Update(gameTime);
         }
-        #endregion
     }
 }
 #endif

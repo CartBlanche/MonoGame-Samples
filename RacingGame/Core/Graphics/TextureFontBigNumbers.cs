@@ -1,13 +1,9 @@
-#region File Description
 //-----------------------------------------------------------------------------
 // TextureFontBigNumbers.cs
 //
 // Microsoft XNA Community Game Platform
 // Copyright (C) Microsoft Corporation. All rights reserved.
 //-----------------------------------------------------------------------------
-#endregion
-
-#region Using directives
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
@@ -16,7 +12,6 @@ using System.Text;
 using RacingGame.Helpers;
 using RacingGame.GameLogic;
 using Microsoft.Xna.Framework.Input;
-#endregion
 
 namespace RacingGame.Graphics
 {
@@ -25,7 +20,6 @@ namespace RacingGame.Graphics
     /// </summary>
     public static class TextureFontBigNumbers
     {
-        #region Constants
         /// <summary>
         /// Big numbers in the Ingame.png graphic
         /// </summary>
@@ -52,9 +46,6 @@ namespace RacingGame.Graphics
                 // 9
                 new Rectangle(749, 342, 80, 133),
             };
-        #endregion
-
-        #region Write number
         /// <summary>
         /// Write digit
         /// </summary>
@@ -229,6 +220,5 @@ namespace RacingGame.Graphics
                 ((float)BaseGame.Width / 1600.0f)),
                 y, number, alpha);
         }
-        #endregion
     }
 }

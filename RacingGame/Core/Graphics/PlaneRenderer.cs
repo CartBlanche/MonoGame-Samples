@@ -1,13 +1,9 @@
-#region File Description
 //-----------------------------------------------------------------------------
 // PlaneRenderer.cs
 //
 // Microsoft XNA Community Game Platform
 // Copyright (C) Microsoft Corporation. All rights reserved.
 //-----------------------------------------------------------------------------
-#endregion
-
-#region Using directives
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
@@ -15,7 +11,6 @@ using System.Collections.Generic;
 using System.Text;
 using RacingGame.Shaders;
 using RacingGame.Tracks;
-#endregion
 
 namespace RacingGame.Graphics
 {
@@ -25,15 +20,11 @@ namespace RacingGame.Graphics
     /// </summary>
     class PlaneRenderer
     {
-        #region Variables
         Vector3 pos;
         Plane plane;
         Material material;
         float size;
         const float Tiling = 20.0f;
-        #endregion
-
-        #region Constructor
         /// <summary>
         /// Create plane renderer
         /// </summary>
@@ -49,9 +40,6 @@ namespace RacingGame.Graphics
             material = setMaterial;
             size = setSize;
         }
-        #endregion
-
-        #region Render
         /// <summary>
         /// Draw plane vertices
         /// </summary>
@@ -101,7 +89,6 @@ namespace RacingGame.Graphics
                 new BaseGame.RenderHandler(DrawPlaneVertices));
             BaseGame.WorldMatrix = Matrix.Identity;
         }
-        #endregion
 
     }
 }

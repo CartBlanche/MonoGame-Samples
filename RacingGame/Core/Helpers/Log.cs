@@ -1,13 +1,9 @@
-#region File Description
 //-----------------------------------------------------------------------------
 // Log.cs
 //
 // Microsoft XNA Community Game Platform
 // Copyright (C) Microsoft Corporation. All rights reserved.
 //-----------------------------------------------------------------------------
-#endregion
-
-#region Using directives
 using System;
 using System.IO;
 using System.Collections;
@@ -15,7 +11,6 @@ using System.ComponentModel;
 using System.IO.IsolatedStorage;
 using System.Threading;
 using System.Diagnostics;
-#endregion
 
 namespace RacingGame.Helpers
 {
@@ -34,7 +29,6 @@ namespace RacingGame.Helpers
     /// </summary>
     public static class Log
     {
-        #region Variables
 #if !XBOX360
         /// <summary>
         /// Writer
@@ -46,9 +40,6 @@ namespace RacingGame.Helpers
         /// </summary>
         private const string LogFilename = "Log.txt";
 #endif
-        #endregion
-
-        #region Static constructor to create log file
         /// <summary>
         /// Static constructor
         /// </summary>
@@ -107,9 +98,6 @@ namespace RacingGame.Helpers
             }
 #endif
         }
-        #endregion
-
-        #region Write log entry
         /// <summary>
         /// Writes a LogType and info/error message string to the Log file
         /// </summary>
@@ -146,6 +134,5 @@ namespace RacingGame.Helpers
             }
 #endif
         }
-        #endregion
     }
 }

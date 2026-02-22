@@ -1,20 +1,15 @@
-#region File Description
 //-----------------------------------------------------------------------------
 // VBScreenHelper.cs
 //
 // Microsoft XNA Community Game Platform
 // Copyright (C) Microsoft Corporation. All rights reserved.
 //-----------------------------------------------------------------------------
-#endregion
-
-#region Using directives
 using System;
 using System.Collections.Generic;
 using System.Text;
 using RacingGame.Graphics;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-#endregion
 
 namespace RacingGame.Shaders
 {
@@ -28,21 +23,16 @@ namespace RacingGame.Shaders
     /// </summary>
     public static class VBScreenHelper
     {
-        #region VBScreen helper class
         /// <summary>
         /// VBScreen holds all data for the vbScreens list to reuse existing
         /// VBScreens. Handles also the VB, creation and rendering.
         /// </summary>
         private class VBScreen
         {
-            #region Variables
             /// <summary>
             /// Vertex buffer to render stuff on screen.
             /// </summary>
             private VertexBuffer vbScreen;
-            #endregion
-
-            #region Constructor
             /// <summary>
             /// Create VB screen
             /// </summary>
@@ -72,9 +62,6 @@ namespace RacingGame.Shaders
 
                 vbScreen.SetData(vertices);
             }
-            #endregion
-
-            #region Render
             /// <summary>
             /// Render
             /// </summary>
@@ -84,11 +71,7 @@ namespace RacingGame.Shaders
                 BaseGame.Device.SetVertexBuffer(vbScreen);
                 BaseGame.Device.DrawPrimitives(PrimitiveType.TriangleStrip, 0, 2);
             }
-            #endregion
         }
-        #endregion
-
-        #region GridScreen helper class
         /// <summary>
         /// Another vertex and index buffer for a screen grid, basically
         /// used for the same purpose as VBScreen, but allows us to create
@@ -96,7 +79,6 @@ namespace RacingGame.Shaders
         /// </summary>
         private class GridScreen
         {
-            #region Variables
             /// <summary>
             /// Grid dimension
             /// </summary>
@@ -109,10 +91,6 @@ namespace RacingGame.Shaders
             /// Vertex buffer
             /// </summary>
             VertexBuffer vertexBuffer = null;
-
-            #endregion
-
-            #region Constructor
             /// <summary>
             /// Create grid screen
             /// </summary>
@@ -196,9 +174,6 @@ namespace RacingGame.Shaders
                     }
                 indexBuffer.SetData(indices);
             }
-            #endregion
-
-            #region Render
             /// <summary>
             /// Render
             /// </summary>
@@ -210,11 +185,7 @@ namespace RacingGame.Shaders
                 BaseGame.Device.DrawIndexedPrimitives(PrimitiveType.TriangleList,
                     0, 0, (gridWidth - 1) * (gridHeight - 1) * 2);
             }
-            #endregion
         }
-        #endregion
-
-        #region Render
         /// <summary>
         /// Vb screen instance
         /// </summary>
@@ -230,9 +201,6 @@ namespace RacingGame.Shaders
 
             vbScreenInstance.Render();
         }
-        #endregion
-
-        #region Render 10x10 screen grid
         /// <summary>
         /// Grid screen 1 0x 10 instance
         /// </summary>
@@ -248,6 +216,5 @@ namespace RacingGame.Shaders
 
             gridScreen10x10Instance.Render();
         }
-        #endregion
     }
 }

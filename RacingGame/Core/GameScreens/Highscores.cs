@@ -1,13 +1,9 @@
-#region File Description
 //-----------------------------------------------------------------------------
 // Highscores.cs
 //
 // Microsoft XNA Community Game Platform
 // Copyright (C) Microsoft Corporation. All rights reserved.
 //-----------------------------------------------------------------------------
-#endregion
-
-#region Using directives
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -23,7 +19,6 @@ using RacingGame.Properties;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using RacingGame.Sounds;
-#endregion
 
 namespace RacingGame.GameScreens
 {
@@ -33,13 +28,11 @@ namespace RacingGame.GameScreens
     /// <returns>IGame screen</returns>
     class Highscores : IGameScreen
     {
-        #region Highscore helper class
         /// <summary>
         /// Highscore helper class
         /// </summary>
         private struct HighscoreInLevel
         {
-            #region Variables
             /// <summary>
             /// Player name
             /// </summary>
@@ -48,9 +41,6 @@ namespace RacingGame.GameScreens
             /// Highscore points 
             /// </summary>
             public int timeMilliseconds;
-            #endregion
-
-            #region Constructor
             /// <summary>
             /// Create highscore
             /// </summary>
@@ -61,9 +51,6 @@ namespace RacingGame.GameScreens
                 name = setName;
                 timeMilliseconds = setTimeMs;
             }
-            #endregion
-
-            #region ToString
             /// <summary>
             /// To string
             /// </summary>
@@ -72,7 +59,6 @@ namespace RacingGame.GameScreens
             {
                 return name + ":" + timeMilliseconds;
             }
-            #endregion
         }
 
         /// <summary>
@@ -139,9 +125,6 @@ namespace RacingGame.GameScreens
 
             return true;
         }
-        #endregion
-
-        #region Static constructor
         /// <summary>
         /// Create Highscores class, will basically try to load highscore list,
         /// if that fails we generate a standard highscore list!
@@ -168,9 +151,6 @@ namespace RacingGame.GameScreens
                 WriteHighscoresToSettings();
             }
         }
-        #endregion
-
-        #region Get top lap time
         /// <summary>
         /// Get top lap time
         /// </summary>
@@ -180,9 +160,6 @@ namespace RacingGame.GameScreens
         {
             return (float)highscores[level, 0].timeMilliseconds / 1000.0f;
         }
-        #endregion
-
-        #region Get top 5 rank lap times
         /// <summary>
         /// Get top 5 rank lap times
         /// </summary>
@@ -199,9 +176,6 @@ namespace RacingGame.GameScreens
                     highscores[level, 4].timeMilliseconds,
                 };
         }
-        #endregion
-
-        #region Get rank from current score
         /// <summary>
         /// Get rank from current time.
         /// Used in game to determinate rank while flying around ^^
@@ -226,9 +200,6 @@ namespace RacingGame.GameScreens
             // No Rank found, use rank 11
             return NumOfHighscores;
         }
-        #endregion
-
-        #region Submit highscore after game
         /// <summary>
         /// Submit highscore. Done after each game is over (won or lost).
         /// New highscore will be added to the highscore screen.
@@ -263,9 +234,6 @@ namespace RacingGame.GameScreens
 
             // Else no highscore was reached, we can't replace any rank.
         }
-        #endregion
-
-		#region Update
 		/// <summary>
 		/// Unimplemented
 		/// </summary>
@@ -274,9 +242,6 @@ namespace RacingGame.GameScreens
 		{
 
 		}
-		#endregion
-
-        #region Render
         int selectedLevel = 1;
         /// <summary>
         /// Render game screen. Called each frame.
@@ -410,6 +375,5 @@ namespace RacingGame.GameScreens
 
             return false;
         }
-        #endregion
     }
 }

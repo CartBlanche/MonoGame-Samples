@@ -1,17 +1,12 @@
-#region File Description
 //-----------------------------------------------------------------------------
 // SpringPhysicsObject.cs
 //
 // Microsoft XNA Community Game Platform
 // Copyright (C) Microsoft Corporation. All rights reserved.
 //-----------------------------------------------------------------------------
-#endregion
-
-#region Using directives
 using System;
 using System.Collections;
 using System.Text;
-#endregion
 
 namespace RacingGame.GameLogic.Physics
 {
@@ -20,7 +15,6 @@ namespace RacingGame.GameLogic.Physics
     /// </summary>
     public class SpringPhysicsObject
     {
-        #region Constants
         /// <summary>
         /// Default mass, friction and spring values for parameterless constructor
         /// </summary>
@@ -28,9 +22,6 @@ namespace RacingGame.GameLogic.Physics
             DefaultMass = 0.5f,
             DefaultFriction = 0.9f,
             DefaultSpringConstant = 1.0f;
-        #endregion
-
-        #region Variables
         /// <summary>
         /// Spring constant
         /// </summary>
@@ -57,9 +48,6 @@ namespace RacingGame.GameLogic.Physics
         /// spring center (in this class its the center).
         /// </summary>
         public float force = 0.0f;
-        #endregion
-
-        #region Constructor
         /// <summary>
         /// Create simple 1D spring with default values.
         /// </summary>
@@ -83,9 +71,6 @@ namespace RacingGame.GameLogic.Physics
             force = 0;
             velocity = 0;
         }
-        #endregion
-
-        #region Simulate
         /// <summary>
         /// Simulate spring formula using the timeChange.
         /// The velocity is increased by the timeChange * force / mass,
@@ -102,9 +87,6 @@ namespace RacingGame.GameLogic.Physics
             // Apply friction
             force *= 1.0f - (timeChange * friction);
         }
-        #endregion
-
-        #region Change pos
         /// <summary>
         /// Change pos
         /// </summary>
@@ -112,6 +94,5 @@ namespace RacingGame.GameLogic.Physics
         {
             pos += change;
         }
-        #endregion
     }
 }

@@ -1,13 +1,9 @@
-#region File Description
 //-----------------------------------------------------------------------------
 // PostScreenMenu.cs
 //
 // Microsoft XNA Community Game Platform
 // Copyright (C) Microsoft Corporation. All rights reserved.
 //-----------------------------------------------------------------------------
-#endregion
-
-#region Using directives
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -19,7 +15,6 @@ using RacingGame.GameLogic;
 using RacingGame.Graphics;
 using RacingGame.Helpers;
 using Texture = RacingGame.Graphics.Texture;
-#endregion
 
 namespace RacingGame.Shaders
 {
@@ -29,7 +24,6 @@ namespace RacingGame.Shaders
     /// <returns>Shader effect</returns>
     public class PostScreenMenu : ShaderEffect
     {
-        #region Variables
         /// <summary>
         /// The shader effect filename for this shader.
         /// </summary>
@@ -81,9 +75,6 @@ namespace RacingGame.Shaders
                 return started;
             }
         }
-        #endregion
-
-        #region Constructor
         /// <summary>
         /// Create post screen menu. Also used for the constructor of
         /// PostScreenGlow (same RenderToTextures used there).
@@ -117,9 +108,6 @@ namespace RacingGame.Shaders
             : this(Filename)
         {
         }
-        #endregion
-
-        #region Get parameters
         /// <summary>
         /// Reload
         /// </summary>
@@ -150,9 +138,6 @@ namespace RacingGame.Shaders
             // Set texture
             noiseMap.SetValue(noiseMapTexture.XnaTexture);
         }
-        #endregion
-
-        #region Start
         /// <summary>
         /// Start this post screen shader, will just call SetRenderTarget.
         /// All render calls will now be drawn on the sceneMapTexture.
@@ -171,9 +156,6 @@ namespace RacingGame.Shaders
             BaseGame.SetRenderTarget(sceneMapTexture.RenderTarget, true);
             started = true;
         }
-        #endregion
-
-        #region Show
         /// <summary>
         /// Execute shaders and show result on screen, Start(..) must have been
         /// called before and the scene should be rendered to sceneMapTexture.
@@ -262,6 +244,5 @@ namespace RacingGame.Shaders
                 BaseGame.Device.DepthStencilState = DepthStencilState.Default;
             }
         }
-        #endregion
     }
 }

@@ -1,13 +1,9 @@
-#region File Description
 //-----------------------------------------------------------------------------
 // Model.cs
 //
 // Microsoft XNA Community Game Platform
 // Copyright (C) Microsoft Corporation. All rights reserved.
 //-----------------------------------------------------------------------------
-#endregion
-
-#region Using directives
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
@@ -18,7 +14,6 @@ using RacingGame.Shaders;
 using RacingGame.Tracks;
 using XnaModel = Microsoft.Xna.Framework.Graphics.Model;
 using System.IO;
-#endregion
 
 namespace RacingGame.Graphics
 {
@@ -30,7 +25,6 @@ namespace RacingGame.Graphics
     /// </summary>
     public class Model : IDisposable
     {
-        #region Variables
         /// <summary>
         /// Name of this model, also used to load it from the content system.
         /// </summary>
@@ -115,9 +109,6 @@ namespace RacingGame.Graphics
         Dictionary<ModelMeshPart, MeshRenderManager.RenderableMesh>
             renderableMeshes =
             new Dictionary<ModelMeshPart, MeshRenderManager.RenderableMesh>();
-        #endregion
-
-        #region Properties
         /// <summary>
         /// Name for this model, this is the content name.
         /// </summary>
@@ -156,9 +147,6 @@ namespace RacingGame.Graphics
                 return ret;
             }
         }
-        #endregion
-
-        #region Constructor
         /// <summary>
         /// Create model
         /// </summary>
@@ -325,9 +313,6 @@ namespace RacingGame.Graphics
                     ". It does not contain any meshes");
 #endif
         }
-        #endregion
-
-        #region Dispose
         /// <summary>
         /// Dispose
         /// </summary>
@@ -352,9 +337,6 @@ namespace RacingGame.Graphics
                 animatedMesh = null;
             }
         }
-        #endregion
-
-        #region Render
         /// <summary>
         /// Default view distance optimizer is at 250m, then skip stuff.
         /// This will be reduced as our framerate runs low to improve performance
@@ -466,9 +448,6 @@ namespace RacingGame.Graphics
         {
             Render(Matrix.CreateTranslation(renderPos));
         }
-        #endregion
-
-        #region Render car
         /// <summary>
         /// Render car model with this seperate method because we
         /// render it in 2 steps, first the solid stuff, then the alpha glass.
@@ -712,9 +691,6 @@ namespace RacingGame.Graphics
                 }
             }
         }
-        #endregion
-
-        #region Generate shadow
         /// <summary>
         /// Generate shadow for this model in the generate shadow pass
         /// of our shadow mapping shader. All objects rendered here will
@@ -774,9 +750,6 @@ namespace RacingGame.Graphics
                 }
             }
         }
-        #endregion
-
-        #region Use shadow
         /// <summary>
         /// Use shadow for our scene. We render all objects that should receive
         /// shadows here. Called from the ShadowMappingShader.UseShadow method.
@@ -844,6 +817,5 @@ namespace RacingGame.Graphics
                 }
             }
         }
-        #endregion
     }
 }

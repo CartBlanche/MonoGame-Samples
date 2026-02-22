@@ -1,13 +1,9 @@
-#region File Description
 //-----------------------------------------------------------------------------
 // TrackData.cs
 //
 // Microsoft XNA Community Game Platform
 // Copyright (C) Microsoft Corporation. All rights reserved.
 //-----------------------------------------------------------------------------
-#endregion
-
-#region Using directives
 using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
@@ -19,7 +15,6 @@ using RacingGame.Helpers;
 #if NETFX_CORE
 using Serializable = System.Runtime.Serialization.DataContractAttribute;
 #endif
-#endregion
 
 namespace RacingGame.Tracks
 {
@@ -28,7 +23,6 @@ namespace RacingGame.Tracks
     /// </summary>
     public class TrackData
     {
-#region Constants
         /// <summary>
         /// Directory where all the track data files are stored.
         /// </summary>
@@ -37,16 +31,10 @@ namespace RacingGame.Tracks
         /// Extension for the track data files.
         /// </summary>
         public const string Extension = "Track";
-#endregion
-
-#region Variables
         /// <summary>
         /// Track points
         /// </summary>
         private List<Vector3> trackPoints = new List<Vector3>();
-
-        
-#region WidthHelper class
         /// <summary>
         /// Width helper
         /// </summary>
@@ -80,14 +68,11 @@ namespace RacingGame.Tracks
                 scale = setScale;
             }
         }
-#endregion
 
         /// <summary>
         /// Width helper position
         /// </summary>
         private List<WidthHelper> widthHelpers = new List<WidthHelper>();
-
-#region RoadHelper class
         /// <summary>
         /// Road helper
         /// </summary>
@@ -132,14 +117,11 @@ namespace RacingGame.Tracks
                 pos = setPos;
             }
         }
-#endregion
 
         /// <summary>
         /// Tunnel helper position
         /// </summary>
         private List<RoadHelper> roadHelpers = new List<RoadHelper>();
-
-#region NeutralObject class
         /// <summary>
         /// Neutral object
         /// </summary>
@@ -179,15 +161,11 @@ namespace RacingGame.Tracks
                 matrix = setMatrix;
             }
         }
-#endregion
 
         /// <summary>
         /// List of neutral objects used in this level
         /// </summary>
         private List<NeutralObject> objects = new List<NeutralObject>();
-#endregion
-
-#region Properties
         /// <summary>
         /// Track points
         /// </summary>
@@ -235,9 +213,6 @@ namespace RacingGame.Tracks
                 return objects;
             }
         }
-#endregion
-
-#region Constructor
         /// <summary>
         /// Create track data, empty constructor, required for Serialization.
         /// </summary>
@@ -282,7 +257,6 @@ namespace RacingGame.Tracks
                 return loadedTrack;
             }
         }
-#endregion
 
     }
 }

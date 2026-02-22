@@ -1,13 +1,9 @@
-#region File Description
 //-----------------------------------------------------------------------------
 // Material.cs
 //
 // Microsoft XNA Community Game Platform
 // Copyright (C) Microsoft Corporation. All rights reserved.
 //-----------------------------------------------------------------------------
-#endregion
-
-#region Using directives
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -15,7 +11,6 @@ using RacingGame.Helpers;
 using RacingGame.Shaders;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-#endregion
 
 namespace RacingGame.Graphics
 {
@@ -27,7 +22,6 @@ namespace RacingGame.Graphics
     /// </summary>
     public class Material : IDisposable
     {
-        #region Constants
         /// <summary>
         /// Default color values are:
         /// 0.15f for ambient and 1.0f for diffuse and 1.0f specular.
@@ -46,9 +40,6 @@ namespace RacingGame.Graphics
         /// Parallax amount for parallax and offset shaders.
         /// </summary>
         public const float DefaultParallaxAmount = 0.04f;
-        #endregion
-
-        #region Variables
         /// <summary>
         /// Colors
         /// </summary>
@@ -81,9 +72,6 @@ namespace RacingGame.Graphics
         /// Parallax amount for parallax and offset shaders.
         /// </summary>
         public float parallaxAmount = DefaultParallaxAmount;
-        #endregion
-
-        #region Properties
         /// <summary>
         /// Checks if the diffuse texture has alpha
         /// </summary>
@@ -97,10 +85,6 @@ namespace RacingGame.Graphics
                     return false;
             }
         }
-        #endregion
-
-        #region Constructors
-        #region Default Constructors
         /// <summary>
         /// Create material, just using default values.
         /// </summary>
@@ -182,9 +166,6 @@ namespace RacingGame.Graphics
                 detailTexture = new Texture(setDetailTexture);
             // Leave rest to default
         }
-        #endregion
-
-        #region Create material from effect settings
         /// <summary>
         /// Create material
         /// </summary>
@@ -226,10 +207,6 @@ namespace RacingGame.Graphics
             if (specularPowerParameter != null)
                 specularPower = specularPowerParameter.GetValueSingle();
         }
-        #endregion
-        #endregion
-
-        #region Dispose
         /// <summary>
         /// Dispose
         /// </summary>
@@ -257,6 +234,5 @@ namespace RacingGame.Graphics
                     detailTexture.Dispose();
             }
         }
-        #endregion
     }
 }

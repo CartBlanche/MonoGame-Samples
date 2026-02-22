@@ -1,13 +1,9 @@
-#region File Description
 //-----------------------------------------------------------------------------
 // TrackCombiModels.cs
 //
 // Microsoft XNA Community Game Platform
 // Copyright (C) Microsoft Corporation. All rights reserved.
 //-----------------------------------------------------------------------------
-#endregion
-
-#region Using directives
 using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
@@ -20,7 +16,6 @@ using RacingGame.Landscapes;
 #if NETFX_CORE
 using Serializable = System.Runtime.Serialization.DataContractAttribute;
 #endif
-#endregion
 
 namespace RacingGame.Tracks
 {
@@ -31,7 +26,6 @@ namespace RacingGame.Tracks
     /// </summary>
     public class TrackCombiModels
     {
-        #region Constants
         /// <summary>
         /// Directory for loading combi models.
         /// </summary>
@@ -40,9 +34,6 @@ namespace RacingGame.Tracks
         /// Extension we use for combi models.
         /// </summary>
         public const string Extension = "CombiModel";
-        #endregion
-
-        #region Variables
         /// <summary>
         /// CombiObject for every object in this combi model
         /// </summary>
@@ -91,9 +82,6 @@ namespace RacingGame.Tracks
         /// Size of this combi model.
         /// </summary>
         private float size = 10;
-        #endregion
-
-        #region Properties
         /// <summary>
         /// Name
         /// </summary>
@@ -117,9 +105,6 @@ namespace RacingGame.Tracks
                 return size;
             }
         }
-        #endregion
-
-        #region Load
         /// <summary>
         /// Load track combi models
         /// </summary>
@@ -146,9 +131,6 @@ namespace RacingGame.Tracks
                         Name == "CombiStones2") ? 10 : 50;
             }
         }
-        #endregion
-
-        #region Add all models
         /// <summary>
         /// Add all models
         /// </summary>
@@ -161,6 +143,5 @@ namespace RacingGame.Tracks
                 landscape.AddObjectToRender(obj.modelName,
                     obj.matrix * parentMatrix, false);
         }
-        #endregion
     }
 }

@@ -1,13 +1,9 @@
-#region File Description
 //-----------------------------------------------------------------------------
 // CarPhysics.cs
 //
 // Microsoft XNA Community Game Platform
 // Copyright (C) Microsoft Corporation. All rights reserved.
 //-----------------------------------------------------------------------------
-#endregion
-
-#region Using directives
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -23,7 +19,6 @@ using RacingGame.Sounds;
 using Model = RacingGame.Graphics.Model;
 using RacingGame.Tracks;
 using RacingGame.Properties;
-#endregion
 
 namespace RacingGame.GameLogic
 {
@@ -38,7 +33,6 @@ namespace RacingGame.GameLogic
     /// <returns>Base player</returns>
     public class CarPhysics : BasePlayer
     {
-        #region Constants
         /// <summary>
         /// Car is 1000 kg
         /// </summary>
@@ -140,10 +134,6 @@ namespace RacingGame.GameLogic
         /// This is ignored during at the start of the race for zooming in
         /// </summary>
         private const float MaxViewDistance = 1.8f;
-        #endregion
-
-        #region Variables
-        #region Car variables (based on the car model)
         /// <summary>
         /// Max speed of the car, set from the car type (see CarSelection screen).
         /// We start with the speed 0, then it is increased based on the
@@ -183,7 +173,6 @@ namespace RacingGame.GameLogic
             carPitchPhysics = new SpringPhysicsObject(
                 carMass, 1.5f, 120, 0);
         }
-        #endregion
 
         /// <summary>
         /// Car position, updated each frame by our current carSpeed vector.
@@ -287,9 +276,6 @@ namespace RacingGame.GameLogic
         /// Car render matrix we calculate each frame.
         /// </summary>
         Matrix carRenderMatrix = Matrix.Identity;
-        #endregion
-
-        #region Properties
         /// <summary>
         /// Car position
         /// </summary>
@@ -406,9 +392,6 @@ namespace RacingGame.GameLogic
                 return carRenderMatrix;
             }
         }
-        #endregion
-
-        #region Constructor
         /// <summary>
         /// Create car physics controller
         /// </summary>
@@ -431,9 +414,6 @@ namespace RacingGame.GameLogic
         {
             SetCarPosition(setCarPosition, setDirection, setUp);
         }
-        #endregion
-
-        #region SetCarPosition
         /// <summary>
         /// Set car position
         /// </summary>
@@ -450,9 +430,6 @@ namespace RacingGame.GameLogic
             carDir = setDirection;
             carUp = setUp;
         }
-        #endregion
-
-        #region Reset everything for starting a new game
         /// <summary>
         /// Reset all player entries for restarting a game, just resets the
         /// car speed here.
@@ -477,9 +454,6 @@ namespace RacingGame.GameLogic
             trackSegmentNumber = 0;
             trackSegmentPercent = 0;
         }
-        #endregion
-
-        #region Update
         float virtualRotationAmount = 0.0f;
         float rotationChange = 0.0f;
         /// <summary>
@@ -506,8 +480,6 @@ namespace RacingGame.GameLogic
                 moveFactor = 0.001f;
             if (moveFactor > 0.5f)
                 moveFactor = 0.5f;
-
-            #region Handle rotations
             float effectiveSensitivity = MinSensitivity +
                 GameSettings.Default.ControllerSensitivity;
 
@@ -593,9 +565,6 @@ namespace RacingGame.GameLogic
             if (isCarOnGround)
                 carDir = Vector3.TransformNormal(carDir,
                     Matrix.CreateFromAxisAngle(carUp, interpolatedRotationChange));
-            #endregion
-
-            #region Handle view distance (page up/down and mouse wheel)
             if (Input.Keyboard.IsKeyDown(Keys.PageUp) ||
                 Input.GamePadXPressed)
                 viewDistance -= moveFactor * 2.0f;
@@ -612,9 +581,6 @@ namespace RacingGame.GameLogic
                     MathHelper.Clamp(viewDistance, MinViewDistance, MaxViewDistance);
             else
                 viewDistance = Math.Max(viewDistance, MinViewDistance);
-            #endregion
-
-            #region Handle speed
             // With keyboard, do heavy changes, but still smooth over 200ms
             // Up or left mouse button accelerates
             // Also support ASDW (querty) and AOEW (dvorak) shooter like controlling!
@@ -779,9 +745,6 @@ namespace RacingGame.GameLogic
 
             // Handle pitch spring
             carPitchPhysics.Simulate(moveFactor);
-            #endregion
-
-            #region Update track position and handle physics
             int oldTrackSegmentNumber = trackSegmentNumber;
             // Find out where we currently are on the track.
             RacingGameManager.Landscape.UpdateCarTrackPosition(
@@ -873,11 +836,7 @@ namespace RacingGame.GameLogic
             // Finally check for collisions with the guard rails.
             // Also handle gravity.
             ApplyGravityAndCheckForCollisions();
-            #endregion
         }
-        #endregion
-
-        #region CheckForCollisions
         /// <summary>
         /// Current gravity speed, increases as we fly around ^^
         /// </summary>
@@ -938,13 +897,9 @@ namespace RacingGame.GameLogic
             // Check for each corner if we collide with the guard rail
             for (int num = 0; num < carCorners.Length; num++)
             {
-                #region Apply gravity
                 // Apply gravity if we are flying, do this for each wheel.
                 if (carCorners[num].Z > groundPlanePos.Z)
                     applyGravity += Gravity / 4;
-                #endregion
-
-                #region Hit guardrail
                 // Hit any guardrail?
                 float leftDist = Vector3Helper.DistanceToLine(
                     carCorners[num], guardrailLeft, nextGuardrailLeft);
@@ -1098,7 +1053,6 @@ namespace RacingGame.GameLogic
                         carPos += correctCarPosValue * guardrailRightNormal;
                     }
                 }
-                #endregion
             }
 
             ApplyGravity();
@@ -1147,9 +1101,6 @@ namespace RacingGame.GameLogic
                 carPos.Z = groundPlanePos.Z;
             }
         }
-        #endregion
-
-        #region SetGuardRails
         /// <summary>
         /// Ground plane and guardrail positions.
         /// We update this every frame!
@@ -1180,9 +1131,6 @@ namespace RacingGame.GameLogic
             guardrailRight = setGuardrailRight;
             nextGuardrailRight = setNextGuardrailRight;
         }
-        #endregion
-
-        #region UpdateCarMatrixAndCamera
         /// <summary>
         /// Update car matrix and camera
         /// </summary>
@@ -1252,6 +1200,5 @@ namespace RacingGame.GameLogic
 
             return carMatrix;
         }
-        #endregion
     }
 }

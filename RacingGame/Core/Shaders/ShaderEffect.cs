@@ -1,13 +1,9 @@
-#region File Description
 //-----------------------------------------------------------------------------
 // ShaderEffect.cs
 //
 // Microsoft XNA Community Game Platform
 // Copyright (C) Microsoft Corporation. All rights reserved.
 //-----------------------------------------------------------------------------
-#endregion
-
-#region Using directives
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
@@ -18,7 +14,6 @@ using RacingGame.Graphics;
 using RacingGame.Helpers;
 using Texture = RacingGame.Graphics.Texture;
 using XnaTexture = Microsoft.Xna.Framework.Graphics.Texture;
-#endregion
 
 namespace RacingGame.Shaders
 {
@@ -30,7 +25,6 @@ namespace RacingGame.Shaders
     /// </summary>
     public class ShaderEffect : IDisposable
     {
-        #region Some shaders
         /// <summary>
         /// Line rendering shader
         /// </summary>
@@ -61,9 +55,6 @@ namespace RacingGame.Shaders
         /// </summary>
         public static ShadowMapShader shadowMapping =
             new ShadowMapShader();
-        #endregion
-
-        #region Variables
         /// <summary>
         /// Content name for this shader
         /// </summary>
@@ -95,9 +86,6 @@ namespace RacingGame.Shaders
             detailTexture,
             parallaxAmount,
             carHueColorChange;
-        #endregion
-
-        #region Properties
         /// <summary>
         /// Is this shader valid to render? If not we can't perform any rendering.
         /// </summary>
@@ -577,9 +565,6 @@ namespace RacingGame.Shaders
                 SetValue(carHueColorChange, ref lastUsedCarHueColorChange, value);
             }
         }
-        #endregion
-
-        #region Constructor
         [System.Diagnostics.CodeAnalysis.SuppressMessage(
             "Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public ShaderEffect(string shaderName)
@@ -592,9 +577,6 @@ namespace RacingGame.Shaders
 
             Reload();
         }
-        #endregion
-
-        #region Dispose
         /// <summary>
         /// Dispose
         /// </summary>
@@ -617,9 +599,6 @@ namespace RacingGame.Shaders
                     effect.Dispose();
             }
         }
-        #endregion
-
-        #region Reload effect
         /// <summary>
         /// Reload effect (can be useful if we change the fx file dynamically).
         /// </summary>
@@ -637,9 +616,6 @@ namespace RacingGame.Shaders
             GetParameters();
             SetParameterDefaultValues();
         }
-        #endregion
-
-        #region Reset parameters
         /// <summary>
         /// Reset parameters
         /// </summary>
@@ -649,14 +625,11 @@ namespace RacingGame.Shaders
             lastUsedAmbientColor = ColorHelper.Empty;
             lastUsedDiffuseTexture = null;
         }
-        #endregion
 
         protected virtual void SetParameterDefaultValues()
         {
 
         }
-
-        #region Get parameters
         /// <summary>
         /// Get parameters, override to support more
         /// </summary>
@@ -684,9 +657,6 @@ namespace RacingGame.Shaders
             parallaxAmount = effect.Parameters["parallaxAmount"];
             carHueColorChange = effect.Parameters["carHueColorChange"];
         }
-        #endregion
-
-        #region SetParameters
         /// <summary>
         /// Set parameters, this overload sets all material parameters too.
         /// </summary>
@@ -793,9 +763,6 @@ namespace RacingGame.Shaders
             if (setMat.normalTexture != null)
                 normalTexture.SetValue(setMat.normalTexture.XnaTexture);
         }
-        #endregion
-
-        #region Update
         /// <summary>
         /// Update
         /// </summary>
@@ -806,9 +773,6 @@ namespace RacingGame.Shaders
                 effect.CurrentTechnique.Passes[num].Apply();
             }
         }
-        #endregion
-
-        #region Render
         /// <summary>
         /// Render
         /// </summary>
@@ -851,9 +815,6 @@ namespace RacingGame.Shaders
         {
             Render(null, techniqueName, renderDelegate);
         }
-        #endregion
-
-        #region Render single pass shader
         /// <summary>
         /// Render single pass shader
         /// </summary>
@@ -873,6 +834,5 @@ namespace RacingGame.Shaders
                 renderCode();
 
         }
-        #endregion
     }
 }

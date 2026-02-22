@@ -1,20 +1,15 @@
-#region File Description
 //-----------------------------------------------------------------------------
 // ShadowMapBlur.cs
 //
 // Microsoft XNA Community Game Platform
 // Copyright (C) Microsoft Corporation. All rights reserved.
 //-----------------------------------------------------------------------------
-#endregion
-
-#region Using directives
 
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using RacingGame.Graphics;
 using RacingGame.Helpers;
-#endregion
 
 namespace RacingGame.Shaders
 {
@@ -32,8 +27,6 @@ namespace RacingGame.Shaders
             AlphaDestinationBlend = Blend.SourceAlpha,
             ColorDestinationBlend = Blend.SourceColor
         };
-
-        #region Variables
         /// <summary>
         /// The shader effect filename for this shader.
         /// </summary>
@@ -75,9 +68,6 @@ namespace RacingGame.Shaders
                 return blurMapTexture;
             }
         }
-        #endregion
-
-        #region Create
         /// <summary>
         /// Create shadow map screen blur shader.
         /// obs, using full size again: But only use 1/4 of the screen!
@@ -95,7 +85,6 @@ namespace RacingGame.Shaders
                 //improve performance:
                 RenderToTexture.SizeType.HalfScreen);
         }
-        #endregion
 
         protected override void SetParameterDefaultValues()
         {
@@ -104,8 +93,6 @@ namespace RacingGame.Shaders
             // float-array padding mismatch on DesktopGL (each float element
             // would be padded to 16 bytes, causing a BlockCopy overrun).
         }
-
-        #region Get parameters
         /// <summary>
         /// Reload
         /// </summary>
@@ -125,9 +112,6 @@ namespace RacingGame.Shaders
                 throw new NotSupportedException("windowSize and sceneMap must be " +
                     "valid in PostScreenShader=" + Filename);
         }
-        #endregion
-
-        #region RenderShadows
         /// <summary>
         /// Render shadows
         /// </summary>
@@ -152,9 +136,6 @@ namespace RacingGame.Shaders
             // Restore back buffer as render target
             BaseGame.ResetRenderTarget(true);
         }
-        #endregion
-
-        #region ShowShadows
         /// <summary>
         /// Show shadows with help of our blur map shader
         /// </summary>
@@ -260,6 +241,5 @@ namespace RacingGame.Shaders
             BaseGame.SetCurrentAlphaMode(BaseGame.AlphaMode.Default);
 
         }
-        #endregion
     }
 }

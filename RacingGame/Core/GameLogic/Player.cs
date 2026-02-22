@@ -1,13 +1,9 @@
-#region File Description
 //-----------------------------------------------------------------------------
 // Player.cs
 //
 // Microsoft XNA Community Game Platform
 // Copyright (C) Microsoft Corporation. All rights reserved.
 //-----------------------------------------------------------------------------
-#endregion
-
-#region Using directives
 using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
@@ -21,7 +17,6 @@ using RacingGame.Sounds;
 using RacingGame.Tracks;
 using Texture = RacingGame.Graphics.Texture;
 using Microsoft.Xna.Framework.Graphics;
-#endregion
 
 namespace RacingGame.GameLogic
 {
@@ -35,7 +30,6 @@ namespace RacingGame.GameLogic
     /// </summary>
     public class Player : ChaseCamera
     {
-        #region Variables
         /// <summary>
         /// Remember all lap times for the victory screen.
         /// </summary>
@@ -68,9 +62,6 @@ namespace RacingGame.GameLogic
         /// in the air before game over occurs
         /// </summary>
         private const float InAirTimeoutMilliseconds = 3000.0f;
-        #endregion
-
-        #region Constructor
         /// <summary>
         /// Create chase camera
         /// </summary>
@@ -80,9 +71,6 @@ namespace RacingGame.GameLogic
             : base(setCarPosition)
         {
         }
-        #endregion
-
-        #region Reset
         /// <summary>
         /// Reset player values.
         /// </summary>
@@ -91,9 +79,6 @@ namespace RacingGame.GameLogic
             base.Reset();
             lapTimes.Clear();
         }
-        #endregion
-
-        #region Handle game logic
         /// <summary>
         /// Update game logic, called every frame.
         /// </summary>
@@ -200,6 +185,5 @@ namespace RacingGame.GameLogic
 
             base.Update();
         }
-        #endregion
     }
 }

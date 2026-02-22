@@ -1,13 +1,9 @@
-#region File Description
 //-----------------------------------------------------------------------------
 // TrackLine.cs
 //
 // Microsoft XNA Community Game Platform
 // Copyright (C) Microsoft Corporation. All rights reserved.
 //-----------------------------------------------------------------------------
-#endregion
-
-#region Using directives
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -17,7 +13,6 @@ using System.Text;
 using RacingGame.Graphics;
 using RacingGame.Helpers;
 using RacingGame.Landscapes;
-#endregion
 
 namespace RacingGame.Tracks
 {
@@ -26,7 +21,6 @@ namespace RacingGame.Tracks
     /// </summary>
     public class TrackLine
     {
-        #region Constants
         /// <summary>
         /// Number of iterations we will produce from the input points to
         /// get our line positions. All data is generated with help of
@@ -79,9 +73,6 @@ namespace RacingGame.Tracks
                 new Vector3(0, -0.353553f, 0.146447f),
                 new Vector3(0, 0, 0),
             };
-        #endregion
-
-        #region Variables
         /// <summary>
         /// Points of this track (middle line), generated from the input points
         /// in the constructor using <see="NumberOfIterationsForInputPoints" />.
@@ -130,9 +121,6 @@ namespace RacingGame.Tracks
         /// </summary>
         protected List<RoadHelperPosition> helperPositions =
             new List<RoadHelperPosition>();
-        #endregion
-
-        #region Constructors
         /// <summary>
         /// Create track line
         /// </summary>
@@ -177,9 +165,6 @@ namespace RacingGame.Tracks
             landscape)
         {
         }
-        #endregion
-
-        #region Load
         /// <summary>
         /// Load
         /// </summary>
@@ -194,23 +179,16 @@ namespace RacingGame.Tracks
             List<TrackData.NeutralObject> neutralObjects,
             Landscape landscape)
         {
-            #region Kill all previously loaded data
             points.Clear();
             helperPositions.Clear();
 
             // Kill all loaded objects
             if (landscape != null)
                 landscape.KillAllLoadedObjects();
-            #endregion
-
-            #region Make sure we got valid data
             if (inputPoints == null ||
                 inputPoints.Length < 3)
                 throw new ArgumentException("inputPoints is invalid, we need at " +
                     "least 3 valid input points to generate a TrackLine.");
-            #endregion
-
-            #region Check if all points are ABOVE the landscape
             if (landscape != null)
             {
                 // Go through all spline points
@@ -265,9 +243,6 @@ namespace RacingGame.Tracks
                             }
                     }
             }
-            #endregion
-
-            #region Search for any loopings indicated by 2 points above each other
             // Go through all spline points (ignore first and last 3, this
             // makes it easier to remove points and add new ones).
             for (int num = 1; num < inputPoints.Length - 3; num++)
@@ -347,9 +322,6 @@ namespace RacingGame.Tracks
                     // That's it, good work everyone ^^
                 }
             }
-            #endregion
-
-            #region Generate all points with help of catmull rom splines
             // Generate all points with help of catmull rom splines
             for (int num = 0; num < inputPoints.Length; num++)
             {
@@ -376,9 +348,6 @@ namespace RacingGame.Tracks
                     points.Add(newVertex);
                 }
             }
-            #endregion
-
-            #region Generate up vectors, very important for our road building
             // Pre up vectors are used to first generate all optimal up vectors
             // for the track, but this is not useful for driving because we need
             // the road to point up always except for loopings.
@@ -416,9 +385,6 @@ namespace RacingGame.Tracks
             // Interpolate the first up vector for a smoother road at the start pos
             preUpVectors[0] = preUpVectors[preUpVectors.Count - 1] + preUpVectors[1];
             preUpVectors[0].Normalize();
-            #endregion
-
-            #region Interpolate the up vectors and also add the dir and right vectors
             // Second pass, interpolated precalced values and apply our logic :)
             //preUpVectors[0] =
             lastUpVec = Vector3.Lerp(defaultUpVec, preUpVectors[0],
@@ -492,9 +458,6 @@ namespace RacingGame.Tracks
                 upVec.Normalize();
                 points[num].up = upVec;
             }
-            #endregion
-
-            #region Smooth up vectors!
             lastUpVec = points[0].up;
             for (int num = 0; num < points.Count; num++)
                 preUpVectors[num] = points[num].up;
@@ -515,7 +478,6 @@ namespace RacingGame.Tracks
                 Vector3 dir = points[num].dir;
                 points[num].right = Vector3.Cross(dir, upVec);
             }
-            #endregion
 
             AdjustRoadWidths(widthHelpers);
 
@@ -538,13 +500,9 @@ namespace RacingGame.Tracks
                 trackData.NeutralsObjects,
                 landscape);
         }
-        #endregion
-
-        #region AdjustRoadWidths
         private void AdjustRoadWidths(
             List<TrackData.WidthHelper> widthHelpers)
         {
-            #region Go through all width helpers and adjust the road width
             // Go through all width helpers along the road,
             // everything close enough (<25) is interessting for us.
             float currentWidth = TrackVertex.DefaultRoadWidth;
@@ -587,14 +545,9 @@ namespace RacingGame.Tracks
                     currentWidth = TrackVertex.MaxRoadWidth;
                 points[num].roadWidth = currentWidth;
             }
-            #endregion
         }
-        #endregion
-
-        #region GenerateUTextureCoordinates
         private void GenerateUTextureCoordinates()
         {
-            #region Generate u texture coordinates
             float currentRoadUTexValue = 0.0f;
             for (int num = 0; num < points.Count; num++)
             {
@@ -620,17 +573,12 @@ namespace RacingGame.Tracks
                 points[0].dir,
                 new Vector2(currentRoadUTexValue, 0),
                 points[0].roadWidth));
-            #endregion
         }
-        #endregion
-
-        #region GenerateTunnelsAndLandscapeObjects
         private void GenerateTunnelsAndLandscapeObjects(
             List<TrackData.RoadHelper> roadHelpers,
             List<TrackData.NeutralObject> neutralObjects,
             Landscape landscape)
         {
-            #region Find out where the tunnels are
             // Go through all tunnel helpers along the road,
             // everything close enough (<25) is interessting for us.
             int helperStartedNum = -1;
@@ -675,9 +623,6 @@ namespace RacingGame.Tracks
             if (helperStartedNum > 0)
                 helperPositions.Add(new RoadHelperPosition(
                     remType, helperStartedNum, points.Count - 3));
-            #endregion
-
-            #region Copy over neutral objects for landscape rendering
             if (landscape != null)
             {
                 for (int num = 0; num < neutralObjects.Count; num++)
@@ -686,8 +631,6 @@ namespace RacingGame.Tracks
                     landscape.AddObjectToRender(obj.modelName, obj.matrix, false);
                 }
             }
-            #endregion
         }
-        #endregion
     }
 }

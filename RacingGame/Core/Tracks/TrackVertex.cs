@@ -1,19 +1,14 @@
-#region File Description
 //-----------------------------------------------------------------------------
 // TrackVertex.cs
 //
 // Microsoft XNA Community Game Platform
 // Copyright (C) Microsoft Corporation. All rights reserved.
 //-----------------------------------------------------------------------------
-#endregion
-
-#region Using directives
 using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
 using System.Text;
 using RacingGame.Graphics;
-#endregion
 
 namespace RacingGame.Tracks
 {
@@ -26,7 +21,6 @@ namespace RacingGame.Tracks
     /// </summary>
     public class TrackVertex
     {
-        #region Variables
         /// <summary>
         /// Position of this point
         /// </summary>
@@ -63,9 +57,6 @@ namespace RacingGame.Tracks
         /// Road width
         /// </summary>
         public float roadWidth = DefaultRoadWidth;
-        #endregion
-
-        #region Properties
         /// <summary>
         /// Left side track vertex generation, used for the GuardRail class.
         /// </summary>
@@ -236,9 +227,6 @@ namespace RacingGame.Tracks
                     -up, -right);
             }
         }
-        #endregion
-
-        #region Constructor
         /// <summary>
         /// Create track vertex
         /// </summary>
@@ -271,6 +259,5 @@ namespace RacingGame.Tracks
             dir = Vector3.Forward;
             uv = Vector2.Zero;
         }
-        #endregion
     }
 }

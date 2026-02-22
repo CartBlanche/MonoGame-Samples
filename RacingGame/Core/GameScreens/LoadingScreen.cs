@@ -1,13 +1,9 @@
-#region File Description
 //-----------------------------------------------------------------------------
 // LoadingScreen.cs
 //
 // Display a screen to inform the player that their game is still responding,
 // while loading content in the background.
 //-----------------------------------------------------------------------------
-#endregion
-
-#region Using directives
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
@@ -17,7 +13,6 @@ using System.Threading;
 using RacingGame.Graphics;
 using System.Threading.Tasks;
 using RacingGame.Helpers;
-#endregion
 
 namespace RacingGame.GameScreens
 {
@@ -26,21 +21,14 @@ namespace RacingGame.GameScreens
 	/// </summary>
 	class LoadingScreen : IGameScreen
 	{
-		#region Variables
 		private const string loadingText = "Loading...";
 		private int loadingTextWidth = TextureFont.GetTextWidth(loadingText);
 		private string loadingStatus = "";
-		#endregion
-
-		#region Constructor
 		public LoadingScreen()
 		{
 			//Setup the handler before we start the thread
 			RacingGameManager.LoadEvent += new EventHandler<EventArgs>(LoadEvent);
 		}
-		#endregion
-
-		#region Update LoadingScreen
 		/// <summary>
 		/// Gather input on the loading screen and update it if progress has
 		/// changed in loading the game.
@@ -68,9 +56,6 @@ namespace RacingGame.GameScreens
 		{
 			loadingStatus = (string)sender;
 		}
-		#endregion
-
-		#region RenderLoadingScreen
 		/// <summary>
 		/// Render loading screen
 		/// </summary>
@@ -92,6 +77,5 @@ namespace RacingGame.GameScreens
 
 			return RacingGameManager.ContentLoaded;
 		}
-		#endregion
 	}
 }

@@ -1,13 +1,9 @@
-#region File Description
 //-----------------------------------------------------------------------------
 // MainMenu.cs
 //
 // Microsoft XNA Community Game Platform
 // Copyright (C) Microsoft Corporation. All rights reserved.
 //-----------------------------------------------------------------------------
-#endregion
-
-#region Using directives
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
@@ -18,7 +14,6 @@ using RacingGame.GameLogic;
 using RacingGame.Graphics;
 using RacingGame.Helpers;
 using RacingGame.Sounds;
-#endregion
 
 namespace RacingGame.GameScreens
 {
@@ -27,7 +22,6 @@ namespace RacingGame.GameScreens
     /// </summary>
     class MainMenu : IGameScreen
     {
-        #region Constants
         static readonly Rectangle[] ButtonRects = new Rectangle[]
             {
                 UIRenderer.MenuButtonPlayGfxRect,
@@ -53,9 +47,6 @@ namespace RacingGame.GameScreens
         /// The amount of time idle at the menu before returning to the splash screen
         /// </summary>
         const float TimeOutMenu = 60000.0f;
-        #endregion
-
-        #region Variables
         /// <summary>
         /// Start with button 0 being selected (play game)
         /// </summary>
@@ -90,16 +81,10 @@ namespace RacingGame.GameScreens
         float idleTime = 0.0f;
 
 		bool musicHasStarted = false;
-        #endregion
-
-		#region Constructor
 		public MainMenu()
 		{
 
 		}
-		#endregion
-
-		#region Update
 		/// <summary>
 		/// Handle starting the menu music.
 		/// </summary>
@@ -113,9 +98,6 @@ namespace RacingGame.GameScreens
 				musicHasStarted = true;
 			}
 		}
-		#endregion
-
-		#region Render
 		/// <summary>
         /// Interpolate rectangle
         /// </summary>
@@ -307,6 +289,5 @@ namespace RacingGame.GameScreens
 
             return false;
         }
-        #endregion
     }
 }

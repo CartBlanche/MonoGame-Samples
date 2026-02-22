@@ -1,13 +1,9 @@
-#region File Description
 //-----------------------------------------------------------------------------
 // Landscape.cs
 //
 // Microsoft XNA Community Game Platform
 // Copyright (C) Microsoft Corporation. All rights reserved.
 //-----------------------------------------------------------------------------
-#endregion
-
-#region Using directives
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
@@ -23,7 +19,6 @@ using RacingGame.GameLogic;
 using RacingGame.GameScreens;
 using RacingGame.Sounds;
 using System.Threading;
-#endregion
 
 namespace RacingGame.Landscapes
 {
@@ -32,7 +27,6 @@ namespace RacingGame.Landscapes
     /// </summary>
     public class Landscape : IDisposable
     {
-        #region Constants
         /// <summary>
         /// Grid width and height
         /// </summary>
@@ -42,9 +36,6 @@ namespace RacingGame.Landscapes
         const float MapWidthFactor = 10,
             MapHeightFactor = 10,
             MapZScale = 300.0f;
-        #endregion
-
-        #region Objects to render on this landscape
         /// <summary>
         /// Landscape object
         /// </summary>
@@ -508,9 +499,6 @@ namespace RacingGame.Landscapes
         {
             AddObjectToRender(modelName, Matrix.CreateTranslation(renderPos), false);
         }
-        #endregion
-
-        #region Variables
         /// <summary>
         /// Currently loaded level
         /// </summary>
@@ -682,9 +670,6 @@ namespace RacingGame.Landscapes
         /// Little helper to avoid creating a new array each frame for rendering
         /// </summary>
         TangentVertex[] brakeTracksVerticesArray = null;
-        #endregion
-
-        #region Properties
         /// <summary>
         /// Current track name
         /// </summary>
@@ -730,9 +715,6 @@ namespace RacingGame.Landscapes
                 return bestReplay;
             }
         }
-        #endregion
-
-        #region Get map height
         /// <summary>
         /// Get map height at a specific point, int based and not as percise as
         /// the float version, which interpolates between our grid points.
@@ -823,9 +805,6 @@ namespace RacingGame.Landscapes
                 (1.0f - fY) * (mapHeights[ix2, iy] - mapHeights[ix2, iy2]) +    // 1
                 (1.0f - fX) * (mapHeights[ix, iy2] - mapHeights[ix2, iy2]); // 3
         }
-        #endregion
-
-        #region Constructor
         /// <summary>
         /// Create landscape.
         /// This constructor should only be called
@@ -835,7 +814,6 @@ namespace RacingGame.Landscapes
         internal Landscape(RacingGameManager.Level setLevel)
         {
             byte[] heights = new byte[GridWidth * GridHeight];
-            #region Load map height data
             using (Stream file = TitleContainer.OpenStream(
                 Path.Combine("Content", "LandscapeHeights.data")))
             {
@@ -843,9 +821,6 @@ namespace RacingGame.Landscapes
             }
 
             mapHeights = new float[GridWidth, GridHeight];
-            #endregion
-
-            #region Build tangent vertices
             // Build our tangent vertices
             for (int x = 0; x < GridWidth; x++)
                 for (int y = 0; y < GridHeight; y++)
@@ -885,9 +860,6 @@ namespace RacingGame.Landscapes
                         y / (float)(GridHeight - 1),
                         x / (float)(GridWidth - 1));
                 }
-            #endregion
-
-            #region Smooth normals
             // Smooth all normals, first copy them over, then smooth everything
             Vector3[,] normalsForSmoothing = new Vector3[GridWidth, GridHeight];
             for (int x = 0; x < GridWidth; x++)
@@ -918,9 +890,6 @@ namespace RacingGame.Landscapes
                         helperVector,
                         vertices[index].normal);
                 }
-            #endregion
-
-            #region Set vertex buffer
             // Set vertex buffer
             // fix
             //vertexBuffer = new VertexBuffer(
@@ -936,9 +905,6 @@ namespace RacingGame.Landscapes
                 vertices.Length, 
                 BufferUsage.WriteOnly);
             vertexBuffer.SetData(vertices);
-            #endregion
-
-            #region Calc index buffer
             // Calc index buffer (Note: have to use uint, ushort is not sufficiant
             // in our case because we have MANY vertices ^^)
             uint[] indices = new uint[(GridWidth - 1) * (GridHeight - 1) * 6];
@@ -959,9 +925,6 @@ namespace RacingGame.Landscapes
                     // Add indices
                     currentIndex += 6;
                 }
-            #endregion
-
-            #region Set index buffer
             // fix
             //indexBuffer = new IndexBuffer(
             //    BaseGame.Device,
@@ -977,15 +940,9 @@ namespace RacingGame.Landscapes
                 BufferUsage.WriteOnly);
 
             indexBuffer.SetData(indices);
-            #endregion
-
-            #region Load track (and replay inside ReloadLevel method)
             // Load track based on the level selection and set car pos with
             // help of the ReloadLevel method.
             ReloadLevel(setLevel);
-            #endregion
-
-            #region Add city planes
             // Just set one giant plane for the whole city!
             foreach (LandscapeObject obj in landscapeObjects)
                 if (obj.IsBigBuilding)
@@ -996,10 +953,7 @@ namespace RacingGame.Landscapes
                         cityMat, Math.Min(obj.Position.X, obj.Position.Y));
                     break;
                 }
-            #endregion
         }
-
-        #region Reload level
         /// <summary>
         /// Reload level
         /// </summary>
@@ -1029,9 +983,6 @@ namespace RacingGame.Landscapes
             // Begin game with red start light
             startLightObject.ChangeModel(landscapeModels[0]);
         }
-        #endregion
-
-        #region Calc landscape position
         /// <summary>
         /// Calc landscape position
         /// </summary>
@@ -1053,10 +1004,6 @@ namespace RacingGame.Landscapes
                 y * MapHeightFactor,
                 heightPercent * MapZScale);
         }
-        #endregion
-        #endregion
-
-        #region Dispose
         /// <summary>
         /// Dispose
         /// </summary>
@@ -1084,9 +1031,6 @@ namespace RacingGame.Landscapes
                 track.Dispose();
             }
         }
-        #endregion
-
-        #region Set car to start pos
         /// <summary>
         /// Set car to start pos
         /// </summary>
@@ -1096,9 +1040,6 @@ namespace RacingGame.Landscapes
                 track.StartPosition, track.StartDirection, track.StartUpVector);
             // Camera is set in zooming in method of the Player class.
         }
-        #endregion
-
-        #region Render
         /// <summary>
         /// Render landscape (just at the origin)
         /// </summary>
@@ -1128,8 +1069,6 @@ namespace RacingGame.Landscapes
             // Render all brake tracks
             RenderBrakeTracks();
         }
-
-        #region RenderLandscapeVertices
         /// <summary>
         /// Render landscape vertices
         /// </summary>
@@ -1140,10 +1079,6 @@ namespace RacingGame.Landscapes
             BaseGame.Device.DrawIndexedPrimitives(PrimitiveType.TriangleList,
                 0, 0, (GridWidth - 1) * (GridHeight - 1) * 2);
         }
-        #endregion
-        #endregion
-
-        #region Generate and use shadow for the landscape
         /// <summary>
         /// Generate shadow
         /// </summary>
@@ -1190,9 +1125,6 @@ namespace RacingGame.Landscapes
             // And the track receives shadow too
             track.UseShadow();
         }
-        #endregion
-
-        #region GetTrackPositionMatrix and UpdateCarTrackPosition
         /// <summary>
         /// Get track position matrix, used for the game background and unit tests.
         /// </summary>
@@ -1237,9 +1169,6 @@ namespace RacingGame.Landscapes
             track.UpdateCarTrackPosition(carPos,
                 ref trackSegmentNumber, ref trackPositionPercent);
         }
-        #endregion
-
-        #region Add and render brake tracks
         /// <summary>
         /// Helper to skip track generation if it is near the last generated pos.
         /// </summary>
@@ -1342,6 +1271,5 @@ namespace RacingGame.Landscapes
                         brakeTracksVerticesArray, 0, brakeTracksVerticesArray.Length / 3);
                 });
         }
-        #endregion
     }
 }

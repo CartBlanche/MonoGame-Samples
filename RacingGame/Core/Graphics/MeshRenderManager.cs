@@ -1,13 +1,9 @@
-#region File Description
 //-----------------------------------------------------------------------------
 // MeshRenderManager.cs
 //
 // Microsoft XNA Community Game Platform
 // Copyright (C) Microsoft Corporation. All rights reserved.
 //-----------------------------------------------------------------------------
-#endregion
-
-#region Using directives
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
@@ -17,7 +13,6 @@ using RacingGame.GameLogic;
 using RacingGame.Helpers;
 using RacingGame.Shaders;
 using RacingGame.Tracks;
-#endregion
 
 namespace RacingGame.Graphics
 {
@@ -43,23 +38,18 @@ namespace RacingGame.Graphics
     /// </summary>
     public class MeshRenderManager
     {
-        #region Remember vertex and index buffers
         /// <summary>
         /// Don't set vertex and index buffers again if they are already set this
         /// frame.
         /// </summary>
         static VertexBuffer lastVertexBufferSet = null;
         static IndexBuffer lastIndexBufferSet = null;
-        #endregion
-
-        #region RenderableMesh helper class
         /// <summary>
         /// Renderable mesh, created in the Model constructor and is rendered
         /// when we render all the models at once at the end of each frame!
         /// </summary>
         public class RenderableMesh
         {
-            #region Variables
             /// <summary>
             /// Vertex buffer
             /// </summary>
@@ -95,9 +85,6 @@ namespace RacingGame.Graphics
             /// After each frame this list is cleared again.
             /// </summary>
             public List<Matrix> renderMatrices = new List<Matrix>();
-            #endregion
-
-            #region Constructor
             /// <summary>
             /// Create renderable mesh
             /// </summary>
@@ -126,9 +113,6 @@ namespace RacingGame.Graphics
                 startIndex = setStartIndex;
                 primitiveCount = setPrimitiveCount;
             }
-            #endregion
-
-            #region Render
             /// <summary>
             /// Render this renderable mesh, MUST be called inside of the
             /// render method of ShaderEffect.normalMapping!
@@ -171,17 +155,12 @@ namespace RacingGame.Graphics
                 // Next frame everything will be created again.
                 renderMatrices.Clear();
             }
-            #endregion
         }
-        #endregion
-
-        #region MeshesPerMaterial helper class
         /// <summary>
         /// Meshes per material
         /// </summary>
         public class MeshesPerMaterial
         {
-            #region Variables
             /// <summary>
             /// Material
             /// </summary>
@@ -190,9 +169,6 @@ namespace RacingGame.Graphics
             /// Meshes
             /// </summary>
             public List<RenderableMesh> meshes = new List<RenderableMesh>();
-            #endregion
-
-            #region Properties
             /// <summary>
             /// Number of render matrices this material uses this frame.
             /// </summary>
@@ -207,9 +183,6 @@ namespace RacingGame.Graphics
                     return ret;
                 }
             }
-            #endregion
-
-            #region Constructor
             /// <summary>
             /// Create meshes per material for the setMaterial.
             /// </summary>
@@ -218,9 +191,6 @@ namespace RacingGame.Graphics
             {
                 material = setMaterial;
             }
-            #endregion
-
-            #region Add
             /// <summary>
             /// Adds a renderable mesh using this material.
             /// </summary>
@@ -235,9 +205,6 @@ namespace RacingGame.Graphics
 
                 meshes.Add(addMesh);
             }
-            #endregion
-
-            #region Render
             /// <summary>
             /// Render all meshes that use this material.
             /// This method is only called if we got any meshes to render,
@@ -278,17 +245,12 @@ namespace RacingGame.Graphics
                     BaseGame.Device.RasterizerState = RasterizerState.CullCounterClockwise;
                 }
             }
-            #endregion
         }
-        #endregion
-
-        #region MeshesPerMaterialsPerTechniques helper class
         /// <summary>
         /// Meshes per material per techniques
         /// </summary>
         public class MeshesPerMaterialPerTechniques
         {
-            #region Variables
             /// <summary>
             /// Technique
             /// </summary>
@@ -298,9 +260,6 @@ namespace RacingGame.Graphics
             /// </summary>
             public List<MeshesPerMaterial> meshesPerMaterials =
                 new List<MeshesPerMaterial>();
-            #endregion
-
-            #region Properties
             /// <summary>
             /// Number of render matrices this technique uses this frame.
             /// </summary>
@@ -321,9 +280,6 @@ namespace RacingGame.Graphics
                     return ret;
                 }
             }
-            #endregion
-
-            #region Constructor
             /// <summary>
             /// Create meshes per material per techniques
             /// </summary>
@@ -332,9 +288,6 @@ namespace RacingGame.Graphics
             {
                 technique = setTechnique;
             }
-            #endregion
-
-            #region Add
             /// <summary>
             /// Adds a renderable mesh using this technique.
             /// </summary>
@@ -364,9 +317,6 @@ namespace RacingGame.Graphics
                 newList.Add(addMesh);
                 meshesPerMaterials.Add(newList);
             }
-            #endregion
-
-            #region Render
             /// <summary>
             /// Render all meshes that use this technique sorted by the materials.
             /// This method is only called if we got any meshes to render,
@@ -391,11 +341,7 @@ namespace RacingGame.Graphics
                         list.Render();
                 }
             }
-            #endregion
         }
-        #endregion
-
-        #region Variables
         /// <summary>
         /// Sorted meshes we got. Everything is sorted by techniques and then
         /// sorted by materials. This all happens at construction time.
@@ -404,9 +350,6 @@ namespace RacingGame.Graphics
         /// </summary>
         List<MeshesPerMaterialPerTechniques> sortedMeshes =
             new List<MeshesPerMaterialPerTechniques>();
-        #endregion
-
-        #region Add
         /// <summary>
         /// Add model mesh part with the used effect to our sortedMeshes list.
         /// Neither the model mesh part nor the effect is directly used,
@@ -494,9 +437,6 @@ namespace RacingGame.Graphics
             foundList.Add(mesh);
             return mesh;
         }
-        #endregion
-
-        #region Render
         /// <summary>
         /// Render all meshes we collected this frame sorted by techniques
         /// and materials. This method is about 3-5 times faster than just
@@ -530,6 +470,5 @@ namespace RacingGame.Graphics
                     list.Render(effect);
             }
         }
-        #endregion
     }
 }

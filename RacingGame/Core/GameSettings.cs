@@ -1,13 +1,9 @@
-#region File Description
 //-----------------------------------------------------------------------------
 // GameSettings.cs
 //
 // Microsoft XNA Community Game Platform
 // Copyright (C) Microsoft Corporation. All rights reserved.
 //-----------------------------------------------------------------------------
-#endregion
-
-#region Using directives
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -20,7 +16,6 @@ using System.Threading;
 #if NETFX_CORE
 using Serializable = System.Runtime.Serialization.DataContractAttribute;
 #endif
-#endregion
 
 namespace RacingGame.Properties
 {
@@ -35,7 +30,6 @@ namespace RacingGame.Properties
     [Serializable]
     public class GameSettings
     {
-        #region Default
         /// <summary>
         /// Filename for our game settings file.
         /// </summary>
@@ -63,9 +57,6 @@ namespace RacingGame.Properties
                 return defaultInstance;
             }
         }
-        #endregion
-
-        #region Constructor
         /// <summary>
         /// Create game settings, don't allow public constructor!
         /// </summary>
@@ -83,9 +74,6 @@ namespace RacingGame.Properties
         {
             Load();
         }
-        #endregion
-
-        #region Load
         /// <summary>
         /// Load
         /// </summary>
@@ -154,9 +142,6 @@ namespace RacingGame.Properties
                 Save();
             }
         }
-        #endregion
-
-        #region Save
         /// <summary>
         /// Save
         /// </summary>
@@ -215,9 +200,6 @@ namespace RacingGame.Properties
             GameSettings.Default.PostScreenEffects = false;
             GameSettings.Save();
         }
-        #endregion
-
-        #region Setting variables with properties
         /// <summary>
         /// Highscores
         /// </summary>
@@ -454,6 +436,5 @@ namespace RacingGame.Properties
                 controllerSensitivity = value;
             }
         }
-        #endregion
     }
 }

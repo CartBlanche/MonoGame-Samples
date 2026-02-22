@@ -1,18 +1,13 @@
-#region File Description
 //-----------------------------------------------------------------------------
 // Directories.cs
 //
 // Microsoft XNA Community Game Platform
 // Copyright (C) Microsoft Corporation. All rights reserved.
 //-----------------------------------------------------------------------------
-#endregion
-
-#region Using directives
 using System;
 using System.Collections.Generic;
 using System.Text;
 using System.IO;
-#endregion
 
 namespace RacingGame.Helpers
 {
@@ -21,7 +16,6 @@ namespace RacingGame.Helpers
     /// </summary>
     class Directories
     {
-        #region Game base directory
         /// <summary>
         /// We can use this to relocate the whole game directory to another
         /// location. Used for testing (everything is stored on a network drive).
@@ -29,9 +23,6 @@ namespace RacingGame.Helpers
         public static readonly string GameBaseDirectory =
             // Update to support Xbox360:
             "";
-        #endregion
-
-        #region Directories
         /// <summary>
         /// Content directory for all our textures, models and shaders.
         /// </summary>
@@ -68,15 +59,11 @@ namespace RacingGame.Helpers
                 return Path.Combine(GameBaseDirectory, "Screenshots");
             }
         }
-        #endregion
-
-        #region Constructor
         /// <summary>
         /// Private constructor to prevent instantiation.
         /// </summary>
         private Directories()
         {
         }
-        #endregion
     }
 }

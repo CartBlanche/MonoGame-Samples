@@ -1,13 +1,9 @@
-#region File Description
 //-----------------------------------------------------------------------------
 // LineManager3D.cs
 //
 // Microsoft XNA Community Game Platform
 // Copyright (C) Microsoft Corporation. All rights reserved.
 //-----------------------------------------------------------------------------
-#endregion
-
-#region Using directives
 using System;
 using System.Collections;
 using System.Text;
@@ -17,7 +13,6 @@ using RacingGame;
 using System.Collections.Generic;
 using RacingGame.Helpers;
 using RacingGame.Shaders;
-#endregion
 
 namespace RacingGame.Graphics
 {
@@ -32,7 +27,6 @@ namespace RacingGame.Graphics
     /// </summary>
     internal class LineManager3D : IDisposable
     {
-        #region Line struct
         /// <summary>
         /// Struct for a line, instances of this class will be added to lines.
         /// </summary>
@@ -101,9 +95,6 @@ namespace RacingGame.Graphics
                 return 0; // Not supported or nessescary
             }
         }
-        #endregion
-
-        #region Variables
         /// <summary>
         /// Number of lines used this frame, will be set to 0 when rendering.
         /// </summary>
@@ -142,10 +133,6 @@ namespace RacingGame.Graphics
         /// </summary>
         protected const int MaxNumOfLines =
             4096;
-
-        #endregion
-
-        #region Initialization
         /// <summary>
         /// Init LineManager
         /// </summary>
@@ -155,9 +142,6 @@ namespace RacingGame.Graphics
                 throw new ArgumentNullException(
                     "XNA device is not initialized, can't init line manager.");
         }
-        #endregion
-
-        #region Dispose
         /// <summary>
         /// Dispose
         /// </summary>
@@ -174,9 +158,6 @@ namespace RacingGame.Graphics
         protected virtual void Dispose(bool disposing)
         {
         }
-        #endregion
-
-        #region AddLine
         /// <summary>
         /// Add line
         /// </summary>
@@ -228,9 +209,6 @@ namespace RacingGame.Graphics
         {
             AddLine(startPoint, color, endPoint, color);
         }
-        #endregion
-
-        #region Update vertex buffer
         protected void UpdateVertexBuffer()
         {
             // Don't do anything if we got no lines.
@@ -256,9 +234,6 @@ namespace RacingGame.Graphics
             // Vertex buffer was build
             buildVertexBuffer = false;
         }
-        #endregion
-
-        #region Render
         /// <summary>
         /// Render all lines added this frame
         /// </summary>
@@ -288,6 +263,5 @@ namespace RacingGame.Graphics
             // Ok, finally reset numOfLines for next frame
             numOfLines = 0;
         }
-        #endregion
     }
 }

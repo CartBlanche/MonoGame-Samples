@@ -1,18 +1,13 @@
-#region File Description
 //-----------------------------------------------------------------------------
 // RacingGameModelProcessor.cs
 //
 // Microsoft XNA Community Game Platform
 // Copyright (C) Microsoft Corporation. All rights reserved.
 //-----------------------------------------------------------------------------
-#endregion
-
-#region Using directives
 using System;
 using Microsoft.Xna.Framework.Content.Pipeline;
 using Microsoft.Xna.Framework.Content.Pipeline.Processors;
 using Microsoft.Xna.Framework.Content.Pipeline.Graphics;
-#endregion
 
 namespace RacingGame.PipelineExtension
 {
@@ -24,7 +19,6 @@ namespace RacingGame.PipelineExtension
     [ContentProcessor(DisplayName = "RacingGame Model (Tangent support)")]
     public class RacingGameModelProcessor : ModelProcessor
     {
-        #region Process
         /// <summary>
         /// Process the model
         /// </summary>
@@ -47,9 +41,6 @@ namespace RacingGame.PipelineExtension
             // And let the rest be processed by the default model processor
             return base.Process(input, context);
         }
-        #endregion
-
-        #region Generate tangents
         /// <summary>
         /// Generate tangents helper method, x files do not have tangents
         /// exported, we have to generate them ourselfs.
@@ -75,9 +66,6 @@ namespace RacingGame.PipelineExtension
                 GenerateTangents(child, context);
             }
         }
-        #endregion
-
-        #region UseParentBoneNameIfMeshNameIsNotSet
         /// <summary>
         /// Use parent bone's name if mesh's name is not set.
         /// </summary>
@@ -92,9 +80,6 @@ namespace RacingGame.PipelineExtension
             foreach (NodeContent node in input.Children)
                 UseParentBoneNameIfMeshNameIsNotSet(node);
         }
-        #endregion
-
-        #region StoreEffectMaterialsAndTechniques
         /// <summary>
         /// Stores the current selected technique and if the texture uses alpha
         /// into the mesh name for each mesh part.
@@ -130,6 +115,5 @@ namespace RacingGame.PipelineExtension
                 StoreEffectTechniqueInMeshName(child, context);
             }
         }
-        #endregion
     }
 }

@@ -1,13 +1,9 @@
-#region File Description
 //-----------------------------------------------------------------------------
 // BasePlayer.cs
 //
 // Microsoft XNA Community Game Platform
 // Copyright (C) Microsoft Corporation. All rights reserved.
 //-----------------------------------------------------------------------------
-#endregion
-
-#region Using directives
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -18,7 +14,6 @@ using RacingGame.Landscapes;
 using RacingGame.Properties;
 using RacingGame.Sounds;
 using RacingGame.Tracks;
-#endregion
 
 namespace RacingGame.GameLogic
 {
@@ -35,7 +30,6 @@ namespace RacingGame.GameLogic
     /// </summary>
     public class BasePlayer
     {
-        #region Global game parameters (game time, game over, etc.)
         /// <summary>
         /// Current game time in ms. Used for time display in game. Also used to
         /// update the sun position and for the highscores.
@@ -233,9 +227,6 @@ namespace RacingGame.GameLogic
         }
 
         private bool firstFrame = true;
-        #endregion
-
-        #region Reset everything for starting a new game
         /// <summary>
         /// Reset all player entries for restarting a game.
         /// In derived classes reset all the variables we need to reset for
@@ -261,9 +252,6 @@ namespace RacingGame.GameLogic
         public virtual void ClearVariablesForGameOver()
         {
         }
-        #endregion
-
-        #region Handle game logic
         /// <summary>
         /// Update game logic, called every frame. In Rocket Commander we did
         /// all the game logic in one big method inside the player class, but it
@@ -305,6 +293,5 @@ namespace RacingGame.GameLogic
             // Increase game time
             currentGameTimeMilliseconds += BaseGame.ElapsedTimeThisFrameInMilliseconds;
         }
-        #endregion
     }
 }

@@ -1,13 +1,9 @@
-#region File Description
 //-----------------------------------------------------------------------------
 // Input.cs
 //
 // Microsoft XNA Community Game Platform
 // Copyright (C) Microsoft Corporation. All rights reserved.
 //-----------------------------------------------------------------------------
-#endregion
-
-#region Using directives
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 using System;
@@ -17,7 +13,6 @@ using System.Threading;
 using RacingGame.Graphics;
 using RacingGame.Helpers;
 using RacingGame.Sounds;
-#endregion
 
 namespace RacingGame.GameLogic
 {
@@ -29,7 +24,6 @@ namespace RacingGame.GameLogic
     /// </summary>
     public static class Input
     {
-        #region Variables
 #if !XBOX360
         /// <summary>
         /// Mouse state, set every frame in the Update method.
@@ -82,9 +76,6 @@ namespace RacingGame.GameLogic
         /// mouse button. Used for the MouseDraggingAmount property.
         /// </summary>
         private static Point startDraggingPos;
-        #endregion
-
-        #region Mouse Properties
         /// <summary>
         /// Was a mouse detected? Returns true if the user moves the mouse.
         /// On the Xbox 360 there will be no mouse movement and theirfore we
@@ -337,9 +328,6 @@ namespace RacingGame.GameLogic
                 (int)Math.Round(rect.Right * widthFactor),
                 (int)Math.Round(rect.Bottom * heightFactor)));
         }
-        #endregion
-
-        #region Keyboard Properties
         /// <summary>
         /// Keyboard
         /// </summary>
@@ -633,9 +621,6 @@ namespace RacingGame.GameLogic
                 return keyboardState.IsKeyDown(Keys.Down);
             }
         }
-        #endregion
-
-        #region GamePad Properties
         /// <summary>
         /// Game pad
         /// </summary>
@@ -899,9 +884,6 @@ namespace RacingGame.GameLogic
                     gamePadStateLastFrame.Buttons.Back == ButtonState.Released;
             }
         }
-        #endregion
-
-        #region Update
         /// <summary>
         /// Update, called from BaseGame.Update().
         /// Will catch all new states for keyboard, mouse and the gamepad.
@@ -961,6 +943,5 @@ namespace RacingGame.GameLogic
             gamePadState =
                 Microsoft.Xna.Framework.Input.GamePad.GetState(PlayerIndex.One);
         }
-        #endregion
     }
 }

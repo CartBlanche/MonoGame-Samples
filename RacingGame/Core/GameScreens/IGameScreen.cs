@@ -1,18 +1,13 @@
-#region File Description
 //-----------------------------------------------------------------------------
 // IGameScreen.cs
 //
 // Microsoft XNA Community Game Platform
 // Copyright (C) Microsoft Corporation. All rights reserved.
 //-----------------------------------------------------------------------------
-#endregion
-
-#region Using directives
 using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
 using System.Text;
-#endregion
 
 namespace RacingGame.GameScreens
 {

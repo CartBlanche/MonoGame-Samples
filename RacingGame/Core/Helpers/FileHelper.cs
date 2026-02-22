@@ -1,13 +1,9 @@
-#region File Description
 //-----------------------------------------------------------------------------
 // FileHelper.cs
 //
 // Microsoft XNA Community Game Platform
 // Copyright (C) Microsoft Corporation. All rights reserved.
 //-----------------------------------------------------------------------------
-#endregion
-
-#region Using directives
 using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
@@ -19,7 +15,6 @@ using Microsoft.Xna.Framework.GamerServices;
 #endif
 using RacingGame.Graphics;
 using Microsoft.Xna.Framework.Graphics;
-#endregion
 
 namespace RacingGame.Helpers
 {
@@ -29,7 +24,6 @@ namespace RacingGame.Helpers
     /// </summary>
     public static class FileHelper
     {
-        #region LoadGameContentFile
         /// <summary>
         /// Load game content file, returns null if file was not found.
         /// </summary>
@@ -39,9 +33,6 @@ namespace RacingGame.Helpers
         {
             return TitleContainer.OpenStream(relativeFilename);
         }
-        #endregion
-
-        #region StorageDevice
 
         public static ManualResetEvent StorageContainerMRE = new ManualResetEvent(true);
 
@@ -94,10 +85,6 @@ namespace RacingGame.Helpers
             }
         }
 #endif
-
-        #endregion
-
-        #region Get text lines
         /// <summary>
         /// Returns the number of text lines we got in a file.
         /// </summary>
@@ -132,9 +119,6 @@ namespace RacingGame.Helpers
                 return null;
             }
         }
-        #endregion
-
-        #region Write Helpers
         /// <summary>
         /// Write vector3 to stream
         /// </summary>
@@ -193,9 +177,6 @@ namespace RacingGame.Helpers
             writer.Write(matrix.M43);
             writer.Write(matrix.M44);
         }
-        #endregion
-
-        #region Read Helpers
         /// <summary>
         /// Read vector3 from stream
         /// </summary>
@@ -257,6 +238,5 @@ namespace RacingGame.Helpers
                 reader.ReadSingle(),
                 reader.ReadSingle());
         }
-        #endregion
     }
 }

@@ -1,13 +1,9 @@
-#region File Description
 //-----------------------------------------------------------------------------
 // Track.cs
 //
 // Microsoft XNA Community Game Platform
 // Copyright (C) Microsoft Corporation. All rights reserved.
 //-----------------------------------------------------------------------------
-#endregion
-
-#region Using directives
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
@@ -19,7 +15,6 @@ using RacingGame.Landscapes;
 using RacingGame.Shaders;
 using Model = RacingGame.Graphics.Model;
 using RacingGame.GameLogic;
-#endregion
 
 namespace RacingGame.Tracks
 {
@@ -30,7 +25,6 @@ namespace RacingGame.Tracks
     /// </summary>
     public class Track : TrackLine, IDisposable
     {
-        #region Constants
         /// <summary>
         /// Factor for streching the width of the road back texture, smaller
         /// values will strech the texture more. 1.0f means we use the same as
@@ -73,9 +67,6 @@ namespace RacingGame.Tracks
         /// Gap for signs, don't put them closer than this together.
         /// </summary>
         const float SignGap = 24;
-        #endregion
-
-        #region Variables
         /// <summary>
         /// Road material for the top of the road.
         /// </summary>
@@ -178,9 +169,6 @@ namespace RacingGame.Tracks
         /// Remember checkpoint segment positions for easier checkpoint checking.
         /// </summary>
         List<int> checkpointSegmentPositions = new List<int>();
-        #endregion
-
-        #region Properties
         /// <summary>
         /// Start position
         /// </summary>
@@ -251,9 +239,6 @@ namespace RacingGame.Tracks
                 return checkpointSegmentPositions;
             }
         }
-        #endregion
-
-        #region Constructor
         /// <summary>
         /// Create track
         /// </summary>
@@ -264,8 +249,6 @@ namespace RacingGame.Tracks
         {
             GenerateVerticesAndObjects(landscape);
         }
-
-        #region Reload
         /// <summary>
         /// Reload
         /// </summary>
@@ -279,15 +262,11 @@ namespace RacingGame.Tracks
 
             GenerateVerticesAndObjects(landscape);
         }
-        #endregion
-
-        #region GenerateVerticesAndObjects
         /// <summary>
         /// Generate vertices and objects
         /// </summary>
         private void GenerateVerticesAndObjects(Landscape landscape)
         {
-            #region Generate the road vertices
             // Each road segment gets 5 points:
             // left, left middle, middle, right middle, right.
             // The reason for this is that we would bad triangle errors if the
@@ -378,9 +357,6 @@ namespace RacingGame.Tracks
                 indices.Length,
                 BufferUsage.WriteOnly);
             roadIb.SetData(indices);
-            #endregion
-
-            #region Generate the road back vertices
             // We need 4 vertices per cross-section edge of the road back hull
             roadBackVertices = new TangentVertex[points.Count * 4];
             for (int num = 0; num < points.Count; num++)
@@ -477,9 +453,6 @@ namespace RacingGame.Tracks
                 backIndices.Length,
                 BufferUsage.WriteOnly);
             roadBackIb.SetData(backIndices);
-            #endregion
-
-            #region Generate the road tunnel vertices
             // Only generate tunnels for the parts were we want to have tunnels for.
             int totalTunnelLength = 0;
             foreach (RoadHelperPosition tunnelPos in helperPositions)
@@ -614,25 +587,14 @@ namespace RacingGame.Tracks
                     BufferUsage.WriteOnly);
                 roadTunnelIb.SetData(roadTunnelIndices);
             }
-            #endregion
-
-            #region Generate guard rails
             leftRail = new GuardRail(points, GuardRail.Modes.Left, landscape);
             rightRail = new GuardRail(points, GuardRail.Modes.Right, landscape);
-            #endregion
-
-            #region Generate columns
             columns = new TrackColumns(points, landscape);
-            #endregion
 
             GenerateObjectsForTrack(landscape);
         }
-        #endregion
-
-        #region GenerateObjectsForTrack
         private void GenerateObjectsForTrack(Landscape landscape)
         {
-            #region Generate palms and laterns for the road
             // Auto generate palms and laterns at the side of our road.
             float lastGap = 0;//PalmAndLaternGap;
             int generatedNum = 0;
@@ -769,9 +731,6 @@ namespace RacingGame.Tracks
                 // which will then be checked in the next loop.
                 lastGap -= distance;
             }
-            #endregion
-
-            #region Generate signs and checkpoints
             // Add the goal and start light models always!
             if (landscape != null)
             {
@@ -1012,9 +971,6 @@ namespace RacingGame.Tracks
                 lastGap -= distance;
                 signGap -= distance;
             }
-            #endregion
-
-            #region Add random landscape objects to fill our level up
             // Randomly generate, but don't collide with existing objects
             // or the track!
             for (int num = 0; num < points.Count; num += 2)
@@ -1083,12 +1039,7 @@ namespace RacingGame.Tracks
                         points[num].right, distance * (side ? 1 : -1));
                 }
             }
-            #endregion
         }
-        #endregion
-        #endregion
-
-        #region Dispose
         /// <summary>
         /// Dispose
         /// </summary>
@@ -1122,9 +1073,6 @@ namespace RacingGame.Tracks
                 columns.Dispose();
             }
         }
-        #endregion
-
-        #region Render
         /// <summary>
         /// Render
         /// </summary>
@@ -1220,9 +1168,6 @@ namespace RacingGame.Tracks
             // Restore culling (default is always counter clockwise)
             BaseGame.Device.RasterizerState = RasterizerState.CullCounterClockwise;
         }
-        #endregion
-
-        #region Generate and use shadow for the track
         /// <summary>
         /// Generate shadow
         /// </summary>
@@ -1272,9 +1217,6 @@ namespace RacingGame.Tracks
             //not required, we don't see near columns anyway:
             //columns.UseShadow();
         }
-        #endregion
-
-        #region Get track position matrix
         /// <summary>
         /// Get track position matrix, put in a value between 0 and 1 and
         /// you get a position on the track (0=start, 1=end).
@@ -1377,9 +1319,6 @@ namespace RacingGame.Tracks
                 TrackVertex.RoadWidthScale;
             return mat;
         }
-        #endregion
-
-        #region UpdateCarTrackPosition
         /// <summary>
         /// Update car track position
         /// </summary>
@@ -1467,6 +1406,5 @@ namespace RacingGame.Tracks
             // No tunnel found here
             return false;
         }
-        #endregion
     }
 }

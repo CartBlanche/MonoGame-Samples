@@ -1,13 +1,9 @@
-#region File Description
 //-----------------------------------------------------------------------------
 // PostScreenGlow.cs
 //
 // Microsoft XNA Community Game Platform
 // Copyright (C) Microsoft Corporation. All rights reserved.
 //-----------------------------------------------------------------------------
-#endregion
-
-#region Using directives
 using System;
 using System.Collections;
 using System.Text;
@@ -19,7 +15,6 @@ using Microsoft.Xna.Framework.Graphics;
 using Texture = RacingGame.Graphics.Texture;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework;
-#endregion
 
 namespace RacingGame.Shaders
 {
@@ -37,8 +32,6 @@ namespace RacingGame.Shaders
                 ColorDestinationBlend = Blend.Zero,
                 AlphaDestinationBlend = Blend.One
             };
-
-        #region Variables
         /// <summary>
         /// The shader effect filename for this shader.
         /// </summary>
@@ -61,9 +54,6 @@ namespace RacingGame.Shaders
         /// Helper texture for the screen border (darken the borders).
         /// </summary>
         private Texture screenBorderFadeoutMapTexture = null;
-        #endregion
-
-        #region Properties
         /// <summary>
         /// Last used radial blur scale factor
         /// </summary>
@@ -87,9 +77,6 @@ namespace RacingGame.Shaders
                 }
             }
         }
-        #endregion
-
-        #region Constructor
         /// <summary>
         /// Create post screen glow
         /// </summary>
@@ -100,9 +87,6 @@ namespace RacingGame.Shaders
             radialSceneMapTexture = new RenderToTexture(
                 RenderToTexture.SizeType.FullScreen);
         }
-        #endregion
-
-        #region Get parameters
         /// <summary>
         /// Reload
         /// </summary>
@@ -136,9 +120,6 @@ namespace RacingGame.Shaders
 
             radialBlurScaleFactor = effect.Parameters["radialBlurScaleFactor"];
         }
-        #endregion
-
-        #region Show
         /// <summary>
         /// Execute shaders and show result on screen, Start(..) must have been
         /// called before and the scene should be rendered to sceneMapTexture.
@@ -244,6 +225,5 @@ namespace RacingGame.Shaders
                 BaseGame.Device.DepthStencilState = DepthStencilState.Default;
             }
         }
-        #endregion
     }
 }

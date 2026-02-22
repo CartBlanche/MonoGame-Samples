@@ -1,13 +1,9 @@
-#region File Description
 //-----------------------------------------------------------------------------
 // SplashScreen.cs
 //
 // Microsoft XNA Community Game Platform
 // Copyright (C) Microsoft Corporation. All rights reserved.
 //-----------------------------------------------------------------------------
-#endregion
-
-#region Using directives
 using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
@@ -15,7 +11,6 @@ using System.Text;
 using RacingGame.Graphics;
 using RacingGame.GameLogic;
 using RacingGame.Shaders;
-#endregion
 
 namespace RacingGame.GameScreens
 {
@@ -24,7 +19,6 @@ namespace RacingGame.GameScreens
     /// </summary>
     class SplashScreen : IGameScreen
     {
-		#region Update
 		/// <summary>
 		/// Unimplemented
 		/// </summary>
@@ -33,9 +27,6 @@ namespace RacingGame.GameScreens
 		{
 
 		}
-		#endregion
-
-        #region RenderSplashScreen
         /// <summary>
         /// Render splash screen
         /// </summary>
@@ -67,6 +58,5 @@ namespace RacingGame.GameScreens
                 Input.KeyboardEscapeJustPressed ||
                 Input.GamePadStartPressed;
         }
-        #endregion
     }
 }

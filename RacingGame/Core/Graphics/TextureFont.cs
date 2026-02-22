@@ -1,20 +1,15 @@
-#region File Description
 //-----------------------------------------------------------------------------
 // TextureFont.cs
 //
 // Microsoft XNA Community Game Platform
 // Copyright (C) Microsoft Corporation. All rights reserved.
 //-----------------------------------------------------------------------------
-#endregion
-
-#region Using directives
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
 using System.Text;
 using RacingGame.Helpers;
-#endregion
 
 namespace RacingGame.Graphics
 {
@@ -29,7 +24,6 @@ namespace RacingGame.Graphics
     /// </summary>
     class TextureFont : IDisposable
     {
-        #region Constants
         /// <summary>
         /// Game font filename for our bitmap.
         /// </summary>
@@ -160,9 +154,6 @@ namespace RacingGame.Graphics
             new Rectangle(227, 216, 10, 9),
             new Rectangle(237, 216, 18, 17),
         };
-        #endregion
-
-        #region Variables
         /// <summary>
         /// Font texture
         /// </summary>
@@ -171,9 +162,6 @@ namespace RacingGame.Graphics
         /// Font sprite
         /// </summary>
         SpriteBatch fontSprite;
-        #endregion
-
-        #region Properties
         /// <summary>
         /// Height
         /// </summary>
@@ -185,9 +173,6 @@ namespace RacingGame.Graphics
                 return BaseGame.YToRes1050(FontHeight - SubRenderHeight);
             }
         }
-        #endregion
-
-        #region Constructor
         /// <summary>
         /// Create texture font
         /// </summary>
@@ -196,9 +181,6 @@ namespace RacingGame.Graphics
             fontTexture = new Texture(GameFontFilename);
             fontSprite = new SpriteBatch(BaseGame.Device);
         }
-        #endregion
-
-        #region Dispose
         /// <summary>
         /// Dispose
         /// </summary>
@@ -222,9 +204,6 @@ namespace RacingGame.Graphics
                     fontSprite.Dispose();
             }
         }
-        #endregion
-
-        #region Get text width
         /// <summary>
         /// Get the text width of a given text.
         /// </summary>
@@ -244,16 +223,11 @@ namespace RacingGame.Graphics
             }
             return width;
         }
-        #endregion
-
-        #region Write methods
-        #region FontToRender helper class
         /// <summary>
         /// TextureFont to render
         /// </summary>
         internal class FontToRender
         {
-            #region Variables
             /// <summary>
             /// X and y position
             /// </summary>
@@ -270,9 +244,6 @@ namespace RacingGame.Graphics
             /// Scale, usually just 1
             /// </summary>
             public float scale;
-            #endregion
-
-            #region Constructor
             /// <summary>
             /// Create font to render
             /// </summary>
@@ -305,9 +276,7 @@ namespace RacingGame.Graphics
                 color = setColor;
                 scale = setScale;
             }
-            #endregion
         }
-        #endregion
 
         /// <summary>
         /// Remember font texts to render to render them all at once
@@ -387,9 +356,6 @@ namespace RacingGame.Graphics
                 ((Math.Abs(timeMilliseconds) / 10) % 100).ToString("00"),
                 col);
         }
-        #endregion
-
-        #region Write all
         /// <summary>
         /// Write all
 		/// Draws the added texts to the screen.
@@ -450,6 +416,5 @@ namespace RacingGame.Graphics
 
             remTexts.Clear();
         }
-        #endregion
     }
 }

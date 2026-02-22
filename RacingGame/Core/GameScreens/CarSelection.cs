@@ -1,13 +1,9 @@
-#region File Description
 //-----------------------------------------------------------------------------
 // CarSelection.cs
 //
 // Microsoft XNA Community Game Platform
 // Copyright (C) Microsoft Corporation. All rights reserved.
 //-----------------------------------------------------------------------------
-#endregion
-
-#region Using directives
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
@@ -19,7 +15,6 @@ using RacingGame.Sounds;
 using Texture = RacingGame.Graphics.Texture;
 using RacingGame.Shaders;
 using RacingGame.Properties;
-#endregion
 
 namespace RacingGame.GameScreens
 {
@@ -29,7 +24,6 @@ namespace RacingGame.GameScreens
     /// <returns>IGame screen</returns>
     class CarSelection : IGameScreen
     {
-        #region Car type variables (max speed, acceleration, etc.)
         /// <summary>
         /// Max speed for each car type
         /// </summary>
@@ -69,9 +63,6 @@ namespace RacingGame.GameScreens
                 CarPhysics.DefaultMaxAccelerationPerSec, // 5 m/s^2
             };
         // Rest of car variables is automatically calculated below!
-        #endregion
-
-		#region Update
 		/// <summary>
 		/// Unimplemented
 		/// </summary>
@@ -80,9 +71,6 @@ namespace RacingGame.GameScreens
 		{
 
 		}
-		#endregion
-
-		#region Render
 		/// <summary>
         /// Render
         /// </summary>
@@ -347,10 +335,6 @@ namespace RacingGame.GameScreens
 
             return false;
         }
-        #endregion
-
-        #region PostUIRender
-        #region Helpers
         /// <summary>
         /// Helper for rotating the 3 cars in the car selection screen.
         /// </summary>
@@ -411,9 +395,6 @@ namespace RacingGame.GameScreens
 
             return rot;
         }
-        #endregion
-
-        #region Show car properties bar
         Rectangle gfxBarFromOptionsScreen = new Rectangle(
             372, 297, 472, 6);
         /// <summary>
@@ -435,7 +416,6 @@ namespace RacingGame.GameScreens
                 BaseGame.XToRes((int)(192 * value)), BaseGame.YToRes(6)),
                 gfxBarFromOptionsScreen);
         }
-        #endregion
 
         /// <summary>
         /// Post user interface render
@@ -503,6 +483,5 @@ namespace RacingGame.GameScreens
             BaseGame.WorldMatrix = Matrix.Identity;
             BaseGame.ViewMatrix = remViewMatrix;
         }
-        #endregion
     }
 }

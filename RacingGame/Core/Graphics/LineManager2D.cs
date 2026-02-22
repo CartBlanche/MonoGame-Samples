@@ -1,13 +1,9 @@
-#region File Description
 //-----------------------------------------------------------------------------
 // LineManager2D.cs
 //
 // Microsoft XNA Community Game Platform
 // Copyright (C) Microsoft Corporation. All rights reserved.
 //-----------------------------------------------------------------------------
-#endregion
-
-#region Unit Testing
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using RacingGame.Graphics;
@@ -16,7 +12,6 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using RacingGame.Shaders;
-#endregion
 
 namespace RacingGame.Graphics
 {
@@ -28,7 +23,6 @@ namespace RacingGame.Graphics
     /// </summary>
     public class LineManager2D : IDisposable
     {
-        #region Variables
         /// <summary>
         /// Number of lines used this frame, will be set to 0 when rendering.
         /// </summary>
@@ -48,7 +42,6 @@ namespace RacingGame.Graphics
         /// </summary>
         struct Line
         {
-            #region Variables
             /// <summary>
             /// Positions
             /// </summary>
@@ -57,9 +50,6 @@ namespace RacingGame.Graphics
             /// Color
             /// </summary>
             public Color color;
-            #endregion
-
-            #region Constructor
             /// <summary>
             /// Create line
             /// </summary>
@@ -73,9 +63,6 @@ namespace RacingGame.Graphics
                 endPoint = setEndPoint;
                 color = setColor;
             }
-            #endregion
-
-            #region Equals operators
             /// <summary>
             /// Are these two Lines equal?
             /// </summary>
@@ -116,7 +103,6 @@ namespace RacingGame.Graphics
             {
                 return 0; // Not supported or nessescary
             }
-            #endregion
         }
 
         /// <summary>
@@ -140,19 +126,12 @@ namespace RacingGame.Graphics
         /// Max. number of lines allowed.
         /// </summary>
         private const int MaxNumOfLines = 64;
-
-        #endregion
-
-        #region Constructor
         /// <summary>
         /// Create LineManager
         /// </summary>
         public LineManager2D()
         {
         }
-        #endregion
-
-        #region Dispose
         /// <summary>
         /// Dispose
         /// </summary>
@@ -169,9 +148,6 @@ namespace RacingGame.Graphics
         protected virtual void Dispose(bool disposing)
         {
         }
-        #endregion
-
-        #region Vertex buffer stuff
         /// <summary>
         /// Update vertex buffer
         /// </summary>
@@ -210,9 +186,6 @@ namespace RacingGame.Graphics
             // Vertex buffer was build
             buildVertexBuffer = false;
         }
-        #endregion
-
-        #region Add line
         /// <summary>
         /// Add line
         /// </summary>
@@ -265,9 +238,6 @@ namespace RacingGame.Graphics
                 new Point(endPoint.X, endPoint.Y + 1), Color.Black);
             AddLine(startPoint, endPoint, color);
         }
-        #endregion
-
-        #region Render
         /// <summary>
         /// Render all lines added this frame
         /// </summary>
@@ -297,6 +267,5 @@ namespace RacingGame.Graphics
             // Ok, finally reset numOfLines for next frame
             numOfLines = 0;
         }
-        #endregion
     }
 }

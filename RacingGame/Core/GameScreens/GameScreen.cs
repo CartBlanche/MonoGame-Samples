@@ -1,13 +1,9 @@
-#region File Description
 //-----------------------------------------------------------------------------
 // GameScreen.cs
 //
 // Microsoft XNA Community Game Platform
 // Copyright (C) Microsoft Corporation. All rights reserved.
 //-----------------------------------------------------------------------------
-#endregion
-
-#region Using directives
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -19,7 +15,6 @@ using RacingGame.Landscapes;
 using Microsoft.Xna.Framework;
 using RacingGame.Shaders;
 using RacingGame.Sounds;
-#endregion
 
 namespace RacingGame.GameScreens
 {
@@ -28,10 +23,6 @@ namespace RacingGame.GameScreens
     /// </summary>
     class GameScreen : IGameScreen
     {
-        #region Variables
-        #endregion
-
-        #region Constructor
         /// <summary>
         /// Create game screen
         /// </summary>
@@ -53,9 +44,6 @@ namespace RacingGame.GameScreens
             // Play game music
             Sound.Play(Sound.Sounds.GameMusic);
         }
-        #endregion
-
-		#region Update
 		/// <summary>
 		/// Unimplemented
 		/// </summary>
@@ -64,9 +52,6 @@ namespace RacingGame.GameScreens
 		{
 
 		}
-		#endregion
-
-		#region Render
 		/// <summary>
         /// Render game screen. Called each frame.
         /// </summary>
@@ -164,6 +149,5 @@ namespace RacingGame.GameScreens
 
             return false;
         }
-        #endregion
     }
 }

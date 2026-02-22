@@ -1,13 +1,9 @@
-#region File Description
 //-----------------------------------------------------------------------------
 // GuardRail.cs
 //
 // Microsoft XNA Community Game Platform
 // Copyright (C) Microsoft Corporation. All rights reserved.
 //-----------------------------------------------------------------------------
-#endregion
-
-#region Using directives
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
@@ -17,7 +13,6 @@ using RacingGame.Graphics;
 using RacingGame.Shaders;
 using Model = RacingGame.Graphics.Model;
 using RacingGame.Landscapes;
-#endregion
 
 namespace RacingGame.Tracks
 {
@@ -26,8 +21,6 @@ namespace RacingGame.Tracks
     /// </summary>
     class GuardRail : IDisposable
     {
-        #region Constants
-        #region Guardrail vertices
         /// <summary>
         /// Guard rail vertices, determinted with help of the unit test below!
         /// </summary>
@@ -103,7 +96,6 @@ namespace RacingGame.Tracks
                 new Vector3(10, 0, -105), new Vector2(0.0f, 1 - 0.003053f),
                 new Vector3(-0.382683f, 0, -0.923880f), new Vector3(0, -1, 0)),
             };
-        #endregion
 
         /// <summary>
         /// Downscale factor for the vertices.
@@ -130,9 +122,6 @@ namespace RacingGame.Tracks
         /// </summary>
         static readonly Vector3 HolderPileCorrectionVector =
             new Vector3(0.225f, 0, 0);
-        #endregion
-
-        #region Modes enum
         /// <summary>
         /// We got 2 modes for a guard rail, left and right, depending
         /// on with side of the road we want to have it.
@@ -142,9 +131,6 @@ namespace RacingGame.Tracks
             Left,
             Right,
         }
-        #endregion
-
-        #region Variables
         /// <summary>
         /// Rail points for the whole guard rail.
         /// </summary>
@@ -168,9 +154,6 @@ namespace RacingGame.Tracks
         /// </summary>
         List<Matrix> holderPileMatrices = new List<Matrix>();
          */
-        #endregion
-
-        #region Constructor
         /// <summary>
         /// Create guard rail
         /// </summary>
@@ -180,7 +163,6 @@ namespace RacingGame.Tracks
         public GuardRail(List<TrackVertex> points, Modes mode,
             Landscape landscape)
         {
-            #region Generate guardrail points
             // First generate a list of points at the side of the road where
             // we are going to generate all the guard rail vertices.
             // Note: We use only half as much points as points provides!
@@ -215,9 +197,6 @@ namespace RacingGame.Tracks
                         railPoints[num].right * InsideRoadDistance;
                 }
             }
-            #endregion
-
-            #region Generate vertex buffer
             railVertices =
                 new TangentVertex[railPoints.Length * GuardRailVertices.Length];
 
@@ -348,9 +327,6 @@ namespace RacingGame.Tracks
                 railVertices.Length,
                 BufferUsage.WriteOnly);
             railVb.SetData(railVertices);
-            #endregion
-
-            #region GenerateIndexBuffer
             // Count of quads (polygons) which creates the current guardrail segment
             int quadPolysPerStrip = GuardRailVertices.Length - 1;
             int[] indices =
@@ -395,19 +371,12 @@ namespace RacingGame.Tracks
                 indices.Length,
                 BufferUsage.WriteOnly);
             railIb.SetData(indices);
-            #endregion
         }
-        #endregion
-
-        #region Dispose
         public void Dispose()
         {
             railVb.Dispose();
             railIb.Dispose();
         }
-        #endregion
-
-        #region Render
         /// <summary>
         /// Render
         /// </summary>
@@ -447,9 +416,6 @@ namespace RacingGame.Tracks
                 PrimitiveType.TriangleList,
                 0, 0, (GuardRailVertices.Length - 1) * (railPoints.Length - 1) * 2);
         }
-        #endregion
-
-        #region Generate and use shadow for the guard rails
         /// <summary>
         /// Generate shadow
         /// </summary>
@@ -467,6 +433,5 @@ namespace RacingGame.Tracks
             // Receive shadow on the guard rails
             RenderGuardRailVertices();
         }
-        #endregion
     }
 }

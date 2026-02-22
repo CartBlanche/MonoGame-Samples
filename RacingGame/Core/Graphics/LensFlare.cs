@@ -1,13 +1,9 @@
-#region File Description
 //-----------------------------------------------------------------------------
 // LensFlare.cs
 //
 // Microsoft XNA Community Game Platform
 // Copyright (C) Microsoft Corporation. All rights reserved.
 //-----------------------------------------------------------------------------
-#endregion
-
-#region Using directives
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -18,7 +14,6 @@ using RacingGame.Graphics;
 using RacingGame.GameLogic;
 using Material = RacingGame.Graphics.Material;
 using Microsoft.Xna.Framework.Graphics;
-#endregion
 
 namespace RacingGame.Graphics
 {
@@ -37,7 +32,6 @@ namespace RacingGame.Graphics
     /// </summary>
     public class LensFlare : IDisposable
     {
-        #region Variables
         /// <summary>
         /// Default sun position!
         /// </summary>
@@ -125,9 +119,6 @@ namespace RacingGame.Graphics
             for (int num = 0; num < NumberOfFlareTypes; num++)
                 flareTextures[num] = new Texture(flareTextureNames[num]);
         }
-        #endregion
-
-        #region Flare data struct
         /// <summary>
         /// Flare data struct for the quick and easy flare type list below.
         /// </summary>
@@ -229,9 +220,6 @@ namespace RacingGame.Graphics
             new FlareData(
             CircleType, -1.0f, 0.15f, new Color(60, 60, 255, 85)),
         }; // flareTypes[]
-        #endregion
-
-        #region Properties
         /// <summary>
         /// Origin 3D
         /// </summary>
@@ -247,9 +235,6 @@ namespace RacingGame.Graphics
                 return lensOrigin3D;
             }
         }
-        #endregion
-
-        #region Constructors
         /// <summary>
         /// Create lens flare base
         /// </summary>
@@ -258,9 +243,6 @@ namespace RacingGame.Graphics
             lensOrigin3D = setLensOrigin3D;
             LoadTextures();
         }
-        #endregion
-
-        #region Dispose
         /// <summary>
         /// Dispose
         /// </summary>
@@ -283,9 +265,6 @@ namespace RacingGame.Graphics
                         flareTextures[num].Dispose();
             }
         }
-        #endregion
-
-        #region Render
         /// <summary>
         /// Current sun intensity used for our lens flare effect.
         /// </summary>
@@ -362,6 +341,5 @@ namespace RacingGame.Graphics
                     BlendState.Additive);
             }
         }
-        #endregion
     }
 }

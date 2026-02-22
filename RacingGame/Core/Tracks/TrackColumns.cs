@@ -1,13 +1,9 @@
-#region File Description
 //-----------------------------------------------------------------------------
 // TrackColumns.cs
 //
 // Microsoft XNA Community Game Platform
 // Copyright (C) Microsoft Corporation. All rights reserved.
 //-----------------------------------------------------------------------------
-#endregion
-
-#region Using directives
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
@@ -17,7 +13,6 @@ using RacingGame.Graphics;
 using Model = RacingGame.Graphics.Model;
 using RacingGame.Landscapes;
 using RacingGame.Shaders;
-#endregion
 
 namespace RacingGame.Tracks
 {
@@ -26,8 +21,6 @@ namespace RacingGame.Tracks
     /// </summary>
     class TrackColumns : IDisposable
     {
-        #region Constants
-        #region Guardrail vertices
         /// <summary>
         /// Column vertices, just a simple circle!
         /// </summary>
@@ -63,7 +56,6 @@ namespace RacingGame.Tracks
                 new Vector3(1, 0, 0), new Vector2(6.0f / 6.0f, 0.0f),
                 new Vector3(1, 0, 0), new Vector3(0, 0, -1)),
             };
-        #endregion
 
         /// <summary>
         /// Gap between the seperate piles.
@@ -85,9 +77,6 @@ namespace RacingGame.Tracks
         /// we don't want them to come through the road.
         /// </summary>
         const float TopColumnSubHeight = 0.55f;
-        #endregion
-
-        #region Variables
         /// <summary>
         /// Column position list.
         /// </summary>
@@ -104,9 +93,6 @@ namespace RacingGame.Tracks
         /// Index buffer orf guard rail.
         /// </summary>
         IndexBuffer columnIb = null;
-        #endregion
-
-        #region Constructor
         /// <summary>
         /// Create track columns
         /// </summary>
@@ -116,8 +102,6 @@ namespace RacingGame.Tracks
         {
             if (landscape == null)
                 return;
-
-            #region Find out column positions
             float lastColumnsDistance = ColumnsDistance;
             List<Matrix> columnPointSpacesTop = new List<Matrix>();
             List<Matrix> columnPointSpacesBottom = new List<Matrix>();
@@ -199,9 +183,6 @@ namespace RacingGame.Tracks
                 // which will then be checked in the next loop.
                 lastColumnsDistance -= distance;
             }
-            #endregion
-
-            #region Generate vertex buffer
             columnVertices = new TangentVertex[
                 columnPositions.Count * BaseColumnVertices.Length * 2];
 
@@ -276,9 +257,6 @@ namespace RacingGame.Tracks
                 columnVertices.Length,
                 BufferUsage.WriteOnly);
             columnVb.SetData(columnVertices);
-            #endregion
-
-            #region GenerateIndexBuffer
             // Count of quads (polygons) we have for each column
             int quadPolysPerColumn = BaseColumnVertices.Length - 1;
             int[] indices =
@@ -325,19 +303,12 @@ namespace RacingGame.Tracks
                 indices.Length,
                 BufferUsage.WriteOnly);
             columnIb.SetData(indices);
-            #endregion
         }
-        #endregion
-
-        #region Dispose
         public void Dispose()
         {
             columnVb.Dispose();
             columnIb.Dispose();
         }
-        #endregion
-
-        #region Render
         /// <summary>
         /// Render
         /// </summary>
@@ -381,6 +352,5 @@ namespace RacingGame.Tracks
                 0, 0, (BaseColumnVertices.Length - 1) *
                 columnPositions.Count * 2);
         }
-        #endregion
     }
 }
