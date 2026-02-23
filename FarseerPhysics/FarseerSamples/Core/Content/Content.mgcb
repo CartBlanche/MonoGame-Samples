@@ -4,7 +4,7 @@
 /intermediateDir:obj/$(Platform)
 /platform:$(Platform)
 /config:
-/profile:Reach
+/profile:HiDef
 /compress:False
 
 #-------------------------------- References --------------------------------#
