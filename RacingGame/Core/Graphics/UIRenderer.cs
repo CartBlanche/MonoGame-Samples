@@ -261,9 +261,9 @@ namespace RacingGame.Graphics
         /// </summary>
         public UIRenderer()
         {
-            background = new Texture("background");
-            buttons = new Texture("buttons");
-            headers = new Texture("headers");
+            background = new Texture("Background");
+            buttons = new Texture("Buttons");
+            headers = new Texture("Headers");
 #if XBOX360
             helpScreen = new Texture("HelpScreenXbox360");
             optionsScreen = new Texture("OptionsScreenXbox360");
@@ -273,9 +273,9 @@ namespace RacingGame.Graphics
 #endif
             mouseCursor = new Texture("MouseCursor");
             ingame = new Texture("Ingame");
-            trophies[0] = new Texture("pokal1");
-            trophies[1] = new Texture("pokal2");
-            trophies[2] = new Texture("pokal3");
+            trophies[0] = new Texture("Pokal1");
+            trophies[1] = new Texture("Pokal2");
+            trophies[2] = new Texture("Pokal3");
             font = new TextureFont();
 
 			postScreenMenuShader = new PostScreenMenu();

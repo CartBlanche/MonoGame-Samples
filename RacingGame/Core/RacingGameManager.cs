@@ -376,7 +376,7 @@ namespace RacingGame
             carTextures[1] = new Texture("RacerCar2");
             carTextures[2] = new Texture("RacerCar3");
             colorSelectionTexture = new Texture("ColorSelection");
-            brakeTrackMaterial = new Material("track");
+            brakeTrackMaterial = new Material("Track");
 
             LoadEvent("All systems go!", null);
             Task.Delay(1000).Wait();

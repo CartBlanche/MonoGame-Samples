@@ -8,8 +8,6 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.IO;
-using RacingGame;
-using RacingGame.GameLogic;
 using RacingGame.Helpers;
 
 namespace RacingGame.Graphics
@@ -17,7 +15,7 @@ namespace RacingGame.Graphics
     /// <summary>
     /// Texture class helping you with using DirectX Textures and handling
     /// possible errors that can happen while loading (stupid DirectX
-    /// error messages telling you absolutly nothing, so a lot of pre-checks
+    /// error messages telling you absolutely nothing, so a lot of pre-checks
     /// help you determinate the error before even calling DirectX methods).
     /// </summary>
     public class Texture : IDisposable
@@ -35,10 +33,7 @@ namespace RacingGame.Graphics
         /// </summary>
         public string Filename
         {
-            get
-            {
-                return texFilename;
-            }
+            get { return texFilename; }
         }
 
         /// <summary>
@@ -103,8 +98,8 @@ namespace RacingGame.Graphics
         protected void CalcHalfPixelSize()
         {
             precaledHalfPixelSize = new Vector2(
-                (1.0f / (float)texWidth) / 2.0f,
-                (1.0f / (float)texHeight) / 2.0f);
+                (1.0f / texWidth) / 2.0f,
+                (1.0f / texHeight) / 2.0f);
         }
 
         /// <summary>
@@ -147,7 +142,7 @@ namespace RacingGame.Graphics
         /// <summary>
         /// Has alpha?
         /// </summary>
-        protected bool hasAlpha = false;
+        private bool hasAlpha;
         /// <summary>
         /// Has texture alpha information?
         /// </summary>
@@ -159,10 +154,10 @@ namespace RacingGame.Graphics
             }
         }
         /// <summary>
-        /// Create texture from given filename.
+        /// Create texture from a given filename.
         /// </summary>
         /// <param name="setFilename">Set filename, must be relative and be a
-        /// valid file in the textures directory.</param>
+        /// valid file in the Textures directory.</param>
         public Texture(string setFilename)
         {
             if (alphaSprite == null)
@@ -172,7 +167,7 @@ namespace RacingGame.Graphics
                 additiveSprite = new SpriteBatch(BaseGame.Device);
 
             if (String.IsNullOrEmpty(setFilename))
-                throw new ArgumentNullException("setFilename",
+                throw new ArgumentNullException(nameof(setFilename),
                     "Unable to create texture without valid filename.");
 
             // Set content name (cut off extension!)
@@ -216,7 +211,7 @@ namespace RacingGame.Graphics
                 additiveSprite = new SpriteBatch(BaseGame.Device);
 
             if (tex == null)
-                throw new ArgumentNullException("tex");
+                throw new ArgumentNullException(nameof(tex));
 
             internalXnaTexture = tex;
 
@@ -391,12 +386,14 @@ namespace RacingGame.Graphics
                 alphaSprite.Draw(internalXnaTexture, rect, pixelRect, color);
             //SpriteHelper.AddSpriteToRender(this, rect, pixelRect, color, blendState);
         }
+
         /// <summary>
         /// Render on screen with rotation
         /// </summary>
-        /// <param name="pos">Position</param>
+        /// <param name="rect"></param>
         /// <param name="pixelRect">Pixel rectangle</param>
         /// <param name="rotation">Rotation</param>
+        /// <param name="rotationPoint"></param>
         public void RenderOnScreenWithRotation(
             Rectangle rect, Rectangle pixelRect,
             float rotation, Vector2 rotationPoint)

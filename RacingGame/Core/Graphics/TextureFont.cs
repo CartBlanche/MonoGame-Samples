@@ -27,7 +27,7 @@ namespace RacingGame.Graphics
         /// <summary>
         /// Game font filename for our bitmap.
         /// </summary>
-        const string GameFontFilename = "GameFont.png";
+        const string GameFontFilename = "GameFont";
 
         /// <summary>
         /// Font height

@@ -113,7 +113,7 @@ namespace RacingGame.Shaders
 
             // Load screen border texture
             screenBorderFadeoutMap = effect.Parameters["screenBorderFadeoutMap"];
-            screenBorderFadeoutMapTexture = new Texture("ScreenBorderFadeout.dds");
+            screenBorderFadeoutMapTexture = new Texture("ScreenBorderFadeout");
             // Set texture
             screenBorderFadeoutMap.SetValue(
                 screenBorderFadeoutMapTexture.XnaTexture);
