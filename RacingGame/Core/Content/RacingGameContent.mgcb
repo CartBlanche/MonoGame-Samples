@@ -1391,7 +1391,7 @@
 /processorParam:TextureFormat=Color
 /build:Textures/Ast_Normal.tga
 
-#begin Textures/background.png
+#begin Textures/Background.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -1401,9 +1401,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Textures/background.png
+/build:Textures/Background.png
 
-#begin Textures/banner.tga
+#begin Textures/Banner.tga
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -1413,9 +1413,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Textures/banner.tga
+/build:Textures/Banner.tga
 
-#begin Textures/banner2.tga
+#begin Textures/Banner2.tga
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -1425,9 +1425,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Textures/banner2.tga
+/build:Textures/Banner2.tga
 
-#begin Textures/banner3.tga
+#begin Textures/Banner3.tga
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -1437,9 +1437,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Textures/banner3.tga
+/build:Textures/Banner3.tga
 
-#begin Textures/bannerNormal.tga
+#begin Textures/BannerNormal.tga
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -1449,7 +1449,7 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Textures/bannerNormal.tga
+/build:Textures/BannerNormal.tga
 
 #begin Textures/Blockade.tga
 /importer:TextureImporter
@@ -1487,7 +1487,7 @@
 /processorParam:TextureFormat=Color
 /build:Textures/Building.tga
 
-#begin Textures/building2.tga
+#begin Textures/Building2.tga
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -1497,9 +1497,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Textures/building2.tga
+/build:Textures/Building2.tga
 
-#begin Textures/building2Normal.tga
+#begin Textures/Building2Normal.tga
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -1509,9 +1509,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Textures/building2Normal.tga
+/build:Textures/Building2Normal.tga
 
-#begin Textures/building3.tga
+#begin Textures/Building3.tga
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -1521,9 +1521,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Textures/building3.tga
+/build:Textures/Building3.tga
 
-#begin Textures/building3Normal.tga
+#begin Textures/Building3Normal.tga
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -1533,9 +1533,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Textures/building3Normal.tga
+/build:Textures/Building3Normal.tga
 
-#begin Textures/building4.tga
+#begin Textures/Building4.tga
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -1545,9 +1545,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Textures/building4.tga
+/build:Textures/Building4.tga
 
-#begin Textures/building4Normal.tga
+#begin Textures/Building4Normal.tga
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -1557,9 +1557,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Textures/building4Normal.tga
+/build:Textures/Building4Normal.tga
 
-#begin Textures/building5.tga
+#begin Textures/Building5.tga
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -1569,9 +1569,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Textures/building5.tga
+/build:Textures/Building5.tga
 
-#begin Textures/building5Normal.tga
+#begin Textures/Building5Normal.tga
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -1581,9 +1581,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Textures/building5Normal.tga
+/build:Textures/Building5Normal.tga
 
-#begin Textures/buildingNormal.tga
+#begin Textures/BuildingNormal.tga
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -1593,9 +1593,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Textures/buildingNormal.tga
+/build:Textures/BuildingNormal.tga
 
-#begin Textures/buttons.png
+#begin Textures/Buttons.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -1605,7 +1605,7 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Textures/buttons.png
+/build:Textures/Buttons.png
 
 #begin Textures/CarSelectionPlate.tga
 /importer:TextureImporter
@@ -1715,7 +1715,7 @@
 /processorParam:TextureFormat=Color
 /build:Textures/GameFont.png
 
-#begin Textures/garbagecan.tga
+#begin Textures/Garbagecan.tga
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -1725,9 +1725,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Textures/garbagecan.tga
+/build:Textures/Garbagecan.tga
 
-#begin Textures/garbagecanNormal.tga
+#begin Textures/GarbagecanNormal.tga
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -1737,9 +1737,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Textures/garbagecanNormal.tga
+/build:Textures/GarbagecanNormal.tga
 
-#begin Textures/gelaender.tga
+#begin Textures/Gelaender.tga
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -1749,9 +1749,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Textures/gelaender.tga
+/build:Textures/Gelaender.tga
 
-#begin Textures/gelaenderNormal.tga
+#begin Textures/GelaenderNormal.tga
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -1761,7 +1761,7 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Textures/gelaenderNormal.tga
+/build:Textures/GelaenderNormal.tga
 
 #begin Textures/Glow.tga
 /importer:TextureImporter
@@ -1811,7 +1811,7 @@
 /processorParam:TextureFormat=Color
 /build:Textures/Halo.tga
 
-#begin Textures/headers.png
+#begin Textures/Headers.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -1821,7 +1821,7 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Textures/headers.png
+/build:Textures/Headers.png
 
 #begin Textures/HelpScreenWindows.png
 /importer:TextureImporter
@@ -1895,7 +1895,7 @@
 /processorParam:TextureFormat=Color
 /build:Textures/HydrantNormal.tga
 
-#begin Textures/ingame.png
+#begin Textures/Ingame.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -1905,7 +1905,7 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Textures/ingame.png
+/build:Textures/Ingame.png
 
 #begin Textures/Kaktus.tga
 /importer:TextureImporter
@@ -1979,7 +1979,7 @@
 /processorParam:TextureFormat=Color
 /build:Textures/KaktusSegNormal.tga
 
-#begin Textures/ladyluck.tga
+#begin Textures/Ladyluck.tga
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -1989,9 +1989,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Textures/ladyluck.tga
+/build:Textures/Ladyluck.tga
 
-#begin Textures/ladyluckNormal.tga
+#begin Textures/LadyluckNormal.tga
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -2001,7 +2001,7 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Textures/ladyluckNormal.tga
+/build:Textures/LadyluckNormal.tga
 
 #begin Textures/Landscape.tga
 /importer:TextureImporter
@@ -2303,7 +2303,7 @@
 /processorParam:TextureFormat=Color
 /build:Textures/PalmNormal.tga
 
-#begin Textures/plants.tga
+#begin Textures/Plants.tga
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -2313,9 +2313,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Textures/plants.tga
+/build:Textures/Plants.tga
 
-#begin Textures/plants_normal.tga
+#begin Textures/Plants_normal.tga
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -2325,9 +2325,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Textures/plants_normal.tga
+/build:Textures/Plants_normal.tga
 
-#begin Textures/plazacasino.tga
+#begin Textures/Plazacasino.tga
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -2337,9 +2337,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Textures/plazacasino.tga
+/build:Textures/Plazacasino.tga
 
-#begin Textures/plazacasinoNormal.tga
+#begin Textures/PlazacasinoNormal.tga
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -2349,9 +2349,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Textures/plazacasinoNormal.tga
+/build:Textures/PlazacasinoNormal.tga
 
-#begin Textures/plazaschild.tga
+#begin Textures/Plazaschild.tga
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -2361,9 +2361,21 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Textures/plazaschild.tga
+/build:Textures/Plazaschild.tga
+    
+#begin Textures/PlazaschildNormal.tga
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Textures/PlazaschildNormal.tga
 
-#begin Textures/plazaschildNormal.tga
+#begin Textures/Pokal1.tga
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -2373,9 +2385,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Textures/plazaschildNormal.tga
+/build:Textures/Pokal1.tga
 
-#begin Textures/pokal1.tga
+#begin Textures/Pokal2.tga
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -2385,9 +2397,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Textures/pokal1.tga
+/build:Textures/Pokal2.tga
 
-#begin Textures/pokal2.tga
+#begin Textures/Pokal3.tga
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -2397,19 +2409,7 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Textures/pokal2.tga
-
-#begin Textures/pokal3.tga
-/importer:TextureImporter
-/processor:TextureProcessor
-/processorParam:ColorKeyColor=255,0,255,255
-/processorParam:ColorKeyEnabled=True
-/processorParam:GenerateMipmaps=False
-/processorParam:PremultiplyAlpha=True
-/processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
-/processorParam:TextureFormat=Color
-/build:Textures/pokal3.tga
+/build:Textures/Pokal3.tga
 
 #begin Textures/RacerCar.tga
 /importer:TextureImporter
@@ -2567,7 +2567,7 @@
 /processorParam:TextureFormat=Color
 /build:Textures/RoadNormal.tga
 
-#begin Textures/roadsign1.tga
+#begin Textures/Roadsign1.tga
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -2577,9 +2577,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Textures/roadsign1.tga
+/build:Textures/Roadsign1.tga
 
-#begin Textures/roadsign1Normal.tga
+#begin Textures/Roadsign1Normal.tga
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -2589,9 +2589,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Textures/roadsign1Normal.tga
+/build:Textures/Roadsign1Normal.tga
 
-#begin Textures/roadsign2.tga
+#begin Textures/Roadsign2.tga
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -2601,9 +2601,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Textures/roadsign2.tga
+/build:Textures/Roadsign2.tga
 
-#begin Textures/roadsign2Normal.tga
+#begin Textures/Roadsign2Normal.tga
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -2613,7 +2613,7 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Textures/roadsign2Normal.tga
+/build:Textures/Roadsign2Normal.tga
 
 #begin Textures/RoadTunnel.tga
 /importer:TextureImporter
@@ -2639,7 +2639,7 @@
 /processorParam:TextureFormat=Color
 /build:Textures/RoadTunnelNormal.tga
 
-#begin Textures/ruin.tga
+#begin Textures/Ruin.tga
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -2649,7 +2649,7 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Textures/ruin.tga
+/build:Textures/Ruin.tga
 
 #begin Textures/Ruin01.tga
 /importer:TextureImporter
@@ -2675,7 +2675,7 @@
 /processorParam:TextureFormat=Color
 /build:Textures/Ruin01_Normal.tga
 
-#begin Textures/ruinNormal.tga
+#begin Textures/RuinNormal.tga
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -2685,7 +2685,7 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Textures/ruinNormal.tga
+/build:Textures/RuinNormal.tga
 
 #begin Textures/Schild.tga
 /importer:TextureImporter
@@ -2903,7 +2903,7 @@
 /processorParam:TextureFormat=Color
 /build:Textures/Streaks.tga
 
-#begin Textures/streetlamp.tga
+#begin Textures/Streetlamp.tga
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -2913,9 +2913,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Textures/streetlamp.tga
+/build:Textures/Streetlamp.tga
 
-#begin Textures/streetlamp2.tga
+#begin Textures/Streetlamp2.tga
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -2925,9 +2925,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Textures/streetlamp2.tga
+/build:Textures/Streetlamp2.tga
 
-#begin Textures/streetlamp2Normal.tga
+#begin Textures/Streetlamp2Normal.tga
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -2937,9 +2937,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Textures/streetlamp2Normal.tga
+/build:Textures/Streetlamp2Normal.tga
 
-#begin Textures/streetlampNormal.tga
+#begin Textures/StreetlampNormal.tga
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -2949,7 +2949,7 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Textures/streetlampNormal.tga
+/build:Textures/StreetlampNormal.tga
 
 #begin Textures/Sun.tga
 /importer:TextureImporter
@@ -2987,7 +2987,7 @@
 /processorParam:TextureFormat=Color
 /build:Textures/TLightNormal.tga
 
-#begin Textures/track.tga
+#begin Textures/Track.tga
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -2997,9 +2997,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Textures/track.tga
+/build:Textures/Track.tga
 
-#begin Textures/train.tga
+#begin Textures/Train.tga
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -3009,9 +3009,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Textures/train.tga
+/build:Textures/Train.tga
 
-#begin Textures/trainNormal.tga
+#begin Textures/TrainNormal.tga
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -3021,7 +3021,7 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Textures/trainNormal.tga
+/build:Textures/TrainNormal.tga
 
 #begin Textures/Trunk.tga
 /importer:TextureImporter
