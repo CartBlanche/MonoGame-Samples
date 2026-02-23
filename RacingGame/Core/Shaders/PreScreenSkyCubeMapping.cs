@@ -71,12 +71,24 @@ namespace RacingGame.Shaders
         {
             base.GetParameters();
             
-            // Load and set cube map texture
-            skyCubeMapTexture = BaseGame.Content.Load<TextureCube>(
-                Path.Combine(Directories.ContentDirectory,
-                 "Textures",
-                SkyCubeMapFilename));
-            diffuseTexture.SetValue(skyCubeMapTexture);
+            // Load and set cube map texture.
+            // On Android the DDS asset uses DXT1 compression which is not supported
+            // on GLES. Catch the failure so the rest of the game still loads;
+            // sky rendering and reflections will be skipped until the content
+            // pipeline is configured to produce an Android-compatible format.
+            try
+            {
+                skyCubeMapTexture = BaseGame.Content.Load<TextureCube>(
+                    Path.Combine(Directories.ContentDirectory,
+                     "Textures",
+                    SkyCubeMapFilename));
+                diffuseTexture.SetValue(skyCubeMapTexture);
+            }
+            catch (Exception ex)
+            {
+                Log.Write("SkyCubeMap load failed (likely unsupported DXT format on this platform): " + ex.Message);
+                skyCubeMapTexture = null;
+            }
 
             // Set sky color to nearly white
             AmbientColor = DefaultSkyColor;
@@ -88,6 +100,10 @@ namespace RacingGame.Shaders
         {
             // Can't render with shader if shader is not valid!
             if (this.Valid == false)
+                return;
+
+            // Texture failed to load (e.g. unsupported format on this platform).
+            if (skyCubeMapTexture == null)
                 return;
 
             // Don't use or write to the z buffer

@@ -217,11 +217,11 @@ namespace RacingGame.Shaders
             //    MultisampleCount = 0;
             //}
 
-            outSF = SurfaceFormat.Rgba64;
+            // Rgba64 is a HiDef-only format and is not available on Android or iOS.
+            // Android also does not reliably support MSAA on render targets.
+            outSF = OperatingSystem.IsAndroid() || OperatingSystem.IsIOS() ? SurfaceFormat.Color : SurfaceFormat.Rgba64;
             outDF = BaseGame.BackBufferDepthFormat;
-			outMSC = MultisampleCount;
-            //BaseGame.Device.Adapter.QueryRenderTargetFormat(BaseGame.Device.GraphicsProfile,
-            //    SurfaceFormat.Rgba64, BaseGame.BackBufferDepthFormat, MultisampleCount, out outSF, out outDF, out outMSC);
+            outMSC = OperatingSystem.IsAndroid() || OperatingSystem.IsIOS() ? 0 : MultisampleCount;
 
             if (sizeType == SizeType.ShadowMap)
                 outMSC = 0;
