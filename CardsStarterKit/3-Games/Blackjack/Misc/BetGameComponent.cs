@@ -1147,8 +1147,9 @@ namespace Blackjack
                     chip.AddAnimation(new TransitionGameComponentAnimation(
                         chip.CurrentPosition, positions[chipIndex])
                     {
-                        Duration = TimeSpan.FromSeconds(0.5),
+                        Duration = TimeSpan.FromSeconds(1.0),
                         StartDelay = delayBetweenChips * i,
+                        FinalScale = 1.0f / AnimationConstants.ChipDrawScaleMultiplier,
                         PerformWhenDone = isLastChip ? (object obj) =>
                         {
                             PlayWinningChipSound(obj);
@@ -1197,8 +1198,9 @@ namespace Blackjack
                     chip.AddAnimation(new TransitionGameComponentAnimation(
                         chip.CurrentPosition, positions[chipIndex])
                     {
-                        Duration = TimeSpan.FromSeconds(0.5),
+                        Duration = TimeSpan.FromSeconds(1.0),
                         StartDelay = delayBetweenChips * i,
+                        FinalScale = 1.0f / AnimationConstants.ChipDrawScaleMultiplier,
                         PerformWhenDone = isLastChip ? (object obj) =>
                         {
                             PlayWinningChipSound(obj);
