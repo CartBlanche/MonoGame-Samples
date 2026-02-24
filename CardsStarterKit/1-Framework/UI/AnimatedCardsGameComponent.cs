@@ -104,8 +104,10 @@ namespace CardsFramework
                         // Position + origin to center the rotation point
                         Vector2 centerPosition = CurrentPosition + origin;
 
+                        float drawScale = IsCard ? AnimationConstants.CardDrawScaleMultiplier : AnimationConstants.ChipDrawScaleMultiplier;
+                        float scale = drawScale * CurrentScale;
                         spriteBatch.Draw(CurrentFrame, centerPosition, null, Color,
-                            CurrentRotation, origin, 1f, SpriteEffects.None, 0f);
+                            CurrentRotation, origin, scale, SpriteEffects.None, 0f);
                     }
                 }
             }

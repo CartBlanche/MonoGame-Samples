@@ -69,15 +69,22 @@ namespace CardsFramework
                         // Using trickery and jiggery pokery instead of shaders.
 
                         // Shrink and widen the component to look like it is flipping
+                        // Use the card draw scale so the flip animates from the correct visual size
+                        float drawScale = Component.IsCard ? AnimationConstants.CardDrawScaleMultiplier : AnimationConstants.ChipDrawScaleMultiplier;
+                        int scaledWidth = (int)(texture.Width * drawScale);
+                        int scaledHeight = (int)(texture.Height * drawScale);
+
                         float widthPercent = (float)currentPercent / 100f;
-                        int newWidth = (int)(texture.Width - texture.Width * widthPercent * 2);
-                        int xOffset = (int)(Component.CurrentPosition.X + texture.Width * widthPercent);
+                        int newWidth = (int)(scaledWidth - scaledWidth * widthPercent * 2);
+                        int xOffset = (int)(Component.CurrentPosition.X + scaledWidth * widthPercent)
+                                      - (scaledWidth - texture.Width) / 2;
 
                         // 1. Add vertical scale bulge at midpoint (5% taller)
                         float normalizedPercent = (float)percent / 100f;
                         float verticalBulge = 1f + (0.05f * (1f - Math.Abs(normalizedPercent - 0.5f) * 2f));
-                        int newHeight = (int)(texture.Height * verticalBulge);
-                        int yOffset = (int)(Component.CurrentPosition.Y - (newHeight - texture.Height) / 2f);
+                        int newHeight = (int)(scaledHeight * verticalBulge);
+                        int yOffset = (int)(Component.CurrentPosition.Y - (newHeight - scaledHeight) / 2f)
+                                      - (scaledHeight - texture.Height) / 2;
 
                         // 2. Modulate color brightness during flip (darker at edges when "angled away")
                         float brightness = 1f - (Math.Abs(normalizedPercent - 0.5f) * 0.3f);

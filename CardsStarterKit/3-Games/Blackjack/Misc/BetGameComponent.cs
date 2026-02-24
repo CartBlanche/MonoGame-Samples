@@ -692,7 +692,8 @@ namespace Blackjack
                 AnimatedGameComponent chipComponent = new AnimatedGameComponent(cardGame,
                     chipsAssets[chipValue], spriteBatch, globalTransformation)
                 {
-                    Visible = false
+                    Visible = false,
+                    IsCard = false
                 };
 
                 Game.Components.Add(chipComponent);
@@ -1068,6 +1069,7 @@ namespace Blackjack
                         chipsAssets[chipValue], spriteBatch, globalTransformation)
                     {
                         Visible = false,
+                        IsCard = false,
                         CurrentPosition = dealerPosition
                     };
 
@@ -1471,7 +1473,8 @@ namespace Blackjack
             {
                 TextColor = Color.Black,
                 Enabled = true,
-                Visible = false
+                Visible = false,
+                IsCard = false
             };
 
             Game.Components.Add(chipComponent);

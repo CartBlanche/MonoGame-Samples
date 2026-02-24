@@ -29,8 +29,8 @@ namespace Blackjack
 
         // Card and chip scaling for 7 players (scaled down from 3 players)
         public const float CardScaleRatio = 0.65f;            // 65% of original size to fit 7 players
-        public const float ChipCircleRadiusRatio = 0.055f;    // ~40px radius at 720px height (was ~70px for 3 players)
-        public const float ChipScaleRatio = 0.7f;             // 70% of original chip size
+        public const float ChipCircleRadiusRatio = 0.041f;    // ~30px radius at 720px height (was ~40px, reduced 25%)
+        public const float ChipScaleRatio = 0.525f;           // 52.5% of original chip size (was 70%, reduced 25%)
         public const float RingOffsetYRatio = 0.153f;         // ~110px at 720px height - distance below card position for chip circle
 
         // Card dimensions and spacing (based on original card size 71x96)

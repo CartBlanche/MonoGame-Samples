@@ -47,6 +47,11 @@ namespace CardsFramework
         /// </summary>
         public float CurrentScale { get; set; } = 1.0f;
 
+        /// <summary>
+        /// When true, applies the 1.5x card scale multiplier. When false (chips), uses normal scaling.
+        /// </summary>
+        public bool IsCard { get; set; } = true;
+
         List<AnimatedGameComponentAnimation> runningAnimations =
             new List<AnimatedGameComponentAnimation>();
 
@@ -156,12 +161,16 @@ namespace CardsFramework
                     if (DrawShadow)
                     {
                         Vector2 shadowPosition = centerPosition + ShadowOffset;
+                        float cardShadowScale = IsCard ? AnimationConstants.CardDrawScaleMultiplier * AnimationConstants.ShadowDrawScaleMultiplier : AnimationConstants.ChipDrawScaleMultiplier * AnimationConstants.ShadowDrawScaleMultiplier;
+                        float shadowScale = cardShadowScale * CurrentScale;
                         spriteBatch.Draw(CurrentFrame, shadowPosition, CurrentSegment, Color.Black * 0.3f,
-                            CurrentRotation, origin, 1.05f * CurrentScale, SpriteEffects.None, 0f);
+                            CurrentRotation, origin, shadowScale, SpriteEffects.None, 0f);
                     }
 
+                    float drawScale = IsCard ? AnimationConstants.CardDrawScaleMultiplier : AnimationConstants.ChipDrawScaleMultiplier;
+                    float scale = drawScale * CurrentScale;
                     spriteBatch.Draw(CurrentFrame, centerPosition, CurrentSegment, Color,
-                        CurrentRotation, origin, 1f * CurrentScale, SpriteEffects.None, 0f);
+                        CurrentRotation, origin, scale, SpriteEffects.None, 0f);
 
                     if (Text != null)
                     {
