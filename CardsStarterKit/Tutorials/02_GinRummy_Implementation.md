@@ -20,7 +20,7 @@ Expect this to take 6-8 hours. It's **Intermediate** difficulty.
 
 ### The Game
 
-Gin Rummy is a classic two-player card game where you're trying to form melds (matched sets of cards) and minimise unmatched cards (called "deadwood").
+Gin Rummy is a classic multiplayer card game where you're trying to match sets of cards and minimise unmatched cards.
 
 **Setup:**
 - 2-4 players
