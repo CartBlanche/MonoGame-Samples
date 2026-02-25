@@ -2425,6 +2425,16 @@ namespace Blackjack
                 performWhenDone = HideInshurance;
             }
 
+            // Wrap PerformWhenDone: clear CurrentDestination so the card renders via
+            // CardDrawScaleMultiplier (1.25×) instead of the 1.0× destination rectangle
+            // left behind by ScaleGameComponentAnimation.
+            Action<object> capturedWhenDone = performWhenDone;
+            Action<object> whenDone = (obj) =>
+            {
+                passComponent.CurrentDestination = null;
+                capturedWhenDone?.Invoke(obj);
+            };
+
             // Add scale animation for the pass "card"
             passComponent.AddAnimation(new ScaleGameComponentAnimation(2.0f, 1.0f)
             {
@@ -2433,7 +2443,7 @@ namespace Blackjack
                 PerformBeforeStartArgs = passComponent,
                 StartDelay = TimeSpan.Zero,
                 Duration = TimeSpan.FromSeconds(1),
-                PerformWhenDone = performWhenDone
+                PerformWhenDone = whenDone
             });
         }
 
