@@ -112,6 +112,10 @@ namespace Blackjack
             // Stop the background music when exiting gameplay
             AudioManager.StopMusic();
 
+            // Remove all gameplay components (buttons, cards, chips, etc.) so they
+            // don't remain visible or interactive on whatever screen comes next.
+            blackJackGame?.RemoveAllGameplayComponents();
+
             base.UnloadContent();
         }
 

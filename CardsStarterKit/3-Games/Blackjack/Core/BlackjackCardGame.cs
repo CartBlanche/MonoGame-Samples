@@ -2694,14 +2694,11 @@ namespace Blackjack
         }
 
         /// <summary>
-        /// Handles the Click event of the back button.
+        /// Removes all gameplay components (buttons, cards, chips, etc.) from Game.Components,
+        /// leaving only the ScreenManager. Called when exiting gameplay for any reason.
         /// </summary>
-        /// <param name="sender">The source of the event.</param>
-        /// <param name="e">>The 
-        /// <see cref="System.EventArgs"/> instance containing the event data.</param>
-        void backButton_Click(object sender, EventArgs e)
+        public void RemoveAllGameplayComponents()
         {
-            // Remove all unnecessary components
             for (int componentIndex = 0; componentIndex < Game.Components.Count; componentIndex++)
             {
                 if (!(Game.Components[componentIndex] is ScreenManager))
@@ -2710,6 +2707,17 @@ namespace Blackjack
                     componentIndex--;
                 }
             }
+        }
+
+        /// <summary>
+        /// Handles the Click event of the back button.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">>The
+        /// <see cref="System.EventArgs"/> instance containing the event data.</param>
+        void backButton_Click(object sender, EventArgs e)
+        {
+            RemoveAllGameplayComponents();
 
             foreach (GameScreen screen in screenManager.GetScreens())
                 screen.ExitScreen();
