@@ -36,9 +36,14 @@ namespace Blackjack
         static readonly string soundAssetLocation = "Sounds";
         static readonly string musicAssetLocation = "Music";
 
-        // Audio Data        
+        // Audio Data
         Dictionary<string, SoundEffectInstance> soundBank;
         Dictionary<string, Song> musicBank;
+
+        // Playlist state
+        List<string> playlist;
+        int currentTrackIndex;
+        float currentVolumeMultiplier;
 
 
 
@@ -109,22 +114,24 @@ namespace Blackjack
             LoadSound("CardsShuffle", "Shuffle");
             LoadSound("Deal", "Deal");
 
+            // Downloaded from Pixabay's free sound library: https://pixabay.com/sound-effects/search/
             LoadSound("Click", "Click");
-
-            // TODO: Add card removal sound file to Content/Sounds/CardRemoval.wav
-            // LoadSound("CardRemoval", "CardRemoval");
+            LoadSound("Win", "Win");
+            LoadSound("CardRemoval", "CardRemoval");
         }
 
         /// <summary>
         /// Loads and organizes the music used by the game.
+        /// The load order defines the default playlist cycling order.
         /// </summary>
         public static void LoadMusic()
         {
-            // TODO: Add MenuMusic_Loop and InGameSong_Loop assets to Content/Music/
-            // LoadSong("InGameSong_Loop","InGameSong_Loop");
-            // LoadSong("MenuMusic_Loop","MenuMusic_Loop");
+            // Downloaded from Pixabay's free music library: https://pixabay.com/music/search/
+            LoadSong("sunsides-neo-soul-night-210447", "NeoSoul");
+            LoadSong("sunsides-jazzy-soul-207549", "JazzySoul");
 
-            LoadSong("Casino", "Casino");
+            // Default playlist order
+            audioManager.playlist = ["NeoSoul", "JazzySoul"];
         }
 
 
@@ -256,11 +263,10 @@ namespace Blackjack
             // If the music sound exists
             if (audioManager.musicBank.ContainsKey(musicSoundName))
             {
-                // Stop the old music sound
+                audioManager.playlist = null; // Single track — no playlist cycling
+
                 if (MediaPlayer.State != MediaState.Stopped)
-                {
                     MediaPlayer.Stop();
-                }
 
                 MediaPlayer.IsRepeating = true;
                 MediaPlayer.Volume = GameSettings.Instance.MusicVolume * MathHelper.Clamp(volumeMultiplier, 0f, 1f);
@@ -270,10 +276,55 @@ namespace Blackjack
         }
 
         /// <summary>
+        /// Starts cycling through the music playlist defined in LoadMusic().
+        /// Each track plays to completion before the next one begins, looping indefinitely.
+        /// </summary>
+        /// <param name="volumeMultiplier">Optional volume multiplier applied to MusicVolume setting (0.0 to 1.0). Default is 1.0.</param>
+        public static void PlayPlaylist(float volumeMultiplier = 1.0f)
+        {
+            if (audioManager.playlist == null || audioManager.playlist.Count == 0)
+                return;
+
+            audioManager.currentTrackIndex = 0;
+            audioManager.currentVolumeMultiplier = MathHelper.Clamp(volumeMultiplier, 0f, 1f);
+
+            audioManager.PlayCurrentTrack();
+        }
+
+        private void PlayCurrentTrack()
+        {
+            string alias = playlist[currentTrackIndex];
+            if (!musicBank.TryGetValue(alias, out Song song))
+                return;
+
+            if (MediaPlayer.State != MediaState.Stopped)
+                MediaPlayer.Stop();
+
+            MediaPlayer.IsRepeating = false;
+            MediaPlayer.Volume = GameSettings.Instance.MusicVolume * currentVolumeMultiplier;
+            MediaPlayer.Play(song);
+        }
+
+        /// <summary>
+        /// Advances to the next track when the current one finishes.
+        /// </summary>
+        public override void Update(GameTime gameTime)
+        {
+            base.Update(gameTime);
+
+            if (playlist != null && MediaPlayer.State == MediaState.Stopped)
+            {
+                currentTrackIndex = (currentTrackIndex + 1) % playlist.Count;
+                PlayCurrentTrack();
+            }
+        }
+
+        /// <summary>
         /// Stops the currently playing music.
         /// </summary>
         public static void StopMusic()
         {
+            audioManager.playlist = null; // Prevent Update() from restarting
             if (MediaPlayer.State != MediaState.Stopped)
             {
                 MediaPlayer.Stop();

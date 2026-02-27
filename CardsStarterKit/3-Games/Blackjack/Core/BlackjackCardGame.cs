@@ -1216,9 +1216,7 @@ namespace Blackjack
         /// <param name="obj"></param>
         void PlayCardRemovalSound(object obj)
         {
-            // TODO: Add card removal sound asset to Content/Sounds/CardRemoval.wav or .xnb
-            // Uncomment the line below once the sound asset is added:
-            // AudioManager.PlaySound("CardRemoval", pitch: (float)(random.NextDouble() * 0.1 - 0.05)); // Slight pitch variation
+            AudioManager.PlaySound("CardRemoval", pitch: (float)(random.NextDouble() * 0.1 - 0.05)); // Slight pitch variation
         }
 
         /// <summary>
@@ -1234,6 +1232,13 @@ namespace Blackjack
         void CueOverPlayerHand(BlackjackPlayer player, string assetName,
             HandTypes animationHand, AnimatedHandGameComponent waitForHand)
         {
+            int humanIndex = LocalPlayerIndex >= 0 ? LocalPlayerIndex : 0;
+            if (players.IndexOf(player) == humanIndex &&
+                (assetName == "win" || assetName == "blackjack"))
+            {
+                 AudioManager.PlaySound("Win");
+            }
+
             // Get the position of the relevant hand
             int playerIndex = players.IndexOf(player);
             AnimatedHandGameComponent currentAnimatedHand;

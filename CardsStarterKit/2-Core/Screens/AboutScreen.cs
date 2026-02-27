@@ -77,7 +77,7 @@ namespace Blackjack
                 "",
                 "Version 1.0",
                 "",
-                "Based on Microsoft XNA Community Game Platform",
+                "Based on Microsoft XNA Card Game Starter Kit",
                 "Modernized for MonoGame",
                 "",
                 "Features:",
@@ -85,6 +85,9 @@ namespace Blackjack
                 "- Multiple languages supported",
                 "- Customizable settings",
                 "- NPC opponents",
+                "",
+                "Thanks:",
+                "- Pixabay for Jazz Music, CardRemoval and Winning Sound effects",
                 "",
                 "Built with MonoGame",
                 "www.monogame.net"

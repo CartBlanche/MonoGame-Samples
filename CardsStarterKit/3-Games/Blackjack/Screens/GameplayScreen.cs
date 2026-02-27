@@ -99,7 +99,7 @@ namespace Blackjack
             showHints = settings.ShowHints;
 
             // Start gameplay background ambience
-            AudioManager.PlayMusic("Casino", volumeMultiplier: 0.25f);
+            AudioManager.PlayPlaylist(volumeMultiplier: 0.10f);
 
             base.LoadContent();
         }
