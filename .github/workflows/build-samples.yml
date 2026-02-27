@@ -37,9 +37,9 @@ jobs:
             brew update >/dev/null 2>&1 || true
             brew install jq >/dev/null 2>&1
           fi
-          # Find all Desktop platform csproj files: **/Platforms/Desktop/*.csproj (portable without mapfile)
+          # Find all Desktop platform csproj files: **/**/Desktop/*.csproj (portable without mapfile)
           desktop_projects_tmp=$(mktemp)
-          find . -type f -path '*/Platforms/Desktop/*.csproj' | sort > "$desktop_projects_tmp"
+          find . -type f -path '*/**/Desktop/*.csproj' | sort > "$desktop_projects_tmp"
           if [ ! -s "$desktop_projects_tmp" ]; then
             echo "No Desktop platform projects found."
             echo "projects=[]" >> "$GITHUB_OUTPUT"
