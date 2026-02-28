@@ -116,7 +116,8 @@ jobs:
           PROJ="${{ matrix.project }}"
           NAME=$(basename "$PROJ" .csproj)
           PROJ_DIR=$(dirname "$PROJ")
-          ARTIFACTS_DIR="./artifacts/$NAME"
+          BUILD_NUMBER="${{ github.run_number }}"
+          ARTIFACTS_DIR="./artifacts/$NAME.${BUILD_NUMBER}"
 
           echo "Project path: $PROJ"
           echo "Project name: $NAME"
@@ -158,7 +159,7 @@ jobs:
           echo "Generated artifacts:"
           find "$ARTIFACTS_DIR" -type f -name "*.zip" || echo "No zip files found"
           ls -la "$ARTIFACTS_DIR" || echo "Artifacts directory not found"
-          echo "name=$NAME" >> "$GITHUB_OUTPUT"
+          echo "name=$NAME.${BUILD_NUMBER}" >> "$GITHUB_OUTPUT"
 
       - name: Record Build Result
         if: always()
