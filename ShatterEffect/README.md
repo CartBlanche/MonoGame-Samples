@@ -58,10 +58,10 @@ The sample can be extended in a variety of ways:
 ## Project Structure
 - `Core/` — Shared game logic and content pipeline files
 - `Core/Content/` — Prebuilt .xnb content and related assets
-- `Platforms/Windows/` — Windows-specific project (net8.0-windows)
-- `Platforms/DesktopGL/` — DesktopGL cross-platform project (net8.0)
-- `Platforms/Android/` — Android project (net8.0-android)
-- `Platforms/iOS/` — iOS project (net8.0-ios)
+- `Platforms/Windows/` — Windows-specific project (net9.0-windows)
+- `Platforms/DesktopGL/` — DesktopGL cross-platform project (net9.0)
+- `Platforms/Android/` — Android project (net9.0-android)
+- `Platforms/iOS/` — iOS project (net9.0-ios)
 
 ## Building and Running
 
