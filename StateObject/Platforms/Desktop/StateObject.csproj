@@ -3,7 +3,7 @@
     <OutputType>Exe</OutputType>
     <TargetFramework>net9.0</TargetFramework>
     <RootNamespace>StateObject.DesktopGL</RootNamespace>
-    <AssemblyName>StateObjectDesktopGL</AssemblyName>
+    <AssemblyName>StateObject</AssemblyName>
     <Description>DesktopGL platform for StateObject sample</Description>
     <Company>Microsoft</Company>
     <Product>StateObjectWindows</Product>
@@ -21,13 +21,6 @@
     <MonoGameContentReference Include="..\..\Core\Content\Content.mgcb">
       <Link>Content\Content.mgcb</Link>
     </MonoGameContentReference>
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Include="StateObjectDesktopGL.icns">
-      <Link>$(AssemblyName).icns</Link>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
   </ItemGroup>
 
 </Project>

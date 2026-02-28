@@ -4,56 +4,56 @@
     {
       "label": "build-windows",
       "type": "shell",
-      "command": "dotnet build Platforms/Windows/StateObject.Windows.csproj",
+      "command": "dotnet build Platforms/Windows/StateObject.csproj",
       "group": "build",
       "problemMatcher": "$msCompile"
     },
     {
-      "label": "build-desktopgl",
+      "label": "build-desktop",
       "type": "shell",
-      "command": "dotnet build Platforms/DesktopGL/StateObject.DesktopGL.csproj",
+      "command": "dotnet build Platforms/Desktop/StateObject.csproj",
       "group": "build",
       "problemMatcher": "$msCompile"
     },
     {
       "label": "build-android",
       "type": "shell",
-      "command": "dotnet build Platforms/Android/StateObject.Android.csproj",
+      "command": "dotnet build Platforms/Android/StateObject.csproj",
       "group": "build",
       "problemMatcher": "$msCompile"
     },
     {
       "label": "build-ios",
       "type": "shell",
-      "command": "dotnet build Platforms/iOS/StateObject.iOS.csproj",
+      "command": "dotnet build Platforms/iOS/StateObject.csproj",
       "group": "build",
       "problemMatcher": "$msCompile"
     },
     {
       "label": "run-windows",
       "type": "shell",
-      "command": "dotnet run --project Platforms/Windows/StateObject.Windows.csproj",
+      "command": "dotnet run --project Platforms/Windows/StateObject.csproj",
       "group": "test",
       "problemMatcher": []
     },
     {
-      "label": "run-desktopgl",
+      "label": "run-desktop",
       "type": "shell",
-      "command": "dotnet run --project Platforms/DesktopGL/StateObject.DesktopGL.csproj",
+      "command": "dotnet run --project Platforms/DesktopGL/StateObject.csproj",
       "group": "test",
       "problemMatcher": []
     },
     {
       "label": "run-android",
       "type": "shell",
-      "command": "dotnet run --project Platforms/Android/StateObject.Android.csproj",
+      "command": "dotnet run --project Platforms/Android/StateObject.csproj",
       "group": "test",
       "problemMatcher": []
     },
     {
       "label": "run-ios",
       "type": "shell",
-      "command": "dotnet run --project Platforms/iOS/StateObject.iOS.csproj",
+      "command": "dotnet run --project Platforms/iOS/StateObject.csproj",
       "group": "test",
       "problemMatcher": []
     }

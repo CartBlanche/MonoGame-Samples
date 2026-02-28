@@ -3,19 +3,19 @@
 <plist version="1.0">
 <dict>
     <key>CFBundleName</key>
-    <string>StateObjectDesktopGL</string>
+    <string>RacingGame</string>
     <key>CFBundleDisplayName</key>
-    <string>StateObjectDesktopGL</string>
+    <string>RacingGame</string>
     <key>CFBundleIdentifier</key>
-    <string>com.cartblanche.stateobjectdesktopgl</string>
+    <string>com.cartblanche.RacingGame</string>
     <key>CFBundleVersion</key>
     <string>1.0</string>
     <key>CFBundlePackageType</key>
     <string>APPL</string>
     <key>CFBundleExecutable</key>
-    <string>StateObjectDesktopGL</string>
+    <string>RacingGame</string>
     <key>CFBundleIconFile</key>
-    <string>StateObjectDesktopGL.icns</string>
+    <string>RacingGame.icns</string>
     <key>NSHighResolutionCapable</key>
     <true/>
 </dict>

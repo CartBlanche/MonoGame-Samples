@@ -4,28 +4,28 @@
     {
       "label": "build-windows",
       "type": "shell",
-      "command": "dotnet build Platforms/Windows/VideoPlayer.Windows.csproj",
+      "command": "dotnet build Platforms/Windows/VideoPlayer.csproj",
       "group": "build",
       "problemMatcher": "$msCompile"
     },
     {
-      "label": "build-desktopgl",
+      "label": "build-Desktop",
       "type": "shell",
-      "command": "dotnet build Platforms/DesktopGL/VideoPlayer.DesktopGL.csproj",
+      "command": "dotnet build Platforms/Desktop/VideoPlayer.csproj",
       "group": "build",
       "problemMatcher": "$msCompile"
     },
     {
       "label": "build-android",
       "type": "shell",
-      "command": "dotnet build Platforms/Android/VideoPlayer.Android.csproj",
+      "command": "dotnet build Platforms/Android/VideoPlayer.csproj",
       "group": "build",
       "problemMatcher": "$msCompile"
     },
     {
       "label": "build-ios",
       "type": "shell",
-      "command": "dotnet build Platforms/iOS/VideoPlayer.iOS.csproj",
+      "command": "dotnet build Platforms/iOS/VideoPlayer.csproj",
       "group": "build",
       "problemMatcher": "$msCompile"
     }
