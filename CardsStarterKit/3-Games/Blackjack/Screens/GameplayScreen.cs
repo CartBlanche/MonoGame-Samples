@@ -989,7 +989,7 @@ namespace Blackjack
                 case 0:
                     // Hint: Place a bet and hit Deal to join game
                     // Position to the right of Deal/Clear buttons and chips
-                    message = "Place a bet and hit\nDeal to join a game.";
+                    message = Resources.HintPlaceBet;
                     Vector2 textSize0 = font.MeasureString(message);
                     Rectangle dealBounds = betComponent.DealButtonBounds;
 
@@ -1004,13 +1004,13 @@ namespace Blackjack
                 case 1:
                     // Hint: Click Clear or chip stack to remove bets
                     // Position above the chip stack
-                    message = "Hit Clear or your chip stack\nto remove your bets.";
+                    message = Resources.HintRemoveBet;
                     Vector2 textSize1 = font.MeasureString(message);
                     Vector2 chipStackPos = betComponent.GetHumanPlayerChipStackPosition();
 
                     // Position hint above the chip stack (avoid overlapping with chip text)
                     backgroundRectangle = new Rectangle(
-                        (int)chipStackPos.X - (int)(textSize1.X / 2) - hPad + 120,
+                        (int)chipStackPos.X - (int)(textSize1.X / 2) - hPad + 180,
                         (int)chipStackPos.Y - (int)textSize1.Y - vPad * 2 - 80, // Above the stack
                         (int)(textSize1.X + hPad * 1.5),
                         (int)(textSize1.Y + vPad * 1.5));
@@ -1019,7 +1019,7 @@ namespace Blackjack
                 case 2:
                     // Hint: Goal of blackjack
                     // Position in center-top area
-                    message = "Get as close to 21 as possible, without going over.";
+                    message = Resources.HintGameGoal;
                     Vector2 textSize2 = font.MeasureString(message);
                     backgroundRectangle = new Rectangle(
                         safeArea.Center.X - (int)(textSize2.X / 2) - hPad,

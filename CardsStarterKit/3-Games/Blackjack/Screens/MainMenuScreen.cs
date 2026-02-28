@@ -33,8 +33,7 @@ namespace Blackjack
             BuildMenuEntries();
             base.LoadContent();
 
-            // TODO: Start menu background music when audio asset is available
-            // AudioManager.PlayMusic("MenuMusic_Loop");
+            AudioManager.PlayMusic("CasinoAmbiance", volumeMultiplier: 0.15f);
         }
 
         public override void Update(GameTime gameTime, bool otherScreenHasFocus, bool coveredByOtherScreen)
@@ -62,7 +61,7 @@ namespace Blackjack
             // Create our menu entries.
             MenuEntry startGameMenuEntry = new MenuEntry(Resources.Play);
             MenuEntry settingsMenuEntry = new MenuEntry(Resources.Settings);
-            MenuEntry aboutMenuEntry = new MenuEntry("About");
+            MenuEntry aboutMenuEntry = new MenuEntry(Resources.About);
             MenuEntry exitMenuEntry = new MenuEntry(Resources.Exit);
 
             // Hook up menu event handlers.

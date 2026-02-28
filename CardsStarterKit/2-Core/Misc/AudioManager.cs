@@ -42,6 +42,7 @@ namespace Blackjack
 
         // Playlist state
         List<string> playlist;
+        bool isPlaylistActive;
         int currentTrackIndex;
         float currentVolumeMultiplier;
 
@@ -129,6 +130,7 @@ namespace Blackjack
             // Downloaded from Pixabay's free music library: https://pixabay.com/music/search/
             LoadSong("sunsides-neo-soul-night-210447", "NeoSoul");
             LoadSong("sunsides-jazzy-soul-207549", "JazzySoul");
+            LoadSong("freesound_community-casino-ambiance-19130", "CasinoAmbiance");
 
             // Default playlist order
             audioManager.playlist = ["NeoSoul", "JazzySoul"];
@@ -263,7 +265,7 @@ namespace Blackjack
             // If the music sound exists
             if (audioManager.musicBank.ContainsKey(musicSoundName))
             {
-                audioManager.playlist = null; // Single track — no playlist cycling
+                audioManager.isPlaylistActive = false; // Single track — no playlist cycling
 
                 if (MediaPlayer.State != MediaState.Stopped)
                     MediaPlayer.Stop();
@@ -287,6 +289,7 @@ namespace Blackjack
 
             audioManager.currentTrackIndex = 0;
             audioManager.currentVolumeMultiplier = MathHelper.Clamp(volumeMultiplier, 0f, 1f);
+            audioManager.isPlaylistActive = true;
 
             audioManager.PlayCurrentTrack();
         }
@@ -312,7 +315,7 @@ namespace Blackjack
         {
             base.Update(gameTime);
 
-            if (playlist != null && MediaPlayer.State == MediaState.Stopped)
+            if (isPlaylistActive && MediaPlayer.State == MediaState.Stopped)
             {
                 currentTrackIndex = (currentTrackIndex + 1) % playlist.Count;
                 PlayCurrentTrack();
@@ -324,7 +327,7 @@ namespace Blackjack
         /// </summary>
         public static void StopMusic()
         {
-            audioManager.playlist = null; // Prevent Update() from restarting
+            audioManager.isPlaylistActive = false; // Prevent Update() from restarting
             if (MediaPlayer.State != MediaState.Stopped)
             {
                 MediaPlayer.Stop();
