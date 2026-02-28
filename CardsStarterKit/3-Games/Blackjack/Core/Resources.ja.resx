@@ -355,4 +355,18 @@ Bボタン、Esc = キャンセル</value>
   <data name="CardBackColorBlue" xml:space="preserve">
     <value>青</value>
   </data>
+  <data name="About" xml:space="preserve">
+    <value>情報</value>
+  </data>
+  <data name="HintPlaceBet" xml:space="preserve">
+    <value>ベットして「配る」
+ボタンを押してゲームに参加しよう。</value>
+  </data>
+  <data name="HintRemoveBet" xml:space="preserve">
+    <value>「クリア」ボタンまたはチップスタックを押して
+ベットを取り消そう。</value>
+  </data>
+  <data name="HintGameGoal" xml:space="preserve">
+    <value>21を超えずにできるだけ近い数を目指そう。</value>
+  </data>
 </root>

@@ -1134,5 +1134,49 @@ namespace Blackjack
                 return ResourceManager.GetString("CardBackColorBlue", resourceCulture);
             }
         }
+
+        /// <summary>
+        ///   Looks up a localized string similar to About.
+        /// </summary>
+        internal static string About
+        {
+            get
+            {
+                return ResourceManager.GetString("About", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized hint for placing a bet and hitting Deal.
+        /// </summary>
+        internal static string HintPlaceBet
+        {
+            get
+            {
+                return ResourceManager.GetString("HintPlaceBet", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized hint for removing placed bets.
+        /// </summary>
+        internal static string HintRemoveBet
+        {
+            get
+            {
+                return ResourceManager.GetString("HintRemoveBet", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized hint describing the goal of blackjack.
+        /// </summary>
+        internal static string HintGameGoal
+        {
+            get
+            {
+                return ResourceManager.GetString("HintGameGoal", resourceCulture);
+            }
+        }
     }
 }

@@ -415,4 +415,18 @@ B button, Esc = Cancel</value>
   <data name="CardBackColorBlue" xml:space="preserve">
     <value>Blue</value>
   </data>
+  <data name="About" xml:space="preserve">
+    <value>About</value>
+  </data>
+  <data name="HintPlaceBet" xml:space="preserve">
+    <value>Place a bet and hit the
+"Deal" button to join a game.</value>
+  </data>
+  <data name="HintRemoveBet" xml:space="preserve">
+    <value>Hit "Clear" button or your chip stack
+to remove your placed bets.</value>
+  </data>
+  <data name="HintGameGoal" xml:space="preserve">
+    <value>Get as close to 21 as possible, without going over.</value>
+  </data>
 </root>

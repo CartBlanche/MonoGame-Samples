@@ -505,3 +505,10 @@
 /importer:Mp3Importer
 /processor:SoundEffectProcessor
 /build:Sounds/Win.mp3
+
+
+#begin Music/freesound_community-casino-ambiance-19130.mp3
+/importer:Mp3Importer
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:Music/freesound_community-casino-ambiance-19130.mp3
