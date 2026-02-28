@@ -10,7 +10,7 @@
 
 #-------------------------------- References --------------------------------#
 
-/reference:../../PipelineExtension/bin/Debug/net8.0/PipelineExtension.dll
+/reference:../../PipelineExtension/bin/Release/net8.0/PipelineExtension.dll
 
 #---------------------------------- Content ---------------------------------#
 
