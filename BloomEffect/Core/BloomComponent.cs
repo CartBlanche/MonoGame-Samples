@@ -6,6 +6,7 @@
 //-----------------------------------------------------------------------------
 
 using System;
+using System.IO;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
@@ -74,9 +75,9 @@ namespace BloomSample.Core
         {
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
-            bloomExtractEffect = Game.Content.Load<Effect>("Effects/BloomExtract");
-            bloomCombineEffect = Game.Content.Load<Effect>("Effects/BloomCombine");
-            gaussianBlurEffect = Game.Content.Load<Effect>("Effects/GaussianBlur");
+            bloomExtractEffect = Game.Content.Load<Effect>(Path.Combine("Effects", "BloomExtract"));
+            bloomCombineEffect = Game.Content.Load<Effect>(Path.Combine("Effects", "BloomCombine"));
+            gaussianBlurEffect = Game.Content.Load<Effect>(Path.Combine("Effects", "GaussianBlur"));
 
             // Look up the resolution and format of our main backbuffer.
             PresentationParameters pp = GraphicsDevice.PresentationParameters;
