@@ -1,12 +1,14 @@
 // Effect dynamically changes color saturation.
 
-sampler TextureSampler : register(s0);
+#include "Macros.hlsl"
+
+DECLARE_TEXTURE(TextureSampler, 0);
 
 
 float4 main(float4 color : COLOR0, float2 texCoord : TEXCOORD0) : COLOR0
 {
     // Look up the texture color.
-    float4 tex = tex2D(TextureSampler, texCoord);
+    float4 tex = SAMPLE_TEXTURE(TextureSampler, texCoord);
     
     // Convert it to greyscale. The constants 0.3, 0.59, and 0.11 are because
     // the human eye is more sensitive to green light, and less to blue.
@@ -23,6 +25,6 @@ technique Desaturate
 {
     pass Pass1
     {
-        PixelShader = compile ps_4_0 main();
+        PixelShader = compile ps_2_0 main();
     }
 }

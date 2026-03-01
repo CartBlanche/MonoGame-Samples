@@ -1,9 +1,13 @@
 // Pixel shader extracts the brighter areas of an image.
 // This is the first step in applying a bloom postprocess.
 
-sampler TextureSampler : register(s0);
+#include "Macros.hlsl"
 
+DECLARE_TEXTURE(TextureSampler, 0);
+
+BEGIN_CONSTANTS
 float BloomThreshold;
+END_CONSTANTS
 
 
 float4 PixelShaderFunction(float2 texCoord : TEXCOORD0) : COLOR0

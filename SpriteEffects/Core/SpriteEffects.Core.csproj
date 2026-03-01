@@ -6,10 +6,9 @@
   </PropertyGroup>
     
   <ItemGroup>
-    <PackageReference Include="MonoGame.Framework.DesktopGL" Version="3.8.*" PrivateAssets="all" />
-  </ItemGroup>
-    
-  <ItemGroup>
     <ProjectReference Include="..\Processor\SpriteEffects.Processor.csproj" />
+    <PackageReference Include="MonoGame.Framework.DesktopGL" Version="3.8.*">
+      <PrivateAssets>All</PrivateAssets>
+    </PackageReference>
   </ItemGroup>
 </Project>

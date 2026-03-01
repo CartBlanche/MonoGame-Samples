@@ -13,9 +13,17 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace BloomSample.Core
 {
+    /// <summary>
+    /// A DrawableGameComponent that will add bloom post-processing to what the previous
+    /// components have drawn.
+    /// </summary>
+    /// <remarks>
+    /// This public class is similar to one in the Bloom sample.
+    /// </remarks>
     public class BloomComponent : DrawableGameComponent
     {
 
+        ContentManager content;
         SpriteBatch spriteBatch;
 
         Effect bloomExtractEffect;
@@ -59,12 +67,13 @@ namespace BloomSample.Core
 
 
 
-
         public BloomComponent(Game game)
             : base(game)
         {
             if (game == null)
                 throw new ArgumentNullException("game");
+
+            content = new ContentManager(game.Services, Path.Combine("Content"));
         }
 
 
@@ -75,9 +84,9 @@ namespace BloomSample.Core
         {
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
-            bloomExtractEffect = Game.Content.Load<Effect>(Path.Combine("Effects", "BloomExtract"));
-            bloomCombineEffect = Game.Content.Load<Effect>(Path.Combine("Effects", "BloomCombine"));
-            gaussianBlurEffect = Game.Content.Load<Effect>(Path.Combine("Effects", "GaussianBlur"));
+			bloomExtractEffect = content.Load<Effect>(Path.Combine("Effects", "BloomExtract"));
+			bloomCombineEffect = content.Load<Effect>(Path.Combine("Effects", "BloomCombine"));
+			gaussianBlurEffect = content.Load<Effect>(Path.Combine("Effects", "GaussianBlur"));
 
             // Look up the resolution and format of our main backbuffer.
             PresentationParameters pp = GraphicsDevice.PresentationParameters;
@@ -109,12 +118,8 @@ namespace BloomSample.Core
         /// </summary>
         protected override void UnloadContent()
         {
-            sceneRenderTarget.Dispose();
-            renderTarget1.Dispose();
-            renderTarget2.Dispose();
+            content.Unload();
         }
-
-
 
 
 
@@ -125,12 +130,8 @@ namespace BloomSample.Core
         /// </summary>
         public void BeginDraw()
         {
-            if (Visible)
-            {
-                GraphicsDevice.SetRenderTarget(sceneRenderTarget);
-            }
+            GraphicsDevice.SetRenderTarget(sceneRenderTarget);
         }
-
 
         /// <summary>
         /// This is where it all happens. Grabs a scene that has already been rendered,
@@ -151,7 +152,7 @@ namespace BloomSample.Core
 
             // Pass 2: draw from rendertarget 1 into rendertarget 2,
             // using a shader to apply a horizontal gaussian blur filter.
-            SetBlurEffectParameters(1.0f / (float)renderTarget1.Width, 0);
+            //SetBlurEffectParameters(1.0f / (float)renderTarget1.Width, 0);
 
             DrawFullscreenQuad(renderTarget1, renderTarget2,
                                gaussianBlurEffect,
@@ -159,7 +160,7 @@ namespace BloomSample.Core
 
             // Pass 3: draw from rendertarget 2 back into rendertarget 1,
             // using a shader to apply a vertical gaussian blur filter.
-            SetBlurEffectParameters(0, 1.0f / (float)renderTarget1.Height);
+            //SetBlurEffectParameters(0, 1.0f / (float)renderTarget1.Height);
 
             DrawFullscreenQuad(renderTarget2, renderTarget1,
                                gaussianBlurEffect,
@@ -171,7 +172,6 @@ namespace BloomSample.Core
             GraphicsDevice.SetRenderTarget(null);
 
             EffectParameterCollection parameters = bloomCombineEffect.Parameters;
-
             parameters["BloomIntensity"].SetValue(Settings.BloomIntensity);
             parameters["BaseIntensity"].SetValue(Settings.BaseIntensity);
             parameters["BloomSaturation"].SetValue(Settings.BloomSaturation);
@@ -185,6 +185,10 @@ namespace BloomSample.Core
                                viewport.Width, viewport.Height,
                                bloomCombineEffect,
                                IntermediateBuffer.FinalResult);
+//            DrawFullscreenQuad(sceneRenderTarget,
+//                               ScreenManager.BASE_BUFFER_WIDTH, ScreenManager.BASE_BUFFER_HEIGHT,
+//                               bloomCombineEffect,
+//                               IntermediateBuffer.FinalResult);
         }
 
 
@@ -217,7 +221,7 @@ namespace BloomSample.Core
             {
                 effect = null;
             }
-
+			effect = null;
             spriteBatch.Begin(0, BlendState.Opaque, null, null, null, effect);
             spriteBatch.Draw(texture, new Rectangle(0, 0, width, height), Color.White);
             spriteBatch.End();

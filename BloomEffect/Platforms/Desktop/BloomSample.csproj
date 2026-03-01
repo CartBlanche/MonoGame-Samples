@@ -6,18 +6,28 @@
     <AssemblyName>BloomSample</AssemblyName>
     <MonoGamePlatform>DesktopGL</MonoGamePlatform>
   </PropertyGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\Core\BloomSample.Core.csproj" />
-    <PackageReference Include="MonoGame.Framework.DesktopGL" Version="3.8.*" />
-    <PackageReference Include="MonoGame.Framework.Content.Pipeline" Version="3.8.*" />
-  </ItemGroup>
-  <ItemGroup>
-    <MonoGameContentReference Include="..\..\Core\Content\Content.mgcb" />
-  </ItemGroup>
+  
   <ItemGroup>
     <None Include="BloomSample.icns">
       <Link>$(AssemblyName).icns</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Core\BloomSample.Core.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <MonoGameContentReference Include="..\..\Core\Content\Content.mgcb">
+      <Link>Content\Content.mgcb</Link>
+      <Platform>DesktopGL</Platform>
+    </MonoGameContentReference>
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="MonoGame.Framework.DesktopGL" Version="3.8.*" />
+  </ItemGroup>
+  <Target Name="RestoreDotnetTools" BeforeTargets="CollectPackageReferences">
+    <Message Text="Restoring dotnet tools..." Importance="High" />
+    <Exec Command="dotnet tool restore" />
+  </Target>
 </Project>

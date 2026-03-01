@@ -6,6 +6,7 @@
 //-----------------------------------------------------------------------------
 
 using System;
+using System.IO;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
@@ -82,10 +83,10 @@ namespace SpriteEffects
 			waterfallTexture = Content.Load<Texture2D>("waterfall");
 
 			// Load Shaders
-			desaturateEffect = Content.Load<Effect> ("desaturate");
-			disappearEffect = Content.Load<Effect> ("disappear");
-			normalmapEffect = Content.Load<Effect> ("normalmap");
-			refractionEffect = Content.Load<Effect> ("refraction");
+			desaturateEffect = Content.Load<Effect> (Path.Combine ("Effects", "desaturate"));
+			disappearEffect = Content.Load<Effect> (Path.Combine ("Effects", "disappear"));
+			normalmapEffect = Content.Load<Effect> (Path.Combine ("Effects", "normalmap"));
+			refractionEffect = Content.Load<Effect> (Path.Combine ("Effects", "refraction"));
 		}
 
 
