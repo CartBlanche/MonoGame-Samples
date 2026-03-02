@@ -18,7 +18,7 @@
   </PropertyGroup>
   
   <ItemGroup>
-    <ProjectReference Include="..\..\Core\Blackjack.Core.Android.csproj" />
+    <ProjectReference Include="..\..\Core\Blackjack.Core.csproj" />
     <PackageReference Include="MonoGame.Framework.Android" Version="3.8.*" />
     <PackageReference Include="MonoGame.Content.Builder.Task" Version="3.8.*" />
   </ItemGroup>
