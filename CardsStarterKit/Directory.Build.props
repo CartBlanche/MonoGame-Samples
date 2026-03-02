@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project>
+  <PropertyGroup>
+    <!-- Single source of truth for the game version across all platforms.
+         Bump this before each release. Format: Major.Minor.Patch -->
+    <Version>1.0.0</Version>
+    <AssemblyVersion>$(Version).0</AssemblyVersion>
+    <FileVersion>$(Version).0</FileVersion>
+  </PropertyGroup>
+</Project>

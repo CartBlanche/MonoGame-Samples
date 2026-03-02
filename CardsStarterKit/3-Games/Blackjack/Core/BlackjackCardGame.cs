@@ -517,7 +517,7 @@ namespace Blackjack
             var shuffleAnimation = new RiffleShuffleAnimation(
                     this,
                     shufflePosition, // Shuffle happens at top-center
-                    TimeSpan.FromSeconds(1.0), // Fast shuffle - back to original speed
+                    TimeSpan.FromSeconds(1.0 * AnimationSpeedMultiplier),
                     cardSize) // Scaled card size
                 {
                     SplitDistance = splitDistance, // Scaled split distance
@@ -564,7 +564,7 @@ namespace Blackjack
 
             // Use 4 cards to represent the deck
             int cardsToAnimate = Math.Min(4, deckCards.Count);
-            TimeSpan duration = TimeSpan.FromSeconds(0.6);
+            TimeSpan duration = TimeSpan.FromSeconds(0.6 * AnimationSpeedMultiplier);
             float dealerRotation = MathHelper.ToRadians(-47f); // Match the dealer deck's rotation
 
             for (int i = 0; i < cardsToAnimate; i++)
@@ -1801,7 +1801,7 @@ namespace Blackjack
                             new TransitionGameComponentAnimation(animatedCard.CurrentPosition,
                                 new Vector2(animatedCard.CurrentPosition.X, ScreenManager.BASE_BUFFER_HEIGHT))
                             {
-                                Duration = TimeSpan.FromSeconds(0.40),
+                                Duration = TimeSpan.FromSeconds(0.40 * AnimationSpeedMultiplier),
                                 PerformBeforeStart = PlayCardRemovalSound,
                                 PerformWhenDone = RemoveComponent,
                                 PerformWhenDoneArgs = animatedCard
@@ -1936,7 +1936,7 @@ namespace Blackjack
                 firstCardSourcePosition, firstCardTargetPosition)
             {
                 StartDelay = TimeSpan.Zero,
-                Duration = TimeSpan.FromSeconds(0.5f)
+                Duration = TimeSpan.FromSeconds(0.5f * AnimationSpeedMultiplier)
             };
 
             // Animate the second card (being split off) to move right
@@ -1948,7 +1948,7 @@ namespace Blackjack
                 secondCardSourcePosition, secondCardTargetPosition)
             {
                 StartDelay = TimeSpan.Zero,
-                Duration = TimeSpan.FromSeconds(0.5f)
+                Duration = TimeSpan.FromSeconds(0.5f * AnimationSpeedMultiplier)
             };
 
             // Apply animation to first hand's card
@@ -2308,7 +2308,7 @@ namespace Blackjack
                 targetPosition)
             {
                 StartDelay = TimeSpan.Zero,
-                Duration = TimeSpan.FromSeconds(0.5f)
+                Duration = TimeSpan.FromSeconds(0.5f * AnimationSpeedMultiplier)
             };
 
             // Actually perform the split
@@ -2447,7 +2447,7 @@ namespace Blackjack
                 PerformBeforeStart = ShowComponent,
                 PerformBeforeStartArgs = passComponent,
                 StartDelay = TimeSpan.Zero,
-                Duration = TimeSpan.FromSeconds(1),
+                Duration = TimeSpan.FromSeconds(1 * AnimationSpeedMultiplier),
                 PerformWhenDone = whenDone
             });
         }
@@ -3231,7 +3231,7 @@ namespace Blackjack
             var animation = new TransitionGameComponentAnimation(sourcePosition, targetPosition)
             {
                 StartDelay = TimeSpan.Zero,
-                Duration = TimeSpan.FromSeconds(0.5f)
+                Duration = TimeSpan.FromSeconds(0.5f * AnimationSpeedMultiplier)
             };
 
             player.SplitHand();

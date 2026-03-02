@@ -70,12 +70,15 @@ namespace Blackjack
 
         private void BuildContent()
         {
+            var version = (System.Reflection.Assembly.GetEntryAssembly() ?? System.Reflection.Assembly.GetExecutingAssembly()).GetName().Version;
+            string versionString = $"Version {version.ToString(3)}";
+
             // Build the about content
             contentLines = new string[]
             {
                 "MonoGame Blackjack",
                 "",
-                "Version 1.0",
+                versionString,
                 "",
                 "Based on Microsoft XNA Card Game Starter Kit",
                 "Modernized for MonoGame",
@@ -88,6 +91,7 @@ namespace Blackjack
                 "",
                 "Thanks:",
                 "- Pixabay for Jazz Music, CardRemoval and Winning Sound effects",
+                "- gnokii and openclipart.org for this game's Icon",
                 "",
                 "Built with MonoGame",
                 "www.monogame.net"
