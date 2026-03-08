@@ -11,11 +11,12 @@ using System.Text;
 using Microsoft.Xna.Framework.Graphics;
 using System.Threading;
 using Microsoft.Xna.Framework;
-using GameStateManagement;
+
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Input.Touch;
 using System.IO;
 using CardsFramework;
+using CardsFramework.Core;
 
 namespace Blackjack
 {
@@ -98,7 +99,6 @@ namespace Blackjack
                 foreach (GameScreen screen in ScreenManager.GetScreens())
                     screen.ExitScreen();
 
-                gameplayScreen.ScreenManager = ScreenManager;
                 ScreenManager.AddScreen(gameplayScreen, null);
                 isExited = true;
             }
@@ -109,7 +109,7 @@ namespace Blackjack
         }
 
         /// <summary>
-        /// Render screen 
+        /// Render screen
         /// </summary>
         /// <param name="gameTime"></param>
         public override void Draw(GameTime gameTime)

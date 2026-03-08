@@ -11,11 +11,12 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using CardsFramework;
+using CardsFramework.Core;
 using Microsoft.Xna.Framework;
 using System.Threading;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Graphics;
-using GameStateManagement;
+
 using System.Reflection;
 using System.IO;
 

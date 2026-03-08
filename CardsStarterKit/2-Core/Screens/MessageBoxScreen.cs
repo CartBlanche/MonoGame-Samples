@@ -5,29 +5,32 @@
 //-----------------------------------------------------------------------------
 using System;
 using Microsoft.Xna.Framework;
-using GameStateManagement;
+
 using Microsoft.Xna.Framework.Graphics;
 
-namespace Blackjack
+namespace CardsFramework.Core
 {
     /// <summary>
     /// A popup screen that displays a message and waits for the user to acknowledge.
     /// </summary>
-    class MessageBoxScreen : GameScreen
+    public class MessageBoxScreen : GameScreen
     {
         string message;
         MenuEntry okMenuEntry;
         public event EventHandler<PlayerIndexEventArgs> Accepted;
 
-        public MessageBoxScreen(string message)
+        readonly string okText;
+
+        public MessageBoxScreen(string message, string okText = "OK")
         {
             this.message = message;
+            this.okText = okText;
             IsPopup = true;
         }
 
         public override void LoadContent()
         {
-            okMenuEntry = new MenuEntry(Resources.OK);
+            okMenuEntry = new MenuEntry(okText);
             okMenuEntry.Selected += OkMenuEntrySelected;
             //MenuEntries.Add(okMenuEntry);
             base.LoadContent();

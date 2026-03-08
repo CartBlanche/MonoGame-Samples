@@ -8,39 +8,17 @@
 using System;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Blackjack;
 using CardsFramework;
-using Microsoft.Xna.Framework.Net;
 
-namespace GameStateManagement
+namespace CardsFramework.Core
 {
-    /// <summary>
-    /// MenuEntry subclass for displaying AvailableNetworkSession info.
-    /// </summary>
-    class AvailableSessionMenuEntry : MenuEntry
-    {
-        public AvailableNetworkSession AvailableSession { get; }
-
-        public AvailableSessionMenuEntry(AvailableNetworkSession session)
-            : base(GetMenuItemText(session))
-        {
-            AvailableSession = session;
-        }
-
-        static string GetMenuItemText(AvailableNetworkSession session)
-        {
-            int totalSlots = session.CurrentGamerCount + session.OpenPublicGamerSlots;
-            return $"{session.HostGamertag} ({session.CurrentGamerCount}/{totalSlots})";
-        }
-    }
-
     /// <summary>
     /// Helper class represents a single entry in a MenuScreen. By default this
     /// just draws the entry text string, but it can be customized to display menu
     /// entries in different ways. This also provides an event that will be raised
     /// when the menu entry is selected.
     /// </summary>
-    class MenuEntry
+    public class MenuEntry
     {
 
         /// <summary>

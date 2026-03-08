@@ -5,7 +5,6 @@
 //-----------------------------------------------------------------------------
 
 using System;
-using GameStateManagement;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -13,9 +12,9 @@ using Microsoft.Xna.Framework.Input.Touch;
 using Microsoft.Xna.Framework.Content;
 using CardsFramework;
 
-namespace Blackjack
+namespace CardsFramework.Core
 {
-    class AboutScreen : GameScreen
+    public class AboutScreen : GameScreen
     {
         private Texture2D background;
         private Texture2D buttonRegularTexture;

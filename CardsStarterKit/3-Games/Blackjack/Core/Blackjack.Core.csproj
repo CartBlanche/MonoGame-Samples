@@ -20,27 +20,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\1-Framework\Cards.Framework.csproj" />
+    <ProjectReference Include="..\..\..\2-Core\Cards.Framework.Core.csproj" />
     <ProjectReference Include="..\..\..\..\MonoGame.Xna.Framework.Net\MonoGame.Xna.Framework.Net.csproj" />
-  </ItemGroup>
-  <ItemGroup>
-    <!-- Shared Core Framework -->
-    <Compile Include="..\..\..\2-Core\ScreenManager\*.cs" Link="ScreenManager\%(Filename)%(Extension)" />
-    <Compile Include="..\..\..\2-Core\Screens\*.cs" Link="Screens\%(Filename)%(Extension)" />
-    <Compile Include="..\..\..\2-Core\Misc\*.cs" Link="Misc\%(Filename)%(Extension)" />
-
-    <!-- Game-Specific Code -->
-    <Compile Include="..\Misc\*.cs" />
-    <Compile Include="..\UI\*.cs" />
-    <Compile Include="..\Players\*.cs" />
-    <Compile Include="..\Networking\*.cs" />
-    <Compile Include="..\Screens\*.cs" />
-    <Compile Include="..\Rules\*.cs" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <!-- Exclude platform-specific files -->
-    <Compile Remove="Platforms\**\*.cs" />
-    <EmbeddedResource Remove="Platforms\**\*" />
-    <None Remove="Platforms\**\*" />
   </ItemGroup>
 </Project>

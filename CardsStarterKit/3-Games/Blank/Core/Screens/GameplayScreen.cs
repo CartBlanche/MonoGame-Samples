@@ -6,7 +6,7 @@
 
 using System;
 using CardsFramework;
-using GameStateManagement;
+using CardsFramework.Core;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 

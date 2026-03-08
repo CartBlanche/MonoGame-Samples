@@ -5,24 +5,28 @@
 //-----------------------------------------------------------------------------
 
 using System;
-using GameStateManagement;
+
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Content;
 using CardsFramework;
 
-namespace Blackjack
+namespace CardsFramework.Core
 {
-    class SplashScreen : GameScreen
+    public class SplashScreen : GameScreen
     {
+        private readonly Func<GameScreen[]> onComplete;
         private Texture2D splashTexture;
         private Rectangle safeArea;
         private TimeSpan displayDuration = TimeSpan.FromSeconds(3);
         private TimeSpan elapsedTime = TimeSpan.Zero;
         private bool contentLoaded = false;
 
-        public SplashScreen()
+        /// <param name="onComplete">Factory that returns the screens to push once the splash finishes.
+        /// Example: () => new GameScreen[] { new BackgroundScreen(), new MainMenuScreen() }</param>
+        public SplashScreen(Func<GameScreen[]> onComplete)
         {
+            this.onComplete = onComplete;
             TransitionOnTime = TimeSpan.FromSeconds(0.5);
             TransitionOffTime = TimeSpan.FromSeconds(0.5);
         }
@@ -67,8 +71,8 @@ namespace Blackjack
                 {
                     // Remove splash screen and add background + main menu
                     ExitScreen();
-                    ScreenManager.AddScreen(new BackgroundScreen(), null);
-                    ScreenManager.AddScreen(new MainMenuScreen(), null);
+                    foreach (var screen in onComplete())
+                        ScreenManager.AddScreen(screen, null);
                 }
             }
         }
@@ -84,16 +88,16 @@ namespace Blackjack
             {
                 // Skip to main menu immediately
                 ExitScreen();
-                ScreenManager.AddScreen(new BackgroundScreen(), null);
-                ScreenManager.AddScreen(new MainMenuScreen(), null);
+                foreach (var screen in onComplete())
+                    ScreenManager.AddScreen(screen, null);
             }
 
             // Check for mouse/touch input to skip
             if (UIUtility.IsDesktop && inputState.CurrentMouseState.LeftButton == Microsoft.Xna.Framework.Input.ButtonState.Pressed)
             {
                 ExitScreen();
-                ScreenManager.AddScreen(new BackgroundScreen(), null);
-                ScreenManager.AddScreen(new MainMenuScreen(), null);
+                foreach (var screen in onComplete())
+                    ScreenManager.AddScreen(screen, null);
             }
         }
 

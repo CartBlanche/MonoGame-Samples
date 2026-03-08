@@ -4,8 +4,9 @@
 // Minimal pause screen for Blank game
 //-----------------------------------------------------------------------------
 
-using GameStateManagement;
+
 using Microsoft.Xna.Framework;
+using CardsFramework.Core;
 
 namespace Blank
 {

@@ -6,7 +6,7 @@
 
 using System;
 using System.Collections.Generic;
-using GameStateManagement;
+
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -14,6 +14,7 @@ using Microsoft.Xna.Framework.Input.Touch;
 using Microsoft.Xna.Framework.Content;
 using System.IO;
 using CardsFramework;
+using CardsFramework.Core;
 
 namespace Blackjack
 {
@@ -61,7 +62,7 @@ namespace Blackjack
         {
             // Settings screen needs Tap gestures for mobile
             EnabledGestures = GestureType.Tap;
-            
+
             TransitionOnTime = TimeSpan.FromSeconds(0.5);
             TransitionOffTime = TimeSpan.FromSeconds(0.5);
             settings = GameSettings.Instance;

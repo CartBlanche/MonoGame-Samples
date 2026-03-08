@@ -8,27 +8,32 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
-using GameStateManagement;
+
 using Microsoft.Xna.Framework;
 
-namespace Blackjack
+namespace CardsFramework.Core
 {
-    class PauseScreen : MenuScreen
+    public class PauseScreen : MenuScreen
     {
         /// <summary>
         /// Initializes a new instance of the screen.
         /// </summary>
-        public PauseScreen()
+        readonly string returnText;
+        readonly string quitText;
+
+        public PauseScreen(string returnText = "Back", string quitText = "Quit")
             : base("Pause")
         {
+            this.returnText = returnText;
+            this.quitText = quitText;
             IsPopup = true;
         }
 
         public override void LoadContent()
         {
             // Create our menu entries.
-            MenuEntry returnGameMenuEntry = new MenuEntry(Resources.Back);
-            MenuEntry exitMenuEntry = new MenuEntry(Resources.Quit);
+            MenuEntry returnGameMenuEntry = new MenuEntry(returnText);
+            MenuEntry exitMenuEntry = new MenuEntry(quitText);
 
             // Hook up menu event handlers.
             returnGameMenuEntry.Selected += ReturnGameMenuEntrySelected;
@@ -49,14 +54,14 @@ namespace Blackjack
         void ReturnGameMenuEntrySelected(object sender, EventArgs e)
         {
             GameScreen[] screens = ScreenManager.GetScreens();
-            GameplayScreen gameplayScreen = null;
+            IPausable pausable = null;
             List<GameScreen> res = new List<GameScreen>();
 
             for (int screenIndex = 0; screenIndex < screens.Length; screenIndex++)
             {
-                if (screens[screenIndex] is GameplayScreen)
+                if (screens[screenIndex] is IPausable p)
                 {
-                    gameplayScreen = (GameplayScreen)screens[screenIndex];
+                    pausable = p;
                 }
                 else
                 {
@@ -67,7 +72,7 @@ namespace Blackjack
             foreach (GameScreen screen in res)
                 screen.ExitScreen();
 
-            gameplayScreen.ReturnFromPause();
+            pausable?.ReturnFromPause();
         }
 
         /// <summary>
@@ -83,7 +88,7 @@ namespace Blackjack
             foreach (GameScreen screen in screens)
             {
                 // Exit only if it's one of the pause screens or gameplay
-                if (screen is PauseScreen || screen is GameplayScreen)
+                if (screen is PauseScreen || screen is IPausable)
                 {
                     screen.ExitScreen();
                 }

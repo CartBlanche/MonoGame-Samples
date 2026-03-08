@@ -4,8 +4,9 @@
 // Main menu for the blank card game
 //-----------------------------------------------------------------------------
 
-using GameStateManagement;
+
 using Microsoft.Xna.Framework;
+using CardsFramework.Core;
 
 namespace Blank
 {

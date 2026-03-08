@@ -12,7 +12,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Media;
 
-namespace Blackjack
+namespace CardsFramework.Core
 {
     /// <summary>
     /// Component that manages audio playback for all sounds.
@@ -46,7 +46,9 @@ namespace Blackjack
         int currentTrackIndex;
         float currentVolumeMultiplier;
 
-
+        // Volume providers — injected at Initialize() so AudioManager has no dependency on game-specific settings
+        Func<float> soundVolumeProvider;
+        Func<float> musicVolumeProvider;
 
 
 
@@ -57,11 +59,15 @@ namespace Blackjack
         /// Initialize the static AudioManager functionality.
         /// </summary>
         /// <param name="game">The game that this component will be attached to.</param>
-        public static void Initialize(Game game)
+        /// <param name="getSoundVolume">Returns the current sound effect volume (0–1). Defaults to 1.0 if null.</param>
+        /// <param name="getMusicVolume">Returns the current music volume (0–1). Defaults to 1.0 if null.</param>
+        public static void Initialize(Game game, Func<float> getSoundVolume = null, Func<float> getMusicVolume = null)
         {
             audioManager = new AudioManager(game);
             audioManager.soundBank = new Dictionary<string, SoundEffectInstance>();
             audioManager.musicBank = new Dictionary<string, Song>();
+            audioManager.soundVolumeProvider = getSoundVolume ?? (() => 1.0f);
+            audioManager.musicVolumeProvider = getMusicVolume ?? (() => 1.0f);
 
             game.Components.Add(audioManager);
         }
@@ -167,6 +173,8 @@ namespace Blackjack
         /// <param name="pan">Stereo panning (-1.0 = left ear, 0.0 = center, 1.0 = right ear). Default is 0.</param>
         public static void PlaySound(string soundName, bool isLooped = false, float? volume = null, float pitch = 0f, float pan = 0f)
         {
+            if (audioManager?.soundBank == null) return;
+
             // If the sound exists, start it
             if (audioManager.soundBank.ContainsKey(soundName))
             {
@@ -179,7 +187,7 @@ namespace Blackjack
                 }
 
                 // Use custom volume or default to settings
-                sound.Volume = volume ?? GameSettings.Instance.SoundVolume;
+                sound.Volume = volume ?? audioManager.soundVolumeProvider();
 
                 // Set pitch (clamped to valid range)
                 sound.Pitch = MathHelper.Clamp(pitch, -1.0f, 1.0f);
@@ -271,7 +279,7 @@ namespace Blackjack
                     MediaPlayer.Stop();
 
                 MediaPlayer.IsRepeating = true;
-                MediaPlayer.Volume = GameSettings.Instance.MusicVolume * MathHelper.Clamp(volumeMultiplier, 0f, 1f);
+                MediaPlayer.Volume = audioManager.musicVolumeProvider() * MathHelper.Clamp(volumeMultiplier, 0f, 1f);
 
                 MediaPlayer.Play(audioManager.musicBank[musicSoundName]);
             }
@@ -304,7 +312,7 @@ namespace Blackjack
                 MediaPlayer.Stop();
 
             MediaPlayer.IsRepeating = false;
-            MediaPlayer.Volume = GameSettings.Instance.MusicVolume * currentVolumeMultiplier;
+            MediaPlayer.Volume = musicVolumeProvider() * currentVolumeMultiplier;
             MediaPlayer.Play(song);
         }
 

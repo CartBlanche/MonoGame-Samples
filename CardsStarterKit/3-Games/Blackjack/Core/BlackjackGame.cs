@@ -15,8 +15,9 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
 using CardsFramework;
+using CardsFramework.Core;
 using System.Globalization;
-using GameStateManagement;
+
 
 namespace Blackjack
 {
@@ -54,15 +55,21 @@ namespace Blackjack
                 throw new PlatformNotSupportedException();
             }
 
-            screenManager = new ScreenManager(this);
+            screenManager = new ScreenManager(this, () => GameSettings.Instance.Language);
 
             // Show splash screen on startup (it will add BackgroundScreen and MainMenuScreen after 3 seconds)
-            screenManager.AddScreen(new SplashScreen(), null);
+            screenManager.AddScreen(new SplashScreen(() => new GameScreen[]
+            {
+                new BackgroundScreen(),
+                new MainMenuScreen()
+            }), null);
 
             Components.Add(screenManager);
 
             // Initialize sound system
-            AudioManager.Initialize(this);
+            AudioManager.Initialize(this,
+                getSoundVolume: () => GameSettings.Instance.SoundVolume,
+                getMusicVolume: () => GameSettings.Instance.MusicVolume);
         }
 
         protected override void Initialize()

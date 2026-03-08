@@ -15,7 +15,8 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Input.Touch;
 using CardsFramework;
-using GameStateManagement;
+using CardsFramework.Core;
+
 
 namespace Blackjack
 {
@@ -30,8 +31,6 @@ namespace Blackjack
         CardsFramework.CardsGame cardGame;
         SpriteBatch spriteBatch;
         Matrix globalTransformation;
-
-        bool isKeyDown = false;
 
         // In network games, this specifies which player index the local user controls
         public int LocalPlayerIndex { get; set; } = -1;

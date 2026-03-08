@@ -3,17 +3,17 @@
 // Adapted from NetworkStateManagement sample for Blackjack
 //-----------------------------------------------------------------------------
 using System;
-using GameStateManagement;
+
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Net;
 
-namespace Blackjack
+namespace CardsFramework.Core
 {
     /// <summary>
     /// Component in charge of owning and updating the current NetworkSession object.
     /// Responsible for calling NetworkSession.Update and exposing the session as a service.
     /// </summary>
-    class NetworkSessionComponent : GameComponent
+    public class NetworkSessionComponent : GameComponent
     {
         ScreenManager screenManager;
         NetworkSession networkSession;

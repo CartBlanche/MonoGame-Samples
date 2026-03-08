@@ -7,7 +7,8 @@
 using System;
 using Microsoft.Xna.Framework;
 using CardsFramework;
-using GameStateManagement;
+using CardsFramework.Core;
+
 
 namespace Blank
 {

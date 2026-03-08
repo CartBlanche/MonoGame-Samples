@@ -10,11 +10,11 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
-using GameStateManagement;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Graphics;
 using CardsFramework;
+using CardsFramework.Core;
 using Microsoft.Xna.Framework.Input.Touch;
 using System.Globalization;
 using Microsoft.Xna.Framework.Net;
@@ -22,7 +22,7 @@ using Microsoft.Xna.Framework.GamerServices;
 
 namespace Blackjack
 {
-    class GameplayScreen : GameScreen
+    class GameplayScreen : GameScreen, CardsFramework.Core.ILanguageAware, CardsFramework.Core.IPausable
     {
         BlackjackCardGame blackJackGame;
 
@@ -872,6 +872,8 @@ namespace Blackjack
 
             blackJackGame.HandleReceivedTurnChanged(packet.CurrentPlayerIndex);
         }
+
+        public void OnLanguageChanged() => UpdateButtonText();
 
         /// <summary>
         /// Updates button text after language change

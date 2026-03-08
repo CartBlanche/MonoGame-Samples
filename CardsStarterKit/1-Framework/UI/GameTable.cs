@@ -57,6 +57,20 @@ namespace CardsFramework
         }
 
         /// <summary>
+        /// Convenience constructor — fills the full viewport, no dealer position, sequential place layout.
+        /// Suitable for getting started quickly without specifying every parameter.
+        /// </summary>
+        /// <param name="game">The associated game object.</param>
+        /// <param name="sharedSpriteBatch">The sprite batch used for drawing.</param>
+        /// <param name="places">Number of player places on the table.</param>
+        /// <param name="theme">The theme used to display UI elements.</param>
+        public GameTable(Game game, SpriteBatch sharedSpriteBatch, int places = 1, string theme = "")
+            : this(game.GraphicsDevice.Viewport.Bounds, Vector2.Zero, places,
+                   index => new Vector2(index * 200, 0), theme, game, sharedSpriteBatch)
+        {
+        }
+
+        /// <summary>
         /// Initializes a new instance of the class.
         /// </summary>
         /// <param name="tableBounds">The table bounds.</param>

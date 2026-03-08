@@ -8,13 +8,13 @@
 using System;
 using Microsoft.Xna.Framework;
 
-namespace GameStateManagement
+namespace CardsFramework.Core
 {
     /// <summary>
     /// Custom event argument which includes the index of the player who
     /// triggered the event. This is used by the MenuEntry.Selected event.
     /// </summary>
-    class PlayerIndexEventArgs : EventArgs
+    public class PlayerIndexEventArgs : EventArgs
     {
         /// <summary>
         /// Constructor.
