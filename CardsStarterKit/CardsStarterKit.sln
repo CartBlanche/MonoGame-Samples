@@ -6,23 +6,23 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cards.Framework", "1-Framew
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlackJack.Core", "3-Games\Blackjack\Core\Blackjack.Core.csproj", "{80C61169-FFE2-4335-BCE6-F0A4722FA419}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlackJack.Windows", "3-Games\Blackjack\Platforms\Windows\BlackJack.csproj", "{92B782FF-2679-431D-B095-9BB86D09ED59}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlackJack.Windows", "3-Games\Blackjack\Windows\BlackJack.csproj", "{92B782FF-2679-431D-B095-9BB86D09ED59}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlackJack.iOS", "3-Games\Blackjack\Platforms\iOS\BlackJack.csproj", "{02C6C7B5-5F17-4E12-9278-A9AC14358525}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlackJack.iOS", "3-Games\Blackjack\iOS\BlackJack.csproj", "{02C6C7B5-5F17-4E12-9278-A9AC14358525}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlackJack.DesktopGL", "3-Games\Blackjack\Platforms\Desktop\BlackJack.csproj", "{E23472DC-9347-4327-9292-732B80959226}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlackJack.DesktopGL", "3-Games\Blackjack\Desktop\BlackJack.csproj", "{E23472DC-9347-4327-9292-732B80959226}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlackJack.Android", "3-Games\Blackjack\Platforms\Android\BlackJack.csproj", "{B767C86E-EAB0-4ACF-B2DE-687828BB949B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlackJack.Android", "3-Games\Blackjack\Android\BlackJack.csproj", "{B767C86E-EAB0-4ACF-B2DE-687828BB949B}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Blank.Core", "3-Games\Blank\Core\Blank.Core.csproj", "{C1D12345-1234-4567-89AB-CDEF01234567}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Blank.Windows", "3-Games\Blank\Platforms\Windows\Blank.csproj", "{C2D12345-1234-4567-89AB-CDEF01234567}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Blank.Windows", "3-Games\Blank\Windows\Blank.csproj", "{C2D12345-1234-4567-89AB-CDEF01234567}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Blank.iOS", "3-Games\Blank\Platforms\iOS\Blank.csproj", "{C3D12345-1234-4567-89AB-CDEF01234567}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Blank.iOS", "3-Games\Blank\iOS\Blank.csproj", "{C3D12345-1234-4567-89AB-CDEF01234567}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Blank.DesktopGL", "3-Games\Blank\Platforms\Desktop\Blank.csproj", "{C4D12345-1234-4567-89AB-CDEF01234567}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Blank.DesktopGL", "3-Games\Blank\Desktop\Blank.csproj", "{C4D12345-1234-4567-89AB-CDEF01234567}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Blank.Android", "3-Games\Blank\Platforms\Android\Blank.csproj", "{C5D12345-1234-4567-89AB-CDEF01234567}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Blank.Android", "3-Games\Blank\Android\Blank.csproj", "{C5D12345-1234-4567-89AB-CDEF01234567}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Android", "Android", "{EC64DD6B-8E84-498D-9B44-40F089887811}"
 EndProject

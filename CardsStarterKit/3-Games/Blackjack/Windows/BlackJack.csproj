@@ -3,10 +3,10 @@
   <PropertyGroup>
     <TargetFramework>net9.0-windows</TargetFramework>
     <OutputType>WinExe</OutputType>
-    <RootNamespace>Blank.Windows</RootNamespace>
-    <AssemblyName>Blank</AssemblyName>
-    <AssemblyTitle>Blank</AssemblyTitle>
-    <Description>Windows platform for Blank Game.</Description>
+    <RootNamespace>Blackjack.Windows</RootNamespace>
+    <AssemblyName>Blackjack</AssemblyName>
+    <AssemblyTitle>Blackjack</AssemblyTitle>
+    <Description>Windows platform for Blackjack Game.</Description>
     <Authors>CartBlanche</Authors>
     <Company>MonoGame Foundation</Company>
     <GenerateAssemblyInfo>true</GenerateAssemblyInfo>
@@ -21,22 +21,22 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Core\Blank.Core.csproj" />
+    <ProjectReference Include="..\Core\Blackjack.Core.csproj" />
     <PackageReference Include="MonoGame.Framework.WindowsDX" Version="3.8.*" />
     <PackageReference Include="MonoGame.Content.Builder.Task" Version="3.8.*" />
   </ItemGroup>
 
   <ItemGroup>
-    <MonoGameContentReference Include="..\..\Content\Content.mgcb" />
+    <MonoGameContentReference Include="..\Content\Content.mgcb" />
   </ItemGroup>
 
   <!-- Centralized Icon Resources -->
   <ItemGroup>
-    <None Include="..\..\..\..\2-Core\Resources\Icons\Windows\Icon.ico">
+    <None Include="..\..\..\2-Core\Resources\Icons\Windows\Icon.ico">
       <Link>Icon.ico</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <EmbeddedResource Include="..\..\..\..\2-Core\Resources\Icons\Windows\Icon.ico">
+    <EmbeddedResource Include="..\..\..\2-Core\Resources\Icons\Windows\Icon.ico">
       <LogicalName>Icon.ico</LogicalName>
     </EmbeddedResource>
   </ItemGroup>

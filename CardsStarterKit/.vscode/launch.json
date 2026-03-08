@@ -6,9 +6,9 @@
             "type": "coreclr",
             "request": "launch",
             "preLaunchTask": "build-desktop",
-            "program": "${workspaceFolder}/3-Games/Blackjack/Platforms/Desktop/bin/Debug/net9.0/Blackjack.dll",
+            "program": "${workspaceFolder}/3-Games/Blackjack/Desktop/bin/Debug/net9.0/Blackjack.dll",
             "args": [],
-            "cwd": "${workspaceFolder}/3-Games/Blackjack/Platforms/Desktop",
+            "cwd": "${workspaceFolder}/3-Games/Blackjack/Desktop",
             "console": "internalConsole",
             "stopAtEntry": false
         },
@@ -17,9 +17,9 @@
             "type": "coreclr",
             "request": "launch",
             "preLaunchTask": "build-windows",
-            "program": "${workspaceFolder}/3-Games/Blackjack/Platforms/Windows/bin/Debug/net9.0/Blackjack.dll",
+            "program": "${workspaceFolder}/3-Games/Blackjack/Windows/bin/Debug/net9.0/Blackjack.dll",
             "args": [],
-            "cwd": "${workspaceFolder}/3-Games/Blackjack/Platforms/Windows",
+            "cwd": "${workspaceFolder}/3-Games/Blackjack/Windows",
             "console": "internalConsole",
             "stopAtEntry": false
         },
