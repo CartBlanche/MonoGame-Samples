@@ -16,7 +16,7 @@
     <UseWindowsForms>true</UseWindowsForms>
     <EnableWindowsTargeting>true</EnableWindowsTargeting>
     <ApplicationManifest>app.manifest</ApplicationManifest>
-    <ApplicationIcon>..\..\..\..\2-Core\Resources\Icons\Windows\Icon.ico</ApplicationIcon>
+    <ApplicationIcon>..\..\..\2-Core\Resources\Icons\Windows\Icon.ico</ApplicationIcon>
     <ApplicationHighDpiMode>PerMonitorV2</ApplicationHighDpiMode>
   </PropertyGroup>
 

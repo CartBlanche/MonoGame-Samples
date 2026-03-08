@@ -1,0 +1,77 @@
+<Solution>
+
+  <!-- Shared libraries -->
+  <Project Path="1-Framework/Cards.Framework.csproj" />
+  <Project Path="2-Core/Cards.Framework.Core.csproj" />
+  <Folder Name="/Blank/Android/">
+    <Project Path="3-Games/Blank/Android/Blank.csproj">
+      <Deploy />
+    </Project>
+  </Folder>
+  <Folder Name="/Blank/Desktop/">
+    <Project Path="3-Games/Blank/Desktop/Blank.csproj">
+      <Deploy />
+    </Project>
+  </Folder>
+  <Folder Name="/Blank/iOS/">
+    <Project Path="3-Games/Blank/iOS/Blank.csproj">
+      <Deploy />
+    </Project>
+  </Folder>
+  <Folder Name="/Blank/Windows/">
+    <Project Path="3-Games/Blank/Windows/Blank.csproj" />
+  </Folder>
+  <Project Path="../MonoGame.Xna.Framework.Net/MonoGame.Xna.Framework.Net.csproj" />
+
+  <!-- Games -->
+  <Folder Name="/Blackjack/">
+    <Project Path="3-Games/Blackjack/Core/Blackjack.Core.csproj" />
+    <Folder Name="/Desktop/">
+      <Project Path="3-Games/Blackjack/Desktop/BlackJack.csproj" />
+    </Folder>
+    <Folder Name="/Android/">
+      <Project Path="3-Games/Blackjack/Android/BlackJack.csproj" />
+    </Folder>
+    <Folder Name="/iOS/">
+      <Project Path="3-Games/Blackjack/iOS/BlackJack.csproj" />
+    </Folder>
+    <Folder Name="/Windows/">
+      <Project Path="3-Games/Blackjack/Windows/BlackJack.csproj" />
+    </Folder>
+  </Folder>
+  <Folder Name="/Blackjack/Android/">
+    <Project Path="3-Games/Blackjack/Android/BlackJack.csproj">
+      <Deploy />
+    </Project>
+  </Folder>
+  <Folder Name="/Blackjack/Desktop/">
+    <Project Path="3-Games/Blackjack/Desktop/BlackJack.csproj">
+      <Deploy />
+    </Project>
+  </Folder>
+  <Folder Name="/Blackjack/iOS/">
+    <Project Path="3-Games/Blackjack/iOS/BlackJack.csproj">
+      <Deploy />
+    </Project>
+  </Folder>
+  <Folder Name="/Blackjack/Windows/">
+    <Project Path="3-Games/Blackjack/Windows/BlackJack.csproj" />
+  </Folder>
+
+  <Folder Name="/Blank/">
+    <Project Path="3-Games/Blank/Core/Blank.Core.csproj" />
+    <Folder Name="/Desktop/">
+      <Project Path="3-Games/Blank/Desktop/Blank.csproj" />
+    </Folder>
+    <Folder Name="/Android/">
+      <Project Path="3-Games/Blank/Android/Blank.csproj" />
+    </Folder>
+    <Folder Name="/iOS/">
+      <Project Path="3-Games/Blank/iOS/Blank.csproj" />
+    </Folder>
+    <Folder Name="/Windows/">
+      <Project Path="3-Games/Blank/Windows/Blank.csproj" />
+    </Folder>
+  </Folder>
+
+</Solution>
