@@ -759,7 +759,7 @@ Almost done with the game class. Just need drawing and a utility method:
 
 ### Step 6.1: Create a Screen for the Magic Trick
 
-**Create:** `2-Core/Screens/MagicTrickGameplayScreen.cs`
+**Create:** `3-Games/MagicTrick/Core/Screens/MagicTrickGameplayScreen.cs`
 
 ```csharp
 using System;
@@ -853,7 +853,7 @@ namespace CardsStarterKit
 
 ### Step 6.2: Add Menu Entry
 
-**Modify:** `2-Core/Screens/MainMenuScreen.cs`
+**Modify:** `3-Games/MagicTrick/Core/Screens/MainMenuScreen.cs`
 
 Find the constructor where menu entries are added and add:
 
@@ -886,7 +886,7 @@ Build and run:
 
 ```bash
 dotnet build
-dotnet run --project Platforms/Desktop/BlackJack.csproj
+dotnet run --project 3-Games/MagicTrick/Desktop/MagicTrick.csproj
 ```
 
 ### Step 7.1: Run It

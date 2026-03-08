@@ -1878,9 +1878,9 @@ private void GinRummyMenuEntrySelected(object sender, EventArgs e)
 ```bash
 dotnet build
 # For macOS/Linux
-dotnet run --project Platforms/DesktopGL/CardsStarterKit.DesktopGL.csproj
+dotnet run --project 3-Games/GinRummy/Desktop/GinRummy.csproj
 # For Windows
-dotnet run --project Platforms/WindowsDX/CardsStarterKit.WindowsDX.csproj
+dotnet run --project 3-Games/GinRummy/Windows/GinRummy.csproj
 ```
 
 ### Step 11.2: Test Scenarios
