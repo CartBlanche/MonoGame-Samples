@@ -10,8 +10,8 @@
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Core\SpriteEffects.Core.csproj" />
-    <PackageReference Include="MonoGame.Framework.WindowsDX" Version="3.8.*" />
-    <PackageReference Include="MonoGame.Content.Builder.Task" Version="3.8.*" />
+    <PackageReference Include="MonoGame.Framework.WindowsDX" Version="3.8.5-preview.3" />
+    <PackageReference Include="MonoGame.Content.Builder.Task" Version="3.8.5-preview.3" />
   </ItemGroup>
 
   <ItemGroup>

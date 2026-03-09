@@ -7,7 +7,7 @@
     
   <ItemGroup>
     <ProjectReference Include="..\Processor\SpriteEffects.Processor.csproj" />
-    <PackageReference Include="MonoGame.Framework.DesktopGL" Version="3.8.*">
+    <PackageReference Include="MonoGame.Framework.DesktopGL" Version="3.8.5-preview.3">
       <PrivateAssets>All</PrivateAssets>
     </PackageReference>
   </ItemGroup>
