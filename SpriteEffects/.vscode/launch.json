@@ -6,20 +6,20 @@
             "type": "coreclr",
             "request": "launch",
             "preLaunchTask": "build-windows",
-            "program": "${workspaceFolder}/Platform/Windows/bin/Debug/net8.0-windows/SpriteEffects.Windows.exe",
+            "program": "${workspaceFolder}/Platform/Windows/bin/Debug/net9.0-windows/SpriteEffects.exe",
             "args": [],
             "cwd": "${workspaceFolder}/Platform/Windows",
             "stopAtEntry": false,
             "console": "internalConsole"
         },
         {
-            "name": "Launch DesktopGL",
+            "name": "Launch Desktop",
             "type": "coreclr",
             "request": "launch",
-            "preLaunchTask": "build-desktopgl",
-            "program": "${workspaceFolder}/Platform/DesktopGL/bin/Debug/net8.0/SpriteEffects.DesktopGL.exe",
+            "preLaunchTask": "build-desktop",
+            "program": "${workspaceFolder}/Platform/Desktop/bin/Debug/net9.0/SpriteEffects",
             "args": [],
-            "cwd": "${workspaceFolder}/Platform/DesktopGL",
+            "cwd": "${workspaceFolder}/Platform/Desktop",
             "stopAtEntry": false,
             "console": "internalConsole"
         }

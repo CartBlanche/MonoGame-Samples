@@ -74,19 +74,19 @@ namespace SpriteEffects
 		/// </summary>
 		protected override void LoadContent ()
 		{
-			spriteBatch = new SpriteBatch(graphics.GraphicsDevice);
-
+			// Load Shaders
+			desaturateEffect = Content.Load<Effect>(Path.Combine("Effects", "desaturate"));
+			disappearEffect = Content.Load<Effect>(Path.Combine("Effects", "disappear"));
+			normalmapEffect = Content.Load<Effect>(Path.Combine("Effects", "normalmap"));
+			refractionEffect = Content.Load<Effect>(Path.Combine("Effects", "refraction"));
+			
 			// Load Textures
 			catTexture = Content.Load<Texture2D>("cat");
-			catNormalmapTexture = Content.Load<Texture2D>("cat_normalmap");
+			catNormalmapTexture = Content.Load<Texture2D>("cat_depth");
 			glacierTexture = Content.Load<Texture2D>("glacier");
 			waterfallTexture = Content.Load<Texture2D>("waterfall");
 
-			// Load Shaders
-			desaturateEffect = Content.Load<Effect> (Path.Combine ("Effects", "desaturate"));
-			disappearEffect = Content.Load<Effect> (Path.Combine ("Effects", "disappear"));
-			normalmapEffect = Content.Load<Effect> (Path.Combine ("Effects", "normalmap"));
-			refractionEffect = Content.Load<Effect> (Path.Combine ("Effects", "refraction"));
+			spriteBatch = new SpriteBatch(graphics.GraphicsDevice);
 		}
 
 

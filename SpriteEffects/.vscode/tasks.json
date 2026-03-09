@@ -4,28 +4,28 @@
         {
             "label": "build-windows",
             "type": "shell",
-            "command": "dotnet build Platform/Windows/SpriteEffects.Windows.csproj",
+            "command": "dotnet build Platform/Windows/SpriteEffects.csproj",
             "group": "build",
             "problemMatcher": "$msCompile"
         },
         {
-            "label": "build-desktopgl",
+            "label": "build-desktop",
             "type": "shell",
-            "command": "dotnet build Platform/DesktopGL/SpriteEffects.DesktopGL.csproj",
+            "command": "dotnet build Platform/Desktop/SpriteEffects.csproj",
             "group": "build",
             "problemMatcher": "$msCompile"
         },
         {
             "label": "run-windows",
             "type": "shell",
-            "command": "dotnet run --project Platform/Windows/SpriteEffects.Windows.csproj",
+            "command": "dotnet run --project Platform/Windows/SpriteEffects.csproj",
             "group": "test",
             "problemMatcher": []
         },
         {
-            "label": "run-desktopgl",
+            "label": "run-desktop",
             "type": "shell",
-            "command": "dotnet run --project Platform/DesktopGL/SpriteEffects.DesktopGL.csproj",
+            "command": "dotnet run --project Platform/Desktop/SpriteEffects.csproj",
             "group": "test",
             "problemMatcher": []
         }

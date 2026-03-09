@@ -10,7 +10,7 @@
 
 #-------------------------------- References --------------------------------#
 
-/reference:..\..\Processor\bin\Release\net9.0\SpriteEffects.Processor.dll
+/reference:..\..\Processor\bin\Release\net8.0\SpriteEffects.Processor.dll
 
 #----------------------------- Content References --------------------------#
 
