@@ -41,12 +41,11 @@ namespace ShatterEffectProcessor
         {
             MeshBuilder builder = MeshBuilder.StartMesh("model");
 
-            MeshContent mesh = input as MeshContent;
-            List<Vector3> normalList = new List<Vector3>();
-            List<Vector2> texCoordList = new List<Vector2>();
-
-            if (mesh != null)
+            if (input is MeshContent mesh)
             {
+                List<Vector3> normalList = new List<Vector3>();
+                List<Vector2> texCoordList = new List<Vector2>();
+
                 int normalChannel = builder.CreateVertexChannel<Vector3>(
                                                VertexChannelNames.Normal());
                 int texChannel = builder.CreateVertexChannel<Vector2>(

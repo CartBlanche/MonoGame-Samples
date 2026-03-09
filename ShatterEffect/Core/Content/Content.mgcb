@@ -10,7 +10,7 @@
 
 #-------------------------------- References --------------------------------#
 
-/reference:..\..\Processor\bin\Release\net9.0\ShatterEffectSample.Processor.dll
+/reference:..\..\Processor\bin\Release\net8.0\ShatterEffect.Processor.dll
 
 #---------------------------------- Content ---------------------------------#
 
