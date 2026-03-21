@@ -23,6 +23,18 @@ namespace CardsFramework
         Vector2 destinationPosition;
 
         /// <summary>
+        /// The CurrentScale value at the start of the animation (default 1.0).
+        /// </summary>
+        public float StartScale { get; set; } = 1.0f;
+
+        /// <summary>
+        /// The CurrentScale value to reach at the end of the animation (default 1.0).
+        /// Override to match the visual size of the landing target, e.g. 1/ChipDrawScaleMultiplier
+        /// when returning chips to the selector so they appear full-size on arrival.
+        /// </summary>
+        public float FinalScale { get; set; } = 1.0f;
+
+        /// <summary>
         /// Initializes a new instance of the class.
         /// </summary>
         /// <param name="sourcePosition">The source position.</param>
@@ -51,9 +63,26 @@ namespace CardsFramework
                 float easedPercent = EaseOutCubic(percent);
                 Component.CurrentPosition = sourcePosition + positionDelta * easedPercent;
 
+                // Enable shadow and calculate dynamic offset based on animation progress
+                // Shadow peaks at midpoint (halfway through the motion)
+                Component.DrawShadow = true;
+                float shadowIntensity = 1f - Math.Abs(percent - 0.5f) * 2f;
+                float baseOffset = 8f;
+                float shadowOffset = baseOffset + (12f * shadowIntensity); // Ranges from 8 to 20 pixels
+                Component.ShadowOffset = new Vector2(shadowOffset, shadowOffset);
+
+                // Scale up during motion, peaking at temporal midpoint (creates "swooping" effect)
+                // Base interpolates from StartScale to FinalScale; swoop bump added on top.
+                // Use raw percent (not eased) so the peak is centred in time, not front-loaded
+                float scaleIntensity = 1f - Math.Abs(percent - 0.5f) * 2f;
+                float baseScale = MathHelper.Lerp(StartScale, FinalScale, percent);
+                Component.CurrentScale = baseScale + (0.4f * scaleIntensity);
+
                 if (IsDone())
                 {
                     Component.CurrentPosition = destinationPosition;
+                    Component.DrawShadow = false;
+                    Component.CurrentScale = FinalScale;
                 }
             }
 

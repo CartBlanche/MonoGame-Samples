@@ -23,7 +23,7 @@ namespace CardsFramework
         /// An action to perform before the animation begins.
         /// </summary>
         public Action<object> PerformBeforeStart;
-        public object PerformBeforSartArgs { get; set; }
+        public object PerformBeforeStartArgs { get; set; }
         /// <summary>
         /// An action to perform once the animation is complete.
         /// </summary>
@@ -118,7 +118,7 @@ namespace CardsFramework
                 {
                     if (PerformBeforeStart != null)
                     {
-                        PerformBeforeStart(PerformBeforSartArgs);
+                        PerformBeforeStart(PerformBeforeStartArgs);
                         PerformBeforeStart = null;
                     }
                     isStarted = true;

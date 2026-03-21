@@ -32,6 +32,26 @@ namespace CardsFramework
         public Rectangle? CurrentDestination { get; set; }
         public float CurrentRotation { get; set; } = 0f;
 
+        /// <summary>
+        /// Drawn beneath the card during movement.
+        /// </summary>
+        public bool DrawShadow { get; set; } = false;
+
+        /// <summary>
+        /// The shadow offset (in pixels). Increases as card moves faster (appears higher).
+        /// </summary>
+        public Vector2 ShadowOffset { get; set; } = new Vector2(8, 8);
+
+        /// <summary>
+        /// The scale multiplier for the card (1.0f = normal size). Used during animations for depth effect.
+        /// </summary>
+        public float CurrentScale { get; set; } = 1.0f;
+
+        /// <summary>
+        /// When true, applies the 1.5x card scale multiplier. When false (chips), uses normal scaling.
+        /// </summary>
+        public bool IsCard { get; set; } = true;
+
         List<AnimatedGameComponentAnimation> runningAnimations =
             new List<AnimatedGameComponentAnimation>();
 
@@ -56,7 +76,7 @@ namespace CardsFramework
         {
             if (sharedSpriteBatch == null)
                 throw new ArgumentNullException(nameof(sharedSpriteBatch), "AnimatedGameComponent requires a valid SpriteBatch.");
-                
+
             CardGame = cardGame;
             CurrentFrame = currentFrame;
             TextColor = Color.Black;
@@ -114,8 +134,15 @@ namespace CardsFramework
                         CurrentDestination.Value.Width / (float)CurrentFrame.Width,
                         CurrentDestination.Value.Height / (float)CurrentFrame.Height);
 
+                    if (DrawShadow)
+                    {
+                        Vector2 shadowPosition = centerPosition + ShadowOffset;
+                        spriteBatch.Draw(CurrentFrame, shadowPosition, CurrentSegment, Color.Black * 0.3f,
+                            CurrentRotation, origin, scale * 1.05f * CurrentScale, SpriteEffects.None, 0f);
+                    }
+
                     spriteBatch.Draw(CurrentFrame, centerPosition, CurrentSegment, Color,
-                        CurrentRotation, origin, scale, SpriteEffects.None, 0f);
+                        CurrentRotation, origin, scale * CurrentScale, SpriteEffects.None, 0f);
 
                     if (Text != null)
                     {
@@ -131,8 +158,19 @@ namespace CardsFramework
                     // Position + origin to center the rotation point
                     Vector2 centerPosition = CurrentPosition + origin;
 
+                    if (DrawShadow)
+                    {
+                        Vector2 shadowPosition = centerPosition + ShadowOffset;
+                        float cardShadowScale = IsCard ? AnimationConstants.CardDrawScaleMultiplier * AnimationConstants.ShadowDrawScaleMultiplier : AnimationConstants.ChipDrawScaleMultiplier * AnimationConstants.ShadowDrawScaleMultiplier;
+                        float shadowScale = cardShadowScale * CurrentScale;
+                        spriteBatch.Draw(CurrentFrame, shadowPosition, CurrentSegment, Color.Black * 0.3f,
+                            CurrentRotation, origin, shadowScale, SpriteEffects.None, 0f);
+                    }
+
+                    float drawScale = IsCard ? AnimationConstants.CardDrawScaleMultiplier : AnimationConstants.ChipDrawScaleMultiplier;
+                    float scale = drawScale * CurrentScale;
                     spriteBatch.Draw(CurrentFrame, centerPosition, CurrentSegment, Color,
-                        CurrentRotation, origin, 1f, SpriteEffects.None, 0f);
+                        CurrentRotation, origin, scale, SpriteEffects.None, 0f);
 
                     if (Text != null)
                     {

@@ -7,14 +7,14 @@
 
 using System;
 using System.Threading.Tasks;
-using GameStateManagement;
+
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
 
-namespace Blackjack
+namespace CardsFramework.Core
 {
 	/// <summary>
 	/// When an asynchronous network operation (for instance searching for or joining a
@@ -26,10 +26,11 @@ namespace Blackjack
 	/// captures all user input to prevent interaction with underlying screens until
 	/// the operation completes.
 	/// </summary>
-	class NetworkBusyScreen<T> : GameScreen
+	public class NetworkBusyScreen<T> : GameScreen
 	{
 		readonly Task<T> task;
 		readonly System.Threading.CancellationTokenSource cts;
+		readonly string busyMessage;
 		bool completionRaised;
 		Texture2D gradientTexture;
 		Texture2D busyTexture;
@@ -45,10 +46,11 @@ namespace Blackjack
 		/// Constructs a network busy screen for the specified asynchronous operation.
 		/// Accepts a Task&lt;T&gt; representing the in-flight operation.
 		/// </summary>
-		public NetworkBusyScreen(Task<T> task)
+		public NetworkBusyScreen(Task<T> task, string busyMessage = "Network Busy...")
 		{
 			this.task = task;
 			this.cts = null;
+			this.busyMessage = busyMessage;
 
 			IsPopup = true;
 
@@ -59,10 +61,11 @@ namespace Blackjack
 		/// <summary>
 		/// Overload that accepts a CancellationTokenSource to allow user cancellation.
 		/// </summary>
-		public NetworkBusyScreen(Task<T> task, System.Threading.CancellationTokenSource cts)
+		public NetworkBusyScreen(Task<T> task, System.Threading.CancellationTokenSource cts, string busyMessage = "Network Busy...")
 		{
 			this.task = task;
 			this.cts = cts;
+			this.busyMessage = busyMessage;
 
 			IsPopup = true;
 
@@ -146,7 +149,7 @@ namespace Blackjack
 			SpriteBatch spriteBatch = ScreenManager.SpriteBatch;
 			SpriteFont font = ScreenManager.Font;
 
-            string message = Resources.NetworkBusy;
+            string message = busyMessage;
 
 			const int hPad = 32;
 			const int vPad = 16;

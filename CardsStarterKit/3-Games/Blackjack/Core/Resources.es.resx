@@ -356,4 +356,18 @@ Botón B, Esc = Cancelar</value>
   <data name="CardBackColorBlue" xml:space="preserve">
     <value>Azul</value>
   </data>
+  <data name="About" xml:space="preserve">
+    <value>Acerca de</value>
+  </data>
+  <data name="HintPlaceBet" xml:space="preserve">
+    <value>Realiza una apuesta y pulsa el 
+botón "Repartir" para unirte.</value>
+  </data>
+  <data name="HintRemoveBet" xml:space="preserve">
+    <value>Pulsa "Borrar" o tu pila de fichas
+para retirar tus apuestas.</value>
+  </data>
+  <data name="HintGameGoal" xml:space="preserve">
+    <value>Acércate lo más posible a 21, sin pasarte.</value>
+  </data>
 </root>

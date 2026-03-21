@@ -8,8 +8,10 @@
     <Copyright>Copyright © Microsoft</Copyright>
     <Version>1.0.0.0</Version>
   </PropertyGroup>
-  <!-- Let SDK include all .cs files by default -->
   <ItemGroup>
-    <PackageReference Include="MonoGame.Framework.DesktopGL" Version="3.8.*" PrivateAssets="all" />
+    <ProjectReference Include="..\Processor\ShatterEffect.Processor.csproj" />
+    <PackageReference Include="MonoGame.Framework.DesktopGL" Version="3.8.5-preview.3">
+      <PrivateAssets>All</PrivateAssets>
+    </PackageReference>
   </ItemGroup>
 </Project>

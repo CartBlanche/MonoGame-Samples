@@ -8,27 +8,32 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
-using GameStateManagement;
+
 using Microsoft.Xna.Framework;
 
-namespace Blackjack
+namespace CardsFramework.Core
 {
-    class PauseScreen : MenuScreen
+    public class PauseScreen : MenuScreen
     {
         /// <summary>
         /// Initializes a new instance of the screen.
         /// </summary>
-        public PauseScreen()
-            : base("")
-        {
+        readonly string returnText;
+        readonly string quitText;
 
+        public PauseScreen(string returnText = "Back", string quitText = "Quit")
+            : base("Pause")
+        {
+            this.returnText = returnText;
+            this.quitText = quitText;
+            IsPopup = true;
         }
 
         public override void LoadContent()
         {
             // Create our menu entries.
-            MenuEntry returnGameMenuEntry = new MenuEntry(Resources.Back);
-            MenuEntry exitMenuEntry = new MenuEntry(Resources.Quit);
+            MenuEntry returnGameMenuEntry = new MenuEntry(returnText);
+            MenuEntry exitMenuEntry = new MenuEntry(quitText);
 
             // Hook up menu event handlers.
             returnGameMenuEntry.Selected += ReturnGameMenuEntrySelected;
@@ -49,14 +54,14 @@ namespace Blackjack
         void ReturnGameMenuEntrySelected(object sender, EventArgs e)
         {
             GameScreen[] screens = ScreenManager.GetScreens();
-            GameplayScreen gameplayScreen = null;
+            IPausable pausable = null;
             List<GameScreen> res = new List<GameScreen>();
 
             for (int screenIndex = 0; screenIndex < screens.Length; screenIndex++)
             {
-                if (screens[screenIndex] is GameplayScreen)
+                if (screens[screenIndex] is IPausable p)
                 {
-                    gameplayScreen = (GameplayScreen)screens[screenIndex];
+                    pausable = p;
                 }
                 else
                 {
@@ -67,7 +72,7 @@ namespace Blackjack
             foreach (GameScreen screen in res)
                 screen.ExitScreen();
 
-            gameplayScreen.ReturnFromPause();
+            pausable?.ReturnFromPause();
         }
 
         /// <summary>
@@ -76,28 +81,30 @@ namespace Blackjack
         /// <param name="playerIndex"></param>
         protected override void OnCancel(PlayerIndex playerIndex)
         {
-            for (int componentIndex = 0; componentIndex < ScreenManager.Game.Components.Count; componentIndex++)
+            // Exit only the pause-related screens: PauseScreen, BackgroundScreen (pause overlay), and GameplayScreen
+            // This will return to the LobbyScreen beneath them
+            GameScreen[] screens = ScreenManager.GetScreens();
+
+            foreach (GameScreen screen in screens)
             {
-                if (!(ScreenManager.Game.Components[componentIndex] is ScreenManager))
+                // Exit only if it's one of the pause screens or gameplay
+                if (screen is PauseScreen || screen is IPausable)
                 {
-                    if (ScreenManager.Game.Components[componentIndex] is DrawableGameComponent)
+                    screen.ExitScreen();
+                }
+                // Also exit the BackgroundScreen that was added for the pause overlay
+                // It should be the one right before PauseScreen
+                else if (screen is BackgroundScreen)
+                {
+                    // Check if this is the pause BackgroundScreen (there might be others in the stack)
+                    int pauseIndex = System.Array.FindIndex(screens, s => s is PauseScreen);
+                    int bgIndex = System.Array.FindIndex(screens, s => s == screen);
+                    if (bgIndex == pauseIndex - 1)
                     {
-                        (ScreenManager.Game.Components[componentIndex] as IDisposable).Dispose();
-                        componentIndex--;
-                    }
-                    else
-                    {
-                        ScreenManager.Game.Components.RemoveAt(componentIndex);
-                        componentIndex--;
+                        screen.ExitScreen();
                     }
                 }
             }
-
-            foreach (GameScreen screen in ScreenManager.GetScreens())
-                screen.ExitScreen();
-
-            ScreenManager.AddScreen(new BackgroundScreen(), null);
-            ScreenManager.AddScreen(new MainMenuScreen(), null);
         }
     }
 }

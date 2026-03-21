@@ -7,17 +7,17 @@
             "type": "process",
             "args": [
                 "build",
-                "Platforms/Windows/TiledSprites.Windows.csproj"
+                "Platforms/Windows/TiledSprites.csproj"
             ],
             "problemMatcher": "$msCompile"
         },
         {
-            "label": "build-desktopgl",
+            "label": "build-desktop",
             "command": "dotnet",
             "type": "process",
             "args": [
                 "build",
-                "Platforms/DesktopGL/TiledSprites.DesktopGL.csproj"
+                "Platforms/Desktop/TiledSprites.csproj"
             ],
             "problemMatcher": "$msCompile"
         },
@@ -27,7 +27,7 @@
             "type": "process",
             "args": [
                 "build",
-                "Platforms/Android/TiledSprites.Android.csproj"
+                "Platforms/Android/TiledSprites.csproj"
             ],
             "problemMatcher": "$msCompile"
         },
@@ -37,7 +37,7 @@
             "type": "process",
             "args": [
                 "build",
-                "Platforms/iOS/TiledSprites.iOS.csproj"
+                "Platforms/iOS/TiledSprites.csproj"
             ],
             "problemMatcher": "$msCompile"
         }

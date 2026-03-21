@@ -355,4 +355,18 @@
   <data name="CardBackColorBlue" xml:space="preserve">
     <value>Синий</value>
   </data>
+  <data name="About" xml:space="preserve">
+    <value>О игре</value>
+  </data>
+  <data name="HintPlaceBet" xml:space="preserve">
+    <value>Сделайте ставку и нажмите 
+«Раздать», чтобы начать игру.</value>
+  </data>
+  <data name="HintRemoveBet" xml:space="preserve">
+    <value>Нажмите «Очистить» или стопку фишек,
+чтобы убрать ставки.</value>
+  </data>
+  <data name="HintGameGoal" xml:space="preserve">
+    <value>Наберите как можно ближе к 21, не превышая его.</value>
+  </data>
 </root>

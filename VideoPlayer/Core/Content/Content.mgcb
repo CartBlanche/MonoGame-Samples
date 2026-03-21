@@ -19,4 +19,4 @@
 /build:font.spritefont
 
 #begin Videos
-/build:sintel_trailer.mp4
+/copy:sintel_trailer.mp4

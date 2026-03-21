@@ -356,4 +356,18 @@ Bouton B, Échap = Annuler</value>
   <data name="CardBackColorBlue" xml:space="preserve">
     <value>Bleu</value>
   </data>
+  <data name="About" xml:space="preserve">
+    <value>À propos</value>
+  </data>
+  <data name="HintPlaceBet" xml:space="preserve">
+    <value>Misez et appuyez sur le bouton 
+"Distribuer" pour rejoindre.</value>
+  </data>
+  <data name="HintRemoveBet" xml:space="preserve">
+    <value>Appuyez sur "Effacer" ou votre pile de jetons
+pour retirer vos mises.</value>
+  </data>
+  <data name="HintGameGoal" xml:space="preserve">
+    <value>Approchez-vous le plus possible de 21, sans le dépasser.</value>
+  </data>
 </root>

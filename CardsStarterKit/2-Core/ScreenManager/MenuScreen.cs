@@ -11,16 +11,15 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input.Touch;
 using Microsoft.Xna.Framework.Input;
-using Blackjack;
 using CardsFramework;
 
-namespace GameStateManagement
+namespace CardsFramework.Core
 {
     /// <summary>
     /// Base class for screens that contain a menu of options. The user can
     /// move up and down to select an entry, or cancel to back out of the screen.
     /// </summary>
-    abstract class MenuScreen : GameScreen
+    public abstract class MenuScreen : GameScreen
     {
 
         // the number of pixels to pad above and below menu entries for touch input
@@ -112,6 +111,17 @@ namespace GameStateManagement
                          inputState.IsNewKeyPress(Keys.Space, ControllingPlayer, out player))
                 {
                     OnSelectEntry(selectedEntry, player);
+                }
+
+                // Update selectedEntry based on mouse hover (for hover highlight)
+                Point cursorLocation = new Point((int)inputState.CurrentCursorLocation.X, (int)inputState.CurrentCursorLocation.Y);
+                for (int i = 0; i < menuEntries.Count; i++)
+                {
+                    if (menuEntries[i].Destination.Contains(cursorLocation))
+                    {
+                        selectedEntry = i;
+                        break;
+                    }
                 }
 
                 // Handle mouse input using transformed coordinates

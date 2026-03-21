@@ -7,13 +7,21 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpriteEffects.Processor", "
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpriteEffects.Core", "Core\SpriteEffects.Core.csproj", "{986126B8-F1ED-C0DC-1990-CEB4E96B6CD0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpriteEffects.Android", "Platform\Android\SpriteEffects.Android.csproj", "{FE453FCF-2BE1-E16C-C626-C8A9D2791B14}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpriteEffects", "Platform\Android\SpriteEffects.csproj", "{FE453FCF-2BE1-E16C-C626-C8A9D2791B14}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpriteEffects.DesktopGL", "Platform\DesktopGL\SpriteEffects.DesktopGL.csproj", "{F2B835F1-9F82-EB30-0036-8B7CCC3B07DF}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Android", "Android", "{1744E3A0-F630-409E-9736-0283FF629F1F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpriteEffects.iOS", "Platform\iOS\SpriteEffects.iOS.csproj", "{E73EA002-EBC1-64DB-3767-8220C8F0459A}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Desktop", "Desktop", "{628843D8-0DFB-4140-AB0C-997BEB179CD9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpriteEffects.Windows", "Platform\Windows\SpriteEffects.Windows.csproj", "{407CD235-33D3-F670-DC9E-E5AE61F93336}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "iOS", "iOS", "{8489E38F-0002-4370-8195-A1A653B00C53}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Windows", "Windows", "{90A766E8-E8D0-40B5-9590-88CE3A8ABBCF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpriteEffects", "Platform\Desktop\SpriteEffects.csproj", "{7341D141-C5E7-4C53-8E63-79643CC76553}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpriteEffects", "Platform\iOS\SpriteEffects.csproj", "{C24BCFA7-D50F-4FC6-B966-EC085F1F5CFD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpriteEffects", "Platform\Windows\SpriteEffects.csproj", "{AF8799D7-4D0F-4326-8BEA-B3A8E4F92D71}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -35,20 +43,18 @@ Global
 		{FE453FCF-2BE1-E16C-C626-C8A9D2791B14}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FE453FCF-2BE1-E16C-C626-C8A9D2791B14}.Release|Any CPU.Build.0 = Release|Any CPU
 		{FE453FCF-2BE1-E16C-C626-C8A9D2791B14}.Release|Any CPU.Deploy.0 = Release|Any CPU
-		{F2B835F1-9F82-EB30-0036-8B7CCC3B07DF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{F2B835F1-9F82-EB30-0036-8B7CCC3B07DF}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{F2B835F1-9F82-EB30-0036-8B7CCC3B07DF}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{F2B835F1-9F82-EB30-0036-8B7CCC3B07DF}.Release|Any CPU.Build.0 = Release|Any CPU
-		{E73EA002-EBC1-64DB-3767-8220C8F0459A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{E73EA002-EBC1-64DB-3767-8220C8F0459A}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{E73EA002-EBC1-64DB-3767-8220C8F0459A}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
-		{E73EA002-EBC1-64DB-3767-8220C8F0459A}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{E73EA002-EBC1-64DB-3767-8220C8F0459A}.Release|Any CPU.Build.0 = Release|Any CPU
-		{E73EA002-EBC1-64DB-3767-8220C8F0459A}.Release|Any CPU.Deploy.0 = Release|Any CPU
-		{407CD235-33D3-F670-DC9E-E5AE61F93336}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{407CD235-33D3-F670-DC9E-E5AE61F93336}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{407CD235-33D3-F670-DC9E-E5AE61F93336}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{407CD235-33D3-F670-DC9E-E5AE61F93336}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7341D141-C5E7-4C53-8E63-79643CC76553}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7341D141-C5E7-4C53-8E63-79643CC76553}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7341D141-C5E7-4C53-8E63-79643CC76553}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7341D141-C5E7-4C53-8E63-79643CC76553}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C24BCFA7-D50F-4FC6-B966-EC085F1F5CFD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C24BCFA7-D50F-4FC6-B966-EC085F1F5CFD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C24BCFA7-D50F-4FC6-B966-EC085F1F5CFD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C24BCFA7-D50F-4FC6-B966-EC085F1F5CFD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AF8799D7-4D0F-4326-8BEA-B3A8E4F92D71}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AF8799D7-4D0F-4326-8BEA-B3A8E4F92D71}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AF8799D7-4D0F-4326-8BEA-B3A8E4F92D71}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AF8799D7-4D0F-4326-8BEA-B3A8E4F92D71}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -58,5 +64,11 @@ Global
 	EndGlobalSection
 	GlobalSection(MonoDevelopProperties) = preSolution
 		StartupItem = SpriteEffects.csproj
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{FE453FCF-2BE1-E16C-C626-C8A9D2791B14} = {1744E3A0-F630-409E-9736-0283FF629F1F}
+		{7341D141-C5E7-4C53-8E63-79643CC76553} = {628843D8-0DFB-4140-AB0C-997BEB179CD9}
+		{C24BCFA7-D50F-4FC6-B966-EC085F1F5CFD} = {8489E38F-0002-4370-8195-A1A653B00C53}
+		{AF8799D7-4D0F-4326-8BEA-B3A8E4F92D71} = {90A766E8-E8D0-40B5-9590-88CE3A8ABBCF}
 	EndGlobalSection
 EndGlobal

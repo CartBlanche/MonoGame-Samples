@@ -355,4 +355,18 @@ B按钮、Esc = 取消</value>
   <data name="CardBackColorBlue" xml:space="preserve">
     <value>蓝色</value>
   </data>
+  <data name="About" xml:space="preserve">
+    <value>关于</value>
+  </data>
+  <data name="HintPlaceBet" xml:space="preserve">
+    <value>下注后点击
+「发牌」按钮加入游戏。</value>
+  </data>
+  <data name="HintRemoveBet" xml:space="preserve">
+    <value>点击「清除」按钮或筹码堆
+可取消已下的注。</value>
+  </data>
+  <data name="HintGameGoal" xml:space="preserve">
+    <value>在不超过21点的情况下尽量靠近21点。</value>
+  </data>
 </root>

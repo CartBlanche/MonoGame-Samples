@@ -2,13 +2,16 @@
 // This is used twice by the bloom postprocess, first to
 // blur horizontally, and then again to blur vertically.
 
-sampler TextureSampler : register(s0);
+#include "Macros.hlsl"
+
+DECLARE_TEXTURE(TextureSampler, 0);
 
 #define SAMPLE_COUNT 15
 
+BEGIN_CONSTANTS
 float2 SampleOffsets[SAMPLE_COUNT];
 float SampleWeights[SAMPLE_COUNT];
-
+END_CONSTANTS
 
 float4 PixelShaderFunction(float2 texCoord : TEXCOORD0) : COLOR0
 {

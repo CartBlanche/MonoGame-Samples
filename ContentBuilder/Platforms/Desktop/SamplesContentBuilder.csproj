@@ -21,4 +21,7 @@
   <ItemGroup>
     <MonoGameContentReference Include="..\..\Core\Content\Content-DesktopGL.mgcb" />
   </ItemGroup>
+  <None Include="SamplesContentBuilder.icns">
+    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+  </None>
 </Project>

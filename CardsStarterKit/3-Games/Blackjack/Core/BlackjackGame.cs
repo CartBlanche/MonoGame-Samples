@@ -15,8 +15,9 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
 using CardsFramework;
+using CardsFramework.Core;
 using System.Globalization;
-using GameStateManagement;
+
 
 namespace Blackjack
 {
@@ -54,15 +55,21 @@ namespace Blackjack
                 throw new PlatformNotSupportedException();
             }
 
-            screenManager = new ScreenManager(this);
+            screenManager = new ScreenManager(this, () => GameSettings.Instance.Language);
 
-            screenManager.AddScreen(new BackgroundScreen(), null);
-            screenManager.AddScreen(new MainMenuScreen(), null);
+            // Show splash screen on startup (it will add BackgroundScreen and MainMenuScreen after 3 seconds)
+            screenManager.AddScreen(new SplashScreen(() => new GameScreen[]
+            {
+                new BackgroundScreen(),
+                new MainMenuScreen()
+            }), null);
 
             Components.Add(screenManager);
 
             // Initialize sound system
-            AudioManager.Initialize(this);
+            AudioManager.Initialize(this,
+                getSoundVolume: () => GameSettings.Instance.SoundVolume,
+                getMusicVolume: () => GameSettings.Instance.MusicVolume);
         }
 
         protected override void Initialize()
@@ -77,8 +84,56 @@ namespace Blackjack
         protected override void LoadContent()
         {
             AudioManager.LoadSounds();
+            AudioManager.LoadMusic();
 
             base.LoadContent();
         }
+
+        /// <summary>
+        /// Allows the game to run logic such as updating the world,
+        /// checking for collisions, gathering input, and playing audio.
+        /// </summary>
+        /// <param name="gameTime">Provides a snapshot of timing values.</param>
+        protected override void Update(GameTime gameTime)
+        {
+            if (UIUtility.IsDesktop)
+            {
+                KeyboardState keyboardState = Keyboard.GetState();
+
+                // Check if Alt+Enter is pressed
+                if ((keyboardState.IsKeyDown(Keys.LeftAlt) || keyboardState.IsKeyDown(Keys.RightAlt))
+                    && keyboardState.IsKeyDown(Keys.Enter))
+                {
+                    // Use a static flag to prevent multiple toggles on held keys
+                    if (!wasFullscreenTogglePressed)
+                    {
+                        graphicsDeviceManager.ToggleFullScreen();
+
+                        wasFullscreenTogglePressed = true;
+                    }
+                }
+                else
+                {
+                    wasFullscreenTogglePressed = false;
+                }
+            }
+
+            base.Update(gameTime);
+        }
+
+        /// <summary>
+        /// This is called when the game should draw itself.
+        /// </summary>
+        /// <param name="gameTime">Provides a snapshot of timing values.</param>
+        protected override void Draw(GameTime gameTime)
+        {
+            // Clear the screen to prevent rendering artifacts when switching between windowed and fullscreen
+            GraphicsDevice.Clear(Color.Black);
+
+            base.Draw(gameTime);
+        }
+
+        // Flag to prevent multiple fullscreen toggles when keys are held
+        private bool wasFullscreenTogglePressed = false;
     }
 }

@@ -41,12 +41,11 @@ namespace ShatterEffectProcessor
         {
             MeshBuilder builder = MeshBuilder.StartMesh("model");
 
-            MeshContent mesh = input as MeshContent;
-            List<Vector3> normalList = new List<Vector3>();
-            List<Vector2> texCoordList = new List<Vector2>();
-
-            if (mesh != null)
+            if (input is MeshContent mesh)
             {
+                List<Vector3> normalList = new List<Vector3>();
+                List<Vector2> texCoordList = new List<Vector2>();
+
                 int normalChannel = builder.CreateVertexChannel<Vector3>(
                                                VertexChannelNames.Normal());
                 int texChannel = builder.CreateVertexChannel<Vector2>(
@@ -179,7 +178,7 @@ namespace ShatterEffectProcessor
                 // Add the textures in the source Material to our effect.
                 if (!effect.Textures.ContainsKey("modelTexture"))
                 {
-                    context.Logger.Log("Adding texture: " + texture.Name);
+                    context.Logger.LogMessage("Adding texture: " + texture.Name);
                     effect.Textures.Add("modelTexture", texture);
                 }
             }

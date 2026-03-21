@@ -356,4 +356,18 @@ Pulsante B, Esc = Annulla</value>
   <data name="CardBackColorBlue" xml:space="preserve">
     <value>Blu</value>
   </data>
+  <data name="About" xml:space="preserve">
+    <value>Info</value>
+  </data>
+  <data name="HintPlaceBet" xml:space="preserve">
+    <value>Fai una puntata e premi 
+"Distribuire" per giocare.</value>
+  </data>
+  <data name="HintRemoveBet" xml:space="preserve">
+    <value>Premi "Cancella" o la tua pila di fiches
+per rimuovere le puntate.</value>
+  </data>
+  <data name="HintGameGoal" xml:space="preserve">
+    <value>Avvicinati il più possibile a 21, senza superarlo.</value>
+  </data>
 </root>

@@ -16,7 +16,7 @@ using System.IO;
 using System.IO.IsolatedStorage;
 using CardsFramework;
 
-namespace GameStateManagement
+namespace CardsFramework.Core
 {
     /// <summary>
     /// The screen manager is a component which manages one or more GameScreen
@@ -45,8 +45,14 @@ namespace GameStateManagement
 
         bool traceEnabled;
 
-        internal const int BASE_BUFFER_WIDTH = 1280;
-        internal const int BASE_BUFFER_HEIGHT = 720;
+        /// <summary>
+        /// Returns the current language tag (e.g. "日本語"). Injected at construction
+        /// so ScreenManager has no dependency on any game-specific settings class.
+        /// </summary>
+        readonly Func<string> languageProvider;
+
+        public const int BASE_BUFFER_WIDTH = 1280;
+        public const int BASE_BUFFER_HEIGHT = 720;
 
         private int backbufferWidth;
         /// <summary>Gets or sets the current backbuffer width.</summary>
@@ -141,9 +147,17 @@ namespace GameStateManagement
         /// <summary>
         /// Constructs a new screen manager component.
         /// </summary>
-        public ScreenManager(Game game)
+        /// <param name="game">The game that owns this component.</param>
+        /// <param name="languageProvider">
+        /// Optional callback that returns the current language tag (e.g. "日本語").
+        /// Used to select the correct font (CJK vs Latin) at startup.
+        /// Defaults to returning an empty string (Latin fonts) if not provided.
+        /// </param>
+        public ScreenManager(Game game, Func<string> languageProvider = null)
             : base(game)
         {
+            this.languageProvider = languageProvider ?? (() => string.Empty);
+
             // we must set EnabledGestures before we can query for them, but
             // we don't assume the game wants to read them.
             TouchPanel.EnabledGestures = GestureType.None;
@@ -169,9 +183,10 @@ namespace GameStateManagement
 
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
-            // Load the appropriate fonts based on the saved language setting
-            // This handles the case where the game was closed with a CJK language selected
-            string currentLanguage = Blackjack.GameSettings.Instance.Language;
+            // Load the appropriate fonts based on the saved language setting.
+            // The language is provided via the languageProvider delegate injected at construction,
+            // keeping ScreenManager independent of any game-specific settings class.
+            string currentLanguage = languageProvider();
             bool useCJKFont = currentLanguage == "日本語" || currentLanguage == "中文";
 
             string menuFontPath = useCJKFont ? "Fonts/MenuFont_CJK" : "Fonts/MenuFont";
@@ -224,20 +239,10 @@ namespace GameStateManagement
         {
             foreach (GameScreen screen in screens)
             {
-                if (screen is Blackjack.SettingsScreen settingsScreen)
-                {
-                    // SettingsScreen rebuilds itself in the cycle methods
-                }
-                else if (screen is Blackjack.GameplayScreen gameplayScreen)
-                {
-                    // Update gameplay button text (Deal, Clear, Hit, Stand, etc.)
-                    gameplayScreen.UpdateButtonText();
-                }
-                else if (screen is GameStateManagement.MenuScreen menuScreen)
-                {
-                    // Force menu screens to rebuild their entries with the new language
+                if (screen is ILanguageAware languageAware)
+                    languageAware.OnLanguageChanged();
+                else if (screen is MenuScreen menuScreen)
                     menuScreen.LoadContent();
-                }
             }
         }
 

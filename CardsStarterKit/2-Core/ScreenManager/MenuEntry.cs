@@ -8,39 +8,17 @@
 using System;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Blackjack;
 using CardsFramework;
-using Microsoft.Xna.Framework.Net;
 
-namespace GameStateManagement
+namespace CardsFramework.Core
 {
-    /// <summary>
-    /// MenuEntry subclass for displaying AvailableNetworkSession info.
-    /// </summary>
-    class AvailableSessionMenuEntry : MenuEntry
-    {
-        public AvailableNetworkSession AvailableSession { get; }
-
-        public AvailableSessionMenuEntry(AvailableNetworkSession session)
-            : base(GetMenuItemText(session))
-        {
-            AvailableSession = session;
-        }
-
-        static string GetMenuItemText(AvailableNetworkSession session)
-        {
-            int totalSlots = session.CurrentGamerCount + session.OpenPublicGamerSlots;
-            return $"{session.HostGamertag} ({session.CurrentGamerCount}/{totalSlots})";
-        }
-    }
-
     /// <summary>
     /// Helper class represents a single entry in a MenuScreen. By default this
     /// just draws the entry text string, but it can be customized to display menu
     /// entries in different ways. This also provides an event that will be raised
     /// when the menu entry is selected.
     /// </summary>
-    class MenuEntry
+    public class MenuEntry
     {
 
         /// <summary>
@@ -96,6 +74,8 @@ namespace GameStateManagement
         /// </summary>
         protected internal virtual void OnSelectEntry(PlayerIndex playerIndex)
         {
+            AudioManager.PlaySound("Click");
+
             if (Selected != null)
                 Selected(this, new PlayerIndexEventArgs(playerIndex));
         }
@@ -165,6 +145,23 @@ namespace GameStateManagement
 
             spriteBatch.DrawString(screenManager.Font, text, getTextPosition(screen),
                 textColor, Rotation, Vector2.Zero, Scale, SpriteEffects.None, 0);
+
+            // Draw hover border on desktop (bold gold rectangle outline)
+            if (UIUtility.IsDesktop && isSelected && !isPressed)
+            {
+                Texture2D pixel = screenManager.BlankTexture;
+                int borderThickness = 3;
+                Color borderColor = Color.Gold;
+
+                // Top border
+                spriteBatch.Draw(pixel, new Rectangle(destination.X, destination.Y, destination.Width, borderThickness), borderColor);
+                // Bottom border
+                spriteBatch.Draw(pixel, new Rectangle(destination.X, destination.Y + destination.Height - borderThickness, destination.Width, borderThickness), borderColor);
+                // Left border
+                spriteBatch.Draw(pixel, new Rectangle(destination.X, destination.Y, borderThickness, destination.Height), borderColor);
+                // Right border
+                spriteBatch.Draw(pixel, new Rectangle(destination.X + destination.Width - borderThickness, destination.Y, borderThickness, destination.Height), borderColor);
+            }
         }
 
 
@@ -191,8 +188,8 @@ namespace GameStateManagement
             // Calculate horizontal centering
             float centeredX = destination.X + (destination.Width / 2.0f) - (GetWidth(screen) / 2.0f) * Scale;
 
-            // Calculate vertical centering
-            float centeredY = destination.Y + (destination.Height / 2.0f) - (GetHeight(screen) / 2.0f) * Scale;
+            // Calculate vertical centering and move up 2 pixels for better visual centering
+            float centeredY = destination.Y + (destination.Height / 2.0f) - (GetHeight(screen) / 2.0f) * Scale - 2;
 
             textPosition = new Vector2(centeredX, centeredY);
 

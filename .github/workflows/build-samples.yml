@@ -37,9 +37,9 @@ jobs:
             brew update >/dev/null 2>&1 || true
             brew install jq >/dev/null 2>&1
           fi
-          # Find all Desktop platform csproj files: **/Platforms/Desktop/*.csproj (portable without mapfile)
+          # Find all Desktop platform csproj files: **/**/Desktop/*.csproj (portable without mapfile)
           desktop_projects_tmp=$(mktemp)
-          find . -type f -path '*/Platforms/Desktop/*.csproj' | sort > "$desktop_projects_tmp"
+          find . -type f -path '*/**/Desktop/*.csproj' | sort > "$desktop_projects_tmp"
           if [ ! -s "$desktop_projects_tmp" ]; then
             echo "No Desktop platform projects found."
             echo "projects=[]" >> "$GITHUB_OUTPUT"
@@ -116,7 +116,8 @@ jobs:
           PROJ="${{ matrix.project }}"
           NAME=$(basename "$PROJ" .csproj)
           PROJ_DIR=$(dirname "$PROJ")
-          ARTIFACTS_DIR="./artifacts/$NAME"
+          BUILD_NUMBER="${{ github.run_number }}"
+          ARTIFACTS_DIR="./artifacts/$NAME.${BUILD_NUMBER}"
 
           echo "Project path: $PROJ"
           echo "Project name: $NAME"
@@ -142,7 +143,8 @@ jobs:
               -i "$INFO_PLIST" \
               -c "$ICNS_FILE" \
               -v \
-              --macos-universal
+              --macos-universal \
+              --publish-args "-p:PublishSingleFile=true"
           else
             echo "No .icns file found, packaging without custom icon"
             monopack -p "$PROJ" \
@@ -150,13 +152,14 @@ jobs:
               -rids win-x64,linux-x64,osx-x64,osx-arm64 \
               -i "$INFO_PLIST" \
               -v \
-              --macos-universal
+              --macos-universal \
+              --publish-args "-p:PublishSingleFile=true"
           fi
 
           echo "Generated artifacts:"
           find "$ARTIFACTS_DIR" -type f -name "*.zip" || echo "No zip files found"
           ls -la "$ARTIFACTS_DIR" || echo "Artifacts directory not found"
-          echo "name=$NAME" >> "$GITHUB_OUTPUT"
+          echo "name=$NAME.${BUILD_NUMBER}" >> "$GITHUB_OUTPUT"
 
       - name: Record Build Result
         if: always()

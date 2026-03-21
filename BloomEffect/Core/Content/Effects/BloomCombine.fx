@@ -2,14 +2,17 @@
 // scene, using tweakable intensity levels and saturation.
 // This is the final step in applying a bloom postprocess.
 
-sampler BloomSampler : register(s0);
-sampler BaseSampler : register(s1);
+#include "Macros.hlsl"
 
+BEGIN_CONSTANTS
 float BloomIntensity;
 float BaseIntensity;
-
 float BloomSaturation;
 float BaseSaturation;
+END_CONSTANTS
+
+DECLARE_TEXTURE(BloomSampler, 0);
+DECLARE_TEXTURE(BaseSampler, 1);
 
 
 // Helper for modifying the saturation of a color.

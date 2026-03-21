@@ -12,7 +12,7 @@ using System.IO;
 using Microsoft.Xna.Framework.Graphics;
 using CardsFramework;
 
-namespace GameStateManagement
+namespace CardsFramework.Core
 {
     /// <summary>
     /// Enum describes the screen transition state.

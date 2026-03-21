@@ -7,18 +7,18 @@
             "type": "shell",
             "args": [
                 "build",
-                "Platforms/Windows/ShatterEffectSample.Windows.csproj"
+                "Platforms/Windows/ShatterEffect.csproj"
             ],
             "group": "build",
             "problemMatcher": "$msCompile"
         },
         {
-            "label": "build-desktopgl",
+            "label": "build-desktop",
             "command": "dotnet",
             "type": "shell",
             "args": [
                 "build",
-                "Platforms/DesktopGL/ShatterEffectSample.DesktopGL.csproj"
+                "Platforms/Desktop/ShatterEffect.csproj"
             ],
             "group": "build",
             "problemMatcher": "$msCompile"
@@ -29,7 +29,7 @@
             "type": "shell",
             "args": [
                 "build",
-                "Platforms/Android/ShatterEffectSample.Android.csproj"
+                "Platforms/Android/ShatterEffect.csproj"
             ],
             "group": "build",
             "problemMatcher": "$msCompile"
@@ -40,7 +40,7 @@
             "type": "shell",
             "args": [
                 "build",
-                "Platforms/iOS/ShatterEffectSample.iOS.csproj"
+                "Platforms/iOS/ShatterEffect.csproj"
             ],
             "group": "build",
             "problemMatcher": "$msCompile"

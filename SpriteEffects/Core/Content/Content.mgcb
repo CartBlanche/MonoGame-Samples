@@ -18,22 +18,22 @@
 /importer:EffectImporter
 /processor:EffectProcessor
 /processorParam:DebugMode=Auto
-/build:desaturate.fx
+/build:Effects/desaturate.fx
 
 /importer:EffectImporter
 /processor:EffectProcessor
 /processorParam:DebugMode=Auto
-/build:disappear.fx
+/build:Effects/disappear.fx
 
 /importer:EffectImporter
 /processor:EffectProcessor
 /processorParam:DebugMode=Auto
-/build:normalmap.fx
+/build:Effects/normalmap.fx
 
 /importer:EffectImporter
 /processor:EffectProcessor
 /processorParam:DebugMode=Auto
-/build:refraction.fx
+/build:Effects/refraction.fx
 
 #begin Texture Files
 /importer:TextureImporter

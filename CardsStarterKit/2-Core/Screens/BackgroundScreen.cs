@@ -8,14 +8,14 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
-using GameStateManagement;
+
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
 using System.IO;
 
-namespace Blackjack
+namespace CardsFramework.Core
 {
-    class BackgroundScreen : GameScreen
+    public class BackgroundScreen : GameScreen
     {
         Texture2D background;
         Rectangle safeArea;

@@ -14,8 +14,8 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\Core\ShatterEffect.Core.csproj" />
-    <PackageReference Include="MonoGame.Framework.iOS" Version="3.8.*" />
-    <PackageReference Include="MonoGame.Content.Builder.Task" Version="3.8.*" />
+    <PackageReference Include="MonoGame.Framework.iOS" Version="3.8.5-preview.3" />
+    <PackageReference Include="MonoGame.Content.Builder.Task" Version="3.8.5-preview.3" />
   </ItemGroup>
 
   <ItemGroup>

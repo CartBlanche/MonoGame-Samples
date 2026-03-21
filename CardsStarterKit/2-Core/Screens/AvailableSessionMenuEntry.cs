@@ -5,17 +5,17 @@
 //-----------------------------------------------------------------------------
 
 using System;
-using GameStateManagement;
+
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Net;
 
-namespace Blackjack
+namespace CardsFramework.Core
 {
     /// <summary>
     /// Helper class customizes the standard MenuEntry class
     /// for displaying AvailableNetworkSession objects.
     /// </summary>
-    class AvailableSessionMenuEntry : MenuEntry
+    public class AvailableSessionMenuEntry : MenuEntry
     {
         AvailableNetworkSession availableSession;
         bool gotQualityOfService;

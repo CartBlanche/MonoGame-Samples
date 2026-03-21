@@ -2,65 +2,59 @@
 
 ## Overview
 
-In this tutorial, you'll build a complete Gin Rummy card game using the CardsStarterKit framework. This is a more complex implementation than the magic trick, teaching you:
+Time to step up. This tutorial builds a complete Gin Rummy game, it's substantially more complex than the magic trick, but teaches you patterns you'll use in every card game:
 
-- Managing larger hands (10 cards vs 2)
-- Implementing meld detection (sets and runs)
-- Creating intermediate NPC opponents
+- Managing larger hands (10 cards)
+- Detecting melds (combinations of cards)
+- Building NPC opponents with basic AI
 - Turn-based gameplay with draw/discard mechanics
-- Calculating deadwood and scoring
-- Multi-player support
-- Advanced UI for card organization
+- Calculating scores and game state
+- Supporting multiple players
+- Hand management UI
 
-**Target Audience:** MonoGame developers new to card games
-
-**Estimated Time:** 6-8 hours
-
-**Difficulty:** Intermediate
+Expect this to take 6-8 hours. It's **Intermediate** difficulty.
 
 ---
 
 ## What is Gin Rummy?
 
-### Game Rules Summary
+### The Game
 
-**Objective:** Form melds (sets/runs) and minimize deadwood (unmatched cards).
+Gin Rummy is a classic multiplayer card game where you're trying to match sets of cards and minimise unmatched cards.
 
 **Setup:**
-- 2-4 players (we'll support up to 4)
-- Each player receives 10 cards
+- 2-4 players
+- Each gets 10 cards
 - Remaining cards form the stock pile
-- Top card of stock is flipped to start discard pile
+- Top card flipped to start the discard pile
 
-**Gameplay Flow:**
-1. **Draw Phase:** Player draws from stock or discard pile
-2. **Discard Phase:** Player discards one card to discard pile
-3. **Optional Knock:** If deadwood ≤ 10 points, player can knock
-4. **Gin:** If deadwood = 0, player declares "Gin!"
+**Your Turn:**
+1. Draw a card from stock or discard pile
+2. Discard any card
+3. If your deadwood is ≤ 10 points, you can **knock**
+4. If you have 0 deadwood, you can claim **Gin**
 
-**Melds:**
-- **Set:** 3-4 cards of same rank (e.g., 7♥ 7♠ 7♣)
-- **Run:** 3+ consecutive cards of same suit (e.g., 4♠ 5♠ 6♠)
+**Melds:** Two types:
+- **Set:** 3-4 cards of the same rank (7♥ 7♠ 7♣)
+- **Run:** 3+ consecutive cards of same suit (4♠ 5♠ 6♠)
 
-**Deadwood Points:**
+**Card Values for Deadwood:**
 - Ace = 1 point
 - 2-10 = face value
-- J, Q, K = 10 points
+- J, Q, K = 10 points each
 
-**Scoring (Single Round - Tutorial Focus):**
-- **Gin:** Knocker gets opponent's deadwood + 25 bonus
-- **Knock:** Knocker gets difference in deadwood
-- **Undercut:** If opponent has less/equal deadwood, opponent gets difference + 25 bonus
+**Scoring:**
+- **Gin:** Player gets opponent's deadwood + 25 bonus
+- **Knock:** Player gets the difference in deadwood points
+- **Undercut:** If opponent has equal or better deadwood, opponent gets difference + 25 bonus
 
-### What We'll Build
-
-This tutorial focuses on **single-round gameplay** to keep it manageable. At the end, we'll discuss extending it to full match scoring (first to 100 points).
+We'll build a single round for now. Full match play (first to 100 points) is doable with minimal additions at the end.
 
 ---
 
 ## Part 1: Project Structure
 
-### Step 1.1: Create Directory Structure
+Organise your files like this:
 
 ```bash
 mkdir -p 3-Games/GinRummy/Core
@@ -96,64 +90,32 @@ Your structure will look like:
 
 ## Part 2: Core Data Structures
 
-### Step 2.1: Define Game State
+### Step 2.1: Game State Enum
 
-**Create:** `Core/Game/GinRummy/Game/GinRummyGameState.cs`
+**Create:** `3-Games/GinRummy/Core/GinRummyGameState.cs`
 
 ```csharp
 namespace GinRummy
 {
-    /// <summary>
-    /// States of a Gin Rummy game
-    /// </summary>
     public enum GinRummyGameState
     {
-        /// <summary>
-        /// Dealing initial hands
-        /// </summary>
-        Dealing,
-
-        /// <summary>
-        /// Player's turn - drawing phase
-        /// </summary>
-        Drawing,
-
-        /// <summary>
-        /// Player's turn - discarding phase
-        /// </summary>
-        Discarding,
-
-        /// <summary>
-        /// Player knocked - showing hands
-        /// </summary>
-        Knocked,
-
-        /// <summary>
-        /// Player got Gin - showing hands
-        /// </summary>
-        Gin,
-
-        /// <summary>
-        /// Calculating scores
-        /// </summary>
-        Scoring,
-
-        /// <summary>
-        /// Round complete - showing results
-        /// </summary>
-        RoundEnd,
-
-        /// <summary>
-        /// Waiting between turns
-        /// </summary>
-        Waiting
+        Dealing,          // Initial hand dealing
+        Drawing,          // Player drawing phase
+        Discarding,       // Player discarding phase
+        Knocked,          // Someone knocked, showing hands
+        Gin,              // Someone got Gin
+        Scoring,          // Calculating round score
+        RoundEnd,         // Results displayed
+        Waiting           // Between turns
     }
 }
 ```
 
-### Step 2.2: Define Meld Structure
+### Step 2.2: Meld Detection
 
-**Create:** `Core/Game/GinRummy/Game/Meld.cs`
+**Create:** `3-Games/GinRummy/Core/Meld.cs`
+
+A Meld is either a **Set** (3-4 cards of same rank) or a **Run** (3+ consecutive cards of same suit).
 
 ```csharp
 using System.Collections.Generic;
@@ -162,192 +124,70 @@ using CardsFramework.Cards;
 
 namespace GinRummy
 {
-    /// <summary>
-    /// Types of melds in Gin Rummy
-    /// </summary>
-    public enum MeldType
-    {
-        /// <summary>
-        /// 3+ cards of same rank (e.g., 7♥ 7♠ 7♣)
-        /// </summary>
-        Set,
+    public enum MeldType { Set, Run }
 
-        /// <summary>
-        /// 3+ consecutive cards of same suit (e.g., 4♠ 5♠ 6♠)
-        /// </summary>
-        Run
-    }
-
-    /// <summary>
-    /// Represents a meld (set or run) of cards
-    /// </summary>
     public class Meld
     {
-        /// <summary>
-        /// Type of this meld
-        /// </summary>
         public MeldType Type { get; set; }
+        public List<TraditionalCard> Cards { get; set; } = new();
 
-        /// <summary>
-        /// Cards in this meld
-        /// </summary>
-        public List<TraditionalCard> Cards { get; set; }
+        public int PointValue => Cards.Sum(GetCardPoints);
 
-        /// <summary>
-        /// Total point value of cards in this meld
-        /// </summary>
-        public int PointValue
-        {
-            get
-            {
-                return Cards.Sum(card => GetCardPoints(card));
-            }
-        }
-
-        public Meld()
-        {
-            Cards = new List<TraditionalCard>();
-        }
-
-        /// <summary>
-        /// Creates a meld from a list of cards
-        /// </summary>
+        public Meld() { }
         public Meld(MeldType type, List<TraditionalCard> cards)
         {
             Type = type;
             Cards = new List<TraditionalCard>(cards);
         }
 
-        /// <summary>
-        /// Gets the point value of a card for deadwood calculation
-        /// </summary>
-        public static int GetCardPoints(TraditionalCard card)
+        public static int GetCardPoints(TraditionalCard card) => card.Value switch
         {
-            switch (card.Value)
-            {
-                case CardValue.Ace:
-                    return 1;
-                case CardValue.Two:
-                    return 2;
-                case CardValue.Three:
-                    return 3;
-                case CardValue.Four:
-                    return 4;
-                case CardValue.Five:
-                    return 5;
-                case CardValue.Six:
-                    return 6;
-                case CardValue.Seven:
-                    return 7;
-                case CardValue.Eight:
-                    return 8;
-                case CardValue.Nine:
-                    return 9;
-                case CardValue.Ten:
-                case CardValue.Jack:
-                case CardValue.Queen:
-                case CardValue.King:
-                    return 10;
-                default:
-                    return 0;
-            }
-        }
+            CardValue.Ace => 1,
+            CardValue.Two => 2, CardValue.Three => 3, CardValue.Four => 4,
+            CardValue.Five => 5, CardValue.Six => 6, CardValue.Seven => 7,
+            CardValue.Eight => 8, CardValue.Nine => 9,
+            CardValue.Ten or CardValue.Jack or CardValue.Queen or CardValue.King => 10,
+            _ => 0
+        };
 
-        /// <summary>
-        /// Checks if this meld is valid
-        /// </summary>
         public bool IsValid()
         {
-            if (Cards.Count < 3)
-                return false;
-
-            if (Type == MeldType.Set)
-                return IsValidSet();
-            else
-                return IsValidRun();
+            if (Cards.Count < 3) return false;
+            return Type == MeldType.Set ? IsValidSet() : IsValidRun();
         }
 
-        /// <summary>
-        /// Validates a set (same rank)
-        /// </summary>
         private bool IsValidSet()
         {
-            if (Cards.Count < 3 || Cards.Count > 4)
-                return false;
-
-            CardValue firstValue = Cards[0].Value;
-
-            // All cards must have the same value
-            return Cards.All(card => card.Value == firstValue);
+            if (Cards.Count > 4) return false;
+            var firstValue = Cards[0].Value;
+            return Cards.All(c => c.Value == firstValue);
         }
 
-        /// <summary>
-        /// Validates a run (consecutive same suit)
-        /// </summary>
         private bool IsValidRun()
         {
-            if (Cards.Count < 3)
-                return false;
+            var suit = Cards[0].Type;
+            if (!Cards.All(c => c.Type == suit)) return false;
 
-            CardSuit suit = Cards[0].Type;
-
-            // All cards must be same suit
-            if (!Cards.All(card => card.Type == suit))
-                return false;
-
-            // Sort cards by value
-            var sortedCards = Cards.OrderBy(card => GetCardNumericValue(card)).ToList();
-
-            // Check consecutive values
-            for (int i = 1; i < sortedCards.Count; i++)
+            var sorted = Cards.OrderBy(GetCardNumericValue).ToList();
+            for (int i = 1; i < sorted.Count; i++)
             {
-                int prevValue = GetCardNumericValue(sortedCards[i - 1]);
-                int currValue = GetCardNumericValue(sortedCards[i]);
-
-                if (currValue != prevValue + 1)
+                if (GetCardNumericValue(sorted[i]) != GetCardNumericValue(sorted[i-1]) + 1)
                     return false;
             }
-
             return true;
         }
 
-        /// <summary>
-        /// Gets numeric value for sorting (Ace=1, King=13)
-        /// </summary>
-        private static int GetCardNumericValue(TraditionalCard card)
+        private static int GetCardNumericValue(TraditionalCard card) => card.Value switch
         {
-            switch (card.Value)
-            {
-                case CardValue.Ace: return 1;
-                case CardValue.Two: return 2;
-                case CardValue.Three: return 3;
-                case CardValue.Four: return 4;
-                case CardValue.Five: return 5;
-                case CardValue.Six: return 6;
-                case CardValue.Seven: return 7;
-                case CardValue.Eight: return 8;
-                case CardValue.Nine: return 9;
-                case CardValue.Ten: return 10;
-                case CardValue.Jack: return 11;
-                case CardValue.Queen: return 12;
-                case CardValue.King: return 13;
-                default: return 0;
-            }
-        }
-
-        public override string ToString()
-        {
-            string cardList = string.Join(", ", Cards.Select(c => $"{c.Value} of {c.Type}"));
-            return $"{Type}: [{cardList}]";
-        }
+            CardValue.Ace => 1, CardValue.Two => 2, CardValue.Three => 3,
+            CardValue.Four => 4, CardValue.Five => 5, CardValue.Six => 6,
+            CardValue.Seven => 7, CardValue.Eight => 8, CardValue.Nine => 9,
+            CardValue.Ten => 10, CardValue.Jack => 11, CardValue.Queen => 12,
+            CardValue.King => 13, _ => 0
+        };
     }
 }
 ```
-
-**Key Features:**
-- `IsValid()`: Validates sets (same rank) and runs (consecutive, same suit)
-- `PointValue`: Sums card values for scoring
-- `GetCardPoints()`: Standard Gin Rummy point values
 
 ### Step 2.3: Create Meld Detector
 
@@ -610,9 +450,13 @@ This is computationally intensive for 10 cards but acceptable for gameplay.
 
 ## Part 3: Player Classes
 
-### Step 3.1: GinRummyPlayer
+Each player tracks their hand, melds, deadwood, and game state. Create two classes:
 
-**Create:** `Core/Game/GinRummy/Players/GinRummyPlayer.cs`
+### Step 3.1: GinRummyPlayer (Base)
+
+**Create:** `3-Games/GinRummy/Players/GinRummyPlayer.cs`
+
+This is the core player class. Both human and AI players inherit from it.
 
 ```csharp
 using System.Collections.Generic;
@@ -622,91 +466,42 @@ using CardsFramework.Game;
 
 namespace GinRummy
 {
-    /// <summary>
-    /// Represents a player in Gin Rummy
-    /// </summary>
     public class GinRummyPlayer : Player
     {
-        #region Properties
-
-        /// <summary>
-        /// Current melds in player's hand
-        /// </summary>
-        public List<Meld> Melds { get; set; }
-
-        /// <summary>
-        /// Deadwood point value
-        /// </summary>
+        public List<Meld> Melds { get; set; } = new();
         public int Deadwood { get; set; }
-
-        /// <summary>
-        /// Whether player has knocked
-        /// </summary>
         public bool HasKnocked { get; set; }
-
-        /// <summary>
-        /// Whether player has gin
-        /// </summary>
         public bool HasGin { get; set; }
-
-        /// <summary>
-        /// Score for this round
-        /// </summary>
         public int RoundScore { get; set; }
-
-        /// <summary>
-        /// Total score across all rounds (for future multi-round support)
-        /// </summary>
         public int TotalScore { get; set; }
-
-        /// <summary>
-        /// Whether it's currently this player's turn
-        /// </summary>
         public bool IsMyTurn { get; set; }
-
-        /// <summary>
-        /// Whether player has drawn this turn
-        /// </summary>
         public bool HasDrawn { get; set; }
 
-        #endregion
+        public GinRummyPlayer(string name, CardsGame game) : base(name, game) { }
 
-        #region Initialization
-
-        public GinRummyPlayer(string name, CardsGame game)
-            : base(name, game)
+        public void AnalyseHand()
         {
-            Melds = new List<Meld>();
+            var handCards = new List<TraditionalCard>(Hand);
+            Melds = MeldDetector.FindOptimalMelds(handCards);
+            Deadwood = MeldDetector.CalculateDeadwood(handCards, Melds);
+            HasGin = (Deadwood == 0);
+        }
+
+        public bool CanKnock() => Deadwood <= 10;
+
+        public void ResetForNewRound()
+        {
+            Melds.Clear();
             Deadwood = 0;
             HasKnocked = false;
             HasGin = false;
             RoundScore = 0;
-            TotalScore = 0;
             IsMyTurn = false;
             HasDrawn = false;
         }
-
-        #endregion
-
-        #region Methods
-
-        /// <summary>
-        /// Analyzes hand to find optimal melds and calculate deadwood
-        /// </summary>
-        public void AnalyzeHand()
-        {
-            List<TraditionalCard> handCards = new List<TraditionalCard>();
-
-            for (int i = 0; i < Hand.Count; i++)
-            {
-                handCards.Add(Hand[i]);
-            }
-
-            // Find optimal melds
-            Melds = MeldDetector.FindOptimalMelds(handCards);
-
-            // Calculate deadwood
-            Deadwood = MeldDetector.CalculateDeadwood(handCards, Melds);
+    }
+}
+```
 
             // Check for Gin (no deadwood)
             HasGin = (Deadwood == 0 && handCards.Count == 10);
@@ -740,27 +535,22 @@ namespace GinRummy
 ```
 
 **Key Methods:**
-- `AnalyzeHand()`: Uses `MeldDetector` to find melds and deadwood
+- `AnalyseHand()`: Uses `MeldDetector` to find melds and deadwood
 - `CanKnock()`: Checks if knock is legal
 - `ResetForNewRound()`: Prepares for next round
 
-### Step 3.2: GinRummyNPCPlayer
+### The NPC Player
 
-**Create:** `Core/Game/GinRummy/Players/GinRummyNPCPlayer.cs`
+AI-controlled players need a simple wrapper:
 
 ```csharp
 using CardsFramework.Game;
 
 namespace GinRummy
 {
-    /// <summary>
-    /// NPC-controlled Gin Rummy player
-    /// </summary>
     public class GinRummyNPCPlayer : GinRummyPlayer
     {
-        /// <summary>
-        /// NPC decision-making component
-        /// </summary>
+        // NPC logic lives in a separate class
         public GinRummyNPC NPC { get; private set; }
 
         public GinRummyNPCPlayer(string name, CardsGame game)
@@ -772,13 +562,11 @@ namespace GinRummy
 }
 ```
 
-Simple wrapper - the NPC logic will be in a separate class.
-
 ---
 
-## Part 4: NPC Implementation
+## Part 4: Computer Opponent AI
 
-### Step 4.1: Intermediate NPC
+The NPC class makes all the strategic decisions for a computer player. It decides which cards to draw, which to discard, and when to knock.
 
 **Create:** `Core/Game/GinRummy/AI/GinRummyNPC.cs`
 
@@ -790,9 +578,6 @@ using CardsFramework.Cards;
 
 namespace GinRummy
 {
-    /// <summary>
-    /// Intermediat NPC for Gin Rummy
-    /// </summary>
     public class GinRummyNPC
     {
         private GinRummyPlayer player;
@@ -804,55 +589,37 @@ namespace GinRummy
             this.random = new Random();
         }
 
-        /// <summary>
-        /// Decides whether to draw from stock or discard pile
-        /// </summary>
+        // Should we grab the discard pile's top card?
         public bool ShouldDrawFromDiscard(TraditionalCard topDiscard)
         {
             if (topDiscard == null)
                 return false;
 
-            // Simulate adding this card to hand
-            List<TraditionalCard> testHand = GetCurrentHandCards();
+            var testHand = GetCurrentHandCards();
             testHand.Add(topDiscard);
+            var melds = MeldDetector.FindOptimalMelds(testHand);
+            int newDeadwood = MeldDetector.CalculateDeadwood(testHand, melds);
 
-            // Find melds with this card
-            var meldsWithDiscard = MeldDetector.FindOptimalMelds(testHand);
-            int deadwoodWithDiscard = MeldDetector.CalculateDeadwood(testHand, meldsWithDiscard);
-
-            // Compare to current deadwood
-            return deadwoodWithDiscard < player.Deadwood;
+            return newDeadwood < player.Deadwood;
         }
 
-        /// <summary>
-        /// Decides which card to discard
-        /// </summary>
+        // Which card should we discard?
         public TraditionalCard SelectCardToDiscard()
         {
-            List<TraditionalCard> handCards = GetCurrentHandCards();
-
-            // Analyze hand
+            var handCards = GetCurrentHandCards();
             var melds = MeldDetector.FindOptimalMelds(handCards);
             var meldedCards = GetMeldedCards(melds);
+            var deadwood = handCards.Where(card => !meldedCards.Contains(card)).ToList();
 
-            // Get deadwood cards
-            var deadwoodCards = handCards.Where(card => !meldedCards.Contains(card)).ToList();
-
-            if (deadwoodCards.Count > 0)
-            {
-                // Discard highest value deadwood card
-                return deadwoodCards.OrderByDescending(card => Meld.GetCardPoints(card)).First();
-            }
-            else
-            {
-                // No deadwood - discard card that breaks the smallest meld
-                return SelectCardFromMelds(melds);
-            }
+            if (deadwood.Any())
+                // Get rid of the highest-value useless card
+                return deadwood.OrderByDescending(Meld.GetCardPoints).First();
+            
+            // No deadwood; sacrifice a card from a meld
+            return SelectCardFromMelds(melds);
         }
 
-        /// <summary>
-        /// Decides whether to knock
-        /// </summary>
+        // Is it time to knock?
         public bool ShouldKnock()
         {
             // Knock if deadwood is very low
@@ -2111,9 +1878,9 @@ private void GinRummyMenuEntrySelected(object sender, EventArgs e)
 ```bash
 dotnet build
 # For macOS/Linux
-dotnet run --project Platforms/DesktopGL/CardsStarterKit.DesktopGL.csproj
+dotnet run --project 3-Games/GinRummy/Desktop/GinRummy.csproj
 # For Windows
-dotnet run --project Platforms/WindowsDX/CardsStarterKit.WindowsDX.csproj
+dotnet run --project 3-Games/GinRummy/Windows/GinRummy.csproj
 ```
 
 ### Step 11.2: Test Scenarios

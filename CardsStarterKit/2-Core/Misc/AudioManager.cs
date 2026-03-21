@@ -7,11 +7,12 @@
 
 using System;
 using System.Collections.Generic;
+using System.IO;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Media;
 
-namespace Blackjack
+namespace CardsFramework.Core
 {
     /// <summary>
     /// Component that manages audio playback for all sounds.
@@ -32,13 +33,22 @@ namespace Blackjack
             }
         }
 
-        static readonly string soundAssetLocation = "Sounds/";
+        static readonly string soundAssetLocation = "Sounds";
+        static readonly string musicAssetLocation = "Music";
 
-        // Audio Data        
+        // Audio Data
         Dictionary<string, SoundEffectInstance> soundBank;
         Dictionary<string, Song> musicBank;
 
+        // Playlist state
+        List<string> playlist;
+        bool isPlaylistActive;
+        int currentTrackIndex;
+        float currentVolumeMultiplier;
 
+        // Volume providers — injected at Initialize() so AudioManager has no dependency on game-specific settings
+        Func<float> soundVolumeProvider;
+        Func<float> musicVolumeProvider;
 
 
 
@@ -49,11 +59,15 @@ namespace Blackjack
         /// Initialize the static AudioManager functionality.
         /// </summary>
         /// <param name="game">The game that this component will be attached to.</param>
-        public static void Initialize(Game game)
+        /// <param name="getSoundVolume">Returns the current sound effect volume (0–1). Defaults to 1.0 if null.</param>
+        /// <param name="getMusicVolume">Returns the current music volume (0–1). Defaults to 1.0 if null.</param>
+        public static void Initialize(Game game, Func<float> getSoundVolume = null, Func<float> getMusicVolume = null)
         {
             audioManager = new AudioManager(game);
             audioManager.soundBank = new Dictionary<string, SoundEffectInstance>();
             audioManager.musicBank = new Dictionary<string, Song>();
+            audioManager.soundVolumeProvider = getSoundVolume ?? (() => 1.0f);
+            audioManager.musicVolumeProvider = getMusicVolume ?? (() => 1.0f);
 
             game.Components.Add(audioManager);
         }
@@ -71,7 +85,7 @@ namespace Blackjack
         /// <remarks>Loading a sound with an alias that is already used will have no effect.</remarks>
         public static void LoadSound(string contentName, string alias)
         {
-            SoundEffect soundEffect = audioManager.Game.Content.Load<SoundEffect>(soundAssetLocation + contentName);
+            SoundEffect soundEffect = audioManager.Game.Content.Load<SoundEffect>(Path.Combine(soundAssetLocation, contentName));
             SoundEffectInstance soundEffectInstance = soundEffect.CreateInstance();
 
             if (!audioManager.soundBank.ContainsKey(alias))
@@ -89,7 +103,7 @@ namespace Blackjack
         /// /// <remarks>Loading a song with an alias that is already used will have no effect.</remarks>
         public static void LoadSong(string contentName, string alias)
         {
-            Song song = audioManager.Game.Content.Load<Song>(soundAssetLocation + contentName);
+            Song song = audioManager.Game.Content.Load<Song>(Path.Combine(musicAssetLocation, contentName));
 
             if (!audioManager.musicBank.ContainsKey(alias))
             {
@@ -106,15 +120,26 @@ namespace Blackjack
             LoadSound("CardFlip", "Flip");
             LoadSound("CardsShuffle", "Shuffle");
             LoadSound("Deal", "Deal");
+
+            // Downloaded from Pixabay's free sound library: https://pixabay.com/sound-effects/search/
+            LoadSound("Click", "Click");
+            LoadSound("Win", "Win");
+            LoadSound("CardRemoval", "CardRemoval");
         }
 
         /// <summary>
         /// Loads and organizes the music used by the game.
+        /// The load order defines the default playlist cycling order.
         /// </summary>
         public static void LoadMusic()
         {
-            LoadSong("InGameSong_Loop","InGameSong_Loop");
-            LoadSong("MenuMusic_Loop","MenuMusic_Loop");
+            // Downloaded from Pixabay's free music library: https://pixabay.com/music/search/
+            LoadSong("sunsides-neo-soul-night-210447", "NeoSoul");
+            LoadSong("sunsides-jazzy-soul-207549", "JazzySoul");
+            LoadSong("freesound_community-casino-ambiance-19130", "CasinoAmbiance");
+
+            // Default playlist order
+            audioManager.playlist = ["NeoSoul", "JazzySoul"];
         }
 
 
@@ -139,59 +164,50 @@ namespace Blackjack
         }
 
         /// <summary>
-        /// Plays a sound by name.
+        /// Plays a sound by name with optional parameters for looping, volume, pitch, and stereo panning.
         /// </summary>
         /// <param name="soundName">The name of the sound to play.</param>
-        public static void PlaySound(string soundName)
+        /// <param name="isLooped">Indicates if the sound should loop. Default is false.</param>
+        /// <param name="volume">Custom volume (0.0 to 1.0). If null, uses SoundVolume from settings.</param>
+        /// <param name="pitch">Pitch adjustment (-1.0 to 1.0, where 0 is normal pitch). Default is 0.</param>
+        /// <param name="pan">Stereo panning (-1.0 = left ear, 0.0 = center, 1.0 = right ear). Default is 0.</param>
+        public static void PlaySound(string soundName, bool isLooped = false, float? volume = null, float pitch = 0f, float pan = 0f)
         {
+            if (audioManager?.soundBank == null) return;
+
             // If the sound exists, start it
             if (audioManager.soundBank.ContainsKey(soundName))
             {
-                audioManager.soundBank[soundName].Volume = GameSettings.Instance.SoundVolume;
-                audioManager.soundBank[soundName].Play();
+                var sound = audioManager.soundBank[soundName];
+
+                // Set loop if different from current state
+                if (sound.IsLooped != isLooped)
+                {
+                    sound.IsLooped = isLooped;
+                }
+
+                // Use custom volume or default to settings
+                sound.Volume = volume ?? audioManager.soundVolumeProvider();
+
+                // Set pitch (clamped to valid range)
+                sound.Pitch = MathHelper.Clamp(pitch, -1.0f, 1.0f);
+
+                // Set stereo panning (clamped to valid range)
+                sound.Pan = MathHelper.Clamp(pan, -1.0f, 1.0f);
+
+                sound.Play();
             }
         }
 
         /// <summary>
-        /// Plays a sound by name.
+        /// Plays a sound by name with pitch adjustment.
         /// </summary>
         /// <param name="soundName">The name of the sound to play.</param>
-        /// <param name="isLooped">Indicates if the sound should loop.</param>
-        public static void PlaySound(string soundName, bool isLooped)
+        /// <param name="pitch">Pitch adjustment (-1.0 to 1.0, where 0 is normal pitch).
+        /// Higher values (0.2-0.5) make the sound higher pitched, lower values (-0.3 to -0.5) make it lower pitched.</param>
+        public static void PlaySoundWithPitch(string soundName, float pitch)
         {
-            // If the sound exists, start it
-            if (audioManager.soundBank.ContainsKey(soundName))
-            {
-                if (audioManager.soundBank[soundName].IsLooped != isLooped)
-                {
-                    audioManager.soundBank[soundName].IsLooped = isLooped;
-                }
-
-                audioManager.soundBank[soundName].Volume = GameSettings.Instance.SoundVolume;
-                audioManager.soundBank[soundName].Play();
-            }
-        }
-
-
-        /// <summary>
-        /// Plays a sound by name.
-        /// </summary>
-        /// <param name="soundName">The name of the sound to play.</param>
-        /// <param name="isLooped">Indicates if the sound should loop.</param>
-        /// <param name="volume">Indicates if the volume</param>
-        public static void PlaySound(string soundName, bool isLooped, float volume)
-        {
-            // If the sound exists, start it
-            if (audioManager.soundBank.ContainsKey(soundName))
-            {
-                if (audioManager.soundBank[soundName].IsLooped != isLooped)
-                {
-                    audioManager.soundBank[soundName].IsLooped = isLooped;
-                }
-
-                audioManager.soundBank[soundName].Volume = volume;
-                audioManager.soundBank[soundName].Play();
-            }
+            PlaySound(soundName, pitch: pitch);
         }
 
         /// <summary>
@@ -250,22 +266,67 @@ namespace Blackjack
         /// Play music by name. This stops the currently playing music first. Music will loop until stopped.
         /// </summary>
         /// <param name="musicSoundName">The name of the music sound.</param>
+        /// <param name="volumeMultiplier">Optional volume multiplier applied to MusicVolume setting (0.0 to 1.0). Default is 1.0.</param>
         /// <remarks>If the desired music is not in the music bank, nothing will happen.</remarks>
-        public static void PlayMusic(string musicSoundName)
+        public static void PlayMusic(string musicSoundName, float volumeMultiplier = 1.0f)
         {
             // If the music sound exists
             if (audioManager.musicBank.ContainsKey(musicSoundName))
             {
-                // Stop the old music sound
+                audioManager.isPlaylistActive = false; // Single track — no playlist cycling
+
                 if (MediaPlayer.State != MediaState.Stopped)
-                {
                     MediaPlayer.Stop();
-                }
 
                 MediaPlayer.IsRepeating = true;
-                MediaPlayer.Volume = GameSettings.Instance.MusicVolume;
+                MediaPlayer.Volume = audioManager.musicVolumeProvider() * MathHelper.Clamp(volumeMultiplier, 0f, 1f);
 
                 MediaPlayer.Play(audioManager.musicBank[musicSoundName]);
+            }
+        }
+
+        /// <summary>
+        /// Starts cycling through the music playlist defined in LoadMusic().
+        /// Each track plays to completion before the next one begins, looping indefinitely.
+        /// </summary>
+        /// <param name="volumeMultiplier">Optional volume multiplier applied to MusicVolume setting (0.0 to 1.0). Default is 1.0.</param>
+        public static void PlayPlaylist(float volumeMultiplier = 1.0f)
+        {
+            if (audioManager.playlist == null || audioManager.playlist.Count == 0)
+                return;
+
+            audioManager.currentTrackIndex = 0;
+            audioManager.currentVolumeMultiplier = MathHelper.Clamp(volumeMultiplier, 0f, 1f);
+            audioManager.isPlaylistActive = true;
+
+            audioManager.PlayCurrentTrack();
+        }
+
+        private void PlayCurrentTrack()
+        {
+            string alias = playlist[currentTrackIndex];
+            if (!musicBank.TryGetValue(alias, out Song song))
+                return;
+
+            if (MediaPlayer.State != MediaState.Stopped)
+                MediaPlayer.Stop();
+
+            MediaPlayer.IsRepeating = false;
+            MediaPlayer.Volume = musicVolumeProvider() * currentVolumeMultiplier;
+            MediaPlayer.Play(song);
+        }
+
+        /// <summary>
+        /// Advances to the next track when the current one finishes.
+        /// </summary>
+        public override void Update(GameTime gameTime)
+        {
+            base.Update(gameTime);
+
+            if (isPlaylistActive && MediaPlayer.State == MediaState.Stopped)
+            {
+                currentTrackIndex = (currentTrackIndex + 1) % playlist.Count;
+                PlayCurrentTrack();
             }
         }
 
@@ -274,9 +335,32 @@ namespace Blackjack
         /// </summary>
         public static void StopMusic()
         {
+            audioManager.isPlaylistActive = false; // Prevent Update() from restarting
             if (MediaPlayer.State != MediaState.Stopped)
             {
                 MediaPlayer.Stop();
+            }
+        }
+
+        /// <summary>
+        /// Pauses the currently playing music.
+        /// </summary>
+        public static void PauseMusic()
+        {
+            if (MediaPlayer.State == MediaState.Playing)
+            {
+                MediaPlayer.Pause();
+            }
+        }
+
+        /// <summary>
+        /// Resumes the currently paused music.
+        /// </summary>
+        public static void ResumeMusic()
+        {
+            if (MediaPlayer.State == MediaState.Paused)
+            {
+                MediaPlayer.Resume();
             }
         }
 

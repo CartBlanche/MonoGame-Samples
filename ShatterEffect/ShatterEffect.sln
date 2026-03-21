@@ -1,0 +1,68 @@
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.5.2.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Android", "Android", "{F1D3BDAE-DDBE-4A86-8964-78C1408D1AF2}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Desktop", "Desktop", "{E0019F0C-7578-40A4-8C39-73E819574DF5}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Windows", "Windows", "{FE42F058-5C72-4F3F-921B-03553EC90200}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "iOS", "iOS", "{A6DF356D-9368-4B96-955D-23B34E84005A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShatterEffect", "Platforms\Android\ShatterEffect.csproj", "{DC4A780B-1196-4D01-BF33-C5A6E8A7B1E7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShatterEffect", "Platforms\Desktop\ShatterEffect.csproj", "{7F8F7238-38AB-468C-8F16-9FE04807C6F8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShatterEffect", "Platforms\iOS\ShatterEffect.csproj", "{EB848EA3-308F-40DD-95A6-F4EF33245F1E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShatterEffect", "Platforms\Windows\ShatterEffect.csproj", "{738DDE1C-D16F-459F-BC7C-DDB570785830}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShatterEffect.Processor", "Processor\ShatterEffect.Processor.csproj", "{C4BD4432-6790-4555-B204-61830F75F248}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShatterEffect.Core", "Core\ShatterEffect.Core.csproj", "{294C6396-5DC6-4FE9-A14A-2E2D12202974}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{DC4A780B-1196-4D01-BF33-C5A6E8A7B1E7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DC4A780B-1196-4D01-BF33-C5A6E8A7B1E7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DC4A780B-1196-4D01-BF33-C5A6E8A7B1E7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DC4A780B-1196-4D01-BF33-C5A6E8A7B1E7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7F8F7238-38AB-468C-8F16-9FE04807C6F8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7F8F7238-38AB-468C-8F16-9FE04807C6F8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7F8F7238-38AB-468C-8F16-9FE04807C6F8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7F8F7238-38AB-468C-8F16-9FE04807C6F8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EB848EA3-308F-40DD-95A6-F4EF33245F1E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EB848EA3-308F-40DD-95A6-F4EF33245F1E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EB848EA3-308F-40DD-95A6-F4EF33245F1E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EB848EA3-308F-40DD-95A6-F4EF33245F1E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{738DDE1C-D16F-459F-BC7C-DDB570785830}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{738DDE1C-D16F-459F-BC7C-DDB570785830}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{738DDE1C-D16F-459F-BC7C-DDB570785830}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{738DDE1C-D16F-459F-BC7C-DDB570785830}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C4BD4432-6790-4555-B204-61830F75F248}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C4BD4432-6790-4555-B204-61830F75F248}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C4BD4432-6790-4555-B204-61830F75F248}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C4BD4432-6790-4555-B204-61830F75F248}.Release|Any CPU.Build.0 = Release|Any CPU
+		{294C6396-5DC6-4FE9-A14A-2E2D12202974}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{294C6396-5DC6-4FE9-A14A-2E2D12202974}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{294C6396-5DC6-4FE9-A14A-2E2D12202974}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{294C6396-5DC6-4FE9-A14A-2E2D12202974}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+					SolutionGuid = {9CC4CC96-C4DD-4CB8-8DFC-CB19A85CA4A2}
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{DC4A780B-1196-4D01-BF33-C5A6E8A7B1E7} = {F1D3BDAE-DDBE-4A86-8964-78C1408D1AF2}
+		{7F8F7238-38AB-468C-8F16-9FE04807C6F8} = {E0019F0C-7578-40A4-8C39-73E819574DF5}
+		{EB848EA3-308F-40DD-95A6-F4EF33245F1E} = {A6DF356D-9368-4B96-955D-23B34E84005A}
+		{738DDE1C-D16F-459F-BC7C-DDB570785830} = {FE42F058-5C72-4F3F-921B-03553EC90200}
+	EndGlobalSection
+EndGlobal

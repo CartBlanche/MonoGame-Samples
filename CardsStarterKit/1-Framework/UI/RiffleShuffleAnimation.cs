@@ -19,9 +19,11 @@ namespace CardsFramework
     public class RiffleShuffleAnimation : ShuffleAnimation
     {
         // Animation timing ratios (must sum to 1.0)
-        private const float SplitPhaseRatio = 0.2f;
-        private const float CascadePhaseRatio = 0.6f;
-        private const float GatherPhaseRatio = 0.2f;
+        private const float SplitPhaseRatio = 0.2f;     // Cards split into two halves
+        private const float PauseAfterSplitRatio = 0.1f; // Pause to show the split (longer)
+        private const float CascadePhaseRatio = 0.55f;  // Interleave cascade (slower for polish)
+        private const float PauseBeforeGatherRatio = 0.1f; // Pause before pushing together (longer)
+        private const float GatherPhaseRatio = 0.05f;   // Quick final gather
 
         // Card display settings
         private const int MaxVisibleCards = 18;
@@ -85,7 +87,9 @@ namespace CardsFramework
 
             // Time calculations for animation phases
             TimeSpan splitDuration = TimeSpan.FromMilliseconds(Duration.TotalMilliseconds * SplitPhaseRatio);
+            TimeSpan pauseAfterSplit = TimeSpan.FromMilliseconds(Duration.TotalMilliseconds * PauseAfterSplitRatio);
             TimeSpan cascadeDuration = TimeSpan.FromMilliseconds(Duration.TotalMilliseconds * CascadePhaseRatio);
+            TimeSpan pauseBeforeGather = TimeSpan.FromMilliseconds(Duration.TotalMilliseconds * PauseBeforeGatherRatio);
             TimeSpan gatherDuration = TimeSpan.FromMilliseconds(Duration.TotalMilliseconds * GatherPhaseRatio);
 
             for (int i = 0; i < cardsToShow; i++)
@@ -118,7 +122,7 @@ namespace CardsFramework
                 // Phase 2: Cascade/riffle together with visible arc
                 // Stagger the cascade timing so cards drop one by one
                 double cascadeProgress = (double)cardIndexInHalf / totalInHalf;
-                TimeSpan cascadeDelay = splitDuration +
+                TimeSpan cascadeDelay = splitDuration + pauseAfterSplit +
                     TimeSpan.FromMilliseconds(cascadeDuration.TotalMilliseconds * cascadeProgress * CascadeStaggerRatio);
 
                 // Create a high arc path for visibility
@@ -162,7 +166,7 @@ namespace CardsFramework
                     TimeSpan.FromMilliseconds(cascadeDuration.TotalMilliseconds * CascadeDownRatio));
 
                 // Phase 3: Gather into neat pile
-                TimeSpan gatherDelay = splitDuration + cascadeDuration;
+                TimeSpan gatherDelay = splitDuration + pauseAfterSplit + cascadeDuration + pauseBeforeGather;
                 AddTransition(
                     cardComponent,
                     Position,

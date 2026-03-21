@@ -7,12 +7,12 @@
 
 using System;
 
-namespace Blackjack
+namespace CardsFramework.Core
 {
     /// <summary>
     /// Custom EventArgs class used by the NetworkBusyScreen.OperationCompleted event.
     /// </summary>
-    class OperationCompletedEventArgs : EventArgs
+    public class OperationCompletedEventArgs : EventArgs
     {
         /// <summary>
         /// Gets or sets the result of the network operation that has just completed.
