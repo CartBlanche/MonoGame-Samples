@@ -1,0 +1,15 @@
+<Solution>
+  <Folder Name="/Android/">
+    <Project Path="Android/MatchemPoker.csproj" />
+  </Folder>
+  <Folder Name="/Desktop/">
+    <Project Path="Desktop/MatchemPoker.csproj" />
+  </Folder>
+  <Folder Name="/iOS/">
+    <Project Path="iOS/MatchemPoker.csproj" />
+  </Folder>
+  <Folder Name="/Windows/">
+    <Project Path="Windows/MatchemPoker.csproj" />
+  </Folder>
+  <Project Path="Core/Core.csproj" />
+</Solution>

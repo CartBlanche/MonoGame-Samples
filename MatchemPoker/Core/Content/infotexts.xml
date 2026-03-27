@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<XnaContent>
+  <Asset Type="System.String[]" Name="test">
+    <Item>Match'em Poker</Item>
+    <Item>Built With MonoGame</Item>
+    <Item> </Item>
+    <Item>Simply switch cards</Item>
+    <Item>with eachother to</Item>
+    <Item>create poker hands.</Item>
+    <Item> </Item>
+    <Item>Ported from:</Item>
+    <Item>github.com/microsoft</Item>
+    <Item>By:</Item>
+    <Item>Dominique Louis</Item>
+    <Item> </Item>
+    <Item>Audio samples from</Item>
+    <Item>FREESOUND.ORG used.</Item>
+    <Item>Thanks to:</Item>
+    <Item>milton, mattwasser,</Item>
+    <Item>Christian jinnyzoe</Item>
+    <Item>Cursor Art: kenney.nl/</Item>
+  </Asset>
+</XnaContent>

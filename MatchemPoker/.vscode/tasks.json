@@ -1,0 +1,25 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Debug Android Build",
+            "type": "shell",
+            "command": "dotnet build -p:Configuration=Debug ${workspaceFolder}/Android/MatchemPoker.csproj \"/t:Install;_Run\" /p:AndroidAttachDebugger=true /p:AndroidSdbHostPort=10000"
+        },
+        {
+            "label": "Debug Desktop Build",
+            "type": "shell",
+            "command": "dotnet build -p:Configuration=Debug ${workspaceFolder}/Desktop/MatchemPoker.csproj"
+        },
+        {
+            "label": "Debug iOS Build",
+            "type": "shell",
+            "command": "dotnet build -p:Configuration=Debug ${workspaceFolder}/iOS/MatchemPoker.csproj"
+        },
+        {
+            "label": "Debug Windows Build",
+            "type": "shell",
+            "command": "dotnet build -p:Configuration=Debug ${workspaceFolder}/Windows/MatchemPoker.csproj"
+        }
+    ]
+}

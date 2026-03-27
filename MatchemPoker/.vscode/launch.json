@@ -1,0 +1,34 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Android Debug",
+            "type": "mono",
+            "request": "attach",
+            "address": "localhost",
+            "port": 10000,
+            "preLaunchTask": "Debug Android Build"
+        },
+        {
+            "name": "Desktop Debug",
+            "type": "coreclr",
+            "request": "launch",
+            "preLaunchTask": "Debug Desktop Build",
+            "program": "${workspaceFolder}/Desktop/bin/Debug/net9.0/MatchemPoker"
+        },
+        {
+            "name": "iOS Debug",
+            "type": "coreclr",
+            "request": "launch",
+            "preLaunchTask": "Debug iOS Build",
+            "program": "${workspaceFolder}/iOS/bin/Debug/net9.0-ios/MatchemPoker.dll"
+        },
+        {
+            "name": "Windows Debug",
+            "type": "coreclr",
+            "request": "launch",
+            "preLaunchTask": "Debug Windows Build",
+            "program": "${workspaceFolder}/Windows/bin/Debug/net9.0-windows/MatchemPoker.exe"
+        }
+    ]
+}
