@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Original font: "Press Start" (Press Start 2P - https://fonts.google.com/specimen/Press+Start+2P)
+  To restore the original look, download and install "Press Start 2P" from Google Fonts,
+  then change FontName below back to "Press Start" (or the installed font family name).
+-->
+<XnaContent xmlns:Graphics="Microsoft.Xna.Framework.Content.Pipeline.Graphics">
+	<Asset Type="Graphics:FontDescription">
+		<FontName>Arial</FontName>
+		<Size>24</Size>
+		<Spacing>2</Spacing>
+		<Style>Bold</Style>
+		<CharacterRegions>
+			<CharacterRegion>
+				<Start>&#32;</Start>
+				<End>&#126;</End>
+			</CharacterRegion>
+		</CharacterRegions>
+	</Asset>
+</XnaContent>

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" package="MatchemPoker" android:versionCode="1" android:versionName="1.0">
+	<uses-sdk android:minSdkVersion="23" android:targetSdkVersion="35" />
+	<uses-feature android:glEsVersion="0x00030000" android:required="true" />
+
+	<application
+		android:hardwareAccelerated="true"
+		android:icon="@drawable/icon"
+		android:roundIcon="@drawable/icon"
+		android:isGame="true"/>
+</manifest>
