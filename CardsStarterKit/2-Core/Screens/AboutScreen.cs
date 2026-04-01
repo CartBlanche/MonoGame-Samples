@@ -28,9 +28,11 @@ namespace CardsFramework.Core
         private string[] contentLines;
         private Vector2 contentStartPosition;
         private float lineSpacing;
+        private readonly string _title;
 
-        public AboutScreen()
+        public AboutScreen(string title = "About")
         {
+            _title = title;
             // About screen needs Tap gestures for mobile
             EnabledGestures = GestureType.Tap;
 
@@ -42,7 +44,7 @@ namespace CardsFramework.Core
         {
             ContentManager content = ScreenManager.Game.Content;
 
-            background = content.Load<Texture2D>("Images/UI/table");
+            //background = content.Load<Texture2D>("Images/UI/table");
             buttonRegularTexture = content.Load<Texture2D>("Images/ButtonRegular");
             buttonPressedTexture = content.Load<Texture2D>("Images/ButtonPressed");
 
@@ -172,10 +174,11 @@ namespace CardsFramework.Core
             spriteBatch.Begin(SpriteSortMode.Deferred, null, null, null, null, null, ScreenManager.GlobalTransformation);
 
             // Draw background
-            spriteBatch.Draw(background, safeArea, Color.White * TransitionAlpha);
+            if (background != null)
+                spriteBatch.Draw(background, safeArea, Color.White * TransitionAlpha);
 
             // Draw title
-            string title = "About";
+            string title = _title;
             Vector2 titleSize = ScreenManager.Font.MeasureString(title);
             Vector2 titlePos = new Vector2(safeArea.Center.X - titleSize.X / 2, safeArea.Top + 10);
             spriteBatch.DrawString(ScreenManager.Font, title, titlePos, Color.White * TransitionAlpha);
