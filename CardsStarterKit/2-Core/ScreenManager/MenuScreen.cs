@@ -258,7 +258,7 @@ namespace CardsFramework.Core
                 MenuEntry menuEntry = menuEntries[i];
 
                 // each entry is to be centered horizontally
-                position.X = ScreenManager.BASE_BUFFER_WIDTH / 2 - menuEntry.GetWidth(this) / 2;
+                position.X = ScreenManager.BaseScreenSize.X / 2 - menuEntry.GetWidth(this) / 2;
 
                 if (ScreenState == ScreenState.TransitionOn)
                     position.X -= transitionOffset * 256;
@@ -337,7 +337,7 @@ namespace CardsFramework.Core
             spriteBatch.End();
         }
 
-        public void UpdateMenuEntryDestination()
+        public virtual void UpdateMenuEntryDestination()
         {
             Rectangle bounds = ScreenManager.SafeArea;
 

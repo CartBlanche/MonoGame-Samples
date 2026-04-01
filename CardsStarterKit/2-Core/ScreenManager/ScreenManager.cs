@@ -29,7 +29,7 @@ namespace CardsFramework.Core
         List<GameScreen> screens = new List<GameScreen>();
         List<GameScreen> screensToUpdate = new List<GameScreen>();
 
-        InputState inputState = new InputState(BASE_BUFFER_WIDTH, BASE_BUFFER_HEIGHT);
+        InputState inputState;
 
         public InputState InputState => inputState;
 
@@ -131,17 +131,10 @@ namespace CardsFramework.Core
             set { traceEnabled = value; }
         }
 
-        Rectangle safeArea = new Rectangle(0, 0, BASE_BUFFER_WIDTH, BASE_BUFFER_HEIGHT);
         /// <summary>
         /// Returns the portion of the screen where drawing is safely allowed.
         /// </summary>
-        public Rectangle SafeArea
-        {
-            get
-            {
-                return safeArea;
-            }
-        }
+        public Rectangle SafeArea => new Rectangle(0, 0, (int)baseScreenSize.X, (int)baseScreenSize.Y);
 
 
         /// <summary>
@@ -157,9 +150,23 @@ namespace CardsFramework.Core
             : base(game)
         {
             this.languageProvider = languageProvider ?? (() => string.Empty);
+            inputState = new InputState(BASE_BUFFER_WIDTH, BASE_BUFFER_HEIGHT);
 
             // we must set EnabledGestures before we can query for them, but
             // we don't assume the game wants to read them.
+            TouchPanel.EnabledGestures = GestureType.None;
+        }
+
+        /// <summary>
+        /// Constructs a new screen manager with a configurable base resolution.
+        /// Use this overload for games that target a non-standard resolution (e.g. 480×800 portrait).
+        /// </summary>
+        public ScreenManager(Game game, Func<string> languageProvider, int baseWidth, int baseHeight)
+            : base(game)
+        {
+            this.languageProvider = languageProvider ?? (() => string.Empty);
+            baseScreenSize = new Vector2(baseWidth, baseHeight);
+            inputState = new InputState(baseWidth, baseHeight);
             TouchPanel.EnabledGestures = GestureType.None;
         }
 

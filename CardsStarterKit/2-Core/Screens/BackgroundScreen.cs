@@ -19,12 +19,24 @@ namespace CardsFramework.Core
     {
         Texture2D background;
         Rectangle safeArea;
+        readonly string backgroundPath;
+        readonly Rectangle? sourceRect;
 
         /// <summary>
         /// Initializes a new instance of the screen.
         /// </summary>
-        public BackgroundScreen()
+        /// <param name="backgroundImagePath">
+        /// Content path of the background texture (without extension).
+        /// Defaults to "Images/titlescreen" for backward compatibility.
+        /// </param>
+        /// <param name="sourceRect">
+        /// Optional source rectangle to crop the texture (e.g. one quadrant of a sprite sheet).
+        /// Null draws the full texture.
+        /// </param>
+        public BackgroundScreen(string backgroundImagePath = "Images/titlescreen", Rectangle? sourceRect = null)
         {
+            backgroundPath = backgroundImagePath;
+            this.sourceRect = sourceRect;
             TransitionOnTime = TimeSpan.FromSeconds(0.0);
             TransitionOffTime = TimeSpan.FromSeconds(0.5);
         }
@@ -34,8 +46,8 @@ namespace CardsFramework.Core
         /// </summary>
         public override void LoadContent()
         {
-            background = ScreenManager.Game.Content.Load<Texture2D>(Path.Combine("Images", "titlescreen"));
-            safeArea = new Rectangle(0, 0, ScreenManager.BASE_BUFFER_WIDTH, ScreenManager.BASE_BUFFER_HEIGHT);
+            background = ScreenManager.Game.Content.Load<Texture2D>(backgroundPath);
+            safeArea = ScreenManager.SafeArea;
             base.LoadContent();
         }
 
@@ -61,7 +73,7 @@ namespace CardsFramework.Core
         {
             ScreenManager.SpriteBatch.Begin(SpriteSortMode.Deferred, null, null, null, null, null, ScreenManager.GlobalTransformation);
 
-            ScreenManager.SpriteBatch.Draw(background, safeArea, Color.White * TransitionAlpha);
+            ScreenManager.SpriteBatch.Draw(background, safeArea, sourceRect, Color.White * TransitionAlpha);
 
             ScreenManager.SpriteBatch.End();
 

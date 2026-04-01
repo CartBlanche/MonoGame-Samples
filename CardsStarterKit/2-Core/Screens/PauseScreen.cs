@@ -20,12 +20,14 @@ namespace CardsFramework.Core
         /// </summary>
         readonly string returnText;
         readonly string quitText;
+        readonly Action _onQuit;
 
-        public PauseScreen(string returnText = "Back", string quitText = "Quit")
-            : base("Pause")
+        public PauseScreen(string returnText = "Back", string quitText = "Quit", Action onQuit = null, string title = "Pause")
+            : base(title)
         {
             this.returnText = returnText;
-            this.quitText = quitText;
+            this.quitText   = quitText;
+            _onQuit         = onQuit;
             IsPopup = true;
         }
 
@@ -81,28 +83,26 @@ namespace CardsFramework.Core
         /// <param name="playerIndex"></param>
         protected override void OnCancel(PlayerIndex playerIndex)
         {
-            // Exit only the pause-related screens: PauseScreen, BackgroundScreen (pause overlay), and GameplayScreen
-            // This will return to the LobbyScreen beneath them
-            GameScreen[] screens = ScreenManager.GetScreens();
+            if (_onQuit != null)
+            {
+                _onQuit();
+                return;
+            }
 
+            // Default: exit pause-related screens and return to whatever is beneath
+            GameScreen[] screens = ScreenManager.GetScreens();
             foreach (GameScreen screen in screens)
             {
-                // Exit only if it's one of the pause screens or gameplay
                 if (screen is PauseScreen || screen is IPausable)
                 {
                     screen.ExitScreen();
                 }
-                // Also exit the BackgroundScreen that was added for the pause overlay
-                // It should be the one right before PauseScreen
                 else if (screen is BackgroundScreen)
                 {
-                    // Check if this is the pause BackgroundScreen (there might be others in the stack)
                     int pauseIndex = System.Array.FindIndex(screens, s => s is PauseScreen);
-                    int bgIndex = System.Array.FindIndex(screens, s => s == screen);
+                    int bgIndex    = System.Array.FindIndex(screens, s => s == screen);
                     if (bgIndex == pauseIndex - 1)
-                    {
                         screen.ExitScreen();
-                    }
                 }
             }
         }
