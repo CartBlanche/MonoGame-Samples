@@ -19,6 +19,7 @@ using Microsoft.Xna.Framework.Input.Touch;
 using System.Globalization;
 using Microsoft.Xna.Framework.Net;
 using Microsoft.Xna.Framework.GamerServices;
+using System.IO;
 
 namespace Blackjack
 {
@@ -92,7 +93,7 @@ namespace Blackjack
             UpdateButtonText();
 
             // Load gradient texture for hint boxes
-            gradientTexture = ScreenManager.Game.Content.Load<Texture2D>("Images/UI/gradient");
+            gradientTexture = ScreenManager.Game.Content.Load<Texture2D>(Path.Combine("Images", "UI", "gradient"));
 
             // Initialize hint system
             settings = GameSettings.Instance;

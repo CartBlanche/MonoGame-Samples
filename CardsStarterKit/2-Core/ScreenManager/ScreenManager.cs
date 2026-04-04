@@ -189,17 +189,17 @@ namespace CardsFramework.Core
             string currentLanguage = languageProvider();
             bool useCJKFont = currentLanguage == "日本語" || currentLanguage == "中文";
 
-            string menuFontPath = useCJKFont ? "Fonts/MenuFont_CJK" : "Fonts/MenuFont";
-            string regularFontPath = useCJKFont ? "Fonts/Regular_CJK" : "Fonts/Regular";
-            string boldFontPath = useCJKFont ? "Fonts/Bold_CJK" : "Fonts/Bold";
+            string menuFontPath = useCJKFont ? Path.Combine("Fonts", "MenuFont_CJK") : Path.Combine("Fonts", "MenuFont");
+            string regularFontPath = useCJKFont ? Path.Combine("Fonts", "Regular_CJK") : Path.Combine("Fonts", "Regular");
+            string boldFontPath = useCJKFont ? Path.Combine("Fonts", "Bold_CJK") : Path.Combine("Fonts", "Bold");
 
             font = content.Load<SpriteFont>(menuFontPath);
             regularFont = content.Load<SpriteFont>(regularFontPath);
             boldFont = content.Load<SpriteFont>(boldFontPath);
 
-            blankTexture = content.Load<Texture2D>("Images/blank");
-            buttonBackground = content.Load<Texture2D>("Images/ButtonRegular");
-            buttonPressed = content.Load<Texture2D>("Images/ButtonPressed");
+            blankTexture = content.Load<Texture2D>(Path.Combine("Images", "blank"));
+            buttonBackground = content.Load<Texture2D>(Path.Combine("Images", "ButtonRegular"));
+            buttonPressed = content.Load<Texture2D>(Path.Combine("Images", "ButtonPressed"));
 
             // Tell each of the screens to load their content.
             foreach (GameScreen screen in screens)

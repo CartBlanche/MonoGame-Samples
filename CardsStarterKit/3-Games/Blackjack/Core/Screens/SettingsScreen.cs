@@ -72,16 +72,16 @@ namespace Blackjack
         {
             ContentManager content = ScreenManager.Game.Content;
 
-            background = content.Load<Texture2D>("Images/UI/table");
+            background = content.Load<Texture2D>(Path.Combine("Images", "UI", "table"));
 
             // Fonts are accessed directly from ScreenManager properties (no caching)
 
-            buttonRegularTexture = content.Load<Texture2D>("Images/ButtonRegular");
-            buttonPressedTexture = content.Load<Texture2D>("Images/ButtonPressed");
+            buttonRegularTexture = content.Load<Texture2D>(Path.Combine("Images", "ButtonRegular"));
+            buttonPressedTexture = content.Load<Texture2D>(Path.Combine("Images", "ButtonPressed"));
 
             // Load current theme card back using invariant theme value
             string themeCardBack = $"CardBack_{settings.Theme}";
-            cardBackTexture = content.Load<Texture2D>($"Images/Cards/{themeCardBack}");
+            cardBackTexture = content.Load<Texture2D>(Path.Combine("Images", "Cards", themeCardBack));
 
             safeArea = ScreenManager.SafeArea;
 
@@ -136,7 +136,7 @@ namespace Blackjack
                     {
                         // Reload card back texture using invariant theme value
                         string themeCardBack = $"CardBack_{settings.Theme}";
-                        cardBackTexture = ScreenManager.Game.Content.Load<Texture2D>($"Images/Cards/{themeCardBack}");
+                        cardBackTexture = ScreenManager.Game.Content.Load<Texture2D>(Path.Combine("Images", "Cards", themeCardBack));
                         MainMenuScreen.Theme = settings.Theme;
                     },
                     ref yPos);

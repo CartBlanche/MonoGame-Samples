@@ -11,6 +11,7 @@ using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Input.Touch;
 using Microsoft.Xna.Framework.Content;
 using CardsFramework;
+using System.IO;
 
 namespace CardsFramework.Core
 {
@@ -42,9 +43,9 @@ namespace CardsFramework.Core
         {
             ContentManager content = ScreenManager.Game.Content;
 
-            background = content.Load<Texture2D>("Images/UI/table");
-            buttonRegularTexture = content.Load<Texture2D>("Images/ButtonRegular");
-            buttonPressedTexture = content.Load<Texture2D>("Images/ButtonPressed");
+            background = content.Load<Texture2D>(Path.Combine("Images", "UI", "table"));
+            buttonRegularTexture = content.Load<Texture2D>(Path.Combine("Images", "ButtonRegular"));
+            buttonPressedTexture = content.Load<Texture2D>(Path.Combine("Images", "ButtonPressed"));
 
             safeArea = ScreenManager.SafeArea;
 

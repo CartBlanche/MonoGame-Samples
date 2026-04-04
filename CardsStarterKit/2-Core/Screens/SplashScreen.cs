@@ -10,6 +10,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Content;
 using CardsFramework;
+using System.IO;
 
 namespace CardsFramework.Core
 {
@@ -39,7 +40,7 @@ namespace CardsFramework.Core
             // For now, we'll use the blank texture as a placeholder
             try
             {
-                splashTexture = content.Load<Texture2D>("Images/blank");
+                splashTexture = content.Load<Texture2D>(Path.Combine("Images", "blank"));
             }
             catch
             {

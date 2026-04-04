@@ -6,6 +6,7 @@
 //-----------------------------------------------------------------------------
 
 using System;
+using System.IO;
 using System.Threading.Tasks;
 
 using Microsoft.Xna.Framework;
@@ -83,8 +84,8 @@ namespace CardsFramework.Core
 		{
 			ContentManager content = ScreenManager.Game.Content;
 
-			gradientTexture = content.Load<Texture2D>("Images/UI/gradient");
-			busyTexture = content.Load<Texture2D>("Images/GamePadCursor"); // TODO change to hourglass
+			gradientTexture = content.Load<Texture2D>(Path.Combine("Images", "UI", "gradient"));
+			busyTexture = content.Load<Texture2D>(Path.Combine("Images", "GamePadCursor")); // TODO change to hourglass
 		}
 
 		/// <summary>
