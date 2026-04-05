@@ -337,7 +337,7 @@ namespace CardsFramework.Core
             spriteBatch.End();
         }
 
-        public void UpdateMenuEntryDestination()
+        public virtual void UpdateMenuEntryDestination()
         {
             Rectangle bounds = ScreenManager.SafeArea;
 

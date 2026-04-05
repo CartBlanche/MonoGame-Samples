@@ -192,6 +192,21 @@ namespace CardsFramework.Core
         }
 
         /// <summary>
+        /// Constructs a new screen manager with a custom logical base resolution.
+        /// Use this overload when the game targets a non-default canvas (e.g. 480x800 portrait).
+        /// </summary>
+        public ScreenManager(Game game, Func<string> languageProvider, int baseWidth, int baseHeight)
+            : base(game)
+        {
+            this.languageProvider = languageProvider ?? (() => string.Empty);
+            this._fontProvider = null;
+            baseScreenSize = new Vector2(baseWidth, baseHeight);
+            inputState = new InputState(baseWidth, baseHeight);
+            safeArea = new Rectangle(0, 0, baseWidth, baseHeight);
+            TouchPanel.EnabledGestures = GestureType.None;
+        }
+
+        /// <summary>
         /// Initializes the screen manager component.
         /// </summary>
         public override void Initialize()

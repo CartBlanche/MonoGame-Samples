@@ -20,6 +20,9 @@ namespace CardsFramework.Core
         Texture2D background;
         Rectangle safeArea;
 
+        string _imagePath;
+        Rectangle? _sourceRect;
+
         /// <summary>
         /// Initializes a new instance of the screen.
         /// </summary>
@@ -30,11 +33,21 @@ namespace CardsFramework.Core
         }
 
         /// <summary>
+        /// Initializes a new instance with a custom image path and source rectangle.
+        /// </summary>
+        public BackgroundScreen(string imagePath, Rectangle sourceRect) : this()
+        {
+            _imagePath  = imagePath;
+            _sourceRect = sourceRect;
+        }
+
+        /// <summary>
         /// Load graphics content for the screen.
         /// </summary>
         public override void LoadContent()
         {
-            background = ScreenManager.Game.Content.Load<Texture2D>(Path.Combine("Images", "titlescreen"));
+            string path = _imagePath ?? Path.Combine("Images", "titlescreen");
+            background = ScreenManager.Game.Content.Load<Texture2D>(path);
             safeArea = new Rectangle(0, 0, ScreenManager.BASE_BUFFER_WIDTH, ScreenManager.BASE_BUFFER_HEIGHT);
             base.LoadContent();
         }
@@ -61,7 +74,10 @@ namespace CardsFramework.Core
         {
             ScreenManager.SpriteBatch.Begin(SpriteSortMode.Deferred, null, null, null, null, null, ScreenManager.GlobalTransformation);
 
-            ScreenManager.SpriteBatch.Draw(background, safeArea, Color.White * TransitionAlpha);
+            if (_sourceRect.HasValue)
+                ScreenManager.SpriteBatch.Draw(background, safeArea, _sourceRect.Value, Color.White * TransitionAlpha);
+            else
+                ScreenManager.SpriteBatch.Draw(background, safeArea, Color.White * TransitionAlpha);
 
             ScreenManager.SpriteBatch.End();
 

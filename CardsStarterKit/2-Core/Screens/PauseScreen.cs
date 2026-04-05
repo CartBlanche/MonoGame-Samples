@@ -21,11 +21,23 @@ namespace CardsFramework.Core
         readonly string returnText;
         readonly string quitText;
 
+        Action _onQuit;
+
         public PauseScreen(string returnText = "Back", string quitText = "Quit")
             : base("Pause")
         {
             this.returnText = returnText;
             this.quitText = quitText;
+            IsPopup = true;
+        }
+
+        /// <summary>Initializes a pause screen with a custom quit action and title.</summary>
+        public PauseScreen(string returnText, string quitText, Action onQuit, string title)
+            : base(title ?? "Pause")
+        {
+            this.returnText = returnText;
+            this.quitText   = quitText;
+            this._onQuit    = onQuit;
             IsPopup = true;
         }
 
@@ -81,6 +93,8 @@ namespace CardsFramework.Core
         /// <param name="playerIndex"></param>
         protected override void OnCancel(PlayerIndex playerIndex)
         {
+            if (_onQuit != null) { _onQuit(); return; }
+
             // Exit only the pause-related screens: PauseScreen, BackgroundScreen (pause overlay), and GameplayScreen
             // This will return to the LobbyScreen beneath them
             GameScreen[] screens = ScreenManager.GetScreens();

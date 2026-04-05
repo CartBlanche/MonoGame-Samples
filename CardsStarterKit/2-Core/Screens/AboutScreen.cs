@@ -30,11 +30,15 @@ namespace CardsFramework.Core
         private Vector2 contentStartPosition;
         private float lineSpacing;
 
-        public AboutScreen()
-        {
-            // About screen needs Tap gestures for mobile
-            EnabledGestures = GestureType.Tap;
+        string _title;
 
+        public AboutScreen() : this(null) { }
+
+        /// <summary>Initializes an about screen with an optional custom title.</summary>
+        public AboutScreen(string title)
+        {
+            _title = title;
+            EnabledGestures = GestureType.Tap;
             TransitionOnTime = TimeSpan.FromSeconds(0.5);
             TransitionOffTime = TimeSpan.FromSeconds(0.5);
         }
