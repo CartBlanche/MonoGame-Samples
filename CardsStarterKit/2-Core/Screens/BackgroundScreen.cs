@@ -48,7 +48,7 @@ namespace CardsFramework.Core
         {
             string path = _imagePath ?? Path.Combine("Images", "titlescreen");
             background = ScreenManager.Game.Content.Load<Texture2D>(path);
-            safeArea = new Rectangle(0, 0, ScreenManager.BASE_BUFFER_WIDTH, ScreenManager.BASE_BUFFER_HEIGHT);
+            safeArea = ScreenManager.SafeArea;
             base.LoadContent();
         }
 
