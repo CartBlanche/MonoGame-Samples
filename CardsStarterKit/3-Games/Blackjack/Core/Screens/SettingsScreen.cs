@@ -18,7 +18,7 @@ using CardsFramework.Core;
 
 namespace Blackjack
 {
-    class SettingsScreen : GameScreen
+    class SettingsScreen : GameScreen, ILanguageAware
     {
         private Texture2D background;
         private Texture2D cardBackTexture;
@@ -104,6 +104,15 @@ namespace Blackjack
             BuildSettingItems();
 
             base.LoadContent();
+        }
+
+        /// <summary>
+        /// Called by ScreenManager.ApplyLanguageChange after fonts have been reloaded.
+        /// Rebuilds the setting items so text is measured with the new font.
+        /// </summary>
+        public void OnLanguageChanged()
+        {
+            BuildSettingItems();
         }
 
         /// <summary>
@@ -236,54 +245,38 @@ namespace Blackjack
 
         private void CycleToNextLanguage()
         {
-            // Determine next language
-            string nextLanguage = settings.Language switch
+            settings.Language = settings.Language switch
             {
-                "English" => "Français",
+                "English"  => "Français",
                 "Français" => "Español",
-                "Español" => "Italiano",
+                "Español"  => "Italiano",
                 "Italiano" => "Русский",
-                "Русский" => "日本語",
-                "日本語" => "中文",
-                "中文" => "English",
-                _ => "English"
+                "Русский"  => "日本語",
+                "日本語"   => "中文",
+                "中文"     => "English",
+                _          => "English"
             };
 
-            // Phase 1: Reload fonts BEFORE changing language
-            ScreenManager.ReloadFontForLanguage(nextLanguage);
-
-            // Phase 2: Set the language (this will change CurrentUICulture)
-            settings.Language = nextLanguage;
-
-            // Phase 3: Refresh all screens now that language and fonts are both updated
-            BuildSettingItems();
-            ScreenManager.RefreshScreensAfterLanguageChange();
+            // Reload fonts then notify all screens (including this one via ILanguageAware).
+            ScreenManager.ApplyLanguageChange(settings.Language);
         }
 
         private void CycleToPreviousLanguage()
         {
-            // Determine previous language
-            string previousLanguage = settings.Language switch
+            settings.Language = settings.Language switch
             {
-                "English" => "中文",
-                "中文" => "日本語",
-                "日本語" => "Русский",
-                "Русский" => "Italiano",
+                "English"  => "中文",
+                "中文"     => "日本語",
+                "日本語"   => "Русский",
+                "Русский"  => "Italiano",
                 "Italiano" => "Español",
-                "Español" => "Français",
+                "Español"  => "Français",
                 "Français" => "English",
-                _ => "中文" // Default to last active language
+                _          => "中文"
             };
 
-            // Phase 1: Reload fonts BEFORE changing language
-            ScreenManager.ReloadFontForLanguage(previousLanguage);
-
-            // Phase 2: Set the language (this will change CurrentUICulture)
-            settings.Language = previousLanguage;
-
-            // Phase 3: Refresh all screens now that language and fonts are both updated
-            BuildSettingItems();
-            ScreenManager.RefreshScreensAfterLanguageChange();
+            // Reload fonts then notify all screens (including this one via ILanguageAware).
+            ScreenManager.ApplyLanguageChange(settings.Language);
         }
 
         private void CycleToNextCurrency()

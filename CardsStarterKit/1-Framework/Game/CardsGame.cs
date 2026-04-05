@@ -38,6 +38,14 @@ namespace CardsFramework
         public Game Game { get; set; }
 
         /// <summary>
+        /// Optional font provider. When set, LoadContent acquires the regular font
+        /// through the provider instead of hardcoding the asset path.
+        /// Games that supply a custom provider (e.g. SDF fonts) set this before
+        /// calling LoadContent. Games that do nothing receive the default font.
+        /// </summary>
+        public IFontProvider FontProvider { get; set; }
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="CardsGame"/> class.
         /// </summary>
         /// <param name="decks">The amount of decks in the game.</param>
@@ -167,8 +175,11 @@ namespace CardsFramework
             // Load card back picture
             LoadUITexture("Cards", "CardBack_" + Theme);
 
-            // Load the game's font
-            Font = Game.Content.Load<SpriteFont>(Path.Combine("Fonts", "Regular"));
+            // Load the game's font via the provider when one has been supplied,
+            // otherwise fall back to the original hardcoded path for backward compatibility.
+            Font = FontProvider != null
+                ? FontProvider.GetFont(FontRole.Regular, string.Empty)
+                : Game.Content.Load<SpriteFont>(Path.Combine("Fonts", "Regular"));
 
             GameTable.Initialize();
         }

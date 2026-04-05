@@ -51,6 +51,12 @@ namespace CardsFramework.Core
         /// </summary>
         readonly Func<string> languageProvider;
 
+        /// <summary>
+        /// Supplies SpriteFont instances by role and language. Lazily initialised to
+        /// DefaultFontProvider in LoadContent when no provider is supplied at construction.
+        /// </summary>
+        IFontProvider _fontProvider;
+
         public const int BASE_BUFFER_WIDTH = 1280;
         public const int BASE_BUFFER_HEIGHT = 720;
 
@@ -145,7 +151,8 @@ namespace CardsFramework.Core
 
 
         /// <summary>
-        /// Constructs a new screen manager component.
+        /// Constructs a new screen manager component using the default font provider.
+        /// Existing games that do not pass a custom provider continue to work unchanged.
         /// </summary>
         /// <param name="game">The game that owns this component.</param>
         /// <param name="languageProvider">
@@ -157,9 +164,30 @@ namespace CardsFramework.Core
             : base(game)
         {
             this.languageProvider = languageProvider ?? (() => string.Empty);
+            this._fontProvider = null; // lazily created as DefaultFontProvider in LoadContent
 
             // we must set EnabledGestures before we can query for them, but
             // we don't assume the game wants to read them.
+            TouchPanel.EnabledGestures = GestureType.None;
+        }
+
+        /// <summary>
+        /// Constructs a new screen manager component with an explicit font provider.
+        /// Use this overload to supply SDF fonts or any game-specific font pipeline.
+        /// </summary>
+        /// <param name="game">The game that owns this component.</param>
+        /// <param name="languageProvider">
+        /// Callback that returns the current language tag (e.g. "日本語").
+        /// </param>
+        /// <param name="fontProvider">
+        /// The font provider that will supply SpriteFont instances by role and language.
+        /// </param>
+        public ScreenManager(Game game, Func<string> languageProvider, IFontProvider fontProvider)
+            : base(game)
+        {
+            this.languageProvider = languageProvider ?? (() => string.Empty);
+            this._fontProvider = fontProvider ?? throw new ArgumentNullException(nameof(fontProvider));
+
             TouchPanel.EnabledGestures = GestureType.None;
         }
 
@@ -178,28 +206,22 @@ namespace CardsFramework.Core
         /// </summary>
         protected override void LoadContent()
         {
-            // Load content belonging to the screen manager.
             ContentManager content = Game.Content;
 
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
-            // Load the appropriate fonts based on the saved language setting.
-            // The language is provided via the languageProvider delegate injected at construction,
-            // keeping ScreenManager independent of any game-specific settings class.
+            // Lazily create the default provider if no custom one was injected.
+            if (_fontProvider == null)
+                _fontProvider = new DefaultFontProvider(content);
+
             string currentLanguage = languageProvider();
-            bool useCJKFont = currentLanguage == "日本語" || currentLanguage == "中文";
+            font        = _fontProvider.GetFont(FontRole.Menu,    currentLanguage);
+            regularFont = _fontProvider.GetFont(FontRole.Regular, currentLanguage);
+            boldFont    = _fontProvider.GetFont(FontRole.Bold,    currentLanguage);
 
-            string menuFontPath = useCJKFont ? Path.Combine("Fonts", "MenuFont_CJK") : Path.Combine("Fonts", "MenuFont");
-            string regularFontPath = useCJKFont ? Path.Combine("Fonts", "Regular_CJK") : Path.Combine("Fonts", "Regular");
-            string boldFontPath = useCJKFont ? Path.Combine("Fonts", "Bold_CJK") : Path.Combine("Fonts", "Bold");
-
-            font = content.Load<SpriteFont>(menuFontPath);
-            regularFont = content.Load<SpriteFont>(regularFontPath);
-            boldFont = content.Load<SpriteFont>(boldFontPath);
-
-            blankTexture = content.Load<Texture2D>(Path.Combine("Images", "blank"));
+            blankTexture    = content.Load<Texture2D>(Path.Combine("Images", "blank"));
             buttonBackground = content.Load<Texture2D>(Path.Combine("Images", "ButtonRegular"));
-            buttonPressed = content.Load<Texture2D>(Path.Combine("Images", "ButtonPressed"));
+            buttonPressed   = content.Load<Texture2D>(Path.Combine("Images", "ButtonPressed"));
 
             // Tell each of the screens to load their content.
             foreach (GameScreen screen in screens)
@@ -209,31 +231,26 @@ namespace CardsFramework.Core
         }
 
         /// <summary>
-        /// Reloads the font based on the current language setting.
+        /// Reloads the fonts for the given language via the active IFontProvider.
         /// Uses CJK fonts for Japanese and Chinese, regular fonts for other languages.
-        /// NOTE: This only loads fonts. Call RefreshScreensAfterLanguageChange() after
-        /// the language has been set to rebuild screen content.
+        /// NOTE: This only reloads fonts. Call RefreshScreensAfterLanguageChange() after
+        /// to rebuild screen content, or use ApplyLanguageChange() to do both atomically.
         /// </summary>
         public void ReloadFontForLanguage(string language)
         {
-            ContentManager content = Game.Content;
+            if (_fontProvider == null)
+                _fontProvider = new DefaultFontProvider(Game.Content);
 
-            // Determine if we need CJK font support
-            bool useCJKFont = language == "日本語" || language == "中文";
-
-            // Load all appropriate fonts
-            string menuFontPath = useCJKFont ? "Fonts/MenuFont_CJK" : "Fonts/MenuFont";
-            string regularFontPath = useCJKFont ? "Fonts/Regular_CJK" : "Fonts/Regular";
-            string boldFontPath = useCJKFont ? "Fonts/Bold_CJK" : "Fonts/Bold";
-
-            font = content.Load<SpriteFont>(menuFontPath);
-            regularFont = content.Load<SpriteFont>(regularFontPath);
-            boldFont = content.Load<SpriteFont>(boldFontPath);
+            font        = _fontProvider.GetFont(FontRole.Menu,    language);
+            regularFont = _fontProvider.GetFont(FontRole.Regular, language);
+            boldFont    = _fontProvider.GetFont(FontRole.Bold,    language);
         }
 
         /// <summary>
         /// Refreshes all screens after language change. Call this AFTER setting the language
-        /// to ensure screens rebuild with matching language and fonts.
+        /// and reloading fonts to ensure screens rebuild with the new language and fonts.
+        /// Screens that implement ILanguageAware receive OnLanguageChanged(); other
+        /// MenuScreens have their content reloaded.
         /// </summary>
         public void RefreshScreensAfterLanguageChange()
         {
@@ -244,6 +261,19 @@ namespace CardsFramework.Core
                 else if (screen is MenuScreen menuScreen)
                     menuScreen.LoadContent();
             }
+        }
+
+        /// <summary>
+        /// Atomic helper: reloads fonts for <paramref name="language"/> then refreshes
+        /// all screens. Call this after the game's language setting has been updated.
+        /// This is the preferred single entry point for language changes, reducing the
+        /// chance of ordering mistakes versus calling the two methods separately.
+        /// </summary>
+        /// <param name="language">The new language tag (e.g. "日本語", "English").</param>
+        public void ApplyLanguageChange(string language)
+        {
+            ReloadFontForLanguage(language);
+            RefreshScreensAfterLanguageChange();
         }
 
         /// <summary>

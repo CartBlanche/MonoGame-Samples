@@ -2,7 +2,7 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "Launch Desktop",
+            "name": "Blackjack Desktop",
             "type": "coreclr",
             "request": "launch",
             "preLaunchTask": "build-desktop",
@@ -13,7 +13,7 @@
             "stopAtEntry": false
         },
         {
-            "name": "Launch Windows",
+            "name": "Blackjack Windows",
             "type": "coreclr",
             "request": "launch",
             "preLaunchTask": "build-windows",
@@ -24,7 +24,7 @@
             "stopAtEntry": false
         },
         {
-            "name": "Launch Android",
+            "name": "Blackjack Android",
             "type": "mono",
             "request": "attach",
             "preLaunchTask": "build-android",
@@ -32,7 +32,7 @@
             "port": 10000,
         },
         {
-            "name": "Launch iOS",
+            "name": "Blackjack iOS",
             "type": "mono",
             "request": "attach",
             "preLaunchTask": "build-ios",
