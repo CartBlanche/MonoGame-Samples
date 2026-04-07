@@ -12,12 +12,12 @@ using Microsoft.Xna.Framework.Input.Touch;
 using Microsoft.Xna.Framework.Content;
 using CardsFramework;
 using System.IO;
+using System.Reflection;
 
 namespace CardsFramework.Core
 {
-    public class AboutScreen : GameScreen
+    public abstract class AboutScreenBase : GameScreen
     {
-        private Texture2D background;
         private Texture2D buttonRegularTexture;
         private Texture2D buttonPressedTexture;
         private Rectangle safeArea;
@@ -26,18 +26,18 @@ namespace CardsFramework.Core
         private bool isBackButtonPressed = false;
         private bool isMouseDown = false;
 
-        private string[] contentLines;
         private Vector2 contentStartPosition;
         private float lineSpacing;
+        private float contentScale;
 
-        string _title;
+        private readonly string title;
 
-        public AboutScreen() : this(null) { }
+        protected abstract string[] ContentLines { get; }
+        protected virtual string TitleText => string.IsNullOrWhiteSpace(title) ? "About" : title;
 
-        /// <summary>Initializes an about screen with an optional custom title.</summary>
-        public AboutScreen(string title)
+        protected AboutScreenBase(string title)
         {
-            _title = title;
+            this.title = title;
             EnabledGestures = GestureType.Tap;
             TransitionOnTime = TimeSpan.FromSeconds(0.5);
             TransitionOffTime = TimeSpan.FromSeconds(0.5);
@@ -47,7 +47,6 @@ namespace CardsFramework.Core
         {
             ContentManager content = ScreenManager.Game.Content;
 
-            background = content.Load<Texture2D>(Path.Combine("Images", "UI", "table"));
             buttonRegularTexture = content.Load<Texture2D>(Path.Combine("Images", "ButtonRegular"));
             buttonPressedTexture = content.Load<Texture2D>(Path.Combine("Images", "ButtonPressed"));
 
@@ -66,47 +65,63 @@ namespace CardsFramework.Core
                 backButtonSize,
                 backButtonSize);
 
-            // Build content lines
-            BuildContent();
+            // Calculate content layout and fit scale after safe-area is known.
+            BuildLayout();
 
             base.LoadContent();
         }
 
-        private void BuildContent()
+        private void BuildLayout()
         {
-            var version = (System.Reflection.Assembly.GetEntryAssembly() ?? System.Reflection.Assembly.GetExecutingAssembly()).GetName().Version;
-            string versionString = $"Version {version.ToString(3)}";
-
-            // Build the about content
-            contentLines = new string[]
-            {
-                "MonoGame Blackjack",
-                "",
-                versionString,
-                "",
-                "Based on Microsoft XNA Card Game Starter Kit",
-                "Modernized for MonoGame",
-                "",
-                "Features:",
-                "- Cross-platform gameplay",
-                "- Multiple languages supported",
-                "- Customizable settings",
-                "- NPC opponents",
-                "",
-                "Thanks:",
-                "- Pixabay for Jazz Music, CardRemoval and Winning Sound effects",
-                "- gnokii and openclipart.org for this game's Icon",
-                "",
-                "Built with MonoGame",
-                "www.monogame.net"
-            };
-
-            // Calculate starting position for content (centered below title)
             float heightScale = safeArea.Height / 720f;
+            lineSpacing = 30f * heightScale;
+
+            // Start below the title with side padding.
             contentStartPosition = new Vector2(
                 safeArea.Left + 80 * heightScale,
                 safeArea.Top + 120 * heightScale
             );
+
+            contentScale = ComputeContentScale(heightScale);
+        }
+
+        private float ComputeContentScale(float heightScale)
+        {
+            if (ContentLines == null || ContentLines.Length == 0)
+            {
+                return 1f;
+            }
+
+            float maxLineWidth = 0f;
+            foreach (string line in ContentLines)
+            {
+                if (string.IsNullOrEmpty(line))
+                {
+                    continue;
+                }
+
+                float lineWidth = ScreenManager.RegularFont.MeasureString(line).X;
+                if (lineWidth > maxLineWidth)
+                {
+                    maxLineWidth = lineWidth;
+                }
+            }
+
+            float availableWidth = Math.Max(1f, safeArea.Width - (160f * heightScale));
+            float widthScale = maxLineWidth > 0f ? availableWidth / maxLineWidth : 1f;
+
+            float availableHeight = Math.Max(1f, safeArea.Bottom - (contentStartPosition.Y + 20f * heightScale));
+            float contentHeight = Math.Max(1f, ContentLines.Length * lineSpacing);
+            float heightFitScale = availableHeight / contentHeight;
+
+            float fit = Math.Min(widthScale, heightFitScale);
+            return MathHelper.Clamp(Math.Min(1f, fit), 0.60f, 1f);
+        }
+
+        protected string GetVersionLine()
+        {
+            var version = (Assembly.GetEntryAssembly() ?? Assembly.GetExecutingAssembly()).GetName().Version;
+            return version == null ? "Version" : $"Version {version.ToString(3)}";
         }
 
         public override void HandleInput(InputState inputState)
@@ -176,24 +191,30 @@ namespace CardsFramework.Core
 
             spriteBatch.Begin(SpriteSortMode.Deferred, null, null, null, null, null, ScreenManager.GlobalTransformation);
 
-            // Draw background
-            spriteBatch.Draw(background, safeArea, Color.White * TransitionAlpha);
-
             // Draw title
-            string title = "About";
-            Vector2 titleSize = ScreenManager.Font.MeasureString(title);
+            Vector2 titleSize = ScreenManager.Font.MeasureString(TitleText);
             Vector2 titlePos = new Vector2(safeArea.Center.X - titleSize.X / 2, safeArea.Top + 10);
-            spriteBatch.DrawString(ScreenManager.Font, title, titlePos, Color.White * TransitionAlpha);
+            spriteBatch.DrawString(ScreenManager.Font, TitleText, titlePos, Color.White * TransitionAlpha);
 
             // Draw content lines
             Vector2 linePos = contentStartPosition;
-            foreach (string line in contentLines)
+            foreach (string line in ContentLines)
             {
                 if (!string.IsNullOrEmpty(line))
                 {
-                    spriteBatch.DrawString(ScreenManager.RegularFont, line, linePos, Color.White * TransitionAlpha);
+                    spriteBatch.DrawString(
+                        ScreenManager.RegularFont,
+                        line,
+                        linePos,
+                        Color.White * TransitionAlpha,
+                        0f,
+                        Vector2.Zero,
+                        contentScale,
+                        SpriteEffects.None,
+                        0f);
                 }
-                linePos.Y += lineSpacing;
+
+                linePos.Y += lineSpacing * contentScale;
             }
 
             // Draw back button
@@ -210,5 +231,24 @@ namespace CardsFramework.Core
 
             base.Draw(gameTime);
         }
+    }
+
+    public class AboutScreen : AboutScreenBase
+    {
+        public AboutScreen() : this(null) { }
+
+        public AboutScreen(string title) : base(title)
+        {
+        }
+
+        protected override string[] ContentLines => new[]
+        {
+            "Cards Framework",
+            "",
+            GetVersionLine(),
+            "",
+            "Built with MonoGame",
+            "www.monogame.net"
+        };
     }
 }

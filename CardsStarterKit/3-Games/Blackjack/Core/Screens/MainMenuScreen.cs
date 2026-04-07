@@ -109,7 +109,7 @@ namespace Blackjack
         /// <param name="e"></param>
         void AboutMenuEntrySelected(object sender, EventArgs e)
         {
-            ScreenManager.AddScreen(new AboutScreen(), null);
+            ScreenManager.AddScreen(new BlackjackAboutScreen(), null);
         }
 
         /// <summary>
