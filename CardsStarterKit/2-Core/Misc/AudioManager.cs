@@ -82,64 +82,87 @@ namespace CardsFramework.Core
         /// <param name="contentName">The content name of the sound file. Assumes all sounds are located under
         /// the "Sounds" folder in the content project.</param>
         /// <param name="alias">Alias to give the sound. This will be used to identify the sound uniquely.</param>
-        /// <remarks>Loading a sound with an alias that is already used will have no effect.</remarks>
-        public static void LoadSound(string contentName, string alias)
+        /// <param name="replaceExisting">If true, replaces and disposes an existing alias entry.</param>
+        /// <remarks>Loading a sound with an alias that is already used will have no effect unless replaceExisting is true.</remarks>
+        public static void LoadSound(string contentName, string alias, bool replaceExisting = false)
         {
             SoundEffect soundEffect = audioManager.Game.Content.Load<SoundEffect>(Path.Combine(soundAssetLocation, contentName));
             SoundEffectInstance soundEffectInstance = soundEffect.CreateInstance();
 
-            if (!audioManager.soundBank.ContainsKey(alias))
+            if (audioManager.soundBank.ContainsKey(alias))
             {
-                audioManager.soundBank.Add(alias, soundEffectInstance);
+                if (!replaceExisting)
+                    return;
+
+                audioManager.soundBank[alias].Dispose();
+                audioManager.soundBank[alias] = soundEffectInstance;
+                return;
             }
+
+            audioManager.soundBank.Add(alias, soundEffectInstance);
         }
 
         /// <summary>
         /// Loads a single song into the sound manager, giving it a specified alias.
         /// </summary>
-        /// <param name="contentName">The content name of the sound file containing the song. Assumes all sounds are 
-        /// located under the "Sounds" folder in the content project.</param>
+        /// <param name="contentName">The content name of the song file. Assumes all songs are located under
+        /// the "Music" folder in the content project.</param>
         /// <param name="alias">Alias to give the song. This will be used to identify the song uniquely.</param>
-        /// /// <remarks>Loading a song with an alias that is already used will have no effect.</remarks>
-        public static void LoadSong(string contentName, string alias)
+        /// <param name="replaceExisting">If true, replaces an existing alias entry.</param>
+        /// <remarks>Loading a song with an alias that is already used will have no effect unless replaceExisting is true.</remarks>
+        public static void LoadSong(string contentName, string alias, bool replaceExisting = false)
         {
             Song song = audioManager.Game.Content.Load<Song>(Path.Combine(musicAssetLocation, contentName));
 
-            if (!audioManager.musicBank.ContainsKey(alias))
+            if (audioManager.musicBank.ContainsKey(alias))
             {
-                audioManager.musicBank.Add(alias, song);
+                if (!replaceExisting)
+                    return;
+
+                audioManager.musicBank[alias] = song;
+                return;
             }
+
+            audioManager.musicBank.Add(alias, song);
         }
 
         /// <summary>
-        /// Loads and organizes the sounds used by the game.
+        /// Legacy no-op hook kept for compatibility.
+        /// Games should explicitly call LoadSound(...) for their own audio assets.
         /// </summary>
         public static void LoadSounds()
         {
-            LoadSound("Bet", "Bet");
-            LoadSound("CardFlip", "Flip");
-            LoadSound("CardsShuffle", "Shuffle");
-            LoadSound("Deal", "Deal");
-
-            // Downloaded from Pixabay's free sound library: https://pixabay.com/sound-effects/search/
-            LoadSound("Click", "Click");
-            LoadSound("Win", "Win");
-            LoadSound("CardRemoval", "CardRemoval");
+            // Intentionally empty.
         }
 
         /// <summary>
-        /// Loads and organizes the music used by the game.
-        /// The load order defines the default playlist cycling order.
+        /// Legacy no-op hook kept for compatibility.
+        /// Games should explicitly call LoadSong(...) and SetPlaylist(...).
         /// </summary>
         public static void LoadMusic()
         {
-            // Downloaded from Pixabay's free music library: https://pixabay.com/music/search/
-            LoadSong("sunsides-neo-soul-night-210447", "NeoSoul");
-            LoadSong("sunsides-jazzy-soul-207549", "JazzySoul");
-            LoadSong("freesound_community-casino-ambiance-19130", "CasinoAmbiance");
+            // Intentionally empty.
+        }
 
-            // Default playlist order
-            audioManager.playlist = ["NeoSoul", "JazzySoul"];
+        /// <summary>
+        /// Defines the playlist order by alias for PlayPlaylist().
+        /// Aliases not present in the music bank are ignored.
+        /// </summary>
+        public static void SetPlaylist(params string[] songAliases)
+        {
+            audioManager.playlist = new List<string>();
+
+            if (songAliases == null)
+                return;
+
+            foreach (string alias in songAliases)
+            {
+                if (string.IsNullOrWhiteSpace(alias))
+                    continue;
+
+                if (audioManager.musicBank.ContainsKey(alias))
+                    audioManager.playlist.Add(alias);
+            }
         }
 
 

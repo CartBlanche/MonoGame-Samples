@@ -83,8 +83,20 @@ namespace Blackjack
         /// </summary>
         protected override void LoadContent()
         {
-            AudioManager.LoadSounds();
-            AudioManager.LoadMusic();
+            // Game-specific sounds.
+            AudioManager.LoadSound("Bet", "Bet");
+            AudioManager.LoadSound("CardFlip", "Flip");
+            AudioManager.LoadSound("CardsShuffle", "Shuffle");
+            AudioManager.LoadSound("Deal", "Deal");
+            AudioManager.LoadSound("Click", "Click");
+            AudioManager.LoadSound("Win", "Win");
+            AudioManager.LoadSound("CardRemoval", "CardRemoval");
+
+            // Game-specific music and playlist defaults.
+            AudioManager.LoadSong("sunsides-neo-soul-night-210447", "NeoSoul");
+            AudioManager.LoadSong("sunsides-jazzy-soul-207549", "JazzySoul");
+            AudioManager.LoadSong("freesound_community-casino-ambiance-19130", "CasinoAmbiance");
+            AudioManager.SetPlaylist("NeoSoul", "JazzySoul");
 
             base.LoadContent();
         }
