@@ -9,6 +9,8 @@ using System;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Content;
+using Microsoft.Xna.Framework.Input;
+using Microsoft.Xna.Framework.Input.Touch;
 using CardsFramework;
 using System.IO;
 
@@ -22,6 +24,7 @@ namespace CardsFramework.Core
         private TimeSpan displayDuration = TimeSpan.FromSeconds(3);
         private TimeSpan elapsedTime = TimeSpan.Zero;
         private bool contentLoaded = false;
+        private bool completed = false;
 
         /// <param name="onComplete">Factory that returns the screens to push once the splash finishes.
         /// Example: () => new GameScreen[] { new BackgroundScreen(), new MainMenuScreen() }</param>
@@ -59,7 +62,7 @@ namespace CardsFramework.Core
         {
             base.Update(gameTime, otherScreenHasFocus, coveredByOtherScreen);
 
-            if (!contentLoaded || coveredByOtherScreen)
+            if (!contentLoaded || coveredByOtherScreen || completed)
                 return;
 
             // Only count time if we're fully transitioned on
@@ -70,16 +73,16 @@ namespace CardsFramework.Core
                 // After display duration, exit and show main menu
                 if (elapsedTime >= displayDuration)
                 {
-                    // Remove splash screen and add background + main menu
-                    ExitScreen();
-                    foreach (var screen in onComplete())
-                        ScreenManager.AddScreen(screen, null);
+                    CompleteSplash();
                 }
             }
         }
 
         public override void HandleInput(InputState inputState)
         {
+            if (completed)
+                return;
+
             // Allow skipping splash screen with any input
             if (inputState.IsNewKeyPress(Microsoft.Xna.Framework.Input.Keys.Space, ControllingPlayer, out _) ||
                 inputState.IsNewKeyPress(Microsoft.Xna.Framework.Input.Keys.Enter, ControllingPlayer, out _) ||
@@ -87,19 +90,49 @@ namespace CardsFramework.Core
                 inputState.IsNewButtonPress(Microsoft.Xna.Framework.Input.Buttons.A, ControllingPlayer, out _) ||
                 inputState.IsNewButtonPress(Microsoft.Xna.Framework.Input.Buttons.Start, ControllingPlayer, out _))
             {
-                // Skip to main menu immediately
-                ExitScreen();
-                foreach (var screen in onComplete())
-                    ScreenManager.AddScreen(screen, null);
+                CompleteSplash();
+                return;
             }
 
-            // Check for mouse/touch input to skip
-            if (UIUtility.IsDesktop && inputState.CurrentMouseState.LeftButton == Microsoft.Xna.Framework.Input.ButtonState.Pressed)
+            // Desktop: any mouse click skips.
+            if (UIUtility.IsDesktop &&
+                (inputState.CurrentMouseState.LeftButton == ButtonState.Pressed ||
+                 inputState.CurrentMouseState.RightButton == ButtonState.Pressed ||
+                 inputState.CurrentMouseState.MiddleButton == ButtonState.Pressed))
             {
-                ExitScreen();
-                foreach (var screen in onComplete())
-                    ScreenManager.AddScreen(screen, null);
+                CompleteSplash();
+                return;
             }
+
+            // Mobile: any active touch or tap gesture skips.
+            foreach (TouchLocation touch in inputState.CurrentTouchState)
+            {
+                if (touch.State == TouchLocationState.Pressed ||
+                    touch.State == TouchLocationState.Moved ||
+                    touch.State == TouchLocationState.Released)
+                {
+                    CompleteSplash();
+                    return;
+                }
+            }
+
+            foreach (GestureSample _ in inputState.Gestures)
+            {
+                CompleteSplash();
+                return;
+            }
+        }
+
+        private void CompleteSplash()
+        {
+            if (completed)
+                return;
+
+            completed = true;
+            ExitScreen();
+
+            foreach (var screen in onComplete())
+                ScreenManager.AddScreen(screen, null);
         }
 
         public override void Draw(GameTime gameTime)
