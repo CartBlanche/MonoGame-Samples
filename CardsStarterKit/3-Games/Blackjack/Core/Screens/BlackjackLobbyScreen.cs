@@ -21,6 +21,7 @@ namespace Blackjack
         List<string> joinedPlayers = new List<string>();
         bool isHost;
         NetworkSession networkSession;
+        bool hasTransitionedToGameplay;
 
         public BlackjackLobbyScreen(NetworkSession networkSession = null)
             : base(Resources.Lobby)
@@ -190,10 +191,12 @@ namespace Blackjack
             base.Update(gameTime, otherScreenHasFocus, coveredByOtherScreen);
 
             // In network games, check if host started the game
-            if (networkSession != null && !IsExiting)
+            if (networkSession != null && !IsExiting && !hasTransitionedToGameplay)
             {
                 if (networkSession.SessionState == NetworkSessionState.Playing)
                 {
+                    hasTransitionedToGameplay = true;
+
                     // Host started the game, transition all players
                     // Only pass human player names - GameplayScreen will add NPC Players on host only
                     var allPlayers = new List<string>(joinedPlayers);
