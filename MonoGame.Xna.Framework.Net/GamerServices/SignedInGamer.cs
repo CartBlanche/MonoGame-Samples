@@ -13,6 +13,7 @@ namespace Microsoft.Xna.Framework.GamerServices
 	public class SignedInGamer : Gamer
     {
         private static SignedInGamer current;
+        private bool isSignedInToLive;
 
         /// <summary>
         /// Gets the current signed-in gamer.
@@ -262,7 +263,12 @@ namespace Microsoft.Xna.Framework.GamerServices
         /// <summary>
         /// Gets whether this gamer is signed in to a live service.
         /// </summary>
-        public bool IsSignedInToLive => false; // Mock implementation
+        public bool IsSignedInToLive => isSignedInToLive;
+
+        internal void SetSignedInToLive(bool value)
+        {
+            isSignedInToLive = value;
+        }
 
         /// <summary>
         /// Gets whether this gamer is a guest.
@@ -291,5 +297,70 @@ namespace Microsoft.Xna.Framework.GamerServices
 			get;
 			private set;
 		}
+
+        /// <summary>
+        /// Asynchronously writes a score to a leaderboard.
+        /// </summary>
+        public async Task WriteLeaderboardAsync(LeaderboardWriter writer, CancellationToken cancellationToken = default)
+        {
+            if (writer == null)
+                throw new ArgumentNullException(nameof(writer));
+
+            if (!ReferenceEquals(writer.Gamer, this))
+                throw new InvalidOperationException("LeaderboardWriter.Gamer must match this SignedInGamer.");
+
+            cancellationToken.ThrowIfCancellationRequested();
+            var provider = LeaderboardService.ResolveProvider(this);
+            await provider.SubmitAsync(writer, cancellationToken).ConfigureAwait(false);
+        }
+
+        /// <summary>
+        /// Synchronous wrapper for WriteLeaderboardAsync.
+        /// </summary>
+        public void WriteLeaderboard(LeaderboardWriter writer)
+        {
+            WriteLeaderboardAsync(writer).GetAwaiter().GetResult();
+        }
+
+        /// <summary>
+        /// Asynchronously reads leaderboard rows from a page range.
+        /// </summary>
+        public Task<LeaderboardReader> GetLeaderboardAsync(
+            LeaderboardIdentity leaderboard,
+            int pageStart,
+            int pageSize,
+            CancellationToken cancellationToken = default)
+        {
+            var provider = LeaderboardService.ResolveProvider(this);
+            return provider.ReadAsync(leaderboard, pageStart, pageSize, null, cancellationToken);
+        }
+
+        /// <summary>
+        /// Asynchronously reads leaderboard rows centered around this gamer.
+        /// </summary>
+        public Task<LeaderboardReader> GetLeaderboardAsync(
+            LeaderboardIdentity leaderboard,
+            int pageSize,
+            CancellationToken cancellationToken = default)
+        {
+            var provider = LeaderboardService.ResolveProvider(this);
+            return provider.ReadAsync(leaderboard, 0, pageSize, this, cancellationToken);
+        }
+
+        /// <summary>
+        /// Synchronous wrapper for GetLeaderboardAsync.
+        /// </summary>
+        public LeaderboardReader GetLeaderboard(LeaderboardIdentity leaderboard, int pageStart, int pageSize)
+        {
+            return GetLeaderboardAsync(leaderboard, pageStart, pageSize).GetAwaiter().GetResult();
+        }
+
+        /// <summary>
+        /// Synchronous wrapper for gamer-centered GetLeaderboardAsync.
+        /// </summary>
+        public LeaderboardReader GetLeaderboard(LeaderboardIdentity leaderboard, int pageSize)
+        {
+            return GetLeaderboardAsync(leaderboard, pageSize).GetAwaiter().GetResult();
+        }
 	}
 }
