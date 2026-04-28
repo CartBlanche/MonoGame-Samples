@@ -441,7 +441,8 @@ namespace Blackjack
 
                                 // Check if there is enough money to play
                                 // then show new game option or tell the player he has lost
-                                if (((BlackjackPlayer)players[0]).Balance < 5)
+                                int localIdx = LocalPlayerIndex >= 0 ? LocalPlayerIndex : 0;
+                                if (((BlackjackPlayer)players[localIdx]).Balance < 5)
                                 {
                                     EndGame();
                                 }
