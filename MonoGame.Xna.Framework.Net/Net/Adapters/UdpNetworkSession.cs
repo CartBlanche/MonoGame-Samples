@@ -12,7 +12,7 @@ namespace Microsoft.Xna.Framework.Net
     /// </summary>
     internal class UdpNetworkSession : INetworkSession
     {
-        private readonly NetworkSession innerSession;
+        private NetworkSession innerSession;
         private ILocalNetworkGamer localGamerAdapter;
         private Dictionary<string, INetworkGamer> gamerAdapters;
         private bool disposed;
@@ -22,7 +22,7 @@ namespace Microsoft.Xna.Framework.Net
         /// </summary>
         internal UdpNetworkSession(NetworkSession underlyingSession)
         {
-            this.innerSession = underlyingSession ?? throw new ArgumentNullException(nameof(underlyingSession));
+            this.innerSession = underlyingSession;
             this.gamerAdapters = new Dictionary<string, INetworkGamer>();
             this.disposed = false;
         }
@@ -53,10 +53,14 @@ namespace Microsoft.Xna.Framework.Net
         {
             get
             {
-                if (innerSession?.Host == null) return null;
+                if (innerSession == null) return null;
+
+                var local = innerSession.LocalGamers.FirstOrDefault();
+                if (local == null) return null;
+
                 if (localGamerAdapter == null)
                 {
-                    localGamerAdapter = new LocalNetworkGamerAdapter(innerSession.Host as LocalNetworkGamer);
+                    localGamerAdapter = new LocalNetworkGamerAdapter(local);
                 }
                 return localGamerAdapter;
             }
@@ -334,11 +338,7 @@ namespace Microsoft.Xna.Framework.Net
                 innerSession.Dispose();
             }
 
-            // Create a new adapter with the new session
-            // Note: This is a workaround due to the private constructor
-            typeof(UdpNetworkSession)
-                .GetField("innerSession", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)
-                ?.SetValue(this, newSession);
+            innerSession = newSession;
 
             gamerAdapters.Clear();
             localGamerAdapter = null;

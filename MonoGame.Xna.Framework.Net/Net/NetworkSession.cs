@@ -226,12 +226,30 @@ namespace Microsoft.Xna.Framework.Net
         /// <summary>
         /// Gets the bytes per second being sent.
         /// </summary>
-        public int BytesPerSecondSent => 0; // Mock implementation
+        public int BytesPerSecondSent
+        {
+            get
+            {
+                var uptime = diagnostics?.Uptime.TotalSeconds ?? 0;
+                if (uptime <= 0)
+                    return 0;
+                return (int)(diagnostics.BytesSent / uptime);
+            }
+        }
 
         /// <summary>
         /// Gets the bytes per second being received.
         /// </summary>
-        public int BytesPerSecondReceived => 0; // Mock implementation
+        public int BytesPerSecondReceived
+        {
+            get
+            {
+                var uptime = diagnostics?.Uptime.TotalSeconds ?? 0;
+                if (uptime <= 0)
+                    return 0;
+                return (int)(diagnostics.BytesReceived / uptime);
+            }
+        }
 
         /// <summary>
         /// Gets whether the session allows host migration.
@@ -318,7 +336,7 @@ namespace Microsoft.Xna.Framework.Net
                     session = new NetworkSession(sessionType, maxGamers, privateGamerSlots, true);
                     session.sessionState = NetworkSessionState.Lobby;
                     // Phase 1: Start connection monitoring for SystemLink sessions
-                    session.connectionMonitor.StartMonitoring(session);
+                    session.StartConnectionMonitoring();
                     session.logger?.LogInfo($"Started connection monitoring for session {session.sessionId}");
                     // Use the session's own cancellation token, not the CreateAsync parameter
                     _ = SystemLinkSessionManager.AdvertiseSessionAsync(session, session.cancellationTokenSource.Token); // Fire-and-forget
@@ -487,17 +505,24 @@ namespace Microsoft.Xna.Framework.Net
             if (writer == null)
                 throw new ArgumentNullException(nameof(writer));
 
-            byte[] data = writer.GetData();
-
-            lock (lockObject)
+            int payloadLength;
+            var payload = writer.RentData(out payloadLength);
+            try
             {
-                foreach (var gamer in gamers)
+                lock (lockObject)
                 {
-                    if (gamer != sender && !gamer.IsLocal)
+                    foreach (var gamer in gamers)
                     {
-                        SendDataToGamer(gamer, data, options);
+                        if (gamer != sender && !gamer.IsLocal)
+                        {
+                            SendDataToGamer(gamer, payload, payloadLength, options);
+                        }
                     }
                 }
+            }
+            finally
+            {
+                PacketWriter.ReturnRentedData(payload);
             }
         }
 
@@ -652,34 +677,27 @@ namespace Microsoft.Xna.Framework.Net
                 NetworkGamer existingGamer = null;
                 bool isNewGamer = false;
                 
-                Console.WriteLine($"[JOIN-DEBUG] Processing join request from {joinRequest.Gamertag} (ID: {joinRequest.GamerId})");
-                Console.WriteLine($"[JOIN-DEBUG] Current gamer count before lock: {AllGamers.Count}");
+                logger?.LogInfo($"Processing join request from {joinRequest.Gamertag} (ID: {joinRequest.GamerId}), gamer count: {AllGamers.Count}");
                 
                 lock (lockObject)
                 {
-                    Console.WriteLine($"[JOIN-DEBUG] Inside lock, checking for existing gamer with ID: {joinRequest.GamerId}");
                     existingGamer = gamers.FirstOrDefault(g => g.Id == joinRequest.GamerId);
                     
                     if (existingGamer == null)
                     {
                         // New gamer - create and add atomically while holding lock
-                        Console.WriteLine($"[JOIN-DEBUG] No existing gamer found, creating new gamer");
                         logger?.LogInfo($"Accepting join request from {joinRequest.Gamertag} (ID: {joinRequest.GamerId})");
                         var newGamer = new NetworkGamer(this, joinRequest.GamerId, isLocal: false, isHost: false, gamertag: joinRequest.Gamertag);
                         gamers.Add(newGamer);
-                        Console.WriteLine($"[JOIN-DEBUG] Added new gamer, count now: {gamers.Count}");
                         existingGamer = newGamer;
                         isNewGamer = true;
                     }
                     else
                     {
                         // Gamer already joined (this is a retry) - just resend acceptance
-                        Console.WriteLine($"[JOIN-DEBUG] Found existing gamer: {existingGamer.Gamertag}, this is a retry");
                         logger?.LogInfo($"Join request from {joinRequest.Gamertag} is a retry (gamer already exists), resending acceptance");
                     }
                 }
-                
-                Console.WriteLine($"[JOIN-DEBUG] After lock, total gamers: {AllGamers.Count}");
                 
                 // Register endpoint outside lock (uses its own lock internally)
                 RegisterGamerEndpoint(existingGamer, e.RemoteEndPoint);
@@ -932,8 +950,6 @@ namespace Microsoft.Xna.Framework.Net
                     }
                 }
 
-                // Give a brief moment for messages to be sent
-                System.Threading.Thread.Sleep(50);
             }
 
             // Now dispose normally
@@ -1033,10 +1049,20 @@ namespace Microsoft.Xna.Framework.Net
 
         internal void DeserializeSessionPropertiesBinary(byte[] data)
         {
+            var parsed = DeserializeSessionPropertiesStatic(data);
+            SessionProperties.Clear();
+            foreach (var kvp in parsed)
+                SessionProperties[kvp.Key] = kvp.Value;
+        }
+
+        internal static Dictionary<string, object> DeserializeSessionPropertiesStatic(byte[] data)
+        {
+            var result = new Dictionary<string, object>();
+            if (data == null || data.Length < 4)
+                return result;
             using (var ms = new MemoryStream(data))
             using (var reader = new BinaryReader(ms))
             {
-                SessionProperties.Clear();
                 int count = reader.ReadInt32();
                 for (int i = 0; i < count; i++)
                 {
@@ -1050,9 +1076,10 @@ namespace Microsoft.Xna.Framework.Net
                         case 3: value = reader.ReadString(); break;
                         default: value = reader.ReadString(); break;
                     }
-                    SessionProperties[key] = value;
+                    result[key] = value;
                 }
             }
+            return result;
         }
 
         private void BroadcastSessionProperties()
@@ -1096,6 +1123,26 @@ namespace Microsoft.Xna.Framework.Net
             }
         }
 
+        internal void AcceptGamer(NetworkGamer gamer)
+        {
+            AddGamer(gamer);
+        }
+
+        internal void EvictGamer(NetworkGamer gamer)
+        {
+            RemoveGamer(gamer);
+        }
+
+        internal void StartConnectionMonitoring()
+        {
+            connectionMonitor?.StartMonitoring(this);
+        }
+
+        internal void DispatchIncomingMessage(MessageReceivedEventArgs e)
+        {
+            OnMessageReceived(e);
+        }
+
         private void AddGamer(NetworkGamer gamer)
         {
             if (gamer == null) return;
@@ -1125,19 +1172,34 @@ namespace Microsoft.Xna.Framework.Net
         internal void SendDataToGamer(NetworkGamer gamer, PacketWriter writer, SendDataOptions options)
         {
             if (gamer == null || writer == null) return;
-            SendDataToGamer(gamer, writer.GetData(), options);
+
+            int length;
+            var rented = writer.RentData(out length);
+            try
+            {
+                SendDataToGamer(gamer, rented, length, options);
+            }
+            finally
+            {
+                PacketWriter.ReturnRentedData(rented);
+            }
         }
 
         internal void SendDataToGamer(NetworkGamer gamer, byte[] data, SendDataOptions options)
+        {
+            SendDataToGamer(gamer, data, data?.Length ?? 0, options);
+        }
+
+        internal void SendDataToGamer(NetworkGamer gamer, byte[] data, int dataLength, SendDataOptions options)
         {
             if (gamer == null || data == null) return;
             if (gamerEndpoints.TryGetValue(gamer.Id, out IPEndPoint endpoint))
             {
                 try
                 {
-                    networkTransport.Send(data, endpoint);
+                    networkTransport.Send(data, dataLength, endpoint);
                     // Phase 1: Record sent packet in diagnostics
-                    diagnostics?.RecordPacketSent(data.Length);
+                    diagnostics?.RecordPacketSent(dataLength);
                 }
                 catch (Exception ex)
                 {

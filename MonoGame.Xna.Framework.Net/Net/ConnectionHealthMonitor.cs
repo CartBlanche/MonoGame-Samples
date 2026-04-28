@@ -47,7 +47,7 @@ namespace Microsoft.Xna.Framework.Net
             }
 
             // Start heartbeat sender task
-            Task.Run(async () => await HeartbeatLoopAsync());
+            Task.Run(HeartbeatLoopAsync);
         }
 
         /// <summary>
@@ -84,10 +84,9 @@ namespace Microsoft.Xna.Framework.Net
 
                     // Send to each remote gamer individually (peer-to-peer)
                     var remoteGamers = session.AllGamers.Where(g => !g.IsLocal).ToList();
-                    Console.WriteLine($"[HEARTBEAT-SEND] Sending to {remoteGamers.Count} remote gamer(s)");
+                    session.Logger?.LogInfo($"Sending heartbeat to {remoteGamers.Count} remote gamer(s)");
                     foreach (var gamer in remoteGamers)
                     {
-                        Console.WriteLine($"[HEARTBEAT-SEND] -> {gamer.Gamertag} ({gamer.Id})");
                         session.SendDataToGamer(gamer, data, SendDataOptions.None);
                     }
 
@@ -98,7 +97,7 @@ namespace Microsoft.Xna.Framework.Net
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine($"[HEARTBEAT] Error in heartbeat loop: {ex.Message}");
+                    session?.Logger?.LogError($"Error in heartbeat loop: {ex.Message}", ex);
                 }
             }
         }
@@ -125,7 +124,7 @@ namespace Microsoft.Xna.Framework.Net
                         if (gamer != null)
                         {
                             disconnected.Add(gamer);
-                            Console.WriteLine($"[HEARTBEAT] {gamer.Gamertag} timed out (no response for {timeSinceLastHB:F0}ms)");
+                            session.Logger?.LogWarning($"{gamer.Gamertag} timed out (no response for {timeSinceLastHB:F0}ms)");
                         }
                     }
                 }
@@ -134,10 +133,7 @@ namespace Microsoft.Xna.Framework.Net
             // Remove disconnected gamers (outside lock to avoid deadlock)
             foreach (var gamer in disconnected)
             {
-                // Use reflection to call internal RemoveGamer method
-                var removeMethod = session.GetType().GetMethod("RemoveGamer", 
-                    System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
-                removeMethod?.Invoke(session, new object[] { gamer });
+                session.EvictGamer(gamer);
                 
                 lock (connections)
                 {
@@ -151,15 +147,12 @@ namespace Microsoft.Xna.Framework.Net
         /// </summary>
         public void OnHeartbeatReceived(string gamerId, HeartbeatMessage heartbeat)
         {
-            Console.WriteLine($"[HEARTBEAT-RECV] Received from gamer {gamerId}, seq {heartbeat.SequenceNumber}");
-            
             lock (connections)
             {
                 if (!connections.ContainsKey(gamerId))
                 {
                     // New remote gamer
                     connections[gamerId] = new GamerConnectionState();
-                    Console.WriteLine($"[HEARTBEAT-RECV] Created new connection state for {gamerId}");
                 }
 
                 var state = connections[gamerId];
@@ -182,14 +175,9 @@ namespace Microsoft.Xna.Framework.Net
             
             // Find the gamer and send reply
             var gamer = session?.AllGamers.FirstOrDefault(g => g.Id == gamerId);
-            Console.WriteLine($"[HEARTBEAT-REPLY] Found gamer: {gamer?.Gamertag ?? "NULL"}, sending reply");
             if (gamer != null)
             {
                 session?.SendDataToGamer(gamer, writer.GetData(), SendDataOptions.None);
-            }
-            else
-            {
-                Console.WriteLine($"[HEARTBEAT-REPLY] ERROR: Could not find gamer {gamerId} to send reply!");
             }
         }
 
@@ -198,7 +186,6 @@ namespace Microsoft.Xna.Framework.Net
         /// </summary>
         public void OnHeartbeatReplyReceived(string gamerId, HeartbeatReplyMessage reply)
         {
-            Console.WriteLine($"[HEARTBEAT-REPLY-RECV] Received reply from {gamerId}");
             lock (connections)
             {
                 if (connections.TryGetValue(gamerId, out var state))

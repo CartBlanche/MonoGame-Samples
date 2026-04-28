@@ -1,6 +1,7 @@
 using System;
 using System.Net;
 using System.Net.Sockets;
+using System.Threading.Tasks;
 
 namespace Microsoft.Xna.Framework.Net
 {
@@ -9,7 +10,7 @@ namespace Microsoft.Xna.Framework.Net
     /// </summary>
     public class UdpTransport : INetworkTransport
     {
-    private readonly UdpClient udpClient;
+        private readonly UdpClient udpClient;
         private bool isBound;
 
         /// <summary>
@@ -26,8 +27,9 @@ namespace Microsoft.Xna.Framework.Net
         /// <returns>A tuple containing the received data and the sender's endpoint.</returns>
         public (byte[] data, IPEndPoint sender) Receive()
         {
-            // Call the async version and block until it completes
-            return ReceiveAsync().GetAwaiter().GetResult();
+            IPEndPoint remoteEndPoint = new IPEndPoint(IPAddress.Any, 0);
+            var data = udpClient.Receive(ref remoteEndPoint);
+            return (data, remoteEndPoint);
         }
 
         /// <summary>
@@ -47,8 +49,27 @@ namespace Microsoft.Xna.Framework.Net
         /// <param name="endpoint">The endpoint to send the data to.</param>
         public void Send(byte[] data, IPEndPoint endpoint)
         {
-            // Call the async version and block until it completes
-            SendAsync(data, endpoint).GetAwaiter().GetResult();
+            if (data == null)
+                throw new ArgumentNullException(nameof(data));
+            if (endpoint == null)
+                throw new ArgumentNullException(nameof(endpoint));
+
+            udpClient.Send(data, data.Length, endpoint);
+        }
+
+        /// <summary>
+        /// Sends a fixed-length prefix of data to the specified endpoint in a blocking manner.
+        /// </summary>
+        public void Send(byte[] data, int length, IPEndPoint endpoint)
+        {
+            if (data == null)
+                throw new ArgumentNullException(nameof(data));
+            if (endpoint == null)
+                throw new ArgumentNullException(nameof(endpoint));
+            if (length < 0 || length > data.Length)
+                throw new ArgumentOutOfRangeException(nameof(length));
+
+            udpClient.Send(data, length, endpoint);
         }
 
         /// <summary>
@@ -59,7 +80,27 @@ namespace Microsoft.Xna.Framework.Net
         /// <returns>A task that represents the asynchronous operation.</returns>
         public async Task SendAsync(byte[] data, IPEndPoint endpoint)
         {
+            if (data == null)
+                throw new ArgumentNullException(nameof(data));
+            if (endpoint == null)
+                throw new ArgumentNullException(nameof(endpoint));
+
             await udpClient.SendAsync(data, data.Length, endpoint);
+        }
+
+        /// <summary>
+        /// Sends a fixed-length prefix of data to the specified endpoint asynchronously.
+        /// </summary>
+        public async Task SendAsync(byte[] data, int length, IPEndPoint endpoint)
+        {
+            if (data == null)
+                throw new ArgumentNullException(nameof(data));
+            if (endpoint == null)
+                throw new ArgumentNullException(nameof(endpoint));
+            if (length < 0 || length > data.Length)
+                throw new ArgumentOutOfRangeException(nameof(length));
+
+            await udpClient.SendAsync(data, length, endpoint);
         }
 
         /// <summary>
@@ -99,6 +140,6 @@ namespace Microsoft.Xna.Framework.Net
         /// <summary>
         /// Gets a value indicating whether the transport is bound to a local endpoint.
         /// </summary>
-    public bool IsBound => isBound;
+        public bool IsBound => isBound;
     }
 }

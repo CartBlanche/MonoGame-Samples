@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
@@ -19,13 +20,13 @@ namespace Microsoft.Xna.Framework.Net
             // Periodically broadcast session info on LAN until session is full or ended
             return Task.Run(async () =>
             {
-                using (var udpClient = new UdpClient())
+                using (var udpClient = new UdpClient(AddressFamily.InterNetwork))
                 {
                     udpClient.EnableBroadcast = true;
                     var broadcastEndpoint = new IPEndPoint(IPAddress.Broadcast, BroadcastPort);
                     var localhostEndpoint = new IPEndPoint(IPAddress.Loopback, BroadcastPort);
 
-                    Console.WriteLine($"[BROADCAST] Starting session advertisement on port {BroadcastPort}");
+                    session.Logger?.LogInfo($"Starting session advertisement on port {BroadcastPort}");
                     int broadcastCount = 0;
 
                     while (!cancellationToken.IsCancellationRequested && session.AllGamers.Count < session.MaxGamers && session.sessionState != NetworkSessionState.Ended)
@@ -39,46 +40,57 @@ namespace Microsoft.Xna.Framework.Net
                         Buffer.BlockCopy(propertiesBytes, 0, message, headerBytes.Length, propertiesBytes.Length);
 
                         // Send to broadcast address for LAN discovery
-                        await udpClient.SendAsync(message, message.Length, broadcastEndpoint);
+                        try
+                        {
+                            await udpClient.SendAsync(message, message.Length, broadcastEndpoint);
+                        }
+                        catch (SocketException ex)
+                        {
+                            session.Logger?.LogWarning($"Broadcast advertisement send failed: {ex.Message}");
+                        }
+                        catch (Exception ex)
+                        {
+                            session.Logger?.LogWarning($"Broadcast advertisement failed: {ex.Message}");
+                        }
 
                         // ALSO send to localhost for same-machine testing
                         try
                         {
                             await udpClient.SendAsync(message, message.Length, localhostEndpoint);
-                            Console.WriteLine($"[BROADCAST] Also sent to localhost (127.0.0.1:{BroadcastPort})");
+                            session.Logger?.LogInfo($"Also sent advertisement to localhost (127.0.0.1:{BroadcastPort})");
                         }
                         catch (SocketException ex)
                         {
-                            Console.WriteLine($"[BROADCAST] Localhost send failed: {ex.Message}");
+                            session.Logger?.LogWarning($"Localhost advertisement send failed: {ex.Message}");
                         }
 
                         broadcastCount++;
-                        Console.WriteLine($"[BROADCAST] Sent broadcast #{broadcastCount} - SessionID: {session.sessionId}, Gamers: {session.AllGamers.Count}/{session.MaxGamers}");
+                        session.Logger?.LogInfo($"Sent broadcast #{broadcastCount} - SessionID: {session.sessionId}, Gamers: {session.AllGamers.Count}/{session.MaxGamers}");
 
                         await Task.Delay(750, cancellationToken); // Broadcast every 750ms for faster discovery
                     }
 
-                    Console.WriteLine($"[BROADCAST] Stopped broadcasting. Reason: Cancelled={cancellationToken.IsCancellationRequested}, Full={session.AllGamers.Count >= session.MaxGamers}, Ended={session.sessionState == NetworkSessionState.Ended}");
+                    session.Logger?.LogInfo($"Stopped broadcasting. Reason: Cancelled={cancellationToken.IsCancellationRequested}, Full={session.AllGamers.Count >= session.MaxGamers}, Ended={session.sessionState == NetworkSessionState.Ended}");
                 }
             }, cancellationToken);
         }
 
         public static async Task<IEnumerable<AvailableNetworkSession>> DiscoverSessionsAsync(int maxLocalGamers, CancellationToken cancellationToken)
         {
-            Console.WriteLine($"[DISCOVERY] Starting session discovery on port {BroadcastPort}");
+            Debug.WriteLine($"[DISCOVERY] Starting session discovery on port {BroadcastPort}");
 
             // Use dictionary to deduplicate sessions by ID (in case we receive multiple broadcasts from same host)
             var sessionsDict = new Dictionary<string, AvailableNetworkSession>();
 
             try
             {
-                using (var udpClient = new UdpClient())
+                using (var udpClient = new UdpClient(AddressFamily.InterNetwork))
                 {
                     // Enable port reuse for multiple instances on same machine
                     udpClient.Client.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.ReuseAddress, true);
                     udpClient.Client.Bind(new IPEndPoint(IPAddress.Any, BroadcastPort));
 
-                    Console.WriteLine($"[DISCOVERY] Successfully bound to port {BroadcastPort}");
+                    Debug.WriteLine($"[DISCOVERY] Successfully bound to port {BroadcastPort}");
 
                     udpClient.EnableBroadcast = true;
                     // DON'T set ReceiveTimeout - it interferes with ReceiveAsync()
@@ -106,7 +118,7 @@ namespace Microsoft.Xna.Framework.Net
                                 var buffer = result.Buffer;
                                 packetsReceived++;
 
-                                Console.WriteLine($"[DISCOVERY] Received packet #{packetsReceived} from {result.RemoteEndPoint} ({buffer.Length} bytes)");
+                                Debug.WriteLine($"[DISCOVERY] Received packet #{packetsReceived} from {result.RemoteEndPoint} ({buffer.Length} bytes)");
 
                                 // Find the header delimiter (the last colon of the header)
                                 int headerEnd = 0;
@@ -127,7 +139,7 @@ namespace Microsoft.Xna.Framework.Net
                                 if (colonCount == 6)
                                 {
                                     var headerString = Encoding.UTF8.GetString(buffer, 0, headerEnd);
-                                    Console.WriteLine($"[DISCOVERY] Parsed header: {headerString}");
+                                    Debug.WriteLine($"[DISCOVERY] Parsed header: {headerString}");
 
                                     var parts = headerString.Split(':');
                                     var sessionId = parts[1];
@@ -140,9 +152,9 @@ namespace Microsoft.Xna.Framework.Net
                                     var propertiesBytes = new byte[buffer.Length - headerEnd];
                                     Buffer.BlockCopy(buffer, headerEnd, propertiesBytes, 0, propertiesBytes.Length);
 
-                                    var dummySession = new NetworkSession(NetworkSessionType.SystemLink, maxGamers, privateSlots, false, sessionId);
-                                    dummySession.DeserializeSessionPropertiesBinary(propertiesBytes);
-                                    var sessionProperties = dummySession.SessionProperties as Dictionary<string, object>;
+                                    // Parse session properties without creating a full NetworkSession (avoids resource leaks,
+                                    // port 31338 contention, and static NetworkGamer.LocalGamer overwrite)
+                                    var sessionProperties = NetworkSession.DeserializeSessionPropertiesStatic(propertiesBytes);
 
                                     var hostEndpoint = new IPEndPoint(result.RemoteEndPoint.Address, gamePort);
 
@@ -158,39 +170,39 @@ namespace Microsoft.Xna.Framework.Net
                                         sessionId: sessionId,
                                         hostEndpoint: hostEndpoint);
 
-                                    Console.WriteLine($"[DISCOVERY] Added session: {hostGamertag} ({sessionId})");
+                                    Debug.WriteLine($"[DISCOVERY] Added session: {hostGamertag} ({sessionId})");
                                 }
                                 else
                                 {
-                                    Console.WriteLine($"[DISCOVERY] Invalid packet - expected 6 colons, found {colonCount}");
+                                    Debug.WriteLine($"[DISCOVERY] Invalid packet - expected 6 colons, found {colonCount}");
                                 }
                             }
                             // If timeout occurs, continue listening until endTime
                         }
                         catch (SocketException ex)
                         {
-                            Console.WriteLine($"[DISCOVERY] SocketException: {ex.Message}");
+                            Debug.WriteLine($"[DISCOVERY] SocketException: {ex.Message}");
                             // Socket timeout or other network error - continue listening
                         }
                         catch (ObjectDisposedException)
                         {
-                            Console.WriteLine($"[DISCOVERY] Socket disposed");
+                            Debug.WriteLine("[DISCOVERY] Socket disposed");
                             // Socket was disposed (shouldn't happen, but handle gracefully)
                             break;
                         }
                         catch (Exception ex)
                         {
-                            Console.WriteLine($"[DISCOVERY] Unexpected error: {ex.GetType().Name} - {ex.Message}");
+                            Debug.WriteLine($"[DISCOVERY] Unexpected error: {ex.GetType().Name} - {ex.Message}");
                         }
                     }
 
                     var elapsed = DateTime.UtcNow - startTime;
-                    Console.WriteLine($"[DISCOVERY] Completed after {elapsed.TotalSeconds:F2}s. Attempts: {receiveAttempts}, Packets: {packetsReceived}, Sessions: {sessionsDict.Count}");
+                    Debug.WriteLine($"[DISCOVERY] Completed after {elapsed.TotalSeconds:F2}s. Attempts: {receiveAttempts}, Packets: {packetsReceived}, Sessions: {sessionsDict.Count}");
                 }
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"[DISCOVERY] Fatal error: {ex.GetType().Name} - {ex.Message}\n{ex.StackTrace}");
+                Debug.WriteLine($"[DISCOVERY] Fatal error: {ex.GetType().Name} - {ex.Message}\n{ex.StackTrace}");
             }
 
             return sessionsDict.Values;
@@ -202,7 +214,7 @@ namespace Microsoft.Xna.Framework.Net
             const int MAX_RETRIES = 3;
             const int TIMEOUT_MS = 300; // Faster timeout for LAN (reduced from 500ms)
 
-            Console.WriteLine($"[JOIN] Starting join process for session {availableSession.SessionId}");
+            Debug.WriteLine($"[JOIN] Starting join process for session {availableSession.SessionId}");
 
             // Create client session in Joining state
             var session = new NetworkSession(NetworkSessionType.SystemLink,
@@ -229,14 +241,13 @@ namespace Microsoft.Xna.Framework.Net
             }
 
             var hostGamer = new NetworkGamer(session, Guid.NewGuid().ToString(), isLocal: false, isHost: true, gamertag: availableSession.HostGamertag);
-            session.GetType().GetMethod("AddGamer", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)
-                ?.Invoke(session, new object[] { hostGamer });
+            session.AcceptGamer(hostGamer);
             session.RegisterGamerEndpoint(hostGamer, availableSession.HostEndpoint);
 
             // Phase 1: Send join request with retry logic
             for (int attempt = 0; attempt < MAX_RETRIES; attempt++)
             {
-                Console.WriteLine($"[JOIN] Sending join request (attempt {attempt + 1}/{MAX_RETRIES})");
+                Debug.WriteLine($"[JOIN] Sending join request (attempt {attempt + 1}/{MAX_RETRIES})");
 
                 // CRITICAL: Use the session's own local gamer, not the static NetworkGamer.LocalGamer
                 // The static property can be stale when multiple sessions exist (e.g., testing on same machine)
@@ -244,7 +255,7 @@ namespace Microsoft.Xna.Framework.Net
                 if (localGamer == null)
                     throw new InvalidOperationException("No local gamer found in session");
 
-                Console.WriteLine($"[JOIN] Sending as gamer: {localGamer.Gamertag} (ID: {localGamer.Id})");
+                Debug.WriteLine($"[JOIN] Sending as gamer: {localGamer.Gamertag} (ID: {localGamer.Id})");
 
                 var joinRequest = new JoinRequestMessage
                 {
@@ -262,12 +273,9 @@ namespace Microsoft.Xna.Framework.Net
                 {
                     if (session.sessionState == NetworkSessionState.Lobby)
                     {
-                        Console.WriteLine($"[JOIN] Successfully joined session after {attempt + 1} attempt(s)");
+                        Debug.WriteLine($"[JOIN] Successfully joined session after {attempt + 1} attempt(s)");
                         // Phase 1: Start connection monitoring for client
-                        session.GetType().GetField("connectionMonitor", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)
-                            ?.GetValue(session)
-                            ?.GetType().GetMethod("StartMonitoring")
-                            ?.Invoke(session.GetType().GetField("connectionMonitor", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)?.GetValue(session), new object[] { session });
+                        session.StartConnectionMonitoring();
                         return session;
                     }
 
@@ -276,11 +284,11 @@ namespace Microsoft.Xna.Framework.Net
                     await Task.Delay(50, cancellationToken);
                 }
 
-                Console.WriteLine($"[JOIN] Attempt {attempt + 1} timed out");
+                Debug.WriteLine($"[JOIN] Attempt {attempt + 1} timed out");
             }
 
             // After MAX_RETRIES attempts, give up
-            Console.WriteLine($"[JOIN] Failed to join session after {MAX_RETRIES} attempts");
+            Debug.WriteLine($"[JOIN] Failed to join session after {MAX_RETRIES} attempts");
             session.Dispose();
             throw new NetworkSessionJoinException(
                 $"Failed to join session after {MAX_RETRIES} attempts. Host may be unreachable or session is full.",

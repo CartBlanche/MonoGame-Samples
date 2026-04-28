@@ -1,4 +1,5 @@
 using System;
+using System.Buffers;
 using System.IO;
 using System.Text;
 using Microsoft.Xna.Framework;
@@ -225,7 +226,42 @@ namespace Microsoft.Xna.Framework.Net
         /// </summary>
         internal byte[] GetData()
         {
+            writer.Flush();
             return stream.ToArray();
+        }
+
+        /// <summary>
+        /// Rents a pooled buffer and copies packet bytes into it.
+        /// Caller must return the rented buffer via <see cref="ReturnRentedData"/>.
+        /// </summary>
+        internal byte[] RentData(out int length)
+        {
+            writer.Flush();
+            length = (int)stream.Length;
+            var rented = ArrayPool<byte>.Shared.Rent(length);
+
+            if (stream.TryGetBuffer(out var segment))
+            {
+                Buffer.BlockCopy(segment.Array, segment.Offset, rented, 0, length);
+            }
+            else
+            {
+                var snapshot = stream.ToArray();
+                Buffer.BlockCopy(snapshot, 0, rented, 0, snapshot.Length);
+            }
+
+            return rented;
+        }
+
+        /// <summary>
+        /// Returns a pooled buffer previously allocated by <see cref="RentData"/>.
+        /// </summary>
+        internal static void ReturnRentedData(byte[] buffer)
+        {
+            if (buffer != null)
+            {
+                ArrayPool<byte>.Shared.Return(buffer);
+            }
         }
 
         /// <summary>

@@ -34,11 +34,27 @@ namespace Microsoft.Xna.Framework.Net
         void Send(byte[] data, IPEndPoint endpoint);
 
         /// <summary>
+        /// Sends a fixed-length prefix of data to a specific endpoint synchronously.
+        /// </summary>
+        /// <param name="data">The data buffer to send from.</param>
+        /// <param name="length">The number of bytes to send from the start of the buffer.</param>
+        /// <param name="endpoint">The endpoint to send to.</param>
+        void Send(byte[] data, int length, IPEndPoint endpoint);
+
+        /// <summary>
         /// Sends data to a specific endpoint asynchronously.
         /// </summary>
         /// <param name="data">The data to send.</param>
         /// <param name="endpoint">The endpoint to send to.</param>
         Task SendAsync(byte[] data, IPEndPoint endpoint);
+
+        /// <summary>
+        /// Sends a fixed-length prefix of data to a specific endpoint asynchronously.
+        /// </summary>
+        /// <param name="data">The data buffer to send from.</param>
+        /// <param name="length">The number of bytes to send from the start of the buffer.</param>
+        /// <param name="endpoint">The endpoint to send to.</param>
+        Task SendAsync(byte[] data, int length, IPEndPoint endpoint);
 
         /// <summary>
         /// Receives data from the network synchronously.

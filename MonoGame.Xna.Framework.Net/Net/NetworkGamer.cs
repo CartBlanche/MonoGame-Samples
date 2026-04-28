@@ -84,7 +84,16 @@ namespace Microsoft.Xna.Framework.Net
         /// <summary>
         /// Gets whether data is available to be received from this gamer.
         /// </summary>
-        public bool IsDataAvailable => incomingPackets.Count > 0;
+        public bool IsDataAvailable
+        {
+            get
+            {
+                lock (incomingPackets)
+                {
+                    return incomingPackets.Count > 0;
+                }
+            }
+        }
 
         /// <summary>
         /// Gets the SignedInGamer associated with this NetworkGamer.
@@ -131,11 +140,9 @@ namespace Microsoft.Xna.Framework.Net
 
             sender = null;
 
-            // Check if data is available
-            if (!IsDataAvailable)
+            if (!TryDequeueIncomingPacket(out var packet))
                 return 0;
 
-            var packet = incomingPackets.Dequeue();
             sender = packet.Sender;
             int length = Math.Min(data.Length, packet.Data.Length);
             Array.Copy(packet.Data, data, length);
@@ -152,11 +159,9 @@ namespace Microsoft.Xna.Framework.Net
 
             sender = null;
 
-            // Check if data is available
-            if (!IsDataAvailable)
+            if (!TryDequeueIncomingPacket(out var packet))
                 return 0;
 
-            var packet = incomingPackets.Dequeue();
             sender = packet.Sender;
             int length = Math.Min(data.Length - offset, packet.Data.Length);
             Array.Copy(packet.Data, 0, data, offset, length);
@@ -179,11 +184,9 @@ namespace Microsoft.Xna.Framework.Net
                 throw new ArgumentNullException(nameof(reader));
             sender = null;
 
-            // Check if data is available
-            if (!IsDataAvailable)
+            if (!TryDequeueIncomingPacket(out var packet))
                 return 0;
 
-            var packet = incomingPackets.Dequeue();
             sender = packet.Sender;
             reader.Reset(packet.Data);
             return packet.Data.Length;
@@ -239,8 +242,16 @@ namespace Microsoft.Xna.Framework.Net
             if (recipients == null)
                 throw new ArgumentNullException(nameof(recipients));
 
-            byte[] serializedData = data.GetData();
-            SendDataInternal(serializedData, options, recipients);
+            int serializedLength;
+            byte[] serializedData = data.RentData(out serializedLength);
+            try
+            {
+                SendDataInternal(serializedData, serializedLength, options, recipients);
+            }
+            finally
+            {
+                PacketWriter.ReturnRentedData(serializedData);
+            }
 
             data.Position = 0; // Reset position after sending
         }
@@ -324,6 +335,11 @@ namespace Microsoft.Xna.Framework.Net
 
         private void SendDataInternal(byte[] data, SendDataOptions options, IEnumerable<NetworkGamer> recipients)
         {
+            SendDataInternal(data, data?.Length ?? 0, options, recipients);
+        }
+
+        private void SendDataInternal(byte[] data, int dataLength, SendDataOptions options, IEnumerable<NetworkGamer> recipients)
+        {
             switch (session.SessionType)
             {
                 case NetworkSessionType.SystemLink:
@@ -338,15 +354,15 @@ namespace Microsoft.Xna.Framework.Net
                             includeSelf = true;
                             continue;
                         }
-                        session.SendDataToGamer(recipient, data, options);
+                        session.SendDataToGamer(recipient, data, dataLength, options);
                     }
 
                     // Loopback to self if included in recipients (typical when using session.AllGamers).
                     if (includeSelf && IsLocal)
                     {
                         // Clone to avoid later mutation issues.
-                        var clone = new byte[data.Length];
-                        Buffer.BlockCopy(data, 0, clone, 0, data.Length);
+                        var clone = new byte[dataLength];
+                        Buffer.BlockCopy(data, 0, clone, 0, dataLength);
                         EnqueueIncomingPacket(clone, this);
                     }
                     break;
@@ -362,8 +378,8 @@ namespace Microsoft.Xna.Framework.Net
                         if (!delivered.Add(recipient))
                             continue; // avoid duplicate enqueue if recipients enumerates same gamer twice
 
-                        var clone = new byte[data.Length];
-                        Buffer.BlockCopy(data, 0, clone, 0, data.Length);
+                        var clone = new byte[dataLength];
+                        Buffer.BlockCopy(data, 0, clone, 0, dataLength);
                         recipient.EnqueueIncomingPacket(clone, this);
                     }
                     break;
@@ -386,6 +402,21 @@ namespace Microsoft.Xna.Framework.Net
             lock (incomingPackets)
             {
                 incomingPackets.Enqueue((data, sender));
+            }
+        }
+
+        private bool TryDequeueIncomingPacket(out (byte[] Data, NetworkGamer Sender) packet)
+        {
+            lock (incomingPackets)
+            {
+                if (incomingPackets.Count == 0)
+                {
+                    packet = default;
+                    return false;
+                }
+
+                packet = incomingPackets.Dequeue();
+                return true;
             }
         }
     }

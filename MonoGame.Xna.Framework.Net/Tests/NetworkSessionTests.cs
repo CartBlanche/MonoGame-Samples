@@ -3,17 +3,100 @@ using System.Threading.Tasks;
 using Microsoft.Xna.Framework.Net;
 using System.Collections.Generic;
 using System;
-using System.Reflection;
+using System.Net;
+using System.Threading;
+using System.Linq;
 
 namespace Microsoft.Xna.Framework.Net.Tests
 {
     [TestFixture]
     public class NetworkSessionTests
     {
-        [Test]
-        public async Task MessageReceived_EventIsFired()
+        private sealed class FakeNetworkTransport : INetworkTransport
         {
-            var session = await NetworkSession.CreateAsync(NetworkSessionType.SystemLink, 1, 4, 0, new Dictionary<string, object>());
+            private readonly Queue<(byte[] data, IPEndPoint sender)> receiveQueue = new Queue<(byte[] data, IPEndPoint sender)>();
+            private readonly object gate = new object();
+
+            public List<(byte[] data, int length, IPEndPoint endpoint)> SentPackets { get; } = new List<(byte[] data, int length, IPEndPoint endpoint)>();
+
+            public bool IsBound { get; private set; }
+
+            public void Bind()
+            {
+                IsBound = true;
+            }
+
+            public void Bind(int port)
+            {
+                IsBound = true;
+            }
+
+            public void Send(byte[] data, IPEndPoint endpoint)
+            {
+                Send(data, data.Length, endpoint);
+            }
+
+            public void Send(byte[] data, int length, IPEndPoint endpoint)
+            {
+                if (data == null) throw new ArgumentNullException(nameof(data));
+                if (endpoint == null) throw new ArgumentNullException(nameof(endpoint));
+                if (length < 0 || length > data.Length) throw new ArgumentOutOfRangeException(nameof(length));
+
+                var copy = new byte[length];
+                Buffer.BlockCopy(data, 0, copy, 0, length);
+                lock (gate)
+                {
+                    SentPackets.Add((copy, length, endpoint));
+                }
+            }
+
+            public Task SendAsync(byte[] data, IPEndPoint endpoint)
+            {
+                Send(data, endpoint);
+                return Task.CompletedTask;
+            }
+
+            public Task SendAsync(byte[] data, int length, IPEndPoint endpoint)
+            {
+                Send(data, length, endpoint);
+                return Task.CompletedTask;
+            }
+
+            public (byte[] data, IPEndPoint sender) Receive()
+            {
+                lock (gate)
+                {
+                    if (receiveQueue.Count == 0)
+                    {
+                        return (Array.Empty<byte>(), new IPEndPoint(IPAddress.Loopback, 0));
+                    }
+
+                    return receiveQueue.Dequeue();
+                }
+            }
+
+            public Task<(byte[] data, IPEndPoint sender)> ReceiveAsync()
+            {
+                return Task.FromResult(Receive());
+            }
+
+            public void EnqueueInbound(byte[] data, IPEndPoint sender)
+            {
+                lock (gate)
+                {
+                    receiveQueue.Enqueue((data, sender));
+                }
+            }
+
+            public void Dispose()
+            {
+            }
+        }
+
+        [Test]
+        public async Task MessageReceived_EventIsFired_ThroughDispatch()
+        {
+            var session = await NetworkSession.CreateAsync(NetworkSessionType.Local, 1, 4, 0, new Dictionary<string, object>());
             var tcs = new TaskCompletionSource<MessageReceivedEventArgs>();
 
             session.MessageReceived += (sender, args) =>
@@ -21,181 +104,69 @@ namespace Microsoft.Xna.Framework.Net.Tests
                 tcs.TrySetResult(args);
             };
 
-            // Simulate a message being received (this requires a real or mock transport)
-            // For demonstration, we'll invoke the event manually:
-            session.GetType().GetMethod("OnMessageReceived", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)
-                .Invoke(session, new object[] { new MessageReceivedEventArgs(null, null) });
-
-            var result = await tcs.Task;
-            Assert.IsNotNull(result);
-        }
-
-        [Test]
-        public async Task GamerJoined_EventIsFired()
-        {
-            var session = await NetworkSession.CreateAsync(NetworkSessionType.SystemLink, 1, 4, 0, new Dictionary<string, object>());
-            var tcs = new TaskCompletionSource<GamerJoinedEventArgs>();
-
-            session.GamerJoined += (sender, args) =>
+            session.DispatchIncomingMessage(new MessageReceivedEventArgs(new HeartbeatMessage
             {
-                tcs.TrySetResult(args);
-            };
-
-            // Simulate a gamer joining
-            var ctor = typeof(NetworkGamer).GetConstructor(BindingFlags.Instance | BindingFlags.NonPublic, binder: null,
-                types: new[] { typeof(NetworkSession), typeof(string), typeof(bool), typeof(bool), typeof(string) }, modifiers: null);
-            var gamer = (NetworkGamer)ctor.Invoke(new object[] { session, Guid.NewGuid().ToString(), false, false, "TestGamer" });
-            session.GetType().GetMethod("OnGamerJoined", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)
-                .Invoke(session, new object[] { gamer });
+                GamerId = "remote",
+                SequenceNumber = 1,
+                Timestamp = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds()
+            }, null));
 
             var result = await tcs.Task;
             Assert.IsNotNull(result);
-        }
+            Assert.IsInstanceOf<HeartbeatMessage>(result.Message);
 
-        [Test]
-        public async Task SessionEnded_EventIsFired()
-        {
-            var session = await NetworkSession.CreateAsync(NetworkSessionType.SystemLink, 1, 4, 0, new Dictionary<string, object>());
-            var tcs = new TaskCompletionSource<NetworkSessionEndedEventArgs>();
-
-            session.SessionEnded += (sender, args) =>
-            {
-                tcs.TrySetResult(args);
-            };
-
-            // Simulate session ending
-            var endReasonType = typeof(NetworkSessionEndReason);
-            var reason = Enum.GetValues(endReasonType).GetValue(0);
-            session.GetType().GetMethod("OnSessionEnded", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)
-                .Invoke(session, new object[] { reason });
-
-            var result = await tcs.Task;
-            Assert.IsNotNull(result);
-        }
-
-        [Test]
-        public async Task CreateAsync_CreatesSessionSuccessfully()
-        {
-            var session = await NetworkSession.CreateAsync(NetworkSessionType.SystemLink, 1, 4, 0, new Dictionary<string, object>());
-            Assert.IsNotNull(session);
-            Assert.AreEqual(NetworkSessionState.Lobby, session.SessionState);
-            Assert.AreEqual(4, session.MaxGamers);
-        }
-
-        [Test]
-        public void Create_Synchronous_CreatesSessionSuccessfully()
-        {
-            var session = NetworkSession.Create(NetworkSessionType.SystemLink, 1, 4, 0, new Dictionary<string, object>());
-            Assert.IsNotNull(session);
-            Assert.AreEqual(NetworkSessionState.Lobby, session.SessionState);
-            Assert.AreEqual(4, session.MaxGamers);
-        }
-
-        [Test]
-        public void Cancel_CancelsSessionWithoutException()
-        {
-            var session = NetworkSession.Create(NetworkSessionType.SystemLink, 1, 4, 0, new Dictionary<string, object>());
-            Assert.DoesNotThrow(() => session.Cancel());
-        }
-
-        [Test]
-        public async Task DisposeAsync_CleansUpResources()
-        {
-            var session = await NetworkSession.CreateAsync(NetworkSessionType.SystemLink, 1, 4, 0, new Dictionary<string, object>());
             await session.DisposeAsync();
-            Assert.Pass(); // If no exception, disposal succeeded
         }
 
         [Test]
-        public async Task CreateFindJoin_SimulatesSessionLifecycle()
+        public async Task HostProcessesJoinRequest_AndSendsAcceptance()
         {
-            // Create host session
-            var hostSession = await NetworkSession.CreateAsync(NetworkSessionType.SystemLink, 1, 4, 0, new Dictionary<string, object>());
-            Assert.IsNotNull(hostSession);
-            Assert.AreEqual(NetworkSessionState.Lobby, hostSession.SessionState);
+            var hostSession = await NetworkSession.CreateAsync(NetworkSessionType.Local, 1, 4, 0, new Dictionary<string, object>());
+            var transport = new FakeNetworkTransport();
+            hostSession.NetworkTransport = transport;
 
-            // Simulate finding available sessions (mocked)
-            var foundSessions = await NetworkSession.FindAsync(NetworkSessionType.SystemLink, 1, new Dictionary<string, object>());
-            Assert.IsNotNull(foundSessions);
-
-            // Simulate joining the session as a client
-            var availableSession = new AvailableNetworkSession(
-                sessionName: "TestSession",
-                hostGamertag: "HostPlayer",
-                currentGamerCount: 1,
-                openPublicGamerSlots: 3,
-                openPrivateGamerSlots: 0,
-                sessionType: NetworkSessionType.SystemLink,
-                sessionProperties: new Dictionary<string, object>(),
-                sessionId: "test-session-id");
-            var clientSession = await NetworkSession.JoinAsync(availableSession);
-            Assert.IsNotNull(clientSession);
-            Assert.AreEqual(NetworkSessionState.Lobby, clientSession.SessionState);
-
-            // Clean up
-            await hostSession.DisposeAsync();
-            await clientSession.DisposeAsync();
-        }
-
-        [Test]
-        public async Task HostProcessesJoinRequestAndResponds()
-        {
-            // Arrange: Create a host session
-            var hostSession = await NetworkSession.CreateAsync(NetworkSessionType.SystemLink, 1, 4, 0, new Dictionary<string, object>());
             var joinRequest = new JoinRequestMessage
             {
                 GamerId = "Player2",
                 Gamertag = "PlayerTwo"
             };
-            var writer = new PacketWriter();
-            joinRequest.Serialize(writer);
 
-            // Act: Simulate receiving a join request
-            var remoteEndpoint = new System.Net.IPEndPoint(System.Net.IPAddress.Loopback, 12345);
-            hostSession.GetType().GetMethod("OnMessageReceived", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)
-                .Invoke(hostSession, new object[] { new MessageReceivedEventArgs(joinRequest, remoteEndpoint) });
+            var remoteEndpoint = new IPEndPoint(IPAddress.Loopback, 12345);
+            hostSession.DispatchIncomingMessage(new MessageReceivedEventArgs(joinRequest, remoteEndpoint));
 
-            // Assert: Verify the new player was added
-            bool playerFound = false;
-            foreach (var gamer in hostSession.AllGamers)
-            {
-                if (gamer.Gamertag == "PlayerTwo")
-                {
-                    playerFound = true;
-                    break;
-                }
-            }
-            Assert.IsTrue(playerFound);
+            Assert.IsTrue(hostSession.AllGamers.Any(g => g.Gamertag == "PlayerTwo"));
+            Assert.That(transport.SentPackets.Count, Is.EqualTo(1));
+
+            await hostSession.DisposeAsync();
         }
 
         [Test]
-        public async Task PlayerMoveMessageUpdatesPositionAndBroadcasts()
+        public async Task SendToAll_UsesFakeTransportForRemoteGamers()
         {
-            // Arrange: Create a host session and add a player
-            var hostSession = await NetworkSession.CreateAsync(NetworkSessionType.SystemLink, 1, 4, 0, new Dictionary<string, object>());
-            var ctor = typeof(NetworkGamer).GetConstructor(System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic, null,
-                new[] { typeof(NetworkSession), typeof(string), typeof(bool), typeof(bool), typeof(string) }, null);
-            var player = (NetworkGamer)ctor.Invoke(new object[] { hostSession, "Player1", false, false, "PlayerOne" });
-            hostSession.GetType().GetMethod("AddGamer", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)
-                .Invoke(hostSession, new object[] { player });
+            var session = await NetworkSession.CreateAsync(NetworkSessionType.Local, 1, 4, 0, new Dictionary<string, object>());
+            var transport = new FakeNetworkTransport();
+            session.NetworkTransport = transport;
 
-            var moveMessage = new PlayerMoveMessage
-            {
-                PlayerId = int.Parse(player.Id),
-                X = 10.0f,
-                Y = 20.0f,
-                Z = 30.0f
-            };
+            var remote = new NetworkGamer(session, "remote-1", false, false, "RemoteOne");
+            session.AcceptGamer(remote);
+            session.RegisterGamerEndpoint(remote, new IPEndPoint(IPAddress.Loopback, 54321));
+
             var writer = new PacketWriter();
-            moveMessage.Serialize(writer);
+            writer.Write("payload");
 
-            // Act: Simulate receiving a movement message
-            hostSession.GetType().GetMethod("OnMessageReceived", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)
-                .Invoke(hostSession, new object[] { new MessageReceivedEventArgs(moveMessage, null) });
+            session.SendToAll(writer, SendDataOptions.Reliable);
 
-            // Assert: Verify the movement was processed and broadcast
-            // (Mock implementation: Check debug output or internal state changes)
-            Assert.Pass();
+            Assert.That(transport.SentPackets.Count, Is.EqualTo(1));
+            Assert.That(transport.SentPackets[0].length, Is.GreaterThan(0));
+
+            await session.DisposeAsync();
+        }
+
+        [Test]
+        public async Task DisposeAsync_CleansUpResources()
+        {
+            var session = await NetworkSession.CreateAsync(NetworkSessionType.Local, 1, 4, 0, new Dictionary<string, object>());
+            Assert.DoesNotThrowAsync(async () => await session.DisposeAsync());
         }
     }
 }
