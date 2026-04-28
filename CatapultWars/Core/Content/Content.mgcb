@@ -191,3 +191,28 @@
 
 #begin Textures/Catapults/AnimationsDef.xml
 /copy:Textures/Catapults/AnimationsDef.xml
+
+#begin chat_able.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/build:chat_able.png
+
+#begin chat_mute.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/build:chat_mute.png
+
+#begin chat_ready.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/build:chat_ready.png
+
+#begin chat_talking.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/build:chat_talking.png
+
+#begin cat.tga
+/importer:TextureImporter
+/processor:TextureProcessor
+/build:cat.tga
