@@ -7,6 +7,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\MonoGame.Xna.Framework.Net.csproj" />
+    <ProjectReference Include="..\Steam\MonoGame.Xna.Framework.Net.Steam.csproj" />
     <PackageReference Include="NUnitLite" Version="3.13.2" />
     <PackageReference Include="NUnit3TestAdapter" Version="4.5.0" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.7.2" />

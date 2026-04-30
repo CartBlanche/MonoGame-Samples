@@ -41,6 +41,11 @@ namespace Microsoft.Xna.Framework.Net.Tests
             var factory = new SteamNetworkSessionFactory();
             var host = factory.CreateSession();
             var client = factory.CreateSession();
+            var hostStartedCount = 0;
+            var clientStartedCount = 0;
+
+            host.GameStarted += (_, __) => hostStartedCount++;
+            client.GameStarted += (_, __) => clientStartedCount++;
 
             try
             {
@@ -53,6 +58,10 @@ namespace Microsoft.Xna.Framework.Net.Tests
 
                 Assert.That(host.AllGamers.Count, Is.EqualTo(2));
                 Assert.That(client.AllGamers.Count, Is.EqualTo(2));
+                Assert.That(host.State, Is.EqualTo(NetworkSessionState.Playing));
+                Assert.That(client.State, Is.EqualTo(NetworkSessionState.Playing));
+                Assert.That(hostStartedCount, Is.EqualTo(1));
+                Assert.That(clientStartedCount, Is.EqualTo(1));
 
                 var receivedPayload = (string)null;
                 client.MessageReceived += (sender, args) =>

@@ -11,6 +11,9 @@
     <Compile Remove="Tests\**" />
     <EmbeddedResource Remove="Tests\**" />
     <None Remove="Tests\**" />
+    <Compile Remove="Steam\**" />
+    <EmbeddedResource Remove="Steam\**" />
+    <None Remove="Steam\**" />
   </ItemGroup>
 
   <ItemGroup>
@@ -21,6 +24,9 @@
   <ItemGroup>
     <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleTo">
       <_Parameter1>MonoGame.Xna.Framework.Net.Tests</_Parameter1>
+    </AssemblyAttribute>
+    <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleTo">
+      <_Parameter1>MonoGame.Xna.Framework.Net.Steam</_Parameter1>
     </AssemblyAttribute>
   </ItemGroup>
 
