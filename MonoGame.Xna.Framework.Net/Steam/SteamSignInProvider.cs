@@ -35,21 +35,7 @@ namespace Microsoft.Xna.Framework.Net.Steam
             CancellationToken cancellationToken = default)
         {
             cancellationToken.ThrowIfCancellationRequested();
-
-            // Guard: Steam must already be initialized by the composition root.
-            if (!SteamAPI.IsSteamRunning())
-                return Task.FromResult(false);
-
-            // Guard: user must be logged into Steam.
-            if (!SteamUser.BLoggedOn())
-                return Task.FromResult(false);
-
-            // Update the local gamer identity from Steam.
-            var personaName = SteamFriends.GetPersonaName();
-            if (!string.IsNullOrWhiteSpace(personaName))
-                SignedInGamer.Current.SetGamertag(personaName);
-
-            return Task.FromResult(true);
+            return Task.FromResult(SteamRuntime.RefreshSignedInGamerIdentity());
         }
     }
 }
