@@ -14,7 +14,7 @@
 
   <ItemGroup>
     <PackageReference Include="MonoGame.Framework.DesktopGL" Version="3.8.*" PrivateAssets="all" />
-    <PackageReference Include="Steamworks.NET" Version="2024.8.0" />
+    <PackageReference Include="Steamworks.NET.MonoGame" Version="2026.1.0" />
   </ItemGroup>
 
 </Project>
