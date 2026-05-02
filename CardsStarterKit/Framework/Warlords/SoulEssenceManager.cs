@@ -14,6 +14,12 @@ namespace WarlordsFramework
         public int CurrentSE { get; private set; }
         public int PassiveRegen { get; set; }
         public int MaxSEBeforeDegen { get; set; }
+
+        /// <summary>
+        /// Effective regen applied each turn. Defaults to <see cref="PassiveRegen"/>;
+        /// card skills that modify regen should update this value.
+        /// </summary>
+        public int EffectiveRegen => PassiveRegen;
         
         public SoulEssenceManager(int startingSE = 10000)
         {
@@ -23,11 +29,11 @@ namespace WarlordsFramework
         }
         
         /// <summary>
-        /// Apply passive regeneration and degen if over cap
+        /// Apply passive regeneration and degen if over cap.
         /// </summary>
         public void ApplyRegen()
         {
-            CurrentSE += PassiveRegen;
+            CurrentSE += EffectiveRegen;
             
             // Apply 20% degen on surplus if over cap
             if (CurrentSE > MaxSEBeforeDegen)
@@ -68,8 +74,9 @@ namespace WarlordsFramework
         }
         
         /// <summary>
-        /// Check if player is defeated
+        /// True when the player's SE has dropped below zero (defeated at -1 or below).
+        /// Win condition is checked only after the RegenDegen phase.
         /// </summary>
-        public bool IsDefeated => CurrentSE <= 0;
+        public bool IsDefeated => CurrentSE < 0;
     }
 }

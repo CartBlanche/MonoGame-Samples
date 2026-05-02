@@ -23,8 +23,19 @@ namespace WarlordsFramework
         public List<string> Affiliations { get; set; }
         
         // Movement/action tracking
-        public bool HasActedThisTurn { get; set; }
+        /// <summary>The action taken this turn. None = has not acted yet.</summary>
+        public CharacterAction ActionThisTurn { get; set; }
+
+        /// <summary>Computed convenience: true if any action has been taken this turn.</summary>
+        public bool HasActedThisTurn => ActionThisTurn != CharacterAction.None;
+
         public bool CanRetreat { get; set; }
+
+        /// <summary>
+        /// Default damage reduction applied when this character is in Defend stance.
+        /// Card text may override this per-card by subclassing.
+        /// </summary>
+        public const float DefendDamageReduction = 0.25f;
         
         // Equipment
         public ItemCard EquippedItem { get; set; }
@@ -38,17 +49,24 @@ namespace WarlordsFramework
         {
             Affiliations = new List<string>();
             CanRetreat = true;
+            ActionThisTurn = CharacterAction.None;
         }
         
         /// <summary>
-        /// Perform a simple attack on a target character
+        /// Perform a simple attack on a target character.
+        /// If the target is in Defend stance the damage is reduced by
+        /// <see cref="DefendDamageReduction"/> (or the target's override).
         /// </summary>
         public void Attack(CharacterCard target)
         {
             if (HasActedThisTurn) return;
-            
-            target.TakeDamage(AttackPower);
-            HasActedThisTurn = true;
+
+            int damage = AttackPower;
+            if (target.ActionThisTurn == CharacterAction.Defend)
+                damage = (int)(damage * (1f - DefendDamageReduction));
+
+            target.TakeDamage(damage);
+            ActionThisTurn = CharacterAction.Attack;
         }
         
         /// <summary>
@@ -66,11 +84,11 @@ namespace WarlordsFramework
         public bool IsDefeated => CurrentSoulEssence <= 0;
         
         /// <summary>
-        /// Reset action state at end of turn
+        /// Reset action state at the start of a new turn.
         /// </summary>
         public void ResetTurnState()
         {
-            HasActedThisTurn = false;
+            ActionThisTurn = CharacterAction.None;
         }
     }
 

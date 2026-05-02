@@ -31,6 +31,12 @@ namespace Warlords
         private CharacterCard selectedCharacterOnField; // Track selected character from field
         private Rectangle[] handCardRects;
         private Rectangle[] zoneRects;
+
+        // Mulligan
+        private System.Collections.Generic.List<WarlordsCard> mulliganSelected =
+            new System.Collections.Generic.List<WarlordsCard>();
+        private Rectangle mulliganConfirmButton;
+        private Rectangle mulliganSkipButton;
         
         // Feedback system
         private string feedbackMessage = "";
@@ -52,10 +58,10 @@ namespace Warlords
             // Load font
             font = ScreenManager.Game.Content.Load<SpriteFont>("Fonts/Regular");
             
-            // Create and initialize game
+            // Create and initialize game.
+            // Initialize() already calls StartGame() internally — do NOT call it again here.
             game = new WarlordsCardGame(safeArea, screenManager, theme);
             game.Initialize();
-            game.StartGame();
             
             // Get screen dimensions
             int screenHeight = screenManager.GraphicsDevice.Viewport.Height;
@@ -93,15 +99,69 @@ namespace Warlords
             zoneRects[1] = new Rectangle(0, topBarHeight + (3 * zoneHeight), screenWidth, zoneHeight);
             
             previousMouseState = Mouse.GetState();
-            
+
+            // Mulligan buttons — centred near bottom of screen
+            int btnW = UIConstants.GetButtonWidth(screenWidth) * 2;
+            int btnH = UIConstants.GetButtonHeight(screenHeight);
+            int btnY = screenHeight - btnH - UIConstants.GetPadding(screenHeight);
+            mulliganConfirmButton = new Rectangle((screenWidth / 2) - btnW - UIConstants.GetPadding(screenWidth), btnY, btnW, btnH);
+            mulliganSkipButton    = new Rectangle((screenWidth / 2) + UIConstants.GetPadding(screenWidth), btnY, btnW, btnH);
+
             base.LoadContent();
         }
         
         public override void HandleInput(InputState input)
         {
             MouseState currentMouseState = Mouse.GetState();
-            
-            // Only allow input during player's turn
+
+            bool clicked = currentMouseState.LeftButton == ButtonState.Released &&
+                           previousMouseState.LeftButton == ButtonState.Pressed;
+
+            // ── Mulligan input ────────────────────────────────────────
+            if (game.State == WarlordsGameState.MulliganPending && clicked)
+            {
+                Point mp = new Point(currentMouseState.X, currentMouseState.Y);
+
+                if (mulliganConfirmButton.Contains(mp))
+                {
+                    game.PerformMulligan(mulliganSelected);
+                    mulliganSelected.Clear();
+                }
+                else if (mulliganSkipButton.Contains(mp))
+                {
+                    game.SkipMulligan();
+                    mulliganSelected.Clear();
+                }
+                else
+                {
+                    // Toggle card selection — reuse the same card rect layout as DrawMulliganScreen.
+                    int sw  = screenManager.GraphicsDevice.Viewport.Width;
+                    int sh  = screenManager.GraphicsDevice.Viewport.Height;
+                    int cw  = UIConstants.GetCardWidth(sw);
+                    int ch  = (int)(cw * 1.4f);
+                    int cs  = UIConstants.GetCardSpacing(sw);
+                    int pad = UIConstants.GetPadding(sw);
+                    int totalWidth = game.Player.Hand.Count * cw + (game.Player.Hand.Count - 1) * cs;
+                    int startX = (sw - totalWidth) / 2;
+                    int startY = sh / 2 - ch / 2;
+
+                    for (int i = 0; i < game.Player.Hand.Count; i++)
+                    {
+                        var rect = new Rectangle(startX + i * (cw + cs), startY, cw, ch);
+                        if (rect.Contains(mp))
+                        {
+                            var card = game.Player.Hand[i];
+                            if (mulliganSelected.Contains(card))
+                                mulliganSelected.Remove(card);
+                            else
+                                mulliganSelected.Add(card);
+                            break;
+                        }
+                    }
+                }
+            }
+
+            // Only allow normal input during player's turn
             if (game.WaitingForPlayer && game.State == WarlordsGameState.Playing)
             {
                 if (currentMouseState.LeftButton == ButtonState.Released &&
@@ -334,15 +394,147 @@ namespace Warlords
             
             if (game != null)
             {
-                DrawGameInfo(gameTime);
-                DrawZonesWithCards(gameTime);
-                DrawPlayerHand(gameTime);
-                DrawEndTurnButton(gameTime);
-                DrawFeedbackMessage(gameTime);
-                DrawGameOverScreen(gameTime);
+                if (game.State == WarlordsGameState.MulliganPending)
+                {
+                    DrawMulliganScreen(gameTime);
+                }
+                else
+                {
+                    DrawGameInfo(gameTime);
+                    DrawZonesWithCards(gameTime);
+                    DrawPlayerHand(gameTime);
+                    DrawEndTurnButton(gameTime);
+                    DrawFeedbackMessage(gameTime);
+                    DrawGameOverScreen(gameTime);
+                }
             }
         }
         
+        /// <summary>
+        /// Draw the mulligan selection screen shown once before turn 1.
+        /// The player clicks cards to toggle them for swapping, then confirms or skips.
+        /// </summary>
+        private void DrawMulliganScreen(GameTime gameTime)
+        {
+            screenManager.SpriteBatch.Begin();
+
+            int sw  = screenManager.GraphicsDevice.Viewport.Width;
+            int sh  = screenManager.GraphicsDevice.Viewport.Height;
+            int pad = UIConstants.GetPadding(sw);
+            int cw  = UIConstants.GetCardWidth(sw);
+            int ch  = (int)(cw * 1.4f);
+            int cs  = UIConstants.GetCardSpacing(sw);
+
+            // Full-screen dark overlay
+            screenManager.SpriteBatch.Draw(screenManager.BlankTexture,
+                new Rectangle(0, 0, sw, sh), Color.Black * 0.92f);
+
+            // Title
+            string title = "OPENING HAND - Select cards to swap back into your deck";
+            Vector2 titleSize = font.MeasureString(title) * UIConstants.RegularTextScale;
+            screenManager.SpriteBatch.DrawString(font, title,
+                new Vector2((sw - titleSize.X) / 2f, pad * 2),
+                Color.White, 0f, Vector2.Zero, UIConstants.RegularTextScale, SpriteEffects.None, 0f);
+
+            // Sub-title
+            string sub = $"{mulliganSelected.Count} card(s) selected  |  Max hand: {RulesEngine.MaxHandSize}";
+            Vector2 subSize = font.MeasureString(sub) * UIConstants.SmallTextScale;
+            screenManager.SpriteBatch.DrawString(font, sub,
+                new Vector2((sw - subSize.X) / 2f, pad * 2 + titleSize.Y * UIConstants.RegularTextScale + 4),
+                Color.LightGray, 0f, Vector2.Zero, UIConstants.SmallTextScale, SpriteEffects.None, 0f);
+
+            // Hand cards — centred horizontally, vertically centred on screen
+            int handCount  = game.Player.Hand.Count;
+            int totalWidth = handCount * cw + Math.Max(0, handCount - 1) * cs;
+            int startX     = (sw - totalWidth) / 2;
+            int startY     = sh / 2 - ch / 2;
+
+            for (int i = 0; i < handCount; i++)
+            {
+                var card = game.Player.Hand[i];
+                bool selected = mulliganSelected.Contains(card);
+
+                int x = startX + i * (cw + cs);
+                Rectangle cardRect = new Rectangle(x, startY, cw, ch);
+
+                // Card colour by type; teal tint when selected for swap
+                Color cardColor = card is CharacterCard ? new Color(30, 80, 160) :
+                                  card is TerrainCard   ? new Color(20, 100, 40)  :
+                                  card is ItemCard      ? new Color(140, 100, 10)  :
+                                                          new Color(100, 20, 140);
+
+                if (selected) cardColor = Color.Lerp(cardColor, Color.Teal, 0.55f);
+
+                screenManager.SpriteBatch.Draw(screenManager.BlankTexture, cardRect, cardColor);
+                DrawCardBorder(cardRect,
+                    selected ? Color.Cyan : Color.White,
+                    selected ? UIConstants.BorderThicknessThick : UIConstants.BorderThicknessThin);
+
+                // Card name
+                string name = card.Name.Length > 13 ? card.Name.Substring(0, 13) : card.Name;
+                screenManager.SpriteBatch.DrawString(font, name,
+                    new Vector2(x + 3, startY + 3),
+                    Color.White, 0f, Vector2.Zero, UIConstants.RegularTextScale, SpriteEffects.None, 0f);
+
+                // Type label
+                string typeLabel = card is CharacterCard ? "CHARACTER" :
+                                   card is TerrainCard   ? "TERRAIN"   :
+                                   card is ItemCard      ? "ITEM"       : "EVENT";
+                screenManager.SpriteBatch.DrawString(font, typeLabel,
+                    new Vector2(x + 3, startY + ch - 28),
+                    Color.LightGray, 0f, Vector2.Zero, UIConstants.SmallTextScale, SpriteEffects.None, 0f);
+
+                // SWAP indicator overlay
+                if (selected)
+                {
+                    string swapLabel = "SWAP";
+                    Vector2 swapSize = font.MeasureString(swapLabel) * UIConstants.RegularTextScale;
+                    screenManager.SpriteBatch.DrawString(font, swapLabel,
+                        new Vector2(x + (cw - swapSize.X) / 2f, startY + ch / 2f - swapSize.Y / 2f),
+                        Color.Cyan, 0f, Vector2.Zero, UIConstants.RegularTextScale, SpriteEffects.None, 0f);
+                }
+            }
+
+            // Buttons
+            MouseState ms = Mouse.GetState();
+            Point mousePos = new Point(ms.X, ms.Y);
+
+            bool confirmHover = mulliganConfirmButton.Contains(mousePos);
+            bool skipHover    = mulliganSkipButton.Contains(mousePos);
+
+            // Confirm Mulligan (swap selected)
+            Color confirmColor = mulliganSelected.Count > 0
+                ? (confirmHover ? Color.Cyan * 0.9f   : new Color(0, 160, 160) * 0.85f)
+                : (confirmHover ? Color.Gray * 0.7f   : Color.Gray * 0.5f);
+            screenManager.SpriteBatch.Draw(screenManager.BlankTexture, mulliganConfirmButton, confirmColor);
+            DrawCardBorder(mulliganConfirmButton, Color.White, UIConstants.BorderThicknessMedium);
+
+            string confirmText = mulliganSelected.Count > 0
+                ? $"SWAP {mulliganSelected.Count} CARD(S)"
+                : "SWAP (none selected)";
+            Vector2 confirmTextSize = font.MeasureString(confirmText) * UIConstants.RegularTextScale;
+            screenManager.SpriteBatch.DrawString(font, confirmText,
+                new Vector2(
+                    mulliganConfirmButton.X + (mulliganConfirmButton.Width  - confirmTextSize.X) / 2f,
+                    mulliganConfirmButton.Y + (mulliganConfirmButton.Height - confirmTextSize.Y) / 2f),
+                Color.White, 0f, Vector2.Zero, UIConstants.RegularTextScale, SpriteEffects.None, 0f);
+
+            // Keep Hand (skip)
+            Color skipColor = skipHover ? Color.LimeGreen * 0.9f : Color.Green * 0.7f;
+            screenManager.SpriteBatch.Draw(screenManager.BlankTexture, mulliganSkipButton, skipColor);
+            DrawCardBorder(mulliganSkipButton, Color.White, UIConstants.BorderThicknessMedium);
+
+            string skipText = "KEEP HAND";
+            Vector2 skipTextSize = font.MeasureString(skipText) * UIConstants.RegularTextScale;
+            screenManager.SpriteBatch.DrawString(font, skipText,
+                new Vector2(
+                    mulliganSkipButton.X + (mulliganSkipButton.Width  - skipTextSize.X) / 2f,
+                    mulliganSkipButton.Y + (mulliganSkipButton.Height - skipTextSize.Y) / 2f),
+                Color.White, 0f, Vector2.Zero, UIConstants.RegularTextScale, SpriteEffects.None, 0f);
+
+            screenManager.SpriteBatch.End();
+        }
+
         /// <summary>
         /// Draw player info and game state
         /// </summary>
@@ -373,6 +565,14 @@ namespace Warlords
                 (screenWidth - turnSize.X) / 2, padding);
             Color turnColor = game.CurrentPlayer == game.Player ? Color.Yellow : Color.Orange;
             screenManager.SpriteBatch.DrawString(font, turnText, turnPos, turnColor,
+                0f, Vector2.Zero, UIConstants.RegularTextScale, SpriteEffects.None, 0f);
+
+            // Phase indicator (below turn)
+            string phaseText = $"Phase: {game.CurrentPhase}";
+            Vector2 phaseSize = font.MeasureString(phaseText) * UIConstants.RegularTextScale;
+            Vector2 phasePos = new Vector2(
+                (screenWidth - phaseSize.X) / 2, padding + (int)(turnSize.Y * UIConstants.RegularTextScale) + 2);
+            screenManager.SpriteBatch.DrawString(font, phaseText, phasePos, Color.LightCyan,
                 0f, Vector2.Zero, UIConstants.RegularTextScale, SpriteEffects.None, 0f);
             
             // Your SE (right)

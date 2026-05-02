@@ -53,49 +53,15 @@ namespace WarlordsFramework
         }
         
         /// <summary>
-        /// Check if a character can advance from one zone to another
+        /// Check if a character can move from one zone to an adjacent zone.
+        /// This is the legacy execution-layer helper. All new callers should
+        /// use <see cref="RulesEngine.CanMoveCharacter"/> for full validation.
         /// </summary>
         public bool CanAdvance(CharacterCard character, GameZone fromZone, GameZone toZone)
         {
-            // Can't advance if already acted
-            if (character.HasActedThisTurn) return false;
-            
-            // Can't move if character not in fromZone
-            if (!fromZone.Characters.Contains(character)) return false;
-            
-            // Player movement rules
-            if (fromZone.Owner == PlayerSide.Player)
-            {
-                // Player can advance from Home Base to Battlefield
-                if (fromZone.Type == ZoneType.HomeBase && toZone.Type == ZoneType.Battlefield)
-                    return true;
-                    
-                // Player can retreat from Battlefield to Home Base
-                if (fromZone.Type == ZoneType.Battlefield && toZone.Type == ZoneType.HomeBase)
-                    return true;
-                    
-                // Player can advance from Battlefield to Enemy Battlefield (attack)
-                if (fromZone.Type == ZoneType.Battlefield && toZone.Type == ZoneType.EnemyBattlefield)
-                    return true;
-            }
-            
-            // Opponent movement rules
-            if (fromZone.Owner == PlayerSide.Opponent)
-            {
-                // Opponent can advance from Base to Battlefield
-                if (fromZone.Type == ZoneType.EnemyBase && toZone.Type == ZoneType.EnemyBattlefield)
-                    return true;
-                    
-                // Opponent can retreat from Battlefield to Base
-                if (fromZone.Type == ZoneType.EnemyBattlefield && toZone.Type == ZoneType.EnemyBase)
-                    return true;
-                    
-                // Opponent can advance from Battlefield to Player Battlefield (attack)
-                if (fromZone.Type == ZoneType.EnemyBattlefield && toZone.Type == ZoneType.Battlefield)
-                    return true;
-            }
-                
-            return false;
+            var tracker = new TurnTracker { CurrentPhase = TurnPhase.Main };
+            var result = RulesEngine.CanMoveCharacter(character, fromZone, toZone, tracker);
+            return result.IsLegal;
         }
     }
 }

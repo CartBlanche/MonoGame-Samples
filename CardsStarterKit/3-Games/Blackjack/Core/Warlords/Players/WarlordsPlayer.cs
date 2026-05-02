@@ -21,12 +21,36 @@ namespace Warlords
         public new List<WarlordsCard> Hand { get; set; }
         
         public TerrainCard ChosenHomeBase { get; set; }
-        
-        // Turn tracking (for Phase 1 expansion)
-        public bool HasPlayedCharacter { get; set; }
-        public bool HasPlayedItem { get; set; }
-        public bool HasPlayedEvent { get; set; }
-        public bool HasDrawn { get; set; }
+
+        // ── Turn tracking ─────────────────────────────────────────────────
+        public TurnTracker CurrentTurnTracker { get; private set; }
+
+        // Legacy convenience properties — delegate to TurnTracker.
+        public bool HasPlayedCharacter
+        {
+            get => CurrentTurnTracker.HasPlayedCharacter;
+            set => CurrentTurnTracker.HasPlayedCharacter = value;
+        }
+        public bool HasPlayedItem
+        {
+            get => CurrentTurnTracker.HasPlayedItem;
+            set => CurrentTurnTracker.HasPlayedItem = value;
+        }
+        public bool HasPlayedEvent
+        {
+            get => CurrentTurnTracker.HasPlayedEvent;
+            set => CurrentTurnTracker.HasPlayedEvent = value;
+        }
+        public bool HasDrawn
+        {
+            get => CurrentTurnTracker.HasDrawnThisTurn;
+            set => CurrentTurnTracker.HasDrawnThisTurn = value;
+        }
+        public bool HasPlayedTerrain
+        {
+            get => CurrentTurnTracker.HasPlayedTerrain;
+            set => CurrentTurnTracker.HasPlayedTerrain = value;
+        }
         
         public WarlordsPlayer(string name, CardsFramework.CardsGame game) 
             : base(name, game)
@@ -34,6 +58,7 @@ namespace Warlords
             SEManager = new SoulEssenceManager(10000);
             Deck = new List<WarlordsCard>();
             Hand = new List<WarlordsCard>();
+            CurrentTurnTracker = new TurnTracker();
         }
         
         /// <summary>
@@ -50,14 +75,11 @@ namespace Warlords
         }
         
         /// <summary>
-        /// Reset turn flags at end of turn
+        /// Reset turn flags at end of turn.
         /// </summary>
         public void ResetTurnFlags()
         {
-            HasPlayedCharacter = false;
-            HasPlayedItem = false;
-            HasPlayedEvent = false;
-            HasDrawn = false;
+            CurrentTurnTracker.Reset();
         }
     }
 }

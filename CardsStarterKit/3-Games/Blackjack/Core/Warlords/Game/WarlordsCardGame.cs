@@ -24,6 +24,9 @@ namespace Warlords
         public WarlordsPlayer Player { get; private set; }
         public WarlordsPlayer Opponent { get; private set; }
         public WarlordsPlayer CurrentPlayer { get; private set; }
+
+        /// <summary>The phase currently active for the current player's turn.</summary>
+        public TurnPhase CurrentPhase => CurrentPlayer.CurrentTurnTracker.CurrentPhase;
         
         // Card tracking
         public List<WarlordsCard> TheVoid { get; private set; }
@@ -82,10 +85,17 @@ namespace Warlords
             CreateTestDeck(Player);
             CreateTestDeck(Opponent);
             
-            // Deal opening hands
+            // Deal opening hands — StartGame() called once here only.
+            // (WarlordsGameplayScreen must NOT call StartGame() a second time.)
             StartGame();
-            
-            State = WarlordsGameState.Playing;
+
+            // Enter the mulligan window. The human player picks cards to swap;
+            // the AI skips automatically. FinishMulligan() transitions to Playing.
+            State = WarlordsGameState.MulliganPending;
+
+            // AI takes no action during mulligan — skip it immediately so the
+            // human player is the only one presented with the choice.
+            PerformAIMulligan();
         }
         
         /// <summary>
@@ -267,8 +277,9 @@ namespace Warlords
             champion.Tags.Add("Character");
             player.Deck.Add(champion);
             
-            // Add 6 more basic warriors for deck padding
-            for (int i = 0; i < 6; i++)
+            // Add 16 more basic warriors to reach deck total of 35
+            // (5 terrain + 6 named chars + 16 warriors + 4 items + 4 events = 35)
+            for (int i = 0; i < 16; i++)
             {
                 var warrior = new CharacterCard
                 {
@@ -393,13 +404,82 @@ namespace Warlords
             player.Deck = player.Deck.OrderBy(x => Guid.NewGuid()).ToList();
         }
         
+        // ── Mulligan ──────────────────────────────────────────────────────
+
         /// <summary>
-        /// Start the game - deal opening hands
+        /// Human player swaps <paramref name="cardsToSwap"/> back into their deck,
+        /// reshuffles, and redraws the same number of cards.
+        /// Calling with an empty list is equivalent to <see cref="SkipMulligan"/>.
+        /// </summary>
+        public void PerformMulligan(List<WarlordsCard> cardsToSwap)
+        {
+            if (State != WarlordsGameState.MulliganPending) return;
+
+            int swapCount = 0;
+            foreach (var card in cardsToSwap)
+            {
+                if (Player.Hand.Contains(card))
+                {
+                    Player.Hand.Remove(card);
+                    Player.Deck.Add(card);
+                    swapCount++;
+                }
+            }
+
+            if (swapCount > 0)
+                Player.Deck = Player.Deck.OrderBy(_ => Guid.NewGuid()).ToList();
+
+            for (int i = 0; i < swapCount; i++)
+                Player.DrawCard();
+
+            FinishMulligan();
+        }
+
+        /// <summary>Keep the opening hand as-is and start the game.</summary>
+        public void SkipMulligan()
+        {
+            if (State != WarlordsGameState.MulliganPending) return;
+            FinishMulligan();
+        }
+
+        /// <summary>
+        /// Simple AI mulligan: swap any hand cards that are not Characters or Terrain
+        /// when no Characters are present (i.e. unplayable opening hand).
+        /// </summary>
+        private void PerformAIMulligan()
+        {
+            bool hasCharacter = Opponent.Hand.Any(c => c is CharacterCard);
+            if (!hasCharacter)
+            {
+                // Swap all non-character cards to try to get at least one character.
+                var toSwap = Opponent.Hand.Where(c => !(c is CharacterCard)).ToList();
+                foreach (var card in toSwap)
+                {
+                    Opponent.Hand.Remove(card);
+                    Opponent.Deck.Add(card);
+                }
+                Opponent.Deck = Opponent.Deck.OrderBy(_ => Guid.NewGuid()).ToList();
+                for (int i = 0; i < toSwap.Count; i++)
+                    Opponent.DrawCard();
+            }
+        }
+
+        private void FinishMulligan()
+        {
+            State = WarlordsGameState.Playing;
+
+            // Turn 1: opening hand was just drawn — skip the Draw phase.
+            Player.HasDrawn = true;
+            Player.CurrentTurnTracker.AdvancePhase();   // Draw → Main
+        }
+
+        /// <summary>
+        /// Start the game — deal the opening 7-card hand to each player.
+        /// Called once from Initialize(); the screen must not call it again.
         /// </summary>
         public void StartGame()
         {
-            // Deal 5 cards to each player (simplified from 7 for prototype)
-            for (int i = 0; i < 5; i++)
+            for (int i = 0; i < RulesEngine.OpeningHandSize; i++)
             {
                 Player.DrawCard();
                 Opponent.DrawCard();
@@ -407,47 +487,56 @@ namespace Warlords
         }
         
         /// <summary>
-        /// Play a character card to a zone
+        /// Play a character card to a zone.
         /// </summary>
         public void PlayCard(CharacterCard card, GameZone zone)
         {
-            if (CurrentPlayer.Hand.Contains(card))
+            var result = RulesEngine.CanPlayCharacter(
+                card, zone, zone.Owner,
+                CurrentPlayer.CurrentTurnTracker,
+                CurrentPlayer.SEManager.CurrentSE,
+                RulesEngine.EvaluateOverburden(CurrentPlayer.Hand.Count));
+            if (!result.IsLegal) return;
+
+            if (!CurrentPlayer.SEManager.SpendSE(card.SoulEssenceCost)) return;
+
+            CurrentPlayer.Hand.Remove(card);
+            zone.AddCharacter(card);
+            CurrentPlayer.HasPlayedCharacter = true;
+
+            // Overburden Tier-3: characters enter at half MaxSoulEssence
+            if (RulesEngine.EvaluateOverburden(CurrentPlayer.Hand.Count + 1) == OverburdenLevel.Tier3_18Plus)
+                card.CurrentSoulEssence = card.MaxSoulEssence / 2;
+
+            // Apply terrain SE bonus
+            if (zone.ActiveTerrain != null && zone.ActiveTerrain.SEBonus > 0)
             {
-                // Check if player has enough SE to play the card
-                if (!CurrentPlayer.SEManager.SpendSE(card.SoulEssenceCost))
-                    return; // Not enough SE
-                
-                CurrentPlayer.Hand.Remove(card);
-                zone.AddCharacter(card);
-                
-                // Apply terrain bonuses if terrain is active in this zone
-                if (zone.ActiveTerrain != null && zone.ActiveTerrain.SEBonus > 0)
-                {
-                    card.CurrentSoulEssence = Math.Min(
-                        card.CurrentSoulEssence + zone.ActiveTerrain.SEBonus,
-                        card.MaxSoulEssence
-                    );
-                }
+                card.CurrentSoulEssence = Math.Min(
+                    card.CurrentSoulEssence + zone.ActiveTerrain.SEBonus,
+                    card.MaxSoulEssence);
             }
         }
         
         /// <summary>
-        /// Play a terrain card to a zone
+        /// Play a terrain card to a zone (initiates the terrain-contest window).
+        /// For now the terrain is placed immediately; counter logic can be layered on top.
         /// </summary>
         public void PlayTerrain(TerrainCard terrain, GameZone zone)
         {
-            if (CurrentPlayer.Hand.Contains(terrain))
-            {
-                // Check if player has enough SE to play the card
-                if (!CurrentPlayer.SEManager.SpendSE(terrain.SoulEssenceCost))
-                    return; // Not enough SE
-                
-                CurrentPlayer.Hand.Remove(terrain);
-                zone.ActiveTerrain = terrain;
-                
-                // Apply terrain bonuses to all characters in this zone
-                ApplyTerrainBonusesToZone(zone);
-            }
+            var result = RulesEngine.CanAttemptTerrainSet(
+                terrain, zone, zone.Owner,
+                CurrentPlayer.CurrentTurnTracker,
+                CurrentPlayer.SEManager.CurrentSE);
+            if (!result.IsLegal) return;
+
+            if (!CurrentPlayer.SEManager.SpendSE(terrain.SoulEssenceCost)) return;
+
+            CurrentPlayer.Hand.Remove(terrain);
+            zone.ActiveTerrain = terrain;
+            zone.HasTerrainBeenSet = true;
+            CurrentPlayer.HasPlayedTerrain = true;
+
+            ApplyTerrainBonusesToZone(zone);
         }
         
         /// <summary>
@@ -498,37 +587,35 @@ namespace Warlords
         }
         
         /// <summary>
-        /// Equip an item to a character
+        /// Equip an item to a character (or deploy as zone obstacle when IsZoneObstacle is true).
         /// </summary>
         public void PlayItem(ItemCard item, CharacterCard target)
         {
-            // Check if player has the card
+            var result = RulesEngine.CanPlayItem(
+                item, target,
+                CurrentPlayer.CurrentTurnTracker,
+                CurrentPlayer.SEManager.CurrentSE);
+            if (!result.IsLegal) return;
+
             if (!CurrentPlayer.Hand.Contains(item)) return;
-            
-            // Check if item requires a character and target is valid
-            if (item.RequiresCharacter && target == null) return;
-            
+
             // Check equipment restrictions
-            if (item.EquipRestrictions != null && item.EquipRestrictions.Count > 0)
+            if (target != null && item.EquipRestrictions != null && item.EquipRestrictions.Count > 0)
             {
                 if (!item.EquipRestrictions.Contains(target.Classification.ToString()))
-                {
-                    return; // Character doesn't meet requirements
-                }
+                    return;
             }
-            
-            // Check if player has enough SE to play the card
-            if (!CurrentPlayer.SEManager.SpendSE(item.SoulEssenceCost))
-                return; // Not enough SE
-            
-            // Remove from hand
+
+            if (!CurrentPlayer.SEManager.SpendSE(item.SoulEssenceCost)) return;
+
             CurrentPlayer.Hand.Remove(item);
-            
-            // Equip to character
-            target.EquippedItem = item;
-            
-            // Apply item effects based on item name (simple prototype implementation)
-            ApplyItemEffect(item, target);
+            CurrentPlayer.HasPlayedItem = true;
+
+            if (target != null)
+            {
+                target.EquippedItem = item;
+                ApplyItemEffect(item, target);
+            }
         }
         
         /// <summary>
@@ -565,24 +652,23 @@ namespace Warlords
         }
         
         /// <summary>
-        /// Play an event card (instant effect)
+        /// Play an event card (instant effect).
         /// </summary>
         public void PlayEvent(EventCard eventCard)
         {
-            // Check if player has the card
+            var result = RulesEngine.CanPlayEvent(
+                eventCard,
+                CurrentPlayer.CurrentTurnTracker,
+                CurrentPlayer.SEManager.CurrentSE);
+            if (!result.IsLegal) return;
+
             if (!CurrentPlayer.Hand.Contains(eventCard)) return;
-            
-            // Check if player has enough SE to play the card
-            if (!CurrentPlayer.SEManager.SpendSE(eventCard.SoulEssenceCost))
-                return; // Not enough SE
-            
-            // Remove from hand
+            if (!CurrentPlayer.SEManager.SpendSE(eventCard.SoulEssenceCost)) return;
+
             CurrentPlayer.Hand.Remove(eventCard);
-            
-            // Apply event effect
+            CurrentPlayer.HasPlayedEvent = true;
+
             ApplyEventEffect(eventCard);
-            
-            // Events go to The Void after use (permanent removal)
             MoveToVoid(eventCard);
         }
         
@@ -678,23 +764,32 @@ namespace Warlords
 
         
         /// <summary>
-        /// Move a character from one zone to another
+        /// Move a character from one zone to another.
         /// </summary>
         public void MoveCharacter(CharacterCard card, GameZone fromZone, GameZone toZone)
         {
-            if (!Field.CanAdvance(card, fromZone, toZone)) return;
-            
+            var result = RulesEngine.CanMoveCharacter(
+                card, fromZone, toZone,
+                CurrentPlayer.CurrentTurnTracker);
+            if (!result.IsLegal) return;
+
+            // Determine advance vs retreat to assign the correct action.
+            bool isRetreat =
+                (fromZone.Owner == PlayerSide.Player   && toZone.Type == ZoneType.HomeBase) ||
+                (fromZone.Owner == PlayerSide.Player   && toZone.Type == ZoneType.Battlefield && fromZone.Type == ZoneType.EnemyBattlefield) ||
+                (fromZone.Owner == PlayerSide.Opponent && toZone.Type == ZoneType.EnemyBase) ||
+                (fromZone.Owner == PlayerSide.Opponent && toZone.Type == ZoneType.EnemyBattlefield && fromZone.Type == ZoneType.Battlefield);
+
             fromZone.RemoveCharacter(card);
             toZone.AddCharacter(card);
-            card.HasActedThisTurn = true;
-            
-            // Apply terrain bonuses when moving to new zone
+            card.ActionThisTurn = isRetreat ? CharacterAction.Retreat : CharacterAction.Advance;
+
+            // Apply terrain SE bonus when moving into new zone
             if (toZone.ActiveTerrain != null && toZone.ActiveTerrain.SEBonus > 0)
             {
                 card.CurrentSoulEssence = Math.Min(
                     card.CurrentSoulEssence + toZone.ActiveTerrain.SEBonus,
-                    card.MaxSoulEssence
-                );
+                    card.MaxSoulEssence);
             }
         }
         
@@ -722,14 +817,20 @@ namespace Warlords
         
         public void Attack(CharacterCard attacker, CharacterCard target)
         {
-            // Calculate attack with terrain bonuses
+            var result = RulesEngine.CanAttackCharacter(
+                attacker, target, Field,
+                CurrentPlayer.CurrentTurnTracker);
+            if (!result.IsLegal) return;
+
             int effectiveAttack = GetEffectiveAttackPower(attacker);
-            
-            // Deal damage using effective attack
+
+            // Apply defender's damage reduction if in Defend stance
+            if (target.ActionThisTurn == CharacterAction.Defend)
+                effectiveAttack = (int)(effectiveAttack * (1f - CharacterCard.DefendDamageReduction));
+
             target.TakeDamage(effectiveAttack);
-            attacker.HasActedThisTurn = true;
-            
-            // If target defeated, move to Nexus
+            attacker.ActionThisTurn = CharacterAction.Attack;
+
             if (target.IsDefeated)
             {
                 var zone = Field.GetZoneContaining(target);
@@ -739,20 +840,42 @@ namespace Warlords
         }
         
         /// <summary>
-        /// Attack the opposing player directly
+        /// Attack the opposing player directly.
+        /// Requires the attacker to be in the Enemy Battlefield and the Enemy
+        /// Home Base to be fully clear.
         /// </summary>
         public void AttackPlayer(CharacterCard attacker, WarlordsPlayer target)
         {
-            if (attacker.HasActedThisTurn) return;
-            
-            // Use effective attack power with terrain bonuses
+            var attackerSide = (CurrentPlayer == Player) ? PlayerSide.Player : PlayerSide.Opponent;
+            var result = RulesEngine.CanAttackWarlord(
+                attacker, attackerSide, Field,
+                CurrentPlayer.CurrentTurnTracker);
+            if (!result.IsLegal) return;
+
             int effectiveAttack = GetEffectiveAttackPower(attacker);
             target.SEManager.TakeDamage(effectiveAttack);
-            attacker.HasActedThisTurn = true;
-            
-            CheckWinCondition();
+            attacker.ActionThisTurn = CharacterAction.Attack;
         }
         
+        /// <summary>
+        /// Sacrifice a card from hand. The card is sent to The Void.
+        /// If it is a CharacterCard the player gains its current Soul Essence.
+        /// </summary>
+        public void SacrificeCard(WarlordsCard card)
+        {
+            var result = RulesEngine.CanSacrifice(card, CurrentPlayer.CurrentTurnTracker);
+            if (!result.IsLegal) return;
+
+            if (!CurrentPlayer.Hand.Contains(card)) return;
+
+            CurrentPlayer.Hand.Remove(card);
+
+            if (card is CharacterCard charCard)
+                CurrentPlayer.SEManager.GainSE(charCard.CurrentSoulEssence);
+
+            MoveToVoid(card);
+        }
+
         /// <summary>
         /// Apply SE regen with terrain bonuses
         /// </summary>
@@ -770,36 +893,36 @@ namespace Warlords
         }
         
         /// <summary>
-        /// End current turn
+        /// End current turn: apply overburden, regen/degen, win check, then switch player.
         /// </summary>
         public void EndTurn()
         {
+            var tracker = CurrentPlayer.CurrentTurnTracker;
+
+            // ── Overburden tier checks (End phase) ─────────────────────────
+            var overburden = RulesEngine.EvaluateOverburden(CurrentPlayer.Hand.Count);
+            if (overburden >= OverburdenLevel.Tier1_14_15)
+            {
+                // Tier-1 degen equals full effective regen (both regen and degen apply;
+                // they do NOT cancel each other).
+                CurrentPlayer.SEManager.TakeDamage(CurrentPlayer.SEManager.EffectiveRegen);
+            }
+
             // Reset all character actions
             foreach (var zone in Field.GetAllZones())
-            {
                 foreach (var character in zone.Characters)
-                {
                     character.ResetTurnState();
-                }
-            }
-            
-            // Apply regen (with terrain bonuses)
+
+            // ── RegenDegen phase ───────────────────────────────────
             ApplyRegenWithTerrainBonus();
-            
-            // Reset turn flags
-            CurrentPlayer.ResetTurnFlags();
-            
-            // Switch player
-            CurrentPlayer = (CurrentPlayer == Player) ? Opponent : Player;
-            
-            // Draw card at start of turn (if deck has cards)
-            if (CurrentPlayer.Deck.Count > 0)
-            {
-                CurrentPlayer.DrawCard();
-            }
-            
-            // Check win condition
+
+            // ── Win condition (checked only after RegenDegen) ─────────────
             CheckWinCondition();
+            if (State != WarlordsGameState.Playing) return;
+
+            // ── Reset and switch ──────────────────────────────────
+            CurrentPlayer.ResetTurnFlags();
+            CurrentPlayer = (CurrentPlayer == Player) ? Opponent : Player;
         }
         
         /// <summary>
@@ -929,7 +1052,11 @@ namespace Warlords
                 var charToMove = Field.OpponentBase.Characters.FirstOrDefault(c => !c.HasActedThisTurn);
                 if (charToMove != null)
                 {
-                    MoveCharacter(charToMove, Field.OpponentBase, Field.OpponentBattlefield);
+                    // Move character from OpponentBase to OpponentBattlefield — skip rules
+                    // engine for AI so terrain gate doesn't block early movement.
+                    Field.OpponentBase.RemoveCharacter(charToMove);
+                    Field.OpponentBattlefield.AddCharacter(charToMove);
+                    charToMove.ActionThisTurn = CharacterAction.Advance;
                     return true;
                 }
             }
@@ -937,18 +1064,17 @@ namespace Warlords
             // Attack if possible
             if (Field.OpponentBattlefield.HasCharacters)
             {
-                var attacker = Field.OpponentBattlefield.Characters.FirstOrDefault(c => !c.HasActedThisTurn);
+                var attacker = Field.OpponentBattlefield.Characters
+                    .FirstOrDefault(c => c.ActionThisTurn == CharacterAction.None);
                 if (attacker != null)
                 {
                     if (Field.PlayerBattlefield.HasCharacters)
                     {
-                        // Attack player's character
                         Attack(attacker, Field.PlayerBattlefield.Characters[0]);
                         return true;
                     }
                     else if (!Field.PlayerBattlefield.HasCharacters)
                     {
-                        // Attack player directly
                         AttackPlayer(attacker, Player);
                         return true;
                     }
@@ -966,6 +1092,20 @@ namespace Warlords
         {
             WaitingForPlayer = false;
             EndTurn();
+
+            // Auto-draw for the incoming player's Draw phase (optional, once per turn).
+            // The player can skip by advancing the phase; this keeps the prototype playable
+            // without a dedicated Draw-phase UI button.
+            if (State == WarlordsGameState.Playing && CurrentPlayer.Deck.Count > 0
+                && !CurrentPlayer.HasDrawn)
+            {
+                CurrentPlayer.DrawCard();
+                CurrentPlayer.HasDrawn = true;
+            }
+
+            // Move into Main phase automatically.
+            if (State == WarlordsGameState.Playing)
+                CurrentPlayer.CurrentTurnTracker.AdvancePhase(); // Draw → Main
         }
         
         /// <summary>
@@ -1001,6 +1141,11 @@ namespace Warlords
     public enum WarlordsGameState
     {
         Setup,
+        /// <summary>
+        /// The human player is choosing which opening-hand cards to swap.
+        /// AI mulligans automatically.
+        /// </summary>
+        MulliganPending,
         Playing,
         PlayerWins,
         OpponentWins
