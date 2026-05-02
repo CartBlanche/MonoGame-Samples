@@ -48,6 +48,10 @@ namespace WarlordsFramework
         // ── Draw flag ────────────────────────────────────────────────────
         public bool HasDrawnThisTurn   { get; set; }
 
+        // ── Overburden usage counters ────────────────────────────────────
+        public int CardsPlayedThisTurn      { get; set; }
+        public int CharacterActionsThisTurn { get; set; }
+
         // ── Active phase ─────────────────────────────────────────────────
         public TurnPhase CurrentPhase  { get; set; }
 
@@ -61,12 +65,14 @@ namespace WarlordsFramework
         /// </summary>
         public void Reset()
         {
-            HasPlayedCharacter = false;
-            HasPlayedItem      = false;
-            HasPlayedEvent     = false;
-            HasPlayedTerrain   = false;
-            HasDrawnThisTurn   = false;
-            CurrentPhase       = TurnPhase.Draw;
+            HasPlayedCharacter      = false;
+            HasPlayedItem           = false;
+            HasPlayedEvent          = false;
+            HasPlayedTerrain        = false;
+            HasDrawnThisTurn        = false;
+            CardsPlayedThisTurn     = 0;
+            CharacterActionsThisTurn = 0;
+            CurrentPhase            = TurnPhase.Draw;
         }
 
         /// <summary>

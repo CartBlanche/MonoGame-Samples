@@ -26,6 +26,9 @@ namespace Warlords
         private SpriteFont font;
         private MouseState previousMouseState;
         private Rectangle endTurnButton;
+        private Rectangle advancePhaseButton;
+        private Rectangle drawCardButton;
+        private Rectangle sacrificeButton;
         
         // Card selection
         private WarlordsCard selectedCard;
@@ -91,6 +94,25 @@ namespace Warlords
                 buttonWidth,
                 buttonHeight
             );
+
+            // Phase and utility buttons on the left side of hand area
+            drawCardButton = new Rectangle(
+                padding,
+                handAreaY + (handAreaHeight - buttonHeight) / 2,
+                buttonWidth,
+                buttonHeight);
+
+            advancePhaseButton = new Rectangle(
+                padding + buttonWidth + padding,
+                handAreaY + (handAreaHeight - buttonHeight) / 2,
+                buttonWidth,
+                buttonHeight);
+
+            sacrificeButton = new Rectangle(
+                padding + (buttonWidth + padding) * 2,
+                handAreaY + (handAreaHeight - buttonHeight) / 2,
+                buttonWidth,
+                buttonHeight);
             
             // Initialize card and zone rectangles
             handCardRects = new Rectangle[10]; // Max 10 cards in hand
@@ -271,8 +293,49 @@ namespace Warlords
                 {
                     Point mousePos = new Point(currentMouseState.X, currentMouseState.Y);
                     
-                    // Check for end turn button click
-                    if (endTurnButton.Contains(mousePos))
+                    // Draw card (Draw phase only)
+                    if (drawCardButton.Contains(mousePos))
+                    {
+                        if (game.CurrentPhase == TurnPhase.Draw)
+                        {
+                            int beforeHand = game.Player.Hand.Count;
+                            game.TryDrawForCurrentPlayer();
+                            if (game.Player.Hand.Count == beforeHand)
+                            {
+                                feedbackMessage = "Cannot draw now.";
+                                feedbackTimer = FeedbackDuration;
+                            }
+                        }
+                        else
+                        {
+                            feedbackMessage = "Draw is only available in Draw phase.";
+                            feedbackTimer = FeedbackDuration;
+                        }
+                    }
+                    // Advance phase button
+                    else if (advancePhaseButton.Contains(mousePos))
+                    {
+                        selectedCard = null;
+                        selectedCharacterOnField = null;
+                        game.AdvanceCurrentPlayerPhase();
+                    }
+                    // Sacrifice selected hand card
+                    else if (sacrificeButton.Contains(mousePos))
+                    {
+                        if (selectedCard != null && game.Player.Hand.Contains(selectedCard))
+                        {
+                            game.SacrificeCard(selectedCard);
+                            selectedCard = null;
+                            selectedCharacterOnField = null;
+                        }
+                        else
+                        {
+                            feedbackMessage = "Select a card in hand to sacrifice.";
+                            feedbackTimer = FeedbackDuration;
+                        }
+                    }
+                    // Check for end turn button click (force end)
+                    else if (endTurnButton.Contains(mousePos))
                     {
                         selectedCard = null; // Clear selection
                         selectedCharacterOnField = null; // Clear character selection
@@ -306,11 +369,12 @@ namespace Warlords
                                 }
                                 else
                                 {
-                                    // Can't afford - show feedback
+                                    // Can't afford to play now; still allow selecting for sacrifice.
                                     int needed = clickedCard.SoulEssenceCost - game.Player.SEManager.CurrentSE;
                                     feedbackMessage = $"Not enough SE! Need {needed} more.";
                                     feedbackTimer = FeedbackDuration;
-                                    selectedCard = null; // Clear selection
+                                    selectedCard = clickedCard;
+                                    selectedCharacterOnField = null;
                                 }
                                 
                                 cardClicked = true;
@@ -1462,7 +1526,7 @@ namespace Warlords
                 if (selectedCharacterOnField != null)
                     instruction = $"{selectedCharacterOnField.Name}: Click zones to move, enemy to attack, R-click to defend";
                 else if (selectedCard == null)
-                    instruction = "Click a card to select";
+                    instruction = "Use DRAW/ADVANCE/SACRIFICE buttons or click a card to select";
                 else if (selectedCard is ItemCard)
                     instruction = "Click a character to equip";
                 else if (selectedCard is EventCard)
@@ -1488,29 +1552,16 @@ namespace Warlords
             
             screenManager.SpriteBatch.Begin();
             
-            // Only show button when it's player's turn
+            // Only show controls when it's player's turn
             if (game.WaitingForPlayer)
             {
                 MouseState mouseState = Mouse.GetState();
                 Point mousePos = new Point(mouseState.X, mouseState.Y);
-                bool isHovering = endTurnButton.Contains(mousePos);
-                
-                // Button background
-                Color buttonColor = isHovering ? Color.Yellow * 0.8f : Color.Green * 0.7f;
-                screenManager.SpriteBatch.Draw(screenManager.BlankTexture, endTurnButton, buttonColor);
-                
-                // Button border
-                DrawCardBorder(endTurnButton, Color.White, UIConstants.BorderThicknessMedium);
-                
-                // Button text - scaled
-                string buttonText = "END TURN";
-                Vector2 textSize = font.MeasureString(buttonText) * UIConstants.TitleTextScale;
-                Vector2 textPos = new Vector2(
-                    endTurnButton.X + (endTurnButton.Width - textSize.X) / 2,
-                    endTurnButton.Y + (endTurnButton.Height - textSize.Y) / 2
-                );
-                screenManager.SpriteBatch.DrawString(font, buttonText, textPos, Color.Black,
-                    0f, Vector2.Zero, UIConstants.TitleTextScale, SpriteEffects.None, 0f);
+
+                DrawControlButton(drawCardButton, mousePos, "DRAW", game.CurrentPhase == TurnPhase.Draw ? Color.SteelBlue : Color.Gray);
+                DrawControlButton(advancePhaseButton, mousePos, "ADVANCE", Color.CadetBlue);
+                DrawControlButton(sacrificeButton, mousePos, "SACRIFICE", Color.IndianRed);
+                DrawControlButton(endTurnButton, mousePos, "END TURN", Color.Green);
             }
             else if (game.CurrentPlayer == game.Opponent)
             {
@@ -1526,6 +1577,22 @@ namespace Warlords
             }
             
             screenManager.SpriteBatch.End();
+        }
+
+        private void DrawControlButton(Rectangle rect, Point mousePos, string text, Color baseColor)
+        {
+            bool hovering = rect.Contains(mousePos);
+            Color buttonColor = hovering ? baseColor * 0.9f : baseColor * 0.7f;
+            screenManager.SpriteBatch.Draw(screenManager.BlankTexture, rect, buttonColor);
+            DrawCardBorder(rect, Color.White, UIConstants.BorderThicknessMedium);
+
+            Vector2 textSize = font.MeasureString(text) * UIConstants.RegularTextScale;
+            Vector2 textPos = new Vector2(
+                rect.X + (rect.Width - textSize.X) / 2,
+                rect.Y + (rect.Height - textSize.Y) / 2
+            );
+            screenManager.SpriteBatch.DrawString(font, text, textPos, Color.White,
+                0f, Vector2.Zero, UIConstants.RegularTextScale, SpriteEffects.None, 0f);
         }
         
         /// <summary>

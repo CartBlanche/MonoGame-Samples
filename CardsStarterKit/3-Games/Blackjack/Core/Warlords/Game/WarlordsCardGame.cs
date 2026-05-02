@@ -546,12 +546,35 @@ namespace Warlords
                 Opponent.DrawCard();
             }
         }
+
+        private OverburdenLevel GetCurrentOverburden()
+        {
+            return RulesEngine.EvaluateOverburden(CurrentPlayer.Hand.Count);
+        }
+
+        private bool CanTakeCardPlayUnderOverburden()
+        {
+            // Tier-2/3: may play only one card per turn.
+            var overburden = GetCurrentOverburden();
+            return overburden < OverburdenLevel.Tier2_16_17
+                   || CurrentPlayer.CurrentTurnTracker.CardsPlayedThisTurn < 1;
+        }
+
+        private bool CanTakeCharacterActionUnderOverburden()
+        {
+            // Tier-2/3: may take only one character action per turn.
+            var overburden = GetCurrentOverburden();
+            return overburden < OverburdenLevel.Tier2_16_17
+                   || CurrentPlayer.CurrentTurnTracker.CharacterActionsThisTurn < 1;
+        }
         
         /// <summary>
         /// Play a character card to a zone.
         /// </summary>
         public void PlayCard(CharacterCard card, GameZone zone)
         {
+            if (!CanTakeCardPlayUnderOverburden()) return;
+
             var result = RulesEngine.CanPlayCharacter(
                 card, zone, zone.Owner,
                 CurrentPlayer.CurrentTurnTracker,
@@ -564,6 +587,7 @@ namespace Warlords
             CurrentPlayer.Hand.Remove(card);
             zone.AddCharacter(card);
             CurrentPlayer.HasPlayedCharacter = true;
+            CurrentPlayer.CurrentTurnTracker.CardsPlayedThisTurn++;
 
             // Overburden Tier-3: characters enter at half MaxSoulEssence
             if (RulesEngine.EvaluateOverburden(CurrentPlayer.Hand.Count + 1) == OverburdenLevel.Tier3_18Plus)
@@ -585,6 +609,8 @@ namespace Warlords
         /// </summary>
         public void PlayTerrain(TerrainCard terrain, GameZone zone)
         {
+            if (!CanTakeCardPlayUnderOverburden()) return;
+
             var result = RulesEngine.CanAttemptTerrainSet(
                 terrain, zone, zone.Owner,
                 CurrentPlayer.CurrentTurnTracker,
@@ -595,6 +621,7 @@ namespace Warlords
 
             CurrentPlayer.Hand.Remove(terrain);
             CurrentPlayer.HasPlayedTerrain = true;
+            CurrentPlayer.CurrentTurnTracker.CardsPlayedThisTurn++;
 
             // Store intent; the zone is NOT updated yet.
             PendingTerrain = terrain;
@@ -740,6 +767,8 @@ namespace Warlords
         /// </summary>
         public void PlayItem(ItemCard item, CharacterCard target)
         {
+            if (!CanTakeCardPlayUnderOverburden()) return;
+
             var result = RulesEngine.CanPlayItem(
                 item, target,
                 CurrentPlayer.CurrentTurnTracker,
@@ -759,6 +788,7 @@ namespace Warlords
 
             CurrentPlayer.Hand.Remove(item);
             CurrentPlayer.HasPlayedItem = true;
+            CurrentPlayer.CurrentTurnTracker.CardsPlayedThisTurn++;
 
             if (target != null)
             {
@@ -805,6 +835,8 @@ namespace Warlords
         /// </summary>
         public void PlayEvent(EventCard eventCard)
         {
+            if (!CanTakeCardPlayUnderOverburden()) return;
+
             var result = RulesEngine.CanPlayEvent(
                 eventCard,
                 CurrentPlayer.CurrentTurnTracker,
@@ -816,6 +848,7 @@ namespace Warlords
 
             CurrentPlayer.Hand.Remove(eventCard);
             CurrentPlayer.HasPlayedEvent = true;
+            CurrentPlayer.CurrentTurnTracker.CardsPlayedThisTurn++;
 
             ApplyEventEffect(eventCard);
             MoveToVoid(eventCard);
@@ -917,6 +950,8 @@ namespace Warlords
         /// </summary>
         public void MoveCharacter(CharacterCard card, GameZone fromZone, GameZone toZone)
         {
+            if (!CanTakeCharacterActionUnderOverburden()) return;
+
             var result = RulesEngine.CanMoveCharacter(
                 card, fromZone, toZone,
                 CurrentPlayer.CurrentTurnTracker);
@@ -932,6 +967,7 @@ namespace Warlords
             fromZone.RemoveCharacter(card);
             toZone.AddCharacter(card);
             card.ActionThisTurn = isRetreat ? CharacterAction.Retreat : CharacterAction.Advance;
+            CurrentPlayer.CurrentTurnTracker.CharacterActionsThisTurn++;
 
             // Apply terrain SE bonus when moving into new zone
             if (toZone.ActiveTerrain != null && toZone.ActiveTerrain.SEBonus > 0)
@@ -970,13 +1006,18 @@ namespace Warlords
         /// </summary>
         public void Defend(CharacterCard character)
         {
+            if (!CanTakeCharacterActionUnderOverburden()) return;
+
             var result = RulesEngine.CanDefend(character, CurrentPlayer.CurrentTurnTracker);
             if (!result.IsLegal) return;
             character.ActionThisTurn = CharacterAction.Defend;
+            CurrentPlayer.CurrentTurnTracker.CharacterActionsThisTurn++;
         }
 
         public void Attack(CharacterCard attacker, CharacterCard target)
         {
+            if (!CanTakeCharacterActionUnderOverburden()) return;
+
             var result = RulesEngine.CanAttackCharacter(
                 attacker, target, Field,
                 CurrentPlayer.CurrentTurnTracker);
@@ -990,6 +1031,7 @@ namespace Warlords
 
             target.TakeDamage(effectiveAttack);
             attacker.ActionThisTurn = CharacterAction.Attack;
+            CurrentPlayer.CurrentTurnTracker.CharacterActionsThisTurn++;
 
             if (target.IsDefeated)
             {
@@ -1006,6 +1048,8 @@ namespace Warlords
         /// </summary>
         public void AttackPlayer(CharacterCard attacker, WarlordsPlayer target)
         {
+            if (!CanTakeCharacterActionUnderOverburden()) return;
+
             var attackerSide = (CurrentPlayer == Player) ? PlayerSide.Player : PlayerSide.Opponent;
             var result = RulesEngine.CanAttackWarlord(
                 attacker, attackerSide, Field,
@@ -1015,6 +1059,7 @@ namespace Warlords
             int effectiveAttack = GetEffectiveAttackPower(attacker);
             target.SEManager.TakeDamage(effectiveAttack);
             attacker.ActionThisTurn = CharacterAction.Attack;
+            CurrentPlayer.CurrentTurnTracker.CharacterActionsThisTurn++;
         }
         
         /// <summary>
@@ -1146,22 +1191,39 @@ namespace Warlords
             // AI turn
             if (CurrentPlayer == Opponent && State == WarlordsGameState.Playing)
             {
-                // Add delay so we can see what's happening
                 if (DateTime.Now >= nextAIAction)
                 {
+                    // Drive AI through explicit phases.
+                    if (CurrentPhase == TurnPhase.Draw)
+                    {
+                        TryDrawForCurrentPlayer();
+                        AdvanceCurrentPlayerPhase();
+                        nextAIAction = DateTime.Now + aiDelay;
+                        return;
+                    }
+
+                    if (CurrentPhase == TurnPhase.RegenDegen || CurrentPhase == TurnPhase.End)
+                    {
+                        AdvanceCurrentPlayerPhase();
+                        nextAIAction = DateTime.Now + aiDelay;
+                        return;
+                    }
+
+                    // Main phase actions
                     bool actionTaken = SimpleAI();
-                    
+
                     if (actionTaken)
                     {
                         aiActionsThisTurn++;
                         nextAIAction = DateTime.Now + aiDelay;
                     }
-                    
-                    // End AI turn after max actions or if no action was taken
+
+                    // Advance out of Main after max actions or if no action was taken
                     if (!actionTaken || aiActionsThisTurn >= MaxAIActionsPerTurn)
                     {
                         aiActionsThisTurn = 0;
-                        PlayerEndTurn();
+                        AdvanceCurrentPlayerPhase();
+                        nextAIAction = DateTime.Now + aiDelay;
                     }
                 }
             }
@@ -1234,12 +1296,10 @@ namespace Warlords
                 var charToMove = Field.OpponentBase.Characters.FirstOrDefault(c => !c.HasActedThisTurn);
                 if (charToMove != null)
                 {
-                    // Move character from OpponentBase to OpponentBattlefield — skip rules
-                    // engine for AI so terrain gate doesn't block early movement.
-                    Field.OpponentBase.RemoveCharacter(charToMove);
-                    Field.OpponentBattlefield.AddCharacter(charToMove);
-                    charToMove.ActionThisTurn = CharacterAction.Advance;
-                    return true;
+                    int beforeCount = Field.OpponentBattlefield.Characters.Count;
+                    MoveCharacter(charToMove, Field.OpponentBase, Field.OpponentBattlefield);
+                    if (Field.OpponentBattlefield.Characters.Count > beforeCount)
+                        return true;
                 }
             }
             
@@ -1268,26 +1328,45 @@ namespace Warlords
         }
         
         /// <summary>
-        /// Manually end turn (called by player or after AI delay)
+        /// Attempt the Draw phase action for the current player.
+        /// </summary>
+        public void TryDrawForCurrentPlayer()
+        {
+            var result = RulesEngine.CanDraw(CurrentPlayer.CurrentTurnTracker, CurrentPlayer.Deck.Count);
+            if (!result.IsLegal) return;
+
+            CurrentPlayer.DrawCard();
+            CurrentPlayer.HasDrawn = true;
+            CurrentPlayer.CurrentTurnTracker.HasDrawnThisTurn = true;
+        }
+
+        /// <summary>
+        /// Advance one phase for the current player. At End phase this resolves the turn,
+        /// applies end-of-turn effects, and passes priority to the opponent in Draw phase.
+        /// </summary>
+        public void AdvanceCurrentPlayerPhase()
+        {
+            if (State != WarlordsGameState.Playing) return;
+
+            var tracker = CurrentPlayer.CurrentTurnTracker;
+
+            if (tracker.CurrentPhase == TurnPhase.End)
+            {
+                WaitingForPlayer = false;
+                EndTurn();
+                return;
+            }
+
+            tracker.AdvancePhase();
+        }
+
+        /// <summary>
+        /// Force end of turn immediately (skip remaining phases).
         /// </summary>
         public void PlayerEndTurn()
         {
             WaitingForPlayer = false;
             EndTurn();
-
-            // Auto-draw for the incoming player's Draw phase (optional, once per turn).
-            // The player can skip by advancing the phase; this keeps the prototype playable
-            // without a dedicated Draw-phase UI button.
-            if (State == WarlordsGameState.Playing && CurrentPlayer.Deck.Count > 0
-                && !CurrentPlayer.HasDrawn)
-            {
-                CurrentPlayer.DrawCard();
-                CurrentPlayer.HasDrawn = true;
-            }
-
-            // Move into Main phase automatically.
-            if (State == WarlordsGameState.Playing)
-                CurrentPlayer.CurrentTurnTracker.AdvancePhase(); // Draw → Main
         }
         
         /// <summary>
