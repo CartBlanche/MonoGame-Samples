@@ -29,6 +29,12 @@ namespace WarlordsFramework
         /// <summary>Computed convenience: true if any action has been taken this turn.</summary>
         public bool HasActedThisTurn => ActionThisTurn != CharacterAction.None;
 
+        /// <summary>
+        /// True on the turn the character was deployed from hand. Blocks all actions
+        /// until the next turn (summoning sickness). Cleared by ResetTurnState().
+        /// </summary>
+        public bool DeployedThisTurn { get; set; }
+
         public bool CanRetreat { get; set; }
 
         /// <summary>
@@ -89,6 +95,7 @@ namespace WarlordsFramework
         public void ResetTurnState()
         {
             ActionThisTurn = CharacterAction.None;
+            DeployedThisTurn = false;
         }
     }
 

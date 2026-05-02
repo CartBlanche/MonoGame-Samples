@@ -586,6 +586,7 @@ namespace Warlords
 
             CurrentPlayer.Hand.Remove(card);
             zone.AddCharacter(card);
+            card.DeployedThisTurn = true;
             CurrentPlayer.HasPlayedCharacter = true;
             CurrentPlayer.CurrentTurnTracker.CardsPlayedThisTurn++;
 

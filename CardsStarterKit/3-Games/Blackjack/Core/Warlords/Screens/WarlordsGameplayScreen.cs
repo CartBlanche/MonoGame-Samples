@@ -194,7 +194,8 @@ namespace Warlords
                     if (rect.Contains(mp))
                     {
                         game.SelectHomeTerrain(terrains[i]);
-                        break;
+                            previousMouseState = currentMouseState;
+                            return;
                     }
                 }
             }

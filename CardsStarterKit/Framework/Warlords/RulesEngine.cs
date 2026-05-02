@@ -257,6 +257,10 @@ namespace WarlordsFramework
             var phase = RequirePhase(tracker, TurnPhase.Main);
             if (!phase.IsLegal) return phase;
 
+            if (character.DeployedThisTurn)
+                return RulesResult.Illegal(
+                    $"{character.Name} was just deployed and cannot act until next turn.");
+
             if (character.ActionThisTurn != CharacterAction.None)
                 return RulesResult.Illegal(
                     $"{character.Name} has already acted this turn " +
@@ -286,16 +290,6 @@ namespace WarlordsFramework
 
             if (isAdvance)
             {
-                // Advancing into an opponent-controlled zone requires it to be clear.
-                bool advancingIntoOpponentZone =
-                    (fromZone.Owner == PlayerSide.Player   && toZone.Owner == PlayerSide.Opponent) ||
-                    (fromZone.Owner == PlayerSide.Opponent && toZone.Owner == PlayerSide.Player);
-
-                if (advancingIntoOpponentZone && !toZone.IsClearForAdvance)
-                    return RulesResult.Illegal(
-                        "The target zone must be clear of characters and obstacle items " +
-                        "before you can advance into it.");
-
                 // Advancing from own Home Base to own Battlefield requires terrain to be set.
                 bool advancingFromHomeBaseToOwnBattlefield =
                     (fromZone.Type == ZoneType.HomeBase     && toZone.Type == ZoneType.Battlefield      && fromZone.Owner == PlayerSide.Player) ||
@@ -325,6 +319,10 @@ namespace WarlordsFramework
         {
             var phase = RequirePhase(tracker, TurnPhase.Main);
             if (!phase.IsLegal) return phase;
+
+            if (attacker.DeployedThisTurn)
+                return RulesResult.Illegal(
+                    $"{attacker.Name} was just deployed and cannot act until next turn.");
 
             if (attacker.ActionThisTurn != CharacterAction.None)
                 return RulesResult.Illegal(
@@ -361,6 +359,10 @@ namespace WarlordsFramework
         {
             var phase = RequirePhase(tracker, TurnPhase.Main);
             if (!phase.IsLegal) return phase;
+
+            if (attacker.DeployedThisTurn)
+                return RulesResult.Illegal(
+                    $"{attacker.Name} was just deployed and cannot act until next turn.");
 
             if (attacker.ActionThisTurn != CharacterAction.None)
                 return RulesResult.Illegal(
@@ -401,6 +403,10 @@ namespace WarlordsFramework
         {
             var phase = RequirePhase(tracker, TurnPhase.Main);
             if (!phase.IsLegal) return phase;
+
+            if (character.DeployedThisTurn)
+                return RulesResult.Illegal(
+                    $"{character.Name} was just deployed and cannot act until next turn.");
 
             if (character.ActionThisTurn != CharacterAction.None)
                 return RulesResult.Illegal(
