@@ -72,24 +72,37 @@ namespace Microsoft.Xna.Framework.Net.Steam
 
             if (OperatingSystem.IsWindows())
             {
+                string winRid = RuntimeInformation.ProcessArchitecture == Architecture.X86 ? "win-x86" : "win-x64";
                 candidates = new[]
                 {
-                    Path.Combine(baseDir, "steam_api64.dll")
+                    Path.Combine(baseDir, "steam_api64.dll"),
+                    Path.Combine(baseDir, "runtimes", winRid, "native", "steam_api64.dll")
                 };
             }
             else if (OperatingSystem.IsLinux())
             {
+                string linuxRid = RuntimeInformation.ProcessArchitecture switch
+                {
+                    Architecture.X64 => "linux-x64",
+                    Architecture.X86 => "linux-x86",
+                    Architecture.Arm64 => "linux-arm64",
+                    _ => "linux-x64"
+                };
                 candidates = new[]
                 {
-                    Path.Combine(baseDir, "libsteam_api.so")
+                    Path.Combine(baseDir, "libsteam_api.so"),
+                    Path.Combine(baseDir, "runtimes", linuxRid, "native", "libsteam_api.so")
                 };
             }
             else if (OperatingSystem.IsMacOS())
             {
+                string osxRid = RuntimeInformation.ProcessArchitecture == Architecture.Arm64 ? "osx-arm64" : "osx-x64";
                 candidates = new[]
                 {
                     Path.Combine(baseDir, "libsteam_api.dylib"),
-                    Path.Combine(baseDir, "steam_api.bundle", "Contents", "MacOS", "libsteam_api.dylib")
+                    Path.Combine(baseDir, "steam_api.bundle", "Contents", "MacOS", "libsteam_api.dylib"),
+                    Path.Combine(baseDir, "runtimes", osxRid, "native", "libsteam_api.dylib"),
+                    Path.Combine(baseDir, "runtimes", "osx", "native", "libsteam_api.dylib")
                 };
             }
             else
