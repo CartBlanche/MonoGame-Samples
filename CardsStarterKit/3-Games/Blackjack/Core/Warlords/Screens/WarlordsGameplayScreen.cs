@@ -116,6 +116,8 @@ namespace Warlords
 
             bool clicked = currentMouseState.LeftButton == ButtonState.Released &&
                            previousMouseState.LeftButton == ButtonState.Pressed;
+            bool rightClicked = currentMouseState.RightButton == ButtonState.Released &&
+                                previousMouseState.RightButton == ButtonState.Pressed;
 
             // ── Mulligan input ────────────────────────────────────────
             if (game.State == WarlordsGameState.MulliganPending && clicked)
@@ -164,6 +166,13 @@ namespace Warlords
             // Only allow normal input during player's turn
             if (game.WaitingForPlayer && game.State == WarlordsGameState.Playing)
             {
+                // Right-click: put selected field character into Defend stance
+                if (rightClicked && selectedCharacterOnField != null)
+                {
+                    game.Defend(selectedCharacterOnField);
+                    // Keep the selection visible so the DEF indicator is clear
+                }
+
                 if (currentMouseState.LeftButton == ButtonState.Released &&
                     previousMouseState.LeftButton == ButtonState.Pressed)
                 {
@@ -235,6 +244,26 @@ namespace Warlords
                                 {
                                     selectedCard = clickedCharacter;
                                     selectedCharacterOnField = clickedCharacter;
+                                }
+                                cardClicked = true;
+                            }
+                            else if (selectedCharacterOnField != null)
+                            {
+                                // Attack targeting: check for enemy character or enemy zone click
+                                CharacterCard enemyChar = GetEnemyCharacterAtPosition(mousePos);
+                                if (enemyChar != null)
+                                {
+                                    game.Attack(selectedCharacterOnField, enemyChar);
+                                    selectedCard = null;
+                                    selectedCharacterOnField = null;
+                                    cardClicked = true;
+                                }
+                                else if (IsMouseInEnemyZone(mousePos))
+                                {
+                                    game.AttackPlayer(selectedCharacterOnField, game.Opponent);
+                                    selectedCard = null;
+                                    selectedCharacterOnField = null;
+                                    cardClicked = true;
                                 }
                             }
                         }
@@ -366,7 +395,68 @@ namespace Warlords
             
             return null;
         }
-        
+
+        /// <summary>
+        /// Get enemy character card at mouse position (opponent zones only).
+        /// Uses the same coordinate math as DrawZonesWithCards (zone indices 0 and 1).
+        /// </summary>
+        private CharacterCard GetEnemyCharacterAtPosition(Point mousePos)
+        {
+            int screenWidth  = ScreenManager.GraphicsDevice.Viewport.Width;
+            int screenHeight = ScreenManager.GraphicsDevice.Viewport.Height;
+
+            int handAreaHeight = UIConstants.GetHandAreaHeight(screenHeight);
+            int topBarHeight   = UIConstants.GetTopBarHeight(screenHeight);
+            int playAreaHeight = screenHeight - handAreaHeight - topBarHeight;
+            int zoneHeight     = playAreaHeight / 4;
+
+            int cardWidth   = UIConstants.GetCardWidth(screenWidth);
+            int cardHeight  = UIConstants.GetCardHeight(screenHeight);
+            int cardSpacing = UIConstants.GetCardSpacing(screenWidth);
+            int padding     = UIConstants.GetPadding(screenWidth);
+
+            // Opponent zones: OpponentBase = draw index 0, OpponentBattlefield = draw index 1
+            GameZone[] enemyZones  = { game.Field.OpponentBase, game.Field.OpponentBattlefield };
+            int[]      zoneIndices = { 0, 1 };
+
+            for (int i = 0; i < enemyZones.Length; i++)
+            {
+                var zone = enemyZones[i];
+                int yPos           = topBarHeight + (zoneIndices[i] * zoneHeight);
+                int cardX          = (int)(screenWidth * 0.16f);
+                int cardY          = yPos + padding;
+                int maxCardHeight   = zoneHeight - (2 * padding);
+                int actualCardHeight = Math.Min(cardHeight, maxCardHeight);
+
+                for (int j = 0; j < zone.Characters.Count; j++)
+                {
+                    int x = cardX + (j * (cardWidth + cardSpacing));
+                    Rectangle cardRect = new Rectangle(x, cardY, cardWidth, actualCardHeight);
+                    if (cardRect.Contains(mousePos))
+                        return zone.Characters[j];
+                }
+            }
+
+            return null;
+        }
+
+        /// <summary>
+        /// Returns true when the mouse is over either enemy zone (OpponentBase or OpponentBattlefield).
+        /// </summary>
+        private bool IsMouseInEnemyZone(Point mousePos)
+        {
+            int screenHeight   = ScreenManager.GraphicsDevice.Viewport.Height;
+            int screenWidth    = ScreenManager.GraphicsDevice.Viewport.Width;
+            int handAreaHeight = UIConstants.GetHandAreaHeight(screenHeight);
+            int topBarHeight   = UIConstants.GetTopBarHeight(screenHeight);
+            int playAreaHeight = screenHeight - handAreaHeight - topBarHeight;
+            int zoneHeight     = playAreaHeight / 4;
+
+            // Enemy zones occupy the top two rows of the play area
+            Rectangle enemyArea = new Rectangle(0, topBarHeight, screenWidth, zoneHeight * 2);
+            return enemyArea.Contains(mousePos);
+        }
+
         public override void Update(GameTime gameTime, bool otherScreenHasFocus, bool coveredByOtherScreen)
         {
             if (!coveredByOtherScreen && game != null)
@@ -726,6 +816,24 @@ namespace Warlords
                     Color atkColor = terrainBonus > 0 ? Color.Orange : Color.Red;
                     screenManager.SpriteBatch.DrawString(font, atkText, atkPos, atkColor, 
                         0f, Vector2.Zero, UIConstants.SmallTextScale, SpriteEffects.None, 0f);
+
+                    // Action status indicator (top-right corner of card)
+                    if (character.ActionThisTurn == CharacterAction.Defend)
+                    {
+                        string defText = "DEF";
+                        Vector2 defSize = font.MeasureString(defText) * UIConstants.SmallTextScale;
+                        screenManager.SpriteBatch.DrawString(font, defText,
+                            new Vector2(x + cardWidth - defSize.X - 2, cardY + 3),
+                            Color.Orange, 0f, Vector2.Zero, UIConstants.SmallTextScale, SpriteEffects.None, 0f);
+                    }
+                    else if (character.ActionThisTurn != CharacterAction.None)
+                    {
+                        string actText = "ACT";
+                        Vector2 actSize = font.MeasureString(actText) * UIConstants.SmallTextScale;
+                        screenManager.SpriteBatch.DrawString(font, actText,
+                            new Vector2(x + cardWidth - actSize.X - 2, cardY + 3),
+                            Color.Gray, 0f, Vector2.Zero, UIConstants.SmallTextScale, SpriteEffects.None, 0f);
+                    }
                 }
             }
             
@@ -966,11 +1074,17 @@ namespace Warlords
             // Draw instructions if waiting for player
             if (game.WaitingForPlayer)
             {
-                string instruction = selectedCard == null 
-                    ? "Click a card to select" 
-                    : selectedCard is ItemCard ? "Click a character to equip"
-                    : selectedCard is EventCard ? "Event will play instantly"
-                    : $"Click a zone to play {selectedCard.Name}";
+                string instruction;
+                if (selectedCharacterOnField != null)
+                    instruction = $"{selectedCharacterOnField.Name}: L-click enemy to attack | R-click to defend";
+                else if (selectedCard == null)
+                    instruction = "Click a card to select";
+                else if (selectedCard is ItemCard)
+                    instruction = "Click a character to equip";
+                else if (selectedCard is EventCard)
+                    instruction = "Event will play instantly";
+                else
+                    instruction = $"Click a zone to play {selectedCard.Name}";
                     
                 Vector2 instructionSize = font.MeasureString(instruction) * UIConstants.RegularTextScale;
                 Vector2 instructionPos = new Vector2(screenWidth - instructionSize.X - padding, handAreaY + padding / 2);

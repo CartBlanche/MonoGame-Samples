@@ -815,6 +815,17 @@ namespace Warlords
             return attackPower;
         }
         
+        /// <summary>
+        /// Put a character in Defend stance, granting 25% damage reduction until end of turn.
+        /// Requires Main phase; character must not have acted yet.
+        /// </summary>
+        public void Defend(CharacterCard character)
+        {
+            var result = RulesEngine.CanDefend(character, CurrentPlayer.CurrentTurnTracker);
+            if (!result.IsLegal) return;
+            character.ActionThisTurn = CharacterAction.Defend;
+        }
+
         public void Attack(CharacterCard attacker, CharacterCard target)
         {
             var result = RulesEngine.CanAttackCharacter(
