@@ -5,6 +5,7 @@
 //-----------------------------------------------------------------------------
 
 using System;
+using System.Linq;
 using CardsFramework;
 using CardsFramework.Core;
 using Microsoft.Xna.Framework;
@@ -31,12 +32,19 @@ namespace Warlords
         private CharacterCard selectedCharacterOnField; // Track selected character from field
         private Rectangle[] handCardRects;
         private Rectangle[] zoneRects;
+        private Rectangle enemyBattlefieldRect;
 
         // Mulligan
         private System.Collections.Generic.List<WarlordsCard> mulliganSelected =
             new System.Collections.Generic.List<WarlordsCard>();
         private Rectangle mulliganConfirmButton;
         private Rectangle mulliganSkipButton;
+
+        // Terrain contest
+        private Rectangle contestPassButton;
+
+        // Modal dialog (terrain counter notification)
+        private Rectangle dialogCloseButton;
         
         // Feedback system
         private string feedbackMessage = "";
@@ -97,6 +105,9 @@ namespace Warlords
             
             // Your Home Base (dark blue zone) - 4th zone
             zoneRects[1] = new Rectangle(0, topBarHeight + (3 * zoneHeight), screenWidth, zoneHeight);
+
+            // Enemy Battlefield (dark red zone) - 2nd zone
+            enemyBattlefieldRect = new Rectangle(0, topBarHeight + (1 * zoneHeight), screenWidth, zoneHeight);
             
             previousMouseState = Mouse.GetState();
 
@@ -106,6 +117,13 @@ namespace Warlords
             int btnY = screenHeight - btnH - UIConstants.GetPadding(screenHeight);
             mulliganConfirmButton = new Rectangle((screenWidth / 2) - btnW - UIConstants.GetPadding(screenWidth), btnY, btnW, btnH);
             mulliganSkipButton    = new Rectangle((screenWidth / 2) + UIConstants.GetPadding(screenWidth), btnY, btnW, btnH);
+
+            // Terrain contest pass button — same row as mulligan buttons
+            int contestBtnW = UIConstants.GetButtonWidth(screenWidth) * 2;
+            contestPassButton = new Rectangle((screenWidth / 2) - contestBtnW / 2, btnY, contestBtnW, btnH);
+
+            // Modal close button (centered near bottom)
+            dialogCloseButton = new Rectangle((screenWidth / 2) - btnW / 2, btnY, btnW, btnH);
 
             base.LoadContent();
         }
@@ -118,6 +136,81 @@ namespace Warlords
                            previousMouseState.LeftButton == ButtonState.Pressed;
             bool rightClicked = currentMouseState.RightButton == ButtonState.Released &&
                                 previousMouseState.RightButton == ButtonState.Pressed;
+
+            // Modal notification dialog has top priority and blocks all other input.
+            if (game.IsDialogOpen)
+            {
+                if (clicked)
+                {
+                    Point mp = new Point(currentMouseState.X, currentMouseState.Y);
+                    if (dialogCloseButton.Contains(mp))
+                        game.CloseDialog();
+                }
+
+                previousMouseState = currentMouseState;
+                return;
+            }
+
+            // ── Home terrain selection input ──────────────────────────────
+            if (game.State == WarlordsGameState.HomeTerrainSelectionPending && clicked)
+            {
+                Point mp = new Point(currentMouseState.X, currentMouseState.Y);
+                var terrains = game.Player.Deck.OfType<TerrainCard>().ToList();
+
+                int sw  = screenManager.GraphicsDevice.Viewport.Width;
+                int sh  = screenManager.GraphicsDevice.Viewport.Height;
+                int cw  = UIConstants.GetCardWidth(sw);
+                int ch  = (int)(cw * 1.6f);
+                int cs  = UIConstants.GetCardSpacing(sw);
+                int totalW = terrains.Count * cw + Math.Max(0, terrains.Count - 1) * cs;
+                int startX = (sw - totalW) / 2;
+                int startY = sh / 2 - ch / 2;
+
+                for (int i = 0; i < terrains.Count; i++)
+                {
+                    var rect = new Rectangle(startX + i * (cw + cs), startY, cw, ch);
+                    if (rect.Contains(mp))
+                    {
+                        game.SelectHomeTerrain(terrains[i]);
+                        break;
+                    }
+                }
+            }
+
+            // ── Terrain contest input (only when player is the contester) ──
+            if (game.State == WarlordsGameState.TerrainContestPending && clicked &&
+                game.PendingTerrainProposer == game.Opponent)
+            {
+                Point mp = new Point(currentMouseState.X, currentMouseState.Y);
+
+                if (contestPassButton.Contains(mp))
+                {
+                    game.PassTerrainContest();
+                }
+                else
+                {
+                    // Toggle a terrain card from hand for countering
+                    int sw  = screenManager.GraphicsDevice.Viewport.Width;
+                    int sh  = screenManager.GraphicsDevice.Viewport.Height;
+                    int cw  = UIConstants.GetCardWidth(sw);
+                    int ch  = (int)(cw * 1.4f);
+                    int cs  = UIConstants.GetCardSpacing(sw);
+                    var terrains = game.Player.Hand.OfType<TerrainCard>().ToList();
+                    int totalW   = terrains.Count * cw + Math.Max(0, terrains.Count - 1) * cs;
+                    int startX   = (sw - totalW) / 2;
+                    int startY   = sh / 2 - ch / 2;
+
+                    for (int i = 0; i < terrains.Count; i++)
+                    {
+                        var rect = new Rectangle(startX + i * (cw + cs), startY, cw, ch);
+                        if (rect.Contains(mp))
+                        {
+                            game.CounterTerrain(terrains[i]);
+                            break;
+                        }
+                    }
+                }
+            }
 
             // ── Mulligan input ────────────────────────────────────────
             if (game.State == WarlordsGameState.MulliganPending && clicked)
@@ -312,23 +405,49 @@ namespace Warlords
                                         selectedCard = null;
                                         selectedCharacterOnField = null;
                                     }
+                                    // Check Enemy Battlefield (advance)
+                                    else if (enemyBattlefieldRect.Contains(mousePos))
+                                    {
+                                        game.MoveCharacter((CharacterCard)selectedCard, fromZone, game.Field.OpponentBattlefield);
+                                        selectedCard = null;
+                                        selectedCharacterOnField = null;
+                                    }
                                 }
                                 else
                                 {
                                     // Playing from hand to zones
-                                    // Check Your Battlefield
-                                    if (zoneRects[0].Contains(mousePos))
+                                    // Characters must be deployed to Home Base unless a special skill says otherwise.
+                                    if (selectedCard is CharacterCard)
                                     {
-                                        game.PlayCardGeneric(selectedCard, game.Field.PlayerBattlefield);
-                                        selectedCard = null;
-                                        selectedCharacterOnField = null;
+                                        if (zoneRects[1].Contains(mousePos))
+                                        {
+                                            game.PlayCardGeneric(selectedCard, game.Field.PlayerHomeBase);
+                                            selectedCard = null;
+                                            selectedCharacterOnField = null;
+                                        }
+                                        else if (zoneRects[0].Contains(mousePos))
+                                        {
+                                            feedbackMessage = "Characters must be deployed to your Home Base.";
+                                            feedbackTimer = FeedbackDuration;
+                                        }
                                     }
-                                    // Check Your Home Base
-                                    else if (zoneRects[1].Contains(mousePos))
+                                    else
                                     {
-                                        game.PlayCardGeneric(selectedCard, game.Field.PlayerHomeBase);
-                                        selectedCard = null;
-                                        selectedCharacterOnField = null;
+                                        // Terrain/Event/Item routing from hand
+                                        // Check Your Battlefield
+                                        if (zoneRects[0].Contains(mousePos))
+                                        {
+                                            game.PlayCardGeneric(selectedCard, game.Field.PlayerBattlefield);
+                                            selectedCard = null;
+                                            selectedCharacterOnField = null;
+                                        }
+                                        // Check Your Home Base
+                                        else if (zoneRects[1].Contains(mousePos))
+                                        {
+                                            game.PlayCardGeneric(selectedCard, game.Field.PlayerHomeBase);
+                                            selectedCard = null;
+                                            selectedCharacterOnField = null;
+                                        }
                                     }
                                 }
                             }
@@ -484,9 +603,19 @@ namespace Warlords
             
             if (game != null)
             {
-                if (game.State == WarlordsGameState.MulliganPending)
+                if (game.State == WarlordsGameState.HomeTerrainSelectionPending)
+                {
+                    DrawHomeTerrainScreen(gameTime);
+                }
+                else if (game.State == WarlordsGameState.MulliganPending)
                 {
                     DrawMulliganScreen(gameTime);
+                }
+                else if (game.State == WarlordsGameState.TerrainContestPending)
+                {
+                    DrawGameInfo(gameTime);
+                    DrawZonesWithCards(gameTime);
+                    DrawTerrainContestScreen(gameTime);
                 }
                 else
                 {
@@ -497,6 +626,9 @@ namespace Warlords
                     DrawFeedbackMessage(gameTime);
                     DrawGameOverScreen(gameTime);
                 }
+
+                if (game.IsDialogOpen)
+                    DrawModalDialog(gameTime, game.DialogMessage);
             }
         }
         
@@ -621,6 +753,258 @@ namespace Warlords
                     mulliganSkipButton.X + (mulliganSkipButton.Width  - skipTextSize.X) / 2f,
                     mulliganSkipButton.Y + (mulliganSkipButton.Height - skipTextSize.Y) / 2f),
                 Color.White, 0f, Vector2.Zero, UIConstants.RegularTextScale, SpriteEffects.None, 0f);
+
+            screenManager.SpriteBatch.End();
+        }
+
+        /// <summary>
+        /// Full-screen overlay shown at game start for the player to pick their home terrain.
+        /// All terrain cards from the player's deck are displayed. Clicking one selects it,
+        /// placing it on the player's Home Base and advancing to the mulligan phase.
+        /// </summary>
+        private void DrawHomeTerrainScreen(GameTime gameTime)
+        {
+            screenManager.SpriteBatch.Begin();
+
+            int sw  = screenManager.GraphicsDevice.Viewport.Width;
+            int sh  = screenManager.GraphicsDevice.Viewport.Height;
+            int pad = UIConstants.GetPadding(sw);
+            int cw  = UIConstants.GetCardWidth(sw);
+            int ch  = (int)(cw * 1.6f); // slightly taller to fit regen/effect text
+            int cs  = UIConstants.GetCardSpacing(sw);
+
+            // Background
+            screenManager.SpriteBatch.Draw(screenManager.BlankTexture,
+                new Rectangle(0, 0, sw, sh), new Color(10, 15, 30));
+
+            // Title
+            string title = "SELECT YOUR HOME TERRAIN";
+            Vector2 titleSize = font.MeasureString(title) * UIConstants.TitleTextScale;
+            screenManager.SpriteBatch.DrawString(font, title,
+                new Vector2((sw - titleSize.X) / 2f, pad * 2),
+                Color.Yellow, 0f, Vector2.Zero, UIConstants.TitleTextScale, SpriteEffects.None, 0f);
+
+            // Sub-title
+            string sub = "This terrain will be placed on your Home Base before the game begins.";
+            Vector2 subSize = font.MeasureString(sub) * UIConstants.SmallTextScale;
+            screenManager.SpriteBatch.DrawString(font, sub,
+                new Vector2((sw - subSize.X) / 2f, pad * 2 + titleSize.Y * UIConstants.TitleTextScale + 6),
+                Color.LightGray, 0f, Vector2.Zero, UIConstants.SmallTextScale, SpriteEffects.None, 0f);
+
+            // AI status line
+            bool aiPicked = game.Field.OpponentBase.ActiveTerrain != null;
+            string aiLine = aiPicked
+                ? $"Enemy has chosen: {game.Field.OpponentBase.ActiveTerrain.Name}"
+                : "Enemy is choosing...";
+            Vector2 aiLineSize = font.MeasureString(aiLine) * UIConstants.SmallTextScale;
+            screenManager.SpriteBatch.DrawString(font, aiLine,
+                new Vector2((sw - aiLineSize.X) / 2f,
+                    pad * 2 + titleSize.Y * UIConstants.TitleTextScale + 6 + subSize.Y * UIConstants.SmallTextScale + 4),
+                aiPicked ? Color.OrangeRed : Color.Gray,
+                0f, Vector2.Zero, UIConstants.SmallTextScale, SpriteEffects.None, 0f);
+
+            // Terrain cards
+            var terrains = game.Player.Deck.OfType<TerrainCard>().ToList();
+            int totalW = terrains.Count * cw + Math.Max(0, terrains.Count - 1) * cs;
+            int startX = (sw - totalW) / 2;
+            int startY = sh / 2 - ch / 2;
+
+            MouseState ms = Mouse.GetState();
+            Point mousePos = new Point(ms.X, ms.Y);
+
+            for (int i = 0; i < terrains.Count; i++)
+            {
+                var card = terrains[i];
+                int x = startX + i * (cw + cs);
+                Rectangle cardRect = new Rectangle(x, startY, cw, ch);
+                bool hover = cardRect.Contains(mousePos);
+
+                Color cardColor = hover
+                    ? Color.Lerp(new Color(20, 100, 40), Color.White, 0.15f)
+                    : new Color(20, 100, 40);
+                screenManager.SpriteBatch.Draw(screenManager.BlankTexture, cardRect, cardColor);
+                DrawCardBorder(cardRect,
+                    hover ? Color.Yellow : Color.LimeGreen,
+                    hover ? UIConstants.BorderThicknessThick : UIConstants.BorderThicknessThin);
+
+                // Card name
+                string name = card.Name.Length > 13 ? card.Name.Substring(0, 13) : card.Name;
+                screenManager.SpriteBatch.DrawString(font, name,
+                    new Vector2(x + 3, startY + 3),
+                    Color.White, 0f, Vector2.Zero, UIConstants.RegularTextScale, SpriteEffects.None, 0f);
+
+                // Rarity
+                screenManager.SpriteBatch.DrawString(font, card.Rarity.ToString(),
+                    new Vector2(x + 3, startY + 22),
+                    Color.Gold, 0f, Vector2.Zero, UIConstants.TinyTextScale, SpriteEffects.None, 0f);
+
+                // Home Base effect (regen)
+                if (card.RegenBonus > 0)
+                {
+                    string regenText = $"+{card.RegenBonus} Regen";
+                    screenManager.SpriteBatch.DrawString(font, regenText,
+                        new Vector2(x + 3, startY + ch / 2 - 18),
+                        Color.Cyan, 0f, Vector2.Zero, UIConstants.SmallTextScale, SpriteEffects.None, 0f);
+                }
+
+                // Battlefield effect summary
+                string bfEffect = card.SEBonus > 0 && card.AttackBonus > 0
+                    ? $"+{card.SEBonus}SE +{card.AttackBonus}ATK"
+                    : card.SEBonus > 0
+                        ? $"+{card.SEBonus} SE"
+                        : card.AttackBonus > 0
+                            ? $"+{card.AttackBonus} ATK"
+                            : "";
+                if (!string.IsNullOrEmpty(bfEffect))
+                {
+                    screenManager.SpriteBatch.DrawString(font, "BF: " + bfEffect,
+                        new Vector2(x + 3, startY + ch / 2),
+                        Color.Orange, 0f, Vector2.Zero, UIConstants.TinyTextScale, SpriteEffects.None, 0f);
+                }
+
+                // Cost
+                string costText = $"{card.SoulEssenceCost} SE";
+                Vector2 costSize = font.MeasureString(costText) * UIConstants.SmallTextScale;
+                screenManager.SpriteBatch.DrawString(font, costText,
+                    new Vector2(x + cw - costSize.X - 2, startY + ch - 18),
+                    Color.Gold, 0f, Vector2.Zero, UIConstants.SmallTextScale, SpriteEffects.None, 0f);
+
+                // "TERRAIN" label bottom-left
+                screenManager.SpriteBatch.DrawString(font, "TERRAIN",
+                    new Vector2(x + 3, startY + ch - 18),
+                    Color.LightGreen, 0f, Vector2.Zero, UIConstants.TinyTextScale, SpriteEffects.None, 0f);
+
+                // Hover prompt
+                if (hover)
+                {
+                    string selectText = "CLICK TO SELECT";
+                    Vector2 selSize = font.MeasureString(selectText) * UIConstants.TinyTextScale;
+                    screenManager.SpriteBatch.DrawString(font, selectText,
+                        new Vector2(x + (cw - selSize.X) / 2f, startY + ch + 4),
+                        Color.Yellow, 0f, Vector2.Zero, UIConstants.TinyTextScale, SpriteEffects.None, 0f);
+                }
+            }
+
+            screenManager.SpriteBatch.End();
+        }
+
+        /// <summary>
+        /// Overlay shown when a terrain has been proposed and the opposing player must
+        /// decide whether to counter it. The board is drawn behind this.
+        /// When the AI proposed the terrain, the human player sees their terrain cards
+        /// and a Pass button. When the human proposed, a "Waiting for AI..." message shows.
+        /// </summary>
+        private void DrawTerrainContestScreen(GameTime gameTime)
+        {
+            screenManager.SpriteBatch.Begin();
+
+            int sw  = screenManager.GraphicsDevice.Viewport.Width;
+            int sh  = screenManager.GraphicsDevice.Viewport.Height;
+            int pad = UIConstants.GetPadding(sw);
+            int cw  = UIConstants.GetCardWidth(sw);
+            int ch  = (int)(cw * 1.4f);
+            int cs  = UIConstants.GetCardSpacing(sw);
+
+            // Semi-transparent overlay
+            screenManager.SpriteBatch.Draw(screenManager.BlankTexture,
+                new Rectangle(0, 0, sw, sh), Color.Black * 0.80f);
+
+            // Title
+            string proposerName = game.PendingTerrainProposer == game.Player ? "YOU" : "ENEMY";
+            string terrainName  = game.PendingTerrain?.Name ?? "?";
+            string title = $"TERRAIN CONTEST: {proposerName} played {terrainName}";
+            Vector2 titleSize = font.MeasureString(title) * UIConstants.RegularTextScale;
+            screenManager.SpriteBatch.DrawString(font, title,
+                new Vector2((sw - titleSize.X) / 2f, pad * 2),
+                Color.Yellow, 0f, Vector2.Zero, UIConstants.RegularTextScale, SpriteEffects.None, 0f);
+
+            bool playerIsContester = game.PendingTerrainProposer == game.Opponent;
+
+            if (!playerIsContester)
+            {
+                // Player proposed — waiting for AI
+                string waitMsg = "Waiting for AI response...";
+                Vector2 waitSize = font.MeasureString(waitMsg) * UIConstants.RegularTextScale;
+                screenManager.SpriteBatch.DrawString(font, waitMsg,
+                    new Vector2((sw - waitSize.X) / 2f, sh / 2f),
+                    Color.Orange, 0f, Vector2.Zero, UIConstants.RegularTextScale, SpriteEffects.None, 0f);
+            }
+            else
+            {
+                // Player is contester — show their terrain cards
+                string sub = "Play a terrain to COUNTER (both return to deck) or PASS to let it land";
+                Vector2 subSize = font.MeasureString(sub) * UIConstants.SmallTextScale;
+                screenManager.SpriteBatch.DrawString(font, sub,
+                    new Vector2((sw - subSize.X) / 2f, pad * 2 + titleSize.Y * UIConstants.RegularTextScale + 4),
+                    Color.LightGray, 0f, Vector2.Zero, UIConstants.SmallTextScale, SpriteEffects.None, 0f);
+
+                var terrains = game.Player.Hand.OfType<TerrainCard>().ToList();
+
+                if (terrains.Count == 0)
+                {
+                    string noTerrains = "No terrain cards in hand.";
+                    Vector2 noSize = font.MeasureString(noTerrains) * UIConstants.RegularTextScale;
+                    screenManager.SpriteBatch.DrawString(font, noTerrains,
+                        new Vector2((sw - noSize.X) / 2f, sh / 2f - ch / 2f),
+                        Color.Gray, 0f, Vector2.Zero, UIConstants.RegularTextScale, SpriteEffects.None, 0f);
+                }
+                else
+                {
+                    int totalW = terrains.Count * cw + Math.Max(0, terrains.Count - 1) * cs;
+                    int startX = (sw - totalW) / 2;
+                    int startY = sh / 2 - ch / 2;
+
+                    for (int i = 0; i < terrains.Count; i++)
+                    {
+                        var card = terrains[i];
+                        bool canAfford = game.Player.SEManager.CurrentSE >= card.SoulEssenceCost;
+                        int x = startX + i * (cw + cs);
+                        Rectangle cardRect = new Rectangle(x, startY, cw, ch);
+
+                        Color cardColor = canAfford ? new Color(20, 100, 40) : new Color(20, 60, 20) * 0.6f;
+                        screenManager.SpriteBatch.Draw(screenManager.BlankTexture, cardRect, cardColor);
+                        DrawCardBorder(cardRect, canAfford ? Color.LimeGreen : Color.DarkGreen,
+                            UIConstants.BorderThicknessThin);
+
+                        string name = card.Name.Length > 13 ? card.Name.Substring(0, 13) : card.Name;
+                        screenManager.SpriteBatch.DrawString(font, name,
+                            new Vector2(x + 3, startY + 3),
+                            canAfford ? Color.White : Color.Gray,
+                            0f, Vector2.Zero, UIConstants.RegularTextScale, SpriteEffects.None, 0f);
+
+                        string costText = $"{card.SoulEssenceCost}";
+                        Vector2 costSize = font.MeasureString(costText) * UIConstants.SmallTextScale;
+                        screenManager.SpriteBatch.DrawString(font, costText,
+                            new Vector2(x + cw - costSize.X - 2, startY + 3),
+                            canAfford ? Color.Gold : Color.Red,
+                            0f, Vector2.Zero, UIConstants.SmallTextScale, SpriteEffects.None, 0f);
+
+                        if (!canAfford)
+                        {
+                            string cantText = "N/A";
+                            Vector2 cantSize = font.MeasureString(cantText) * UIConstants.SmallTextScale;
+                            screenManager.SpriteBatch.DrawString(font, cantText,
+                                new Vector2(x + (cw - cantSize.X) / 2f, startY + ch / 2f - cantSize.Y / 2f),
+                                Color.Gray, 0f, Vector2.Zero, UIConstants.SmallTextScale, SpriteEffects.None, 0f);
+                        }
+                    }
+                }
+
+                // Pass button
+                MouseState ms = Mouse.GetState();
+                bool passHover = contestPassButton.Contains(new Point(ms.X, ms.Y));
+                Color passColor = passHover ? Color.Crimson * 0.9f : new Color(180, 20, 20) * 0.8f;
+                screenManager.SpriteBatch.Draw(screenManager.BlankTexture, contestPassButton, passColor);
+                DrawCardBorder(contestPassButton, Color.White, UIConstants.BorderThicknessMedium);
+
+                string passText = "PASS (let terrain land)";
+                Vector2 passTextSize = font.MeasureString(passText) * UIConstants.RegularTextScale;
+                screenManager.SpriteBatch.DrawString(font, passText,
+                    new Vector2(
+                        contestPassButton.X + (contestPassButton.Width  - passTextSize.X) / 2f,
+                        contestPassButton.Y + (contestPassButton.Height - passTextSize.Y) / 2f),
+                    Color.White, 0f, Vector2.Zero, UIConstants.RegularTextScale, SpriteEffects.None, 0f);
+            }
 
             screenManager.SpriteBatch.End();
         }
@@ -1076,7 +1460,7 @@ namespace Warlords
             {
                 string instruction;
                 if (selectedCharacterOnField != null)
-                    instruction = $"{selectedCharacterOnField.Name}: L-click enemy to attack | R-click to defend";
+                    instruction = $"{selectedCharacterOnField.Name}: Click zones to move, enemy to attack, R-click to defend";
                 else if (selectedCard == null)
                     instruction = "Click a card to select";
                 else if (selectedCard is ItemCard)
@@ -1185,6 +1569,61 @@ namespace Warlords
             screenManager.SpriteBatch.DrawString(font, feedbackMessage, textPos, Color.Red * alpha,
                 0f, Vector2.Zero, UIConstants.TitleTextScale, SpriteEffects.None, 0f);
             
+            screenManager.SpriteBatch.End();
+        }
+
+        private void DrawModalDialog(GameTime gameTime, string message)
+        {
+            if (string.IsNullOrEmpty(message)) return;
+
+            screenManager.SpriteBatch.Begin();
+
+            int sw = screenManager.GraphicsDevice.Viewport.Width;
+            int sh = screenManager.GraphicsDevice.Viewport.Height;
+            int pad = UIConstants.GetPadding(sw);
+
+            // Backdrop
+            screenManager.SpriteBatch.Draw(screenManager.BlankTexture,
+                new Rectangle(0, 0, sw, sh), Color.Black * 0.65f);
+
+            // Dialog panel
+            int panelW = Math.Min(sw - (pad * 8), 900);
+            int panelH = Math.Min(sh - (pad * 8), 280);
+            Rectangle panel = new Rectangle((sw - panelW) / 2, (sh - panelH) / 2, panelW, panelH);
+            screenManager.SpriteBatch.Draw(screenManager.BlankTexture, panel, new Color(24, 24, 40));
+            DrawCardBorder(panel, Color.White, UIConstants.BorderThicknessMedium);
+
+            string title = "TERRAIN COUNTERED";
+            Vector2 titleSize = font.MeasureString(title) * UIConstants.RegularTextScale;
+            screenManager.SpriteBatch.DrawString(font, title,
+                new Vector2(panel.X + (panel.Width - titleSize.X) / 2f, panel.Y + pad),
+                Color.Orange, 0f, Vector2.Zero, UIConstants.RegularTextScale, SpriteEffects.None, 0f);
+
+            Vector2 msgPos = new Vector2(panel.X + pad, panel.Y + pad * 3);
+            screenManager.SpriteBatch.DrawString(font, message, msgPos,
+                Color.White, 0f, Vector2.Zero, UIConstants.SmallTextScale, SpriteEffects.None, 0f);
+
+            // Reposition close button under the panel for current resolution
+            dialogCloseButton = new Rectangle(
+                panel.X + (panel.Width / 2) - (dialogCloseButton.Width / 2),
+                panel.Bottom - dialogCloseButton.Height - pad,
+                dialogCloseButton.Width,
+                dialogCloseButton.Height);
+
+            MouseState ms = Mouse.GetState();
+            bool hover = dialogCloseButton.Contains(new Point(ms.X, ms.Y));
+            Color closeColor = hover ? Color.Cyan * 0.9f : Color.SteelBlue * 0.85f;
+            screenManager.SpriteBatch.Draw(screenManager.BlankTexture, dialogCloseButton, closeColor);
+            DrawCardBorder(dialogCloseButton, Color.White, UIConstants.BorderThicknessMedium);
+
+            string closeText = "CLOSE";
+            Vector2 closeSize = font.MeasureString(closeText) * UIConstants.RegularTextScale;
+            screenManager.SpriteBatch.DrawString(font, closeText,
+                new Vector2(
+                    dialogCloseButton.X + (dialogCloseButton.Width - closeSize.X) / 2f,
+                    dialogCloseButton.Y + (dialogCloseButton.Height - closeSize.Y) / 2f),
+                Color.White, 0f, Vector2.Zero, UIConstants.RegularTextScale, SpriteEffects.None, 0f);
+
             screenManager.SpriteBatch.End();
         }
         

@@ -40,6 +40,18 @@ namespace Warlords
         private DateTime nextAIAction = DateTime.Now;
         private int aiActionsThisTurn = 0;
         private const int MaxAIActionsPerTurn = 3;
+
+        // Terrain contest state
+        /// <summary>The terrain card that has been proposed but not yet confirmed.</summary>
+        public TerrainCard PendingTerrain { get; private set; }
+        /// <summary>The zone the pending terrain was proposed for.</summary>
+        public GameZone PendingTerrainZone { get; private set; }
+        /// <summary>The player who proposed the pending terrain.</summary>
+        public WarlordsPlayer PendingTerrainProposer { get; private set; }
+
+        // One-shot UI notification state
+        public bool IsDialogOpen { get; private set; }
+        public string DialogMessage { get; private set; }
         
         public bool WaitingForPlayer { get; set; }
         
@@ -85,17 +97,12 @@ namespace Warlords
             CreateTestDeck(Player);
             CreateTestDeck(Opponent);
             
-            // Deal opening hands — StartGame() called once here only.
-            // (WarlordsGameplayScreen must NOT call StartGame() a second time.)
-            StartGame();
+            // Enter home terrain selection. Decks are NOT shuffled and hands are NOT
+            // dealt yet — that happens once both sides have picked their home terrain.
+            State = WarlordsGameState.HomeTerrainSelectionPending;
 
-            // Enter the mulligan window. The human player picks cards to swap;
-            // the AI skips automatically. FinishMulligan() transitions to Playing.
-            State = WarlordsGameState.MulliganPending;
-
-            // AI takes no action during mulligan — skip it immediately so the
-            // human player is the only one presented with the choice.
-            PerformAIMulligan();
+            // AI immediately picks its best home terrain (highest RegenBonus).
+            SelectAIHomeTerrain();
         }
         
         /// <summary>
@@ -474,8 +481,62 @@ namespace Warlords
         }
 
         /// <summary>
+        /// Player picks a terrain card from their deck to place on their Home Base.
+        /// Called from the UI. When both sides have selected, transitions to MulliganPending.
+        /// </summary>
+        public void SelectHomeTerrain(TerrainCard terrain)
+        {
+            if (State != WarlordsGameState.HomeTerrainSelectionPending) return;
+            if (!Player.Deck.Contains(terrain)) return;
+
+            Player.Deck.Remove(terrain);
+            Field.PlayerHomeBase.ActiveTerrain = terrain;
+            Field.PlayerHomeBase.HasTerrainBeenSet = true;
+
+            // If AI has already picked (it does so immediately in Initialize), proceed.
+            if (Field.OpponentBase.ActiveTerrain != null)
+                FinishHomeTerrainSelection();
+        }
+
+        /// <summary>
+        /// AI picks its home terrain — the one with the highest RegenBonus, favouring
+        /// expensive cards when bonuses are equal (best value for HomeBase regen role).
+        /// </summary>
+        private void SelectAIHomeTerrain()
+        {
+            var best = Opponent.Deck.OfType<TerrainCard>()
+                .OrderByDescending(t => t.RegenBonus)
+                .ThenByDescending(t => t.SoulEssenceCost)
+                .FirstOrDefault();
+
+            if (best == null) return;
+
+            Opponent.Deck.Remove(best);
+            Field.OpponentBase.ActiveTerrain = best;
+            Field.OpponentBase.HasTerrainBeenSet = true;
+        }
+
+        /// <summary>
+        /// Both home terrains have been chosen. Shuffle both decks, deal opening hands,
+        /// then enter the mulligan window.
+        /// </summary>
+        private void FinishHomeTerrainSelection()
+        {
+            // Shuffle remaining decks now that home terrain cards have been removed.
+            Player.Deck   = Player.Deck.OrderBy(_ => Guid.NewGuid()).ToList();
+            Opponent.Deck = Opponent.Deck.OrderBy(_ => Guid.NewGuid()).ToList();
+
+            // Deal opening hands.
+            StartGame();
+
+            // Enter mulligan; AI decides immediately.
+            State = WarlordsGameState.MulliganPending;
+            PerformAIMulligan();
+        }
+
+        /// <summary>
         /// Start the game — deal the opening 7-card hand to each player.
-        /// Called once from Initialize(); the screen must not call it again.
+        /// Called once from FinishHomeTerrainSelection(); the screen must not call it.
         /// </summary>
         public void StartGame()
         {
@@ -518,8 +579,9 @@ namespace Warlords
         }
         
         /// <summary>
-        /// Play a terrain card to a zone (initiates the terrain-contest window).
-        /// For now the terrain is placed immediately; counter logic can be layered on top.
+        /// Play a terrain card to a zone. Deducts cost, removes from hand, then enters
+        /// the terrain-contest window (TerrainContestPending). The terrain is NOT placed on
+        /// the zone until the opponent passes or fails to counter.
         /// </summary>
         public void PlayTerrain(TerrainCard terrain, GameZone zone)
         {
@@ -532,12 +594,99 @@ namespace Warlords
             if (!CurrentPlayer.SEManager.SpendSE(terrain.SoulEssenceCost)) return;
 
             CurrentPlayer.Hand.Remove(terrain);
-            zone.ActiveTerrain = terrain;
-            zone.HasTerrainBeenSet = true;
             CurrentPlayer.HasPlayedTerrain = true;
 
-            ApplyTerrainBonusesToZone(zone);
+            // Store intent; the zone is NOT updated yet.
+            PendingTerrain = terrain;
+            PendingTerrainZone = zone;
+            PendingTerrainProposer = CurrentPlayer;
+            State = WarlordsGameState.TerrainContestPending;
+            WaitingForPlayer = false;
         }
+
+        /// <summary>
+        /// The contesting player plays a terrain from their hand to counter the pending terrain.
+        /// Both terrains are returned to their owners' decks (reshuffled) and the zone stays clear.
+        /// </summary>
+        public void CounterTerrain(TerrainCard counterTerrain)
+        {
+            if (State != WarlordsGameState.TerrainContestPending) return;
+            if (counterTerrain == null) return;
+
+            // Contester is whoever is NOT the proposer
+            WarlordsPlayer contester = (PendingTerrainProposer == Player) ? Opponent : Player;
+            if (!contester.Hand.Contains(counterTerrain)) return;
+
+            contester.SEManager.SpendSE(counterTerrain.SoulEssenceCost);
+            contester.Hand.Remove(counterTerrain);
+
+            // Both terrains return to their owners' decks and are reshuffled
+            PendingTerrainProposer.Deck.Add(PendingTerrain);
+            ShuffleDeck(PendingTerrainProposer);
+
+            contester.Deck.Add(counterTerrain);
+            ShuffleDeck(contester);
+
+            // Zone is untouched — no terrain is placed
+            string proposedName = PendingTerrain?.Name ?? "terrain";
+            string counterName = counterTerrain.Name;
+            bool playerWasProposer = PendingTerrainProposer == Player;
+            ClearPendingTerrain();
+            State = WarlordsGameState.Playing;
+
+            if (playerWasProposer)
+            {
+                IsDialogOpen = true;
+                DialogMessage =
+                    $"Terrain was countered: {proposedName} vs {counterName}. Both were returned to decks and reshuffled.";
+            }
+        }
+
+        /// <summary>
+        /// The contesting player passes (cannot or chooses not to counter).
+        /// The pending terrain is confirmed onto the zone.
+        /// </summary>
+        public void PassTerrainContest()
+        {
+            if (State != WarlordsGameState.TerrainContestPending) return;
+
+            // Battlefield terrain effects are shared across both battlefield lanes.
+            Field.PlayerBattlefield.ActiveTerrain = PendingTerrain;
+            Field.PlayerBattlefield.HasTerrainBeenSet = true;
+            Field.OpponentBattlefield.ActiveTerrain = PendingTerrain;
+            Field.OpponentBattlefield.HasTerrainBeenSet = true;
+
+            ApplyTerrainBonusesToZone(Field.PlayerBattlefield);
+            ApplyTerrainBonusesToZone(Field.OpponentBattlefield);
+
+            ClearPendingTerrain();
+            State = WarlordsGameState.Playing;
+        }
+
+        public void CloseDialog()
+        {
+            IsDialogOpen = false;
+            DialogMessage = string.Empty;
+        }
+
+        private void ClearPendingTerrain()
+        {
+            PendingTerrain = null;
+            PendingTerrainZone = null;
+            PendingTerrainProposer = null;
+        }
+
+        private static void ShuffleDeck(WarlordsPlayer player)
+        {
+            var rng = new Random();
+            var deck = player.Deck;
+            for (int i = deck.Count - 1; i > 0; i--)
+            {
+                int j = rng.Next(i + 1);
+                (deck[i], deck[j]) = (deck[j], deck[i]);
+            }
+        }
+
         
         /// <summary>
         /// Apply terrain bonuses to all characters in a zone
@@ -972,6 +1121,28 @@ namespace Warlords
         /// </summary>
         public void Update(GameTime gameTime)
         {
+            // ── Terrain contest: AI responds ─────────────────────────────
+            // When a terrain was proposed by the player, give the AI one tick to decide.
+            if (State == WarlordsGameState.TerrainContestPending && DateTime.Now >= nextAIAction)
+            {
+                WarlordsPlayer contester = (PendingTerrainProposer == Player) ? Opponent : Player;
+
+                if (contester == Opponent)
+                {
+                    // AI counters if it has an affordable terrain in hand
+                    var counterTerrain = Opponent.Hand.OfType<TerrainCard>()
+                        .Where(t => t.SoulEssenceCost <= Opponent.SEManager.CurrentSE)
+                        .OrderByDescending(t => t.AttackBonus + t.RegenBonus)
+                        .FirstOrDefault();
+
+                    if (counterTerrain != null)
+                        CounterTerrain(counterTerrain);
+                    else
+                        PassTerrainContest();
+                }
+                // When the player is the contester, the human decides via UI — nothing to do here.
+            }
+
             // AI turn
             if (CurrentPlayer == Opponent && State == WarlordsGameState.Playing)
             {
@@ -1153,11 +1324,24 @@ namespace Warlords
     {
         Setup,
         /// <summary>
+        /// Both players simultaneously pick one terrain card from their deck to place
+        /// on their Home Base before decks are shuffled or hands are dealt.
+        /// AI picks automatically; the human player decides via UI.
+        /// </summary>
+        HomeTerrainSelectionPending,
+        /// <summary>
         /// The human player is choosing which opening-hand cards to swap.
         /// AI mulligans automatically.
         /// </summary>
         MulliganPending,
         Playing,
+        /// <summary>
+        /// A terrain card has been proposed; the opposing player now gets
+        /// one chance to counter it by playing a terrain of their own.
+        /// Resolves to Playing when either the counter window expires or
+        /// a counter is played.
+        /// </summary>
+        TerrainContestPending,
         PlayerWins,
         OpponentWins
     }

@@ -134,6 +134,14 @@ namespace WarlordsFramework
             if (targetZone.Owner != playerSide)
                 return RulesResult.Illegal("Characters must be played into your own zones.");
 
+            // By default, characters enter from the Home Base (or EnemyBase for AI side).
+            // Special skills that bypass this can be layered above this rule later.
+            bool isOwnHomeBase =
+                (playerSide == PlayerSide.Player   && targetZone.Type == ZoneType.HomeBase) ||
+                (playerSide == PlayerSide.Opponent && targetZone.Type == ZoneType.EnemyBase);
+            if (!isOwnHomeBase)
+                return RulesResult.Illegal("Characters must be deployed to your Home Base.");
+
             if (card.SoulEssenceCost > playerSE)
                 return RulesResult.Illegal(
                     $"Insufficient Soul Essence (need {card.SoulEssenceCost}, have {playerSE}).");
