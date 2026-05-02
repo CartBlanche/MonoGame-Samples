@@ -4,7 +4,7 @@
 // Main menu for Warlords
 //-----------------------------------------------------------------------------
 
-using GameStateManagement;
+using CardsFramework.Core;
 using Microsoft.Xna.Framework;
 
 namespace Warlords

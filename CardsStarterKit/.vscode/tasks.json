@@ -7,7 +7,7 @@
             "command": "dotnet",
             "args": [
                 "build",
-                "${workspaceFolder}/Platforms/Warlords-Desktop/Warlords.DesktopGL.csproj"
+                "${workspaceFolder}/3-Games/Warlords/Desktop/Warlords.csproj"
             ],
             "group": {
                 "kind": "build",

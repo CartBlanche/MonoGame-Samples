@@ -9,13 +9,13 @@
             "program": "${workspaceFolder}/3-Games/Blackjack/Desktop/bin/Debug/net9.0/Blackjack.dll",
         },
         {
-            "name": "Warlords DesktopGL",
+            "name": "Warlords Desktop",
             "type": "coreclr",
             "request": "launch",
             "preLaunchTask": "build-warlords-desktop",
-            "program": "${workspaceFolder}/Platforms/Warlords-Desktop/bin/Debug/net8.0/Warlords.dll",
+            "program": "${workspaceFolder}/3-Games/Warlords/Desktop/bin/Debug/net9.0/Warlords.dll",
             "args": [],
-            "cwd": "${workspaceFolder}/Platforms/Warlords-Desktop",
+            "cwd": "${workspaceFolder}/3-Games/Warlords/Desktop",
             "console": "internalConsole",
             "stopAtEntry": false
         },

@@ -6,9 +6,8 @@
 
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using GameStateManagement;
+using CardsFramework.Core;
 using CardsFramework;
-using Blackjack; // For BackgroundScreen and AudioManager
 
 namespace Warlords
 {

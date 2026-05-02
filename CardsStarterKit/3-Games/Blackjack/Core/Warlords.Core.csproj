@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>net8.0</TargetFramework>
+    <TargetFramework>net9.0</TargetFramework>
+    <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
     <RootNamespace>Warlords.Core</RootNamespace>
     <AssemblyTitle>Warlords</AssemblyTitle>
     <AssemblyProduct>Warlords</AssemblyProduct>
@@ -17,7 +18,12 @@
     <PackageReference Include="MonoGame.Framework.DesktopGL" Version="3.8.*" PrivateAssets="all"/>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Framework\Cards.Framework.csproj" />
-    <ProjectReference Include="..\..\..\MonoGame.Xna.Framework.Net\MonoGame.Xna.Framework.Net.csproj" />
+    <ProjectReference Include="..\..\..\1-Framework\Cards.Framework.csproj" />
+    <ProjectReference Include="..\..\..\2-Core\Cards.Framework.Core.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Include="Warlords\**\*.cs" />
+    <Compile Include="..\..\..\Framework\Warlords\**\*.cs" LinkBase="WarlordsFramework" />
   </ItemGroup>
 </Project>
