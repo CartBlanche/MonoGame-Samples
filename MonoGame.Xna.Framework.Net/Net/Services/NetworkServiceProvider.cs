@@ -2,20 +2,11 @@ using System;
 
 namespace Microsoft.Xna.Framework.Net
 {
-    /// <summary>
-    /// Service locator for network session factories.
-    /// Manages the global network session factory instance for the application.
-    /// This enables switching between different networking backends (UDP, Steam, etc.) at runtime.
-    /// </summary>
     public static class NetworkServiceProvider
     {
         private static INetworkSessionFactory sessionFactory;
         private static readonly object lockObject = new object();
 
-        /// <summary>
-        /// Gets the current network session factory.
-        /// </summary>
-        /// <exception cref="InvalidOperationException">Thrown if no factory has been configured.</exception>
         public static INetworkSessionFactory SessionFactory
         {
             get
@@ -23,27 +14,26 @@ namespace Microsoft.Xna.Framework.Net
                 lock (lockObject)
                 {
                     if (sessionFactory == null)
-                    {
-                        throw new InvalidOperationException(
-                            "Network session factory not configured. " +
-                            "Call NetworkServiceProvider.SetSessionFactory() during game initialization.");
-                    }
+                        throw new InvalidOperationException("Network session factory not configured. Call NetworkServiceProvider.SetSessionFactory() during game initialization.");
                     return sessionFactory;
                 }
             }
         }
 
-        /// <summary>
-        /// Sets the network session factory.
-        /// This should be called once during game initialization.
-        /// </summary>
-        /// <param name="factory">The network session factory to use.</param>
-        /// <exception cref="ArgumentNullException">Thrown if factory is null.</exception>
+        public static string ActiveBackendName
+        {
+            get
+            {
+                lock (lockObject)
+                {
+                    return sessionFactory?.BackendName;
+                }
+            }
+        }
+
         public static void SetSessionFactory(INetworkSessionFactory factory)
         {
-            if (factory == null)
-                throw new ArgumentNullException(nameof(factory));
-
+            if (factory == null) throw new ArgumentNullException(nameof(factory));
             lock (lockObject)
             {
                 sessionFactory = factory;
@@ -51,9 +41,6 @@ namespace Microsoft.Xna.Framework.Net
             }
         }
 
-        /// <summary>
-        /// Resets the session factory to default (UDP-based).
-        /// </summary>
         public static void ResetToDefault()
         {
             lock (lockObject)
@@ -63,9 +50,6 @@ namespace Microsoft.Xna.Framework.Net
             }
         }
 
-        /// <summary>
-        /// Gets a value indicating whether a session factory has been configured.
-        /// </summary>
         public static bool IsConfigured
         {
             get

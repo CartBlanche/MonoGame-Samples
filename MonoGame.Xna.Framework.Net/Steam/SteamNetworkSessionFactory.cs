@@ -10,7 +10,7 @@ namespace Microsoft.Xna.Framework.Net
     /// </summary>
     public sealed class SteamNetworkSessionFactory : INetworkSessionFactory
     {
-        public string BackendName => "Steam Vertical Slice";
+        public string BackendName => "Steam";
 
         public INetworkSession CreateSession()
         {
