@@ -1082,52 +1082,55 @@ namespace Warlords
         }
 
         /// <summary>
-        /// Apply SE regen with terrain bonuses
+        /// Apply SE regen with terrain bonuses for a specific player.
         /// </summary>
-        private void ApplyRegenWithTerrainBonus()
+        private void ApplyRegenWithTerrainBonus(WarlordsPlayer player)
         {
-            // Start with base regen
-            CurrentPlayer.SEManager.ApplyRegen();
-            
-            // Add terrain regen bonuses from Home Base
-            GameZone homeBase = (CurrentPlayer == Player) ? Field.PlayerHomeBase : Field.OpponentBase;
+            player.SEManager.ApplyRegen();
+            GameZone homeBase = (player == Player) ? Field.PlayerHomeBase : Field.OpponentBase;
             if (homeBase.ActiveTerrain != null && homeBase.ActiveTerrain.RegenBonus > 0)
-            {
-                CurrentPlayer.SEManager.GainSE(homeBase.ActiveTerrain.RegenBonus);
-            }
+                player.SEManager.GainSE(homeBase.ActiveTerrain.RegenBonus);
+        }
+
+        /// <summary>
+        /// Apply overburden degen (if any) then regen for a specific player.
+        /// Called once per round for each player.
+        /// </summary>
+        private void ApplyOverburdenDegenAndRegen(WarlordsPlayer player)
+        {
+            var overburden = RulesEngine.EvaluateOverburden(player.Hand.Count);
+            if (overburden >= OverburdenLevel.Tier1_14_15)
+                player.SEManager.TakeDamage(player.SEManager.EffectiveRegen);
+            ApplyRegenWithTerrainBonus(player);
         }
         
         /// <summary>
-        /// End current turn: apply overburden, regen/degen, win check, then switch player.
+        /// End current turn. On the first player's turn, reset state and switch.
+        /// On the second player's turn (end of round), apply overburden degen + regen
+        /// for BOTH players, then check the win condition.
         /// </summary>
         public void EndTurn()
         {
-            var tracker = CurrentPlayer.CurrentTurnTracker;
-
-            // ── Overburden tier checks (End phase) ─────────────────────────
-            var overburden = RulesEngine.EvaluateOverburden(CurrentPlayer.Hand.Count);
-            if (overburden >= OverburdenLevel.Tier1_14_15)
-            {
-                // Tier-1 degen equals full effective regen (both regen and degen apply;
-                // they do NOT cancel each other).
-                CurrentPlayer.SEManager.TakeDamage(CurrentPlayer.SEManager.EffectiveRegen);
-            }
+            bool isEndOfRound = (CurrentPlayer == Opponent);
 
             // Reset all character actions
             foreach (var zone in Field.GetAllZones())
                 foreach (var character in zone.Characters)
                     character.ResetTurnState();
 
-            // ── RegenDegen phase ───────────────────────────────────
-            ApplyRegenWithTerrainBonus();
-
-            // ── Win condition (checked only after RegenDegen) ─────────────
-            CheckWinCondition();
-            if (State != WarlordsGameState.Playing) return;
-
             // ── Reset and switch ──────────────────────────────────
             CurrentPlayer.ResetTurnFlags();
             CurrentPlayer = (CurrentPlayer == Player) ? Opponent : Player;
+
+            if (isEndOfRound)
+            {
+                // ── End-of-round: overburden degen + regen for both players ──
+                ApplyOverburdenDegenAndRegen(Player);
+                ApplyOverburdenDegenAndRegen(Opponent);
+
+                // ── Win condition (checked only after RegenDegen) ─────────────
+                CheckWinCondition();
+            }
         }
         
         /// <summary>
