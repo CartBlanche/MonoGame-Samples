@@ -50,6 +50,11 @@ namespace Microsoft.Xna.Framework.Net.Steam
                 Console.Error.WriteLine($"[SteamRuntime] SteamAPI.Init failed: {ex.Message}");
                 isInitialized = false;
             }
+            catch (FileNotFoundException ex)
+            {
+                Console.Error.WriteLine($"[SteamRuntime] Steam managed assembly load failed: {ex.Message}");
+                isInitialized = false;
+            }
             catch (BadImageFormatException ex)
             {
                 Console.Error.WriteLine($"[SteamRuntime] Steam native library architecture mismatch: {ex.Message}");
@@ -72,7 +77,14 @@ namespace Microsoft.Xna.Framework.Net.Steam
 
             if (OperatingSystem.IsWindows())
             {
-                string winRid = RuntimeInformation.ProcessArchitecture == Architecture.X86 ? "win-x86" : "win-x64";
+                if (RuntimeInformation.ProcessArchitecture == Architecture.X86)
+                {
+                    // TODO(vNext): add x86 support if demand warrants it.
+                    error = "Windows x86 is not supported in v1.0. Use x64.";
+                    return false;
+                }
+
+                string winRid = "win-x64";
                 candidates = new[]
                 {
                     Path.Combine(baseDir, "steam_api64.dll"),
@@ -81,10 +93,16 @@ namespace Microsoft.Xna.Framework.Net.Steam
             }
             else if (OperatingSystem.IsLinux())
             {
+                if (RuntimeInformation.ProcessArchitecture == Architecture.X86)
+                {
+                    // TODO(vNext): add x86 support if demand warrants it.
+                    error = "Linux x86 is not supported in v1.0. Use x64 or arm64.";
+                    return false;
+                }
+
                 string linuxRid = RuntimeInformation.ProcessArchitecture switch
                 {
                     Architecture.X64 => "linux-x64",
-                    Architecture.X86 => "linux-x86",
                     Architecture.Arm64 => "linux-arm64",
                     _ => "linux-x64"
                 };
