@@ -5,7 +5,7 @@ VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CatapultNetWars.Core", "Core\CatapultNetWars.Core.csproj", "{2D6B149A-DED5-BD6D-92E9-06F37A7E8D03}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonoGame.Xna.Framework.Net", "..\MonoGame.Xna.Framework.Net\MonoGame.Xna.Framework.Net.csproj", "{86E1E7AD-DD62-384D-A073-092A5F875CF0}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonoGame.Xna.Framework.Net", "..\..\MonoGame.Xna.Framework.Net\MonoGame.Xna.Framework.Net.csproj", "{86E1E7AD-DD62-384D-A073-092A5F875CF0}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CatapultNetWars.Android", "Platforms\Android\CatapultNetWars.Android.csproj", "{7DF9E0D3-84A7-8FD3-949C-4AB7CE0DE1B2}"
 EndProject

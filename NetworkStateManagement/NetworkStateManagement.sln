@@ -13,7 +13,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetworkStateManagement.Andr
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetworkStateManagement.iOS", "Platforms\iOS\NetworkStateManagement.iOS.csproj", "{B1C2D3E4-2345-6789-BCDE-2345678901BC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonoGame.Xna.Framework.Net", "..\MonoGame.Xna.Framework.Net\MonoGame.Xna.Framework.Net.csproj", "{86E1E7AD-DD62-384D-A073-092A5F875CF0}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonoGame.Xna.Framework.Net", "..\..\MonoGame.Xna.Framework.Net\MonoGame.Xna.Framework.Net.csproj", "{86E1E7AD-DD62-384D-A073-092A5F875CF0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

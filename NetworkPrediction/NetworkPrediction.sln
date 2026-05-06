@@ -10,7 +10,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetworkPrediction.Android",
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetworkPrediction.iOS", "Platforms\iOS\NetworkPrediction.iOS.csproj", "{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC943}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonoGame.Xna.Framework.Net", "..\MonoGame.Xna.Framework.Net\MonoGame.Xna.Framework.Net.csproj", "{27C4BF5B-45A3-CFB1-0DEB-87633296E924}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonoGame.Xna.Framework.Net", "..\..\MonoGame.Xna.Framework.Net\MonoGame.Xna.Framework.Net.csproj", "{27C4BF5B-45A3-CFB1-0DEB-87633296E924}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetworkPrediction.Core", "Core\NetworkPrediction.Core.csproj", "{C6FBEA27-92E7-4F7E-7F87-E186E9FDFC54}"
 EndProject

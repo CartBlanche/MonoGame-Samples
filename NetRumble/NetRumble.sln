@@ -13,7 +13,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NetRumble.Android", "Platfo
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NetRumble.iOS", "Platforms\iOS\NetRumble.iOS.csproj", "{A2D8F8D1-2AA4-4E5E-9C8A-123456789004}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonoGame.Xna.Framework.Net", "MonoGame.Xna.Framework.Net\MonoGame.Xna.Framework.Net.csproj", "{6EBFD7EA-D749-9DA1-9331-91D4EBC26861}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonoGame.Xna.Framework.Net", "..\..\MonoGame.Xna.Framework.Net\MonoGame.Xna.Framework.Net.csproj", "{6EBFD7EA-D749-9DA1-9331-91D4EBC26861}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

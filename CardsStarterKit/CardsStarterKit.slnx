@@ -21,7 +21,7 @@
   <Folder Name="/Blank/Windows/">
     <Project Path="3-Games/Blank/Windows/Blank.csproj" />
   </Folder>
-  <Project Path="../MonoGame.Xna.Framework.Net/MonoGame.Xna.Framework.Net.csproj" />
+  <Project Path="../../MonoGame.Xna.Framework.Net/MonoGame.Xna.Framework.Net.csproj" />
 
   <!-- Games -->
   <Folder Name="/Blackjack/">

@@ -13,7 +13,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Peer2Peer.iOS", "Platforms\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Peer2PeerSample.Core", "Core\Peer2PeerSample.Core.csproj", "{A1B2C3D4-E5F6-7890-1234-56789ABCDEF0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonoGame.Xna.Framework.Net", "..\MonoGame.Xna.Framework.Net\MonoGame.Xna.Framework.Net.csproj", "{86E1E7AD-DD62-384D-A073-092A5F875CF0}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonoGame.Xna.Framework.Net", "..\..\MonoGame.Xna.Framework.Net\MonoGame.Xna.Framework.Net.csproj", "{86E1E7AD-DD62-384D-A073-092A5F875CF0}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Peer2PeerMasterServer", "Peer2PeerMasterServer\Peer2PeerMasterServer.csproj", "{5B387405-901A-2547-BA97-DDF3180E221C}"
 EndProject

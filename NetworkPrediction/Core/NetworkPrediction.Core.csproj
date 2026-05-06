@@ -12,7 +12,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\MonoGame.Xna.Framework.Net\MonoGame.Xna.Framework.Net.csproj" /> 
+    <ProjectReference Include="..\..\..\MonoGame.Xna.Framework.Net\MonoGame.Xna.Framework.Net.csproj" /> 
   </ItemGroup>
 
 </Project>
