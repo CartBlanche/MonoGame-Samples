@@ -87,6 +87,7 @@ namespace Microsoft.Xna.Framework.Net
 
         public static void JoinLobby(string sessionId, SteamNetworkSession joiningSession)
         {
+            List<SteamNetworkSession> toPromote;
             lock (Gate)
             {
                 if (!Lobbies.TryGetValue(sessionId, out var lobby))
@@ -109,10 +110,14 @@ namespace Microsoft.Xna.Framework.Net
                 lobby.Participants.Add(joiningSession);
                 LocalOwnerByGamerId[joiningSession.LocalGamer.Id] = joiningSession;
 
-                foreach (var participant in lobby.Participants)
-                {
-                    participant.PromoteToPlayingIfNeeded();
-                }
+                // Snapshot under lock; promote outside to avoid deadlock if a GameStarted
+                // handler re-enters directory operations (e.g. CloseAsync → RemoveLobby).
+                toPromote = new List<SteamNetworkSession>(lobby.Participants);
+            }
+
+            foreach (var participant in toPromote)
+            {
+                participant.PromoteToPlayingIfNeeded();
             }
         }
 
