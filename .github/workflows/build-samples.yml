@@ -15,6 +15,8 @@ permissions:
 env:
   DOTNET_NOLOGO: true
   CONFIGURATION: Release
+  MONOGAME_NET_REPO: ${{ github.repository_owner }}/MonoGame.Xna.Framework.Net
+  MONOGAME_NET_REF: main
 
 jobs:
   discover:
@@ -25,6 +27,20 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+
+      - name: Checkout MonoGame.Xna.Framework.Net sibling repo
+        uses: actions/checkout@v4
+        with:
+          repository: ${{ env.MONOGAME_NET_REPO }}
+          ref: ${{ env.MONOGAME_NET_REF }}
+          path: _deps/MonoGame.Xna.Framework.Net
+
+      - name: Link sibling path for networking samples
+        shell: bash
+        run: |
+          set -e
+          ln -sfn "$GITHUB_WORKSPACE/_deps/MonoGame.Xna.Framework.Net" "$GITHUB_WORKSPACE/../MonoGame.Xna.Framework.Net"
+          echo "Linked sibling repo path: $GITHUB_WORKSPACE/../MonoGame.Xna.Framework.Net"
 
       - name: Collect & filter Desktop platform project files
         id: collect
@@ -95,6 +111,20 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Checkout MonoGame.Xna.Framework.Net sibling repo
+        uses: actions/checkout@v4
+        with:
+          repository: ${{ env.MONOGAME_NET_REPO }}
+          ref: ${{ env.MONOGAME_NET_REF }}
+          path: _deps/MonoGame.Xna.Framework.Net
+
+      - name: Link sibling path for networking samples
+        shell: bash
+        run: |
+          set -e
+          ln -sfn "$GITHUB_WORKSPACE/_deps/MonoGame.Xna.Framework.Net" "$GITHUB_WORKSPACE/../MonoGame.Xna.Framework.Net"
+          echo "Linked sibling repo path: $GITHUB_WORKSPACE/../MonoGame.Xna.Framework.Net"
+
       - name: Setup .NET 8
         uses: actions/setup-dotnet@v4
         with:
@@ -137,7 +167,7 @@ jobs:
           echo "Packaging $NAME for all desktop platforms"
           if [ -f "$ICNS_FILE" ]; then
             echo "Using icon file: $ICNS_FILE"
-            monopack -p "$PROJ" \
+            monopack -p "$PROJ" \gi
               -o "$ARTIFACTS_DIR" \
               -rids win-x64,linux-x64,osx-x64,osx-arm64 \
               -i "$INFO_PLIST" \
