@@ -370,4 +370,10 @@ per rimuovere le puntate.</value>
   <data name="HintGameGoal" xml:space="preserve">
     <value>Avvicinati il più possibile a 21, senza superarlo.</value>
   </data>
+  <data name="LoggedIntoPlatform" xml:space="preserve">
+    <value>Connesso a {0}</value>
+  </data>
+  <data name="UnableToLogIntoPlatform" xml:space="preserve">
+    <value>Impossibile accedere a {0}</value>
+  </data>
 </root>

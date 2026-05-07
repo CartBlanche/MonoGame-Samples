@@ -28,6 +28,7 @@
     <Project Path="3-Games/Blackjack/Core/Blackjack.Core.csproj" />
     <Folder Name="/Desktop/">
       <Project Path="3-Games/Blackjack/Desktop/BlackJack.csproj" />
+      <Project Path="3-Games/Blackjack/Desktop/BlackJack.Steam.csproj" />
     </Folder>
     <Folder Name="/Android/">
       <Project Path="3-Games/Blackjack/Android/BlackJack.csproj" />
@@ -48,6 +49,7 @@
     <Project Path="3-Games/Blackjack/Desktop/BlackJack.csproj">
       <Deploy />
     </Project>
+    <Project Path="3-Games/Blackjack/Desktop/BlackJack.Steam.csproj" />
   </Folder>
   <Folder Name="/Blackjack/iOS/">
     <Project Path="3-Games/Blackjack/iOS/BlackJack.csproj">

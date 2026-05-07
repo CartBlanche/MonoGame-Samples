@@ -369,4 +369,10 @@ B按钮、Esc = 取消</value>
   <data name="HintGameGoal" xml:space="preserve">
     <value>在不超过21点的情况下尽量靠近21点。</value>
   </data>
+  <data name="LoggedIntoPlatform" xml:space="preserve">
+    <value>已登录 {0}</value>
+  </data>
+  <data name="UnableToLogIntoPlatform" xml:space="preserve">
+    <value>无法登录 {0}</value>
+  </data>
 </root>

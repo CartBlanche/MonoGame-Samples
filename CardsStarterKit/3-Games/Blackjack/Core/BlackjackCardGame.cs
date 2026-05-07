@@ -2816,6 +2816,13 @@ namespace Blackjack
             if (NetworkSession == null || !IsHost)
                 return;
 
+            // Validate player index in case player list changed after disconnect
+            if (playerIndex >= players.Count)
+            {
+                Debug.WriteLine($"[BetPlaced] Player index {playerIndex} out of range (current count: {players.Count}). Ignoring bet broadcast.");
+                return;
+            }
+
             var packet = new Networking.BetPlacedPacket
             {
                 PlayerIndex = playerIndex,
@@ -2836,6 +2843,13 @@ namespace Blackjack
         {
             if (NetworkSession == null || NetworkSession.LocalGamers.Count == 0)
                 return;
+
+            // Validate player index in case player list changed after disconnect
+            if (playerIndex >= players.Count)
+            {
+                Debug.WriteLine($"[BetPlaced] Player index {playerIndex} out of range (current count: {players.Count}). Ignoring bet send.");
+                return;
+            }
 
             var packet = new Networking.BetPlacedPacket
             {
@@ -2858,6 +2872,13 @@ namespace Blackjack
             if (NetworkSession == null || !IsHost)
                 return;
 
+            // Validate player index in case player list changed after disconnect
+            if (playerIndex >= players.Count)
+            {
+                Debug.WriteLine($"[ChipAdded] Player index {playerIndex} out of range (current count: {players.Count}). Ignoring chip broadcast.");
+                return;
+            }
+
             var packet = new Networking.ChipAddedPacket
             {
                 PlayerIndex = playerIndex,
@@ -2878,6 +2899,13 @@ namespace Blackjack
         {
             if (NetworkSession == null || NetworkSession.LocalGamers.Count == 0)
                 return;
+
+            // Validate player index in case player list changed after disconnect
+            if (playerIndex >= players.Count)
+            {
+                Debug.WriteLine($"[ChipAdded] Player index {playerIndex} out of range (current count: {players.Count}). Ignoring chip send.");
+                return;
+            }
 
             var packet = new Networking.ChipAddedPacket
             {
@@ -3084,9 +3112,16 @@ namespace Blackjack
         /// </summary>
         public void HandleReceivedChipAdded(byte playerIndex, int chipValue)
         {
+            // Validate player index in case it arrived after a player disconnect
+            if (playerIndex >= players.Count)
+            {
+                Debug.WriteLine($"[ChipAdded] Received chip for invalid player index {playerIndex} (current count: {players.Count}). Ignoring.");
+                return;
+            }
+
             // This method is called when receiving a ChipAdded packet
             // We add the chip with animation but don't re-send to network (sendToNetwork: false)
-            if (playerIndex < players.Count && betGameComponent != null)
+            if (betGameComponent != null)
             {
                 // Add the visual chip component with animation
                 // The sendToNetwork parameter is false to prevent infinite loop

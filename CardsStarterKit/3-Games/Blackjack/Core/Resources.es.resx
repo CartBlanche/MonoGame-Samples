@@ -370,4 +370,10 @@ para retirar tus apuestas.</value>
   <data name="HintGameGoal" xml:space="preserve">
     <value>Acércate lo más posible a 21, sin pasarte.</value>
   </data>
+  <data name="LoggedIntoPlatform" xml:space="preserve">
+    <value>Conectado a {0}</value>
+  </data>
+  <data name="UnableToLogIntoPlatform" xml:space="preserve">
+    <value>No se pudo iniciar sesión en {0}</value>
+  </data>
 </root>

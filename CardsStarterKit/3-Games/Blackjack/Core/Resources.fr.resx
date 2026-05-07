@@ -370,4 +370,10 @@ pour retirer vos mises.</value>
   <data name="HintGameGoal" xml:space="preserve">
     <value>Approchez-vous le plus possible de 21, sans le dépasser.</value>
   </data>
+  <data name="LoggedIntoPlatform" xml:space="preserve">
+    <value>Connecté à {0}</value>
+  </data>
+  <data name="UnableToLogIntoPlatform" xml:space="preserve">
+    <value>Impossible de se connecter à {0}</value>
+  </data>
 </root>

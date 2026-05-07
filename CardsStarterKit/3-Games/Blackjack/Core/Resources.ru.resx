@@ -369,4 +369,10 @@
   <data name="HintGameGoal" xml:space="preserve">
     <value>Наберите как можно ближе к 21, не превышая его.</value>
   </data>
+  <data name="LoggedIntoPlatform" xml:space="preserve">
+    <value>Вход выполнен: {0}</value>
+  </data>
+  <data name="UnableToLogIntoPlatform" xml:space="preserve">
+    <value>Не удалось войти в {0}</value>
+  </data>
 </root>

@@ -683,6 +683,13 @@ namespace Blackjack
         /// Set to false when receiving chip additions from the network to avoid loops.</param>
         public void AddChip(int playerIndex, int chipValue, bool secondHand, bool sendToNetwork = true)
         {
+            // Validate player index in case player list changed
+            if (playerIndex < 0 || playerIndex >= players.Count)
+            {
+                Debug.WriteLine($"[AddChip] Player index {playerIndex} out of range (count: {players.Count}). Ignoring.");
+                return;
+            }
+
             // Only add the chip if the bet is successfully performed
             if (((BlackjackPlayer)players[playerIndex]).Bet(chipValue))
             {

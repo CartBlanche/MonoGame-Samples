@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Steam desktop build.
+  Uses Program.Steam.cs as the entry point and keeps Steam runtime wiring out of
+  the default desktop/itch target.
+-->
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <Import Project="Desktop.Shared.props" />
+
+  <ItemGroup>
+    <Compile Remove="Program.cs" />
+    <ProjectReference Include="$(MSBuildProjectDirectory)\..\..\..\..\..\MonoGame.Xna.Framework.Net\Steam\MonoGame.Xna.Framework.Net.Steam.csproj" />
+  </ItemGroup>
+
+  <PropertyGroup>
+    <SteamAppIdFile>$(MSBuildProjectDirectory)\steam_appid.txt</SteamAppIdFile>
+  </PropertyGroup>
+
+  <Target Name="CopySteamAppId" AfterTargets="Build">
+    <Copy SourceFiles="$(SteamAppIdFile)"
+          DestinationFolder="$(OutDir)"
+          SkipUnchangedFiles="true"
+          Condition="Exists('$(SteamAppIdFile)')" />
+  </Target>
+
+</Project>

@@ -369,4 +369,10 @@ Bボタン、Esc = キャンセル</value>
   <data name="HintGameGoal" xml:space="preserve">
     <value>21を超えずにできるだけ近い数を目指そう。</value>
   </data>
+  <data name="LoggedIntoPlatform" xml:space="preserve">
+    <value>{0} にログイン中</value>
+  </data>
+  <data name="UnableToLogIntoPlatform" xml:space="preserve">
+    <value>{0} にログインできません</value>
+  </data>
 </root>

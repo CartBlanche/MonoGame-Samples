@@ -2,10 +2,21 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "Blackjack Desktop",
+            "name": "Desktop",
             "type": "coreclr",
             "request": "launch",
-            "preLaunchTask": "build-desktop",
+            "preLaunchTask": "Desktop",
+            "program": "${workspaceFolder}/3-Games/Blackjack/Desktop/bin/Debug/net9.0/Blackjack.dll",
+            "args": [],
+            "cwd": "${workspaceFolder}/3-Games/Blackjack/Desktop",
+            "console": "internalConsole",
+            "stopAtEntry": false
+        },
+        {
+            "name": "Desktop (Steam)",
+            "type": "coreclr",
+            "request": "launch",
+            "preLaunchTask": "Desktop (Steam)",
             "program": "${workspaceFolder}/3-Games/Blackjack/Desktop/bin/Debug/net9.0/Blackjack.dll",
             "args": [],
             "cwd": "${workspaceFolder}/3-Games/Blackjack/Desktop",

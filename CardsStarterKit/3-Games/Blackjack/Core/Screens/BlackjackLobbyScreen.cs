@@ -5,7 +5,9 @@
 //-----------------------------------------------------------------------------
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
+using System.Threading;
 
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -22,6 +24,7 @@ namespace Blackjack
         bool isHost;
         NetworkSession networkSession;
         bool hasTransitionedToGameplay;
+        int gameStartedSignal;
 
         public BlackjackLobbyScreen(NetworkSession networkSession = null)
             : base(Resources.Lobby)
@@ -35,6 +38,7 @@ namespace Blackjack
                 // Subscribe to session events
                 networkSession.GamerJoined += OnGamerJoined;
                 networkSession.GamerLeft += OnGamerLeft;
+                networkSession.GameStarted += OnGameStarted;
 
                 // Initialize player list from current session
                 UpdatePlayerList();
@@ -130,6 +134,7 @@ namespace Blackjack
                 {
                     networkSession.GamerJoined -= OnGamerJoined;
                     networkSession.GamerLeft -= OnGamerLeft;
+                    networkSession.GameStarted -= OnGameStarted;
                     networkSession.Dispose();
                     networkSession = null;
                 }
@@ -147,6 +152,7 @@ namespace Blackjack
             {
                 networkSession.GamerJoined -= OnGamerJoined;
                 networkSession.GamerLeft -= OnGamerLeft;
+                networkSession.GameStarted -= OnGameStarted;
             }
 
             // Exit all current screens before returning to main menu
@@ -165,6 +171,12 @@ namespace Blackjack
         void OnGamerLeft(object sender, GamerLeftEventArgs e)
         {
             UpdatePlayerList();
+        }
+
+        void OnGameStarted(object sender, GameStartedEventArgs e)
+        {
+            // GameStarted can be raised from the networking receive thread.
+            Volatile.Write(ref gameStartedSignal, 1);
         }
 
         void UpdatePlayerList()
@@ -193,9 +205,14 @@ namespace Blackjack
             // In network games, check if host started the game
             if (networkSession != null && !IsExiting && !hasTransitionedToGameplay)
             {
-                if (networkSession.SessionState == NetworkSessionState.Playing)
+                var currentState = networkSession.SessionState;
+                bool receivedGameStartedEvent = Volatile.Read(ref gameStartedSignal) == 1;
+                Debug.WriteLine($"[Lobby] SessionState: {currentState}, IsHost: {isHost}, Gamers: {networkSession.AllGamers.Count}, GameStartedEvent: {receivedGameStartedEvent}");
+
+                if (currentState == NetworkSessionState.Playing || receivedGameStartedEvent)
                 {
                     hasTransitionedToGameplay = true;
+                    Debug.WriteLine("[Lobby] Detected Playing state, transitioning to GameplayScreen");
 
                     // Host started the game, transition all players
                     // Only pass human player names - GameplayScreen will add NPC Players on host only

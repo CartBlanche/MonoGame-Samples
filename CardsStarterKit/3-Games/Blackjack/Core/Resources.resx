@@ -429,4 +429,10 @@ to remove your placed bets.</value>
   <data name="HintGameGoal" xml:space="preserve">
     <value>Get as close to 21 as possible, without going over.</value>
   </data>
+  <data name="LoggedIntoPlatform" xml:space="preserve">
+    <value>Logged into {0}</value>
+  </data>
+  <data name="UnableToLogIntoPlatform" xml:space="preserve">
+    <value>Unable to log into {0}</value>
+  </data>
 </root>

@@ -13,6 +13,7 @@ using Microsoft.Xna.Framework.Input.Touch;
 
 using CardsFramework;
 using CardsFramework.Core;
+using Blackjack.Networking;
 
 namespace Blackjack
 {
@@ -67,14 +68,10 @@ namespace Blackjack
 
         void HostGameMenuEntrySelected(object sender, EventArgs e)
         {
-            // Host a new session and go to lobby
-            // Use SystemLink for local network testing (PlayerMatch requires online services)
-            var asyncResult = NetworkSession.CreateAsync(
-                NetworkSessionType.SystemLink,
-                BlackjackConstants.MinPlayers, // local gamers
-                BlackjackConstants.MaxPlayers, // max gamers
-                0, // private slots
-                null);
+            // Host a new session and go to lobby.
+            var asyncResult = MultiplayerSessionService.CreateHostSessionAsync(
+                BlackjackConstants.MinPlayers,
+                BlackjackConstants.MaxPlayers);
             var busyScreen = new NetworkBusyScreen<NetworkSession>(asyncResult, Resources.NetworkBusy);
             busyScreen.OperationCompleted += (s, evt) =>
             {
@@ -98,7 +95,7 @@ namespace Blackjack
             var availableSession = entry?.AvailableSession;
             if (availableSession != null)
             {
-                var asyncResult = NetworkSession.JoinAsync(availableSession);
+                var asyncResult = MultiplayerSessionService.JoinSessionAsync(availableSession);
                 var busyScreen = new NetworkBusyScreen<NetworkSession>(asyncResult, Resources.NetworkBusy);
                 busyScreen.OperationCompleted += (s, evt) =>
                 {
@@ -298,10 +295,7 @@ namespace Blackjack
 
             isSearching = true;
 
-            var asyncResult = NetworkSession.FindAsync(
-                NetworkSessionType.SystemLink,
-                1, // local gamers
-                null);
+            var asyncResult = MultiplayerSessionService.FindSessionsAsync(1);
             var busyScreen = new NetworkBusyScreen<AvailableNetworkSessionCollection>(asyncResult, Resources.NetworkBusy);
             busyScreen.OperationCompleted += (s, evt) =>
             {

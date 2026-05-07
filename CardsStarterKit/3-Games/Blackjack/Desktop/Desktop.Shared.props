@@ -1,0 +1,49 @@
+<!--
+  Shared MSBuild properties and items for all Blackjack desktop store targets.
+  Import this file from each store-specific .csproj so paths stay anchored to
+  this desktop folder regardless of the importing project.
+-->
+<Project>
+
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <OutputType>WinExe</OutputType>
+    <RootNamespace>Blackjack.DesktopGL</RootNamespace>
+    <AssemblyName>Blackjack</AssemblyName>
+    <AssemblyTitle>Blackjack</AssemblyTitle>
+    <Description>DesktopGL platform for Blackjack Game.</Description>
+    <Authors>CartBlanche</Authors>
+    <Company>MonoGame Foundation</Company>
+    <GenerateAssemblyInfo>true</GenerateAssemblyInfo>
+    <ApplicationManifest>$(MSBuildThisFileDirectory)app.manifest</ApplicationManifest>
+    <ApplicationIcon>$(MSBuildThisFileDirectory)..\..\..\2-Core\Resources\Icons\Windows\Icon.ico</ApplicationIcon>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="$(MSBuildThisFileDirectory)..\..\..\2-Core\Resources\Icons\Windows\Icon.ico">
+      <Link>Icon.ico</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="$(MSBuildThisFileDirectory)..\..\..\2-Core\Resources\Icons\macOS\Icon.icns">
+      <Link>Blackjack.icns</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)..\..\..\2-Core\Resources\Icons\Windows\Icon.ico">
+      <LogicalName>Icon.ico</LogicalName>
+    </EmbeddedResource>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)..\..\..\2-Core\Resources\Icons\macOS\Icon.bmp">
+      <LogicalName>Icon.bmp</LogicalName>
+    </EmbeddedResource>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="$(MSBuildThisFileDirectory)..\Core\Blackjack.Core.csproj" />
+    <PackageReference Include="MonoGame.Framework.DesktopGL" Version="3.8.*" />
+    <PackageReference Include="MonoGame.Content.Builder.Task" Version="3.8.*" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <MonoGameContentReference Include="$(MSBuildThisFileDirectory)..\Content\Content.mgcb" />
+  </ItemGroup>
+
+</Project>

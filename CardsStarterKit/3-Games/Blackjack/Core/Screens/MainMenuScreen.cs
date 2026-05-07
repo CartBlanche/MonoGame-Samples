@@ -120,5 +120,37 @@ namespace Blackjack
         {
             ScreenManager.Game.Exit();
         }
+
+        public override void Draw(GameTime gameTime)
+        {
+            base.Draw(gameTime);
+
+            string status = LeaderboardPlatformStatus.GetLeaderboardStatusMessage();
+            if (string.IsNullOrWhiteSpace(status))
+            {
+                return;
+            }
+
+            var spriteBatch = ScreenManager.SpriteBatch;
+            var bounds = ScreenManager.SafeArea;
+            const float statusScale = 0.90f;
+
+            Vector2 statusSize = ScreenManager.RegularFont.MeasureString(status);
+            float statusX = bounds.Left + (bounds.Width - statusSize.X * statusScale) / 2f;
+            float statusY = bounds.Bottom - statusSize.Y * statusScale - 12f;
+
+            spriteBatch.Begin(SpriteSortMode.Deferred, null, null, null, null, null, ScreenManager.GlobalTransformation);
+            spriteBatch.DrawString(
+                ScreenManager.RegularFont,
+                status,
+                new Vector2(statusX, statusY),
+                new Color(126, 99, 62) * 0.82f * TransitionAlpha,
+                0f,
+                Vector2.Zero,
+                statusScale,
+                SpriteEffects.None,
+                0f);
+            spriteBatch.End();
+        }
     }
 }
