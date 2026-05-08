@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Solution>
+  <Folder Name="Core">
+    <Project Path="Core/NetworkStateManagement.Core.csproj" />
+  </Folder>
+
+  <Folder Name="Networking">
+    <Project Path="../../MonoGame.Xna.Framework.Net/MonoGame.Xna.Framework.Net.csproj" />
+  </Folder>
+
+  <Folder Name="Platforms">
+    <Folder Name="Windows">
+      <Project Path="Platforms/Windows/NetworkStateManagement.Windows.csproj">
+        <Deploy />
+      </Project>
+    </Folder>
+
+    <Folder Name="Desktop">
+      <Project Path="Platforms/Desktop/NetworkStateManagement.csproj">
+        <Deploy />
+      </Project>
+      <Project Path="Platforms/Desktop/NetworkStateManagement.Steam.csproj">
+        <Deploy />
+      </Project>
+    </Folder>
+
+    <Folder Name="Android">
+      <Project Path="Platforms/Android/NetworkStateManagement.Android.csproj">
+        <Deploy />
+      </Project>
+    </Folder>
+
+    <Folder Name="iOS">
+      <Project Path="Platforms/iOS/NetworkStateManagement.iOS.csproj">
+        <Deploy />
+      </Project>
+    </Folder>
+  </Folder>
+</Solution>

@@ -1,36 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk">
-  <PropertyGroup>
-    <OutputType>Exe</OutputType>
-    <TargetFramework>net9.0</TargetFramework>
-    <RootNamespace>NetworkStateManagement</RootNamespace>
-    <AssemblyName>NetworkStateManagement</AssemblyName>
-    <GenerateAssemblyInfo>true</GenerateAssemblyInfo>
-    <AssemblyTitle>NetworkStateManagement</AssemblyTitle>
-    <AssemblyDescription></AssemblyDescription>
-    <AssemblyConfiguration></AssemblyConfiguration>
-    <Company>Microsoft</Company>
-    <Product>NetworkStateManagement</Product>
-    <Copyright>Copyright © Microsoft 2011</Copyright>
-    <Trademark></Trademark>
-    <AssemblyVersion>1.0.0.0</AssemblyVersion>
-    <FileVersion>1.0.0.0</FileVersion>
-    <MonoGamePlatform>DesktopGL</MonoGamePlatform>
-  </PropertyGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\Core\NetworkStateManagement.Core.csproj" />
-    <PackageReference Include="MonoGame.Framework.DesktopGL" Version="3.8.*" />
-    <PackageReference Include="MonoGame.Content.Builder.Task" Version="3.8.*" />
-  </ItemGroup>
+  <Import Project="Desktop.Shared.props" />
 
   <ItemGroup>
-    <MonoGameContentReference Include="..\..\Core\Content\Content.mgcb" />
+    <!-- Itch.io desktop target: no Steam platform SDK wiring. -->
+    <Compile Remove="Program.Steam.cs" />
+    <Compile Remove="DesktopSteamGame.cs" />
   </ItemGroup>
-
-  <ItemGroup>
-    <None Include="NetworkStateManagement.icns">
-      <Link>$(AssemblyName).icns</Link>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
-
 </Project>

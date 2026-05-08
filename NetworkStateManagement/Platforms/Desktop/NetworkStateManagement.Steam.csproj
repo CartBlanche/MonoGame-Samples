@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Steam desktop build.
+  Uses Program.Steam.cs as the entry point (Program.cs is excluded).
+-->
+<Project Sdk="Microsoft.NET.Sdk">
+  <Import Project="Desktop.Shared.props" />
+
+  <ItemGroup>
+    <Compile Remove="Program.cs" />
+    <ProjectReference Include="..\..\..\..\MonoGame.Xna.Framework.Net\Steam\MonoGame.Xna.Framework.Net.Steam.csproj" />
+  </ItemGroup>
+
+  <PropertyGroup>
+    <!-- steam_appid.txt in this directory (default 480 = Steamworks test app). -->
+    <SteamAppIdFile>$(MSBuildProjectDirectory)\steam_appid.txt</SteamAppIdFile>
+  </PropertyGroup>
+
+  <Target Name="CopySteamAppId" AfterTargets="Build">
+    <Copy SourceFiles="$(SteamAppIdFile)"
+          DestinationFolder="$(OutDir)"
+          SkipUnchangedFiles="true"
+          Condition="Exists('$(SteamAppIdFile)')" />
+  </Target>
+</Project>

@@ -71,12 +71,7 @@ namespace NetworkStateManagement
 			Components.Add(screenManager);
 			Components.Add(new MessageDisplayComponent(this));
 			Components.Add(new GamerServicesComponent(this));
-
-			// Activate the first screens.
-			screenManager.AddScreen(new BackgroundScreen(), null);
-			screenManager.AddScreen(new MainMenuScreen(), null);
-
-			// Listen for invite notification events.
+		Components.Add(new PlatformStatusComponent(this));
 			NetworkSession.InviteAccepted += (sender, e) => NetworkSessionComponent.InviteAccepted(screenManager, e);
 
 			// To test the trial mode behavior while developing your game,

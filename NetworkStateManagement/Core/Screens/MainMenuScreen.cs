@@ -26,29 +26,51 @@ namespace NetworkStateManagement
 			MenuEntry singlePlayerMenuEntry = new MenuEntry(Resources.SinglePlayer);
 			// TODO MenuEntry liveMenuEntry = new MenuEntry(Resources.PlayerMatch);
 			MenuEntry systemLinkMenuEntry = new MenuEntry(Resources.SystemLink);
-			MenuEntry exitMenuEntry = new MenuEntry(Resources.Exit);
+		MenuEntry leaderboardsMenuEntry = new MenuEntry("Leaderboards");
+		MenuEntry achievementsMenuEntry = new MenuEntry("Achievements");
+		MenuEntry exitMenuEntry = new MenuEntry(Resources.Exit);
 
-			// Hook up menu event handlers.
-			singlePlayerMenuEntry.Selected += SinglePlayerMenuEntrySelected;
-			// TODO liveMenuEntry.Selected += LiveMenuEntrySelected;
-			systemLinkMenuEntry.Selected += SystemLinkMenuEntrySelected;
-			exitMenuEntry.Selected += OnCancel;
+		// Hook up menu event handlers.
+		singlePlayerMenuEntry.Selected += SinglePlayerMenuEntrySelected;
+		// TODO liveMenuEntry.Selected += LiveMenuEntrySelected;
+		systemLinkMenuEntry.Selected += SystemLinkMenuEntrySelected;
+		leaderboardsMenuEntry.Selected += LeaderboardsMenuEntrySelected;
+		achievementsMenuEntry.Selected += AchievementsMenuEntrySelected;
+		exitMenuEntry.Selected += OnCancel;
 
-			// Add entries to the menu.
-			// TODO MenuEntries.Add(liveMenuEntry);
-			MenuEntries.Add(systemLinkMenuEntry);
-			MenuEntries.Add(singlePlayerMenuEntry);
-			MenuEntries.Add(exitMenuEntry);
-		}
+		// Add entries to the menu.
+		// TODO MenuEntries.Add(liveMenuEntry);
+		MenuEntries.Add(systemLinkMenuEntry);
+		MenuEntries.Add(singlePlayerMenuEntry);
+		MenuEntries.Add(leaderboardsMenuEntry);
+		MenuEntries.Add(achievementsMenuEntry);
+		MenuEntries.Add(exitMenuEntry);
+	}
 
-		/// <summary>
-		/// Event handler for when the Single Player menu entry is selected.
-		/// </summary>
-		void SinglePlayerMenuEntrySelected(object sender, PlayerIndexEventArgs e)
-		{
-			LoadingScreen.Load(ScreenManager, true, e.PlayerIndex,
-				new GameplayScreen(null));
-		}
+	/// <summary>
+	/// Event handler for when the Single Player menu entry is selected.
+	/// </summary>
+	void SinglePlayerMenuEntrySelected(object sender, PlayerIndexEventArgs e)
+	{
+		LoadingScreen.Load(ScreenManager, true, e.PlayerIndex,
+			new GameplayScreen(null));
+	}
+
+	/// <summary>
+	/// Event handler for when the Leaderboards menu entry is selected.
+	/// </summary>
+	void LeaderboardsMenuEntrySelected(object sender, PlayerIndexEventArgs e)
+	{
+		ScreenManager.AddScreen(new LeaderboardsScreen(), e.PlayerIndex);
+	}
+
+	/// <summary>
+	/// Event handler for when the Achievements menu entry is selected.
+	/// </summary>
+	void AchievementsMenuEntrySelected(object sender, PlayerIndexEventArgs e)
+	{
+		ScreenManager.AddScreen(new AchievementsScreen(), e.PlayerIndex);
+	}
 
 		/// <summary>
 		/// Event handler for when the Live menu entry is selected.
