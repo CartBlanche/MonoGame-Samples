@@ -268,6 +268,22 @@ namespace Blackjack
         }
 
         /// <summary>
+        /// Shows a result cue component and optionally plays the local win sound
+        /// at cue start time.
+        /// </summary>
+        /// <param name="obj">Tuple of animation component and whether to play the win sound.</param>
+        void ShowComponentAndMaybePlayWinSound(object obj)
+        {
+            Tuple<AnimatedGameComponent, bool> args = (Tuple<AnimatedGameComponent, bool>)obj;
+            args.Item1.Visible = true;
+
+            if (args.Item2)
+            {
+                AudioManager.PlaySound("Win");
+            }
+        }
+
+        /// <summary>
         /// Adds a player to the game.
         /// </summary>
         /// <param name="player">The player to add.</param>
@@ -559,11 +575,8 @@ namespace Blackjack
             HandTypes animationHand, AnimatedHandGameComponent waitForHand)
         {
             int humanIndex = LocalPlayerIndex >= 0 ? LocalPlayerIndex : 0;
-            if (players.IndexOf(player) == humanIndex &&
-                (assetName == "win" || assetName == "blackjack"))
-            {
-                 AudioManager.PlaySound("Win");
-            }
+            bool playWinSoundOnCueStart = players.IndexOf(player) == humanIndex &&
+                (assetName == "win" || assetName == "blackjack");
 
             // Get the position of the relevant hand
             int playerIndex = players.IndexOf(player);
@@ -603,25 +616,32 @@ namespace Blackjack
                 };
             Game.Components.Add(animationComponent);
 
-            // Calculate when to start the animation. The animation will only begin
-            // after all hand cards finish animating
-            TimeSpan estimatedTimeToCompleteAnimations;
+            // Calculate when to start the animation.
+            // In suspense-sensitive flows (e.g., round result reveal), wait for both
+            // the dealer reveal/deal sequence and the current hand animation completion.
+            TimeSpan estimatedTimeToCompleteAnimations =
+                currentAnimatedHand.EstimatedTimeForAnimationsCompletion();
+
             if (waitForHand != null)
             {
-                estimatedTimeToCompleteAnimations = waitForHand.EstimatedTimeForAnimationsCompletion();
+                TimeSpan waitForHandCompletion = waitForHand.EstimatedTimeForAnimationsCompletion();
+                if (waitForHandCompletion > estimatedTimeToCompleteAnimations)
+                {
+                    estimatedTimeToCompleteAnimations = waitForHandCompletion;
+                }
             }
-            else
-            {
-                estimatedTimeToCompleteAnimations = currentAnimatedHand.EstimatedTimeForAnimationsCompletion();
-            }
+
+            // Add a brief suspense beat before revealing outcome cues.
+            TimeSpan suspenseRevealOffset = TimeSpan.FromMilliseconds(120 * AnimationSpeedMultiplier);
+            estimatedTimeToCompleteAnimations += suspenseRevealOffset;
 
             // Add a scale effect animation
             animationComponent.AddAnimation(new ScaleGameComponentAnimation(2.0f, 1.0f)
             {
                 StartDelay = estimatedTimeToCompleteAnimations,
                 Duration = TimeSpan.FromSeconds(1f * AnimationSpeedMultiplier),
-                PerformBeforeStart = ShowComponent,
-                PerformBeforeStartArgs = animationComponent
+                PerformBeforeStart = ShowComponentAndMaybePlayWinSound,
+                PerformBeforeStartArgs = Tuple.Create(animationComponent, playWinSoundOnCueStart)
             });
         }
 
