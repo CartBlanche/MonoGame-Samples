@@ -34,7 +34,6 @@ namespace Blackjack
 
         // Setting item areas
         private List<SettingItem> settingItems = new List<SettingItem>();
-        private int selectedIndex = -1;
         private int hoveredIndex = -1;
         private int pressedButtonIndex = -1; // Which button is being pressed (-1 for none, 0 for left, 1 for right)
 
