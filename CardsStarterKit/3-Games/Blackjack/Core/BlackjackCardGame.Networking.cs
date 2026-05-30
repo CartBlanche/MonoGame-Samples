@@ -478,6 +478,17 @@ namespace Blackjack
                 return;
             }
 
+            var player = (BlackjackPlayer)players[playerIndex];
+
+            // Chip packets can arrive after BetPlaced due to network timing.
+            // Once betting is finalized for a player, ignore any late chip events
+            // so we do not re-deduct balance after reconciliation.
+            if (player.IsDoneBetting)
+            {
+                Debug.WriteLine($"[ChipAdded] Ignoring late chip for player {playerIndex} because betting is already finalized.");
+                return;
+            }
+
             // When a client places a chip, the deduction already happened locally.
             // The host echoes the packet back to all clients including the originator,
             // so skip re-applying it here to prevent a double-deduction.

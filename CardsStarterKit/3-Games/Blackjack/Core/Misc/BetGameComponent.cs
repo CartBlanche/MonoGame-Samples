@@ -690,10 +690,37 @@ namespace Blackjack
                 return;
             }
 
+            // In network games, currentBet/currentChipComponent should only track
+            // the local human player's in-progress betting UI.
+            int trackedPlayerIndex;
+            BlackjackCardGame networkGame = cardGame as BlackjackCardGame;
+            if (networkGame != null && networkGame.IsNetworkGame && LocalPlayerIndex >= 0)
+            {
+                trackedPlayerIndex = LocalPlayerIndex;
+            }
+            else
+            {
+                trackedPlayerIndex = GetCurrentPlayer();
+            }
+
+            bool trackAsCurrentBet = (playerIndex == trackedPlayerIndex);
+
             // Only add the chip if the bet is successfully performed
             if (((BlackjackPlayer)players[playerIndex]).Bet(chipValue))
             {
-                currentBet += chipValue;
+                if (trackAsCurrentBet)
+                {
+                    currentBet += chipValue;
+                }
+
+                // Use per-player stack count for visual offset so mirrored remote chips
+                // do not alter the local player's chip stack spacing.
+                int playerStackCount = 0;
+                if (playerChipComponents.TryGetValue(playerIndex, out var existingPlayerChips))
+                {
+                    playerStackCount = existingPlayerChips.Count;
+                }
+
                 // Add chip component
                 AnimatedGameComponent chipComponent = new AnimatedGameComponent(cardGame,
                     chipsAssets[chipValue], spriteBatch, globalTransformation)
@@ -712,7 +739,7 @@ namespace Blackjack
                 // Stack chips slightly offset but keep them centered in the ring
                 // Use smaller offsets to prevent drifting from center
                 position = cardGame.GameTable[playerIndex] + offset +
-                    new Vector2(-currentChipComponent.Count * 1, currentChipComponent.Count * 0.5f);
+                    new Vector2(-playerStackCount * 1, playerStackCount * 0.5f);
 
 
                 // Find the index of the chip
@@ -744,8 +771,11 @@ namespace Blackjack
                     AnimationCycles = 3,
                 });
 
-                currentChipComponent.Add(chipComponent);
-                currentChipValues.Add(chipValue); // Track the chip value
+                if (trackAsCurrentBet)
+                {
+                    currentChipComponent.Add(chipComponent);
+                    currentChipValues.Add(chipValue); // Track the local player's current bet stack
+                }
 
                 // Track chip for this player (for win/loss animations)
                 if (!playerChipComponents.ContainsKey(playerIndex))
@@ -773,8 +803,11 @@ namespace Blackjack
                     }
                 }
 
-                // Update Clear button state now that a chip has been added
-                UpdateClearButtonState();
+                // Update Clear button state only for the local tracked bet stack.
+                if (trackAsCurrentBet)
+                {
+                    UpdateClearButtonState();
+                }
             }
         }
 
