@@ -14,6 +14,9 @@ Time to step up. This tutorial builds a complete Gin Rummy game, it's substantia
 
 Expect this to take 6-8 hours. It's **Intermediate** difficulty.
 
+**Framework note:** The snippets below target the current Cards.Framework / Cards.Framework.Core API shape in this repo.
+**Host note:** This tutorial is written to be implemented inside the Blank sample template under `3-Games/Blank/Core/`.
+
 ---
 
 ## What is Gin Rummy?
@@ -57,17 +60,18 @@ We'll build a single round for now. Full match play (first to 100 points) is doa
 Organise your files like this:
 
 ```bash
-mkdir -p 3-Games/GinRummy/Core
-mkdir -p 3-Games/GinRummy/Players
-mkdir -p 3-Games/GinRummy/Rules
-mkdir -p 3-Games/GinRummy/UI
-mkdir -p 3-Games/GinRummy/AI
+mkdir -p 3-Games/Blank/Core/GinRummy/Core
+mkdir -p 3-Games/Blank/Core/GinRummy/Players
+mkdir -p 3-Games/Blank/Core/GinRummy/Rules
+mkdir -p 3-Games/Blank/Core/GinRummy/UI
+mkdir -p 3-Games/Blank/Core/GinRummy/AI
+mkdir -p 3-Games/Blank/Core/GinRummy/Core/Screens
 ```
 
 Your structure will look like:
 
 ```
-3-Games/GinRummy/
+3-Games/Blank/Core/GinRummy/
 ├── Core/
 │   ├── GinRummyCardGame.cs
 │   ├── GinRummyGameState.cs
@@ -81,10 +85,16 @@ Your structure will look like:
 │   ├── GinRule.cs
 │   └── TurnCompleteRule.cs
 ├── UI/
+│   ├── Button.cs (copied from Blackjack)
 │   └── HandOrganizer.cs
+├── Core/
+│   └── Screens/
+│       └── GinRummyGameplayScreen.cs
 └── AI/
-    └── GinRummyAI.cs
+    └── GinRummyNPC.cs
 ```
+
+Then copy `3-Games/Blackjack/Core/UI/Button.cs` into `3-Games/Blank/Core/GinRummy/UI/Button.cs` and change its namespace from `Blackjack` to `GinRummy`.
 
 ---
 
@@ -92,7 +102,7 @@ Your structure will look like:
 
 ### Step 2.1: Game State Enum
 
-**Create:** `3-Games/GinRummy/Core/GinRummyGameState.cs`
+**Create:** `3-Games/Blank/Core/GinRummy/Core/GinRummyGameState.cs`
 
 ```csharp
 namespace GinRummy
@@ -113,14 +123,14 @@ namespace GinRummy
 
 ### Step 2.2: Meld Detection
 
-**Create:** `3-Games/GinRummy/Core/Meld.cs`
+**Create:** `3-Games/Blank/Core/GinRummy/Core/Meld.cs`
 
 A Meld is either a **Set** (3-4 cards of same rank) or a **Run** (3+ consecutive cards of same suit).
 
 ```csharp
 using System.Collections.Generic;
 using System.Linq;
-using CardsFramework.Cards;
+using CardsFramework;
 
 namespace GinRummy
 {
@@ -177,7 +187,7 @@ namespace GinRummy
             return true;
         }
 
-        private static int GetCardNumericValue(TraditionalCard card) => card.Value switch
+        public static int GetCardNumericValue(TraditionalCard card) => card.Value switch
         {
             CardValue.Ace => 1, CardValue.Two => 2, CardValue.Three => 3,
             CardValue.Four => 4, CardValue.Five => 5, CardValue.Six => 6,
@@ -193,12 +203,12 @@ namespace GinRummy
 
 This is the brain of Gin Rummy - finding optimal melds to minimize deadwood.
 
-**Create:** `Core/Game/GinRummy/Game/MeldDetector.cs`
+**Create:** `3-Games/Blank/Core/GinRummy/Core/MeldDetector.cs`
 
 ```csharp
 using System.Collections.Generic;
 using System.Linq;
-using CardsFramework.Cards;
+using CardsFramework;
 
 namespace GinRummy
 {
@@ -454,15 +464,13 @@ Each player tracks their hand, melds, deadwood, and game state. Create two class
 
 ### Step 3.1: GinRummyPlayer (Base)
 
-**Create:** `3-Games/GinRummy/Players/GinRummyPlayer.cs`
+**Create:** `3-Games/Blank/Core/GinRummy/Players/GinRummyPlayer.cs`
 
 This is the core player class. Both human and AI players inherit from it.
 
 ```csharp
 using System.Collections.Generic;
-using CardsFramework.Cards;
-using CardsFramework.Players;
-using CardsFramework.Game;
+using CardsFramework;
 
 namespace GinRummy
 {
@@ -479,45 +487,16 @@ namespace GinRummy
 
         public GinRummyPlayer(string name, CardsGame game) : base(name, game) { }
 
-        public void AnalyseHand()
+        public void AnalyzeHand()
         {
             var handCards = new List<TraditionalCard>(Hand);
             Melds = MeldDetector.FindOptimalMelds(handCards);
             Deadwood = MeldDetector.CalculateDeadwood(handCards, Melds);
-            HasGin = (Deadwood == 0);
-        }
-
-        public bool CanKnock() => Deadwood <= 10;
-
-        public void ResetForNewRound()
-        {
-            Melds.Clear();
-            Deadwood = 0;
-            HasKnocked = false;
-            HasGin = false;
-            RoundScore = 0;
-            IsMyTurn = false;
-            HasDrawn = false;
-        }
-    }
-}
-```
-
-            // Check for Gin (no deadwood)
             HasGin = (Deadwood == 0 && handCards.Count == 10);
         }
 
-        /// <summary>
-        /// Checks if player can knock (deadwood <= 10)
-        /// </summary>
-        public bool CanKnock()
-        {
-            return Deadwood <= 10 && Hand.Count == 10;
-        }
+        public bool CanKnock() => Deadwood <= 10 && Hand.Count == 10;
 
-        /// <summary>
-        /// Resets player state for new round
-        /// </summary>
         public void ResetForNewRound()
         {
             Melds.Clear();
@@ -528,14 +507,12 @@ namespace GinRummy
             IsMyTurn = false;
             HasDrawn = false;
         }
-
-        #endregion
     }
 }
 ```
 
 **Key Methods:**
-- `AnalyseHand()`: Uses `MeldDetector` to find melds and deadwood
+- `AnalyzeHand()`: Uses `MeldDetector` to find melds and deadwood
 - `CanKnock()`: Checks if knock is legal
 - `ResetForNewRound()`: Prepares for next round
 
@@ -544,19 +521,19 @@ namespace GinRummy
 AI-controlled players need a simple wrapper:
 
 ```csharp
-using CardsFramework.Game;
+using CardsFramework;
 
 namespace GinRummy
 {
     public class GinRummyNPCPlayer : GinRummyPlayer
     {
         // NPC logic lives in a separate class
-        public GinRummyNPC NPC { get; private set; }
+        public GinRummyNPC AI { get; private set; }
 
         public GinRummyNPCPlayer(string name, CardsGame game)
             : base(name, game)
         {
-            NPC = new GinRummyNPC(this);
+            AI = new GinRummyNPC(this);
         }
     }
 }
@@ -568,13 +545,13 @@ namespace GinRummy
 
 The NPC class makes all the strategic decisions for a computer player. It decides which cards to draw, which to discard, and when to knock.
 
-**Create:** `Core/Game/GinRummy/AI/GinRummyNPC.cs`
+**Create:** `3-Games/Blank/Core/GinRummy/AI/GinRummyNPC.cs`
 
 ```csharp
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using CardsFramework.Cards;
+using CardsFramework;
 
 namespace GinRummy
 {
@@ -752,11 +729,11 @@ This creates a competent but not unbeatable opponent.
 
 ### Step 5.1: Knock Rule
 
-**Create:** `Core/Game/GinRummy/Rules/KnockRule.cs`
+**Create:** `3-Games/Blank/Core/GinRummy/Rules/KnockRule.cs`
 
 ```csharp
 using System;
-using CardsFramework.Rules;
+using CardsFramework;
 
 namespace GinRummy
 {
@@ -797,11 +774,11 @@ namespace GinRummy
 
 ### Step 5.2: Gin Rule
 
-**Create:** `Core/Game/GinRummy/Rules/GinRule.cs`
+**Create:** `3-Games/Blank/Core/GinRummy/Rules/GinRule.cs`
 
 ```csharp
 using System;
-using CardsFramework.Rules;
+using CardsFramework;
 
 namespace GinRummy
 {
@@ -842,11 +819,11 @@ namespace GinRummy
 
 ### Step 5.3: Turn Complete Rule
 
-**Create:** `Core/Game/GinRummy/Rules/TurnCompleteRule.cs`
+**Create:** `3-Games/Blank/Core/GinRummy/Rules/TurnCompleteRule.cs`
 
 ```csharp
 using System;
-using CardsFramework.Rules;
+using CardsFramework;
 
 namespace GinRummy
 {
@@ -904,7 +881,7 @@ namespace GinRummy
 
 ### Step 6.1: Fields and Initialization
 
-**Create:** `Core/Game/GinRummy/Game/GinRummyCardGame.cs`
+**Create:** `3-Games/Blank/Core/GinRummy/Core/GinRummyCardGame.cs`
 
 ```csharp
 using System;
@@ -912,11 +889,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using CardsFramework.Cards;
-using CardsFramework.Game;
-using CardsFramework.Players;
-using CardsFramework.UI;
-using CardsFramework.Rules;
+using CardsFramework;
 using CardsFramework.Core;
 
 namespace GinRummy
@@ -941,9 +914,11 @@ namespace GinRummy
         }
 
         // UI Components
+        public IReadOnlyList<Player> Players => players;
+
         private List<AnimatedHandGameComponent> animatedHands;
         private AnimatedCardsGameComponent discardPileComponent;
-        private DeckDisplayComponent stockPileComponent;
+        private AnimatedCardsGameComponent stockPileComponent;
 
         private Button buttonDrawStock;
         private Button buttonDrawDiscard;
@@ -984,7 +959,8 @@ namespace GinRummy
                 minimumPlayers: 2,
                 maximumPlayers: 4,
                 gameTable: gameTable,
-                theme: "Default")
+                theme: "Default",
+                game: screenManager.Game)
         {
             this.screenManager = screenManager;
             discardPile = new List<TraditionalCard>();
@@ -993,13 +969,12 @@ namespace GinRummy
             statusText = "";
         }
 
-        public override void Initialize()
+        public void Initialize()
         {
-            base.Initialize();
             currentState = GinRummyGameState.Dealing;
         }
 
-        public override void LoadContent()
+        public void LoadContent()
         {
             base.LoadContent();
 
@@ -1007,10 +982,10 @@ namespace GinRummy
             gameFont = screenManager.Font;
 
             // Get input state for buttons
-            InputState input = new InputState();
+            InputState input = screenManager.InputState;
 
-            int screenWidth = GraphicsDevice.Viewport.Width;
-            int screenHeight = GraphicsDevice.Viewport.Height;
+            int screenWidth = screenManager.SafeArea.Width;
+            int screenHeight = screenManager.SafeArea.Height;
             int buttonWidth = 200;
             int buttonHeight = 60;
 
@@ -1100,23 +1075,32 @@ namespace GinRummy
             buttonNewRound.Visible = false;
             Game.Components.Add(buttonNewRound);
 
-            // Create stock pile display
-            stockPileComponent = new DeckDisplayComponent(dealer, gameTable, Game);
-            stockPileComponent.LoadContent();
-            Game.Components.Add(stockPileComponent);
+            // Create a simple face-down stock pile display
+            if (dealer.Count > 0)
+            {
+                stockPileComponent = new AnimatedCardsGameComponent(
+                    dealer[0],
+                    this,
+                    screenManager.SpriteBatch,
+                    screenManager.GlobalTransformation
+                );
+                stockPileComponent.CurrentPosition = new Vector2(screenWidth / 2 - 100, screenHeight / 2);
+                stockPileComponent.IsFaceDown = true;
+                Game.Components.Add(stockPileComponent);
+            }
 
             // Initialize rules
             knockRule = new KnockRule(this);
             knockRule.RuleMatch += KnockRule_RuleMatch;
-            Rules.Add(knockRule);
+            rules.Add(knockRule);
 
             ginRule = new GinRule(this);
             ginRule.RuleMatch += GinRule_RuleMatch;
-            Rules.Add(ginRule);
+            rules.Add(ginRule);
 
             turnCompleteRule = new TurnCompleteRule(this);
             turnCompleteRule.RuleMatch += TurnCompleteRule_RuleMatch;
-            Rules.Add(turnCompleteRule);
+            rules.Add(turnCompleteRule);
         }
 
         #endregion
@@ -1134,7 +1118,10 @@ namespace GinRummy
                 throw new ArgumentException("Player must be of type GinRummyPlayer");
             }
 
-            base.AddPlayer(newPlayer);
+            if (players.Count >= MaximumPlayers)
+                throw new InvalidOperationException("Maximum players reached.");
+
+            players.Add(newPlayer);
 
             // Create animated hand for this player
             AnimatedHandGameComponent animatedHand = new AnimatedHandGameComponent(
@@ -1144,9 +1131,7 @@ namespace GinRummy
                 screenManager.SpriteBatch,
                 screenManager.GlobalTransformation
             );
-            animatedHand.LoadContent();
             animatedHands.Add(animatedHand);
-            Game.Components.Add(animatedHand);
         }
 
         public override Player GetCurrentPlayer()
@@ -1222,7 +1207,6 @@ namespace GinRummy
             );
             discardPileComponent.CurrentPosition = discardPosition;
             discardPileComponent.IsFaceDown = false;
-            discardPileComponent.LoadContent();
             Game.Components.Add(discardPileComponent);
 
             // Analyze all hands
@@ -1290,7 +1274,7 @@ namespace GinRummy
                 return;
 
             // Remove from hand
-            currentPlayer.Hand.LostCard -= null; // Detach events if any
+            card.MoveToHand(dealer);
             discardPile.Add(card);
 
             // Update visual
@@ -1324,10 +1308,14 @@ namespace GinRummy
                     GraphicsDevice.Viewport.Height / 2
                 );
 
-                discardPileComponent = new AnimatedCardsGameComponent(TopDiscard, Game);
+                discardPileComponent = new AnimatedCardsGameComponent(
+                    TopDiscard,
+                    this,
+                    screenManager.SpriteBatch,
+                    screenManager.GlobalTransformation
+                );
                 discardPileComponent.CurrentPosition = discardPosition;
                 discardPileComponent.IsFaceDown = false;
-                discardPileComponent.LoadContent();
                 Game.Components.Add(discardPileComponent);
             }
         }
@@ -1348,10 +1336,8 @@ namespace GinRummy
             Deal();
         }
 
-        public override void Update(GameTime gameTime)
+        public void Update(GameTime gameTime)
         {
-            base.Update(gameTime);
-
             CheckRules();
             UpdateUIForState();
             ProcessAITurns(gameTime);
@@ -1623,22 +1609,23 @@ namespace GinRummy
             return Meld.GetCardPoints(card);
         }
 
-        public override void Draw(GameTime gameTime)
+        public void Draw(GameTime gameTime)
         {
-            base.Draw(gameTime);
-
             // Draw status text
             if (!string.IsNullOrEmpty(statusText) && gameFont != null)
             {
-                SpriteBatch spriteBatch = (SpriteBatch)Game.Services.GetService(typeof(SpriteBatch));
+                SpriteBatch spriteBatch = screenManager.SpriteBatch;
 
                 if (spriteBatch != null)
                 {
                     Vector2 position = new Vector2(20, 20);
 
                     // Draw with shadow
+                    spriteBatch.Begin(SpriteSortMode.Deferred, null, null, null, null, null,
+                        screenManager.GlobalTransformation);
                     spriteBatch.DrawString(gameFont, statusText, position + new Vector2(2, 2), Color.Black);
                     spriteBatch.DrawString(gameFont, statusText, position, Color.White);
+                    spriteBatch.End();
                 }
             }
         }
@@ -1652,13 +1639,13 @@ namespace GinRummy
 
 ## Part 9: UI Enhancement - Hand Organizer
 
-**Create:** `Core/Game/GinRummy/UI/HandOrganizer.cs`
+**Create:** `3-Games/Blank/Core/GinRummy/UI/HandOrganizer.cs`
 
 ```csharp
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Xna.Framework;
-using CardsFramework.Cards;
+using CardsFramework;
 
 namespace GinRummy
 {
@@ -1764,16 +1751,16 @@ This helper organizes cards visually, grouping melds together and separating dea
 
 ### Step 10.1: Create Gameplay Screen
 
-**Create:** `Core/Game/Screens/GinRummyGameplayScreen.cs`
+**Create:** `3-Games/Blank/Core/GinRummy/Core/Screens/GinRummyGameplayScreen.cs`
 
 ```csharp
 using System;
 using Microsoft.Xna.Framework;
 using GinRummy;
-using CardsFramework.UI;
+using CardsFramework;
 using CardsFramework.Core;
 
-namespace CardsStarterKit
+namespace Blank
 {
     public class GinRummyGameplayScreen : GameScreen
     {
@@ -1789,11 +1776,10 @@ namespace CardsStarterKit
             base.LoadContent();
 
             // Create game table (4 player positions)
-            GameTable gameTable = new GameTable(ScreenManager.Game, 4);
+            GameTable gameTable = new GameTable(ScreenManager.Game, ScreenManager.SpriteBatch, 4);
 
             // Create game
             ginRummyGame = new GinRummyCardGame(gameTable, ScreenManager);
-            ScreenManager.Game.Components.Add(ginRummyGame);
             ginRummyGame.Initialize();
             ginRummyGame.LoadContent();
 
@@ -1809,6 +1795,18 @@ namespace CardsStarterKit
 
             // Start game
             ginRummyGame.StartPlaying();
+        }
+
+        public override void Update(GameTime gameTime, bool otherScreenHasFocus, bool coveredByOtherScreen)
+        {
+            base.Update(gameTime, otherScreenHasFocus, coveredByOtherScreen);
+            ginRummyGame?.Update(gameTime);
+        }
+
+        public override void Draw(GameTime gameTime)
+        {
+            base.Draw(gameTime);
+            ginRummyGame?.Draw(gameTime);
         }
 
         public override void HandleInput(InputState input)
@@ -1841,11 +1839,6 @@ namespace CardsStarterKit
 
         public override void UnloadContent()
         {
-            if (ginRummyGame != null)
-            {
-                ScreenManager.Game.Components.Remove(ginRummyGame);
-            }
-
             base.UnloadContent();
         }
     }
@@ -1854,7 +1847,7 @@ namespace CardsStarterKit
 
 ### Step 10.2: Add Menu Entry
 
-**Modify:** `Core/Game/Screens/MainMenuScreen.cs`
+**Modify:** `3-Games/Blank/Core/Screens/MainMenuScreen.cs`.
 
 ```csharp
 // Add in constructor
@@ -1876,11 +1869,8 @@ private void GinRummyMenuEntrySelected(object sender, EventArgs e)
 ### Step 11.1: Build and Run
 
 ```bash
-dotnet build
-# For macOS/Linux
-dotnet run --project 3-Games/GinRummy/Desktop/GinRummy.csproj
-# For Windows
-dotnet run --project 3-Games/GinRummy/Windows/GinRummy.csproj
+dotnet build 3-Games/Blank/Desktop/Blank.csproj
+dotnet run --project 3-Games/Blank/Desktop/Blank.csproj
 ```
 
 ### Step 11.2: Test Scenarios
@@ -2116,19 +2106,20 @@ Want to explore other variants? Here are some links:
 
 ## Complete File Checklist
 
-- [ ] `Core/Game/GinRummy/Game/GinRummyGameState.cs`
-- [ ] `Core/Game/GinRummy/Game/Meld.cs`
-- [ ] `Core/Game/GinRummy/Game/MeldDetector.cs`
-- [ ] `Core/Game/GinRummy/Game/GinRummyCardGame.cs`
-- [ ] `Core/Game/GinRummy/Players/GinRummyPlayer.cs`
-- [ ] `Core/Game/GinRummy/Players/GinRummyNPCPlayer.cs`
-- [ ] `Core/Game/GinRummy/AI/GinRummyNPC.cs`
-- [ ] `Core/Game/GinRummy/Rules/KnockRule.cs`
-- [ ] `Core/Game/GinRummy/Rules/GinRule.cs`
-- [ ] `Core/Game/GinRummy/Rules/TurnCompleteRule.cs`
-- [ ] `Core/Game/GinRummy/UI/HandOrganizer.cs`
-- [ ] `Core/Game/Screens/GinRummyGameplayScreen.cs`
-- [ ] Modified `Core/Game/Screens/MainMenuScreen.cs`
+- [ ] `3-Games/Blank/Core/GinRummy/Core/GinRummyGameState.cs`
+- [ ] `3-Games/Blank/Core/GinRummy/Core/Meld.cs`
+- [ ] `3-Games/Blank/Core/GinRummy/Core/MeldDetector.cs`
+- [ ] `3-Games/Blank/Core/GinRummy/Core/GinRummyCardGame.cs`
+- [ ] `3-Games/Blank/Core/GinRummy/Players/GinRummyPlayer.cs`
+- [ ] `3-Games/Blank/Core/GinRummy/Players/GinRummyNPCPlayer.cs`
+- [ ] `3-Games/Blank/Core/GinRummy/AI/GinRummyNPC.cs`
+- [ ] `3-Games/Blank/Core/GinRummy/Rules/KnockRule.cs`
+- [ ] `3-Games/Blank/Core/GinRummy/Rules/GinRule.cs`
+- [ ] `3-Games/Blank/Core/GinRummy/Rules/TurnCompleteRule.cs`
+- [ ] `3-Games/Blank/Core/GinRummy/UI/Button.cs`
+- [ ] `3-Games/Blank/Core/GinRummy/UI/HandOrganizer.cs`
+- [ ] `3-Games/Blank/Core/GinRummy/Core/Screens/GinRummyGameplayScreen.cs`
+- [ ] Modified `3-Games/Blank/Core/Screens/MainMenuScreen.cs`
 
 ---
 
