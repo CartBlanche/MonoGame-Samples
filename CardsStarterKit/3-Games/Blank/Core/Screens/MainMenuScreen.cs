@@ -22,6 +22,8 @@ namespace Blank
 
         public override void LoadContent()
         {
+            MenuEntries.Clear();
+
             // Add menu entries
             MenuEntry playGameMenuEntry = new MenuEntry("Play Game");
             MenuEntry exitMenuEntry = new MenuEntry("Exit");

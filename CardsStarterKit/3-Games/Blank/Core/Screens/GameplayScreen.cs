@@ -38,7 +38,11 @@ namespace Blank
             var player = new BlankPlayer("Player 1", cardGame);
             cardGame.AddPlayer(player);
 
-            // Start the game
+            // Load card assets and set up UI components.
+            // See BlankCardGame.UIOrchestration.cs to add buttons and enable card rendering.
+            cardGame.Initialize();
+
+            // Deal first hand and start game logic.
             cardGame.StartPlaying();
 
             base.LoadContent();

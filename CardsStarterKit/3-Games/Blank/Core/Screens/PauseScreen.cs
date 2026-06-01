@@ -23,6 +23,8 @@ namespace Blank
 
         public override void LoadContent()
         {
+            MenuEntries.Clear();
+
             MenuEntry resumeMenuEntry = new MenuEntry("Resume");
             MenuEntry quitMenuEntry = new MenuEntry("Quit to Main Menu");
 

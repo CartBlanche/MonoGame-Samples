@@ -46,12 +46,18 @@ namespace Blank
                 throw new PlatformNotSupportedException();
             }
 
-            screenManager = new ScreenManager(this);
+            // Use the language-aware ScreenManager overload so new games can
+            // opt into runtime language/font switching without changing bootstrap code.
+            screenManager = new ScreenManager(this, () => string.Empty);
 
             // Add screens - start with main menu
             screenManager.AddScreen(new MainMenuScreen(), null);
 
             Components.Add(screenManager);
+
+            // Initialize audio plumbing even if this starter has no sounds yet.
+            // New games can begin calling AudioManager.LoadSound/LoadSong immediately.
+            AudioManager.Initialize(this);
         }
 
         protected override void Initialize()
@@ -65,6 +71,12 @@ namespace Blank
         /// </summary>
         protected override void LoadContent()
         {
+            // Starter hook: load game-specific audio here.
+            // Example:
+            // AudioManager.LoadSound("Click", "Click");
+            // AudioManager.LoadSong("track-name", "MainTheme");
+            // AudioManager.SetPlaylist("MainTheme");
+
             base.LoadContent();
         }
     }
