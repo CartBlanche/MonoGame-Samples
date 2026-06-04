@@ -20,4 +20,7 @@
     <ProjectReference Include="..\1-Framework\Cards.Framework.csproj" />
     <ProjectReference Include="..\..\..\MonoGame.Xna.Framework.Net\MonoGame.Xna.Framework.Net.csproj" />
   </ItemGroup>
+  <ItemGroup>
+    <Compile Remove="Screens/Templates/**/*.cs" />
+  </ItemGroup>
 </Project>
