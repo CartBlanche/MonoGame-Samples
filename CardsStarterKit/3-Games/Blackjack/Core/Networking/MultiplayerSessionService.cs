@@ -1,5 +1,6 @@
 using System;
 using System.Diagnostics;
+using System.Reflection;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework.Net;
 
@@ -60,6 +61,24 @@ namespace Blackjack.Networking
             }
         }
 
+        /// <summary>
+        /// Preferred typed bootstrap path for platform entry points that can reference
+        /// a concrete network factory at compile time. Reflection remains as a fallback
+        /// via <see cref="InitializeBackend(MultiplayerBackend, string)"/>.
+        /// </summary>
+        public static void InitializeBackend(MultiplayerBackend backend, INetworkSessionFactory typedFactory, string gameName = null)
+        {
+            if (typedFactory != null)
+            {
+                ActiveBackend = backend;
+                NetworkServiceProvider.SetSessionFactory(typedFactory);
+                Debug.WriteLine($"[Multiplayer] Registered typed session factory for backend={backend}: {typedFactory.GetType().Name}");
+                return;
+            }
+
+            InitializeBackend(backend, gameName);
+        }
+
         private static bool TryConfigureSteamBackend(string gameName)
         {
             var factoryType = Type.GetType(SteamFactoryTypeName, throwOnError: false);
@@ -68,18 +87,16 @@ namespace Blackjack.Networking
                 return false;
             }
 
-            object factoryInstance = null;
-
-            if (!string.IsNullOrWhiteSpace(gameName))
+            object factoryInstance;
+            try
             {
-                var gameTagCtor = factoryType.GetConstructor(new[] { typeof(string) });
-                if (gameTagCtor != null)
-                {
-                    factoryInstance = gameTagCtor.Invoke(new object[] { gameName });
-                }
+                factoryInstance = CreateFactoryInstance(factoryType, gameName);
             }
-
-            factoryInstance ??= Activator.CreateInstance(factoryType);
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"[Multiplayer] Failed to create Steam factory instance: {ex.Message}");
+                return false;
+            }
 
             if (factoryInstance is INetworkSessionFactory sessionFactory)
             {
@@ -88,6 +105,41 @@ namespace Blackjack.Networking
             }
 
             return false;
+        }
+
+        private static object CreateFactoryInstance(Type factoryType, string gameName)
+        {
+            // Prefer any ctor whose first argument is string and all remaining args are optional.
+            foreach (var ctor in factoryType.GetConstructors(BindingFlags.Public | BindingFlags.Instance))
+            {
+                var parameters = ctor.GetParameters();
+                if (parameters.Length == 0)
+                    continue;
+
+                if (parameters[0].ParameterType != typeof(string))
+                    continue;
+
+                var args = new object[parameters.Length];
+                args[0] = gameName;
+
+                bool usable = true;
+                for (int i = 1; i < parameters.Length; i++)
+                {
+                    if (!parameters[i].IsOptional)
+                    {
+                        usable = false;
+                        break;
+                    }
+
+                    args[i] = Type.Missing;
+                }
+
+                if (usable)
+                    return ctor.Invoke(args);
+            }
+
+            // Fall back to a true parameterless constructor when available.
+            return Activator.CreateInstance(factoryType);
         }
 
         public static Task<NetworkSession> CreateHostSessionAsync(int minPlayers, int maxPlayers)

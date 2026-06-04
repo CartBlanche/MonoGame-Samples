@@ -190,6 +190,15 @@
   <data name="Play" xml:space="preserve">
     <value>Играть</value>
   </data>
+  <data name="Achievements" xml:space="preserve">
+    <value>ДОСТИЖЕНИЯ</value>
+  </data>
+  <data name="Hidden" xml:space="preserve">
+    <value>Скрыто</value>
+  </data>
+  <data name="AchievementUnlockedHeader" xml:space="preserve">
+    <value>ДОСТИЖЕНИЕ ОТКРЫТО</value>
+  </data>
   <data name="Theme" xml:space="preserve">
     <value>Тема</value>
   </data>

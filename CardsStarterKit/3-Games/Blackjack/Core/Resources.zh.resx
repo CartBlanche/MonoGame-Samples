@@ -190,6 +190,15 @@ B按钮、Esc = 取消</value>
   <data name="Play" xml:space="preserve">
     <value>开始</value>
   </data>
+  <data name="Achievements" xml:space="preserve">
+    <value>成就</value>
+  </data>
+  <data name="Hidden" xml:space="preserve">
+    <value>隐藏</value>
+  </data>
+  <data name="AchievementUnlockedHeader" xml:space="preserve">
+    <value>成就已解锁</value>
+  </data>
   <data name="Theme" xml:space="preserve">
     <value>主题</value>
   </data>

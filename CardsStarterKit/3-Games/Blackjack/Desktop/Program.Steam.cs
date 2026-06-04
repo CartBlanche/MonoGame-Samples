@@ -14,7 +14,10 @@ namespace Blackjack.DesktopGL
         static void Main()
         {
             Directory.SetCurrentDirectory(AppContext.BaseDirectory);
-            MultiplayerSessionService.InitializeBackend(MultiplayerBackend.Steam, "Blackjack");
+            MultiplayerSessionService.InitializeBackend(
+                MultiplayerBackend.Steam,
+                new SteamNetworkSessionFactory("Blackjack"),
+                "Blackjack");
             LeaderboardPlatformStatus.ConfigureFromBackend(MultiplayerSessionService.ActiveBackend);
 
             var steamInitialized = SteamRuntime.Initialize();

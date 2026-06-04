@@ -190,6 +190,15 @@ Bボタン、Esc = キャンセル</value>
   <data name="Play" xml:space="preserve">
     <value>プレイ</value>
   </data>
+  <data name="Achievements" xml:space="preserve">
+    <value>実績</value>
+  </data>
+  <data name="Hidden" xml:space="preserve">
+    <value>非表示</value>
+  </data>
+  <data name="AchievementUnlockedHeader" xml:space="preserve">
+    <value>実績解除</value>
+  </data>
   <data name="Theme" xml:space="preserve">
     <value>テーマ</value>
   </data>

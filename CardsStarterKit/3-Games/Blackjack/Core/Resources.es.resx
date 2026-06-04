@@ -191,6 +191,15 @@ Botón B, Esc = Cancelar</value>
   <data name="Play" xml:space="preserve">
     <value>Jugar</value>
   </data>
+  <data name="Achievements" xml:space="preserve">
+    <value>LOGROS</value>
+  </data>
+  <data name="Hidden" xml:space="preserve">
+    <value>Oculto</value>
+  </data>
+  <data name="AchievementUnlockedHeader" xml:space="preserve">
+    <value>LOGRO DESBLOQUEADO</value>
+  </data>
   <data name="Theme" xml:space="preserve">
     <value>Tema</value>
   </data>

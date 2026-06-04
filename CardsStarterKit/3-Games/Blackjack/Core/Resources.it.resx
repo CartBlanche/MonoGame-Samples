@@ -191,6 +191,15 @@ Pulsante B, Esc = Annulla</value>
   <data name="Play" xml:space="preserve">
     <value>Gioca</value>
   </data>
+  <data name="Achievements" xml:space="preserve">
+    <value>OBIETTIVI</value>
+  </data>
+  <data name="Hidden" xml:space="preserve">
+    <value>Nascosto</value>
+  </data>
+  <data name="AchievementUnlockedHeader" xml:space="preserve">
+    <value>OBIETTIVO SBLOCCATO</value>
+  </data>
   <data name="Theme" xml:space="preserve">
     <value>Tema</value>
   </data>

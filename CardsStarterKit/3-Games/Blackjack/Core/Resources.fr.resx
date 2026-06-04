@@ -191,6 +191,15 @@ Bouton B, Échap = Annuler</value>
   <data name="Play" xml:space="preserve">
     <value>Jouer</value>
   </data>
+  <data name="Achievements" xml:space="preserve">
+    <value>SUCCÈS</value>
+  </data>
+  <data name="Hidden" xml:space="preserve">
+    <value>Caché</value>
+  </data>
+  <data name="AchievementUnlockedHeader" xml:space="preserve">
+    <value>SUCCES DEVERROUILLE</value>
+  </data>
   <data name="Theme" xml:space="preserve">
     <value>Thème</value>
   </data>

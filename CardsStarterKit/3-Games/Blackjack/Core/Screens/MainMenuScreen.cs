@@ -61,18 +61,21 @@ namespace Blackjack
 
             // Create our menu entries.
             MenuEntry startGameMenuEntry = new MenuEntry(Resources.Play);
+            MenuEntry achievementsMenuEntry = new MenuEntry(AchievementLocalization.GetAchievementsText());
             MenuEntry settingsMenuEntry = new MenuEntry(Resources.Settings);
             MenuEntry aboutMenuEntry = new MenuEntry(Resources.About);
             MenuEntry exitMenuEntry = new MenuEntry(Resources.Exit);
 
             // Hook up menu event handlers.
             startGameMenuEntry.Selected += StartGameMenuEntrySelected;
+            achievementsMenuEntry.Selected += AchievementsMenuEntrySelected;
             settingsMenuEntry.Selected += SettingsMenuEntrySelected;
             aboutMenuEntry.Selected += AboutMenuEntrySelected;
             exitMenuEntry.Selected += OnCancel;
 
             // Add entries to the menu.
             MenuEntries.Add(startGameMenuEntry);
+            MenuEntries.Add(achievementsMenuEntry);
             MenuEntries.Add(settingsMenuEntry);
             MenuEntries.Add(aboutMenuEntry);
             MenuEntries.Add(exitMenuEntry);
@@ -100,6 +103,11 @@ namespace Blackjack
         void SettingsMenuEntrySelected(object sender, EventArgs e)
         {
             ScreenManager.AddScreen(new SettingsScreen(), null);
+        }
+
+        void AchievementsMenuEntrySelected(object sender, EventArgs e)
+        {
+            ScreenManager.AddScreen(new BlackjackAchievementsScreen(), null);
         }
 
         /// <summary>
@@ -151,6 +159,45 @@ namespace Blackjack
                 SpriteEffects.None,
                 0f);
             spriteBatch.End();
+        }
+
+        public override void UpdateMenuEntryDestination()
+        {
+            Rectangle bounds = ScreenManager.SafeArea;
+            Rectangle textureSize = ScreenManager.ButtonBackground.Bounds;
+
+            if (MenuEntries.Count == 0)
+                return;
+
+            int maxWidth = 0;
+            for (int i = 0; i < MenuEntries.Count; i++)
+            {
+                int width = MenuEntries[i].GetWidth(this);
+                if (width > maxWidth)
+                    maxWidth = width;
+            }
+
+            maxWidth += 20;
+
+            const int verticalGap = 8;
+            const int rightMargin = 24;
+            const int bottomMargin = 24;
+            int stackHeight = MenuEntries.Count * 50 + (MenuEntries.Count - 1) * verticalGap;
+            int x = bounds.Right - rightMargin - maxWidth;
+            int y = bounds.Bottom - bottomMargin - stackHeight;
+
+            // If we run out of room vertically, fall back to base layout.
+            if (y < bounds.Top + 12)
+            {
+                base.UpdateMenuEntryDestination();
+                return;
+            }
+
+            for (int i = 0; i < MenuEntries.Count; i++)
+            {
+                MenuEntries[i].Destination = new Rectangle(x, y, maxWidth, 50);
+                y += 50 + verticalGap;
+            }
         }
     }
 }

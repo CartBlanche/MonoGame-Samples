@@ -14,6 +14,7 @@ using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
+using Microsoft.Xna.Framework.Input.Touch;
 using CardsFramework;
 using CardsFramework.Core;
 using System.Globalization;
@@ -28,6 +29,8 @@ namespace Blackjack
     {
         GraphicsDeviceManager graphicsDeviceManager;
         ScreenManager screenManager;
+        AchievementToastManager achievementToasts;
+        MouseState lastMouseState;
 
         /// <summary>
         /// Initializes a new instance of the game.
@@ -74,6 +77,8 @@ namespace Blackjack
 
         protected override void Initialize()
         {
+            BlackjackAchievements.RegisterCatalogDefinitions();
+            BlackjackAchievements.AchievementUnlocked += OnAchievementUnlocked;
             base.Initialize();
         }
 
@@ -97,6 +102,9 @@ namespace Blackjack
             AudioManager.LoadSong("sunsides-jazzy-soul-207549", "JazzySoul");
             AudioManager.LoadSong("freesound_community-casino-ambiance-19130", "CasinoAmbiance");
             AudioManager.SetPlaylist("NeoSoul", "JazzySoul");
+
+            achievementToasts = new AchievementToastManager(GraphicsDevice, screenManager);
+            achievementToasts.ToastActivated += OnAchievementToastActivated;
 
             base.LoadContent();
         }
@@ -130,6 +138,11 @@ namespace Blackjack
                 }
             }
 
+            PumpNetworkToasts();
+            achievementToasts?.Update(gameTime);
+            HandleAchievementToastInput();
+            lastMouseState = Mouse.GetState();
+
             base.Update(gameTime);
         }
 
@@ -143,9 +156,116 @@ namespace Blackjack
             GraphicsDevice.Clear(Color.Black);
 
             base.Draw(gameTime);
+            achievementToasts?.Draw();
+        }
+
+        protected override void UnloadContent()
+        {
+            BlackjackAchievements.AchievementUnlocked -= OnAchievementUnlocked;
+
+            if (achievementToasts != null)
+                achievementToasts.ToastActivated -= OnAchievementToastActivated;
+
+            achievementToasts?.Dispose();
+            achievementToasts = null;
+
+            base.UnloadContent();
         }
 
         // Flag to prevent multiple fullscreen toggles when keys are held
         private bool wasFullscreenTogglePressed = false;
+
+        private void OnAchievementUnlocked(string achievementKey, string displayName)
+        {
+            achievementToasts?.Enqueue(achievementKey, displayName);
+        }
+
+        private void PumpNetworkToasts()
+        {
+            var component = Services.GetService(typeof(NetworkSessionComponent)) as NetworkSessionComponent;
+            if (component == null || achievementToasts == null)
+                return;
+
+            while (component.TryDequeueSystemMessage(out var message))
+            {
+                string text = FormatNetworkToastMessage(message);
+                if (!string.IsNullOrWhiteSpace(text))
+                    achievementToasts.EnqueueNetworkMessage(text);
+            }
+        }
+
+        private static string FormatNetworkToastMessage(NetworkSessionComponent.SystemMessage message)
+        {
+            if (message == null)
+                return string.Empty;
+
+            switch (message.Kind)
+            {
+                case NetworkSessionComponent.SystemMessageKind.GamerJoined:
+                    return string.Format(Resources.MessageGamerJoined, message.GamerTag ?? string.Empty);
+                case NetworkSessionComponent.SystemMessageKind.GamerLeft:
+                    return string.Format(Resources.MessageGamerLeft, message.GamerTag ?? string.Empty);
+                case NetworkSessionComponent.SystemMessageKind.SessionEnded:
+                    return message.Message ?? "Session ended.";
+                case NetworkSessionComponent.SystemMessageKind.NetworkError:
+                    return message.Message ?? "Network error.";
+                default:
+                    return message.Message ?? string.Empty;
+            }
+        }
+
+        private void OnAchievementToastActivated(object sender, AchievementToastManager.ToastActivatedEventArgs e)
+        {
+            if (e == null)
+                return;
+
+            OpenAchievementsScreen();
+        }
+
+        private void HandleAchievementToastInput()
+        {
+            if (achievementToasts == null)
+                return;
+
+            Matrix inverse = Matrix.Invert(screenManager.GlobalTransformation);
+
+            MouseState mouse = Mouse.GetState();
+            bool mouseReleased = mouse.LeftButton == ButtonState.Pressed && lastMouseState.LeftButton == ButtonState.Released;
+            if (mouseReleased)
+            {
+                Vector2 logical = Vector2.Transform(new Vector2(mouse.X, mouse.Y), inverse);
+                if (achievementToasts.HandleMouseRelease(new Point((int)logical.X, (int)logical.Y)))
+                    return;
+            }
+
+            foreach (TouchLocation touch in TouchPanel.GetState())
+            {
+                if (touch.State != TouchLocationState.Pressed)
+                    continue;
+
+                Vector2 logical = Vector2.Transform(touch.Position, inverse);
+                if (achievementToasts.HandleTap(logical))
+                    return;
+            }
+        }
+
+        private void OpenAchievementsScreen()
+        {
+            if (IsAchievementsScreenOpen())
+                return;
+
+            screenManager.AddScreen(new BlackjackAchievementsScreen(), null);
+        }
+
+        private bool IsAchievementsScreenOpen()
+        {
+            foreach (GameScreen screen in screenManager.GetScreens())
+            {
+                if (screen is BlackjackAchievementsScreen)
+                    return true;
+            }
+
+            return false;
+        }
     }
 }

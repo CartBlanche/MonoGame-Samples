@@ -250,6 +250,15 @@ B button, Esc = Cancel</value>
   <data name="Play" xml:space="preserve">
     <value>Play</value>
   </data>
+  <data name="Achievements" xml:space="preserve">
+    <value>ACHIEVEMENTS</value>
+  </data>
+  <data name="Hidden" xml:space="preserve">
+    <value>Hidden</value>
+  </data>
+  <data name="AchievementUnlockedHeader" xml:space="preserve">
+    <value>ACHIEVEMENT UNLOCKED</value>
+  </data>
   <data name="Theme" xml:space="preserve">
     <value>Theme</value>
   </data>
