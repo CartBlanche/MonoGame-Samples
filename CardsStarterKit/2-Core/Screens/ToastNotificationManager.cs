@@ -50,6 +50,12 @@ namespace CardsFramework.Core
         /// Optional caller-owned payload for activation handlers.
         /// </summary>
         public object Payload { get; set; }
+
+        /// <summary>
+        /// Optional deduplication key used when key deduplication is enabled.
+        /// If empty, <see cref="Identifier"/> is used as a fallback key.
+        /// </summary>
+        public string DeduplicationKey { get; set; } = string.Empty;
     }
 
     /// <summary>
@@ -94,8 +100,8 @@ namespace CardsFramework.Core
         private const float HoldSeconds = 3.00f;
         private const float FadeOutSeconds = 0.40f;
         private const float ToastDuration = SlideInSeconds + HoldSeconds + FadeOutSeconds;
-        private const int ToastWidth = 330;
-        private const int ToastHeight = 74;
+        private const int DefaultToastWidth = 330;
+        private const int DefaultToastHeight = 82;
         private const int ToastGap = 10;
 
         private readonly ScreenManager screenManager;
@@ -104,6 +110,8 @@ namespace CardsFramework.Core
         private readonly Queue<ToastNotification> pending = new Queue<ToastNotification>();
         private readonly List<ActiveToast> active = new List<ActiveToast>();
         private readonly Dictionary<string, ToastVisualStyle> stylesByCategory = new Dictionary<string, ToastVisualStyle>(StringComparer.OrdinalIgnoreCase);
+        private readonly Dictionary<string, float> recentDeduplicationKeys = new Dictionary<string, float>(StringComparer.Ordinal);
+        private float managerClockSeconds;
 
         /// <summary>
         /// Raised when the user clicks or taps an active toast.
@@ -114,6 +122,27 @@ namespace CardsFramework.Core
         /// Vertical offset in pixels from safe-area top where the first toast is rendered.
         /// </summary>
         public int ToastTopOffset { get; set; } = 140;
+
+        /// <summary>
+        /// Toast width in pixels. Defaults to legacy width.
+        /// </summary>
+        public int ToastWidth { get; set; } = DefaultToastWidth;
+
+        /// <summary>
+        /// Toast height in pixels. Defaults to legacy height.
+        /// </summary>
+        public int ToastHeight { get; set; } = DefaultToastHeight;
+
+        /// <summary>
+        /// Enables suppression of duplicate keys seen within <see cref="KeyDeduplicationWindowSeconds"/>.
+        /// Disabled by default to preserve existing behavior.
+        /// </summary>
+        public bool EnableKeyDeduplication { get; set; }
+
+        /// <summary>
+        /// Window in seconds for key deduplication when enabled.
+        /// </summary>
+        public float KeyDeduplicationWindowSeconds { get; set; } = 1.0f;
 
         public ToastNotificationManager(GraphicsDevice graphicsDevice, ScreenManager screenManager)
         {
@@ -127,16 +156,55 @@ namespace CardsFramework.Core
         /// </summary>
         public void Enqueue(ToastNotification notification)
         {
-            if (notification == null || string.IsNullOrWhiteSpace(notification.Title))
+            if (!TryPrepareNotification(notification))
                 return;
 
-            notification.Category ??= "default";
-            notification.Header ??= string.Empty;
-            notification.Identifier ??= string.Empty;
-            notification.Title = notification.Title.Trim();
-            notification.Subtitle ??= string.Empty;
+            if (ShouldSuppressByDeduplication(notification))
+                return;
 
             pending.Enqueue(notification);
+        }
+
+        /// <summary>
+        /// Shows a notification immediately, optionally clearing pending queued notifications first.
+        /// This method is additive and does not change existing <see cref="Enqueue"/> behavior.
+        /// </summary>
+        public void EnqueueImmediate(ToastNotification notification, bool clearPending = false)
+        {
+            if (!TryPrepareNotification(notification))
+                return;
+
+            if (ShouldSuppressByDeduplication(notification))
+                return;
+
+            if (clearPending)
+                pending.Clear();
+
+            active.Insert(0, new ActiveToast
+            {
+                Notification = notification,
+                Time = 0f,
+            });
+
+            while (active.Count > 2)
+                active.RemoveAt(active.Count - 1);
+
+            PromotePendingIcon(notification);
+        }
+
+        /// <summary>
+        /// Clears active and/or pending notifications.
+        /// </summary>
+        public void ClearAll(bool includeActive = true, bool includePending = true)
+        {
+            if (includeActive)
+                active.Clear();
+
+            if (includePending)
+                pending.Clear();
+
+            if (includeActive || includePending)
+                recentDeduplicationKeys.Clear();
         }
 
         /// <summary>
@@ -159,6 +227,8 @@ namespace CardsFramework.Core
                 return;
 
             float dt = (float)gameTime.ElapsedGameTime.TotalSeconds;
+            managerClockSeconds += Math.Max(0f, dt);
+
             for (int i = active.Count - 1; i >= 0; i--)
             {
                 active[i].Time += dt;
@@ -176,6 +246,7 @@ namespace CardsFramework.Core
             }
 
             PromotePendingIconsToTextures();
+            PruneDeduplicationHistory();
         }
 
         /// <summary>
@@ -249,10 +320,12 @@ namespace CardsFramework.Core
                 slideT = p * 0.15f;
             }
 
-            int baseX = safe.Right - ToastWidth - 16;
-            int baseY = safe.Top + ToastTopOffset + stackIndex * (ToastHeight + ToastGap);
+            int toastWidth = Math.Max(220, ToastWidth);
+            int toastHeight = Math.Max(64, ToastHeight);
+            int baseX = safe.Right - toastWidth - 16;
+            int baseY = safe.Top + ToastTopOffset + stackIndex * (toastHeight + ToastGap);
             int slideX = (int)(26f * slideT);
-            Rectangle rect = new Rectangle(baseX + slideX, baseY, ToastWidth, ToastHeight);
+            Rectangle rect = new Rectangle(baseX + slideX, baseY, toastWidth, toastHeight);
 
             ToastVisualStyle style = ResolveStyle(toast.Notification?.Category);
             Color frame = style.FrameColor * alpha;
@@ -272,28 +345,31 @@ namespace CardsFramework.Core
                 sb.Draw(pixel, new Rectangle(rect.X + 10, rect.Y + 12, 6, 16), style.AccentHighlightColor * alpha);
             }
 
+            bool hasIcon = toast.Notification?.IconTexture != null;
             const int iconSize = 42;
             int iconX = rect.X + 18;
             int iconY = rect.Y + (rect.Height - iconSize) / 2;
-            if (toast.Notification?.IconTexture != null)
+            if (hasIcon)
                 sb.Draw(toast.Notification.IconTexture, new Rectangle(iconX, iconY, iconSize, iconSize), Color.White * alpha);
 
-            float textLeft = iconX + iconSize + 12;
+            float textLeft = hasIcon ? iconX + iconSize + 16 : rect.X + 28;
             float maxTextWidth = rect.Right - textLeft - 10;
 
             string fittedHeader = FitTextToWidth(subtitleFont, toast.Notification?.Header, maxTextWidth, 0.65f);
-            string fittedTitle = FitTextToWidth(titleFont, toast.Notification?.Title, maxTextWidth, 0.65f);
+            string[] titleLines = WrapTextToWidth(titleFont, toast.Notification?.Title, maxTextWidth, 2, 0.65f);
             string fittedSubtitle = FitTextToWidth(subtitleFont, toast.Notification?.Subtitle, maxTextWidth, 0.60f);
 
             float headerScale = ComputeScale(subtitleFont, fittedHeader, maxTextWidth, 0.65f);
-            float titleScale = ComputeScale(titleFont, fittedTitle, maxTextWidth, 0.64f);
+            float titleScale = ComputeScale(titleFont, string.Join(" ", titleLines), maxTextWidth, 0.64f);
             float subtitleScale = ComputeScale(subtitleFont, fittedSubtitle, maxTextWidth, 0.60f);
 
             bool hasSubtitle = !string.IsNullOrWhiteSpace(fittedSubtitle);
+            bool hasHeader = !string.IsNullOrWhiteSpace(fittedHeader);
             float headerY = hasSubtitle ? rect.Y + 7 : rect.Y + 12;
-            float titleY = hasSubtitle ? rect.Y + 24 : rect.Y + 34;
+            float titleY = (!hasHeader && !hasSubtitle) ? rect.Y + 12 : (hasSubtitle ? rect.Y + 24 : rect.Y + 34);
+            float titleLineHeight = titleFont.LineSpacing * titleScale;
 
-            if (!string.IsNullOrEmpty(fittedHeader))
+            if (hasHeader)
             {
                 sb.DrawString(subtitleFont, fittedHeader,
                     new Vector2(textLeft, headerY),
@@ -301,10 +377,16 @@ namespace CardsFramework.Core
                     0f, Vector2.Zero, headerScale, SpriteEffects.None, 0f);
             }
 
-            sb.DrawString(titleFont, fittedTitle,
-                new Vector2(textLeft, titleY),
-                Color.White * alpha,
-                0f, Vector2.Zero, titleScale, SpriteEffects.None, 0f);
+            for (int i = 0; i < titleLines.Length; i++)
+            {
+                if (string.IsNullOrWhiteSpace(titleLines[i]))
+                    continue;
+
+                sb.DrawString(titleFont, titleLines[i],
+                    new Vector2(textLeft, titleY + (i * titleLineHeight)),
+                    Color.White * alpha,
+                    0f, Vector2.Zero, titleScale, SpriteEffects.None, 0f);
+            }
 
             if (hasSubtitle)
             {
@@ -359,11 +441,70 @@ namespace CardsFramework.Core
             return ellipsis;
         }
 
+        private static string[] WrapTextToWidth(SpriteFont font, string text, float maxWidth, int maxLines, float minScale)
+        {
+            if (font == null || string.IsNullOrWhiteSpace(text) || maxWidth <= 0f || maxLines <= 0)
+                return Array.Empty<string>();
+
+            string candidate = text.Trim();
+            if (font.MeasureString(candidate).X * minScale <= maxWidth)
+                return new[] { candidate };
+
+            string[] words = candidate.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+            if (words.Length == 0)
+                return Array.Empty<string>();
+
+            if (maxLines == 1)
+                return new[] { FitTextToWidth(font, candidate, maxWidth, minScale) };
+
+            var lines = new List<string>();
+            string currentLine = words[0];
+
+            for (int i = 1; i < words.Length; i++)
+            {
+                string word = words[i];
+                string trial = currentLine + " " + word;
+
+                if (font.MeasureString(trial).X * minScale <= maxWidth)
+                {
+                    currentLine = trial;
+                    continue;
+                }
+
+                lines.Add(currentLine);
+
+                if (lines.Count >= maxLines - 1)
+                {
+                    string remaining = string.Join(" ", words, i, words.Length - i);
+                    lines.Add(FitTextToWidth(font, remaining, maxWidth, minScale));
+                    return lines.ToArray();
+                }
+
+                if (font.MeasureString(word).X * minScale <= maxWidth)
+                {
+                    currentLine = word;
+                }
+                else
+                {
+                    currentLine = FitTextToWidth(font, word, maxWidth, minScale);
+                }
+            }
+
+            lines.Add(currentLine);
+
+            if (lines.Count > maxLines)
+                lines.RemoveRange(maxLines, lines.Count - maxLines);
+
+            return lines.ToArray();
+        }
+
         private Rectangle GetToastBounds(int stackIndex, ActiveToast toast)
         {
             Rectangle safe = screenManager.SafeArea;
-            int baseX = safe.Right - ToastWidth - 16;
-            int baseY = safe.Top + ToastTopOffset + stackIndex * (ToastHeight + ToastGap);
+            int toastWidth = Math.Max(220, ToastWidth);
+            int toastHeight = Math.Max(64, ToastHeight);
+            int baseX = safe.Right - toastWidth - 16;
+            int baseY = safe.Top + ToastTopOffset + stackIndex * (toastHeight + ToastGap);
             float t = toast?.Time ?? 0f;
 
             if (t < SlideInSeconds)
@@ -377,7 +518,7 @@ namespace CardsFramework.Core
                 baseX += (int)(26f * p * 0.15f);
             }
 
-            return new Rectangle(baseX, baseY, ToastWidth, ToastHeight);
+            return new Rectangle(baseX, baseY, toastWidth, toastHeight);
         }
 
         private void PromotePendingIconsToTextures()
@@ -420,6 +561,92 @@ namespace CardsFramework.Core
             {
                 // Keep fallback icon path on decode failures.
             }
+        }
+
+        private bool TryPrepareNotification(ToastNotification notification)
+        {
+            if (notification == null || string.IsNullOrWhiteSpace(notification.Title))
+                return false;
+
+            notification.Category ??= "default";
+            notification.Header ??= string.Empty;
+            notification.Identifier ??= string.Empty;
+            notification.DeduplicationKey ??= string.Empty;
+            notification.Title = notification.Title.Trim();
+            notification.Subtitle ??= string.Empty;
+            return true;
+        }
+
+        private bool ShouldSuppressByDeduplication(ToastNotification notification)
+        {
+            if (!EnableKeyDeduplication)
+                return false;
+
+            float windowSeconds = Math.Max(0f, KeyDeduplicationWindowSeconds);
+            if (windowSeconds <= 0f)
+                return false;
+
+            string key = ResolveDeduplicationKey(notification);
+            if (string.IsNullOrWhiteSpace(key))
+                return false;
+
+            if (recentDeduplicationKeys.TryGetValue(key, out float lastSeenAt) &&
+                managerClockSeconds - lastSeenAt <= windowSeconds)
+            {
+                return true;
+            }
+
+            recentDeduplicationKeys[key] = managerClockSeconds;
+            return false;
+        }
+
+        private static string ResolveDeduplicationKey(ToastNotification notification)
+        {
+            if (notification == null)
+                return string.Empty;
+
+            string explicitKey = (notification.DeduplicationKey ?? string.Empty).Trim();
+            if (!string.IsNullOrWhiteSpace(explicitKey))
+                return explicitKey;
+
+            string identifier = (notification.Identifier ?? string.Empty).Trim();
+            if (!string.IsNullOrWhiteSpace(identifier))
+                return identifier;
+
+            return string.Empty;
+        }
+
+        private void PruneDeduplicationHistory()
+        {
+            if (recentDeduplicationKeys.Count == 0)
+                return;
+
+            float windowSeconds = Math.Max(0f, KeyDeduplicationWindowSeconds);
+            if (!EnableKeyDeduplication || windowSeconds <= 0f)
+            {
+                recentDeduplicationKeys.Clear();
+                return;
+            }
+
+            float staleBefore = managerClockSeconds - (windowSeconds * 4f);
+            if (staleBefore <= 0f)
+                return;
+
+            List<string> staleKeys = null;
+            foreach (KeyValuePair<string, float> pair in recentDeduplicationKeys)
+            {
+                if (pair.Value >= staleBefore)
+                    continue;
+
+                staleKeys ??= new List<string>();
+                staleKeys.Add(pair.Key);
+            }
+
+            if (staleKeys == null)
+                return;
+
+            for (int i = 0; i < staleKeys.Count; i++)
+                recentDeduplicationKeys.Remove(staleKeys[i]);
         }
 
         public void Dispose()

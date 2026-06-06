@@ -45,6 +45,10 @@ namespace CardsFramework.Core
         bool isPlaylistActive;
         int currentTrackIndex;
         float currentVolumeMultiplier;
+        bool isMusicFadingOut;
+        float musicFadeDurationSeconds;
+        float musicFadeElapsedSeconds;
+        float musicFadeStartVolume;
 
         // Volume providers — injected at Initialize() so AudioManager has no dependency on game-specific settings
         Func<float> soundVolumeProvider;
@@ -296,6 +300,7 @@ namespace CardsFramework.Core
             // If the music sound exists
             if (audioManager.musicBank.ContainsKey(musicSoundName))
             {
+                audioManager.isMusicFadingOut = false;
                 audioManager.isPlaylistActive = false; // Single track — no playlist cycling
 
                 if (MediaPlayer.State != MediaState.Stopped)
@@ -318,6 +323,7 @@ namespace CardsFramework.Core
             if (audioManager.playlist == null || audioManager.playlist.Count == 0)
                 return;
 
+            audioManager.isMusicFadingOut = false;
             audioManager.currentTrackIndex = 0;
             audioManager.currentVolumeMultiplier = MathHelper.Clamp(volumeMultiplier, 0f, 1f);
             audioManager.isPlaylistActive = true;
@@ -346,6 +352,26 @@ namespace CardsFramework.Core
         {
             base.Update(gameTime);
 
+            if (isMusicFadingOut)
+            {
+                if (MediaPlayer.State == MediaState.Stopped)
+                {
+                    isMusicFadingOut = false;
+                }
+                else
+                {
+                    musicFadeElapsedSeconds += (float)gameTime.ElapsedGameTime.TotalSeconds;
+                    float t = MathHelper.Clamp(musicFadeElapsedSeconds / musicFadeDurationSeconds, 0f, 1f);
+                    MediaPlayer.Volume = MathHelper.Lerp(musicFadeStartVolume, 0f, t);
+
+                    if (t >= 1f)
+                    {
+                        MediaPlayer.Stop();
+                        isMusicFadingOut = false;
+                    }
+                }
+            }
+
             if (isPlaylistActive && MediaPlayer.State == MediaState.Stopped)
             {
                 currentTrackIndex = (currentTrackIndex + 1) % playlist.Count;
@@ -356,13 +382,27 @@ namespace CardsFramework.Core
         /// <summary>
         /// Stops the currently playing music.
         /// </summary>
-        public static void StopMusic()
+        public static void StopMusic(float fadeOutSeconds = 0f)
         {
             audioManager.isPlaylistActive = false; // Prevent Update() from restarting
-            if (MediaPlayer.State != MediaState.Stopped)
+
+            if (MediaPlayer.State == MediaState.Stopped)
             {
-                MediaPlayer.Stop();
+                audioManager.isMusicFadingOut = false;
+                return;
             }
+
+            if (fadeOutSeconds > 0f)
+            {
+                audioManager.isMusicFadingOut = true;
+                audioManager.musicFadeDurationSeconds = fadeOutSeconds;
+                audioManager.musicFadeElapsedSeconds = 0f;
+                audioManager.musicFadeStartVolume = MediaPlayer.Volume;
+                return;
+            }
+
+            audioManager.isMusicFadingOut = false;
+            MediaPlayer.Stop();
         }
 
         /// <summary>
