@@ -339,16 +339,17 @@ namespace CardsFramework.Core
             sb.Draw(pixel, new Rectangle(rect.X, rect.Y, 2, rect.Height), frame);
             sb.Draw(pixel, new Rectangle(rect.Right - 2, rect.Y, 2, rect.Height), frame);
 
+            bool hasIcon = toast.Notification?.IconTexture != null;
+            const int iconSize = 64;
+            int iconX = rect.X + 26;
+            int iconY = rect.Y + (rect.Height - iconSize) / 2;
+
             if (style.ShowAccentBar)
             {
-                sb.Draw(pixel, new Rectangle(rect.X + 10, rect.Y + 12, 6, rect.Height - 24), style.AccentColor * alpha);
-                sb.Draw(pixel, new Rectangle(rect.X + 10, rect.Y + 12, 6, 16), style.AccentHighlightColor * alpha);
+                sb.Draw(pixel, new Rectangle(rect.X + 14, iconY, 6, iconSize), style.AccentColor * alpha);
+                sb.Draw(pixel, new Rectangle(rect.X + 14, iconY, 6, 18), style.AccentHighlightColor * alpha);
             }
 
-            bool hasIcon = toast.Notification?.IconTexture != null;
-            const int iconSize = 42;
-            int iconX = rect.X + 18;
-            int iconY = rect.Y + (rect.Height - iconSize) / 2;
             if (hasIcon)
                 sb.Draw(toast.Notification.IconTexture, new Rectangle(iconX, iconY, iconSize, iconSize), Color.White * alpha);
 
