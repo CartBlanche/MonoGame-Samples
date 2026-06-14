@@ -21,6 +21,6 @@
   <ItemGroup>
     <ProjectReference Include="..\..\..\1-Framework\Cards.Framework.csproj" />
     <ProjectReference Include="..\..\..\2-Core\Cards.Framework.Core.csproj" />
-    <ProjectReference Include="..\..\..\..\..\MonoGame.Xna.Framework.Net\MonoGame.Xna.Framework.Net.csproj" />
+    <ProjectReference Include="..\..\..\..\..\MonoGame.Xna.Framework.Net\Core\MonoGame.Xna.Framework.Net.csproj" />
   </ItemGroup>
 </Project>
