@@ -389,9 +389,12 @@ namespace CardsFramework.Core
 
             bool hasSubtitle = !string.IsNullOrWhiteSpace(fittedSubtitle);
             bool hasHeader = !string.IsNullOrWhiteSpace(fittedHeader);
-            float headerY = hasSubtitle ? rect.Y + 7 : rect.Y + 12;
-            float titleY = (!hasHeader && !hasSubtitle) ? rect.Y + 12 : (hasSubtitle ? rect.Y + 24 : rect.Y + 34);
             float titleLineHeight = titleFont.LineSpacing * titleScale;
+            float headerLineHeight = subtitleFont.LineSpacing * headerScale;
+
+            // Calculate Y positions dynamically based on content
+            float currentY = rect.Y + 6;
+            float headerY = currentY;
 
             if (hasHeader)
             {
@@ -399,8 +402,10 @@ namespace CardsFramework.Core
                     new Vector2(textLeft, headerY),
                     new Color(211, 202, 164) * alpha,
                     0f, Vector2.Zero, headerScale, SpriteEffects.None, 0f);
+                currentY += headerLineHeight + 2;
             }
 
+            float titleY = currentY;
             for (int i = 0; i < titleLines.Length; i++)
             {
                 if (string.IsNullOrWhiteSpace(titleLines[i]))
@@ -414,8 +419,10 @@ namespace CardsFramework.Core
 
             if (hasSubtitle)
             {
+                // Position subtitle after all title lines
+                float subtitleY = titleY + (titleLines.Length * titleLineHeight) + 2;
                 sb.DrawString(subtitleFont, fittedSubtitle,
-                    new Vector2(textLeft, rect.Y + 50),
+                    new Vector2(textLeft, subtitleY),
                     new Color(225, 205, 168) * alpha,
                     0f, Vector2.Zero, subtitleScale, SpriteEffects.None, 0f);
             }
