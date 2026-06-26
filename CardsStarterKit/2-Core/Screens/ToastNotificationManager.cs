@@ -94,6 +94,7 @@ namespace CardsFramework.Core
         {
             public ToastNotification Notification;
             public float Time;
+            public float VisualSlotIndex;  // fractional slot position for smooth animation
         }
 
         private const float SlideInSeconds = 0.22f;
@@ -184,6 +185,7 @@ namespace CardsFramework.Core
             {
                 Notification = notification,
                 Time = 0f,
+                VisualSlotIndex = 1f,  // start below the current top toast
             });
 
             while (active.Count > 2)
@@ -242,7 +244,28 @@ namespace CardsFramework.Core
                 {
                     Notification = pending.Dequeue(),
                     Time = 0f,
+                    VisualSlotIndex = active.Count,  // start at the position it enters
                 });
+            }
+
+            // Animate each toast's visual slot toward its target (list index)
+            for (int i = 0; i < active.Count; i++)
+            {
+                float targetSlot = (float)i;
+                float diff = Math.Abs(active[i].VisualSlotIndex - targetSlot);
+
+                if (diff > 0.01f)
+                {
+                    // Smooth ease-out toward target slot (same curve as scroll animation)
+                    active[i].VisualSlotIndex = MathHelper.Lerp(
+                        active[i].VisualSlotIndex,
+                        targetSlot,
+                        1f - MathF.Pow(0.002f, dt));
+                }
+                else
+                {
+                    active[i].VisualSlotIndex = targetSlot;  // snap to exact position when close
+                }
             }
 
             PromotePendingIconsToTextures();
@@ -256,7 +279,7 @@ namespace CardsFramework.Core
         {
             for (int i = 0; i < active.Count; i++)
             {
-                if (!GetToastBounds(i, active[i]).Contains(location))
+                if (!GetToastBounds(active[i]).Contains(location))
                     continue;
 
                 ToastActivated?.Invoke(this, new ToastNotificationActivatedEventArgs(active[i].Notification));
@@ -292,11 +315,11 @@ namespace CardsFramework.Core
 
             sb.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.LinearClamp, DepthStencilState.None, RasterizerState.CullNone);
             for (int i = 0; i < active.Count; i++)
-                DrawToast(sb, titleFont, subtitleFont, safe, i, active[i]);
+                DrawToast(sb, titleFont, subtitleFont, safe, active[i]);
             sb.End();
         }
 
-        private void DrawToast(SpriteBatch sb, SpriteFont titleFont, SpriteFont subtitleFont, Rectangle safe, int stackIndex, ActiveToast toast)
+        private void DrawToast(SpriteBatch sb, SpriteFont titleFont, SpriteFont subtitleFont, Rectangle safe, ActiveToast toast)
         {
             float t = toast.Time;
             float alpha;
@@ -323,7 +346,7 @@ namespace CardsFramework.Core
             int toastWidth = Math.Max(220, ToastWidth);
             int toastHeight = Math.Max(64, ToastHeight);
             int baseX = safe.Right - toastWidth - 16;
-            int baseY = safe.Top + ToastTopOffset + stackIndex * (toastHeight + ToastGap);
+            int baseY = safe.Top + ToastTopOffset + (int)(toast.VisualSlotIndex * (toastHeight + ToastGap));
             int slideX = (int)(26f * slideT);
             Rectangle rect = new Rectangle(baseX + slideX, baseY, toastWidth, toastHeight);
 
@@ -499,13 +522,13 @@ namespace CardsFramework.Core
             return lines.ToArray();
         }
 
-        private Rectangle GetToastBounds(int stackIndex, ActiveToast toast)
+        private Rectangle GetToastBounds(ActiveToast toast)
         {
             Rectangle safe = screenManager.SafeArea;
             int toastWidth = Math.Max(220, ToastWidth);
             int toastHeight = Math.Max(64, ToastHeight);
             int baseX = safe.Right - toastWidth - 16;
-            int baseY = safe.Top + ToastTopOffset + stackIndex * (toastHeight + ToastGap);
+            int baseY = safe.Top + ToastTopOffset + (int)(toast.VisualSlotIndex * (toastHeight + ToastGap));
             float t = toast?.Time ?? 0f;
 
             if (t < SlideInSeconds)
