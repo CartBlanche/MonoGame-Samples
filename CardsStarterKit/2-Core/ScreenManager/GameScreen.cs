@@ -357,6 +357,41 @@ namespace CardsFramework.Core
 
 
         /// <summary>
+        /// Calculates a scissor rectangle for clipping content to the game area.
+        /// Useful for preventing drawing outside the playable area on letterboxed displays.
+        /// </summary>
+        /// <param name="transform">The GlobalTransformation matrix that maps game-space to device-space.</param>
+        /// <param name="topClipOffset">Offset from top of game area (negative moves clip boundary up to clip more).</param>
+        /// <param name="bottomClipOffset">Offset from bottom of game area (positive moves clip boundary up to clip more).</param>
+        /// <returns>A Rectangle in device-space for use with GraphicsDevice.ScissorRectangle.</returns>
+        protected Rectangle CalculateScissorRectangle(Matrix transform, float topClipOffset = 0, float bottomClipOffset = 0)
+        {
+            var baseSize = ScreenManager.BaseScreenSize;
+            var corners = new Vector2[]
+            {
+                new Vector2(0, topClipOffset),
+                new Vector2(baseSize.X, topClipOffset),
+                new Vector2(0, baseSize.Y - bottomClipOffset),
+                new Vector2(baseSize.X, baseSize.Y - bottomClipOffset)
+            };
+
+            var transformed0 = Vector2.Transform(corners[0], transform);
+            Vector2 minCorner = transformed0;
+            Vector2 maxCorner = transformed0;
+
+            for (int i = 1; i < corners.Length; i++)
+            {
+                var transformed = Vector2.Transform(corners[i], transform);
+                minCorner = Vector2.Min(minCorner, transformed);
+                maxCorner = Vector2.Max(maxCorner, transformed);
+            }
+
+            return new Rectangle((int)minCorner.X, (int)minCorner.Y,
+                                (int)(maxCorner.X - minCorner.X),
+                                (int)(maxCorner.Y - minCorner.Y));
+        }
+
+        /// <summary>
         /// A helper method which loads assets using the screen manager's
         /// associated game content loader.
         /// </summary>
