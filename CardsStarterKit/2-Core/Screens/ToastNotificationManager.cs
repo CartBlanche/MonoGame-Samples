@@ -312,8 +312,9 @@ namespace CardsFramework.Core
                 return;
 
             Rectangle safe = screenManager.SafeArea;
+            Matrix transform = screenManager.GlobalTransformation;
 
-            sb.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.LinearClamp, DepthStencilState.None, RasterizerState.CullNone);
+            sb.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.LinearClamp, DepthStencilState.None, RasterizerState.CullNone, null, transform);
             for (int i = 0; i < active.Count; i++)
                 DrawToast(sb, titleFont, subtitleFont, safe, active[i]);
             sb.End();

@@ -228,7 +228,32 @@ namespace CardsFramework.Core
             sb.End();
 
             Rectangle oldScissor = ScreenManager.GraphicsDevice.ScissorRectangle;
-            ScreenManager.GraphicsDevice.ScissorRectangle = _listViewport;
+
+            // Transform the list viewport through GlobalTransformation for correct device-space clipping
+            var corners = new Vector2[]
+            {
+                new Vector2(_listViewport.Left, _listViewport.Top),
+                new Vector2(_listViewport.Right, _listViewport.Top),
+                new Vector2(_listViewport.Left, _listViewport.Bottom),
+                new Vector2(_listViewport.Right, _listViewport.Bottom)
+            };
+
+            var transformed0 = Vector2.Transform(corners[0], xform);
+            Vector2 minCorner = transformed0;
+            Vector2 maxCorner = transformed0;
+
+            for (int i = 1; i < corners.Length; i++)
+            {
+                var transformed = Vector2.Transform(corners[i], xform);
+                minCorner = Vector2.Min(minCorner, transformed);
+                maxCorner = Vector2.Max(maxCorner, transformed);
+            }
+
+            var transformedViewport = new Rectangle((int)minCorner.X, (int)minCorner.Y,
+                                                    (int)(maxCorner.X - minCorner.X),
+                                                    (int)(maxCorner.Y - minCorner.Y));
+
+            ScreenManager.GraphicsDevice.ScissorRectangle = transformedViewport;
 
             sb.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.LinearClamp, null, ScissorRasterizer, null, xform);
 
