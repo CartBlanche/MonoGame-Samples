@@ -16,7 +16,7 @@ NetworkStateManagement is a MonoGame-based project demonstrating network state m
 - `/Platforms/iOS` - iOS-specific entry point and project
 
 ## Prerequisites
-- .NET 8.0 SDK or later
+- .NET 10.0 SDK or later
 - MonoGame 3.8.*
 - Visual Studio Code or Visual Studio
 

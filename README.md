@@ -2,6 +2,8 @@
 
 This repository contains a collection of cross-platform MonoGame samples and game projects that should compile on Windows, macOS, Linux, iOS and Android.  Each sample demonstrates different game development concepts, features, or genres. For detailed information about each sample, see the linked README in each sub-directory.
 
+[![Build Samples](https://github.com/CartBlanche/MonoGame-Samples/actions/workflows/build-samples.yml/badge.svg)](https://github.com/CartBlanche/MonoGame-Samples/actions/workflows/build-samples.yml)
+
 ---
 
 ## How to Contribute
