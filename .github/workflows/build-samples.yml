@@ -80,11 +80,15 @@ jobs:
             echo "projects=[]" >> "$GITHUB_OUTPUT"
           else
             json=$(jq -R . < "$success_tmp" | jq -s -c .)
-            echo "projects=$json" >> "$GITHUB_OUTPUT"
+            echo "projects<<EOF" >> "$GITHUB_OUTPUT"
+            echo "$json" >> "$GITHUB_OUTPUT"
+            echo "EOF" >> "$GITHUB_OUTPUT"
           fi
           if [ -s "$skipped_tmp" ]; then
             skipped_json=$(jq -R . < "$skipped_tmp" | jq -s -c .)
-            echo "skipped=$skipped_json" >> "$GITHUB_OUTPUT"
+            echo "skipped<<EOF" >> "$GITHUB_OUTPUT"
+            echo "$skipped_json" >> "$GITHUB_OUTPUT"
+            echo "EOF" >> "$GITHUB_OUTPUT"
           else
             echo "skipped=[]" >> "$GITHUB_OUTPUT"
           fi
