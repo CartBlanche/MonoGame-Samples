@@ -130,7 +130,7 @@ jobs:
           echo "Linked sibling repo path: $GITHUB_WORKSPACE/../MonoGame.Xna.Framework.Net"
 
       - name: Setup .NET 8 & 10
-        uses: actions/setup-dotnet@v4
+        uses: actions/setup-dotnet@v6
         with:
           dotnet-version: |
             8.0.x
