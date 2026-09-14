@@ -172,7 +172,7 @@ jobs:
           echo "Packaging $NAME for all desktop platforms"
           if [ -f "$ICNS_FILE" ]; then
             echo "Using icon file: $ICNS_FILE"
-            monopack -p "$PROJ" \gi
+            monopack -p "$PROJ" \
               -o "$ARTIFACTS_DIR" \
               -rids win-x64,linux-x64,osx-x64,osx-arm64 \
               -i "$INFO_PLIST" \
