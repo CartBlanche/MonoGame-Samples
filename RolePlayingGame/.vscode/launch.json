@@ -2,36 +2,36 @@
     "version": "0.2.0",
     "configurations": [
         {
-             "name": "Launch Windows",
+             "name": "Windows",
             "type": "coreclr",
             "request": "launch",
             "preLaunchTask": "build-windows",
-            "program": "${workspaceFolder}/Platforms/Windows/bin/Debug/net8.0-windows/RolePlayingGame.exe",
+            "program": "${workspaceFolder}/Platforms/Windows/bin/Debug/net10.0-windows/RolePlayingGame.exe",
             "cwd": "${workspaceFolder}/Platforms/Windows"
         },
         {
-            "name": "Launch DesktopGL",
+            "name": "DesktopGL",
             "type": "coreclr",
             "request": "launch",
             "preLaunchTask": "build-desktop",
-            "program": "${workspaceFolder}/Platforms/Desktop/bin/Debug/net8.0/RolePlayingGame",
+            "program": "${workspaceFolder}/Platforms/Desktop/bin/Debug/net10.0/RolePlayingGame",
             "cwd": "${workspaceFolder}/Platforms/Desktop"
         },
         {
-            "name": "Launch Android",
-            "type": "coreclr",
-            "request": "launch",
-            "preLaunchTask": "build-android",
-            "program": "${workspaceFolder}/Platforms/Android/bin/Debug/net8.0-android/RolePlayingGame.dll",
-            "cwd": "${workspaceFolder}/Platforms/Android"
+            "name": "Android",
+            "type": "mono",
+            "request": "attach",
+            "address": "localhost",
+            "port": 10000,
+			"preLaunchTask": "build-android",
         },
         {
-            "name": "Launch iOS",
-            "type": "coreclr",
-            "request": "launch",
+            "name": "iOS",
+            "type": "mono",
+            "request": "attach",
+            "address": "localhost",
+            "port": 10001,
             "preLaunchTask": "build-ios",
-            "program": "${workspaceFolder}/Platforms/iOS/bin/Debug/net8.0-ios/RolePlayingGame.dll",
-            "cwd": "${workspaceFolder}/Platforms/iOS"
         }
     ]
 }

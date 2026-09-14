@@ -6,13 +6,25 @@
 	<string>com.yourcompany.RolePlayingGame</string>
 	<key>CFBundleName</key>
 	<string>RolePlayingGame</string>
+	<key>CFBundleDisplayName</key>
+	<string>RolePlayingGame</string>
 	<key>CFBundleVersion</key>
 	<string>1</string>
-	<key>LSMinimumSystemVersion</key>
-	<string>10.6</string>
-	<key>NSPrincipalClass</key>
-	<string>NSApplication</string>
-	<key>CFBundleIconFile</key>
-	<string>RolePlayingGame.icns</string>
+	<key>MinimumOSVersion</key>
+	<string>12.2</string>
+	<key>UIDeviceFamily</key>
+	<array>
+		<integer>1</integer>
+		<integer>2</integer>
+	</array>
+	<key>UISupportedInterfaceOrientations</key>
+	<array>
+		<string>UIInterfaceOrientationLandscapeLeft</string>
+		<string>UIInterfaceOrientationLandscapeRight</string>
+	</array>
+	<key>UIRequiresFullScreen</key>
+	<true/>
+	<key>UIStatusBarHidden</key>
+	<true/>
 </dict>
 </plist>

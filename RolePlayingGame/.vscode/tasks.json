@@ -26,7 +26,7 @@
             "type": "process",
             "args": [
                 "build",
-                "${workspaceFolder}/Platforms/Windows/RolePlayingGame.Windows.csproj"
+                "${workspaceFolder}/Platforms/Windows/RolePlayingGame.csproj"
             ],
             "group": "build",
             "presentation": {
@@ -45,7 +45,7 @@
             "type": "process",
             "args": [
                 "build",
-                "${workspaceFolder}/Platforms/Desktop/RolePlayingGame.Desktop.csproj"
+                "${workspaceFolder}/Platforms/Desktop/RolePlayingGame.csproj"
             ],
             "group": "build",
             "presentation": {
@@ -59,42 +59,14 @@
             "problemMatcher": "$msCompile"
         },
         {
-            "label": "build-android",
-            "command": "dotnet",
-            "type": "process",
-            "args": [
-                "build",
-                "${workspaceFolder}/Platforms/Android/RolePlayingGame.Android.csproj"
-            ],
-            "group": "build",
-            "presentation": {
-                "echo": true,
-                "reveal": "silent",
-                "focus": false,
-                "panel": "shared",
-                "showReuseMessage": true,
-                "clear": false
-            },
-            "problemMatcher": "$msCompile",
-        },
+			"label": "build-android",
+			"type": "shell",
+			"command": "dotnet build ${workspaceFolder}/Platforms/Android/RolePlayingGame.csproj \"/t:Install;_Run\" /p:AndroidAttachDebugger=true /p:AndroidSdbHostPort=10000"
+		},
         {
             "label": "build-ios",
-            "command": "dotnet",
-            "type": "process",
-            "args": [
-                "build",
-                "${workspaceFolder}/Platforms/iOS/RolePlayingGame.iOS.csproj"
-            ],
-            "group": "build",
-            "presentation": {
-                "echo": true,
-                "reveal": "silent",
-                "focus": false,
-                "panel": "shared",
-                "showReuseMessage": true,
-                "clear": false
-            },
-            "problemMatcher": "$msCompile",
+            "type": "shell",
+            "command": "dotnet build ${workspaceFolder}/Platforms/iOS/RolePlayingGame.csproj && dotnet build ${workspaceFolder}/Platforms/iOS/RolePlayingGame.csproj -t:Run",
         },
         {
             "label": "run-windows",
