@@ -26,10 +26,10 @@ jobs:
       skipped: ${{ steps.collect.outputs.skipped }}
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
 
       - name: Checkout MonoGame.Xna.Framework.Net sibling repo
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
         with:
           repository: ${{ env.MONOGAME_NET_REPO }}
           ref: ${{ env.MONOGAME_NET_REF }}
@@ -113,10 +113,10 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
 
       - name: Checkout MonoGame.Xna.Framework.Net sibling repo
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
         with:
           repository: ${{ env.MONOGAME_NET_REPO }}
           ref: ${{ env.MONOGAME_NET_REF }}
