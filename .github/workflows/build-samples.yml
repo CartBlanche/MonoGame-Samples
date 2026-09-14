@@ -20,7 +20,7 @@ env:
 
 jobs:
   discover:
-    runs-on: macos-latest
+    runs-on: macos-26
     outputs:
       projects: ${{ steps.collect.outputs.projects }}
       skipped: ${{ steps.collect.outputs.skipped }}
@@ -125,14 +125,15 @@ jobs:
           ln -sfn "$GITHUB_WORKSPACE/_deps/MonoGame.Xna.Framework.Net" "$GITHUB_WORKSPACE/../MonoGame.Xna.Framework.Net"
           echo "Linked sibling repo path: $GITHUB_WORKSPACE/../MonoGame.Xna.Framework.Net"
 
-      - name: Setup .NET 8
+      - name: Setup .NET 8 & 10
         uses: actions/setup-dotnet@v4
         with:
           dotnet-version: |
             8.0.x
+            10.0.x
 
-      - name: Setup for MonoGame
-        uses: infinitespace-studios/monogame-actions/install-wine@v1.0
+      - name: Setup Wine
+        uses: monogame/monogame-actions/install-wine@v1.0.3
 
       - name: Install MonoPack
         run: dotnet tool install --global MonoPack
