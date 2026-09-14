@@ -1,6 +1,6 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>net9.0</TargetFramework>
+    <TargetFramework>net10.0</TargetFramework>
     <AssemblyName>RenderTarget2D.Core</AssemblyName>
     <RootNamespace>RenderTarget2DSample</RootNamespace>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>

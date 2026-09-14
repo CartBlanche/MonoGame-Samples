@@ -82,7 +82,7 @@ namespace RockRain
         /// </summary>
         public override void Show()
         {
-            // GamePad.Visible is not available in MonoGame 3.8.4
+            // GamePad.Visible is not available in MonoGame 3.8.5
             // GamePad.Visible = true;
             
             MediaPlayer.Play(audio.BackMusic);

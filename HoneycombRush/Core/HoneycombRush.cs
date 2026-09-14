@@ -46,7 +46,7 @@ namespace HoneycombRush
 
             IsMouseVisible = true;
 
-            // GamerServicesComponent is no longer needed in MonoGame 3.8.4
+            // GamerServicesComponent is no longer needed in MonoGame 3.8.5
             // Components.Add(new GamerServicesComponent(this));
 
             Vector2 scaleVector = new Vector2(graphics.PreferredBackBufferWidth / 1280f,

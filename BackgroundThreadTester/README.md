@@ -1,10 +1,10 @@
-# Background Thread Tester - MonoGame 3.8.4
+# Background Thread Tester - MonoGame 3.8.5
 
 This project demonstrates background thread management in MonoGame applications.
 
 ## Project Structure
 
-This project has been modernized to use SDK-style projects with MonoGame 3.8.4 NuGet packages:
+This project has been modernized to use SDK-style projects with MonoGame 3.8.5 NuGet packages:
 
 - **BackgroundThreadTester.Windows.csproj** - Windows DirectX version (net8.0-windows)
 - **BackgroundThreadTester.DesktopGL.csproj** - Cross-platform OpenGL version (net8.0)

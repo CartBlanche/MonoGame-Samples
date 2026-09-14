@@ -5,18 +5,18 @@
 // Copyright (C) Microsoft Corporation. All rights reserved.
 //-----------------------------------------------------------------------------
 
-// Remote debugging doesn't work in MonoGame 3.8.4 because it relied on
+// Remote debugging doesn't work in MonoGame 3.8.5 because it relied on
 // Microsoft.Xna.Framework.Net which is obsolete.
 // This entire file has been disabled for MonoGame compatibility.
 
-#if FALSE // Disabled for MonoGame 3.8.4 compatibility
+#if FALSE // Disabled for MonoGame 3.8.5 compatibility
 
 
 using System;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework.Net;
 using Microsoft.Xna.Framework;
-// using Microsoft.Xna.Framework.GamerServices; // Obsolete in MonoGame 3.8.4
+// using Microsoft.Xna.Framework.GamerServices; // Obsolete in MonoGame 3.8.5
 using System.Text.RegularExpressions;
 
 
@@ -391,4 +391,4 @@ namespace HoneycombRush.GameDebugTools
     }
 }
 
-#endif // FALSE - Disabled for MonoGame 3.8.4 compatibility
+#endif // FALSE - Disabled for MonoGame 3.8.5 compatibility

@@ -1,6 +1,6 @@
 # MonoGame Orientation Sample
 
-This is a MonoGame 3.8.4 sample project that demonstrates orientation handling in games across multiple platforms. The sample shows how to handle different screen orientations and scaling in MonoGame applications.
+This is a MonoGame 3.8.5 sample project that demonstrates orientation handling in games across multiple platforms. The sample shows how to handle different screen orientations and scaling in MonoGame applications.
 
 ## Project Overview
 

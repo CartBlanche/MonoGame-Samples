@@ -1,6 +1,6 @@
 # MonoGame Input Sample
 
-This project demonstrates input handling in MonoGame 3.8.4, including keyboard, gamepad, and touch input across multiple platforms.
+This project demonstrates input handling in MonoGame 3.8.5, including keyboard, gamepad, and touch input across multiple platforms.
 
 ## Project Overview
 
@@ -99,7 +99,7 @@ dotnet run --project Input.DesktopGL.csproj
 
 ## Technical Details
 
-- Built with MonoGame 3.8.4 framework
+- Built with MonoGame 3.8.5 framework
 - Uses SDK-style project files for modern .NET development
 - Target framework: .NET 8.0 for all platforms
 - Content pipeline: Uses pre-built .xnb files directly

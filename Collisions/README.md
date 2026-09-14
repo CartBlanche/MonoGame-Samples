@@ -1,4 +1,4 @@
-# CollisionSample (MonoGame 3.8.4, .NET 8)
+# CollisionSample (MonoGame 3.8.5, .NET 8)
 
 This project demonstrates various forms of collision detection for primitives in MonoGame, including oriented bounding boxes and triangles. It is structured for modern cross-platform .NET 8 development, with a clean separation between shared game logic and platform-specific entry points.
 
@@ -12,7 +12,7 @@ This project demonstrates various forms of collision detection for primitives in
 
 ## Prerequisites
 - .NET 8 SDK
-- MonoGame 3.8.4 NuGet packages (restored automatically)
+- MonoGame 3.8.5 NuGet packages (restored automatically)
 - For Android/iOS: Appropriate .NET workloads and platform SDKs (e.g., Android Studio, Xcode)
 
 ## Building and Running

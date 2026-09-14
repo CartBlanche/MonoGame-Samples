@@ -1,6 +1,6 @@
 # LensFlare MonoGame Sample
 
-This is a MonoGame 3.8.4 sample that demonstrates how to implement a lens flare effect using occlusion queries to hide the flares when the sun is hidden behind the landscape.
+This is a MonoGame 3.8.5 sample that demonstrates how to implement a lens flare effect using occlusion queries to hide the flares when the sun is hidden behind the landscape.
 
 ## Features
 
@@ -99,7 +99,7 @@ LensFlare/
 
 This sample demonstrates:
 
-- **MonoGame 3.8.4**: Modern SDK-style project format
+- **MonoGame 3.8.5**: Modern SDK-style project format
 - **Cross-platform development**: Single codebase, multiple platforms
 - **GPU Occlusion Queries**: Hardware-accelerated visibility testing
 - **3D Graphics**: Model loading, texturing, and rendering
@@ -107,7 +107,7 @@ This sample demonstrates:
 
 ## License
 
-This sample is based on the original Microsoft XNA Community Game Platform samples and has been updated for MonoGame 3.8.4.
+This sample is based on the original Microsoft XNA Community Game Platform samples and has been updated for MonoGame 3.8.5.
 
 ## Contributing
 

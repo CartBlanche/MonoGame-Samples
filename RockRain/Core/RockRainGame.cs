@@ -58,7 +58,7 @@ namespace RockRain
             // TODO: use this.Content to load your game content here
             Services.AddService(typeof(SpriteBatch), spriteBatch);
 
-            // Setup virtual gamepad - not available in MonoGame 3.8.4
+            // Setup virtual gamepad - not available in MonoGame 3.8.5
             /*
 			gamepadTexture = Content.Load<Texture2D>("gamepad.png");  
 			ButtonDefinition BButton = new ButtonDefinition();
@@ -88,7 +88,7 @@ namespace RockRain
             Services.AddService(typeof(AudioLibrary), audio);
 			
             // Create the Start Scene
-            // Note: XNB files are incompatible with MonoGame 3.8.4
+            // Note: XNB files are incompatible with MonoGame 3.8.5
             // Commenting out font loading for compatibility
             // smallFont = Content.Load<SpriteFont>("menuSmall");
 			// largeFont = Content.Load<SpriteFont>("menuLarge");
@@ -107,7 +107,7 @@ namespace RockRain
 			explosions = new ExplosionManager(this);
             actionElementsTexture = Content.Load<Texture2D>("rockrainenhanced.png");
             actionBackgroundTexture = Content.Load<Texture2D>("spacebackground.jpg");
-            // Note: XNB files are incompatible with MonoGame 3.8.4
+            // Note: XNB files are incompatible with MonoGame 3.8.5
             // scoreFont = Content.Load<SpriteFont>("score");
             actionScene = new ActionScene(this, actionElementsTexture,actionBackgroundTexture, null, explosions);
             Components.Add(actionScene);
@@ -247,7 +247,7 @@ namespace RockRain
             // Draw all Game Components..
             base.Draw(gameTime);
 
-            // GamePad.Draw is not available in MonoGame 3.8.4
+            // GamePad.Draw is not available in MonoGame 3.8.5
 			// GamePad.Draw(gameTime,spriteBatch);
             // End.
             spriteBatch.End();

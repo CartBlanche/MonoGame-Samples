@@ -1,8 +1,8 @@
 
-# Tetris (MonoGame 3.8.4, .NET 8)
+# Tetris (MonoGame 3.8.5, .NET 8)
 
 ## Project Summary
-This is a cross-platform Tetris clone built with MonoGame 3.8.4 and .NET 8.0. It supports Windows, DesktopGL (cross-platform desktop), Android, and iOS. The game features classic Tetris gameplay, persistent high scores, and platform-specific launchers. All core game logic and assets are shared across platforms.
+This is a cross-platform Tetris clone built with MonoGame 3.8.5 and .NET 8.0. It supports Windows, DesktopGL (cross-platform desktop), Android, and iOS. The game features classic Tetris gameplay, persistent high scores, and platform-specific launchers. All core game logic and assets are shared across platforms.
 
 
 ## Project Structure
@@ -17,7 +17,7 @@ This is a cross-platform Tetris clone built with MonoGame 3.8.4 and .NET 8.0. It
 
 ### Prerequisites
 - [.NET 8 SDK](https://dotnet.microsoft.com/download)
-- [MonoGame 3.8.4](https://www.monogame.net/downloads/)
+- [MonoGame 3.8.5](https://www.monogame.net/downloads/)
 - For Android/iOS: Xamarin/MAUI workloads and platform SDKs
 
 

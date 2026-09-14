@@ -13,7 +13,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input.Touch;
 using System.Threading;
 using Microsoft.Xna.Framework.Input;
-// using Microsoft.Xna.Framework.GamerServices; // Obsolete in MonoGame 3.8.4
+// using Microsoft.Xna.Framework.GamerServices; // Obsolete in MonoGame 3.8.5
 
 
 
@@ -221,7 +221,7 @@ namespace HoneycombRush
                 // If is in high score, gets is name
                 if (GameplayScreen.FinalScore != 0 && HighScoreScreen.IsInHighscores(GameplayScreen.FinalScore))
                 {
-                // Guide.BeginShowKeyboardInput is obsolete in MonoGame 3.8.4
+                // Guide.BeginShowKeyboardInput is obsolete in MonoGame 3.8.5
                 // For now, use a default name
                 string playerName = "Player";
                 if (!string.IsNullOrEmpty(playerName))
@@ -279,7 +279,7 @@ namespace HoneycombRush
 
         /// <summary>
         /// A handler invoked after the user has enter his name.
-        /// This method is obsolete in MonoGame 3.8.4 since Guide is no longer available.
+        /// This method is obsolete in MonoGame 3.8.5 since Guide is no longer available.
         /// </summary>
         /// <param name="result"></param>
         /*

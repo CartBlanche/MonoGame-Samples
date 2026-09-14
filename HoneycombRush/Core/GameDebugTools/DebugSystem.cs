@@ -74,7 +74,7 @@ namespace HoneycombRush.GameDebugTools
         /// </summary>
         public TimeRuler TimeRuler { get; private set; }
 
-#if !WINDOWS_PHONE && FALSE // RemoteDebugCommand disabled for MonoGame 3.8.4
+#if !WINDOWS_PHONE && FALSE // RemoteDebugCommand disabled for MonoGame 3.8.5
         /// <summary>
         /// Gets the RemoteDebugCommand for the system.
         /// </summary>
@@ -112,7 +112,7 @@ namespace HoneycombRush.GameDebugTools
             singletonInstance.TimeRuler = new TimeRuler(game);
             game.Components.Add(singletonInstance.TimeRuler);
 
-#if !WINDOWS_PHONE && FALSE // RemoteDebugCommand disabled for MonoGame 3.8.4
+#if !WINDOWS_PHONE && FALSE // RemoteDebugCommand disabled for MonoGame 3.8.5
             singletonInstance.RemoteDebugCommand = new RemoteDebugCommand(game);
             game.Components.Add(singletonInstance.RemoteDebugCommand);
 #endif

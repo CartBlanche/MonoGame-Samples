@@ -1,6 +1,6 @@
 # TouchGesture MonoGame Sample
 
-This is a cross-platform MonoGame 3.8.4 sample demonstrating touch gesture and mouse support. The project uses modern .NET 8.0+ SDK-style projects, with shared game logic in `/Core` and platform-specific launchers in `/Platforms`.
+This is a cross-platform MonoGame 3.8.5 sample demonstrating touch gesture and mouse support. The project uses modern .NET 8.0+ SDK-style projects, with shared game logic in `/Core` and platform-specific launchers in `/Platforms`.
 
 ## Supported Platforms
 - Windows (net8.0-windows)
@@ -46,7 +46,7 @@ README.md              # This file
 ### Prerequisites
 - .NET 8.0 SDK or newer
 - Visual Studio 2022+ or VSCode
-- MonoGame 3.8.4+ (NuGet packages are referenced automatically)
+- MonoGame 3.8.5+ (NuGet packages are referenced automatically)
 
 ### Windows & DesktopGL
 - Open the solution (`TouchGesture.sln`) in Visual Studio and set the desired platform project as startup, then build and run.

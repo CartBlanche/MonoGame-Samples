@@ -1,6 +1,6 @@
 # Aiming MonoGame Sample
 
-This is a cross-platform MonoGame 3.8.4 sample project demonstrating how to aim one object towards another (e.g., a spotlight tracking a cat). The project is organized for modern .NET 8 SDK-style builds and supports Windows, DesktopGL, Android, and iOS.
+This is a cross-platform MonoGame 3.8.5 sample project demonstrating how to aim one object towards another (e.g., a spotlight tracking a cat). The project is organized for modern .NET 8 SDK-style builds and supports Windows, DesktopGL, Android, and iOS.
 
 ## Project Structure
 
@@ -20,7 +20,7 @@ Aiming/
 
 ## Prerequisites
 - .NET 8 SDK
-- MonoGame 3.8.4 (NuGet packages are referenced automatically)
+- MonoGame 3.8.5 (NuGet packages are referenced automatically)
 - For Android/iOS: Xamarin/MAUI workloads and platform SDKs
 - Visual Studio 2022+ or VS Code
 
@@ -57,7 +57,7 @@ dotnet build Platforms/DesktopGL/Aiming.DesktopGL.csproj
 ## Notes
 - Content is loaded as `.xnb` or `.png` files directly, depending on platform.
 - Android/iOS builds require the appropriate SDKs and emulators/devices.
-- If you encounter issues with Android entry points, check the MonoGame 3.8.4 documentation for the latest supported base class for `MainActivity`.
+- If you encounter issues with Android entry points, check the MonoGame 3.8.5 documentation for the latest supported base class for `MainActivity`.
 
 ## License
 MIT (see LICENSE if present)

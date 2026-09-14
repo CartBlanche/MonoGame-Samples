@@ -1,6 +1,6 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>net9.0</TargetFramework>
+    <TargetFramework>net10.0</TargetFramework>
     <RootNamespace>XNAPacMan.Core</RootNamespace>
     <AssemblyName>XNAPacMan.Core</AssemblyName>
     <Nullable>enable</Nullable>

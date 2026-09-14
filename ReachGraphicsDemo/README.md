@@ -1,6 +1,6 @@
-# Reach Graphics Demo - MonoGame 3.8.4
+# Reach Graphics Demo - MonoGame 3.8.5
 
-This project demonstrates various graphics techniques using MonoGame 3.8.4, including alpha blending, dual texturing, environment mapping, particle systems, and skinned animation.
+This project demonstrates various graphics techniques using MonoGame 3.8.5, including alpha blending, dual texturing, environment mapping, particle systems, and skinned animation.
 
 ## Project Structure
 

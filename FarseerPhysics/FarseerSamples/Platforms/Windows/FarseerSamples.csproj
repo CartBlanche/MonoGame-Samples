@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
-    <TargetFramework>net9.0-windows</TargetFramework>
+    <TargetFramework>net10.0-windows</TargetFramework>
     <RootNamespace>FarseerSamples</RootNamespace>
     <AssemblyName>FarseerSamples</AssemblyName>
     <UseWindowsForms>false</UseWindowsForms>

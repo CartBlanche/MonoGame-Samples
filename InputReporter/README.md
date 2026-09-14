@@ -1,6 +1,6 @@
 # InputReporter - MonoGame Sample
 
-A MonoGame 3.8.4 sample project that displays live input values for all connected game controllers. This project demonstrates how to handle gamepad input, display controller capabilities, and provide an interactive interface for testing controller features.
+A MonoGame 3.8.5 sample project that displays live input values for all connected game controllers. This project demonstrates how to handle gamepad input, display controller capabilities, and provide an interactive interface for testing controller features.
 
 ## Features
 
@@ -12,7 +12,7 @@ A MonoGame 3.8.4 sample project that displays live input values for all connecte
 
 ## Project Structure
 
-This project has been modernized to use .NET 8.0 SDK-style projects with MonoGame 3.8.4 NuGet packages:
+This project has been modernized to use .NET 8.0 SDK-style projects with MonoGame 3.8.5 NuGet packages:
 
 - `InputReporter.Windows.csproj` - Windows DirectX version (net8.0-windows)
 - `InputReporter.DesktopGL.csproj` - Cross-platform OpenGL version (net8.0)
@@ -144,7 +144,7 @@ The project uses pre-built XNB content files located in the `Content` folder. No
 
 This project has been updated from the original MonoGame sample to use:
 - .NET 8.0 SDK-style projects
-- MonoGame 3.8.4 NuGet packages
+- MonoGame 3.8.5 NuGet packages
 - Modern project structure with platform-specific entry points
 - Removed legacy #region directives for cleaner code
 - VS Code integration with tasks and launch configurations

@@ -1,6 +1,6 @@
-# Robot Rampage - MonoGame 3.8.4 Project
+# Robot Rampage - MonoGame 3.8.5 Project
 
-This is a modernized version of the Robot Rampage game from the XNA Game Development by Example book, updated to use MonoGame 3.8.4 and .NET 8.0.
+This is a modernized version of the Robot Rampage game from the XNA Game Development by Example book, updated to use MonoGame 3.8.5 and .NET 8.0.
 
 Originally from the Book "XNA 4.0 Game Development by Example: Beginner's Guide" by Kurt Jaegers
 Published by PACKT Publishing: http://www.packtpub.com/xna-4-0-game-development-by-example-beginners-guide/book

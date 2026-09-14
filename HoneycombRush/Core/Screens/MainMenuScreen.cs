@@ -9,9 +9,9 @@
 
 using System;
 using Microsoft.Xna.Framework;
-// using Microsoft.Xna.Framework.GamerServices; // Obsolete in MonoGame 3.8.4
+// using Microsoft.Xna.Framework.GamerServices; // Obsolete in MonoGame 3.8.5
 #if !WINDOWS_PHONE
-// using Microsoft.Xna.Framework.Storage; // Obsolete in MonoGame 3.8.4
+// using Microsoft.Xna.Framework.Storage; // Obsolete in MonoGame 3.8.5
 #endif
 
 

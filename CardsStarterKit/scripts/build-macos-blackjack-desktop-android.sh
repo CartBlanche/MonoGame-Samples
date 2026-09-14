@@ -10,7 +10,7 @@ ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 DESKTOP_VARIANT="${DESKTOP_VARIANT:-itch}"
 CONFIGURATION="${CONFIGURATION:-Release}"
 BUILD_NUMBER="${BUILD_NUMBER:-$(date +%Y%m%d%H%M%S)}"
-ANDROID_FRAMEWORK="${ANDROID_FRAMEWORK:-net9.0-android}"
+ANDROID_FRAMEWORK="${ANDROID_FRAMEWORK:-net10.0-android}"
 
 DESKTOP_ITCH_PROJECT="${ROOT_DIR}/3-Games/Blackjack/Desktop/BlackJack.csproj"
 DESKTOP_STEAM_PROJECT="${ROOT_DIR}/3-Games/Blackjack/Desktop/BlackJack.Steam.csproj"

@@ -14,21 +14,21 @@
             "type": "coreclr",
             "request": "launch",
             "preLaunchTask": "Debug Desktop Build",
-            "program": "${workspaceFolder}/Desktop/bin/Debug/net9.0/MatchemPoker"
+            "program": "${workspaceFolder}/Desktop/bin/Debug/net10.0/MatchemPoker"
         },
         {
             "name": "iOS Debug",
             "type": "coreclr",
             "request": "launch",
             "preLaunchTask": "Debug iOS Build",
-            "program": "${workspaceFolder}/iOS/bin/Debug/net9.0-ios/MatchemPoker.dll"
+            "program": "${workspaceFolder}/iOS/bin/Debug/net10.0-ios/MatchemPoker.dll"
         },
         {
             "name": "Windows Debug",
             "type": "coreclr",
             "request": "launch",
             "preLaunchTask": "Debug Windows Build",
-            "program": "${workspaceFolder}/Windows/bin/Debug/net9.0-windows/MatchemPoker.exe"
+            "program": "${workspaceFolder}/Windows/bin/Debug/net10.0-windows/MatchemPoker.exe"
         }
     ]
 }

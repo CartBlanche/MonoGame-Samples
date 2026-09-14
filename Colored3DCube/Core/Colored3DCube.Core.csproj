@@ -1,6 +1,6 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>net9.0</TargetFramework>
+    <TargetFramework>net10.0</TargetFramework>
     <AssemblyName>Colored3DCube.Core</AssemblyName>
     <RootNamespace>Colored3DCube</RootNamespace>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>

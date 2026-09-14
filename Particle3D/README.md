@@ -1,6 +1,6 @@
 # Particle3D Sample - MonoGame 3.8
 
-This is a modernized version of the MonoGame Particle3D sample, demonstrating advanced 3D particle effects using MonoGame 3.8.4 framework.
+This is a modernized version of the MonoGame Particle3D sample, demonstrating advanced 3D particle effects using MonoGame 3.8.5 framework.
 
 ## Project Overview
 

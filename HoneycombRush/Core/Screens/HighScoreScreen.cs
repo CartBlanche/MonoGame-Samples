@@ -15,10 +15,10 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input.Touch;
 using Microsoft.Xna.Framework.Input;
-// using Microsoft.Xna.Framework.GamerServices; // Obsolete in MonoGame 3.8.4
+// using Microsoft.Xna.Framework.GamerServices; // Obsolete in MonoGame 3.8.5
 
 #if !WINDOWS_PHONE
-// using Microsoft.Xna.Framework.Storage; // Obsolete in MonoGame 3.8.4
+// using Microsoft.Xna.Framework.Storage; // Obsolete in MonoGame 3.8.5
 #endif
 
 
@@ -65,12 +65,12 @@ namespace HoneycombRush
         public static bool HighscoreSaved { get; private set; }
 
 #if !WINDOWS_PHONE
-        // Simplified storage for MonoGame 3.8.4 - using local files instead of Xbox Storage
+        // Simplified storage for MonoGame 3.8.5 - using local files instead of Xbox Storage
         static bool shouldSaveHighScore;
         static bool savingHighscore;
         static bool loadingHighscore;
 
-        // Storage is no longer needed in MonoGame 3.8.4
+        // Storage is no longer needed in MonoGame 3.8.5
 #endif
 
 
@@ -355,7 +355,7 @@ namespace HoneycombRush
         /// </summary>
         public static void SaveHighscore()
         {
-            // Use IsolatedStorage for all platforms in MonoGame 3.8.4
+            // Use IsolatedStorage for all platforms in MonoGame 3.8.5
             using (IsolatedStorageFile isf = IsolatedStorageFile.GetUserStoreForApplication())
             {
                 // Create the file to save the data
@@ -383,7 +383,7 @@ namespace HoneycombRush
         /// </summary>
         public static void LoadHighscores()
         {
-            // Use IsolatedStorage for all platforms in MonoGame 3.8.4
+            // Use IsolatedStorage for all platforms in MonoGame 3.8.5
             using (IsolatedStorageFile isf = IsolatedStorageFile.GetUserStoreForApplication())
             {
                 // Try to open the file

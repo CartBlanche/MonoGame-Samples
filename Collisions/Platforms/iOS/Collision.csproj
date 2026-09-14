@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net9.0-ios</TargetFramework>
+    <TargetFramework>net10.0-ios</TargetFramework>
     <OutputType>Exe</OutputType>
     <RollForward>Major</RollForward>
     <PublishReadyToRun>false</PublishReadyToRun>
@@ -11,7 +11,7 @@
     <RuntimeIdentifier>ios-arm64</RuntimeIdentifier>
     <UseInterpreter>false</UseInterpreter>
     <MonoGamePlatform>iOS</MonoGamePlatform>
-    <MonoGameBinariesPath Condition="'$(MonoGameBinariesPath)' == ''">$(MSBuildThisFileDirectory)..\..\..\MonoGame.3.8.4.2908-develop\MonoGame.Framework\</MonoGameBinariesPath>    
+    <MonoGameBinariesPath Condition="'$(MonoGameBinariesPath)' == ''">$(MSBuildThisFileDirectory)..\..\..\MonoGame.3.8.5\MonoGame.Framework\</MonoGameBinariesPath>    
   </PropertyGroup>
   <ItemGroup>
     <None Include="$(MonoGameBinariesPath)$(MonoGamePlatform)\runtimes\ios-arm64\native\*">

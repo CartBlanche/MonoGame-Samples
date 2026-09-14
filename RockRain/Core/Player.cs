@@ -100,7 +100,7 @@ namespace RockRain
             position.Y += (int)(gamepadstatus.ThumbSticks.Left.Y * -4);
             position.X += (int)(gamepadstatus.ThumbSticks.Left.X * 4);
 			
-			// Check the accelerometer - not available in MonoGame 3.8.4
+			// Check the accelerometer - not available in MonoGame 3.8.5
 			// position.Y += (int)(Accelerometer.GetState().Acceleration.Y * -4);
             // position.X += (int)(Accelerometer.GetState().Acceleration.X * 4);
         }

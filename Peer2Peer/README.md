@@ -1,4 +1,4 @@
-# Peer2Peer Sample - MonoGame 3.8.4
+# Peer2Peer Sample - MonoGame 3.8.5
 
 A MonoGame sample demonstrating peer-to-peer multiplayer networking using a simple tank game. This project showcases how to implement network sessions with multiple players sharing game state in real-time.
 

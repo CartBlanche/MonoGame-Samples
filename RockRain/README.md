@@ -1,6 +1,6 @@
 # RockRain - MonoGame Sample
 
-RockRain is a classic arcade-style space shooter game built with MonoGame 3.8.4. The player controls a spaceship and must avoid meteors while collecting power-ups to survive as long as possible.
+RockRain is a classic arcade-style space shooter game built with MonoGame 3.8.5. The player controls a spaceship and must avoid meteors while collecting power-ups to survive as long as possible.
 
 ## Features
 
@@ -110,7 +110,7 @@ Open `RockRain.sln` in Visual Studio to build and run all platform projects.
 
 ## Modernization Notes
 
-This project has been modernized from an older MonoGame version to 3.8.4:
+This project has been modernized from an older MonoGame version to 3.8.5:
 
 - **Mobile-specific APIs removed**: `GamePad.Visible`, `ButtonDefinition`, `ThumbStickDefinition`, and `Accelerometer` APIs that were specific to older mobile platforms have been commented out
 - **Content Pipeline**: Uses pre-compiled .xnb files directly instead of requiring a Content.mgcb file
@@ -118,14 +118,14 @@ This project has been modernized from an older MonoGame version to 3.8.4:
 
 ## Known Limitations
 
-- **Font Support**: The original XNB font files (menuSmall.xnb, menuLarge.xnb, score.xnb) are incompatible with MonoGame 3.8.4 and have been disabled. Text rendering is currently not functional.
-- **Touch/virtual gamepad support**: Has been disabled for compatibility with MonoGame 3.8.4
+- **Font Support**: The original XNB font files (menuSmall.xnb, menuLarge.xnb, score.xnb) are incompatible with MonoGame 3.8.5 and have been disabled. Text rendering is currently not functional.
+- **Touch/virtual gamepad support**: Has been disabled for compatibility with MonoGame 3.8.5
 - **Accelerometer input**: Not available in desktop versions
 - **Content Pipeline Warning**: The "No Content References Found" warning is expected since we're using pre-compiled XNB files instead of a Content.mgcb file
 
 ## Content Compatibility
 
-To fully restore text rendering functionality, the XNB font files would need to be rebuilt with MonoGame 3.8.4's content pipeline, or the original font source files (.spritefont) would need to be compiled through a proper Content.mgcb file.
+To fully restore text rendering functionality, the XNB font files would need to be rebuilt with MonoGame 3.8.5's content pipeline, or the original font source files (.spritefont) would need to be compiled through a proper Content.mgcb file.
 
 ## MonoGame Content
 

@@ -1,12 +1,12 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>net9.0-android</TargetFramework>
+    <TargetFramework>net10.0-android</TargetFramework>
     <OutputType>Exe</OutputType>
     <RootNamespace>CollisionSample</RootNamespace>
     <AssemblyName>Collision</AssemblyName>
     <SupportedOSPlatformVersion>28.0</SupportedOSPlatformVersion>
     <MonoGamePlatform>Android</MonoGamePlatform>
-    <MonoGameBinariesPath Condition="'$(MonoGameBinariesPath)' == ''">$(MSBuildThisFileDirectory)..\..\..\MonoGame.3.8.4.2908-develop\MonoGame.Framework\</MonoGameBinariesPath>    
+    <MonoGameBinariesPath Condition="'$(MonoGameBinariesPath)' == ''">$(MSBuildThisFileDirectory)..\..\..\MonoGame.3.8.5\MonoGame.Framework\</MonoGameBinariesPath>    
   </PropertyGroup>
   <ItemGroup>
     <None Include="$(MonoGameBinariesPath)$(MonoGamePlatform)\runtimes\android-arm64\native\*">

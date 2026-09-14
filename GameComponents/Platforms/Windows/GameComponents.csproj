@@ -1,6 +1,6 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>net9.0-windows</TargetFramework>
+    <TargetFramework>net10.0-windows</TargetFramework>
     <UseWindowsForms>false</UseWindowsForms>
     <RootNamespace>GameComponents.Windows</RootNamespace>
     <AssemblyName>GameComponents.Windows</AssemblyName>
