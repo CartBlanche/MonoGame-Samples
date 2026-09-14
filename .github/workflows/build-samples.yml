@@ -315,3 +315,24 @@ jobs:
 
           echo "---" >> $GITHUB_STEP_SUMMARY
           echo "Cross-platform bundles (Windows, Linux, macOS) are available as separate artifacts for successful builds." >> $GITHUB_STEP_SUMMARY
+
+      - name: Delete temporary build-result artifacts
+        if: always()
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const artifacts = await github.rest.actions.listArtifactsForRepo({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              per_page: 100,
+            });
+
+            for (const artifact of artifacts.data) {
+              if (artifact.name.startsWith('build-result-')) {
+                await github.rest.actions.deleteArtifact({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  artifact_id: artifact.id,
+                });
+              }
+            }
