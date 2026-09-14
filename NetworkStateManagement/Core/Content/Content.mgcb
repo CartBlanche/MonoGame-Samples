@@ -62,8 +62,3 @@
 /importer:FontDescriptionImporter
 /processor:FontDescriptionProcessor
 /build:menufont.spritefont
-
-#begin Game.ico
-/importer:TextureImporter
-/processor:TextureProcessor
-/build:Game.ico
