@@ -7,7 +7,7 @@
             "type": "shell",
             "args": [
                 "build",
-                "Platforms/Windows/Peer2PeerSample.Windows.csproj",
+                "Platforms/Windows/Peer2PeerSample.csproj",
                 "/property:GenerateFullPaths=true",
                 "/consoleloggerparameters:NoSummary"
             ],
@@ -23,7 +23,7 @@
             "type": "shell",
             "args": [
                 "build",
-                "Platforms/Desktop/Peer2PeerSample.DesktopGL.csproj",
+                "Platforms/Desktop/Peer2PeerSample.csproj",
                 "/property:GenerateFullPaths=true",
                 "/consoleloggerparameters:NoSummary"
             ],
@@ -39,7 +39,7 @@
             "type": "shell",
             "args": [
                 "build",
-                "Platforms/Android/Peer2Peer.Android.csproj",
+                "Platforms/Android/Peer2Peer.csproj",
                 "/property:GenerateFullPaths=true",
                 "/consoleloggerparameters:NoSummary"
             ],
@@ -55,7 +55,7 @@
             "type": "shell",
             "args": [
                 "build",
-                "Platforms/iOS/Peer2Peer.iOS.csproj",
+                "Platforms/iOS/Peer2Peer.csproj",
                 "/property:GenerateFullPaths=true",
                 "/consoleloggerparameters:NoSummary"
             ],

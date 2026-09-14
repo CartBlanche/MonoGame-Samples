@@ -21,13 +21,13 @@ This project demonstrates various forms of collision detection for primitives in
 ```
 dotnet build Platforms/Windows/CollisionSample.Windows.csproj
 ```
-Run the resulting executable from `bin/Debug/net8.0-windows/`.
+Run the resulting executable from `bin/Debug/net10.0-windows/`.
 
 ### DesktopGL (Cross-platform)
 ```
 dotnet build Platforms/Desktop/CollisionSample.DesktopGL.csproj
 ```
-Run the resulting executable from `bin/Debug/net8.0/`.
+Run the resulting executable from `bin/Debug/net10.0/`.
 
 ### Android
 ```

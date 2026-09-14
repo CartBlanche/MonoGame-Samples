@@ -32,14 +32,14 @@ Asteroid Belt Assault is a cross-platform 2D space shooter game originally devel
    ```pwsh
    dotnet build Platforms/Windows/AsteroidBeltAssault.Windows.csproj
    ```
-2. Run: Use the VS Code launch config `Run Windows` or run the built `.exe` from `Platforms/Windows/bin/Debug/net8.0-windows/`.
+2. Run: Use the VS Code launch config `Run Windows` or run the built `.exe` from `Platforms/Windows/bin/Debug/net10.0-windows/`.
 
 ### DesktopGL
 1. Build: Use the VS Code task `build-desktopgl` or run:
    ```pwsh
    dotnet build Platforms/Desktop/AsteroidBeltAssault.DesktopGL.csproj
    ```
-2. Run: Use the VS Code launch config `Run Desktop` or run the built binary from `Platforms/Desktop/bin/Debug/net8.0/`.
+2. Run: Use the VS Code launch config `Run Desktop` or run the built binary from `Platforms/Desktop/bin/Debug/net10.0/`.
 
 ### Android
 1. Build: Use the VS Code task `build-android` or run:

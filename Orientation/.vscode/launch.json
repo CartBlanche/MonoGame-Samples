@@ -6,7 +6,7 @@
             "type": "coreclr",
             "request": "launch",
             "preLaunchTask": "build-windows",
-            "program": "${workspaceFolder}/Platforms/Windows/bin/Debug/net8.0-windows/Orientation.Windows.exe",
+            "program": "${workspaceFolder}/Platforms/Windows/bin/Debug/net10.0-windows/Orientation.Windows.exe",
             "args": [],
             "cwd": "${workspaceFolder}/Platforms/Windows",
             "stopAtEntry": false
@@ -16,7 +16,7 @@
             "type": "coreclr",
             "request": "launch",
             "preLaunchTask": "build-desktopgl",
-            "program": "${workspaceFolder}/Platforms/Desktop/bin/Debug/net8.0/Orientation.DesktopGL.exe",
+            "program": "${workspaceFolder}/Platforms/Desktop/bin/Debug/net10.0/Orientation.DesktopGL.exe",
             "args": [],
             "cwd": "${workspaceFolder}/Platforms/Desktop",
             "stopAtEntry": false
@@ -26,7 +26,7 @@
             "type": "coreclr",
             "request": "launch",
             "preLaunchTask": "build-android",
-            "program": "${workspaceFolder}/Platforms/Android/bin/Debug/net8.0-android/Orientation.Android.dll",
+            "program": "${workspaceFolder}/Platforms/Android/bin/Debug/net10.0-android/Orientation.Android.dll",
             "args": [],
             "cwd": "${workspaceFolder}/Platforms/Android",
             "stopAtEntry": false
@@ -36,7 +36,7 @@
             "type": "coreclr",
             "request": "launch",
             "preLaunchTask": "build-ios",
-            "program": "${workspaceFolder}/Platforms/iOS/bin/Debug/net8.0-ios/Orientation.iOS.dll",
+            "program": "${workspaceFolder}/Platforms/iOS/bin/Debug/net10.0-ios/Orientation.iOS.dll",
             "args": [],
             "cwd": "${workspaceFolder}/Platforms/iOS",
             "stopAtEntry": false

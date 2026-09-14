@@ -6,7 +6,7 @@
             "type": "coreclr",
             "request": "launch",
             "preLaunchTask": "build-windows",
-            "program": "${workspaceFolder}/Platforms/Windows/bin/Debug/net8.0-windows/StarWarrior.Windows.exe",
+            "program": "${workspaceFolder}/Platforms/Windows/bin/Debug/net10.0-windows/StarWarrior.Windows.exe",
             "args": [],
             "cwd": "${workspaceFolder}",
             "stopAtEntry": false
@@ -16,7 +16,7 @@
             "type": "coreclr",
             "request": "launch",
             "preLaunchTask": "build-desktopgl",
-            "program": "${workspaceFolder}/Platforms/DesktopGL/bin/Debug/net8.0/StarWarrior.DesktopGL.exe",
+            "program": "${workspaceFolder}/Platforms/DesktopGL/bin/Debug/net10.0/StarWarrior.DesktopGL.exe",
             "args": [],
             "cwd": "${workspaceFolder}",
             "stopAtEntry": false
@@ -26,7 +26,7 @@
             "type": "coreclr",
             "request": "launch",
             "preLaunchTask": "build-android",
-            "program": "${workspaceFolder}/Platforms/Android/bin/Debug/net8.0-android/StarWarrior.Android.dll",
+            "program": "${workspaceFolder}/Platforms/Android/bin/Debug/net10.0-android/StarWarrior.Android.dll",
             "args": [],
             "cwd": "${workspaceFolder}",
             "stopAtEntry": false
@@ -36,7 +36,7 @@
             "type": "coreclr",
             "request": "launch",
             "preLaunchTask": "build-ios",
-            "program": "${workspaceFolder}/Platforms/iOS/bin/Debug/net8.0-ios/StarWarrior.iOS.dll",
+            "program": "${workspaceFolder}/Platforms/iOS/bin/Debug/net10.0-ios/StarWarrior.iOS.dll",
             "args": [],
             "cwd": "${workspaceFolder}",
             "stopAtEntry": false

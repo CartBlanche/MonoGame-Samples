@@ -28,9 +28,9 @@ Core/
       DesktopGL/Content/
       Windows/Content/
   bin/
-    Debug/net8.0/
+    Debug/net10.0/
   obj/
-    Debug/net8.0/
+    Debug/net10.0/
 Platforms/
   Windows/
     Program.cs
