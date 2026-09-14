@@ -5,7 +5,7 @@
           android:versionName="1.0" 
           android:installLocation="auto">
   
-  <uses-sdk android:minSdkVersion="21" android:targetSdkVersion="34" />
+  <uses-sdk android:minSdkVersion="21" android:targetSdkVersion="36" />
   
   <application android:label="MultiTouch" android:icon="@drawable/icon">
     <activity android:name="microsoft.xna.samples.multitouch.Activity1"

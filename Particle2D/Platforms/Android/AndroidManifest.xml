@@ -3,7 +3,7 @@
           android:versionCode="1"
           android:versionName="1.0"
           package="com.monogame.particlesample">
-  <uses-sdk android:minSdkVersion="21" android:targetSdkVersion="34" />
+  <uses-sdk android:minSdkVersion="21" android:targetSdkVersion="36" />
   <application android:label="ParticleSample">
     <activity android:name="particlesample.Activity1"
               android:label="ParticleSample"

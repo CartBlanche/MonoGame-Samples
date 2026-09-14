@@ -3,7 +3,7 @@
     package="com.cartblanche.waypoint"
     android:versionCode="1"
     android:versionName="1.0">
-    <uses-sdk android:minSdkVersion="21" android:targetSdkVersion="34" />
+    <uses-sdk android:minSdkVersion="21" android:targetSdkVersion="36" />
     <application android:label="Waypoint" android:icon="@mipmap/icon">
         <activity android:name=".MainActivity"
             android:label="Waypoint"

@@ -4,7 +4,7 @@
           android:versionName="1.0" 
           package="com.monogame.rectanglecollisionsample">
   
-  <uses-sdk android:minSdkVersion="21" android:targetSdkVersion="34" />
+  <uses-sdk android:minSdkVersion="21" android:targetSdkVersion="36" />
   
   <application android:label="Rectangle Collision Sample">
   </application>

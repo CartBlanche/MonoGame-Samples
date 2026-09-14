@@ -3,7 +3,7 @@
     package="com.companyname.gamestatemanagement"
     android:versionCode="1"
     android:versionName="1.0">
-    <uses-sdk android:minSdkVersion="21" android:targetSdkVersion="34" />
+    <uses-sdk android:minSdkVersion="21" android:targetSdkVersion="36" />
     <application android:label="GameStateManagement" android:icon="@mipmap/icon">
         <activity android:name="md5b60ffeb829f638581ab2bb9b1a7f4f3f.MainActivity">
             <intent-filter>

@@ -4,7 +4,7 @@
           android:versionCode="1" 
           android:versionName="1.0">
   
-  <uses-sdk android:minSdkVersion="21" android:targetSdkVersion="34" />
+  <uses-sdk android:minSdkVersion="21" android:targetSdkVersion="36" />
   
   <application android:label="InputReporter" 
                android:hardwareAccelerated="true">

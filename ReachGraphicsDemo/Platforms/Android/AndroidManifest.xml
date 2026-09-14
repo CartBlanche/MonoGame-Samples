@@ -4,7 +4,7 @@
           android:versionName="1.0"
           package="com.monogame.reachgraphicsdemo">
   
-  <uses-sdk android:minSdkVersion="21" android:targetSdkVersion="34" />
+  <uses-sdk android:minSdkVersion="21" android:targetSdkVersion="36" />
   
   <uses-permission android:name="android.permission.WAKE_LOCK" />
   

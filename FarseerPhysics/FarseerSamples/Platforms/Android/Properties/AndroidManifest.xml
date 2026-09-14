@@ -5,7 +5,7 @@
           android:versionName="1.0"
           android:installLocation="auto">
   
-  <uses-sdk android:minSdkVersion="28" android:targetSdkVersion="34" />
+  <uses-sdk android:minSdkVersion="28" android:targetSdkVersion="36" />
   
   <application android:label="Farseer Samples" 
                android:icon="@drawable/icon"
