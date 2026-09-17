@@ -1,0 +1,40 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0-android</TargetFramework>
+    <OutputType>Exe</OutputType>
+    <RollForward>Major</RollForward>
+    <PublishReadyToRun>false</PublishReadyToRun>
+    <TieredCompilation>false</TieredCompilation>
+    <AssemblyName>PathfindingSample</AssemblyName>
+    <RootNamespace>PathfindingSample.Android</RootNamespace>
+    <SupportedOSPlatformVersion>21</SupportedOSPlatformVersion>
+    <AndroidUseAapt2>True</AndroidUseAapt2>
+    <AndroidEnableProfiledAot>false</AndroidEnableProfiledAot>
+    <AndroidManifest>AndroidManifest.xml</AndroidManifest>
+    <MonoGamePlatform>Android</MonoGamePlatform>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <ApplicationId>com.monogame.pathfindingsample</ApplicationId>
+    <ApplicationVersion>1</ApplicationVersion>
+    <ApplicationDisplayVersion>1.0</ApplicationDisplayVersion>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="MonoGame.Framework.Android" Version="3.8.*" />
+    <PackageReference Include="MonoGame.Content.Builder.Task" Version="3.8.*" />
+    <ProjectReference Include="..\..\Core\PathfindingSample.Core.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <MonoGameContentReference Include="..\..\Core\Content\Content.mgcb">
+      <Link>Content\Content.mgcb</Link>
+    </MonoGameContentReference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <AndroidAsset Include="..\..\Core\Content\Map*.xml" Link="Assets\Content\%(Filename)%(Extension)" />
+  </ItemGroup>
+
+</Project>

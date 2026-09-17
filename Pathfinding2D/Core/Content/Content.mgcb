@@ -1,0 +1,59 @@
+#----------------------------- Global Properties ----------------------------#
+
+/outputDir:bin/$(Platform)
+/intermediateDir:obj/$(Platform)
+/platform:DesktopGL
+/config:$(Configuration)
+/profile:HiDef
+/compress:False
+
+#-------------------------------- References --------------------------------#
+
+
+
+#---------------------------------- Content ---------------------------------#
+
+#begin whiteTile.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/build:whiteTile.png
+
+#begin barrier.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/build:barrier.png
+
+#begin dot.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/build:dot.png
+
+#begin tank.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/build:tank.png
+
+#begin HUDFont.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/build:HUDFont.spritefont
+
+#begin xboxControllerButtonA.tga
+/importer:TextureImporter
+/processor:TextureProcessor
+/build:xboxControllerButtonA.tga
+
+#begin xboxControllerButtonB.tga
+/importer:TextureImporter
+/processor:TextureProcessor
+/build:xboxControllerButtonB.tga
+
+#begin xboxControllerButtonX.tga
+/importer:TextureImporter
+/processor:TextureProcessor
+/build:xboxControllerButtonX.tga
+
+#begin xboxControllerButtonY.tga
+/importer:TextureImporter
+/processor:TextureProcessor
+/build:xboxControllerButtonY.tga
