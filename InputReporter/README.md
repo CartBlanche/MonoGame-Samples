@@ -30,7 +30,7 @@ Due to .NET SDK limitations with multi-targeting across different platforms, sep
 
 ### Prerequisites
 
-- .NET 8.0 SDK or later
+- .NET 10.0 SDK or later
 - For Android: Android SDK and workload (`dotnet workload install android`)
 
 ### Building

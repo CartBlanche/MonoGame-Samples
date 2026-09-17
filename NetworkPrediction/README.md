@@ -76,7 +76,7 @@ Platforms/
 
 ### Prerequisites
 
-- .NET 8.0 SDK or later
+- .NET 10.0 SDK or later
 - Visual Studio 2022 or VS Code with C# extension
 
 ### Command Line Build

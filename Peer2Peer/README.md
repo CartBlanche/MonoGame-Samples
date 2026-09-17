@@ -48,7 +48,7 @@ Peer2PeerSample/
 - **iOS** (.NET 8.0-ios, minimum iOS 11.0)
 
 ## Prerequisites
-- .NET 8.0 SDK or later
+- .NET 10.0 SDK or later
 - Visual Studio 2022 or VS Code
 - For Android: Android SDK and emulator/device
 - For iOS: Xcode and iOS device/simulator (macOS only)

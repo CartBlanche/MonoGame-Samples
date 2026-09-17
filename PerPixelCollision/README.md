@@ -45,7 +45,7 @@ PerPixelCollisionSample/
 
 ### Prerequisites
 
-- .NET 8.0 SDK or later
+- .NET 10.0 SDK or later
 - For iOS development: Xcode and iOS development tools
 - For Android development: Android SDK and development tools
 

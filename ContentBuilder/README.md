@@ -54,7 +54,7 @@ Each platform has its own Content.mgcb file that references the same source asse
 
 ### Prerequisites
 
-- .NET 8.0 SDK or later
+- .NET 10.0 SDK or later
 - MonoGame 3.8.* (installed via NuGet packages)
 
 ### Visual Studio

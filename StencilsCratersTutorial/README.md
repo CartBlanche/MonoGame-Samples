@@ -14,7 +14,7 @@ A cross-platform MonoGame 3.8.* sample demonstrating stencil buffer craters on a
 ## Building and Running
 
 ### Prerequisites
-- .NET 8.0 SDK or later
+- .NET 10.0 SDK or later
 - Visual Studio 2022+ or VSCode (with C# Dev Kit recommended)
 - For Android/iOS: Xamarin/MAUI workload and platform SDKs
 

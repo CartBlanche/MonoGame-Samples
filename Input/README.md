@@ -22,7 +22,7 @@ The Input sample showcases:
 
 ### Prerequisites
 
-- .NET 8.0 SDK or later
+- .NET 10.0 SDK or later
 - Visual Studio 2022 or VS Code
 - For Android: Android SDK with API level 21 or higher
 - For iOS: Xcode and iOS SDK 11.0 or higher

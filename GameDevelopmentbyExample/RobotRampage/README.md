@@ -16,7 +16,7 @@ The project has been converted to use modern SDK-style project files and support
 
 ## Prerequisites
 
-- .NET 8.0 SDK or later
+- .NET 10.0 SDK or later
 - Visual Studio 2022 (recommended) or Visual Studio Code
 - For Android development: Android SDK
 - For iOS development: Xcode (macOS only)

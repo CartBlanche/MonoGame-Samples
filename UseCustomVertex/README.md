@@ -21,7 +21,7 @@ All platform projects reference the shared code in `Core/`. Platform-specific co
 ## Building and Running
 
 ### Prerequisites
-- .NET 8.0 SDK or later
+- .NET 10.0 SDK or later
 - MonoGame 3.8.* NuGet packages (restored automatically)
 - Visual Studio 2022+ or VSCode (with C# Dev Kit recommended)
 

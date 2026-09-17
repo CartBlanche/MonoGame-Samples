@@ -13,7 +13,7 @@ This is a cross-platform MonoGame 3.8.* sample demonstrating bloom post-processi
 ## Building and Running
 
 ### Prerequisites
-- .NET 8.0 SDK or later
+- .NET 10.0 SDK or later
 - Visual Studio 2022+ (for Windows/iOS/Android) or VSCode
 - MonoGame 3.8.* NuGet packages (restored automatically)
 

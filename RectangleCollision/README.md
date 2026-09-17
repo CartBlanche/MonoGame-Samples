@@ -24,7 +24,7 @@ The player controls a character that can move left and right using the keyboard.
 
 ### Prerequisites
 
-- .NET 8.0 SDK or later
+- .NET 10.0 SDK or later
 - For iOS: Xcode and Mac development environment
 - For Android: Android SDK
 

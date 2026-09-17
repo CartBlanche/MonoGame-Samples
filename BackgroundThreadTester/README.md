@@ -14,7 +14,7 @@ This project has been modernized to use SDK-style projects with MonoGame 3.8.5 N
 ## Building and Running
 
 ### Prerequisites
-- .NET 8.0 SDK or later
+- .NET 10.0 SDK or later
 - Visual Studio 2022 or VS Code
 
 ### Build Commands

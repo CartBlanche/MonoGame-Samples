@@ -39,7 +39,7 @@ Each platform project references the shared Core project and includes only platf
 
 ### Prerequisites
 
-- .NET 8.0 SDK or later
+- .NET 10.0 SDK or later
 - For Android: Android SDK and workload installed (`dotnet workload install android`)
 
 ### Building from Command Line

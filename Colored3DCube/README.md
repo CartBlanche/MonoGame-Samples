@@ -25,7 +25,7 @@ This is a modernized MonoGame 3.8.* sample demonstrating a rotating colored 3D c
 
 ## Requirements
 
-- .NET 8.0 SDK or later
+- .NET 10.0 SDK or later
 - MonoGame 3.8.* (restored via NuGet)
 - For Android/iOS: Xamarin/MAUI/MonoGame toolchain (see MonoGame docs)
 

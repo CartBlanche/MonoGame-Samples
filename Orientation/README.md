@@ -19,7 +19,7 @@ This sample demonstrates:
 
 ## Prerequisites
 
-- .NET 8.0 SDK or later
+- .NET 10.0 SDK or later
 - For Android development: Android SDK with API level 21+
 - For iOS development: Xcode and iOS 11.0+
 - Visual Studio 2022 or Visual Studio Code
