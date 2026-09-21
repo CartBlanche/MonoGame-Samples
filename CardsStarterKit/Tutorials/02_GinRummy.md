@@ -15,7 +15,7 @@ Time to step up. This tutorial builds a complete Gin Rummy game, it's substantia
 Expect this to take 6-8 hours. It's **Intermediate** difficulty.
 
 **Framework note:** The snippets below target the current Cards.Framework / Cards.Framework.Core API shape in this repo.
-**Host note:** This tutorial is written to be implemented inside the Blank sample template under `3-Games/Blank/Core/`.
+**Host note:** Start from the Blank sample template, copy it to a sibling project folder, and rename it to `GinRummy` before following this tutorial. The working project for this tutorial is `3-Games/GinRummy/`.
 
 ---
 
@@ -57,21 +57,27 @@ We'll build a single round for now. Full match play (first to 100 points) is doa
 
 ## Part 1: Project Structure
 
-Organise your files like this:
+Start by copying the Blank project to a sibling folder and renaming it to `GinRummy`.
 
 ```bash
-mkdir -p 3-Games/Blank/Core/GinRummy/Core
-mkdir -p 3-Games/Blank/Core/GinRummy/Players
-mkdir -p 3-Games/Blank/Core/GinRummy/Rules
-mkdir -p 3-Games/Blank/Core/GinRummy/UI
-mkdir -p 3-Games/Blank/Core/GinRummy/AI
-mkdir -p 3-Games/Blank/Core/GinRummy/Core/Screens
+cp -R 3-Games/Blank 3-Games/GinRummy
+```
+
+Then organise your files like this inside the copied project:
+
+```bash
+mkdir -p 3-Games/GinRummy/Core
+mkdir -p 3-Games/GinRummy/Players
+mkdir -p 3-Games/GinRummy/Rules
+mkdir -p 3-Games/GinRummy/UI
+mkdir -p 3-Games/GinRummy/AI
+mkdir -p 3-Games/GinRummy/Screens
 ```
 
 Your structure will look like:
 
 ```
-3-Games/Blank/Core/GinRummy/
+3-Games/GinRummy/
 ├── Core/
 │   ├── GinRummyCardGame.cs
 │   ├── GinRummyGameState.cs
@@ -85,16 +91,15 @@ Your structure will look like:
 │   ├── GinRule.cs
 │   └── TurnCompleteRule.cs
 ├── UI/
-│   ├── Button.cs (copied from Blackjack)
+│   ├── Button.cs (optional local override, if needed)
 │   └── HandOrganizer.cs
-├── Core/
-│   └── Screens/
-│       └── GinRummyGameplayScreen.cs
+├── Screens/
+│   └── GinRummyGameplayScreen.cs
 └── AI/
     └── GinRummyNPC.cs
 ```
 
-Then copy `3-Games/Blackjack/Core/UI/Button.cs` into `3-Games/Blank/Core/GinRummy/UI/Button.cs` and change its namespace from `Blackjack` to `GinRummy`.
+For the gameplay button, use the shared `CardsFramework.Button` from `1-Framework/UI/Button.cs`. If you later want a game-specific appearance, subclass the shared button and override only the visuals or game-specific behavior.
 
 ---
 

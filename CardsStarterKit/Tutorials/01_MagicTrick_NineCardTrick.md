@@ -14,7 +14,7 @@ This tutorial walks you through building a classic 9-card magic trick, the kind 
 If you're new to MonoGame and card game frameworks, this is a great starting point. It's short enough to complete in 2-3 hours but teaches solid patterns you'll reuse in bigger games.
 
 **Framework note:** The snippets below target the current Cards.Framework / Cards.Framework.Core API shape in this repo.
-**Host note:** This tutorial is written to be implemented inside the Blank sample template under `3-Games/Blank/Core/`.
+**Host note:** Start from the Blank sample template, copy it to a sibling project folder, and rename it to `MagicTrick` before following this tutorial. The working project for this tutorial is `3-Games/MagicTrick/`.
 
 **Difficulty:** Beginner | **Time:** 2-3 hours
 
@@ -41,22 +41,27 @@ Honestly, it's not magic, it's maths. Put the selected pile in the middle twice,
 
 ## Part 1: Project Structure Setup
 
-### Step 1.1: Create Module Folders in Blank
+### Step 1.1: Copy the Blank Template and Rename It
 
-Inside `3-Games/Blank/Core`, keep Magic Trick organized like this:
+Start by copying the Blank project to a sibling folder and renaming it to `MagicTrick`.
+
+```bash
+cp -R 3-Games/Blank 3-Games/MagicTrick
+```
+
+Inside the copied project, keep Magic Trick organized like this:
 
 ```
-3-Games/Blank/Core/MagicTrick/
-├── Core/
-│   ├── MagicTrickCardGame.cs
-│   ├── MagicTrickGameState.cs
+3-Games/MagicTrick/Core/
+├── MagicTrickCardGame.cs
+├── MagicTrickGameState.cs
 ├── Players/
 │   └── MagicTrickPlayer.cs
 ├── Rules/
 │   ├── CardSelectionRule.cs
 │   └── RevealRule.cs
 ├── UI/
-│   └── Button.cs (copied from Blackjack)
+│   └── Button.cs (optional local wrapper, if needed)
 └── Screens/
     └── MagicTrickGameplayScreen.cs
 ```
@@ -64,14 +69,15 @@ Inside `3-Games/Blank/Core`, keep Magic Trick organized like this:
 Create these directories:
 
 ```bash
-mkdir -p 3-Games/Blank/Core/MagicTrick/Core
-mkdir -p 3-Games/Blank/Core/MagicTrick/Players
-mkdir -p 3-Games/Blank/Core/MagicTrick/Rules
-mkdir -p 3-Games/Blank/Core/MagicTrick/UI
-mkdir -p 3-Games/Blank/Core/MagicTrick/Core/Screens
+mkdir -p 3-Games/MagicTrick/Core
+mkdir -p 3-Games/MagicTrick/Players
+mkdir -p 3-Games/MagicTrick/Rules
+mkdir -p 3-Games/MagicTrick/UI
+mkdir -p 3-Games/MagicTrick/Screens
 ```
 
-Then copy `3-Games/Blackjack/Core/UI/Button.cs` into `3-Games/Blank/Core/MagicTrick/UI/Button.cs` and change its namespace from `Blackjack` to `MagicTrick`.
+For the gameplay button, use the shared `CardsFramework.Button` from `1-Framework/UI/Button.cs`. If you later want a game-specific look or extra styling, subclass this button and override only the visuals or game-specific behavior.
+
 
 ---
 

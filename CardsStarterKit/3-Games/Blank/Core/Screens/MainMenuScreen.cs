@@ -25,7 +25,7 @@ namespace Blank
             MenuEntries.Clear();
 
             // Add menu entries
-            MenuEntry playGameMenuEntry = new MenuEntry("Play Game");
+            MenuEntry playGameMenuEntry = new MenuEntry("Play");
             MenuEntry exitMenuEntry = new MenuEntry("Exit");
 
             playGameMenuEntry.Selected += PlayGameMenuEntrySelected;
