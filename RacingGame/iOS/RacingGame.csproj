@@ -16,8 +16,8 @@
     </MonoGameContentReference>
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="MonoGame.Content.Builder.Task" Version="3.8.5-preview.3" />
-    <PackageReference Include="MonoGame.Framework.iOS" Version="3.8.5-preview.3" />
+    <PackageReference Include="MonoGame.Content.Builder.Task" Version="3.8.*"  />
+    <PackageReference Include="MonoGame.Framework.iOS" Version="3.8.*"  />
   </ItemGroup>
   <Target Name="RestoreDotnetTools" BeforeTargets="CollectPackageReferences">
     <Message Text="Restoring dotnet tools..." Importance="High" />

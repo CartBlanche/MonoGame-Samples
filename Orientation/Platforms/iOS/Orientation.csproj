@@ -6,7 +6,7 @@
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Core\Orientation.Core.csproj" />
-    <PackageReference Include="MonoGame.Framework.iOS" Version="3.8.5" />
+    <PackageReference Include="MonoGame.Framework.iOS" Version="3.8.*"  />
   </ItemGroup>
 
   <ItemGroup>

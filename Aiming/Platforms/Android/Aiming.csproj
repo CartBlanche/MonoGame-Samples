@@ -16,7 +16,7 @@
     <ProjectReference Include="..\..\Core\Aiming.Core.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="MonoGame.Framework.Android" Version="3.8.5" />
+    <PackageReference Include="MonoGame.Framework.Android" Version="3.8.*"  />
   </ItemGroup>
   <ItemGroup>
     <Content Include="..\..\..\CompiledContent\Android\Content\Textures\cat.xnb" Link="Content\cat.xnb">
