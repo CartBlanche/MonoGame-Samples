@@ -1,0 +1,8 @@
+newmtl Wall_Grey
+Kd 0.509804 0.5333334 0.5607843
+d 1
+
+newmtl Wall_DarkGrey
+Kd 0.4901961 0.509804 0.5411765
+d 1
+

@@ -1,0 +1,7 @@
+<Solution>
+  <Folder Name="/Platforms/" />
+  <Folder Name="/Platforms/Desktop/">
+    <Project Path="Platforms/Desktop/Shooter.csproj" />
+  </Folder>
+  <Project Path="Core/Core.csproj" />
+</Solution>

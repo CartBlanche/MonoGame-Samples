@@ -1,0 +1,154 @@
+
+#----------------------------- Global Properties ----------------------------#
+
+/outputDir:bin/$(Platform)
+/intermediateDir:obj/$(Platform)
+/platform:DesktopGL
+/config:$(Configuration)
+/profile:HiDef
+/compress:False
+
+#-------------------------------- References --------------------------------#
+
+# Skinned model / animation clip pipeline extension (Tools/Shooter.Pipeline, fixed output path).
+/reference:../../Tools/Shooter.Pipeline/bin/Shooter.Pipeline.dll
+
+#---------------------------------- Content ---------------------------------#
+
+# Characters.mgcb: HoverBot + Turret rigs and animation clips (owned by the skinned-character pipeline).
+# Rigs   -> Shooter.Animation.SkinnedModel   (load as "Characters/HoverBot", "Characters/Turret")
+# Clips  -> Shooter.Animation.AnimationClip  (load as "Characters/HoverBot@Idle", ...)
+# MonoGame world space: RotationY(180) of the FBX data, 0.01 scale (see Characters/SKINNING-NOTES.md).
+
+#begin Characters/HoverBot.fbx
+/importer:SkinnedFbxImporter
+/processor:SkinnedModelProcessor
+/processorParam:Space=MonoGame
+/processorParam:Scale=0.01
+/processorParam:GenerateTangents=True
+/build:Characters/HoverBot.fbx
+
+#begin Characters/Turret.fbx
+/importer:SkinnedFbxImporter
+/processor:SkinnedModelProcessor
+/processorParam:Space=MonoGame
+/processorParam:Scale=0.01
+/processorParam:GenerateTangents=True
+/build:Characters/Turret.fbx
+
+#begin Characters/HoverBot@Alerted.fbx
+/importer:SkinnedFbxImporter
+/processor:AnimationClipProcessor
+/processorParam:Space=MonoGame
+/processorParam:Scale=0.01
+/processorParam:ClipName=Alerted
+/processorParam:LoopTime=False
+/build:Characters/HoverBot@Alerted.fbx
+
+#begin Characters/HoverBot@Hurt.fbx
+/importer:SkinnedFbxImporter
+/processor:AnimationClipProcessor
+/processorParam:Space=MonoGame
+/processorParam:Scale=0.01
+/processorParam:ClipName=Hurt
+/processorParam:LoopTime=False
+/build:Characters/HoverBot@Hurt.fbx
+
+#begin Characters/HoverBot@Idle.fbx
+/importer:SkinnedFbxImporter
+/processor:AnimationClipProcessor
+/processorParam:Space=MonoGame
+/processorParam:Scale=0.01
+/processorParam:ClipName=Idle
+/processorParam:LoopTime=True
+/build:Characters/HoverBot@Idle.fbx
+
+#begin Characters/HoverBot@IdleClosed.fbx
+/importer:SkinnedFbxImporter
+/processor:AnimationClipProcessor
+/processorParam:Space=MonoGame
+/processorParam:Scale=0.01
+/processorParam:ClipName=IdleClosed
+/processorParam:LoopTime=True
+/build:Characters/HoverBot@IdleClosed.fbx
+
+#begin Characters/HoverBot@RunFoward.fbx
+/importer:SkinnedFbxImporter
+/processor:AnimationClipProcessor
+/processorParam:Space=MonoGame
+/processorParam:Scale=0.01
+/processorParam:ClipName=RunFoward
+/processorParam:LoopTime=True
+/build:Characters/HoverBot@RunFoward.fbx
+
+#begin Characters/HoverBot@RunFowardClosed.fbx
+/importer:SkinnedFbxImporter
+/processor:AnimationClipProcessor
+/processorParam:Space=MonoGame
+/processorParam:Scale=0.01
+/processorParam:ClipName=RunFowardClosed
+/processorParam:LoopTime=True
+/build:Characters/HoverBot@RunFowardClosed.fbx
+
+#begin Characters/HoverBot@Shoot.fbx
+/importer:SkinnedFbxImporter
+/processor:AnimationClipProcessor
+/processorParam:Space=MonoGame
+/processorParam:Scale=0.01
+/processorParam:ClipName=Shoot
+/processorParam:LoopTime=False
+/build:Characters/HoverBot@Shoot.fbx
+
+#begin Characters/Turret@ActivatedHurt.fbx
+/importer:SkinnedFbxImporter
+/processor:AnimationClipProcessor
+/processorParam:Space=MonoGame
+/processorParam:Scale=0.01
+/processorParam:ClipName=ActivatedHurt
+/processorParam:LoopTime=False
+/build:Characters/Turret@ActivatedHurt.fbx
+
+#begin Characters/Turret@AttackIn.fbx
+/importer:SkinnedFbxImporter
+/processor:AnimationClipProcessor
+/processorParam:Space=MonoGame
+/processorParam:Scale=0.01
+/processorParam:ClipName=AttackIn
+/processorParam:LoopTime=False
+/build:Characters/Turret@AttackIn.fbx
+
+#begin Characters/Turret@AttackLoop.fbx
+/importer:SkinnedFbxImporter
+/processor:AnimationClipProcessor
+/processorParam:Space=MonoGame
+/processorParam:Scale=0.01
+/processorParam:ClipName=AttackLoop
+/processorParam:LoopTime=True
+/build:Characters/Turret@AttackLoop.fbx
+
+#begin Characters/Turret@AttackOut.fbx
+/importer:SkinnedFbxImporter
+/processor:AnimationClipProcessor
+/processorParam:Space=MonoGame
+/processorParam:Scale=0.01
+/processorParam:ClipName=AttackOut
+/processorParam:LoopTime=False
+/build:Characters/Turret@AttackOut.fbx
+
+#begin Characters/Turret@Idle.fbx
+/importer:SkinnedFbxImporter
+/processor:AnimationClipProcessor
+/processorParam:Space=MonoGame
+/processorParam:Scale=0.01
+/processorParam:ClipName=Idle
+/processorParam:LoopTime=True
+/build:Characters/Turret@Idle.fbx
+
+#begin Characters/Turret@PassiveHurt.fbx
+/importer:SkinnedFbxImporter
+/processor:AnimationClipProcessor
+/processorParam:Space=MonoGame
+/processorParam:Scale=0.01
+/processorParam:ClipName=PassiveHurt
+/processorParam:LoopTime=False
+/build:Characters/Turret@PassiveHurt.fbx

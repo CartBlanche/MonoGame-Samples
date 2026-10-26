@@ -1,0 +1,65 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net10.0</TargetFramework>
+    <PublishReadyToRun>false</PublishReadyToRun>
+    <TieredCompilation>false</TieredCompilation>
+    <AssemblyName>Shooter</AssemblyName>
+    <RootNamespace>Shooter</RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <MonoGameContentReference Include="..\..\Core\Content\Shooter.mgcb">
+      <Link>Content\Shooter.mgcb</Link>
+      <Platform>DesktopGL</Platform>
+    </MonoGameContentReference>
+  </ItemGroup>
+  <ItemGroup>
+    <!-- Skinned characters (HoverBot, Turret) + animation clips; built with Tools/Shooter.Pipeline. -->
+    <MonoGameContentReference Include="..\..\Core\Content\Characters.mgcb">
+      <Link>Content\Characters.mgcb</Link>
+      <Platform>DesktopGL</Platform>
+    </MonoGameContentReference>
+    <ProjectReference Include="..\..\Tools\Shooter.Pipeline\Shooter.Pipeline.csproj" ReferenceOutputAssembly="false" />
+  </ItemGroup>
+  <ItemGroup>
+    <!-- Baked MainScene (Tools/SceneBake), read with TitleContainer.OpenStream("Content/Scenes/MainScene.scene.json"). -->
+    <None Include="..\..\Core\Content\Scenes\MainScene.scene.json" Link="Content\Scenes\MainScene.scene.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <!-- Animator controllers exported by Tools/Shooter.CharacterExport (HoverBot.animator.json), read with TitleContainer. -->
+    <None Include="..\..\Core\Content\Characters\*.animator.json" Link="Content\Characters\%(Filename)%(Extension)">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <!-- HLSL effects (Lit, Skybox, Particles, post-processing...) for the MonoGame renderer; owned by Core/Rendering. -->
+    <MonoGameContentReference Include="..\..\Core\Content\Effects.mgcb">
+      <Link>Content\Effects.mgcb</Link>
+      <Platform>DesktopGL</Platform>
+    </MonoGameContentReference>
+    <!-- Baked Unity ParticleSystem data (Tools/ParticleBake), read by Core/Rendering/Particles/ParticleSystemData.Load. -->
+    <None Include="..\..\Core\Content\Particles\*.json" Link="Content\Particles\%(Filename)%(Extension)">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <TrimmerRootAssembly Include="Microsoft.Xna.Framework.Content.ContentTypeReader" Visible="false" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Core\Core.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="MonoGame.Content.Builder.Task" Version="3.8.*" />
+    <PackageReference Include="MonoGame.Framework.DesktopGL" Version="3.8.*" />
+  </ItemGroup>
+  <!-- Content-pipeline extension used by Shooter.mgcb (StaticModelProcessor). Must exist before mgcb runs. -->
+  <Target Name="BuildStaticPipeline" BeforeTargets="PrepareContentBuilder">
+    <Exec Command="dotnet build &quot;$(MSBuildThisFileDirectory)..\..\Tools\Shooter.StaticPipeline\Shooter.StaticPipeline.csproj&quot; -c Release -v q --nologo" />
+  </Target>
+  <Target Name="RestoreDotnetTools" BeforeTargets="CollectPackageReferences">
+    <Message Text="Restoring dotnet tools (this might take a while depending on your internet speed and should only happen upon building your project for the first time, or after upgrading MonoGame, or clearing your nuget cache)" Importance="High" />
+    <Exec Command="dotnet tool restore" />
+  </Target>
+</Project>

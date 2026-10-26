@@ -1,0 +1,715 @@
+{
+  "name": "Turret",
+  "format": "shooter.skeleton/1",
+  "space": "MonoGame world space (right-handed, Y up, -Z forward) = Unity world converted with F = diag(1,1,-1) = RotationY(180) of the FBX data, scaled by 0.01 (cm -\u003E m). position (-x,y,-z)*0.01, quaternion (-qx,qy,-qz,qw). To get Unity-space values apply F again: position (x,y,-z), quaternion (-x,-y,z,w) (see unityGlobalPosition).",
+  "scale": 0.01,
+  "mirrorX": false,
+  "unityFromThis": "F = diag(1,1,-1): position (x,y,-z), quaternion (-x,-y,z,w), scale unchanged",
+  "matrixConvention": "16 floats, row-major, XNA row-vector convention (translation in elements 12..14)",
+  "skeletonRoot": "Turret_Root_C_Jnt",
+  "bones": [
+    {
+      "index": 0,
+      "name": "Turret_Root_C_Jnt",
+      "parent": -1,
+      "path": "Turret_Root_C_Jnt",
+      "local": {
+        "position": [
+          -0,
+          0,
+          -0
+        ],
+        "rotation": [
+          0,
+          0,
+          0,
+          1
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ],
+        "matrix": [
+          1,
+          -0,
+          0,
+          0,
+          -0,
+          1,
+          -0,
+          0,
+          0,
+          -0,
+          1,
+          0,
+          -0,
+          0,
+          -0,
+          1
+        ]
+      },
+      "global": {
+        "position": [
+          -0,
+          0,
+          -0
+        ],
+        "rotation": [
+          0,
+          0,
+          0,
+          1
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ],
+        "matrix": [
+          1,
+          -0,
+          0,
+          0,
+          -0,
+          1,
+          -0,
+          0,
+          0,
+          -0,
+          1,
+          0,
+          -0,
+          0,
+          -0,
+          1
+        ]
+      },
+      "unityGlobalPosition": [
+        -0,
+        0,
+        0
+      ]
+    },
+    {
+      "index": 1,
+      "name": "Turret_FKRoot_C_Jnt",
+      "parent": 0,
+      "path": "Turret_Root_C_Jnt/Turret_FKRoot_C_Jnt",
+      "local": {
+        "position": [
+          0,
+          0,
+          0
+        ],
+        "rotation": [
+          0,
+          0,
+          0,
+          1
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ],
+        "matrix": [
+          1,
+          0,
+          0,
+          -0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          0,
+          1,
+          -0,
+          0,
+          0,
+          0,
+          1
+        ]
+      },
+      "global": {
+        "position": [
+          0,
+          0,
+          0
+        ],
+        "rotation": [
+          0,
+          0,
+          0,
+          1
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ],
+        "matrix": [
+          1,
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          0,
+          1
+        ]
+      },
+      "unityGlobalPosition": [
+        0,
+        0,
+        -0
+      ]
+    },
+    {
+      "index": 2,
+      "name": "Turret_Pole_C_Jnt",
+      "parent": 1,
+      "path": "Turret_Root_C_Jnt/Turret_FKRoot_C_Jnt/Turret_Pole_C_Jnt",
+      "local": {
+        "position": [
+          -0,
+          0.196489,
+          -0
+        ],
+        "rotation": [
+          0,
+          0,
+          0,
+          1
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ],
+        "matrix": [
+          1,
+          -0,
+          0,
+          0,
+          -0,
+          1,
+          -0,
+          0,
+          0,
+          -0,
+          1,
+          0,
+          -0,
+          0.196489,
+          -0,
+          1
+        ]
+      },
+      "global": {
+        "position": [
+          0,
+          0.196489,
+          0
+        ],
+        "rotation": [
+          0,
+          0,
+          0,
+          1
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ],
+        "matrix": [
+          1,
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0.196489,
+          0,
+          1
+        ]
+      },
+      "unityGlobalPosition": [
+        0,
+        0.196489,
+        -0
+      ]
+    },
+    {
+      "index": 3,
+      "name": "Turret_Pivot_C_Jnt",
+      "parent": 2,
+      "path": "Turret_Root_C_Jnt/Turret_FKRoot_C_Jnt/Turret_Pole_C_Jnt/Turret_Pivot_C_Jnt",
+      "local": {
+        "position": [
+          -0,
+          0.030393,
+          -0
+        ],
+        "rotation": [
+          0,
+          0,
+          0,
+          1
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ],
+        "matrix": [
+          1,
+          -0,
+          0,
+          0,
+          -0,
+          1,
+          -0,
+          0,
+          0,
+          -0,
+          1,
+          0,
+          -0,
+          0.030393,
+          -0,
+          1
+        ]
+      },
+      "global": {
+        "position": [
+          0,
+          0.226883,
+          0
+        ],
+        "rotation": [
+          0,
+          0,
+          0,
+          1
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ],
+        "matrix": [
+          1,
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0.226883,
+          0,
+          1
+        ]
+      },
+      "unityGlobalPosition": [
+        0,
+        0.226883,
+        -0
+      ]
+    },
+    {
+      "index": 4,
+      "name": "Turret_Head_C_Jnt",
+      "parent": 3,
+      "path": "Turret_Root_C_Jnt/Turret_FKRoot_C_Jnt/Turret_Pole_C_Jnt/Turret_Pivot_C_Jnt/Turret_Head_C_Jnt",
+      "local": {
+        "position": [
+          -0,
+          0.24224,
+          -0
+        ],
+        "rotation": [
+          0,
+          0,
+          0,
+          1
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ],
+        "matrix": [
+          1,
+          -0,
+          0,
+          0,
+          -0,
+          1,
+          -0,
+          0,
+          0,
+          -0,
+          1,
+          0,
+          -0,
+          0.24224,
+          -0,
+          1
+        ]
+      },
+      "global": {
+        "position": [
+          0,
+          0.469122,
+          0
+        ],
+        "rotation": [
+          0,
+          0,
+          0,
+          1
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ],
+        "matrix": [
+          1,
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0.469122,
+          0,
+          1
+        ]
+      },
+      "unityGlobalPosition": [
+        0,
+        0.469122,
+        -0
+      ]
+    },
+    {
+      "index": 5,
+      "name": "IrisBlade_C_Jnt",
+      "parent": 4,
+      "path": "Turret_Root_C_Jnt/Turret_FKRoot_C_Jnt/Turret_Pole_C_Jnt/Turret_Pivot_C_Jnt/Turret_Head_C_Jnt/IrisBlade_C_Jnt",
+      "local": {
+        "position": [
+          -0.202536,
+          0,
+          -0
+        ],
+        "rotation": [
+          0,
+          0,
+          0,
+          1
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ],
+        "matrix": [
+          1,
+          -0,
+          0,
+          0,
+          -0,
+          1,
+          -0,
+          0,
+          0,
+          -0,
+          1,
+          0,
+          -0.202536,
+          0,
+          -0,
+          1
+        ]
+      },
+      "global": {
+        "position": [
+          -0.202536,
+          0.469122,
+          0
+        ],
+        "rotation": [
+          0,
+          0,
+          0,
+          1
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ],
+        "matrix": [
+          1,
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
+          -0.202536,
+          0.469122,
+          0,
+          1
+        ]
+      },
+      "unityGlobalPosition": [
+        -0.202536,
+        0.469122,
+        -0
+      ]
+    },
+    {
+      "index": 6,
+      "name": "Handle_R_Jnt",
+      "parent": 3,
+      "path": "Turret_Root_C_Jnt/Turret_FKRoot_C_Jnt/Turret_Pole_C_Jnt/Turret_Pivot_C_Jnt/Handle_R_Jnt",
+      "local": {
+        "position": [
+          -0,
+          0.098439,
+          -0.169865
+        ],
+        "rotation": [
+          0,
+          0,
+          0,
+          1
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ],
+        "matrix": [
+          1,
+          -0,
+          0,
+          0,
+          -0,
+          1,
+          -0,
+          0,
+          0,
+          -0,
+          1,
+          0,
+          -0,
+          0.098439,
+          -0.169865,
+          1
+        ]
+      },
+      "global": {
+        "position": [
+          0,
+          0.325322,
+          -0.169865
+        ],
+        "rotation": [
+          0,
+          0,
+          0,
+          1
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ],
+        "matrix": [
+          1,
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0.325322,
+          -0.169865,
+          1
+        ]
+      },
+      "unityGlobalPosition": [
+        0,
+        0.325322,
+        0.169865
+      ]
+    }
+  ],
+  "otherNodes": [
+    {
+      "name": "TurretBottom",
+      "isMesh": true,
+      "local": {
+        "position": [
+          -0,
+          0,
+          -0
+        ],
+        "rotation": [
+          0,
+          0,
+          0,
+          1
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ],
+        "matrix": [
+          1,
+          -0,
+          0,
+          0,
+          -0,
+          1,
+          -0,
+          0,
+          0,
+          -0,
+          1,
+          0,
+          -0,
+          0,
+          -0,
+          1
+        ]
+      }
+    },
+    {
+      "name": "TurretCenter",
+      "isMesh": true,
+      "local": {
+        "position": [
+          -0,
+          0,
+          -0
+        ],
+        "rotation": [
+          0,
+          0,
+          0,
+          1
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ],
+        "matrix": [
+          1,
+          -0,
+          0,
+          0,
+          -0,
+          1,
+          -0,
+          0,
+          0,
+          -0,
+          1,
+          0,
+          -0,
+          0,
+          -0,
+          1
+        ]
+      }
+    },
+    {
+      "name": "TurretTop",
+      "isMesh": true,
+      "local": {
+        "position": [
+          -0,
+          0,
+          -0
+        ],
+        "rotation": [
+          0,
+          0,
+          0,
+          1
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ],
+        "matrix": [
+          1,
+          -0,
+          0,
+          0,
+          -0,
+          1,
+          -0,
+          0,
+          0,
+          -0,
+          1,
+          0,
+          -0,
+          0,
+          -0,
+          1
+        ]
+      }
+    }
+  ]
+}

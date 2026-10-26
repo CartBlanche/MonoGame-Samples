@@ -1,0 +1,5 @@
+# The repo-wide ignore treats *.obj as build output; these are source meshes.
+!Core/Content/Models/**/*.obj
+
+# Edit-mode Unity renders; known unfaithful to Play mode, regenerable.
+Tools/UnityReference/Baseline/

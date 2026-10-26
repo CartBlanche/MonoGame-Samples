@@ -1,0 +1,446 @@
+{
+  "controller": "Turret_AnimationController",
+  "rig": "Turret",
+  "format": "shooter.animator/1",
+  "parameters": [
+    {
+      "name": "OnDamaged",
+      "type": "trigger",
+      "defaultFloat": 0,
+      "defaultInt": 0,
+      "defaultBool": false
+    },
+    {
+      "name": "IsActive",
+      "type": "bool",
+      "defaultFloat": 0,
+      "defaultInt": 0,
+      "defaultBool": false
+    }
+  ],
+  "layers": [
+    {
+      "name": "Base Layer",
+      "blendMode": "override",
+      "defaultWeight": 0,
+      "syncedLayerIndex": -1,
+      "syncedLayerAffectsTiming": false,
+      "ikPass": false,
+      "avatarMask": null,
+      "defaultState": "Idle",
+      "anyStateTransitions": [],
+      "states": [
+        {
+          "id": "Idle",
+          "name": "Idle",
+          "speed": 1,
+          "speedParameter": null,
+          "cycleOffset": 0,
+          "cycleOffsetParameter": null,
+          "timeParameter": null,
+          "mirror": false,
+          "writeDefaultValues": true,
+          "tag": "",
+          "motion": {
+            "type": "clip",
+            "clip": "Idle",
+            "asset": "Characters/Turret@Idle"
+          },
+          "transitions": [
+            {
+              "isExit": false,
+              "destination": "AttackIn",
+              "hasExitTime": false,
+              "exitTime": 0.75,
+              "hasFixedDuration": true,
+              "duration": 0.1,
+              "offset": 0,
+              "interruptionSource": "none",
+              "orderedInterruption": true,
+              "canTransitionToSelf": true,
+              "mute": false,
+              "solo": false,
+              "conditions": [
+                {
+                  "parameter": "IsActive",
+                  "mode": "if",
+                  "threshold": 0
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "AttackOut",
+          "name": "AttackOut",
+          "speed": 1,
+          "speedParameter": null,
+          "cycleOffset": 0,
+          "cycleOffsetParameter": null,
+          "timeParameter": null,
+          "mirror": false,
+          "writeDefaultValues": true,
+          "tag": "",
+          "motion": {
+            "type": "clip",
+            "clip": "AttackOut",
+            "asset": "Characters/Turret@AttackOut"
+          },
+          "transitions": [
+            {
+              "isExit": false,
+              "destination": "Idle",
+              "hasExitTime": true,
+              "exitTime": 0.75,
+              "hasFixedDuration": true,
+              "duration": 0.1,
+              "offset": 0,
+              "interruptionSource": "none",
+              "orderedInterruption": true,
+              "canTransitionToSelf": true,
+              "mute": false,
+              "solo": false,
+              "conditions": []
+            }
+          ]
+        },
+        {
+          "id": "AttackLoop",
+          "name": "AttackLoop",
+          "speed": 1,
+          "speedParameter": null,
+          "cycleOffset": 0,
+          "cycleOffsetParameter": null,
+          "timeParameter": null,
+          "mirror": false,
+          "writeDefaultValues": true,
+          "tag": "",
+          "motion": {
+            "type": "clip",
+            "clip": "AttackLoop",
+            "asset": "Characters/Turret@AttackLoop"
+          },
+          "transitions": [
+            {
+              "isExit": false,
+              "destination": "AttackOut",
+              "hasExitTime": false,
+              "exitTime": 0.37500012,
+              "hasFixedDuration": true,
+              "duration": 0.1,
+              "offset": 0,
+              "interruptionSource": "none",
+              "orderedInterruption": true,
+              "canTransitionToSelf": true,
+              "mute": false,
+              "solo": false,
+              "conditions": [
+                {
+                  "parameter": "IsActive",
+                  "mode": "ifNot",
+                  "threshold": 0
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "AttackIn",
+          "name": "AttackIn",
+          "speed": 1,
+          "speedParameter": null,
+          "cycleOffset": 0,
+          "cycleOffsetParameter": null,
+          "timeParameter": null,
+          "mirror": false,
+          "writeDefaultValues": true,
+          "tag": "",
+          "motion": {
+            "type": "clip",
+            "clip": "AttackIn",
+            "asset": "Characters/Turret@AttackIn"
+          },
+          "transitions": [
+            {
+              "isExit": false,
+              "destination": "AttackLoop",
+              "hasExitTime": true,
+              "exitTime": 0.75,
+              "hasFixedDuration": true,
+              "duration": 0.1,
+              "offset": 0,
+              "interruptionSource": "none",
+              "orderedInterruption": true,
+              "canTransitionToSelf": true,
+              "mute": false,
+              "solo": false,
+              "conditions": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Damaged",
+      "blendMode": "additive",
+      "defaultWeight": 1,
+      "syncedLayerIndex": -1,
+      "syncedLayerAffectsTiming": false,
+      "ikPass": false,
+      "avatarMask": {
+        "name": "Turret",
+        "includedTransforms": [
+          "Handle_R_Jnt",
+          "Turret_Head_C_Jnt",
+          "IrisBlade_C_Jnt"
+        ],
+        "excludedTransforms": [
+          "Turret_Root_C_Jnt",
+          "Turret_FKRoot_C_Jnt",
+          "Turret_Pole_C_Jnt",
+          "Turret_Pivot_C_Jnt",
+          "TurretBottom",
+          "TurretCenter",
+          "TurretTop"
+        ]
+      },
+      "defaultState": "Null",
+      "anyStateTransitions": [],
+      "states": [
+        {
+          "id": "ActivatedHurt",
+          "name": "ActivatedHurt",
+          "speed": 1,
+          "speedParameter": null,
+          "cycleOffset": 0,
+          "cycleOffsetParameter": null,
+          "timeParameter": null,
+          "mirror": false,
+          "writeDefaultValues": true,
+          "tag": "",
+          "motion": {
+            "type": "clip",
+            "clip": "ActivatedHurt",
+            "asset": "Characters/Turret@ActivatedHurt"
+          },
+          "transitions": [
+            {
+              "isExit": true,
+              "destination": null,
+              "hasExitTime": true,
+              "exitTime": 0.75,
+              "hasFixedDuration": true,
+              "duration": 0.1,
+              "offset": 0,
+              "interruptionSource": "none",
+              "orderedInterruption": true,
+              "canTransitionToSelf": true,
+              "mute": false,
+              "solo": false,
+              "conditions": []
+            },
+            {
+              "isExit": false,
+              "destination": "ActivatedHurt",
+              "hasExitTime": false,
+              "exitTime": 0.423077,
+              "hasFixedDuration": true,
+              "duration": 0.1,
+              "offset": 0,
+              "interruptionSource": "none",
+              "orderedInterruption": true,
+              "canTransitionToSelf": true,
+              "mute": false,
+              "solo": false,
+              "conditions": [
+                {
+                  "parameter": "OnDamaged",
+                  "mode": "if",
+                  "threshold": 0
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "PassiveHurt",
+          "name": "PassiveHurt",
+          "speed": 1,
+          "speedParameter": null,
+          "cycleOffset": 0,
+          "cycleOffsetParameter": null,
+          "timeParameter": null,
+          "mirror": false,
+          "writeDefaultValues": true,
+          "tag": "",
+          "motion": {
+            "type": "clip",
+            "clip": "PassiveHurt",
+            "asset": "Characters/Turret@PassiveHurt"
+          },
+          "transitions": [
+            {
+              "isExit": true,
+              "destination": null,
+              "hasExitTime": true,
+              "exitTime": 0.75,
+              "hasFixedDuration": true,
+              "duration": 0.1,
+              "offset": 0,
+              "interruptionSource": "none",
+              "orderedInterruption": true,
+              "canTransitionToSelf": true,
+              "mute": false,
+              "solo": false,
+              "conditions": []
+            },
+            {
+              "isExit": false,
+              "destination": "PassiveHurt",
+              "hasExitTime": false,
+              "exitTime": 0.423077,
+              "hasFixedDuration": true,
+              "duration": 0.1,
+              "offset": 0,
+              "interruptionSource": "none",
+              "orderedInterruption": true,
+              "canTransitionToSelf": true,
+              "mute": false,
+              "solo": false,
+              "conditions": [
+                {
+                  "parameter": "OnDamaged",
+                  "mode": "if",
+                  "threshold": 0
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "Null",
+          "name": "Null",
+          "speed": 1,
+          "speedParameter": null,
+          "cycleOffset": 0,
+          "cycleOffsetParameter": null,
+          "timeParameter": null,
+          "mirror": false,
+          "writeDefaultValues": true,
+          "tag": "",
+          "motion": null,
+          "transitions": [
+            {
+              "isExit": false,
+              "destination": "PassiveHurt",
+              "hasExitTime": false,
+              "exitTime": 0.75,
+              "hasFixedDuration": true,
+              "duration": 0.1,
+              "offset": 0,
+              "interruptionSource": "none",
+              "orderedInterruption": true,
+              "canTransitionToSelf": true,
+              "mute": false,
+              "solo": false,
+              "conditions": [
+                {
+                  "parameter": "OnDamaged",
+                  "mode": "if",
+                  "threshold": 0
+                },
+                {
+                  "parameter": "IsActive",
+                  "mode": "ifNot",
+                  "threshold": 0
+                }
+              ]
+            },
+            {
+              "isExit": false,
+              "destination": "ActivatedHurt",
+              "hasExitTime": false,
+              "exitTime": 0.75,
+              "hasFixedDuration": true,
+              "duration": 0.1,
+              "offset": 0,
+              "interruptionSource": "none",
+              "orderedInterruption": true,
+              "canTransitionToSelf": true,
+              "mute": false,
+              "solo": false,
+              "conditions": [
+                {
+                  "parameter": "OnDamaged",
+                  "mode": "if",
+                  "threshold": 0
+                },
+                {
+                  "parameter": "IsActive",
+                  "mode": "if",
+                  "threshold": 0
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "clips": [
+    {
+      "name": "ActivatedHurt",
+      "asset": "Characters/Turret@ActivatedHurt",
+      "loopTime": false,
+      "loopPose": false,
+      "firstFrame": -1,
+      "lastFrame": -1,
+      "hasClipSettings": false
+    },
+    {
+      "name": "AttackIn",
+      "asset": "Characters/Turret@AttackIn",
+      "loopTime": false,
+      "loopPose": false,
+      "firstFrame": -1,
+      "lastFrame": -1,
+      "hasClipSettings": false
+    },
+    {
+      "name": "AttackLoop",
+      "asset": "Characters/Turret@AttackLoop",
+      "loopTime": true,
+      "loopPose": false,
+      "firstFrame": 30,
+      "lastFrame": 41,
+      "hasClipSettings": true
+    },
+    {
+      "name": "AttackOut",
+      "asset": "Characters/Turret@AttackOut",
+      "loopTime": false,
+      "loopPose": false,
+      "firstFrame": -1,
+      "lastFrame": -1,
+      "hasClipSettings": false
+    },
+    {
+      "name": "Idle",
+      "asset": "Characters/Turret@Idle",
+      "loopTime": true,
+      "loopPose": false,
+      "firstFrame": 1,
+      "lastFrame": 89,
+      "hasClipSettings": true
+    },
+    {
+      "name": "PassiveHurt",
+      "asset": "Characters/Turret@PassiveHurt",
+      "loopTime": false,
+      "loopPose": false,
+      "firstFrame": 1,
+      "lastFrame": 14,
+      "hasClipSettings": true
+    }
+  ]
+}

@@ -1,0 +1,250 @@
+{
+ "resolution": [
+  1280,
+  720
+ ],
+ "camera": "Main Camera",
+ "note": "Play-mode poses. Camera world Y = Player root Y 0.2509 + camera local Y 1.44 (Inspector). Unity left-handed, euler degrees.",
+ "poses": [
+  {
+   "name": "pm_01_start",
+   "position": [
+    -28.5,
+    1.6909,
+    -7.149
+   ],
+   "eulerAngles": [
+    -2.0,
+    76.02191,
+    0
+   ],
+   "fov": 60,
+   "note": "pitch estimated from triangle-sign screen height"
+  },
+  {
+   "name": "pm_02_turn90",
+   "position": [
+    -28.5,
+    1.6909,
+    -7.149
+   ],
+   "eulerAngles": [
+    8.2,
+    169.5,
+    0
+   ],
+   "fov": 60,
+   "note": "From the pm_02_90_degrees_from_start capture: root (-28.5,0.2509,-7.149) rotY 529.5x (=169.5); pitch ESTIMATED +8.2 (down) from wall-seam height, floor edge confirmed"
+  },
+  {
+   "name": "pm_03_turn180",
+   "position": [
+    -28.5,
+    1.6909,
+    -7.149
+   ],
+   "eulerAngles": [
+    0,
+    256.2,
+    0
+   ],
+   "fov": 60,
+   "note": "From the pm_03_180_degrees_from_start capture: root (-28.5,0.2509,-7.149) rotY 256.2x; pitch assumed 0 until compared"
+  },
+  {
+   "name": "pm_04_turn270",
+   "position": [
+    -28.5,
+    1.6909,
+    -7.149
+   ],
+   "eulerAngles": [
+    0,
+    0.2,
+    0
+   ],
+   "fov": 60,
+   "note": "yaw from Unity compass (heading+90)"
+  },
+  {
+   "name": "pm_05_look_up",
+   "position": [
+    -28.5,
+    1.6909,
+    -7.149
+   ],
+   "eulerAngles": [
+    -89,
+    75.9,
+    0
+   ],
+   "fov": 60,
+   "note": "pitch -89, yaw 54.32 from Inspector capture (same as pm_10) | yaw from Unity compass (heading+90)"
+  },
+  {
+   "name": "pm_06_look_down",
+   "position": [
+    -28.5,
+    1.6909,
+    -7.149
+   ],
+   "eulerAngles": [
+    89,
+    80.3,
+    0
+   ],
+   "fov": 60,
+   "note": "pitch ASSUMED +60; clamp is 89 | yaw from Unity compass (heading+90)"
+  },
+  {
+   "name": "pm_07_doorway",
+   "position": [
+    -20.6,
+    1.6909,
+    -1.3
+   ],
+   "eulerAngles": [
+    -4.3,
+    84.1,
+    0
+   ],
+   "fov": 60,
+   "note": "position+yaw fitted to triangle sign and HoverBot screen positions in the Unity shots (compass heading+90, offset -8); pitch assumed 0 | pitch estimated from triangle-sign screen height"
+  },
+  {
+   "name": "pm_08_right_30",
+   "position": [
+    -20.6,
+    1.6909,
+    -1.3
+   ],
+   "eulerAngles": [
+    -2.5,
+    126.8,
+    0
+   ],
+   "fov": 60,
+   "note": "position+yaw fitted to triangle sign and HoverBot screen positions in the Unity shots (compass heading+90, offset -8); pitch assumed 0 | pitch estimated from triangle-sign screen height"
+  },
+  {
+   "name": "pm_09_left_30",
+   "position": [
+    -20.6,
+    1.6909,
+    -1.3
+   ],
+   "eulerAngles": [
+    -3.0,
+    50.9,
+    0
+   ],
+   "fov": 60,
+   "note": "position+yaw fitted to triangle sign and HoverBot screen positions in the Unity shots (compass heading+90, offset -8); pitch assumed 0 | pitch estimated from triangle-sign screen height"
+  },
+  {
+   "name": "pm_10_look_up_exact",
+   "position": [
+    -28.5,
+    1.6909,
+    -7.149
+   ],
+   "eulerAngles": [
+    -89,
+    54.32,
+    0
+   ],
+   "fov": 60,
+   "note": "from Inspector: root (-28.5,0.2509,-7.149) rotY 414.32; camera local (0,1.44,0) rotX -89"
+  },
+  {
+   "name": "pm_11_start_exact",
+   "position": [
+    -28.5,
+    1.6909,
+    -7.149
+   ],
+   "eulerAngles": [
+    0.0,
+    76.02191,
+    0
+   ],
+   "fov": 60,
+   "note": "Inspector: root (-28.5,0.2509,-7.149) rotY 436.0x; camera local Y 1.44, pitch 0 (the player starts level; an earlier estimate of -2 put the scene 1.5 degrees too low against the Unity Game-view recording of 2026-10-26)"
+  },
+  {
+   "name": "pm_12_doorway_centre_exact",
+   "position": [
+    -22,
+    1.6909,
+    0
+   ],
+   "eulerAngles": [
+    -5.3,
+    90.12,
+    0
+   ],
+   "fov": 60,
+   "note": "Inspector: root (-22,0.2509,0) rotY 450.12x; camera pitch ESTIMATED -5.3 from feature offsets (not read from Inspector)"
+  },
+  {
+   "name": "pm_13_hoverbot_front_guess",
+   "position": [
+    2.0,
+    1.691,
+    0
+   ],
+   "eulerAngles": [
+    0,
+    90,
+    0
+   ],
+   "fov": 60,
+   "note": "GUESS: ~4.5m in front of HoverBot (6.5,0.5,0 rotY -89.28), pitch 0; real player/camera values not known"
+  },
+  {
+   "name": "pm_14_hoverbot_front_close",
+   "position": [
+    4.2,
+    1.4,
+    0
+   ],
+   "eulerAngles": [
+    10,
+    90,
+    0
+   ],
+   "fov": 60,
+   "note": "debug close-up in front of bot (bot faces -X)"
+  },
+  {
+   "name": "pm_15_hoverbot_backleft_close",
+   "position": [
+    8.0,
+    1.4,
+    -1.8
+   ],
+   "eulerAngles": [
+    10,
+    -65,
+    0
+   ],
+   "fov": 60,
+   "note": "debug close-up, behind bot"
+  },
+  {
+   "name": "pm_17_turret_guess",
+   "position": [
+    62.4,
+    -6.059100000000001,
+    17.48
+   ],
+   "eulerAngles": [
+    2.5,
+    270,
+    0
+   ],
+   "fov": 60,
+   "note": "ESTIMATE from the turret captures: yaw 270 (compass S at centre); ~7.9m away, 0.73m side offset and 2.5 deg down-pitch from the turret's apparent size/position. Player Transform not yet read."
+  }
+ ]
+}

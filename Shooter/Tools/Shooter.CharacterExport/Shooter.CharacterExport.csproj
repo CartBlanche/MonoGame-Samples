@@ -1,0 +1,23 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <!-- net8.0 to match Shooter.Pipeline (see its csproj for why). -->
+    <TargetFramework>net8.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <RootNamespace>Shooter.CharacterExport</RootNamespace>
+    <InvariantGlobalization>true</InvariantGlobalization>
+    <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="*.cs" />
+    <!-- Reuse the UnityExtractor YAML parser without modifying that project. -->
+    <Compile Include="..\UnityExtractor\Yaml\*.cs" Link="UnityExtractor\Yaml\%(Filename)%(Extension)" />
+    <Compile Include="..\UnityExtractor\Unity\UnityFile.cs" Link="UnityExtractor\Unity\UnityFile.cs" />
+    <Compile Include="..\UnityExtractor\Unity\UnityClassIds.cs" Link="UnityExtractor\Unity\UnityClassIds.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="MonoGame.Framework.DesktopGL" Version="3.8.5" />
+    <ProjectReference Include="..\Shooter.Pipeline\Shooter.Pipeline.csproj" />
+  </ItemGroup>
+</Project>

@@ -1,0 +1,8 @@
+newmtl Floor_Grey
+Kd 0.7593216 0.7476157 0.7803922
+d 1
+
+newmtl Floor_DarkGrey
+Kd 0.6934597 0.6849608 0.7098039
+d 1
+

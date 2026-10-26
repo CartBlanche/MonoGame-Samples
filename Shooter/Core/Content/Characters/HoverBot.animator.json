@@ -1,0 +1,746 @@
+{
+  "controller": "HoverBot_AnimationController",
+  "rig": "HoverBot",
+  "format": "shooter.animator/1",
+  "parameters": [
+    {
+      "name": "Attack",
+      "type": "trigger",
+      "defaultFloat": 0,
+      "defaultInt": 0,
+      "defaultBool": false
+    },
+    {
+      "name": "MoveSpeed",
+      "type": "float",
+      "defaultFloat": 0,
+      "defaultInt": 0,
+      "defaultBool": false
+    },
+    {
+      "name": "Alerted",
+      "type": "bool",
+      "defaultFloat": 0,
+      "defaultInt": 0,
+      "defaultBool": false
+    },
+    {
+      "name": "OnDamaged",
+      "type": "trigger",
+      "defaultFloat": 0,
+      "defaultInt": 0,
+      "defaultBool": false
+    },
+    {
+      "name": "Death",
+      "type": "bool",
+      "defaultFloat": 0,
+      "defaultInt": 0,
+      "defaultBool": false
+    }
+  ],
+  "layers": [
+    {
+      "name": "Base Layer",
+      "blendMode": "override",
+      "defaultWeight": 0,
+      "syncedLayerIndex": -1,
+      "syncedLayerAffectsTiming": false,
+      "ikPass": false,
+      "avatarMask": null,
+      "defaultState": "Idle",
+      "anyStateTransitions": [],
+      "states": [
+        {
+          "id": "Idle",
+          "name": "Idle",
+          "speed": 1,
+          "speedParameter": null,
+          "cycleOffset": 0,
+          "cycleOffsetParameter": null,
+          "timeParameter": null,
+          "mirror": false,
+          "writeDefaultValues": true,
+          "tag": "",
+          "motion": {
+            "type": "clip",
+            "clip": "IdleClosed",
+            "asset": "Characters/HoverBot@IdleClosed"
+          },
+          "transitions": [
+            {
+              "isExit": false,
+              "destination": "Locomotion/Patrolling",
+              "hasExitTime": true,
+              "exitTime": 0.75,
+              "hasFixedDuration": true,
+              "duration": 0.1,
+              "offset": 0,
+              "interruptionSource": "none",
+              "orderedInterruption": true,
+              "canTransitionToSelf": true,
+              "mute": false,
+              "solo": false,
+              "conditions": [
+                {
+                  "parameter": "MoveSpeed",
+                  "mode": "greater",
+                  "threshold": 0.05
+                },
+                {
+                  "parameter": "Alerted",
+                  "mode": "ifNot",
+                  "threshold": 0
+                }
+              ]
+            },
+            {
+              "isExit": false,
+              "destination": "Alerted/Alerted",
+              "hasExitTime": false,
+              "exitTime": 0.87068963,
+              "hasFixedDuration": true,
+              "duration": 0.1,
+              "offset": 0,
+              "interruptionSource": "none",
+              "orderedInterruption": true,
+              "canTransitionToSelf": true,
+              "mute": false,
+              "solo": false,
+              "conditions": [
+                {
+                  "parameter": "MoveSpeed",
+                  "mode": "greater",
+                  "threshold": 0.05
+                },
+                {
+                  "parameter": "Alerted",
+                  "mode": "if",
+                  "threshold": 0
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "Alerted/Alerted",
+          "name": "Alerted",
+          "speed": 1,
+          "speedParameter": null,
+          "cycleOffset": 0,
+          "cycleOffsetParameter": null,
+          "timeParameter": null,
+          "mirror": false,
+          "writeDefaultValues": true,
+          "tag": "",
+          "motion": {
+            "type": "clip",
+            "clip": "Alerted",
+            "asset": "Characters/HoverBot@Alerted"
+          },
+          "transitions": [
+            {
+              "isExit": false,
+              "destination": "Alerted/Following",
+              "hasExitTime": true,
+              "exitTime": 0.75,
+              "hasFixedDuration": true,
+              "duration": 0.1,
+              "offset": 0,
+              "interruptionSource": "none",
+              "orderedInterruption": true,
+              "canTransitionToSelf": true,
+              "mute": false,
+              "solo": false,
+              "conditions": []
+            }
+          ]
+        },
+        {
+          "id": "Alerted/Following",
+          "name": "Following",
+          "speed": 1,
+          "speedParameter": null,
+          "cycleOffset": 0,
+          "cycleOffsetParameter": null,
+          "timeParameter": null,
+          "mirror": false,
+          "writeDefaultValues": true,
+          "tag": "",
+          "motion": {
+            "type": "clip",
+            "clip": "RunFoward",
+            "asset": "Characters/HoverBot@RunFoward"
+          },
+          "transitions": [
+            {
+              "isExit": false,
+              "destination": "Idle",
+              "hasExitTime": false,
+              "exitTime": 0.84615386,
+              "hasFixedDuration": true,
+              "duration": 0.1,
+              "offset": 0,
+              "interruptionSource": "none",
+              "orderedInterruption": true,
+              "canTransitionToSelf": true,
+              "mute": false,
+              "solo": false,
+              "conditions": [
+                {
+                  "parameter": "MoveSpeed",
+                  "mode": "less",
+                  "threshold": 0.05
+                },
+                {
+                  "parameter": "Alerted",
+                  "mode": "ifNot",
+                  "threshold": 0
+                }
+              ]
+            },
+            {
+              "isExit": false,
+              "destination": "Locomotion/Patrolling",
+              "hasExitTime": false,
+              "exitTime": 0.5833334,
+              "hasFixedDuration": true,
+              "duration": 0.1,
+              "offset": 0,
+              "interruptionSource": "none",
+              "orderedInterruption": true,
+              "canTransitionToSelf": true,
+              "mute": false,
+              "solo": false,
+              "conditions": [
+                {
+                  "parameter": "Alerted",
+                  "mode": "ifNot",
+                  "threshold": 0
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "Locomotion/Patrolling",
+          "name": "Patrolling",
+          "speed": 1,
+          "speedParameter": null,
+          "cycleOffset": 0,
+          "cycleOffsetParameter": null,
+          "timeParameter": null,
+          "mirror": false,
+          "writeDefaultValues": true,
+          "tag": "",
+          "motion": {
+            "type": "clip",
+            "clip": "RunFowardClosed",
+            "asset": "Characters/HoverBot@RunFowardClosed"
+          },
+          "transitions": [
+            {
+              "isExit": false,
+              "destination": "Idle",
+              "hasExitTime": true,
+              "exitTime": 0.75,
+              "hasFixedDuration": true,
+              "duration": 0.1,
+              "offset": 0,
+              "interruptionSource": "none",
+              "orderedInterruption": true,
+              "canTransitionToSelf": true,
+              "mute": false,
+              "solo": false,
+              "conditions": [
+                {
+                  "parameter": "MoveSpeed",
+                  "mode": "less",
+                  "threshold": 0.05
+                }
+              ]
+            },
+            {
+              "isExit": false,
+              "destination": "Alerted/Alerted",
+              "hasExitTime": false,
+              "exitTime": 0.75,
+              "hasFixedDuration": true,
+              "duration": 0.1,
+              "offset": 0,
+              "interruptionSource": "none",
+              "orderedInterruption": true,
+              "canTransitionToSelf": true,
+              "mute": false,
+              "solo": false,
+              "conditions": [
+                {
+                  "parameter": "Alerted",
+                  "mode": "if",
+                  "threshold": 0
+                }
+              ]
+            },
+            {
+              "isExit": false,
+              "destination": "Locomotion/TurnRight",
+              "hasExitTime": true,
+              "exitTime": 0.5833334,
+              "hasFixedDuration": true,
+              "duration": 0.25,
+              "offset": 0,
+              "interruptionSource": "none",
+              "orderedInterruption": true,
+              "canTransitionToSelf": true,
+              "mute": false,
+              "solo": false,
+              "conditions": [
+                {
+                  "parameter": "MoveSpeed",
+                  "mode": "less",
+                  "threshold": 0
+                }
+              ]
+            },
+            {
+              "isExit": false,
+              "destination": "Locomotion/Turnleft",
+              "hasExitTime": true,
+              "exitTime": 0.5833334,
+              "hasFixedDuration": true,
+              "duration": 0.25,
+              "offset": 0,
+              "interruptionSource": "none",
+              "orderedInterruption": true,
+              "canTransitionToSelf": true,
+              "mute": false,
+              "solo": false,
+              "conditions": [
+                {
+                  "parameter": "MoveSpeed",
+                  "mode": "less",
+                  "threshold": 0
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "Locomotion/TurnRight",
+          "name": "TurnRight",
+          "speed": 1,
+          "speedParameter": null,
+          "cycleOffset": 0,
+          "cycleOffsetParameter": null,
+          "timeParameter": null,
+          "mirror": false,
+          "writeDefaultValues": true,
+          "tag": "",
+          "motion": null,
+          "transitions": [
+            {
+              "isExit": false,
+              "destination": "Locomotion/Patrolling",
+              "hasExitTime": true,
+              "exitTime": 0.75,
+              "hasFixedDuration": true,
+              "duration": 0.25,
+              "offset": 0,
+              "interruptionSource": "none",
+              "orderedInterruption": true,
+              "canTransitionToSelf": true,
+              "mute": false,
+              "solo": false,
+              "conditions": [
+                {
+                  "parameter": "MoveSpeed",
+                  "mode": "greater",
+                  "threshold": 0
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "Locomotion/Turnleft",
+          "name": "Turnleft",
+          "speed": 1,
+          "speedParameter": null,
+          "cycleOffset": 0,
+          "cycleOffsetParameter": null,
+          "timeParameter": null,
+          "mirror": false,
+          "writeDefaultValues": true,
+          "tag": "",
+          "motion": null,
+          "transitions": [
+            {
+              "isExit": false,
+              "destination": "Locomotion/Patrolling",
+              "hasExitTime": true,
+              "exitTime": 0.75,
+              "hasFixedDuration": true,
+              "duration": 0.25,
+              "offset": 0,
+              "interruptionSource": "none",
+              "orderedInterruption": true,
+              "canTransitionToSelf": true,
+              "mute": false,
+              "solo": false,
+              "conditions": [
+                {
+                  "parameter": "MoveSpeed",
+                  "mode": "greater",
+                  "threshold": 0
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "Locomotion/Blend Tree",
+          "name": "Blend Tree",
+          "speed": 1,
+          "speedParameter": null,
+          "cycleOffset": 0,
+          "cycleOffsetParameter": null,
+          "timeParameter": null,
+          "mirror": false,
+          "writeDefaultValues": true,
+          "tag": "",
+          "motion": {
+            "type": "blendTree",
+            "name": "Blend Tree",
+            "blendType": "simple1D",
+            "blendParameter": "MoveSpeed",
+            "blendParameterY": "MoveSpeed",
+            "minThreshold": 0,
+            "maxThreshold": 1,
+            "useAutomaticThresholds": true,
+            "children": [
+              {
+                "motion": null,
+                "threshold": 0,
+                "timeScale": 1,
+                "cycleOffset": 0,
+                "directBlendParameter": "MoveSpeed"
+              },
+              {
+                "motion": null,
+                "threshold": 0.5,
+                "timeScale": 1,
+                "cycleOffset": 0,
+                "directBlendParameter": "MoveSpeed"
+              },
+              {
+                "motion": null,
+                "threshold": 1,
+                "timeScale": 1,
+                "cycleOffset": 0,
+                "directBlendParameter": "MoveSpeed"
+              }
+            ]
+          },
+          "transitions": []
+        }
+      ]
+    },
+    {
+      "name": "Attack",
+      "blendMode": "additive",
+      "defaultWeight": 0.7,
+      "syncedLayerIndex": -1,
+      "syncedLayerAffectsTiming": false,
+      "ikPass": false,
+      "avatarMask": {
+        "name": "HoverBot",
+        "includedTransforms": [
+          "Robot_FKRoot_C_Jnt",
+          "Bot_L_Wing01_Jnt",
+          "Bot_L_Wing02_Jnt",
+          "Bot_L_Wing03_Jnt_End",
+          "Bot_R_Wing01_Jnt",
+          "Bot_R_Wing02_Jnt",
+          "Bot_R_Wing03_Jnt_End",
+          "EyeBall_C_Jnt",
+          "Top_Cap_C_Jnt",
+          "Front_Panel_C_Jnt",
+          "Front_Panel_C_Jnt_End",
+          "Top_L_Ear01_Jnt",
+          "Top_L_Ear02_Jnt",
+          "Top_R_Ear01_Jnt",
+          "Top_R_Ear02_Jnt"
+        ],
+        "excludedTransforms": [
+          "Bottom",
+          "EyeBall",
+          "Robot_Root_C_Jnt",
+          "Bot_Cap_C_Jnt",
+          "IrisBlade_C_Jnt",
+          "Top"
+        ]
+      },
+      "defaultState": "Null",
+      "anyStateTransitions": [],
+      "states": [
+        {
+          "id": "Shoot",
+          "name": "Shoot",
+          "speed": 1,
+          "speedParameter": null,
+          "cycleOffset": 0,
+          "cycleOffsetParameter": null,
+          "timeParameter": null,
+          "mirror": false,
+          "writeDefaultValues": true,
+          "tag": "",
+          "motion": {
+            "type": "clip",
+            "clip": "Shoot",
+            "asset": "Characters/HoverBot@Shoot"
+          },
+          "transitions": [
+            {
+              "isExit": true,
+              "destination": null,
+              "hasExitTime": true,
+              "exitTime": 0.75,
+              "hasFixedDuration": true,
+              "duration": 0.1,
+              "offset": 0,
+              "interruptionSource": "none",
+              "orderedInterruption": true,
+              "canTransitionToSelf": true,
+              "mute": false,
+              "solo": false,
+              "conditions": []
+            }
+          ]
+        },
+        {
+          "id": "Null",
+          "name": "Null",
+          "speed": 1,
+          "speedParameter": null,
+          "cycleOffset": 0,
+          "cycleOffsetParameter": null,
+          "timeParameter": null,
+          "mirror": false,
+          "writeDefaultValues": true,
+          "tag": "",
+          "motion": null,
+          "transitions": [
+            {
+              "isExit": false,
+              "destination": "Shoot",
+              "hasExitTime": false,
+              "exitTime": 0.75,
+              "hasFixedDuration": true,
+              "duration": 0.1,
+              "offset": 0,
+              "interruptionSource": "none",
+              "orderedInterruption": true,
+              "canTransitionToSelf": true,
+              "mute": false,
+              "solo": false,
+              "conditions": [
+                {
+                  "parameter": "Attack",
+                  "mode": "if",
+                  "threshold": 0
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Dammaged",
+      "blendMode": "additive",
+      "defaultWeight": 1,
+      "syncedLayerIndex": -1,
+      "syncedLayerAffectsTiming": false,
+      "ikPass": false,
+      "avatarMask": {
+        "name": "HoverBot",
+        "includedTransforms": [
+          "Robot_FKRoot_C_Jnt",
+          "Bot_L_Wing01_Jnt",
+          "Bot_L_Wing02_Jnt",
+          "Bot_L_Wing03_Jnt_End",
+          "Bot_R_Wing01_Jnt",
+          "Bot_R_Wing02_Jnt",
+          "Bot_R_Wing03_Jnt_End",
+          "EyeBall_C_Jnt",
+          "Top_Cap_C_Jnt",
+          "Front_Panel_C_Jnt",
+          "Front_Panel_C_Jnt_End",
+          "Top_L_Ear01_Jnt",
+          "Top_L_Ear02_Jnt",
+          "Top_R_Ear01_Jnt",
+          "Top_R_Ear02_Jnt"
+        ],
+        "excludedTransforms": [
+          "Bottom",
+          "EyeBall",
+          "Robot_Root_C_Jnt",
+          "Bot_Cap_C_Jnt",
+          "IrisBlade_C_Jnt",
+          "Top"
+        ]
+      },
+      "defaultState": "Null",
+      "anyStateTransitions": [],
+      "states": [
+        {
+          "id": "Null",
+          "name": "Null",
+          "speed": 1,
+          "speedParameter": null,
+          "cycleOffset": 0,
+          "cycleOffsetParameter": null,
+          "timeParameter": null,
+          "mirror": false,
+          "writeDefaultValues": true,
+          "tag": "",
+          "motion": null,
+          "transitions": [
+            {
+              "isExit": false,
+              "destination": "Hurt",
+              "hasExitTime": false,
+              "exitTime": 0.1,
+              "hasFixedDuration": true,
+              "duration": 0,
+              "offset": 0,
+              "interruptionSource": "none",
+              "orderedInterruption": true,
+              "canTransitionToSelf": true,
+              "mute": false,
+              "solo": false,
+              "conditions": [
+                {
+                  "parameter": "OnDamaged",
+                  "mode": "if",
+                  "threshold": 0
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "Hurt",
+          "name": "Hurt",
+          "speed": 1,
+          "speedParameter": null,
+          "cycleOffset": 0,
+          "cycleOffsetParameter": null,
+          "timeParameter": null,
+          "mirror": false,
+          "writeDefaultValues": true,
+          "tag": "",
+          "motion": {
+            "type": "clip",
+            "clip": "Hurt",
+            "asset": "Characters/HoverBot@Hurt"
+          },
+          "transitions": [
+            {
+              "isExit": true,
+              "destination": null,
+              "hasExitTime": true,
+              "exitTime": 0.75,
+              "hasFixedDuration": true,
+              "duration": 0.1,
+              "offset": 0,
+              "interruptionSource": "none",
+              "orderedInterruption": true,
+              "canTransitionToSelf": true,
+              "mute": false,
+              "solo": false,
+              "conditions": []
+            },
+            {
+              "isExit": false,
+              "destination": "Hurt",
+              "hasExitTime": false,
+              "exitTime": 0.4642858,
+              "hasFixedDuration": true,
+              "duration": 0.1,
+              "offset": 0,
+              "interruptionSource": "none",
+              "orderedInterruption": true,
+              "canTransitionToSelf": true,
+              "mute": false,
+              "solo": false,
+              "conditions": [
+                {
+                  "parameter": "OnDamaged",
+                  "mode": "if",
+                  "threshold": 0
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "clips": [
+    {
+      "name": "Alerted",
+      "asset": "Characters/HoverBot@Alerted",
+      "loopTime": false,
+      "loopPose": false,
+      "firstFrame": 0,
+      "lastFrame": 24,
+      "hasClipSettings": true
+    },
+    {
+      "name": "Hurt",
+      "asset": "Characters/HoverBot@Hurt",
+      "loopTime": false,
+      "loopPose": false,
+      "firstFrame": -1,
+      "lastFrame": -1,
+      "hasClipSettings": false
+    },
+    {
+      "name": "IdleClosed",
+      "asset": "Characters/HoverBot@IdleClosed",
+      "loopTime": true,
+      "loopPose": false,
+      "firstFrame": 1,
+      "lastFrame": 59,
+      "hasClipSettings": true
+    },
+    {
+      "name": "RunFoward",
+      "asset": "Characters/HoverBot@RunFoward",
+      "loopTime": true,
+      "loopPose": false,
+      "firstFrame": 1,
+      "lastFrame": 57,
+      "hasClipSettings": true
+    },
+    {
+      "name": "RunFowardClosed",
+      "asset": "Characters/HoverBot@RunFowardClosed",
+      "loopTime": true,
+      "loopPose": false,
+      "firstFrame": 1,
+      "lastFrame": 57,
+      "hasClipSettings": true
+    },
+    {
+      "name": "Shoot",
+      "asset": "Characters/HoverBot@Shoot",
+      "loopTime": false,
+      "loopPose": false,
+      "firstFrame": 1,
+      "lastFrame": 13,
+      "hasClipSettings": true
+    }
+  ]
+}

@@ -1,0 +1,19 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <!-- Content-pipeline extension for the STATIC models in Shooter.mgcb.
+       Targets net8.0 because the dotnet-mgcb 3.8.5 tool runs on the .NET 8 runtime. -->
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <RootNamespace>Shooter.StaticPipeline</RootNamespace>
+    <AssemblyName>Shooter.StaticPipeline</AssemblyName>
+    <Nullable>disable</Nullable>
+    <ImplicitUsings>disable</ImplicitUsings>
+    <InvariantGlobalization>true</InvariantGlobalization>
+    <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="*.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="MonoGame.Framework.Content.Pipeline" Version="3.8.5" />
+  </ItemGroup>
+</Project>
