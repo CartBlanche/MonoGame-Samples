@@ -48,6 +48,8 @@ namespace Shooter
     ///   --hit-flash <s>     --shot: the HoverBot takes a player hit, then the enemies run for s seconds (the body flash is at its brightest around 0.05 s)
     ///   --hud-kills <n>     --shot --hud: kill the first n enemies before drawing (objective counter, notification, compass markers of the rest)
     ///   --hud-target        --shot --hud: draw the crosshair as if an enemy were in the sights (red, 40)
+    ///   --intro             start at the intro screen (the default when no mode flag is given)
+    ///   --freefly           start in the free-fly scene inspector instead of the intro
     ///   --play              start in first-person play mode (F2 toggles play / free-fly at runtime)
     ///   --test-physics      run the headless player-controller self-test (exit code = failed checks) and exit
     ///
@@ -111,6 +113,7 @@ namespace Shooter
         private Texture2D _screenshotPreview;
         private MouseState _prevMouse;
         private bool _startIntro;
+        private bool _startFreeFly;
         private string _shotMenu;          // --menu intro|controls|win|lose
         private bool _shotMenuSelect;
         private readonly PlayerInputHandler _playerInput = new PlayerInputHandler();
@@ -186,6 +189,7 @@ namespace Shooter
                     case "--backbuffer": _useBackBuffer = true; break;
                     case "--play": _startPlay = true; break;
                     case "--intro": _startIntro = true; break;
+                    case "--freefly": _startFreeFly = true; break;
                     case "--menu": _shotMenu = next; i++; break;
                     case "--menu-select": _shotMenuSelect = true; break;
                     case "--pause": _shotPause = true; if (next == "controls") { _shotPauseControls = true; i++; } break;
@@ -229,6 +233,11 @@ namespace Shooter
             if (_shotDir != null && !_weaponForced)
             {
                 _showWeapon = false;
+            }
+            // A normal launch (no flags) opens the intro screen; free-fly is opt-in via --freefly (or --pose / --poses).
+            if (!_startPlay && !_startFreeFly && _poseName == null && _posesPath == null && _shotDir == null && !_testPhysics)
+            {
+                _startIntro = true;
             }
         }
 

@@ -216,7 +216,7 @@ jobs:
 
       - name: Upload Build Result
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: build-result-${{ steps.package.outputs.name }}
           path: build-results/*.json
@@ -224,7 +224,7 @@ jobs:
 
       - name: Upload Windows Bundle
         if: steps.package.outcome == 'success'
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: ${{ steps.package.outputs.name }}-Windows
           path: artifacts/${{ steps.package.outputs.name }}/*-win-x64.zip
@@ -233,7 +233,7 @@ jobs:
 
       - name: Upload Linux Bundle
         if: steps.package.outcome == 'success'
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: ${{ steps.package.outputs.name }}-Linux
           path: artifacts/${{ steps.package.outputs.name }}/*-linux-x64.tar.gz
@@ -242,7 +242,7 @@ jobs:
 
       - name: Upload macOS App Bundle
         if: steps.package.outcome == 'success'
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: ${{ steps.package.outputs.name }}-macOS-Universal
           path: artifacts/${{ steps.package.outputs.name }}/*-universal.tar.gz

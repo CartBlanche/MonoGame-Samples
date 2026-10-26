@@ -38,7 +38,7 @@ Status: Phase 3 (rendering) verified for the static scene; Phase 4 milestones 1-
 
 ## Controls (current build)
 
-The desktop build starts as a scene inspector with a free-fly camera over MainScene. `--play` (or F2 at runtime) switches to the first-person player; F2 again goes back to free-fly at the player's eye position.
+The desktop build starts at the intro screen (Play, Controls). `--freefly` starts as a scene inspector with a free-fly camera over MainScene instead. `--play` (or F2 at runtime) switches to the first-person player; F2 again goes back to free-fly at the player's eye position.
 
 Play mode (Unity bindings): W A S D / arrows move, mouse looks (0.2 degrees per pixel like Unity's x0.001 x RotationSpeed 200), Shift sprints, C crouches, Space jumps, left mouse fires the Blaster (hold for automatic fire), right mouse aims (zoom, slower look). Also: I J K L look (for machines without a captured mouse), Tab releases / captures the mouse, R respawns, Esc exits. Dying (or falling past the kill height at y = -50) fades to black over 3 s and opens the Lose screen; killing both enemies completes the objective, shows the win message after 2 s and opens the Win screen after 7 s. Both screens offer Play Again (reloads the level) and Menu (the intro screen: Play, Controls). `--intro` starts at the intro screen.
 
