@@ -6,7 +6,25 @@
     <TieredCompilation>false</TieredCompilation>
     <AssemblyName>Shooter</AssemblyName>
     <RootNamespace>Shooter</RootNamespace>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
+    <ApplicationIcon>../../Core/Content/Icon.ico</ApplicationIcon>
   </PropertyGroup>
+  <!-- App icons: generated from Core/Content/Icon.png (see Core/Content/android-icons-generator.sh and generate-icns.sh next to this file). -->
+  <ItemGroup>
+    <None Include="../../Core/Content/Icon.ico">
+      <Link>Icon.ico</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="../../Core/Content/Shooter.icns">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <EmbeddedResource Include="../../Core/Content/Icon.ico">
+      <LogicalName>Icon.ico</LogicalName>
+    </EmbeddedResource>
+    <EmbeddedResource Include="../../Core/Content/Icon.bmp">
+      <LogicalName>Icon.bmp</LogicalName>
+    </EmbeddedResource>
+  </ItemGroup>
   <ItemGroup>
     <MonoGameContentReference Include="..\..\Core\Content\Shooter.mgcb">
       <Link>Content\Shooter.mgcb</Link>
