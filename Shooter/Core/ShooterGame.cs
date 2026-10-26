@@ -43,6 +43,7 @@ namespace Shooter
     ///   --alert <s>         --shot: play every enemy's detect systems (VFX_Alert, AngrySteam) and let them run for s seconds first
     ///   --bars              --shot: draw the enemies' world-space health bars (implies --hit-flash 0: the HoverBot is hurt by 10 first)
     ///   --pickups <s>       --shot: run the pickups (bob, spin, glow particles) for s seconds before rendering; --loot kills the HoverBot first (its Loot_Health appears where it died); --pick hurts the player and steps into the first pickup (heal, sound, VFX_HealthPickup burst) before the s seconds run
+    ///   --icon <file>       renders the Blaster alone into a transparent 1024 x 1024 PNG (app icon master) and exits; --icon-yaw / --icon-pitch / --icon-roll <deg> orbit the camera (150 / 14 / 0), --icon-flash <s> adds the muzzle flash at that age (0.05, 0 = none), --icon-blast <m> a shortened bolt that far ahead of the muzzle (0 = none), --icon-size <px>
     ///   --jetpack <s>       --shot: put the player on the Jetpack pickup (it unlocks: sound, toast, pickup gone), then jump, press jump again in the air and hold it for s seconds; renders the pose camera with the HUD (counter, trails)
     ///   --hit-flash <s>     --shot: the HoverBot takes a player hit, then the enemies run for s seconds (the body flash is at its brightest around 0.05 s)
     ///   --hud-kills <n>     --shot --hud: kill the first n enemies before drawing (objective counter, notification, compass markers of the rest)
@@ -82,6 +83,8 @@ namespace Shooter
         private bool _shotLoot;
         private bool _shotPick;
         private float _shotJetpack = -1f;
+        private string _iconFile;
+        private IconShot.Options _iconOptions = IconShot.Defaults;
         private float _shotHitFlash = -1f;
         private bool _shotBars;
         private float _shotHitDamage = 10f;
@@ -208,6 +211,13 @@ namespace Shooter
                         if (_shotHitFlash < 0f) _shotHitFlash = 0f;
                         if (next != null && float.TryParse(next, System.Globalization.NumberStyles.Float, System.Globalization.CultureInfo.InvariantCulture, out float barDamage)) { _shotHitDamage = barDamage; i++; }
                         break;
+                    case "--icon": _iconFile = next; _shotDir = _shotDir ?? "shots"; i++; break;
+                    case "--icon-yaw": float.TryParse(next, System.Globalization.NumberStyles.Float, System.Globalization.CultureInfo.InvariantCulture, out _iconOptions.Yaw); i++; break;
+                    case "--icon-pitch": float.TryParse(next, System.Globalization.NumberStyles.Float, System.Globalization.CultureInfo.InvariantCulture, out _iconOptions.Pitch); i++; break;
+                    case "--icon-roll": float.TryParse(next, System.Globalization.NumberStyles.Float, System.Globalization.CultureInfo.InvariantCulture, out _iconOptions.Roll); i++; break;
+                    case "--icon-blast": float.TryParse(next, System.Globalization.NumberStyles.Float, System.Globalization.CultureInfo.InvariantCulture, out _iconOptions.Blast); i++; break;
+                    case "--icon-flash": float.TryParse(next, System.Globalization.NumberStyles.Float, System.Globalization.CultureInfo.InvariantCulture, out _iconOptions.Flash); i++; break;
+                    case "--icon-size": int.TryParse(next, out _iconOptions.Size); i++; break;
                     case "--jetpack": float.TryParse(next, System.Globalization.NumberStyles.Float, System.Globalization.CultureInfo.InvariantCulture, out _shotJetpack); _shotHud = true; i++; break;
                     case "--pick": _shotPick = true; if (_shotPickups < 0f) _shotPickups = 0f; break;
                     case "--loot": _shotLoot = true; if (_shotPickups < 0f) _shotPickups = 0f; break;
@@ -977,6 +987,11 @@ namespace Shooter
 
         private void RunShots(GameTime gameTime)
         {
+            if (_iconFile != null)
+            {
+                IconShot.Render(GraphicsDevice, _scene, _renderer, gameTime, _vfx, ((SceneRenderer)_renderer).Particles, _iconFile, _iconOptions);
+                return;
+            }
             Directory.CreateDirectory(_shotDir);
             int width = ShotWidth, height = ShotHeight;
             RenderTarget2D rt = _useBackBuffer ? null : new RenderTarget2D(GraphicsDevice, width, height, false, SurfaceFormat.Color, DepthFormat.Depth24Stencil8);
