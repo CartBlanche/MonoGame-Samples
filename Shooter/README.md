@@ -11,6 +11,21 @@ Platforms/Android/    Android launcher (net10.0-android; resources and icons gen
 Tools/UnityExtractor/ Converts Unity scenes/prefabs (YAML) to JSON for the port
 ```
 
+## Porting skill (Claude Code)
+
+The workflow used to make this port is captured as a reusable Claude Code skill, `unity-to-monogame-port`, for the next Unity project. It is a personal skill installed at `~/.claude/skills/unity-to-monogame-port/`; to share it, copy that folder to the same place (or to `.claude/skills/` in another repo).
+
+```
+unity-to-monogame-port/
+  SKILL.md              workflow, phases, per-mechanic loop, rules (loaded when the skill triggers)
+  references/           conventions, assets, pipeline, systems, pitfalls, verification, packaging, commit-groups
+  examples/phase-entry.md   model entry for Tools/PORTING-PLAN.md
+```
+
+Use it by asking Claude Code to port a Unity project, scene, prefab or mechanic to MonoGame (for example "port the Unity project at ../MyGame to MonoGame, scope: MainScene"); it triggers on its description, or type `/unity-to-monogame-port`. It reads `SKILL.md` first and opens a reference file only when the task needs it. Its rules: regenerate generated content instead of editing it, copy the scene's values rather than script defaults, stop and report after each phase with a "Not verified" list, and never stage or commit (it proposes commit groups for you).
+
+This folder is the worked example the skill points to: `Tools/PORTING-PLAN.md` (log), `Core/Content/ASSET-CONVENTIONS.md`, `Tools/UnityExtractor/README.md` and `Tools/COMMIT-GROUPS.md`. Fix something in the skill's references when a port teaches you something new.
+
 ## Build and run
 
 ```
