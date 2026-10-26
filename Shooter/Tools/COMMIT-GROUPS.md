@@ -229,3 +229,19 @@ git add Tools/UnityExtractor/Program.cs Tools/SceneBake/Program.cs Core/Content/
 git add README.md Tools/UnityExtractor/README.md Tools/PORTING-PLAN.md Tools/COMMIT-GROUPS.md
 ```
 Shared files: none with earlier groups (all earlier ones are committed). `Core/Content/Textures/Pickups` also holds the health pickup textures, which are unchanged.
+
+## Icon and platform packaging, four groups
+
+```
+# AU. App icon master and the --icon renderer
+git add Core/Rendering/IconShot.cs Core/ShooterGame.cs Core/Content/Icon.png
+
+# AV. Desktop packaging: Info.plist, app.manifest, icns, csproj icon wiring, generated Icon.ico / Icon.bmp
+git add Platforms/Desktop/Info.plist Platforms/Desktop/app.manifest Platforms/Desktop/generate-icns.sh Platforms/Desktop/Shooter.icns Platforms/Desktop/Shooter.csproj Core/Content/Icon.ico Core/Content/Icon.bmp Core/Content/Shooter.icns
+
+# AW. Android project, its generated icons and the solution entry
+git add Platforms/Android Core/Content/android-icons-generator.sh Shooter.slnx
+
+# AX. Docs
+git add README.md Tools/COMMIT-GROUPS.md
+```
