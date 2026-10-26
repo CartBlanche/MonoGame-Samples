@@ -286,8 +286,8 @@ namespace RacingGame.Graphics
         {
             get
             {
-                //if (alreadyCheckedGraphicsOptions == false)
-                //    CheckOptionsAndPSVersion();
+                if (alreadyCheckedGraphicsOptions == false)
+                    CheckOptionsAndPSVersion();
 
                 return usePostScreenShaders;
             }
@@ -937,35 +937,28 @@ namespace RacingGame.Graphics
         /// </summary>
         public static void SetCurrentAlphaMode(AlphaMode value)
         {
+            // Set both the color and the alpha blend factors, XNA 3.1's
+            // SourceBlend/DestinationBlend affected the color too.
             switch (value)
             {
                 case AlphaMode.DisableAlpha:
-                    Device.BlendState = new BlendState()
-                    {
-                        AlphaSourceBlend = Blend.Zero,
-                        AlphaDestinationBlend = Blend.One
-                    };
+                    Device.BlendState = BlendState.Opaque;
                     break;
                 case AlphaMode.Default:
-                    Device.BlendState = new BlendState()
-                    {
-                        AlphaSourceBlend = Blend.SourceAlpha,
-                        AlphaDestinationBlend = Blend.InverseSourceAlpha
-                    };
+                    // Textures are premultiplied by the content pipeline.
+                    Device.BlendState = BlendState.AlphaBlend;
                     break;
                 case AlphaMode.SourceAlphaOne:
                     Device.BlendState = new BlendState()
                     {
+                        ColorSourceBlend = Blend.SourceAlpha,
                         AlphaSourceBlend = Blend.SourceAlpha,
+                        ColorDestinationBlend = Blend.One,
                         AlphaDestinationBlend = Blend.One
                     };
                     break;
                 case AlphaMode.OneOne:
-                    Device.BlendState = new BlendState()
-                    {
-                        AlphaSourceBlend = Blend.One,
-                        AlphaDestinationBlend = Blend.One
-                    };
+                    Device.BlendState = BlendState.Additive;
                     break;
             }
         }

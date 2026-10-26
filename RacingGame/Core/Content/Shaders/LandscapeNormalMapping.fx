@@ -17,7 +17,7 @@ float4x4 worldViewProj    : WorldViewProjection;
 float4x4 world            : World;
 float3 viewInverse      : ViewInverse;
 
-const static float3 lightDir : Direction
+float3 lightDir : Direction
 <
     string UIName = "Light Direction";
     string Object = "DirectionalLight";
@@ -25,25 +25,25 @@ const static float3 lightDir : Direction
 > = {-0.65f, 0.65f, -0.39f}; // Normalized by app. FxComposer still uses inverted stuff
 
 // The ambient, diffuse and specular colors are pre-multiplied with the light color!
-const static float4 ambientColor : Ambient
+float4 ambientColor : Ambient
 <
     string UIName = "Ambient Color";
     string Space = "material";
 > = {0.1f, 0.1f, 0.1f, 1.0f};
 
-const static float4 diffuseColor : Diffuse
+float4 diffuseColor : Diffuse
 <
     string UIName = "Diffuse Color";
     string Space = "material";
 > = {1.0f, 1.0f, 1.0f, 1.0f};
 
-const static float4 specularColor : Specular
+float4 specularColor : Specular
 <
     string UIName = "Specular Color";
     string Space = "material";
 > = {1.0f, 1.0f, 1.0f, 1.0f};
 
-const static float shininess : SpecularPower
+float shininess : SpecularPower
 <
     string UIName = "Specular Power";
     string UIWidget = "slider";

@@ -217,20 +217,39 @@ namespace RacingGame.Shaders
             //    MultisampleCount = 0;
             //}
 
-            // Rgba64 is a HiDef-only format and is not available on Android or iOS.
+            // Rgba64 is a HiDef-only format: not available on Android or iOS, nor on
+            // the OpenGL backend (DesktopGL), so fall back to Color when it fails.
             // Android also does not reliably support MSAA on render targets.
-            outSF = OperatingSystem.IsAndroid() || OperatingSystem.IsIOS() ? SurfaceFormat.Color : SurfaceFormat.Rgba64;
+            bool mobile = OperatingSystem.IsAndroid() || OperatingSystem.IsIOS();
+            outSF = mobile ? SurfaceFormat.Color : SurfaceFormat.Rgba64;
             outDF = BaseGame.BackBufferDepthFormat;
-            outMSC = OperatingSystem.IsAndroid() || OperatingSystem.IsIOS() ? 0 : MultisampleCount;
+            outMSC = mobile ? 0 : MultisampleCount;
 
             if (sizeType == SizeType.ShadowMap)
                 outMSC = 0;
 
-			// Create render target of specified size.
-			renderTarget = new RenderTarget2D (
-				BaseGame.Device,
-				texWidth, texHeight, false, 
-					outSF, outDF, outMSC, RenderTargetUsage.DiscardContents);
+            // Try the highest precision formats first, ending at plain Color.
+            SurfaceFormat[] candidates = mobile
+                ? new[] { SurfaceFormat.Color }
+                : new[] { SurfaceFormat.Rgba64, SurfaceFormat.HdrBlendable, SurfaceFormat.Color };
+            renderTarget = null;
+            foreach (SurfaceFormat candidate in candidates)
+            {
+                try
+                {
+                    outSF = candidate;
+                    renderTarget = new RenderTarget2D(
+                        BaseGame.Device,
+                        texWidth, texHeight, false,
+                        outSF, outDF, outMSC, RenderTargetUsage.DiscardContents);
+                    break;
+                }
+                catch (NotSupportedException)
+                {
+                    if (candidate == SurfaceFormat.Color)
+                        throw;
+                }
+            }
 
             if (outSF != SurfaceFormat.Color)
                 usesHighPercisionFormat = true;

@@ -126,7 +126,8 @@ namespace RacingGame.Shaders
             BaseGame.Device.DepthStencilState = DepthStencilState.Default;
             BaseGame.Device.RasterizerState = RasterizerState.CullCounterClockwise;
 
-            BaseGame.Device.BlendState = BlendState.AlphaBlend;
+            // Scene geometry is opaque, anything translucent sets its own mode.
+            BaseGame.Device.BlendState = BlendState.Opaque;
         }
 
         /// <summary>

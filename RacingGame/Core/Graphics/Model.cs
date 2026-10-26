@@ -90,6 +90,13 @@ namespace RacingGame.Graphics
         /// viewInverse matrix and the lightDir vector effect parameters.
         /// Update: We also save diffuseTexture, ambientColor and diffuseColor now
         /// </summary>
+        /// <summary>
+        /// Materials (textures, colors) of the mesh parts, read from the part tags
+        /// the content pipeline stored (null if the part has no info). One entry per
+        /// effect, in the same order as cachedIsReflectionSpecularTechnique.
+        /// </summary>
+        List<Material> cachedPartMaterials = new List<Material>();
+
         List<EffectParameter> cachedEffectParameters =
             new List<EffectParameter>();
 
@@ -232,6 +239,17 @@ namespace RacingGame.Graphics
                     cachedEffectParameters.Add(paramSource.Parameters["viewInverse"]);
                     cachedEffectParameters.Add(paramSource.Parameters["lightDir"]);
 
+                    // The textures of the part come from the info the content pipeline
+                    // stored in the mesh part tag (MonoGame drops them from .x files).
+                    Material partMaterial = null;
+                    if (effectNum < mesh.MeshParts.Count &&
+                        mesh.MeshParts[effectNum].Tag is string partInfo)
+                    {
+                        partMaterial = new Material();
+                        partMaterial.SetFromPartInfo(partInfo);
+                    }
+                    cachedPartMaterials.Add(partMaterial);
+
                     // Store if this is a "ReflectionSpecular" technique.
                     // For BasicEffect fallback, identify glass by mesh name.
                     cachedIsReflectionSpecularTechnique.Add(
@@ -245,11 +263,11 @@ namespace RacingGame.Graphics
                         effect.Parameters["ambientColor"].SetValue(
                             new Color(128, 128, 128).ToVector4());
 
-                    // Car only uses alpha on the glass
-                    if (isCar
-                    && !mesh.Name.StartsWith("glass")
-                    && effect.Parameters["UseAlpha"] != null)
-                        effect.Parameters["UseAlpha"].SetValue(false);
+                    // Only alpha models (palms, ...) and glass use the texture's
+                    // alpha, for everything else it is just a mask.
+                    if (effect.Parameters["UseAlpha"] != null)
+                        effect.Parameters["UseAlpha"].SetValue(
+                            hasAlpha || mesh.Name.ToLower().StartsWith("glass"));
 
                     // Get technique from meshName
                     int techniqueIndex = -1;
@@ -302,7 +320,8 @@ namespace RacingGame.Graphics
                     // Material settings are build from the effect settings.
                     // Also add this to our own dictionary for rendering.
                     renderableMeshes.Add(part, BaseGame.MeshRenderManager.Add(
-                        part.VertexBuffer, part.IndexBuffer, part, part.Effect));
+                        part.VertexBuffer, part.IndexBuffer, part, part.Effect,
+                        hasAlpha));
                 }
             }
 
@@ -589,9 +608,27 @@ namespace RacingGame.Graphics
                             // performance is just rendering the car with Draw!
 
                             // Overwrite car diffuse textures depending on the car number
-                            // we want to render.
-                            cachedEffectParameters[effectParameterIndex++].SetValue(
-                                RacingGameManager.CarTexture(carNumber).XnaTexture);
+                            // we want to render, all other models use their own textures.
+                            EffectParameter diffuseTextureParameter =
+                                cachedEffectParameters[effectParameterIndex++];
+                            if (isCar)
+                                diffuseTextureParameter.SetValue(
+                                    RacingGameManager.CarTexture(carNumber).XnaTexture);
+                            else
+                            {
+                                Material partMaterial =
+                                    cachedPartMaterials[effectTechniqueIndex - 1];
+                                if (partMaterial != null &&
+                                    partMaterial.diffuseTexture != null)
+                                {
+                                    diffuseTextureParameter.SetValue(
+                                        partMaterial.diffuseTexture.XnaTexture);
+                                    if (partMaterial.normalTexture != null)
+                                        ShaderEffect.normalMapping.Effect.Parameters[
+                                            "normalTexture"]?.SetValue(
+                                            partMaterial.normalTexture.XnaTexture);
+                                }
+                            }
 
                             // Also set color
                             cachedEffectParameters[effectParameterIndex++].SetValue(
@@ -661,10 +698,25 @@ namespace RacingGame.Graphics
                         // For BasicEffect fallback, render manually through normalMapping shader
                         if (mesh.Effects.Count > 0 && mesh.Effects[0] is BasicEffect)
                         {
-                            ShaderEffect.normalMapping.Effect.CurrentTechnique.Passes[0].Apply();
+                            Effect shared = ShaderEffect.normalMapping.Effect;
+                            shared.Parameters["UseAlpha"]?.SetValue(
+                                hasAlpha || mesh.Name.ToLower().StartsWith("glass"));
+                            shared.Parameters["alphaTestRef"]?.SetValue(
+                                hasAlpha ? 0.5f : 0.0f);
                             for (int partNum = 0; partNum < mesh.MeshParts.Count; partNum++)
                             {
                                 ModelMeshPart part = mesh.MeshParts[partNum];
+                                // Use the technique of the .x material, except for the
+                                // first part of a car with a changed color (set above).
+                                int partTechnique = part.Tag is string partTechniqueInfo
+                                    ? Material.TechniqueFromPartInfo(partTechniqueInfo) : -1;
+                                if (partTechnique >= 0 &&
+                                    partTechnique < shared.Techniques.Count &&
+                                    (isCar == false || partNum > 0 ||
+                                    RacingGameManager.currentCarColor == 0))
+                                    shared.CurrentTechnique =
+                                        shared.Techniques[partTechnique];
+                                shared.CurrentTechnique.Passes[0].Apply();
                                 BaseGame.Device.SetVertexBuffer(part.VertexBuffer);
                                 BaseGame.Device.Indices = part.IndexBuffer;
                                 BaseGame.Device.DrawIndexedPrimitives(

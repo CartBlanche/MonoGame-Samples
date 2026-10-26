@@ -64,7 +64,11 @@ float alphaFactor
 float fresnelBias = 0.5f;
 float fresnelPower = 1.5f;
 float reflectionAmount = 1.0f;
-bool UseAlpha = true;
+// Only models that really use transparency (palms, glass) turn this on, for all
+// others the diffuse alpha is just a mask and the result must stay opaque.
+bool UseAlpha = false;
+// Alpha test reference for alpha cutout models (palms), 0 disables the test.
+float alphaTestRef = 0.0f;
 // Special shader for car rendering, which allows to change the car color!
 float3 carHueColor = 0.0;
 END_CONSTANTS
@@ -210,7 +214,12 @@ float4 PS_Diffuse(VertexOutput In) : SV_TARGET
     float bump = saturate(dot(normalVector, lightVector));
     
     float4 ambDiffColor = ambientColor + bump * diffuseColor;
-    return diffusePixel * ambDiffColor;
+    if (UseAlpha)
+        clip(diffusePixel.a - alphaTestRef);
+    float4 ret = diffusePixel * ambDiffColor;
+    if (!UseAlpha)
+        ret.a = 1.0f;
+    return ret;
 }
 
 TECHNIQUE (Diffuse, VS_Diffuse, PS_Diffuse)
@@ -354,6 +363,8 @@ float4 PS_Specular20(VertexOutput_Specular20 In) : SV_TARGET
     float4 ambDiffColor = ambientColor + bump * diffuseColor;
     if (UseAlpha)
     {
+        // Alpha test like the original (reference alpha 128)
+        clip(diffusePixel.a - alphaTestRef);
         return diffusePixel * ambDiffColor +
             bump * spec * specularColor * diffusePixel.a;
     }
@@ -386,8 +397,13 @@ float4 PS_DiffuseSpecular20(VertexOutput_Specular20 In) : SV_TARGET
 	float3 reflect = normalize(2 * bump * normalVector - lightVector);
 	float spec = pow(saturate(dot(reflect, viewVector)), shininess);
 
-	return diffusePixel * (ambientColor +
+	if (UseAlpha)
+		clip(diffusePixel.a - alphaTestRef);
+	float4 ret = diffusePixel * (ambientColor +
 		bump * (diffuseColor + spec * specularColor));
+	if (!UseAlpha)
+		ret.a = 1.0f;
+	return ret;
 }
 
 TECHNIQUE(Specular20, VS_Specular20, PS_Specular20)
@@ -766,8 +782,11 @@ float4 PS_SpecularRoad20(VertexOutput_Specular20 In) : SV_TARGET
 	float spec = pow(saturate(dot(reflect, viewVector)), shininess);
 
 	float4 ambDiffColor = ambientColor + bump * diffuseColor;
-	return diffusePixel * ambDiffColor +
+	float4 ret = diffusePixel * ambDiffColor +
 		bump * spec * specularColor * diffusePixel.a;
+	if (!UseAlpha)
+		ret.a = 1.0f;
+	return ret;
 }
 
 TECHNIQUE(SpecularRoad, VS_Specular20, PS_SpecularRoad20)

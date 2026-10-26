@@ -139,6 +139,9 @@ namespace RacingGame.Shaders
 
             // Don't use or write to the z buffer
             BaseGame.Device.DepthStencilState = DepthStencilState.None;
+            // Rendering into a render target flips the winding order on OpenGL,
+            // so the full screen quads must not be culled.
+            BaseGame.Device.RasterizerState = RasterizerState.CullNone;
             // Also don't use any kind of blending.
             //Update: allow writing to alpha!
             BaseGame.Device.BlendState = BlendStateAlphaWrite;
@@ -223,6 +226,7 @@ namespace RacingGame.Shaders
             {
                 // Restore z buffer state
                 BaseGame.Device.DepthStencilState = DepthStencilState.Default;
+                BaseGame.Device.RasterizerState = RasterizerState.CullCounterClockwise;
             }
         }
     }

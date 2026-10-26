@@ -216,6 +216,10 @@ namespace RacingGame.Graphics
                 // it will be done in RenderableMesh.Render anyway because of
                 // updating the world matrix!
                 ShaderEffect.normalMapping.SetParametersOptimized(material);
+                ShaderEffect.normalMapping.Effect.Parameters["UseAlpha"]?.SetValue(
+                    material.useAlpha);
+                ShaderEffect.normalMapping.Effect.Parameters["alphaTestRef"]?.SetValue(
+                    material.useAlpha ? 0.5f : 0.0f);
                 // Set vertex declaration
                 //always true: if (meshes.Count > 0)
 
@@ -363,9 +367,21 @@ namespace RacingGame.Graphics
         /// <param name="effect">Effect</param>
         /// <returns>Renderable mesh</returns>
         public RenderableMesh Add(VertexBuffer vertexBuffer,
-            IndexBuffer indexBuffer, ModelMeshPart part, Effect effect)
+            IndexBuffer indexBuffer, ModelMeshPart part, Effect effect,
+            bool useAlpha = false)
         {
             string techniqueName = effect.CurrentTechnique.Name;
+
+            // MonoGame's XImporter drops the technique of the .x material, the
+            // content processor stores it in the part tag.
+            if (part.Tag is string techniqueInfo)
+            {
+                int techniqueNumber = Material.TechniqueFromPartInfo(techniqueInfo);
+                EffectTechniqueCollection techniques =
+                    ShaderEffect.normalMapping.Effect.Techniques;
+                if (techniqueNumber >= 0 && techniqueNumber < techniques.Count)
+                    techniqueName = techniques[techniqueNumber].Name;
+            }
 
             // Does this technique already exist?
             MeshesPerMaterialPerTechniques foundList = null;
@@ -399,6 +415,12 @@ namespace RacingGame.Graphics
             // multiple times, we check this later.
             Material material = new Material(effect);
 
+            // MonoGame's XImporter drops the effect parameters of the .x files, the
+            // content processor stores them as string in the part tag.
+            if (part.Tag is string partInfo)
+                material.SetFromPartInfo(partInfo);
+            material.useAlpha = useAlpha;
+
             // If the effect is a BasicEffect (MonoGame XImporter fallback), extract
             // the texture from it since Material(Effect) only reads NormalMapping params.
             if (material.diffuseTexture == null && effect is BasicEffect basicEffect &&
@@ -421,7 +443,8 @@ namespace RacingGame.Graphics
                     innerList.material.ambientColor == material.ambientColor &&
                     innerList.material.diffuseColor == material.diffuseColor &&
                     innerList.material.specularColor == material.specularColor &&
-                    innerList.material.specularPower == material.specularPower)
+                    innerList.material.specularPower == material.specularPower &&
+                    innerList.material.useAlpha == material.useAlpha)
                 {
                     // Reuse this material and quit this search
                     material = innerList.material;

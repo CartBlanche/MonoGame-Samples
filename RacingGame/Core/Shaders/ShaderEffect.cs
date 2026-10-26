@@ -644,7 +644,7 @@ namespace RacingGame.Shaders
             ambientColor = effect.Parameters["ambientColor"];
             diffuseColor = effect.Parameters["diffuseColor"];
             specularColor = effect.Parameters["specularColor"];
-            specularPower = effect.Parameters["specularPower"];
+            specularPower = effect.Parameters["specularPower"] ?? effect.Parameters["shininess"];
             alphaFactor = effect.Parameters["alphaFactor"];
             // Default alpha factor to 1.0f for hotels and stuff
             AlphaFactor = 1.0f;
@@ -655,7 +655,7 @@ namespace RacingGame.Shaders
             reflectionCubeTexture = effect.Parameters["reflectionCubeTexture"];
             detailTexture = effect.Parameters["detailTexture"];
             parallaxAmount = effect.Parameters["parallaxAmount"];
-            carHueColorChange = effect.Parameters["carHueColorChange"];
+            carHueColorChange = effect.Parameters["carHueColorChange"] ?? effect.Parameters["carHueColor"];
         }
         /// <summary>
         /// Set parameters, this overload sets all material parameters too.

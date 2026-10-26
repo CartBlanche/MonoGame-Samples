@@ -167,6 +167,81 @@ namespace RacingGame.Graphics
             // Leave rest to default
         }
         /// <summary>
+        /// Set the material values from the info string the content pipeline
+        /// stored in the tag of a model mesh part. MonoGame's .x importer drops the
+        /// EffectInstance data of the .x files, so the RacingGameModelProcessor
+        /// reads it and writes "key=value;key=value" (diffuseTexture, normalTexture,
+        /// ambientColor, diffuseColor, specularColor, shininess).
+        /// </summary>
+        /// <param name="info">Info string</param>
+        public static int TechniqueFromPartInfo(string info)
+        {
+            foreach (string pair in info.Split(new[] { ';' },
+                StringSplitOptions.RemoveEmptyEntries))
+                if (pair.StartsWith("technique=") &&
+                    int.TryParse(pair.Substring(10), out int technique))
+                    return technique;
+            return -1;
+        }
+
+        /// <summary>
+        /// True if the texture alpha is real transparency (palms, ...) and not just
+        /// a mask, set for models that start with "Alpha".
+        /// </summary>
+        public bool useAlpha = false;
+
+        /// <summary>
+        /// Set the material values from the info string the content pipeline
+        /// stored in the tag of a model mesh part (see TechniqueFromPartInfo).
+        /// </summary>
+        public void SetFromPartInfo(string info)
+        {
+            foreach (string pair in info.Split(new[] { ';' },
+                StringSplitOptions.RemoveEmptyEntries))
+            {
+                int pos = pair.IndexOf('=');
+                if (pos < 0)
+                    continue;
+                string key = pair.Substring(0, pos);
+                string value = pair.Substring(pos + 1);
+                switch (key)
+                {
+                    case "diffuseTexture":
+                        diffuseTexture = new Texture(value);
+                        break;
+                    case "normalTexture":
+                        normalTexture = new Texture(value);
+                        break;
+                    case "ambientColor":
+                        ambientColor = ParseColor(value, ambientColor);
+                        break;
+                    case "diffuseColor":
+                        diffuseColor = ParseColor(value, diffuseColor);
+                        break;
+                    case "specularColor":
+                        specularColor = ParseColor(value, specularColor);
+                        break;
+                    case "shininess":
+                        specularPower = float.Parse(value,
+                            System.Globalization.CultureInfo.InvariantCulture);
+                        break;
+                }
+            }
+        }
+
+        private static Color ParseColor(string value, Color defaultColor)
+        {
+            string[] parts = value.Split(',');
+            if (parts.Length != 4)
+                return defaultColor;
+            float[] v = new float[4];
+            for (int i = 0; i < 4; i++)
+                v[i] = float.Parse(parts[i],
+                    System.Globalization.CultureInfo.InvariantCulture);
+            return new Color(new Vector4(v[0], v[1], v[2], v[3]));
+        }
+
+        /// <summary>
         /// Create material
         /// </summary>
         /// <param name="effect">Effect</param>
@@ -203,7 +278,7 @@ namespace RacingGame.Graphics
                 specularColor = new Color(specularColorParameter.GetValueVector4());
 
             EffectParameter specularPowerParameter =
-                effect.Parameters["specularPower"];
+                effect.Parameters["specularPower"] ?? effect.Parameters["shininess"];
             if (specularPowerParameter != null)
                 specularPower = specularPowerParameter.GetValueSingle();
         }
