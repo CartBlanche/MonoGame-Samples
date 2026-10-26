@@ -1,0 +1,51 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net10.0-android</TargetFramework>
+    <OutputType>Exe</OutputType>
+    <RootNamespace>Shooter.Android</RootNamespace>
+    <AssemblyName>Shooter</AssemblyName>
+    <AndroidApplication>True</AndroidApplication>
+    <SupportedOSPlatformVersion>29.0</SupportedOSPlatformVersion>
+    <ApplicationId>com.cartblanche.shooter</ApplicationId>
+    <ApplicationTitle>Shooter</ApplicationTitle>
+    <ApplicationVersion>1</ApplicationVersion>
+    <ApplicationDisplayVersion>1.0</ApplicationDisplayVersion>
+  </PropertyGroup>
+  <ItemGroup>
+    <MonoGameContentReference Include="..\..\Core\Content\Shooter.mgcb">
+      <Link>Content\Shooter.mgcb</Link>
+      <Platform>Android</Platform>
+    </MonoGameContentReference>
+    <!-- Skinned characters (HoverBot, Turret) + animation clips; built with Tools/Shooter.Pipeline. -->
+    <MonoGameContentReference Include="..\..\Core\Content\Characters.mgcb">
+      <Link>Content\Characters.mgcb</Link>
+      <Platform>Android</Platform>
+    </MonoGameContentReference>
+    <MonoGameContentReference Include="..\..\Core\Content\Effects.mgcb">
+      <Link>Content\Effects.mgcb</Link>
+      <Platform>Android</Platform>
+    </MonoGameContentReference>
+    <ProjectReference Include="..\..\Tools\Shooter.Pipeline\Shooter.Pipeline.csproj" ReferenceOutputAssembly="false" />
+  </ItemGroup>
+  <ItemGroup>
+    <!-- Files read with TitleContainer.OpenStream: on Android they are assets (Desktop copies them next to the exe). -->
+    <AndroidAsset Include="..\..\Core\Content\Scenes\MainScene.scene.json" Link="Assets\Content\Scenes\MainScene.scene.json" />
+    <AndroidAsset Include="..\..\Core\Content\Characters\*.animator.json" Link="Assets\Content\Characters\%(Filename)%(Extension)" />
+    <AndroidAsset Include="..\..\Core\Content\Particles\*.json" Link="Assets\Content\Particles\%(Filename)%(Extension)" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Core\Core.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="MonoGame.Content.Builder.Task" Version="3.8.*" />
+    <PackageReference Include="MonoGame.Framework.Android" Version="3.8.*" />
+  </ItemGroup>
+  <!-- Content-pipeline extension used by Shooter.mgcb (StaticModelProcessor). Must exist before mgcb runs. -->
+  <Target Name="BuildStaticPipeline" BeforeTargets="PrepareContentBuilder">
+    <Exec Command="dotnet build &quot;$(MSBuildThisFileDirectory)..\..\Tools\Shooter.StaticPipeline\Shooter.StaticPipeline.csproj&quot; -c Release -v q --nologo" />
+  </Target>
+  <Target Name="RestoreDotnetTools" BeforeTargets="CollectPackageReferences">
+    <Message Text="Restoring dotnet tools (this might take a while depending on your internet speed and should only happen upon building your project for the first time, or after upgrading MonoGame, or clearing your nuget cache)" Importance="High" />
+    <Exec Command="dotnet tool restore" />
+  </Target>
+</Project>

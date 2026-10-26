@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Monochrome icon for themed icons (Android 13+) -->
+    <item
+        android:drawable="@drawable/icon"
+        android:width="66dp"
+        android:height="66dp"
+        android:gravity="center" />
+</layer-list>

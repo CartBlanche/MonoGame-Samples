@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <style name="Theme.Splash" parent="android:Theme.Material.Light.NoActionBar">
+    <!-- Splash screen theme for API 28-30 (Android 12+ uses values-v31/themes.xml) -->
+    <item name="android:windowBackground">@drawable/splash</item>
+    <item name="android:windowNoTitle">true</item>
+    <item name="android:statusBarColor">@color/background_dark</item>
+    <item name="android:navigationBarColor">@color/background_dark</item>
+  </style>
+  <style name="MainTheme" parent="android:Theme.Material.Light.NoActionBar">
+    <item name="android:colorPrimary">@color/background_primary</item>
+    <item name="android:colorPrimaryDark">@color/background_dark</item>
+    <item name="android:colorAccent">@color/accent_blue</item>
+    <item name="android:statusBarColor">@color/background_dark</item>
+    <item name="android:navigationBarColor">@color/background_dark</item>
+  </style>
+</resources>

@@ -1,7 +1,13 @@
 <Solution>
   <Folder Name="/Platforms/" />
+  <Folder Name="/Platforms/Android/">
+    <Project Path="Platforms/Android/Shooter.csproj" />
+  </Folder>
   <Folder Name="/Platforms/Desktop/">
     <Project Path="Platforms/Desktop/Shooter.csproj" />
+  </Folder>
+  <Folder Name="/Tools/">
+    <Project Path="Tools/Shooter.Pipeline/Shooter.Pipeline.csproj" />
   </Folder>
   <Project Path="Core/Core.csproj" />
 </Solution>

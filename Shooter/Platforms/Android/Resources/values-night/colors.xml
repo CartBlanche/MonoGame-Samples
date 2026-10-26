@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Dark mode colors -->
+    <color name="background_dark">#080c0e</color>
+    <color name="background_primary">#10181c</color>
+    <color name="accent_blue">#5eead0</color>
+</resources>
