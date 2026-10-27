@@ -9,11 +9,33 @@ Core/                 Shared game library (net10.0) and content (Content/Shooter
 Platforms/Desktop/    DesktopGL launcher (+ Info.plist, app.manifest, Shooter.icns for macOS / Windows packaging with MonoPack)
 Platforms/Android/    Android launcher (net10.0-android; resources and icons generated from Core/Content/Icon.png)
 Tools/UnityExtractor/ Converts Unity scenes/prefabs (YAML) to JSON for the port
+.claude/skills/       Claude Code skill (unity-to-monogame-port) that captures the porting workflow (see below)
 ```
 
 ## Porting skill (Claude Code)
 
-The workflow used to make this port is captured as a reusable Claude Code skill, `unity-to-monogame-port`, for the next Unity project. It is a personal skill installed at `~/.claude/skills/unity-to-monogame-port/`; to share it, copy that folder to the same place (or to `.claude/skills/` in another repo).
+The workflow used to make this port is captured as a reusable Claude Code skill, `unity-to-monogame-port`, for the next Unity project. The skill lives in this repo at `.claude/skills/unity-to-monogame-port/`. Claude Code loads project skills from `.claude/skills/` automatically, so there is nothing to install: clone the repo, start Claude Code **from inside the `Shooter` folder** (`cd Shooter && claude`) and the skill is available. Starting Claude Code from the repo root or another sample folder will not load it.
+
+To use it on a Unity port that lives elsewhere, copy it to your personal skills folder once, then restart Claude Code:
+
+| OS | Personal skills folder |
+|---|---|
+| macOS / Linux | `~/.claude/skills/` |
+| Windows | `%USERPROFILE%\.claude\skills\` |
+
+```bash
+# macOS / Linux (run from the Shooter folder)
+mkdir -p ~/.claude/skills
+cp -R .claude/skills/unity-to-monogame-port ~/.claude/skills/
+```
+
+```powershell
+# Windows (PowerShell, run from the Shooter folder)
+New-Item -ItemType Directory -Force "$env:USERPROFILE\.claude\skills" | Out-Null
+Copy-Item -Recurse -Force .claude\skills\unity-to-monogame-port "$env:USERPROFILE\.claude\skills\"
+```
+
+`SKILL.md` must end up at `skills/unity-to-monogame-port/SKILL.md`. Re-run the copy to update; if you improve the skill, edit the copy in this repo and re-copy it.
 
 ```
 unity-to-monogame-port/
