@@ -376,11 +376,10 @@ namespace RacingGame.Graphics
             // content processor stores it in the part tag.
             if (part.Tag is string techniqueInfo)
             {
-                int techniqueNumber = Material.TechniqueFromPartInfo(techniqueInfo);
-                EffectTechniqueCollection techniques =
-                    ShaderEffect.normalMapping.Effect.Techniques;
-                if (techniqueNumber >= 0 && techniqueNumber < techniques.Count)
-                    techniqueName = techniques[techniqueNumber].Name;
+                string partTechniqueName =
+                    Material.TechniqueNameFromPartInfo(techniqueInfo);
+                if (partTechniqueName != null)
+                    techniqueName = partTechniqueName;
             }
 
             // Does this technique already exist?

@@ -167,21 +167,45 @@ namespace RacingGame.Graphics
             // Leave rest to default
         }
         /// <summary>
-        /// Set the material values from the info string the content pipeline
-        /// stored in the tag of a model mesh part. MonoGame's .x importer drops the
-        /// EffectInstance data of the .x files, so the RacingGameModelProcessor
-        /// reads it and writes "key=value;key=value" (diffuseTexture, normalTexture,
-        /// ambientColor, diffuseColor, specularColor, shininess).
+        /// MonoGame's .x importer drops the EffectInstance data of the .x files, so
+        /// the RacingGameModelProcessor reads it and stores "key=value;key=value"
+        /// (diffuseTexture, normalTexture, ambientColor, diffuseColor, specularColor,
+        /// shininess, technique, effect) in the tag of each model mesh part.
+        /// This returns the NormalMapping.fx technique name to render the part with,
+        /// or null if the info has no technique.
         /// </summary>
         /// <param name="info">Info string</param>
-        public static int TechniqueFromPartInfo(string info)
+        public static string TechniqueNameFromPartInfo(string info)
         {
+            int technique = -1;
+            string effect = "";
             foreach (string pair in info.Split(new[] { ';' },
                 StringSplitOptions.RemoveEmptyEntries))
-                if (pair.StartsWith("technique=") &&
-                    int.TryParse(pair.Substring(10), out int technique))
-                    return technique;
-            return -1;
+            {
+                if (pair.StartsWith("technique="))
+                    int.TryParse(pair.Substring(10), out technique);
+                else if (pair.StartsWith("effect="))
+                    effect = pair.Substring(7);
+            }
+            if (technique < 0)
+                return null;
+
+            // The glass shader had 2 techniques, the ps_2_0 one exists in
+            // NormalMapping.fx too, which is used to render everything.
+            if (IsGlassPartInfo(info))
+                return technique == 0 ? "ReflectionSpecular" : "ReflectionSpecular20";
+
+            EffectTechniqueCollection techniques =
+                ShaderEffect.normalMapping.Effect.Techniques;
+            return technique < techniques.Count ? techniques[technique].Name : null;
+        }
+
+        /// <summary>
+        /// True if the part used ReflectionSimpleGlass.fx in the .x file (glass).
+        /// </summary>
+        public static bool IsGlassPartInfo(string info)
+        {
+            return info.Contains("effect=ReflectionSimpleGlass;");
         }
 
         /// <summary>
@@ -192,7 +216,7 @@ namespace RacingGame.Graphics
 
         /// <summary>
         /// Set the material values from the info string the content pipeline
-        /// stored in the tag of a model mesh part (see TechniqueFromPartInfo).
+        /// stored in the tag of a model mesh part (see TechniqueNameFromPartInfo).
         /// </summary>
         public void SetFromPartInfo(string info)
         {

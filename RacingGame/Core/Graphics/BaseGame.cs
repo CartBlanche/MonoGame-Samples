@@ -937,28 +937,35 @@ namespace RacingGame.Graphics
         /// </summary>
         public static void SetCurrentAlphaMode(AlphaMode value)
         {
-            // Set both the color and the alpha blend factors, XNA 3.1's
-            // SourceBlend/DestinationBlend affected the color too.
             switch (value)
             {
                 case AlphaMode.DisableAlpha:
-                    Device.BlendState = BlendState.Opaque;
+                    Device.BlendState = new BlendState()
+                    {
+                        AlphaSourceBlend = Blend.Zero,
+                        AlphaDestinationBlend = Blend.One
+                    };
                     break;
                 case AlphaMode.Default:
-                    // Textures are premultiplied by the content pipeline.
-                    Device.BlendState = BlendState.AlphaBlend;
+                    Device.BlendState = new BlendState()
+                    {
+                        AlphaSourceBlend = Blend.SourceAlpha,
+                        AlphaDestinationBlend = Blend.InverseSourceAlpha
+                    };
                     break;
                 case AlphaMode.SourceAlphaOne:
                     Device.BlendState = new BlendState()
                     {
-                        ColorSourceBlend = Blend.SourceAlpha,
                         AlphaSourceBlend = Blend.SourceAlpha,
-                        ColorDestinationBlend = Blend.One,
                         AlphaDestinationBlend = Blend.One
                     };
                     break;
                 case AlphaMode.OneOne:
-                    Device.BlendState = BlendState.Additive;
+                    Device.BlendState = new BlendState()
+                    {
+                        AlphaSourceBlend = Blend.One,
+                        AlphaDestinationBlend = Blend.One
+                    };
                     break;
             }
         }

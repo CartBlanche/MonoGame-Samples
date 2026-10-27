@@ -70,7 +70,8 @@ namespace RacingGame.PipelineExtension
         /// Reads the EffectInstance of every material in a .x file. Returns the
         /// material name and "key=value;key=value" strings with diffuseTexture,
         /// normalTexture (names of existing texture files without extension),
-        /// ambientColor, diffuseColor, specularColor, shininess and technique.
+        /// ambientColor, diffuseColor, specularColor, shininess, technique and
+        /// effect (the .fx file name without extension).
         /// </summary>
         private static Dictionary<string, string> ReadXFileEffectInstances(
             string xFilename)
@@ -90,6 +91,11 @@ namespace RacingGame.PipelineExtension
                     continue;
 
                 StringBuilder info = new StringBuilder();
+                Match effectFile = Regex.Match(block.Substring(effectPos),
+                    "EffectInstance\\s*\\{\\s*\"([^\"]+)\"");
+                if (effectFile.Success)
+                    info.Append("effect=" + Path.GetFileNameWithoutExtension(
+                        effectFile.Groups[1].Value.Replace('\\', '/')) + ";");
                 foreach (Match p in Regex.Matches(block,
                     "EffectParamString\\s*\\{\\s*\"([^\"]+)\"\\s*;\\s*\"([^\"]*)\"\\s*;"))
                 {

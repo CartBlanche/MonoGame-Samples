@@ -708,20 +708,39 @@ namespace RacingGame.Graphics
                                 ModelMeshPart part = mesh.MeshParts[partNum];
                                 // Use the technique of the .x material, except for the
                                 // first part of a car with a changed color (set above).
-                                int partTechnique = part.Tag is string partTechniqueInfo
-                                    ? Material.TechniqueFromPartInfo(partTechniqueInfo) : -1;
-                                if (partTechnique >= 0 &&
-                                    partTechnique < shared.Techniques.Count &&
-                                    (isCar == false || partNum > 0 ||
+                                string partInfo = part.Tag as string;
+                                // Glass used ReflectionSimpleGlass.fx, which was alpha
+                                // blended with its default alphaFactor of 0.66.
+                                bool isGlass = partInfo != null &&
+                                    Material.IsGlassPartInfo(partInfo);
+                                EffectTechnique partTechnique = partInfo == null ? null :
+                                    shared.Techniques[
+                                    Material.TechniqueNameFromPartInfo(partInfo) ?? ""];
+                                // Keep the car color technique (set above) for the
+                                // first part of a colored car, but never for glass.
+                                if (partTechnique != null &&
+                                    (isCar == false || partNum > 0 || isGlass ||
                                     RacingGameManager.currentCarColor == 0))
-                                    shared.CurrentTechnique =
-                                        shared.Techniques[partTechnique];
+                                    shared.CurrentTechnique = partTechnique;
+                                BlendState remBlendState = BaseGame.Device.BlendState;
+                                if (isGlass)
+                                {
+                                    shared.Parameters["alphaFactor"]?.SetValue(0.66f);
+                                    BaseGame.Device.BlendState = BlendState.NonPremultiplied;
+                                }
+
                                 shared.CurrentTechnique.Passes[0].Apply();
                                 BaseGame.Device.SetVertexBuffer(part.VertexBuffer);
                                 BaseGame.Device.Indices = part.IndexBuffer;
                                 BaseGame.Device.DrawIndexedPrimitives(
                                     PrimitiveType.TriangleList,
                                     part.VertexOffset, part.StartIndex, part.PrimitiveCount);
+
+                                if (isGlass)
+                                {
+                                    shared.Parameters["alphaFactor"]?.SetValue(1.0f);
+                                    BaseGame.Device.BlendState = remBlendState;
+                                }
                             }
                         }
                         else
