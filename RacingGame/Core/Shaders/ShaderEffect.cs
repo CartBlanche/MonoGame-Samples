@@ -614,6 +614,7 @@ namespace RacingGame.Shaders
             // This is especially important for derived classes.
             ResetParameters();
             GetParameters();
+            ApplyFxDefaultValues();
             SetParameterDefaultValues();
         }
         /// <summary>
@@ -624,6 +625,83 @@ namespace RacingGame.Shaders
             lastUsedInverseViewMatrix = Matrix.Identity;
             lastUsedAmbientColor = ColorHelper.Empty;
             lastUsedDiffuseTexture = null;
+        }
+
+        /// <summary>
+        /// Default values of the effect parameters the game never sets itself.
+        /// The XNA game relied on the initial values in the .fx files, but those are
+        /// not applied by MonoGame on OpenGL (every parameter starts at 0), which
+        /// turned off the glow, the car reflections, the landscape detail texture
+        /// and made shadows black. The values are copied from the .fx files.
+        /// </summary>
+        /// (Created on first use, the static shader instances above are constructed
+        /// before this field would be initialized.)
+        static Dictionary<string, Dictionary<string, object>> fxDefaultValues;
+        static Dictionary<string, Dictionary<string, object>> FxDefaultValues =>
+            fxDefaultValues ??= new Dictionary<string, Dictionary<string, object>>
+            {
+                { "PostScreenGlow", new Dictionary<string, object>
+                    {
+                        { "DownsampleMultiplicator", 0.25f }, { "downsampleScale", 0.25f },
+                        { "BlurWidth", 8.0f }, { "GlowIntensity", 0.7f },
+                        { "HighlightIntensity", 0.4f }, { "HighlightThreshold", 0.975f },
+                    } },
+                { "PostScreenMenu", new Dictionary<string, object>
+                    {
+                        { "DownsampleMultiplicator", 0.25f }, { "downsampleScale", 0.25f },
+                        { "BlurWidth", 4.0f }, { "GlowIntensity", 0.25f },
+                        { "HighlightIntensity", 0.145f }, { "HighlightThreshold", 0.925f },
+                        { "Speed", 0.0032f }, { "Speed2", 0.0016f },
+                        { "ScratchIntensity", 0.605f }, { "IS", 0.031f },
+                    } },
+                { "PostScreenShadowBlur", new Dictionary<string, object>
+                    {
+                        { "BlurWidth", 1.25f }, { "BlurWidth20", 1.5f },
+                    } },
+                { "NormalMapping", new Dictionary<string, object>
+                    {
+                        { "fresnelBias", 0.5f }, { "fresnelPower", 1.5f },
+                        { "reflectionAmount", 1.0f },
+                    } },
+                { "ReflectionSimpleGlass", new Dictionary<string, object>
+                    {
+                        { "fresnelBias", 0.5f }, { "fresnelPower", 1.5f },
+                        { "reflectionAmount", 1.0f },
+                    } },
+                { "LandscapeNormalMapping", new Dictionary<string, object>
+                    {
+                        { "DetailFactor", 24.0f },
+                    } },
+                { "LightingShader", new Dictionary<string, object>
+                    {
+                        { "shadowCarColor", new Vector4(1.0f, 1.0f, 1.0f, 0.125f) },
+                    } },
+                { "ShadowMap", new Dictionary<string, object>
+                    {
+                        { "ShadowColor", new Vector4(0.25f, 0.26f, 0.27f, 1.0f) },
+                    } },
+            };
+
+        /// <summary>
+        /// Apply the .fx default values (see FxDefaultValues).
+        /// </summary>
+        void ApplyFxDefaultValues()
+        {
+            Dictionary<string, object> values;
+            if (effect == null ||
+                FxDefaultValues.TryGetValue(shaderContentName, out values) == false)
+                return;
+
+            foreach (KeyValuePair<string, object> pair in values)
+            {
+                EffectParameter parameter = effect.Parameters[pair.Key];
+                if (parameter == null)
+                    continue;
+                if (pair.Value is float floatValue)
+                    parameter.SetValue(floatValue);
+                else if (pair.Value is Vector4 vectorValue)
+                    parameter.SetValue(vectorValue);
+            }
         }
 
         protected virtual void SetParameterDefaultValues()

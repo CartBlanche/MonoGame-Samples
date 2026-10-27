@@ -229,8 +229,12 @@ namespace RacingGame.Shaders
                 outMSC = 0;
 
             // Try the highest precision formats first, ending at plain Color.
+            // The shadow map stores depth and needs more precision than half floats
+            // give for the small depth bias, so it prefers a 32 bit float target.
             SurfaceFormat[] candidates = mobile
                 ? new[] { SurfaceFormat.Color }
+                : sizeType == SizeType.ShadowMap
+                ? new[] { SurfaceFormat.Rgba64, SurfaceFormat.Single, SurfaceFormat.HdrBlendable, SurfaceFormat.Color }
                 : new[] { SurfaceFormat.Rgba64, SurfaceFormat.HdrBlendable, SurfaceFormat.Color };
             renderTarget = null;
             foreach (SurfaceFormat candidate in candidates)

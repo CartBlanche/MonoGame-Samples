@@ -14,17 +14,22 @@ float4x4 shadowTexTransform;
 float4x4 worldViewProjLight : WorldViewProjection;
 
 // Hand adjusted near and far plane for better percision.
-const float nearPlane = 2.0f;
-const float farPlane = 8.0f;
+// Fixed values, they have to be the same in the generate and in the use pass and match
+// shadowNearPlane/shadowFarPlane in ShadowMapShader.cs (on OpenGL the farPlane value set
+// from code did not reach the vertex shader of the UseShadowMap20 technique).
+static const float nearPlane = 1.0f;
+static const float farPlane = 6.25f * 28 * 1.25f;
 // Depth bias, controls how much we remove from the depth
 // to fix depth checking artifacts. For ps_1_1 this should
 // be a very high value (0.01f), for ps_2_0 it can be very low.
-const float depthBias = 0.0025f;
+// Same value as compareDepthBias in ShadowMapShader.SetParameters.
+static const float depthBias = 0.00065f;
 // Substract a very low value from shadow map depth to
 // move everything a little closer to the camera.
 // This is done when the shadow map is rendered before any
 // of the depth checking happens, should be a very small value.
-const float shadowMapDepthBias = -0.0005f;
+// Same value as shadowMapDepthBiasValue in ShadowMapShader.SetParameters.
+static const float shadowMapDepthBias = 0.00065f;
 
 // Color for shadowed areas, should be black too, but need
 // some alpha value (e.g. 0.5) for blending the color to black.
@@ -103,8 +108,11 @@ VB_GenerateShadowMap20 VS_GenerateShadowMap20(VertexInput In)
     float internalNearPlane = farPlane / 10;
 
     // Linear depth calculation instead of normal depth calculation.
+    // Use w (the distance to the light), not z: on OpenGL the z of the output
+    // position is remapped from 0..w to -w..w, which made the shadow map depth
+    // smaller than the depth calculated in UseShadowMap20 (everything shadowed).
     Out.depth = float2(
-        (Out.pos.z - internalNearPlane),
+        (Out.pos.w - internalNearPlane),
         (farPlane - internalNearPlane));
 
     return Out;
@@ -170,8 +178,9 @@ VB_UseShadowMap20 VS_UseShadowMap20(VertexInput In)
     
     // Same linear depth calculation as above.
     // Also substract depthBias to fix shadow mapping artifacts.
+    // (w like in VS_GenerateShadowMap20, see there)
     Out.depth = float2(
-        (depthPos.z - internalNearPlane),
+        (depthPos.w - internalNearPlane),
         (farPlane - internalNearPlane));
 
     return Out;

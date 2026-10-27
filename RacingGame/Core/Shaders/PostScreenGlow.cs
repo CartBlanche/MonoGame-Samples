@@ -25,12 +25,15 @@ namespace RacingGame.Shaders
     /// </summary>
     public class PostScreenGlow : PostScreenMenu
     {
+        // Write the shader alpha too: the downsample pass stores the highlights in
+        // alpha. The XNA code kept the destination alpha, which on OpenGL is 1
+        // everywhere, so HighlightIntensity * blur.a brightened the whole screen.
         static readonly BlendState BlendStateAlphaWrite = new BlendState() {
                 ColorSourceBlend = Blend.One,
-                AlphaSourceBlend = Blend.Zero,
+                AlphaSourceBlend = Blend.One,
 
                 ColorDestinationBlend = Blend.Zero,
-                AlphaDestinationBlend = Blend.One
+                AlphaDestinationBlend = Blend.Zero
             };
         /// <summary>
         /// The shader effect filename for this shader.

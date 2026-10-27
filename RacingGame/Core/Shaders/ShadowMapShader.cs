@@ -220,13 +220,13 @@ namespace RacingGame.Shaders
             base.SetParameters(setMat);
 
             // Set all extra parameters for this shader
-            depthBias.SetValue(compareDepthBias);
-            shadowMapDepthBias.SetValue(shadowMapDepthBiasValue);
-            shadowMapTexelSize.SetValue(
+            depthBias?.SetValue(compareDepthBias);
+            shadowMapDepthBias?.SetValue(shadowMapDepthBiasValue);
+            shadowMapTexelSize?.SetValue(
                 new Vector2(texelWidth, texelHeight));
             if (nearPlane != null)
                 nearPlane.SetValue(shadowNearPlane);
-            farPlane.SetValue(shadowFarPlane);
+            farPlane?.SetValue(shadowFarPlane);
         }
         /// <summary>
         /// Calc simple directional shadow mapping matrix
@@ -379,7 +379,7 @@ namespace RacingGame.Shaders
 
                     // Use the shadow map texture here which was generated in
                     // GenerateShadows().
-                    shadowMap.SetValue(shadowMapTexture.XnaTexture);
+                    shadowMap?.SetValue(shadowMapTexture.XnaTexture);
 
                     // Render shadows with help of the UseShadowMap shader
                     RenderSinglePassShader(renderObjects);
