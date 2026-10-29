@@ -5,7 +5,7 @@
     <OutputType>Exe</OutputType>
     <RootNamespace>NetRumble</RootNamespace>
     <AssemblyName>NetRumble</AssemblyName>
-    <SupportedOSPlatformVersion>11.0</SupportedOSPlatformVersion>
+    <SupportedOSPlatformVersion>12.2</SupportedOSPlatformVersion>
   </PropertyGroup>
 
   <ItemGroup>

@@ -7,7 +7,7 @@
             "type": "process",
             "args": [
                 "build",
-                "${workspaceFolder}/Platforms/Windows/NetRumble.Windows.csproj"
+                "${workspaceFolder}/Platforms/Windows/NetRumble.csproj"
             ],
             "group": "build",
             "presentation": {
@@ -24,7 +24,7 @@
             "type": "process",
             "args": [
                 "build",
-                "${workspaceFolder}/Platforms/Desktop/NetRumble.DesktopGL.csproj"
+                "${workspaceFolder}/Platforms/Desktop/NetRumble.csproj"
             ],
             "group": "build",
             "presentation": {
@@ -41,7 +41,7 @@
             "type": "process",
             "args": [
                 "build",
-                "${workspaceFolder}/Platforms/Android/NetRumble.Android.csproj"
+                "${workspaceFolder}/Platforms/Android/NetRumble.csproj"
             ],
             "group": "build",
             "presentation": {
@@ -59,7 +59,7 @@
             "args": [
                 "run",
                 "--project",
-                "${workspaceFolder}/Platforms/Windows/NetRumble.Windows.csproj"
+                "${workspaceFolder}/Platforms/Windows/NetRumble.csproj"
             ],
             "group": "test",
             "dependsOn": "build-windows",

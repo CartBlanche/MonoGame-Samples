@@ -60,6 +60,13 @@ namespace NetRumble
         /// </summary>
         public NetRumbleGame()
         {
+            // keeps this game from listing, or joining, sessions of the other games on the network
+            Microsoft.Xna.Framework.Net.NetworkSession.GameId = "NetRumble";
+
+            // the Net library's log (joins, timeouts, and exceptions thrown by event handlers); the default only
+            // writes to the debugger output
+            Microsoft.Xna.Framework.Net.NetworkLogging.Logger = new Microsoft.Xna.Framework.Net.ConsoleNetworkLogger();
+
             // initialize the graphics device manager
             graphicsDeviceManager = new GraphicsDeviceManager(this);
 

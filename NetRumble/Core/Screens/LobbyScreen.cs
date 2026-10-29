@@ -175,8 +175,10 @@ namespace NetRumble
                 }
             }
 
+            // the session ends during networkSession.Update() above when the host leaves; the handler clears
+            // networkSession and this screen is left to transition off
             // update the menu entry text
-            if (otherScreenHasFocus == false)
+            if (otherScreenHasFocus == false && networkSession != null)
             {
                 if ((networkSession.LocalGamers.Count > 0) &&
                     (networkSession.SessionState == NetworkSessionState.Lobby))
