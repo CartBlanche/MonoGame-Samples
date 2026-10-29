@@ -1,6 +1,7 @@
 ﻿using Android.App;
 using Android.Content.PM;
 using Android.OS;
+using Android.Views;
 using Microsoft.Xna.Framework;
 
 namespace PeerToPeer.Android
@@ -16,7 +17,7 @@ namespace PeerToPeer.Android
         {
             base.OnCreate(bundle);
             var game = new PeerToPeerGame();
-            SetContentView(game.Window);
+            SetContentView(game.Services.GetService(typeof(View)) as View);
             game.Run();
         }
     }

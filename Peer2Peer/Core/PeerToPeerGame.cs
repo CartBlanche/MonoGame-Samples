@@ -44,6 +44,9 @@ namespace PeerToPeer
 
 		public PeerToPeerGame()
 		{
+			// keeps this game from listing, or joining, sessions of the other games on the network
+			Microsoft.Xna.Framework.Net.NetworkSession.GameId = "Peer2Peer";
+
 			graphicsDeviceManager = new GraphicsDeviceManager(this);
 
 			graphicsDeviceManager.PreferredBackBufferWidth = screenWidth;
@@ -372,7 +375,7 @@ namespace PeerToPeer
 			spriteBatch.Begin();
 
 			// For each person in the session...
-			foreach (INetworkGamer gamer in networkSession.AllGamers)
+			foreach (NetworkGamer gamer in networkSession.AllGamers)
 			{
 				// Look up the tank object belonging to this network gamer.
 				Tank tank = gamer.Tag as Tank;
@@ -391,7 +394,7 @@ namespace PeerToPeer
 						label += " (host)";
 
 					// Flash the gamertag to yellow when the player is talking.
-					if (gamer is NetworkGamer networkGamer && networkGamer.IsTalking)
+					if (gamer.IsTalking)
 						labelColor = Color.Yellow;
 
 					spriteBatch.DrawString(font, label, tank.Position, labelColor, 0,
