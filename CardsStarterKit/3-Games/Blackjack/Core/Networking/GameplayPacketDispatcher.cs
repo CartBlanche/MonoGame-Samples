@@ -31,6 +31,10 @@ namespace Blackjack.Networking
                 NetworkGamer sender;
                 localGamer.ReceiveData(packetReader, out sender);
 
+                // data for everyone also comes back to the sender (as in XNA); this game already knows its own
+                if (sender != null && sender.IsLocal)
+                    continue;
+
                 try
                 {
                     var packetType = (PacketType)packetReader.ReadByte();

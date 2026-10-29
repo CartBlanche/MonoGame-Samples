@@ -21,6 +21,6 @@
   <ItemGroup>
     <ProjectReference Include="..\..\..\1-Framework\Cards.Framework.csproj" />
     <ProjectReference Include="..\..\..\2-Core\Cards.Framework.Core.csproj" />
-    <ProjectReference Include="..\..\..\..\..\MonoGame.Xna.Framework.Net\Core\MonoGame.Xna.Framework.Net.csproj" />
+    <PackageReference Include="MonoGame.Xna.Framework.Net" Version="1.0.0-preview.1" />
   </ItemGroup>
 </Project>

@@ -20,7 +20,7 @@ namespace Blackjack.Networking
     /// </summary>
     public static class MultiplayerSessionService
     {
-        private const string SteamFactoryTypeName = "Microsoft.Xna.Framework.Net.SteamNetworkSessionFactory, MonoGame.Xna.Framework.Net.Steam";
+        private const string SteamBackendTypeName = "Microsoft.Xna.Framework.Net.Steam.SteamBackend, MonoGame.Xna.Framework.Net.Steam";
 
         public static MultiplayerBackend ActiveBackend { get; private set; } = MultiplayerBackend.UdpSystemLink;
 
@@ -30,7 +30,7 @@ namespace Blackjack.Networking
         }
 
         /// <summary>
-        /// Centralized backend bootstrap. This is the single enum-to-factory mapping seam.
+        /// Centralized backend bootstrap. This is the single enum-to-back-end mapping seam.
         /// </summary>
         public static void InitializeBackend(MultiplayerBackend backend, string gameName = null)
         {
@@ -41,7 +41,7 @@ namespace Blackjack.Networking
                 case MultiplayerBackend.Steam:
                     if (!TryConfigureSteamBackend(gameName))
                     {
-                        Debug.WriteLine("[Multiplayer] Steam factory unavailable, falling back to UDP/SystemLink.");
+                        Debug.WriteLine("[Multiplayer] Steam back-end unavailable, falling back to UDP/SystemLink.");
                         NetworkServiceProvider.ResetToDefault();
                     }
                     break;
@@ -54,7 +54,7 @@ namespace Blackjack.Networking
                 case MultiplayerBackend.GooglePlay:
                 case MultiplayerBackend.IOS:
                 default:
-                    // Future backends can register platform-specific factories here.
+                    // Future backends can register platform-specific back-ends here.
                     Debug.WriteLine($"[Multiplayer] Backend {backend} not implemented yet, using UDP/SystemLink.");
                     NetworkServiceProvider.ResetToDefault();
                     break;
@@ -63,16 +63,16 @@ namespace Blackjack.Networking
 
         /// <summary>
         /// Preferred typed bootstrap path for platform entry points that can reference
-        /// a concrete network factory at compile time. Reflection remains as a fallback
+        /// a concrete network back-end at compile time. Reflection remains as a fallback
         /// via <see cref="InitializeBackend(MultiplayerBackend, string)"/>.
         /// </summary>
-        public static void InitializeBackend(MultiplayerBackend backend, INetworkSessionFactory typedFactory, string gameName = null)
+        public static void InitializeBackend(MultiplayerBackend backend, INetworkBackend typedBackend, string gameName = null)
         {
-            if (typedFactory != null)
+            if (typedBackend != null)
             {
                 ActiveBackend = backend;
-                NetworkServiceProvider.SetSessionFactory(typedFactory);
-                Debug.WriteLine($"[Multiplayer] Registered typed session factory for backend={backend}: {typedFactory.GetType().Name}");
+                NetworkServiceProvider.SetBackend(typedBackend);
+                Debug.WriteLine($"[Multiplayer] Registered typed network back-end for backend={backend}: {typedBackend.GetType().Name}");
                 return;
             }
 
@@ -81,36 +81,36 @@ namespace Blackjack.Networking
 
         private static bool TryConfigureSteamBackend(string gameName)
         {
-            var factoryType = Type.GetType(SteamFactoryTypeName, throwOnError: false);
-            if (factoryType == null)
+            var backendType = Type.GetType(SteamBackendTypeName, throwOnError: false);
+            if (backendType == null)
             {
                 return false;
             }
 
-            object factoryInstance;
+            object backendInstance;
             try
             {
-                factoryInstance = CreateFactoryInstance(factoryType, gameName);
+                backendInstance = CreateBackendInstance(backendType, gameName);
             }
             catch (Exception ex)
             {
-                Debug.WriteLine($"[Multiplayer] Failed to create Steam factory instance: {ex.Message}");
+                Debug.WriteLine($"[Multiplayer] Failed to create Steam back-end instance: {ex.Message}");
                 return false;
             }
 
-            if (factoryInstance is INetworkSessionFactory sessionFactory)
+            if (backendInstance is INetworkBackend backend)
             {
-                NetworkServiceProvider.SetSessionFactory(sessionFactory);
+                NetworkServiceProvider.SetBackend(backend);
                 return true;
             }
 
             return false;
         }
 
-        private static object CreateFactoryInstance(Type factoryType, string gameName)
+        private static object CreateBackendInstance(Type backendType, string gameName)
         {
             // Prefer any ctor whose first argument is string and all remaining args are optional.
-            foreach (var ctor in factoryType.GetConstructors(BindingFlags.Public | BindingFlags.Instance))
+            foreach (var ctor in backendType.GetConstructors(BindingFlags.Public | BindingFlags.Instance))
             {
                 var parameters = ctor.GetParameters();
                 if (parameters.Length == 0)
@@ -139,7 +139,7 @@ namespace Blackjack.Networking
             }
 
             // Fall back to a true parameterless constructor when available.
-            return Activator.CreateInstance(factoryType);
+            return Activator.CreateInstance(backendType);
         }
 
         public static Task<NetworkSession> CreateHostSessionAsync(int minPlayers, int maxPlayers)

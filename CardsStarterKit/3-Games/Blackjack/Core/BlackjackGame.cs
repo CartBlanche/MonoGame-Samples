@@ -37,6 +37,9 @@ namespace Blackjack
         /// </summary>
         public BlackjackGame()
         {
+            // keeps this game from listing, or joining, sessions of the other games on the network
+            Microsoft.Xna.Framework.Net.NetworkSession.GameId = "Blackjack";
+
             graphicsDeviceManager = new GraphicsDeviceManager(this);
 
             Content.RootDirectory = "Content";

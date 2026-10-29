@@ -187,9 +187,10 @@ namespace Blackjack
             {
                 // CRITICAL: Ensure consistent player ordering across all machines
                 // Host must ALWAYS be first, then other players sorted by their network ID
+                // (GamerId, the string every machine agrees on; NetworkGamer.Id is now XNA's byte)
                 var orderedGamers = networkSession.AllGamers
                     .OrderByDescending(g => g.IsHost)  // Host first
-                    .ThenBy(g => g.Id);                 // Then others sorted by ID
+                    .ThenBy(g => g.GamerId, StringComparer.Ordinal);   // Then others sorted by ID
 
                 foreach (NetworkGamer gamer in orderedGamers)
                 {
