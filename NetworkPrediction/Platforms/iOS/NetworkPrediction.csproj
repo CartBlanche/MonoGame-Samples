@@ -5,7 +5,7 @@
     <TargetFramework>net10.0-ios</TargetFramework>
     <RootNamespace>NetworkPrediction</RootNamespace>
     <AssemblyName>NetworkPrediction</AssemblyName>
-    <SupportedOSPlatformVersion>11.0</SupportedOSPlatformVersion>
+    <SupportedOSPlatformVersion>12.2</SupportedOSPlatformVersion>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <Title>Network Prediction</Title>
     <Product>NetworkPrediction</Product>

@@ -1,7 +1,8 @@
 using Android.App;
 using Android.Content.PM;
 using Android.OS;
-using MonoGame.Framework;
+using Android.Views;
+using Microsoft.Xna.Framework;
 
 namespace NetworkPrediction.Android
 {
@@ -12,7 +13,7 @@ namespace NetworkPrediction.Android
         {
             base.OnCreate(savedInstanceState);
             var game = new NetworkPredictionGame();
-            SetContentView((game.Services.GetService(typeof(Android.Views.View)) as Android.Views.View));
+            SetContentView(game.Services.GetService(typeof(View)) as View);
             game.Run();
         }
     }

@@ -76,6 +76,9 @@ namespace NetworkPrediction
 
         public NetworkPredictionGame()
         {
+            // keeps this game from listing, or joining, sessions of the other games on the network
+            Microsoft.Xna.Framework.Net.NetworkSession.GameId = "NetworkPrediction";
+
             graphics = new GraphicsDeviceManager(this);
 
             graphics.PreferredBackBufferWidth = screenWidth;

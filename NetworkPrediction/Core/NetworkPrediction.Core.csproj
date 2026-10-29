@@ -8,11 +8,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="MonoGame.Framework.DesktopGL" Version="3.8.*" />
+    <PackageReference Include="MonoGame.Framework.DesktopGL" Version="3.8.*" PrivateAssets="all" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\MonoGame.Xna.Framework.Net\Core\MonoGame.Xna.Framework.Net.csproj" /> 
+    <PackageReference Include="MonoGame.Xna.Framework.Net" Version="1.0.0-preview.1" /> 
   </ItemGroup>
 
 </Project>
