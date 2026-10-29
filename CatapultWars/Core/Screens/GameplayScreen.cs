@@ -66,6 +66,10 @@ namespace CatapultGame
 		bool changeTurn;
 		bool isFirstPlayerTurn;
 		bool gameOver;
+
+		// a networked game that had two players, and the other one has left
+		bool hadOpponent;
+		bool opponentLeft;
 		Random random;
 		const int minWind = 0;
 		const int maxWind = 10;
@@ -103,6 +107,7 @@ namespace CatapultGame
 
 			NetworkSession = ScreenManager.Game.Services.GetService(typeof(NetworkSession)) as NetworkSession;
 			IsMultiplayer = NetworkSession != null;
+			hadOpponent = IsMultiplayer && NetworkSession.RemoteGamers.Count > 0;
 
 			// Load textures
 			foregroundTexture = Load<Texture2D>("Textures/Backgrounds/gameplay_screen");
@@ -191,6 +196,15 @@ namespace CatapultGame
 		public override void Update(GameTime gameTime, bool otherScreenHasFocus, bool coveredByOtherScreen)
 		{
 			float elapsed = (float)gameTime.ElapsedGameTime.TotalSeconds;
+
+			// Nobody is left to take the other player's turn, so the game ends and the player who stayed wins
+			if (hadOpponent && !gameOver && NetworkSession.RemoteGamers.Count == 0)
+			{
+				gameOver = true;
+				opponentLeft = true;
+				AudioManager.PlaySound("gameOver_Win");
+				return;
+			}
 
 			// Check it one of the players reached 5 and stop the game
 			if ((playerOne.Catapult.GameOver || playerTwo.Catapult.GameOver) &&
@@ -627,7 +641,11 @@ namespace CatapultGame
 				Texture2D texture;
 				if (IsMultiplayer)
 				{
-					if (NetworkSession.IsHost)
+					if (opponentLeft)
+					{
+						texture = victoryTexture;
+					}
+					else if (NetworkSession.IsHost)
 					{
 						if (playerOne.Score > playerTwo.Score)
 						{

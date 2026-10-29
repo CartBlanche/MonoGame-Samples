@@ -43,6 +43,9 @@ namespace CatapultGame
 
 		public CatapultGame()
 		{
+			// keeps this game from listing, or joining, sessions of the other games on the network
+			Microsoft.Xna.Framework.Net.NetworkSession.GameId = "CatapultWars";
+
 			graphicsDeviceManager = new GraphicsDeviceManager(this);
 			//graphics.SynchronizeWithVerticalRetrace = false;
 

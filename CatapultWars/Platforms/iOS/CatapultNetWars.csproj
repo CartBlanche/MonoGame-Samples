@@ -5,7 +5,7 @@
     <OutputType>Exe</OutputType>
     <RootNamespace>CatapultGame</RootNamespace>
     <AssemblyName>CatapultNetWars</AssemblyName>
-    <SupportedOSPlatformVersion>11.0</SupportedOSPlatformVersion>
+    <SupportedOSPlatformVersion>12.2</SupportedOSPlatformVersion>
     <MonoGamePlatform>iOS</MonoGamePlatform>
   </PropertyGroup>
 
