@@ -8,7 +8,7 @@
 
   <ItemGroup>
     <Compile Remove="Program.cs" />
-    <ProjectReference Include="..\..\..\..\MonoGame.Xna.Framework.Net\Steam\MonoGame.Xna.Framework.Net.Steam.csproj" />
+    <PackageReference Include="MonoGame.Xna.Framework.Net.Steam" Version="1.0.0-preview.1" />
   </ItemGroup>
 
   <PropertyGroup>

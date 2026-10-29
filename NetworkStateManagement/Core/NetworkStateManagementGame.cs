@@ -44,6 +44,9 @@ namespace NetworkStateManagement
         /// </summary>		
         public NetworkStateManagementGame()
 		{
+			// keeps this game from listing, or joining, sessions of the other games on the network
+			Microsoft.Xna.Framework.Net.NetworkSession.GameId = "NetworkStateManagement";
+
 			Content.RootDirectory = "Content";
 
 			graphicsDeviceManager = new GraphicsDeviceManager(this);
@@ -71,7 +74,13 @@ namespace NetworkStateManagement
 			Components.Add(screenManager);
 			Components.Add(new MessageDisplayComponent(this));
 			Components.Add(new GamerServicesComponent(this));
-		Components.Add(new PlatformStatusComponent(this));
+			Components.Add(new PlatformStatusComponent(this));
+
+			// Activate the first screens.
+			screenManager.AddScreen(new BackgroundScreen(), null);
+			screenManager.AddScreen(new MainMenuScreen(), null);
+
+			// Listen for invite notification events.
 			NetworkSession.InviteAccepted += (sender, e) => NetworkSessionComponent.InviteAccepted(screenManager, e);
 
 			// To test the trial mode behavior while developing your game,
