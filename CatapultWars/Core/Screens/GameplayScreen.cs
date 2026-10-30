@@ -46,6 +46,8 @@ namespace CatapultGame
 		Texture2D skyTexture;
 		Texture2D hudBackgroundTexture;
 		Texture2D ammoTypeTexture;
+		HalloweenDecor decor;
+		bool wasHit;
 		Texture2D windArrowTexture;
 		Texture2D defeatTexture;
 		Texture2D victoryTexture;
@@ -55,6 +57,10 @@ namespace CatapultGame
 		Vector2 cloud1Position;
 		Vector2 cloud2Position;
 		Vector2 playerOneHUDPosition;
+
+		// On-screen X for phones and tablets, which have no Esc key. It opens the pause menu.
+		static readonly Rectangle exitButton = new Rectangle(7, 7, 40, 40);
+		Texture2D buttonPixel;
 		Vector2 computerHUDPosition;
 		Vector2 windArrowPosition;
 
@@ -120,6 +126,9 @@ namespace CatapultGame
 			hudBackgroundTexture = Load<Texture2D>("Textures/HUD/hudBackground");
 			windArrowTexture = Load<Texture2D>("Textures/HUD/windArrow");
 			ammoTypeTexture = Load<Texture2D>("Textures/HUD/ammoType");
+			// Seasonal look, decided once per game
+			decor = Theme.IsHalloween ? new HalloweenDecor(ScreenManager.GraphicsDevice) : null;
+
 			// Load font
 			hudFont = Load<SpriteFont>("Fonts/HUDFont");
 
@@ -129,6 +138,13 @@ namespace CatapultGame
 
 			// Define initial HUD positions
 			playerOneHUDPosition = new Vector2(7, 7);
+			if (UIUtility.IsMobile)
+			{
+				// Make room for the exit button
+				playerOneHUDPosition.X += exitButton.Right;
+				buttonPixel = new Texture2D(ScreenManager.GraphicsDevice, 1, 1);
+				buttonPixel.SetData(new[] { Color.White });
+			}
 			computerHUDPosition = new Vector2(613, 7);
 			windArrowPosition = new Vector2(345, 46);
 
@@ -296,6 +312,18 @@ namespace CatapultGame
 			playerOne.Update(gameTime);
 			playerTwo.Update(gameTime);
 
+			if (decor != null)
+			{
+				decor.Update(elapsed);
+
+				// Startle the bats when a catapult is hit
+				bool hitNow = playerOne.Catapult.CurrentState == CatapultState.Hit
+					|| playerTwo.Catapult.CurrentState == CatapultState.Hit;
+				if (hitNow && !wasHit)
+					decor.Scatter();
+				wasHit = hitNow;
+			}
+
 			// Updates the cloud positions
 			UpdateClouds(elapsed);
 
@@ -317,6 +345,7 @@ namespace CatapultGame
 			DrawComputer(gameTime);
 			DrawPlayer(gameTime);
 			DrawHud();
+			DrawExitButton();
 
 			ScreenManager.SpriteBatch.End();
 		}
@@ -331,6 +360,12 @@ namespace CatapultGame
 
 			if (input == null)
 				throw new ArgumentNullException("input");
+
+			if (!gameOver && UIUtility.IsMobile && ExitButtonPressed(input))
+			{
+				PauseCurrentGame();
+				return;
+			}
 
 			if (gameOver)
 			{
@@ -420,6 +455,7 @@ namespace CatapultGame
 					writer.Write(wind);
 					writer.Write(cloud1Position);
 					writer.Write(cloud2Position);
+					writer.Write(MatchSettings.WinScore);
 
 					// Update our locally controlled catapults, and send their
 					// latest position data to everyone in the session.
@@ -557,6 +593,9 @@ namespace CatapultGame
 						wind = packetReader.ReadVector2();
 						cloud1Position = packetReader.ReadVector2();
 						cloud2Position = packetReader.ReadVector2();
+						// The host's points-to-win rides along; an older host does not send it
+						if (packetReader.Position < packetReader.Length)
+							MatchSettings.WinScore = packetReader.ReadInt32();
 						// Set new wind value to the players and
 						playerOne.Catapult.Wind = playerTwo.Catapult.Wind = wind.X > 0 ? wind.Y : -wind.Y;
 						break;
@@ -606,29 +645,54 @@ namespace CatapultGame
 		/// <summary>
 		/// Draw the sky, clouds, mountains, etc. 
 		/// </summary>
+		/// <summary>
+		/// Draws the HUD ammo icon, a pumpkin when themed, at the standard icon size.
+		/// </summary>
+		private void DrawAmmoIcon(Vector2 position)
+		{
+			if (decor != null)
+				ScreenManager.SpriteBatch.Draw(decor.Pumpkin,
+					new Rectangle((int)position.X, (int)position.Y, ammoTypeTexture.Width, ammoTypeTexture.Height), Color.White);
+			else
+				ScreenManager.SpriteBatch.Draw(ammoTypeTexture, position, Color.White);
+		}
+
 		private void DrawBackground()
 		{
 			// Clear the background
 			ScreenManager.Game.GraphicsDevice.Clear(Color.Black);
 
+			bool night = decor != null;
+			Color cloudTint = night ? HalloweenDecor.CloudTint : Color.White;
+
 			// Draw the Sky
-			ScreenManager.SpriteBatch.Draw(skyTexture, Vector2.Zero, Color.White);
+			if (night)
+				decor.DrawSky(ScreenManager.SpriteBatch);
+			else
+				ScreenManager.SpriteBatch.Draw(skyTexture, Vector2.Zero, Color.White);
 
 			// Draw Cloud #1
 			ScreenManager.SpriteBatch.Draw(cloud1Texture,
-				cloud1Position, Color.White);
+				cloud1Position, cloudTint);
 
 			// Draw the Mountain
 			ScreenManager.SpriteBatch.Draw(mountainTexture,
-				Vector2.Zero, Color.White);
+				Vector2.Zero, night ? HalloweenDecor.MountainTint : Color.White);
 
 			// Draw Cloud #2
 			ScreenManager.SpriteBatch.Draw(cloud2Texture,
-				cloud2Position, Color.White);
+				cloud2Position, cloudTint);
 
 			// Draw the Castle, trees, and foreground 
 			ScreenManager.SpriteBatch.Draw(foregroundTexture,
-				Vector2.Zero, Color.White);
+				Vector2.Zero, night ? HalloweenDecor.ForegroundTint : Color.White);
+
+			// Lit windows, lanterns and bats sit behind the catapults and projectiles
+			if (night)
+			{
+				decor.DrawGameLights(ScreenManager.SpriteBatch);
+				decor.DrawBats(ScreenManager.SpriteBatch, 1f);
+			}
 		}
 
 		/// <summary>
@@ -699,13 +763,13 @@ namespace CatapultGame
 			{
 				// Draw Player Hud
 				ScreenManager.SpriteBatch.Draw(hudBackgroundTexture, playerOneHUDPosition, Color.White);
-				ScreenManager.SpriteBatch.Draw(ammoTypeTexture, playerOneHUDPosition + new Vector2(33, 35), Color.White);
+				DrawAmmoIcon(playerOneHUDPosition + new Vector2(33, 35));
 				DrawString(hudFont, playerOne.Score.ToString(), playerOneHUDPosition + new Vector2(123, 35), Color.White);
 				DrawString(hudFont, playerOne.Name, playerOneHUDPosition + new Vector2(40, 1), Color.Blue);
 
 				// Draw Computer Hud
 				ScreenManager.SpriteBatch.Draw(hudBackgroundTexture, computerHUDPosition, Color.White);
-				ScreenManager.SpriteBatch.Draw(ammoTypeTexture, computerHUDPosition + new Vector2(33, 35), Color.White);
+				DrawAmmoIcon(computerHUDPosition + new Vector2(33, 35));
 				DrawString(hudFont, playerTwo.Score.ToString(), computerHUDPosition + new Vector2(123, 35), Color.White);
 				DrawString(hudFont, playerTwo.Name, computerHUDPosition + new Vector2(40, 1), Color.Red);
 
@@ -795,11 +859,52 @@ namespace CatapultGame
 				new Vector2(0, font.LineSpacing / 2), fontScale, SpriteEffects.None, 0);
 		}
 
+		bool ExitButtonPressed(InputState input)
+		{
+			if (input.MouseGesture.HasFlag(MouseGestureType.LeftClick) &&
+				exitButton.Contains(new Point((int)input.CurrentMousePosition.X, (int)input.CurrentMousePosition.Y)))
+				return true;
+
+			foreach (GestureSample gestureSample in input.Gestures)
+			{
+				if (gestureSample.GestureType == GestureType.Tap &&
+					exitButton.Contains(new Point((int)gestureSample.Position.X, (int)gestureSample.Position.Y)))
+					return true;
+			}
+			return false;
+		}
+
+		void DrawExitButton()
+		{
+			if (buttonPixel == null || gameOver)
+				return;
+
+			SpriteBatch spriteBatch = ScreenManager.SpriteBatch;
+			spriteBatch.Draw(buttonPixel, exitButton, Color.Black * 0.55f);
+
+			// Outline
+			Color edge = Color.White * 0.8f;
+			spriteBatch.Draw(buttonPixel, new Rectangle(exitButton.X, exitButton.Y, exitButton.Width, 2), edge);
+			spriteBatch.Draw(buttonPixel, new Rectangle(exitButton.X, exitButton.Bottom - 2, exitButton.Width, 2), edge);
+			spriteBatch.Draw(buttonPixel, new Rectangle(exitButton.X, exitButton.Y, 2, exitButton.Height), edge);
+			spriteBatch.Draw(buttonPixel, new Rectangle(exitButton.Right - 2, exitButton.Y, 2, exitButton.Height), edge);
+
+			Vector2 size = hudFont.MeasureString("X");
+			spriteBatch.DrawString(hudFont, "X", new Vector2(
+				exitButton.Center.X - size.X / 2f, exitButton.Center.Y - size.Y / 2f), Color.White);
+		}
+
 		/// <summary>
 		/// Finish the current game
 		/// </summary>
 		private void FinishCurrentGame()
 		{
+			// A LAN game was started through the loading screen, which cleared the menus
+			// away, so there is nothing underneath to return to: end the session and
+			// rebuild the main menu instead.
+			if (NetworkSession != null && NetworkSessionComponent.EndSession(ScreenManager))
+				return;
+
 			ExitScreen();
 		}
 

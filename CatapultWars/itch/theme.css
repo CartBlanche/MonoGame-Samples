@@ -1,0 +1,38 @@
+/* itch.io custom CSS for Catapult Wars. Colours come from the title screen: dusk purples and a warm orange. */
+:root {
+  --bg: #1a1830;
+  --panel: #2a2745;
+  --text: #ece9f7;
+  --accent: #ff9d1c;
+}
+
+body, .page_widget, .inner_column {
+  background: var(--bg) !important;
+  color: var(--text) !important;
+}
+
+.header_widget h1, .game_title, .formatted h1, .formatted h2 {
+  color: var(--accent) !important;
+  font-family: "Impact", "Arial Black", sans-serif;
+  letter-spacing: .02em;
+}
+
+.formatted a, a { color: var(--accent) !important; }
+
+.formatted hr { border-color: #433f6b; }
+
+.formatted code {
+  background: var(--panel);
+  color: var(--accent);
+  padding: .1em .4em;
+  border-radius: 4px;
+}
+
+.buy_row .download_btn, .button.buy_btn, .game_download_btn {
+  background: var(--accent) !important;
+  color: #1a1830 !important;
+  font-weight: 700;
+  border-radius: 6px;
+}
+
+.formatted ul li, .formatted ol li { margin-bottom: .4em; }

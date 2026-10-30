@@ -390,6 +390,23 @@ namespace CatapultGame
 
 
 		/// <summary>
+		/// Leaves the session without asking, for when a game has finished. Disposes the
+		/// session and returns to the main menu. Returns false if there is no session to leave.
+		/// </summary>
+		public static bool EndSession (ScreenManager screenManager)
+		{
+			NetworkSessionComponent self = FindSessionComponent (screenManager.Game);
+
+			if (self == null)
+				return false;
+
+			self.sessionEndMessage = null;
+			self.LeaveSession ();
+			return true;
+		}
+
+
+		/// <summary>
 		/// Internal method for leaving the network session. This disposes the 
 		/// session, removes the NetworkSessionComponent, and returns the user
 		/// to the main menu screen.

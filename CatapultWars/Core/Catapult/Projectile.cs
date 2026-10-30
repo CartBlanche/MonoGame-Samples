@@ -71,7 +71,20 @@ namespace CatapultGame
         /// </summary>
         public Vector2 ProjectileHitPosition { get; private set; }
 
+        /// <summary>
+        /// Where the projectile was, and how fast and which way it was moving, when it hit the ground.
+        /// </summary>
+        public Vector2 ImpactPosition { get; private set; }
+        public float ImpactSpeed { get; private set; }
+        public int ImpactDirection { get; private set; }
+
         Texture2D projectileTexture;
+        /// <summary>
+        /// Radius of the hit test. Always sized from the standard rock texture so a
+        /// themed projectile never changes the hit area.
+        /// </summary>
+        public float HitRadius { get; private set; }
+
         public Texture2D ProjectileTexture
         {
             get
@@ -108,6 +121,10 @@ namespace CatapultGame
         {
             // Load a projectile texture
             projectileTexture = curGame.Content.Load<Texture2D>(textureName);
+            HitRadius = Math.Max(projectileTexture.Width / 2, projectileTexture.Height / 2);
+
+            if (Theme.IsHalloween)
+                projectileTexture = HalloweenArt.Get(curGame.GraphicsDevice).Pumpkin;
         }
 
         public override void Draw(GameTime gameTime)
@@ -155,6 +172,13 @@ namespace CatapultGame
                 projectilePosition.Y = previousYPosition;
 
                 ProjectileHitPosition = new Vector2(previousXPosition, 332);
+
+                // Velocity now: the wind adds to the horizontal speed, gravity pulls the vertical one down.
+                float vx = direction * projectileVelocity.X + 8 * wind * flightTime;
+                float vy = projectileVelocity.Y - gravity * flightTime;
+                ImpactPosition = projectilePosition;
+                ImpactSpeed = (float)Math.Sqrt(vx * vx + vy * vy);
+                ImpactDirection = vx < 0 ? -1 : 1;
 
                 groundHit = true;
             }

@@ -11,6 +11,7 @@ using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Net;
+using Microsoft.Xna.Framework.Input.Touch;
 
 
 namespace CatapultGame
@@ -30,12 +31,20 @@ namespace CatapultGame
 		Texture2D isTalkingTexture;
 		Texture2D voiceMutedTexture;
 
+		// The points-to-win row. The host changes it; the other player is sent it.
+		const int LobbySettingsMessage = 100;
+		const float SettingsResendSeconds = .5f;
+		static readonly Vector2 winScorePosition = new Vector2(50, 400);
+		float settingsResendTimer;
+
 		/// <summary>
 		/// Constructs a new lobby screen.
 		/// </summary>
 		public LobbyScreen(NetworkSession networkSession)
 		{
 			this.networkSession = networkSession;
+			MatchSettings.WinScore = MatchSettings.DefaultWinScore;
+			EnabledGestures = GestureType.Tap;
 
 			TransitionOnTime = TimeSpan.FromSeconds(0.5);
 			TransitionOffTime = TimeSpan.FromSeconds(0.5);
@@ -63,6 +72,9 @@ namespace CatapultGame
 		{
 			base.Update(gameTime, otherScreenHasFocus, coveredByOtherScreen);
 
+			if (!IsExiting && networkSession.SessionState == NetworkSessionState.Lobby)
+				SyncMatchSettings((float)gameTime.ElapsedGameTime.TotalSeconds);
+
 			if (!IsExiting)
 			{
 				if (networkSession.SessionState == NetworkSessionState.Playing)
@@ -74,7 +86,7 @@ namespace CatapultGame
 					LoadingScreen.Load(ScreenManager, true, null,
 					new GameplayScreen());
 				}
-				else if (networkSession.IsHost && networkSession.IsEveryoneReady)
+				else if (networkSession.IsHost && networkSession.IsEveryoneReady && networkSession.RemoteGamers.Count > 0)
 				{
 					// The host checks whether everyone has marked themselves
 					// as ready, and starts the game in response.
@@ -91,6 +103,12 @@ namespace CatapultGame
 		/// </summary>
 		public override void HandleInput(InputState input)
 		{
+			if (networkSession.IsHost && WinScoreChangeRequested(input))
+			{
+				MatchSettings.WinScore = MatchSettings.NextWinScore(MatchSettings.WinScore);
+				settingsResendTimer = 0f;
+			}
+
 			foreach (LocalNetworkGamer gamer in networkSession.LocalGamers)
 			{
 				PlayerIndex playerIndex = (PlayerIndex)gamer.SignedInGamer.PlayerIndex;
@@ -109,6 +127,81 @@ namespace CatapultGame
 		}
 
 		/// <summary>
+		/// Host sends the points-to-win to everyone; everyone else reads it.
+		/// </summary>
+		void SyncMatchSettings(float elapsed)
+		{
+			if (networkSession.IsHost)
+			{
+				settingsResendTimer -= elapsed;
+				if (settingsResendTimer > 0f || networkSession.LocalGamers.Count == 0)
+					return;
+
+				settingsResendTimer = SettingsResendSeconds;
+				using (var writer = new PacketWriter())
+				{
+					writer.Write(LobbySettingsMessage);
+					writer.Write(MatchSettings.WinScore);
+					networkSession.LocalGamers[0].SendData(writer, SendDataOptions.ReliableInOrder);
+				}
+				return;
+			}
+
+			PacketReader reader = new PacketReader();
+			foreach (LocalNetworkGamer gamer in networkSession.LocalGamers)
+			{
+				while (gamer.IsDataAvailable)
+				{
+					NetworkGamer sender;
+					gamer.ReceiveData(reader, out sender);
+					if (sender.IsLocal)
+						continue;
+
+					if (reader.ReadInt32() == LobbySettingsMessage)
+						MatchSettings.WinScore = reader.ReadInt32();
+				}
+			}
+		}
+
+		Rectangle WinScoreBounds()
+		{
+			Vector2 size = ScreenManager.Font.MeasureString(WinScoreText());
+			return new Rectangle((int)winScorePosition.X - 10, (int)winScorePosition.Y - 8,
+				(int)size.X + 20, (int)size.Y + 16);
+		}
+
+		string WinScoreText()
+		{
+			return networkSession.IsHost
+				? "Points to win:  < " + MatchSettings.WinScore + " >"
+				: "Points to win:  " + MatchSettings.WinScore;
+		}
+
+		/// <summary>
+		/// A tap or click on the row, or an arrow key, steps the host through 5, 10 and 15.
+		/// </summary>
+		bool WinScoreChangeRequested(InputState input)
+		{
+			PlayerIndex ignored;
+			if (input.IsNewKeyPress(Keys.Left, null, out ignored) || input.IsNewKeyPress(Keys.Right, null, out ignored) ||
+				input.IsNewKeyPress(Keys.Up, null, out ignored) || input.IsNewKeyPress(Keys.Down, null, out ignored))
+				return true;
+
+			Rectangle bounds = WinScoreBounds();
+			if (input.MouseGesture.HasFlag(MouseGestureType.LeftClick) &&
+				bounds.Contains(new Point((int)input.CurrentMousePosition.X, (int)input.CurrentMousePosition.Y)))
+				return true;
+
+			foreach (GestureSample gesture in input.Gestures)
+			{
+				if (gesture.GestureType == GestureType.Tap &&
+					bounds.Contains(new Point((int)gesture.Position.X, (int)gesture.Position.Y)))
+					return true;
+			}
+			return false;
+		}
+
+		/// <summary>
 		/// Handle MenuSelect inputs by marking ourselves as ready.
 		/// </summary>
 		void HandleMenuSelect(LocalNetworkGamer localGamer)
@@ -117,7 +210,7 @@ namespace CatapultGame
 			{
 				localGamer.IsReady = true;
 			}
-			else if (localGamer.IsHost)
+			else if (localGamer.IsHost && networkSession.RemoteGamers.Count > 0)
 			{
 				// The host has an option to force starting the game, even if not
 				// everyone has marked themselves ready. If they press select twice
@@ -198,6 +291,26 @@ namespace CatapultGame
 				}
 				else
 					position.Y += ScreenManager.Font.LineSpacing;
+			}
+
+			// Starting alone just drops the host back to the menu, so say what we are waiting for.
+			if (networkSession.IsHost && networkSession.RemoteGamers.Count == 0)
+			{
+				spriteBatch.DrawString(font, "Waiting for another player to join...",
+					new Vector2(position.X + 34 * 2, position.Y + font.LineSpacing / 2f),
+					Color.Gray * TransitionAlpha, 0f, Vector2.Zero, .8f, SpriteEffects.None, 0f);
+			}
+
+			// Draw the points to win, which the host can change.
+			Vector2 rowPosition = winScorePosition;
+			rowPosition.X += position.X - 50 - (gamerCount >= 8 ? 433 : 0);
+			spriteBatch.DrawString(font, WinScoreText(), rowPosition,
+				(networkSession.IsHost ? Color.Orange : Color.White) * TransitionAlpha);
+			if (networkSession.IsHost)
+			{
+				spriteBatch.DrawString(font, "Tap, click or press an arrow key to change",
+					rowPosition + new Vector2(0, font.LineSpacing), Color.Gray * TransitionAlpha, 0f,
+					Vector2.Zero, .6f, SpriteEffects.None, 0f);
 			}
 
 			// Draw the screen title.

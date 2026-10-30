@@ -55,6 +55,7 @@ namespace CatapultGame
 
         Texture2D idleTexture;
         Dictionary<string, Animation> animations;
+        ImpactDust impactDust;
 
         SpriteEffects spriteEffects;
 
@@ -130,8 +131,6 @@ namespace CatapultGame
         /// </summary>
         public bool GameOver { get; set; }
 
-        const int winScore = 5;
-
         public Catapult(Game game)
             : base(game)
         {
@@ -161,6 +160,7 @@ namespace CatapultGame
             // Define initial state of the catapult
             IsActive = true;
             AnimationRunning = false;
+            impactDust = new ImpactDust(curGame.GraphicsDevice);
             currentState = CatapultState.Idle;
             stallUpdateCycles = 0;
 			
@@ -261,6 +261,8 @@ namespace CatapultGame
                 return;
             }
                 
+            impactDust.Update((float)gameTime.ElapsedGameTime.TotalSeconds);
+
             switch (currentState)
             {
                 case CatapultState.Idle:
@@ -334,7 +336,7 @@ namespace CatapultGame
                     {
                         // Start hit sequence
                         postUpdateStateChange = CatapultState.ProjectileHit;
-                        animations["fireMiss"].PlayFromFrameIndex(0);
+                        StartImpact();
                     }
                     break;
                 case CatapultState.ProjectileFlying:
@@ -345,7 +347,7 @@ namespace CatapultGame
                     {
                         // Start hit sequence
                         postUpdateStateChange = CatapultState.ProjectileHit;
-                        animations["fireMiss"].PlayFromFrameIndex(0);
+                        StartImpact();
                     }
 
                     break;
@@ -363,12 +365,10 @@ namespace CatapultGame
                         }
 
                         // Hit animation finished playing
-                        if (animations["fireMiss"].IsActive == false)
+                        if (!impactDust.IsActive)
                         {
                             postUpdateStateChange = CatapultState.Reset;
                         }
-
-                        animations["fireMiss"].Update();
                     }
                     else
                     {
@@ -385,7 +385,7 @@ namespace CatapultGame
                     if ((animations["Destroyed"].IsActive == false) &&
                         (animations["hitSmoke"].IsActive == false))
                     {
-                        if (enemy.Score >= winScore)
+                        if (enemy.Score >= MatchSettings.WinScore)
                         {
                             GameOver = true;
                             break;
@@ -477,9 +477,6 @@ namespace CatapultGame
                     // Draw the catapult
                     DrawIdleCatapult();
 
-                    // Projectile Hit animation
-                    animations["fireMiss"].Draw(spriteBatch,
-                        projectile.ProjectileHitPosition, spriteEffects);
                     break;
                 case CatapultState.Hit:
                     // Catapult hit animation
@@ -497,6 +494,8 @@ namespace CatapultGame
                     break;
             }
 
+            impactDust.Draw(spriteBatch);
+
             base.Draw(gameTime);
         }
 
@@ -509,6 +508,11 @@ namespace CatapultGame
             animations["Destroyed"].PlayFromFrameIndex(0);
             animations["hitSmoke"].PlayFromFrameIndex(0);
             currentState = CatapultState.Hit;
+        }
+
+        void StartImpact()
+        {
+            impactDust.Burst(projectile.ImpactPosition, projectile.ImpactSpeed, projectile.ImpactDirection);
         }
 
         public void Fire(float velocity)
@@ -526,9 +530,7 @@ namespace CatapultGame
             bool bRes = false;
             // Build a sphere around a projectile
             Vector3 center = new Vector3(projectile.ProjectilePosition, 0);
-            BoundingSphere sphere = new BoundingSphere(center,
-                Math.Max(projectile.ProjectileTexture.Width / 2,
-                projectile.ProjectileTexture.Height / 2));
+            BoundingSphere sphere = new BoundingSphere(center, projectile.HitRadius);
 
             // Check Self-Hit - create a bounding box around self
             Vector3 min = new Vector3(catapultPosition, 0);
