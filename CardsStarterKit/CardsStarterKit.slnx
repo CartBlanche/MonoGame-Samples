@@ -3,6 +3,9 @@
   <!-- Shared libraries -->
   <Project Path="1-Framework/Cards.Framework.csproj" />
   <Project Path="2-Core/Cards.Framework.Core.csproj" />
+  <Folder Name="/Tests/">
+    <Project Path="Tests/Cards.Framework.Tests/Cards.Framework.Tests.csproj" />
+  </Folder>
   <Folder Name="/Blank/Android/">
     <Project Path="3-Games/Blank/Android/Blank.csproj">
       <Deploy />

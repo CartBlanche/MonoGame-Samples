@@ -9,6 +9,7 @@ using System;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input.Touch;
 
 namespace CatapultGame
 {
@@ -51,6 +52,7 @@ namespace CatapultGame
                 this.message = message;
 
             IsPopup = true;
+            EnabledGestures = GestureType.Tap;
 
             TransitionOnTime = TimeSpan.FromSeconds(0.2);
             TransitionOffTime = TimeSpan.FromSeconds(0.2);
@@ -86,7 +88,18 @@ namespace CatapultGame
             // controlling player, the InputState helper returns to us which player
             // actually provided the input. We pass that through to our Accepted and
             // Cancelled events, so they can tell which player triggered them.
-            if (input.IsMenuSelect(ControllingPlayer, out playerIndex))
+            // A tap or click inside the box accepts it, and outside cancels, for phones with no keys.
+            bool? pointerAccepts = null;
+            Rectangle box = BoxRectangle();
+            if (input.MouseGesture.HasFlag(MouseGestureType.LeftClick))
+                pointerAccepts = box.Contains(new Point((int)input.CurrentMousePosition.X, (int)input.CurrentMousePosition.Y));
+            foreach (GestureSample gesture in input.Gestures)
+            {
+                if (gesture.GestureType == GestureType.Tap)
+                    pointerAccepts = box.Contains(new Point((int)gesture.Position.X, (int)gesture.Position.Y));
+            }
+
+            if (input.IsMenuSelect(ControllingPlayer, out playerIndex) || pointerAccepts == true)
             {
                 // Raise the accepted event, then exit the message box.
                 if (Accepted != null)
@@ -94,7 +107,7 @@ namespace CatapultGame
 
                 ExitScreen();
             }
-            else if (input.IsMenuCancel(ControllingPlayer, out playerIndex))
+            else if (input.IsMenuCancel(ControllingPlayer, out playerIndex) || pointerAccepts == false)
             {
                 // Raise the cancelled event, then exit the message box.
                 if (Cancelled != null)
@@ -108,6 +121,25 @@ namespace CatapultGame
 
 
 
+        // The message text is centred in the viewport.
+        Vector2 TextPosition()
+        {
+            Vector2 viewportSize = new Vector2(ScreenManager.BASE_BUFFER_WIDTH, ScreenManager.BASE_BUFFER_HEIGHT);
+            return (viewportSize - ScreenManager.Font.MeasureString(message)) / 2;
+        }
+
+        // The background includes a border somewhat larger than the text itself.
+        Rectangle BoxRectangle()
+        {
+            const int hPad = 32;
+            const int vPad = 16;
+
+            Vector2 textPosition = TextPosition();
+            Vector2 textSize = ScreenManager.Font.MeasureString(message);
+            return new Rectangle((int)textPosition.X - hPad, (int)textPosition.Y - vPad,
+                                 (int)textSize.X + hPad * 2, (int)textSize.Y + vPad * 2);
+        }
+
         /// <summary>
         /// Draws the message box.
         /// </summary>
@@ -119,19 +151,8 @@ namespace CatapultGame
             // Darken down any other screens that were drawn beneath the popup.
             ScreenManager.FadeBackBufferToBlack(TransitionAlpha * 2 / 3);
 
-            // Center the message text in the viewport.
-            Vector2 viewportSize = new Vector2(ScreenManager.BASE_BUFFER_WIDTH, ScreenManager.BASE_BUFFER_HEIGHT);
-            Vector2 textSize = font.MeasureString(message);
-            Vector2 textPosition = (viewportSize - textSize) / 2;
-
-            // The background includes a border somewhat larger than the text itself.
-            const int hPad = 32;
-            const int vPad = 16;
-
-            Rectangle backgroundRectangle = new Rectangle((int)textPosition.X - hPad,
-                                                          (int)textPosition.Y - vPad,
-                                                          (int)textSize.X + hPad * 2,
-                                                          (int)textSize.Y + vPad * 2);
+            Vector2 textPosition = TextPosition();
+            Rectangle backgroundRectangle = BoxRectangle();
 
             // Fade the popup alpha during transitions.
             Color color = Color.White * TransitionAlpha;

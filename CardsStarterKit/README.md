@@ -29,3 +29,11 @@ You can then modify the **GameplayScreen.Initialize** method to call your custom
 
 ---
 
+## Pointer and gestures
+
+`InputState` also gives every game one pointer that works the same on desktop and touch, and the gestures a card game needs. It is additive: everything that was in `InputState` still works.
+
+- **One pointer.** `PointerPosition`, `PointerDown`, `PointerPressed` and `PointerReleased` (with `PointerPressPosition`, `PointerReleasePosition` and `PointerSource`) combine the left mouse button and the primary touch, in the game's base-resolution space. The primary touch is the first finger down, followed by its id so a second finger cannot take over, and the position follows a finger as it moves (the older `CurrentCursorLocation` only updates when a finger lands).
+- **Gestures.** `PointerGestureEvents` lists what happened this frame, in order: `Click`, `DoubleClick`, `DragStart`, `DragMove`, `DragEnd`, `DragCancel`, `LongPress`. A press that moves past the drag threshold is a drag and never a click; a press held still is a long-press and never a click; a double-click is two clicks close in time and place. Thresholds are in `PointerGestures.Options` (a finger gets a larger drag threshold and double-click radius than a mouse).
+- **Cancelling.** Call `CancelPointerGesture(gameTime)` when something should abandon a drag in progress, such as a dialog opening or the window losing focus.
+- **Tests.** The recognizer (`PointerGestureRecognizer`) and the device merge (`PointerTracker`) are plain classes with no device access, tested in `Tests/Cards.Framework.Tests` with scripted sequences on a fake clock. Run `dotnet test Tests/Cards.Framework.Tests`.

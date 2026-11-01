@@ -34,7 +34,15 @@ namespace CatapultGame
 		// The points-to-win row. The host changes it; the other player is sent it.
 		const int LobbySettingsMessage = 100;
 		const float SettingsResendSeconds = .5f;
-		static readonly Vector2 winScorePosition = new Vector2(50, 400);
+		static readonly Vector2 winScorePosition = new Vector2(470, 335);
+
+		// Players are listed low on the screen, below the castle in the background art.
+		const float GamerListTop = 135f;
+
+		// On-screen buttons, so phones can ready up and leave without a keyboard.
+		static readonly Rectangle readyButton = new Rectangle(470, 412, 150, 52);
+		static readonly Rectangle leaveButton = new Rectangle(630, 412, 150, 52);
+		Texture2D buttonPixel;
 		float settingsResendTimer;
 
 		/// <summary>
@@ -62,6 +70,9 @@ namespace CatapultGame
 			hasVoiceTexture = content.Load<Texture2D>("chat_able");
 			isTalkingTexture = content.Load<Texture2D>("chat_talking");
 			voiceMutedTexture = content.Load<Texture2D>("chat_mute");
+
+			buttonPixel = new Texture2D(ScreenManager.GraphicsDevice, 1, 1);
+			buttonPixel.SetData(new[] { Color.White });
 		}
 
 		/// <summary>
@@ -103,6 +114,19 @@ namespace CatapultGame
 		/// </summary>
 		public override void HandleInput(InputState input)
 		{
+			if (Tapped(input, leaveButton))
+			{
+				NetworkSessionComponent.LeaveSession(ScreenManager, PlayerIndex.One);
+				return;
+			}
+
+			if (Tapped(input, readyButton))
+			{
+				foreach (LocalNetworkGamer gamer in networkSession.LocalGamers)
+					gamer.IsReady = !LocalReady();
+				return;
+			}
+
 			if (networkSession.IsHost && WinScoreChangeRequested(input))
 			{
 				MatchSettings.WinScore = MatchSettings.NextWinScore(MatchSettings.WinScore);
@@ -187,7 +211,14 @@ namespace CatapultGame
 				input.IsNewKeyPress(Keys.Up, null, out ignored) || input.IsNewKeyPress(Keys.Down, null, out ignored))
 				return true;
 
-			Rectangle bounds = WinScoreBounds();
+			return Tapped(input, WinScoreBounds());
+		}
+
+		/// <summary>
+		/// True when a tap or mouse click landed inside the rectangle.
+		/// </summary>
+		static bool Tapped(InputState input, Rectangle bounds)
+		{
 			if (input.MouseGesture.HasFlag(MouseGestureType.LeftClick) &&
 				bounds.Contains(new Point((int)input.CurrentMousePosition.X, (int)input.CurrentMousePosition.Y)))
 				return true;
@@ -199,6 +230,26 @@ namespace CatapultGame
 					return true;
 			}
 			return false;
+		}
+
+		bool LocalReady()
+		{
+			return networkSession.LocalGamers.Count > 0 && networkSession.LocalGamers[0].IsReady;
+		}
+
+		void DrawButton(SpriteBatch spriteBatch, SpriteFont font, Rectangle bounds, string text, Color accent, float offsetX)
+		{
+			bounds.X += (int)offsetX;
+			spriteBatch.Draw(buttonPixel, bounds, Color.Black * (.6f * TransitionAlpha));
+
+			Color edge = accent * TransitionAlpha;
+			spriteBatch.Draw(buttonPixel, new Rectangle(bounds.X, bounds.Y, bounds.Width, 2), edge);
+			spriteBatch.Draw(buttonPixel, new Rectangle(bounds.X, bounds.Bottom - 2, bounds.Width, 2), edge);
+			spriteBatch.Draw(buttonPixel, new Rectangle(bounds.X, bounds.Y, 2, bounds.Height), edge);
+			spriteBatch.Draw(buttonPixel, new Rectangle(bounds.Right - 2, bounds.Y, 2, bounds.Height), edge);
+
+			Vector2 size = font.MeasureString(text);
+			spriteBatch.DrawString(font, text, new Vector2(bounds.Center.X - size.X / 2f, bounds.Center.Y - size.Y / 2f), edge);
 		}
 
 		/// <summary>
@@ -263,7 +314,7 @@ namespace CatapultGame
 			SpriteBatch spriteBatch = ScreenManager.SpriteBatch;
 			SpriteFont font = ScreenManager.Font;
 
-			Vector2 position = new Vector2(50, 100);
+			Vector2 position = new Vector2(50, GamerListTop);
 
 			// Make the lobby slide into place during transitions.
 			float transitionOffset = (float)Math.Pow(TransitionPosition, 2);
@@ -272,6 +323,9 @@ namespace CatapultGame
 				position.X -= transitionOffset * 256;
 			else
 				position.X += transitionOffset * 512;
+
+			// How far the slide-in transition has pushed everything sideways.
+			float shiftX = position.X - 50;
 
 			spriteBatch.Begin(SpriteSortMode.Deferred, null, null, null, null, null, ScreenManager.GlobalTransformation);
 
@@ -303,15 +357,19 @@ namespace CatapultGame
 
 			// Draw the points to win, which the host can change.
 			Vector2 rowPosition = winScorePosition;
-			rowPosition.X += position.X - 50 - (gamerCount >= 8 ? 433 : 0);
+			rowPosition.X += shiftX;
 			spriteBatch.DrawString(font, WinScoreText(), rowPosition,
 				(networkSession.IsHost ? Color.Orange : Color.White) * TransitionAlpha);
 			if (networkSession.IsHost)
 			{
-				spriteBatch.DrawString(font, "Tap, click or press an arrow key to change",
+				spriteBatch.DrawString(font, "Tap or click to change",
 					rowPosition + new Vector2(0, font.LineSpacing), Color.Gray * TransitionAlpha, 0f,
 					Vector2.Zero, .6f, SpriteEffects.None, 0f);
 			}
+
+			DrawButton(spriteBatch, font, readyButton, LocalReady() ? "Not Ready" : "Ready",
+				LocalReady() ? Color.Orange : Color.Lime, shiftX);
+			DrawButton(spriteBatch, font, leaveButton, "Leave", Color.White, shiftX);
 
 			// Draw the screen title.
 			string title = Resources.Lobby;

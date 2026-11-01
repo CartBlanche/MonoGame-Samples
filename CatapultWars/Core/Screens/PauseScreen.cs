@@ -99,6 +99,13 @@ namespace CatapultGame
         {
             // Tear down our network session
             NetworkSession session = ScreenManager.Game.Services.GetService(typeof(NetworkSession)) as NetworkSession;
+            if (session != null && NetworkSessionComponent.EndSession(ScreenManager))
+            {
+                // The session component rebuilds the menus from scratch, as when a LAN game ends.
+                AudioManager.StopSounds();
+                return;
+            }
+
             if (session != null)
             {
                 if (session.AllGamers.Count == 1)

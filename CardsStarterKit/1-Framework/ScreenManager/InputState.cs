@@ -74,6 +74,53 @@ namespace CardsFramework
         /// </summary>
         public bool IsMouseWheelScrolledUp => isMouseWheelScrolledUp;
 
+        // ── Unified pointer and gestures ─────────────────────────────────
+        // One pointer from the mouse and the primary touch, plus the gestures recognized from it
+        // (click, double-click, drag, long-press). Additive: nothing above changes. Positions are in game
+        // (base resolution) space, like CurrentCursorLocation, but unlike it the pointer follows a finger
+        // while it moves, which a drag needs.
+
+        private readonly PointerTracker pointerTracker = new PointerTracker();
+        private readonly List<TouchSample> touchSamples = new List<TouchSample>();
+
+        /// <summary>The recognizer behind <see cref="PointerGestureEvents"/>; its <see cref="PointerGestureRecognizer.Options"/> hold the thresholds.</summary>
+        public readonly PointerGestureRecognizer PointerGestures = new PointerGestureRecognizer();
+
+        /// <summary>Where the pointer is: the primary touch while a finger is down, otherwise the mouse (every frame, so hover works).</summary>
+        public Vector2 PointerPosition => pointerTracker.Position;
+
+        /// <summary>True while the primary touch or the left mouse button is held.</summary>
+        public bool PointerDown => pointerTracker.Down;
+
+        /// <summary>True only on the frame the pointer goes down.</summary>
+        public bool PointerPressed => pointerTracker.Pressed;
+
+        /// <summary>True only on the frame the pointer comes up.</summary>
+        public bool PointerReleased => pointerTracker.Released;
+
+        /// <summary>Where the pointer was when it last went down.</summary>
+        public Vector2 PointerPressPosition => pointerTracker.PressPosition;
+
+        /// <summary>Where the pointer was when it last came up.</summary>
+        public Vector2 PointerReleasePosition => pointerTracker.ReleasePosition;
+
+        /// <summary>The device behind the pointer this frame (mouse or touch).</summary>
+        public PointerSource PointerSource => pointerTracker.Source;
+
+        /// <summary>The click, double-click, drag and long-press events of this frame, in order.</summary>
+        public IReadOnlyList<PointerGesture> PointerGestureEvents => PointerGestures.Events;
+
+        /// <summary>
+        /// Abandons a drag or press in progress (a dialog opened over it, the window lost focus). A drag reports a
+        /// <see cref="PointerGestureKind.DragCancel"/> event, readable in <see cref="PointerGestureEvents"/> until the next update.
+        /// </summary>
+        public void CancelPointerGesture(GameTime gameTime) => PointerGestures.Cancel(gameTime.TotalGameTime, pointerTracker.Position);
+
+        private TimeSpan lastPointerTime;
+
+        /// <summary>The same, for code that is not handed a <see cref="GameTime"/> (an input handler): it uses the time of the last update.</summary>
+        public void CancelPointerGesture() => PointerGestures.Cancel(lastPointerTime, pointerTracker.Position);
+
         /// <summary>
         /// Constructs a new input state.
         /// </summary>
@@ -236,6 +283,28 @@ namespace CardsFramework
             // Keep cursor within bounds
             currentCursorLocation.X = MathHelper.Clamp(currentCursorLocation.X, 0f, baseBufferWidth);
             currentCursorLocation.Y = MathHelper.Clamp(currentCursorLocation.Y, 0f, baseBufferHeight);
+
+            UpdatePointer(gameTime);
+        }
+
+        /// <summary>
+        /// Builds the unified pointer from the mouse and the touch panel (both moved into game space), then runs the
+        /// gesture recognizer on it. Reads only the device states already captured above.
+        /// </summary>
+        private void UpdatePointer(GameTime gameTime)
+        {
+            touchSamples.Clear();
+            foreach (TouchLocation location in CurrentTouchState)
+                touchSamples.Add(new TouchSample(location.Id, TransformCursorLocation(location.Position), location.State));
+
+            Vector2? mousePosition = UIUtility.IsDesktop
+                ? TransformCursorLocation(new Vector2(CurrentMouseState.X, CurrentMouseState.Y))
+                : (Vector2?)null;
+
+            lastPointerTime = gameTime.TotalGameTime;
+            pointerTracker.Update(mousePosition, CurrentMouseState.LeftButton == ButtonState.Pressed, touchSamples);
+            PointerGestures.Update(gameTime.TotalGameTime, pointerTracker.Position, pointerTracker.Down,
+                                   pointerTracker.Pressed, pointerTracker.Released, pointerTracker.Source);
         }
 
         /// <summary>
