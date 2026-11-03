@@ -1,0 +1,21 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Android",
+            "type": "mono",
+            "request": "attach",
+            "address": "localhost",
+            "port": 10000,
+            "preLaunchTask": "Debug Android Build"
+        },
+        {
+            "name": "Desktop",
+            "type": "coreclr",
+            "request": "launch",
+            "preLaunchTask": "Debug Desktop Build",
+            "program": "${workspaceFolder}/Platforms/Desktop/bin/Debug/net10.0/Gorillas",
+            "cwd": "${workspaceFolder}/Platforms/Desktop/bin/Debug/net10.0"
+        }
+    ]
+}
