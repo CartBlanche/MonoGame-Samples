@@ -5,6 +5,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.GamerServices;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using Microsoft.Xna.Framework.Net;
 
 using Tile_Engine;
 
@@ -39,6 +40,14 @@ namespace Gorillas
 
 		public Engine ()
 		{
+			// Keeps this game from listing, or joining, sessions of the other games on the network.
+			// Must be the same text in every build (desktop and Android) so they can play each other.
+			NetworkSession.GameId = "Gorillas";
+
+			// The Net library's own log (discovery, joins, timeouts, removals) goes to NetLog, which
+			// writes Gorillas-net.log in the temp folder: a packaged game has no console.
+			NetworkLogging.Logger = new NetLogger ();
+
 			graphics = new GraphicsDeviceManager (this);
 			Content.RootDirectory = "Content";
 			

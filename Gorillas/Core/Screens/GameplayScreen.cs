@@ -38,7 +38,6 @@ namespace Gorillas
 		// Networking
 		NetworkSession networkSession;
 		PacketReader packetReader = new PacketReader();
-		PacketWriter packetWriter = new PacketWriter();
 		
 		enum MessageType : byte
 		{
@@ -606,6 +605,9 @@ namespace Gorillas
 			if (networkSession == null || !networkSession.IsHost)
 				return;
 			
+			// A fresh writer per packet: SendData only rewinds the writer, it does not shrink it, so a
+			// reused writer would send the tail of the previous (longer) packet along with this one.
+			PacketWriter packetWriter = new PacketWriter();
 			packetWriter.Write((int)MessageType.NewGame);
 			cityScape.WriteScene(packetWriter);
 			
@@ -624,6 +626,7 @@ namespace Gorillas
 			if (networkSession == null || banana.BeingThrown)
 				return;
 			
+			PacketWriter packetWriter = new PacketWriter();   // fresh per packet, see SendNewGame
 			packetWriter.Write((int)MessageType.ThrowBanana);
 			packetWriter.Write(angle);
 			packetWriter.Write(velocity);

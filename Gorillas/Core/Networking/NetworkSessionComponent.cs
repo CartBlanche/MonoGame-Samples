@@ -141,6 +141,7 @@ namespace Gorillas
 			} catch (Exception exception) {
 				// Handle any errors from the network session update.
 				Debug.WriteLine ("NetworkSession.Update threw " + exception);
+				NetLog.Write ("NetworkSession.Update threw " + exception);
 
 				sessionEndMessage = Resources.ErrorNetwork;
 
@@ -160,6 +161,7 @@ namespace Gorillas
 		/// </summary>
 		void GamerJoined (object sender, GamerJoinedEventArgs e)
 		{
+			NetLog.Write ("Gamer joined: " + e.Gamer.Gamertag);
 			if (notifyWhenPlayersJoinOrLeave) {
 				messageDisplay.ShowMessage (Resources.MessageGamerJoined, 
 					e.Gamer.Gamertag);
@@ -173,6 +175,7 @@ namespace Gorillas
 		/// </summary>
 		void GamerLeft (object sender, GamerLeftEventArgs e)
 		{
+			NetLog.Write ("Gamer left: " + e.Gamer.Gamertag);
 			if (notifyWhenPlayersJoinOrLeave) {
 				messageDisplay.ShowMessage (Resources.MessageGamerLeft, 
 					e.Gamer.Gamertag);
@@ -186,6 +189,7 @@ namespace Gorillas
 		/// </summary>
 		void NetworkSessionEnded (object sender, NetworkSessionEndedEventArgs e)
 		{
+			NetLog.Write ("Session ended: " + e.EndReason);
 			switch (e.EndReason) {
 			case NetworkSessionEndReason.ClientSignedOut:
 				sessionEndMessage = null;

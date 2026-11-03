@@ -40,6 +40,7 @@ namespace Gorillas
 		static string GetErrorMessage (Exception exception)
 		{
 			Debug.WriteLine ("Network operation threw " + exception);
+			NetLog.Write ("Network operation threw " + exception);
 
 			// Is this a GamerPrivilegeException?
 			if (exception is GamerPrivilegeException) {
