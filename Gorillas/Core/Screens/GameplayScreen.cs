@@ -153,7 +153,9 @@ namespace Gorillas
 			
 			gorilla2.Name = "Killa Gorilla";
 			if (networkSession == null || networkSession.AllGamers.Count < 2) {
-				if (OptionsMenuScreen.currentPlayerMode == 0) {
+				// the AI plays Player 2 when asked to, when a network host is alone in the session
+				// (it starts at once if nobody has joined), or when there is no second signed-in gamer
+				if (OptionsMenuScreen.currentPlayerMode == 0 || networkSession != null || SignedInGamer.SignedInGamers.Count < 2) {
 					gorilla2.IsAI = true;
 				}
 				else {
@@ -605,20 +607,18 @@ namespace Gorillas
 			if (networkSession == null || !networkSession.IsHost)
 				return;
 			
-			// A fresh writer per packet: SendData only rewinds the writer, it does not shrink it, so a
-			// reused writer would send the tail of the previous (longer) packet along with this one.
-			PacketWriter packetWriter = new PacketWriter();
-			packetWriter.Write((int)MessageType.NewGame);
-			cityScape.WriteScene(packetWriter);
-			
-			packetWriter.Write(gorilla1.Position);
-			packetWriter.Write(gorilla2.Position);
-			
-			// Update our locally controlled tanks, and send their
-			// latest position data to everyone in the session.
+			// SendData and SendToAll empty the writer once they have sent it, as in XNA, so each local
+			// gamer gets its own packet, written from scratch.
 			foreach (LocalNetworkGamer gamer in networkSession.LocalGamers) {
+				PacketWriter packetWriter = new PacketWriter();
+				packetWriter.Write((int)MessageType.NewGame);
+				cityScape.WriteScene(packetWriter);
+
+				packetWriter.Write(gorilla1.Position);
+				packetWriter.Write(gorilla2.Position);
+
 				gamer.SendData(packetWriter, SendDataOptions.ReliableInOrder);
-			}			
+			}
 		}
 		
 		internal void SendBananaThrown(float angle, float velocity)
@@ -626,16 +626,15 @@ namespace Gorillas
 			if (networkSession == null || banana.BeingThrown)
 				return;
 			
-			PacketWriter packetWriter = new PacketWriter();   // fresh per packet, see SendNewGame
-			packetWriter.Write((int)MessageType.ThrowBanana);
-			packetWriter.Write(angle);
-			packetWriter.Write(velocity);
-			
-			// Update our locally controlled tanks, and send their
-			// latest position data to everyone in the session.
+			// one packet per local gamer: the writer is emptied by SendData, see SendNewGame
 			foreach (LocalNetworkGamer gamer in networkSession.LocalGamers) {
+				PacketWriter packetWriter = new PacketWriter();
+				packetWriter.Write((int)MessageType.ThrowBanana);
+				packetWriter.Write(angle);
+				packetWriter.Write(velocity);
+
 				gamer.SendData(packetWriter, SendDataOptions.ReliableInOrder);
-			}			
+			}
 		}
 		
 		internal void ReadBananaThrown()
