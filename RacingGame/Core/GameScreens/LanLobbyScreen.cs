@@ -201,11 +201,14 @@ namespace RacingGame.GameScreens
             else if (lobby.IsHost && lobby.CanStart)
                 TextureFont.WriteTextCentered(centerX, y, "Everyone is ready. Start the race!", Color.LightGreen, 0.9f);
 
-            TextureFont.WriteTextCentered(centerX, BaseGame.Height - BaseGame.YToRes(30),
+            // Shared bottom buttons: Back = leave, Select = ready / not ready
+            if (BaseGame.UI.RenderBottomButtons(false))
+                toggleReady = true;
+            TextureFont.WriteTextCentered(centerX, BaseGame.Height - BaseGame.YToRes(45),
                 lobby.IsHost
-                    ? "Left/Right: track    Up/Down: laps    Enter: ready    Space: start    Esc: leave"
-                    : "Enter: ready    Esc: leave    (or click your own entry)",
-                Color.Gray, 0.8f);
+                    ? "Left/Right: track   Up/Down: laps   Space: start"
+                    : "Click your own entry to get ready",
+                Color.Gray, 0.7f);
 
             // ---- keyboard and gamepad
             if (Input.KeyboardKeyJustPressed(Keys.Enter) || Input.GamePadAJustPressed)
@@ -235,7 +238,8 @@ namespace RacingGame.GameScreens
                 }
             }
 
-            if (Input.KeyboardEscapeJustPressed || Input.GamePadBJustPressed || Input.GamePadBackJustPressed)
+            if (Input.KeyboardEscapeJustPressed || Input.GamePadBJustPressed || Input.GamePadBackJustPressed ||
+                BaseGame.UI.backButtonPressed)
             {
                 LanRace.Leave(null);
                 return true;

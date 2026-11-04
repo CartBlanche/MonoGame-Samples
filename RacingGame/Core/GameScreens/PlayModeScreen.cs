@@ -12,7 +12,7 @@ namespace RacingGame.GameScreens
     /// </summary>
     class PlayModeScreen : IGameScreen
     {
-        static readonly string[] Entries = { "Single player", "Multiplayer", "Back" };
+        static readonly string[] Entries = { "Single player", "Multiplayer" };
 
         // remembered for the session, so the cursor returns to LAN race after a LAN race
         static int lastSelection = 0;
@@ -28,8 +28,7 @@ namespace RacingGame.GameScreens
         {
             Sound.Play(Sound.Sounds.ButtonClick);
             selection = index;
-            if (index < 2)
-                lastSelection = index;
+            lastSelection = index;
 
             switch (index)
             {
@@ -38,9 +37,6 @@ namespace RacingGame.GameScreens
                     break;
                 case 1:
                     RacingGameManager.AddGameScreen(new LanBrowserScreen());
-                    break;
-                default:
-                    leave = true;
                     break;
             }
         }
@@ -81,8 +77,8 @@ namespace RacingGame.GameScreens
             if (!ignoreMouse && mouseOver >= 0)
                 selection = mouseOver;
 
-            TextureFont.WriteTextCentered(centerX, BaseGame.Height - BaseGame.YToRes(80),
-                "Up/Down: choose    Space: select    Esc: back", Color.Gray, 0.8f);
+            // Shared bottom buttons: Back (left), Select (right)
+            bool selectClicked = BaseGame.UI.RenderBottomButtons(false);
 
             if (Input.KeyboardUpJustPressed || Input.GamePadUpJustPressed)
             {
@@ -98,13 +94,13 @@ namespace RacingGame.GameScreens
             }
 
             if (Input.KeyboardSpaceJustPressed || Input.GamePadAJustPressed ||
-                Input.KeyboardKeyJustPressed(Keys.Enter))
+                Input.KeyboardKeyJustPressed(Keys.Enter) || selectClicked)
                 Choose(selection);
             else if (mouseOver >= 0 && Input.MouseLeftButtonJustPressed)
                 Choose(mouseOver);
 
             if (Input.KeyboardEscapeJustPressed || Input.GamePadBJustPressed ||
-                Input.GamePadBackJustPressed)
+                Input.GamePadBackJustPressed || BaseGame.UI.backButtonPressed)
                 leave = true;
 
             return leave;

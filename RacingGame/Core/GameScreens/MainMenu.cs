@@ -249,7 +249,8 @@ namespace RacingGame.GameScreens
             // start the game screen for the currently selected game part.
             if ((mouseIsOverButton >= 0 && Input.MouseLeftButtonJustPressed) ||
                 Input.GamePadAJustPressed ||
-                Input.KeyboardSpaceJustPressed)
+                Input.KeyboardSpaceJustPressed ||
+                Input.KeyboardKeyJustPressed(Microsoft.Xna.Framework.Input.Keys.Enter))
             {
                 idleTime = 0.0f;
 

@@ -60,6 +60,7 @@ namespace RacingGame.GameScreens
                 Input.GamePadBackJustPressed ||
                 (RacingGameManager.Player.GameOver &&
                 (Input.KeyboardSpaceJustPressed ||
+                Input.KeyboardKeyJustPressed(Microsoft.Xna.Framework.Input.Keys.Enter) ||
                 Input.GamePadAJustPressed ||
                 Input.GamePadBJustPressed ||
                 Input.GamePadXJustPressed ||

@@ -354,6 +354,7 @@ namespace RacingGame.GameScreens
             bool aButtonPressed = BaseGame.UI.RenderBottomButtons(false);
             if (Input.GamePadAJustPressed ||
                 Input.KeyboardSpaceJustPressed ||
+                Input.KeyboardKeyJustPressed(Microsoft.Xna.Framework.Input.Keys.Enter) ||
                 aButtonPressed)
             {
                 if (lan)

@@ -31,9 +31,8 @@ namespace RacingGame.GameScreens
         bool leave;
         bool ignoreMouse = true;
 
-        int EntryCount { get { return sessions.Count + 2; } }
+        int EntryCount { get { return sessions.Count + 1; } }
         bool IsHostEntry(int index) { return index == 0; }
-        bool IsBackEntry(int index) { return index == EntryCount - 1; }
 
         public LanBrowserScreen()
         {
@@ -127,10 +126,6 @@ namespace RacingGame.GameScreens
                 busyText = "Starting a race...";
                 sessionTask = MultiplayerSessionService.CreateHostSessionAsync();
             }
-            else if (IsBackEntry(selection))
-            {
-                leave = true;
-            }
             else
             {
                 AvailableNetworkSession chosen = sessions[selection - 1];
@@ -165,8 +160,6 @@ namespace RacingGame.GameScreens
                 string text;
                 if (IsHostEntry(i))
                     text = "Host";
-                else if (IsBackEntry(i))
-                    text = "Back";
                 else
                 {
                     AvailableNetworkSession s = sessions[i - 1];
@@ -191,8 +184,8 @@ namespace RacingGame.GameScreens
                     sessions.Count == 0 ? "No races found. Host one, or wait." : "",
                     Color.Gray, 0.9f);
 
-            TextureFont.WriteTextCentered(centerX, BaseGame.Height - BaseGame.YToRes(80),
-                "Up/Down: choose    Space: select    Esc: back", Color.Gray, 0.8f);
+            // Shared bottom buttons: Back (left), Select (right)
+            bool selectClicked = BaseGame.UI.RenderBottomButtons(false);
 
             if (sessionTask == null && !launched)
             {
@@ -216,11 +209,12 @@ namespace RacingGame.GameScreens
                     Select();
                 }
                 else if (Input.KeyboardSpaceJustPressed || Input.GamePadAJustPressed ||
-                    Input.KeyboardKeyJustPressed(Keys.Enter))
+                    Input.KeyboardKeyJustPressed(Keys.Enter) || selectClicked)
                     Select();
             }
 
-            if (Input.KeyboardEscapeJustPressed || Input.GamePadBJustPressed || Input.GamePadBackJustPressed)
+            if (Input.KeyboardEscapeJustPressed || Input.GamePadBJustPressed || Input.GamePadBackJustPressed ||
+                BaseGame.UI.backButtonPressed)
                 leave = true;
 
             return leave && sessionTask == null;

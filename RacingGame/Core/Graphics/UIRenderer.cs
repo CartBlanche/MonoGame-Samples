@@ -534,54 +534,46 @@ namespace RacingGame.Graphics
         }
         public bool backButtonPressed = false;
         /// <summary>
-        /// Render bottom buttons (select, back, etc.)
+        /// Render bottom buttons. Back (B) is always bottom LEFT, Select (A) is
+        /// bottom RIGHT, on every screen. Screens that need the bottom right for
+        /// something else (e.g. paging arrows) call this with onlyBack = true.
         /// </summary>
         /// <param name="onlyBack">Only back</param>
+        /// <returns>True if the select (A) button was clicked</returns>
         public bool RenderBottomButtons(bool onlyBack)
         {
-            Rectangle bButtonRect = BaseGame.CalcRectangleCenteredWithGivenHeight(
-                0, 587, 48, BottomButtonBButtonGfxRect);
-            bButtonRect.X = BaseGame.Width - bButtonRect.Width - BaseGame.XToRes(25 + 25);
-            bool overBButton = Input.MouseInBox(bButtonRect);
-            int xAdd = BaseGame.XToRes(16);
-            int yAdd = BaseGame.YToRes(9);
-            if (overBButton)
-                bButtonRect = new Rectangle(
-                    bButtonRect.X - xAdd / 2, bButtonRect.Y - yAdd / 2,
-                    bButtonRect.Width + xAdd, bButtonRect.Height + yAdd);
-            buttons.RenderOnScreen(bButtonRect, BottomButtonBButtonGfxRect);
-
-            // Is mouse over button?
-            if (overBButton)
-                buttons.RenderOnScreen(bButtonRect, BottomButtonSelectionGfxRect);
-
-            // Store value if back button was pressed;
-            backButtonPressed = overBButton && Input.MouseLeftButtonJustPressed;
+            // Back button, bottom left. Click is stored in backButtonPressed.
+            backButtonPressed = RenderBottomButton(BottomButtonBButtonGfxRect, false);
 
             // Don't show button a if there is nothing to select here
             if (onlyBack)
                 return false;
 
-            Rectangle aButtonRect = BaseGame.CalcRectangleCenteredWithGivenHeight(
-                0, 587, 48, BottomButtonAButtonGfxRect);
-            aButtonRect.X = BaseGame.Width -
-                aButtonRect.Width * 2 - BaseGame.XToRes(55 + 25);
-            bool overAButton = Input.MouseInBox(aButtonRect);
-            if (overAButton)
-                aButtonRect = new Rectangle(
-                    aButtonRect.X - xAdd / 2, aButtonRect.Y - yAdd / 2,
-                    aButtonRect.Width + xAdd, aButtonRect.Height + yAdd);
-            buttons.RenderOnScreen(aButtonRect, BottomButtonAButtonGfxRect);
-
-            // Is mouse over button?
-            if (overAButton)
-            {
-                buttons.RenderOnScreen(aButtonRect, BottomButtonSelectionGfxRect);
-                if (Input.MouseLeftButtonJustPressed)
-                    return true;
-            }
-            return false;
+            // Select button, bottom right
+            return RenderBottomButton(BottomButtonAButtonGfxRect, true);
         }
+
+        /// <summary>
+        /// One bottom button (grows and gets the highlight when the mouse is
+        /// over it). Returns true when it was clicked this frame.
+        /// </summary>
+        bool RenderBottomButton(Rectangle gfxRect, bool atRight)
+        {
+            Rectangle r = BaseGame.CalcRectangleCenteredWithGivenHeight(0, 587, 48, gfxRect);
+            r.X = atRight ? BaseGame.Width - r.Width - BaseGame.XToRes(25 + 25)
+                          : BaseGame.XToRes(25 + 25);
+            bool over = Input.MouseInBox(r);
+            if (over)
+            {
+                int xAdd = BaseGame.XToRes(16), yAdd = BaseGame.YToRes(9);
+                r = new Rectangle(r.X - xAdd / 2, r.Y - yAdd / 2, r.Width + xAdd, r.Height + yAdd);
+            }
+            buttons.RenderOnScreen(r, gfxRect);
+            if (over)
+                buttons.RenderOnScreen(r, BottomButtonSelectionGfxRect);
+            return over && Input.MouseLeftButtonJustPressed;
+        }
+
         /// <summary>
         /// Source rectangles in the Ingame texture used to build the laps
         /// panel: a blank rounded panel (cut into 9 slices so it can be any

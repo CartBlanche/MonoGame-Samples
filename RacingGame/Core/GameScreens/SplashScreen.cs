@@ -55,6 +55,7 @@ namespace RacingGame.GameScreens
             // Clicking or pressing start will go to the menu
             return Input.MouseLeftButtonJustPressed ||
                 Input.KeyboardSpaceJustPressed ||
+                Input.KeyboardKeyJustPressed(Microsoft.Xna.Framework.Input.Keys.Enter) ||
                 Input.KeyboardEscapeJustPressed ||
                 Input.GamePadStartPressed;
         }
