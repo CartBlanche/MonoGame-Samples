@@ -492,6 +492,14 @@ namespace RacingGame.GameLogic
             float effectiveSensitivity = MinSensitivity +
                 GameSettings.Default.ControllerSensitivity;
 
+            // The force and friction steps below used to run once per frame, so a
+            // faster frame rate meant more friction per second and a lower top
+            // speed (about 145 mph instead of 200+ at 230 fps, so fewer gears).
+            // frameScale is 1 at 60 fps (the rate this was tuned at) and scales
+            // those steps to the real frame time: identical at 60 fps and the
+            // same behaviour at any other frame rate.
+            float frameScale = moveFactor * 60.0f;
+
             // First handle rotations (reduce last value)
             rotationChange *= 0.95f;
 
@@ -510,10 +518,16 @@ namespace RacingGame.GameLogic
             else
                 rotationChange = 0;
 
+            // Mouse: the movement of this frame is a displacement (it already
+            // gets smaller as frames get shorter), so it must not be scaled by the
+            // frame time a second time: use 1/60 s (what moveFactor is at 60 fps)
+            // instead of moveFactor. The mouse used to turn less and less as the
+            // frame rate rose (about 7x less at 300 fps than at 47 fps).
+            // The keyboard and the analog stick were already frame rate independent.
             if (!Input.DrivingLocked && Input.MouseXMovement != 0)
                 rotationChange -= effectiveSensitivity *
                     (Input.MouseXMovement / 15.0f) *
-                    MaxRotationPerSec * moveFactor;
+                    MaxRotationPerSec / 60.0f;
             if (!Input.DrivingLocked && Input.IsGamePadConnected)
             {
                 // More dynamic force changing with gamepad (slow, faster, etc.)
@@ -652,7 +666,7 @@ namespace RacingGame.GameLogic
                     Vector3.Dot(Vector3.Normalize(speedChangeVector), carDir);
                 if (speedApplyFactor > 1)
                     speedApplyFactor = 1;
-                speed += speedChangeVector.Length() * speedApplyFactor;
+                speed += speedChangeVector.Length() * speedApplyFactor * frameScale;
             }
 
             // Apply friction. Basically we have 2 frictions that slow us down:
@@ -677,17 +691,17 @@ namespace RacingGame.GameLogic
             if (isCarOnGround == false)
                 groundFriction = 0;
 
-            carForce *= 1.0f - (0.275f * 0.02125f *
+            carForce *= (float)Math.Pow(1.0f - (0.275f * 0.02125f *
                 0.2f * // 20% for force slowdown
-                (groundFriction + airFriction));
+                (groundFriction + airFriction)), frameScale);
             // Reduce the speed, but use very low values to make the game more fun!
             float noFrictionSpeed = speed;
-            speed *= 1.0f - (0.01f *
+            speed *= (float)Math.Pow(1.0f - (0.01f *
                 0.1f * 0.02125f *
-                (groundFriction + airFriction));
-            // Never change more than by 1
-            if (speed < noFrictionSpeed - 1)
-                speed = noFrictionSpeed - 1;
+                (groundFriction + airFriction)), frameScale);
+            // Never change more than by 1 (per 60th of a second)
+            if (speed < noFrictionSpeed - 1 * frameScale)
+                speed = noFrictionSpeed - 1 * frameScale;
 
             if (isCarOnGround)
             {
