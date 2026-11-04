@@ -583,6 +583,85 @@ namespace RacingGame.Graphics
             return false;
         }
         /// <summary>
+        /// Source rectangles in the Ingame texture used to build the laps
+        /// panel: a blank rounded panel (cut into 9 slices so it can be any
+        /// size) and the straight middle of the orange bar (used as the "/").
+        /// </summary>
+        static readonly Rectangle BlankPanelGfxRect = new Rectangle(727, 2, 280, 60),
+            SlashBarGfxRect = new Rectangle(350, 14, 22, 156);
+        const int BlankPanelCorner = 20;
+
+        /// <summary>
+        /// Draw a panel of any size from the blank panel (9-slice).
+        /// </summary>
+        private void RenderPanel(Rectangle r)
+        {
+            Rectangle s = BlankPanelGfxRect;
+            int c = BlankPanelCorner;
+            int cw = Math.Min((int)Math.Round(c * (float)BaseGame.Width / 1600.0f), r.Width / 2);
+            int ch = Math.Min((int)Math.Round(c * (float)BaseGame.Height / 1200.0f), r.Height / 2);
+            int[] sx = { s.X, s.X + c, s.Right - c, s.Right };
+            int[] sy = { s.Y, s.Y + c, s.Bottom - c, s.Bottom };
+            int[] dx = { r.X, r.X + cw, r.Right - cw, r.Right };
+            int[] dy = { r.Y, r.Y + ch, r.Bottom - ch, r.Bottom };
+            for (int row = 0; row < 3; row++)
+                for (int col = 0; col < 3; col++)
+                    ingame.RenderOnScreen(
+                        new Rectangle(dx[col], dy[row], dx[col + 1] - dx[col], dy[row + 1] - dy[row]),
+                        new Rectangle(sx[col], sy[row], sx[col + 1] - sx[col], sy[row + 1] - sy[row]));
+        }
+
+        /// <summary>
+        /// Laps panel: "lap/total" in big orange digits with "Laps" below. The
+        /// panel grows with the number of digits (1/3 ... 99/99).
+        /// </summary>
+        private void RenderLapsPanel(int x, int y, int lap, int totalLaps)
+        {
+            const int DigitHeight = 46;   // in 1200 pixel high screen units
+            float scaleX = (float)BaseGame.Width / 1600.0f;
+            float scaleY = (float)BaseGame.Height / 1200.0f;
+
+            if (totalLaps < 1)
+                totalLaps = 1;
+            lap = Math.Max(1, Math.Min(lap, totalLaps));
+
+            int digitsH = (int)Math.Round(DigitHeight * scaleY);
+            int wLap = TextureFontBigNumbers.GetNumberWidth(DigitHeight, lap);
+            int wTotal = TextureFontBigNumbers.GetNumberWidth(DigitHeight, totalLaps);
+            int slashW = (int)Math.Round(30 * scaleX);
+            int contentW = wLap + slashW + wTotal;
+
+            int padX = (int)Math.Round(18 * scaleX);
+            int padTop = (int)Math.Round(9 * scaleY);
+            int padBottom = (int)Math.Round(7 * scaleY);
+            int labelGap = (int)Math.Round(2 * scaleY);
+            int labelH = TextureFont.Height;
+            int panelW = Math.Max((int)Math.Round(110 * scaleX), contentW + 2 * padX);
+            int panelH = padTop + digitsH + labelGap + labelH + padBottom;
+
+            RenderPanel(new Rectangle(x, y, panelW, panelH));
+
+            int left = x + (panelW - contentW) / 2;
+            int top = y + padTop;
+            TextureFontBigNumbers.WriteNumber(left, top, DigitHeight, lap);
+
+            // The "/": the orange bar, leaning right
+            int barH = (int)Math.Round(digitsH * 1.05f);
+            int barW = Math.Max(3, (int)Math.Round(SlashBarGfxRect.Width * barH / (float)SlashBarGfxRect.Height));
+            int centerX = left + wLap + slashW / 2;
+            int centerY = top + digitsH / 2;
+            ingame.RenderOnScreenWithRotation(
+                new Rectangle(centerX, centerY, barW, barH), SlashBarGfxRect,
+                0.38f, new Vector2(SlashBarGfxRect.Width / 2.0f, SlashBarGfxRect.Height / 2.0f));
+
+            TextureFontBigNumbers.WriteNumber(left + wLap + slashW, top, DigitHeight, totalLaps);
+
+            TextureFont.WriteTextCentered(x + panelW / 2,
+                top + digitsH + labelGap + labelH / 2,
+                totalLaps == 1 ? "Lap" : "Laps");
+        }
+
+        /// <summary>
         /// Render game user interface
         /// </summary>
         /// <param name="currentGameTime">Current game time</param>
@@ -614,9 +693,9 @@ namespace RacingGame.Graphics
             // then they will be used the same way on both platforms.
 #if XBOX360
             // Draw all boxes and background stuff
+            // The laps panel is drawn dynamically (RenderLapsPanel), below
             Rectangle lapsRect = BaseGame.CalcRectangle1600(
                 60, 46, LapsGfxRect.Width, LapsGfxRect.Height);
-            ingame.RenderOnScreen(lapsRect, LapsGfxRect, baseUIColor);
             
             Rectangle timesRect = BaseGame.CalcRectangle1600(
                 60, 46, CurrentAndBestGfxRect.Width, CurrentAndBestGfxRect.Height);
@@ -652,9 +731,9 @@ namespace RacingGame.Graphics
             tachoRect.Y = BaseGame.Height-tachoRect.Bottom;
 #else
             // Draw all boxes and background stuff
+            // The laps panel is drawn dynamically (RenderLapsPanel), below
             Rectangle lapsRect = BaseGame.CalcRectangle1600(
                 10, 10, LapsGfxRect.Width, LapsGfxRect.Height);
-            ingame.RenderOnScreen(lapsRect, LapsGfxRect, baseUIColor);
 
             Rectangle timesRect = BaseGame.CalcRectangle1600(
                 10, 10, CurrentAndBestGfxRect.Width, CurrentAndBestGfxRect.Height);
@@ -694,10 +773,8 @@ namespace RacingGame.Graphics
             ingame.RenderOnScreen(tachoRect, TachoGfxRect, baseUIColor);
 
             // Ok, now add the numbers, text and speed values
-            TextureFontBigNumbers.WriteNumber(
-                lapsRect.X + BaseGame.XToRes1600(15),
-                lapsRect.Y + BaseGame.YToRes1200(12),
-                lapNumber);
+            RenderLapsPanel(lapsRect.X, lapsRect.Y, lapNumber,
+                GameLogic.Player.RaceLaps);
 
             // Current and best game times
             Color highlightColor = new Color(255, 185, 80);

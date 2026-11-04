@@ -148,6 +148,26 @@ namespace RacingGame.Graphics
         /// <param name="number">Number</param>
         /// <param name="alpha">Alpha</param>
         /// <returns>Int</returns>
+        /// <summary>
+        /// Width in pixels of WriteNumber(x, y, height, number) without drawing it.
+        /// </summary>
+        public static int GetNumberWidth(int height, int number)
+        {
+            float resScalingX = (float)BaseGame.Width / 1600.0f;
+            float scaleFactor = height / (float)BigNumberRects[0].Height;
+            int width = 0;
+            foreach (char c in number.ToString())
+            {
+                int digit = c - '0';
+                if (digit < 0)
+                    continue;
+                width += (int)Math.Round(
+                    BigNumberRects[digit % BigNumberRects.Length].Width *
+                    resScalingX * scaleFactor);
+            }
+            return width;
+        }
+
         public static int WriteNumber(int x, int y, int number, float alpha)
         {
             // Convert to string
