@@ -91,6 +91,11 @@ namespace RacingGame.GameLogic
         }
 
         /// <summary>
+        /// True while an in-race menu is open: the car ignores keyboard, mouse and gamepad.
+        /// </summary>
+        public static bool DrivingLocked;
+
+        /// <summary>
         /// Mouse position
         /// </summary>
         /// <returns>Point</returns>

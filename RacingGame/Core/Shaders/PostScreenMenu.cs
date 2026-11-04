@@ -38,7 +38,8 @@ namespace RacingGame.Shaders
             blurMap1,
             blurMap2,
             noiseMap,
-            timer;
+            timer,
+            wave;
 
         /// <summary>
         /// Links to the passTextures, easier to write code this way.
@@ -131,6 +132,7 @@ namespace RacingGame.Shaders
             blurMap1 = effect.Parameters["blurMap1"];
             blurMap2 = effect.Parameters["blurMap2"];
             timer = effect.Parameters["Timer"];
+            wave = effect.Parameters["Wave"];
 
             // Load noise texture for stripes effect
             noiseMap = effect.Parameters["noiseMap"];
@@ -188,6 +190,9 @@ namespace RacingGame.Shaders
             if (timer != null)
                 // Add a little offset to prevent first effect.
                 timer.SetValue(BaseGame.TotalTime + 0.75f);
+
+            if (wave != null)
+                wave.SetValue(RacingGame.Properties.GameSettings.Default.WaveEffect ? 1.0f : 0.0f);
 
             effect.CurrentTechnique = effect.Techniques["ScreenGlow20"];
 

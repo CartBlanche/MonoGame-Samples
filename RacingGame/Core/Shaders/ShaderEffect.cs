@@ -652,7 +652,7 @@ namespace RacingGame.Shaders
                         { "BlurWidth", 4.0f }, { "GlowIntensity", 0.25f },
                         { "HighlightIntensity", 0.145f }, { "HighlightThreshold", 0.925f },
                         { "Speed", 0.0032f }, { "Speed2", 0.0016f },
-                        { "ScratchIntensity", 0.605f }, { "IS", 0.031f },
+                        { "ScratchIntensity", 0.605f }, { "IS", 0.031f }, { "Wave", 0.0f },
                     } },
                 { "PostScreenShadowBlur", new Dictionary<string, object>
                     {

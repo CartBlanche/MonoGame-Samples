@@ -345,6 +345,21 @@ namespace RacingGame.Properties
             }
         }
 
+        bool waveEffect = false;
+        /// <summary>
+        /// Wave distortion in the post screen effect (off by default)
+        /// </summary>
+        public bool WaveEffect
+        {
+            get { return waveEffect; }
+            set
+            {
+                if (waveEffect != value)
+                    needSave = true;
+                waveEffect = value;
+            }
+        }
+
         bool highDetail = true;
         /// <summary>
         /// HighDetail

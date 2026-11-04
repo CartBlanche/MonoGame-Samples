@@ -15,6 +15,7 @@ using RacingGame.Sounds;
 using Texture = RacingGame.Graphics.Texture;
 using RacingGame.Shaders;
 using RacingGame.Properties;
+using RacingGame.Multiplayer;
 
 namespace RacingGame.GameScreens
 {
@@ -63,6 +64,21 @@ namespace RacingGame.GameScreens
                 CarPhysics.DefaultMaxAccelerationPerSec, // 5 m/s^2
             };
         // Rest of car variables is automatically calculated below!
+        /// <summary>
+        /// True in the LAN race flow: the car is chosen after hosting or joining a race, and
+        /// goes on to the lobby instead of the track selection.
+        /// </summary>
+        private readonly bool lan;
+
+        public CarSelection()
+        {
+        }
+
+        public CarSelection(bool lan)
+        {
+            this.lan = lan;
+        }
+
 		/// <summary>
 		/// Unimplemented
 		/// </summary>
@@ -77,6 +93,23 @@ namespace RacingGame.GameScreens
         /// <returns>Bool</returns>
         public bool Render()
         {
+            if (lan)
+            {
+                // the race is over, or the session has ended, or the race started without us
+                if (!LanRace.InRace)
+                    return true;
+                if (LanRace.Net.HasEnded)
+                {
+                    LanRace.Leave(LanRace.Net.IsHost ? "The race session ended." : "The host left the race.");
+                    return true;
+                }
+                if (LanRace.Lobby.PendingStart != null)
+                {
+                    LanRace.Leave("The race started without you.");
+                    return true;
+                }
+            }
+
             if (BaseGame.AllowShadowMapping)
             {
                 // Let camera point directly at the center, around 10 units away.
@@ -323,7 +356,14 @@ namespace RacingGame.GameScreens
                 Input.KeyboardSpaceJustPressed ||
                 aButtonPressed)
             {
-                RacingGameManager.AddGameScreen(new TrackSelection());
+                if (lan)
+                {
+                    // the host chooses the track in the lobby
+                    LanRace.Lobby.SetLocalCar(RacingGameManager.currentCarNumber, RacingGameManager.currentCarColor);
+                    RacingGameManager.AddGameScreen(new LanLobbyScreen());
+                }
+                else
+                    RacingGameManager.AddGameScreen(new TrackSelection());
                 return false;
             }
 
@@ -331,7 +371,12 @@ namespace RacingGame.GameScreens
                 Input.GamePadBJustPressed ||
                 Input.GamePadBackJustPressed ||
                 BaseGame.UI.backButtonPressed)
+            {
+                // backing out of the car selection leaves the race
+                if (lan)
+                    LanRace.Leave(null);
                 return true;
+            }
 
             return false;
         }

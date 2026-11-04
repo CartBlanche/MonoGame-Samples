@@ -37,6 +37,7 @@ namespace RacingGame.GameScreens
             PostScreenEffectsGfxRect = new Rectangle(339, 226, 206, 36),
             ShadowsGfxRect = new Rectangle(616, 226, 90, 36),
             HighDetailGfxRect = new Rectangle(784, 226, 120, 36),
+            WaveGfxRect = new Rectangle(920, 226, 80, 36),
             SoundGfxRect = new Rectangle(384, 281, 448, 39),
             MusicGfxRect = new Rectangle(384, 354, 448, 39),
             SensitivityGfxRect = new Rectangle(384, 428, 448, 39);
@@ -53,6 +54,7 @@ namespace RacingGame.GameScreens
         bool usePostScreenShaders = true;
         bool useShadowMapping = true;
         bool useHighDetail = true;
+        bool useWave = false;
         float currentMusicVolume = 1.0f;
         float currentSoundVolume = 1.0f;
         float currentSensitivity = 1.0f;
@@ -77,6 +79,7 @@ namespace RacingGame.GameScreens
             usePostScreenShaders = BaseGame.UsePostScreenShaders;
             useShadowMapping = BaseGame.AllowShadowMapping;
             useHighDetail = BaseGame.HighDetail;
+            useWave = GameSettings.Default.WaveEffect;
 
             // Get music and sound volume
             currentMusicVolume = GameSettings.Default.MusicVolume;
@@ -258,6 +261,17 @@ namespace RacingGame.GameScreens
             {
                 Sound.Play(Sound.Sounds.ButtonClick);
                 useHighDetail = !useHighDetail;
+            }
+
+            // Wave effect (same line as post screen effect, shadows and high detail)
+            Rectangle waveRect = BaseGame.CalcRectangleKeep4To3(WaveGfxRect);
+            waveRect.Y += BaseGame.YToRes768(125);
+            TextureFont.WriteText(waveRect.X, waveRect.Y,
+                "Wave", useWave ? new Color(255, 156, 0) : Color.Gray);
+            if (Input.MouseInBox(waveRect) && Input.MouseLeftButtonJustPressed)
+            {
+                Sound.Play(Sound.Sounds.ButtonClick);
+                useWave = !useWave;
             }
 #endif
             Rectangle soundRect = BaseGame.CalcRectangleKeep4To3(
@@ -459,6 +473,7 @@ namespace RacingGame.GameScreens
                 GameSettings.Default.PostScreenEffects = usePostScreenShaders;
                 GameSettings.Default.ShadowMapping = useShadowMapping;
                 GameSettings.Default.HighDetail = useHighDetail;
+                GameSettings.Default.WaveEffect = useWave;
                 GameSettings.Default.MusicVolume = currentMusicVolume;
                 GameSettings.Default.SoundVolume = currentSoundVolume;
                 GameSettings.Default.ControllerSensitivity = currentSensitivity;

@@ -614,12 +614,15 @@ namespace RacingGame.Landscapes
 
             // Upload new highscore (as we currently are in game,
             // no bonus or anything will be added, this score is low!)
-            Highscores.SubmitHighscore((int)level,
-                (int)RacingGameManager.Player.GameTimeMilliseconds);
+            // (not in a LAN race: its laps are not single-player times)
+            bool multiplayer = RacingGameManager.Player.MultiplayerRace;
+            if (!multiplayer)
+                Highscores.SubmitHighscore((int)level,
+                    (int)RacingGameManager.Player.GameTimeMilliseconds);
 
             RacingGameManager.Player.AddLapTime(thisLapTime);
 
-            if (thisLapTime < bestReplay.LapTime)
+            if (!multiplayer && thisLapTime < bestReplay.LapTime)
             {
                 // Add final checkpoint
                 RacingGameManager.Landscape.NewReplay.CheckpointTimes.Add(

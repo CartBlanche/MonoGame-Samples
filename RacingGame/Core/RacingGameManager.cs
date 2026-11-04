@@ -134,7 +134,7 @@ namespace RacingGame
             get
             {
                 return gameScreens.Count > 0 &&
-                    gameScreens.Peek().GetType() != typeof(GameScreen);
+                    !(gameScreens.Peek() is GameScreen);
             }
         }
 
@@ -146,7 +146,7 @@ namespace RacingGame
             get
             {
                 return gameScreens.Count > 0 &&
-                    gameScreens.Peek().GetType() == typeof(GameScreen);
+                    gameScreens.Peek() is GameScreen;
             }
         }
 
@@ -160,7 +160,7 @@ namespace RacingGame
             {
                 // Only if not in Game, not in splash screen!
                 return gameScreens.Count > 0 &&
-                    gameScreens.Peek().GetType() != typeof(GameScreen) &&
+                    !(gameScreens.Peek() is GameScreen) &&
                     gameScreens.Peek().GetType() != typeof(SplashScreen) &&
                     gameScreens.Peek().GetType() != typeof(LoadingScreen);
             }
@@ -351,6 +351,19 @@ namespace RacingGame
         protected override void Initialize()
         {
             base.Initialize();
+
+            // First launch: the Name setting still has its default, so fill it in with the
+            // user's name (it can be changed in Options, and is what other players see in a race)
+            if (GameSettings.Default.PlayerName == "Player")
+            {
+                string user = Environment.UserName;
+                if (!string.IsNullOrWhiteSpace(user) &&
+                    !user.StartsWith("u0_a", StringComparison.OrdinalIgnoreCase))
+                {
+                    GameSettings.Default.PlayerName = user;
+                    GameSettings.Save();
+                }
+            }
         }
 
         /// <summary>
@@ -400,6 +413,9 @@ namespace RacingGame
         {
             // Update game engine
             base.Update(gameTime);
+
+            // Pump the LAN race session, if we are in one
+            Multiplayer.LanRace.Update();
 
             if (gameScreens.Count > 0)
             {
@@ -463,6 +479,9 @@ namespace RacingGame
             if (gameScreens.Count > 0 &&
                 gameScreens.Peek().GetType() == typeof(CarSelection))
                 ((CarSelection)gameScreens.Peek()).PostUIRender();
+            else if (gameScreens.Count > 0 &&
+                gameScreens.Peek().GetType() == typeof(LanLobbyScreen))
+                ((LanLobbyScreen)gameScreens.Peek()).PostUIRender();
 
             // Do menu shader after everything
             if (BaseGame.UsePostScreenShaders && PostScreenMenu.Started)

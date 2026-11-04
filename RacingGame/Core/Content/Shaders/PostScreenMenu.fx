@@ -64,6 +64,7 @@ float Speed = 0.0032f;
 float Speed2 = 0.0016f;
 float ScratchIntensity = 0.605f;
 float IS = 0.031f;
+float Wave = 0.0f;
 
 END_CONSTANTS
 
@@ -184,7 +185,8 @@ float4 PS_ComposeFinalImage20(
         flash = 2.0*(0.55+0.45*sin(Timer*3.14f*2));
         
     float2 texCoord = In.texCoord[0];
-    if (flash != 1.0f)
+    // Optional horizontal wave distortion (off by default, it makes some people queasy)
+    if (Wave > 0.5f && flash != 1.0f)
         texCoord.x += (flash-1.5f)/40.0f *
             cos(Timer*7+texCoord.y*25.18f);
         

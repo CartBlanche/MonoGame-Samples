@@ -483,6 +483,19 @@ namespace RacingGame.Graphics
         public void RenderCar(int carNumber, Color carColor, bool shadowCarMode,
             Matrix renderMatrix)
         {
+            RenderCar(carNumber, carColor, shadowCarMode, renderMatrix,
+                RacingGameManager.Player.CarWheelPos,
+                RacingGameManager.currentCarColor != 0);
+        }
+
+        /// <summary>
+        /// Render a car that is not the local player's (a remote car in multiplayer):
+        /// its wheel position and whether its color is applied are passed in instead of
+        /// being read from the Player and RacingGameManager.currentCarColor.
+        /// </summary>
+        public void RenderCar(int carNumber, Color carColor, bool shadowCarMode,
+            Matrix renderMatrix, float carWheelPos, bool useCarColor)
+{
             // Multiply object matrix by render matrix, result is used multiple
             // times here.
             renderMatrix = objectMatrix * renderMatrix;
@@ -514,7 +527,7 @@ namespace RacingGame.Graphics
                                     Matrix.CreateRotationX(
                                     // Rotate left 2 wheels forward, the other 2 backward
                                     (wheelNumber == 2 || wheelNumber == 4 ? 1 : -1) *
-                                    RacingGameManager.Player.CarWheelPos) *
+                                    carWheelPos) *
                                     meshMatrix;
                             }
 
@@ -637,7 +650,7 @@ namespace RacingGame.Graphics
                                 diffuseColor.ToVector4());
 
                             // Change shader to SpecularWithReflectionForCar20 if we changed the color.
-                            if (RacingGameManager.currentCarColor != 0 &&
+                            if (useCarColor &&
                                 effectNum == 0)
                             {
                                 // Route through normalMapping when effect is BasicEffect fallback
@@ -661,7 +674,7 @@ namespace RacingGame.Graphics
                                 Matrix.CreateRotationX(
                                 // Rotate left 2 wheels forward, the other 2 backward!
                                 (wheelNumber == 2 || wheelNumber == 4 ? 1 : -1) *
-                                RacingGameManager.Player.CarWheelPos) *
+                                carWheelPos) *
                                 meshMatrix;
                         }
 
@@ -720,7 +733,7 @@ namespace RacingGame.Graphics
                                 // first part of a colored car, but never for glass.
                                 if (partTechnique != null &&
                                     (isCar == false || partNum > 0 || isGlass ||
-                                    RacingGameManager.currentCarColor == 0))
+                                    useCarColor == false))
                                     shared.CurrentTechnique = partTechnique;
                                 BlendState remBlendState = BaseGame.Device.BlendState;
                                 if (isGlass)
@@ -751,7 +764,7 @@ namespace RacingGame.Graphics
 
                     // Change shader back to default render technique.
                     // We only have to do this if the color was changed
-                    if (RacingGameManager.currentCarColor != 0 &&
+                    if (useCarColor &&
                         remCurrentTechnique != null)
                     {
                         Effect restoreEffect = (mesh.Effects.Count > 0 && mesh.Effects[0] is BasicEffect)

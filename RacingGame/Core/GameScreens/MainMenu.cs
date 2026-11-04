@@ -257,7 +257,8 @@ namespace RacingGame.GameScreens
                 switch (SelectedButton)
                 {
                     case 0:
-                        RacingGameManager.AddGameScreen(new CarSelection());
+                        // Single player or LAN race
+                        RacingGameManager.AddGameScreen(new PlayModeScreen());
                         break;
                     case 1:
                         RacingGameManager.AddGameScreen(new Highscores());

@@ -1406,11 +1406,23 @@ namespace RacingGame.Graphics
 				PostUIRender();
 
 				//Handle drawing the Trophy
-				if (RacingGameManager.InGame && RacingGameManager.Player.Victory)
+				int lanPlace = RacingGameManager.InGame && RacingGameManager.Player.MultiplayerRace
+					? Multiplayer.LanRace.LocalPlace : 0;
+				if (lanPlace > 1)
+				{
+					// Multiplayer: only the winner gets the cup, everyone else
+					// sees their position in big letters
+					TextureFont.WriteTextCentered(BaseGame.Width / 2,
+						BaseGame.Height * 2 / 3,
+						GameScreens.MultiplayerGameScreen.Ordinal(lanPlace),
+						lanPlace == 2 ? Color.LightGray : Color.Orange, 6.0f);
+				}
+				else if (RacingGameManager.InGame &&
+					(lanPlace == 1 || (lanPlace == 0 && !RacingGameManager.Player.MultiplayerRace && RacingGameManager.Player.Victory)))
 				{
 					Texture.alphaSprite.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend);
 
-					int rank = GameScreens.Highscores.GetRankFromCurrentTime(
+					int rank = lanPlace == 1 ? 0 : GameScreens.Highscores.GetRankFromCurrentTime(
 						RacingGameManager.Player.LevelNum,
 						(int)RacingGameManager.Player.BestTimeMilliseconds);
 

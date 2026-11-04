@@ -38,7 +38,13 @@ namespace RacingGame.GameLogic
         /// <summary>
         /// The number of laps in each race
         /// </summary>
-        private const int LapCount = 3;
+        public const int LapCount = 3;
+
+        /// <summary>
+        /// The number of laps in the race being driven: LapCount, except in a LAN race, where
+        /// the host chooses (a short race is handy for testing).
+        /// </summary>
+        public static int RaceLaps = LapCount;
 
         /// <summary>
         /// Add lap time
@@ -47,6 +53,20 @@ namespace RacingGame.GameLogic
         public void AddLapTime(float setLapTime)
         {
             lapTimes.Add(setLapTime);
+        }
+
+        /// <summary>
+        /// The time of all the laps driven so far, in seconds (the race time once all laps are done)
+        /// </summary>
+        public float TotalLapTimeSeconds
+        {
+            get
+            {
+                float total = 0;
+                for (int i = 0; i < lapTimes.Count; i++)
+                    total += lapTimes[i];
+                return total;
+            }
         }
 
         /// <summary>
@@ -97,6 +117,11 @@ namespace RacingGame.GameLogic
                         Matrix.CreateRotationZ(BaseGame.TotalTimeMilliseconds / 2593.0f));
                     BaseGame.ViewMatrix = Matrix.CreateLookAt(
                         cameraPos, CarPosition, CarUpVector);
+                    // A LAN race shows its own results, and the best lap time is not a
+                    // single-player highscore
+                    if (MultiplayerRace)
+                        return;
+
                     int rank = Highscores.GetRankFromCurrentTime(
                         this.levelNum, (int)this.BestTimeMilliseconds);
                     this.currentGameTimeMilliseconds = this.BestTimeMilliseconds;
@@ -165,7 +190,7 @@ namespace RacingGame.GameLogic
                 }
 
                 // Finished all laps? Then we won!
-                if (CurrentLap >= LapCount)
+                if (CurrentLap >= RaceLaps)
                 {
                     // Reset player variables (stop car, etc.)
                     ClearVariablesForGameOver();

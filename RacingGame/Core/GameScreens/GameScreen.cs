@@ -44,18 +44,49 @@ namespace RacingGame.GameScreens
             // Play game music
             Sound.Play(Sound.Sounds.GameMusic);
         }
+        /// <summary>
+        /// Render the cars of other players. Nothing in single player.
+        /// </summary>
+        protected virtual void RenderOtherCars()
+        {
+        }
+
+        /// <summary>
+        /// Does the player want to leave the game screen (back to the menu)?
+        /// </summary>
+        protected virtual bool WantsToLeave()
+        {
+            return Input.KeyboardEscapeJustPressed ||
+                Input.GamePadBackJustPressed ||
+                (RacingGameManager.Player.GameOver &&
+                (Input.KeyboardSpaceJustPressed ||
+                Input.GamePadAJustPressed ||
+                Input.GamePadBJustPressed ||
+                Input.GamePadXJustPressed ||
+                Input.GamePadXJustPressed ||
+                Input.MouseLeftButtonJustPressed));
+        }
+
+        /// <summary>
+        /// Race against the ghost of the best lap. Not in multiplayer.
+        /// </summary>
+        protected virtual bool ShowGhostCar
+        {
+            get { return true; }
+        }
+
 		/// <summary>
 		/// Unimplemented
 		/// </summary>
 		/// <param name="gameTime"></param>
-		public void Update(GameTime gameTime)
+		public virtual void Update(GameTime gameTime)
 		{
 
 		}
 		/// <summary>
         /// Render game screen. Called each frame.
         /// </summary>
-        public bool Render()
+        public virtual bool Render()
         {
             ShadowMapShader.PrepareGameShadows();
 
@@ -76,6 +107,9 @@ namespace RacingGame.GameScreens
                 false,
                 RacingGameManager.Player.CarRenderMatrix);
 
+            // Other players' cars (multiplayer)
+            RenderOtherCars();
+
             // And flush all models to be rendered
             BaseGame.MeshRenderManager.Render();
 
@@ -90,7 +124,8 @@ namespace RacingGame.GameScreens
                 bestReplayCarMatrix;
 
             // Also render the shadow car (if the game has started)!
-            if (RacingGameManager.Player.GameTimeMilliseconds > 0)
+            if (ShowGhostCar &&
+                RacingGameManager.Player.GameTimeMilliseconds > 0)
                 RacingGameManager.CarModel.RenderCar(
                     0, RacingGameManager.CarColor,
                     true, bestReplayCarMatrix);
@@ -127,15 +162,7 @@ namespace RacingGame.GameScreens
                 RacingGameManager.Landscape.CurrentTrackName,
                 Highscores.GetTop5LapTimes(TrackSelection.SelectedTrackNumber));
 
-            if (Input.KeyboardEscapeJustPressed ||
-                Input.GamePadBackJustPressed ||
-                (RacingGameManager.Player.GameOver &&
-                (Input.KeyboardSpaceJustPressed ||
-                Input.GamePadAJustPressed ||
-                Input.GamePadBJustPressed ||
-                Input.GamePadXJustPressed ||
-                Input.GamePadXJustPressed ||
-                Input.MouseLeftButtonJustPressed)))
+            if (WantsToLeave())
             {
                 // Stop motor sound
                 Sound.StopGearSound();

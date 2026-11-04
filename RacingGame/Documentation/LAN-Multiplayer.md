@@ -1,6 +1,6 @@
-# LAN Multiplayer for the Racing Game (planned)
+# LAN Multiplayer for the Racing Game
 
-> **Status: planned, not implemented.** This document records what is required to add LAN multiplayer to the Racing Game, based on a read-through of the current code and of the LAN multiplayer in the ShipGame sample. Nothing described here exists in the game yet.
+> **Status: first version implemented on Desktop (macOS tested).** Up to 4 players discover each other on the LAN, pick a car and colour in a lobby, and race the same track. The sections after "Implemented in the first version" are the original plan and design notes; they are kept because they explain the choices. Android, iOS and Windows have not been built or tested yet.
 
 ## Goal
 
@@ -10,6 +10,39 @@ Today the game is single player with a **ghost car** (a replay of your best lap)
 
 - **Scope:** "networked ghosts". Up to **4 players** race the same track simultaneously and see each other's cars. There is **no car-to-car collision** in the first version (cars pass through each other).
 - **Platforms:** Desktop (macOS and Windows) first. Android and iOS come later.
+
+## Implemented in the first version
+
+**Flow** (as in ShipGame): main menu → Start Race → **Single player** or **Multiplayer** → browser (**Host**, the races found on the network, Back) → car and colour selection → lobby → race → results → back to the browser.
+
+**What works**
+
+- Hosting and joining over `MonoGame.Xna.Framework.Net` (UDP SystemLink), 2 to 4 players. The host's session is no longer advertised once the race starts.
+- Lobby: each player's chosen car and colour (a small rotating 3D thumbnail), ready state, and the track (its button art) and number of laps (1 to 5), which only the host changes. Enter, or clicking your own entry, toggles Ready. The host starts the race once at least two players are in and all are ready.
+- The race: a ready barrier (the host sends Go once everybody has loaded, with a 20 s timeout) so everybody's countdown starts together; each machine drives only its own car, and the other cars are drawn from interpolated snapshots (about 20 Hz, 100 ms delay); name tags above the cars; live positions; finish and DNF handling; a results table; the winner gets the trophy and everyone else sees their position in big letters.
+- Leaving: the Esc key (or the "Menu" label, for mouse and touch) opens a **Resume | Leave** menu. The race keeps running while it is open, and the car ignores the controls. If the host leaves, the clients return to the browser with a message. If a client leaves, the others see it and carry on.
+- Names: the **Name** setting (filled in with the user's name on first launch) is what other players see. The unique `_id` gamertag the network library adds is used only to tell players apart.
+- Input: keyboard, gamepad and mouse on every multiplayer screen. Touch should work wherever MonoGame maps a tap to the mouse (not checked yet).
+- Options: a **Wave** option (off by default) on the Post Screen Effect line turns the wobble of the menu post-processing back on. It is off because it makes some people queasy.
+
+**Code** (`RacingGame/Core`)
+
+- `Multiplayer/RacePackets.cs`: packet ids 70 to 75 and 80 (LobbyUpdate, LobbySync, RaceStart, Ready, Go, PlayerFinished, CarState), `RacePlayerInfo`.
+- `Multiplayer/MultiplayerSessionService.cs`: create, find and join; `GameId` "RacingGame", `ProtocolVersion` 2, `MaxPlayers` 4, name helpers.
+- `Multiplayer/RaceNetSession.cs`: the session wrapper (packet dispatch with an audience filter, `Send`/`SendToHost`/`Broadcast`/`Relay`, join and leave events), and a small log written to `$TMPDIR/RacingGame-net.log`.
+- `Multiplayer/RaceLobby.cs`: the lobby state, and `LanRace`, the session shared by the screens.
+- `Multiplayer/RemoteCar.cs`: snapshot interpolation.
+- `GameScreens/PlayModeScreen.cs`, `LanBrowserScreen.cs`, `LanLobbyScreen.cs`, `MultiplayerGameScreen.cs` (a `GameScreen` subclass).
+- Small changes to the single-player code: `GameScreen` virtual hooks, `BasePlayer` (hold the countdown), `Player` (lap count per race, no single-player game-over text in a race), `Landscape` (no highscores or replays in a race), `CarPhysics` (`Input.DrivingLocked`), `Model.RenderCar` overload for other players' cars, and `CarSelection` (a LAN mode).
+
+**How to test on one machine:** build with `dotnet build -c Release` (the content pipeline only works in Release) and start two instances. The host also advertises to 127.0.0.1, so they find each other. Both then share one settings file, so both players have the same name.
+
+**Not done yet**
+
+- Windows, iOS and Android builds with the Net package. Android needs the multicast lock noted under "Risks and gotchas", and a better default name (the user name there is a system id).
+- Joining by IP address, and an in-lobby name editor (the name is set in Options).
+- Car-to-car collision (out of scope for the first version).
+- A check that a tap is mapped to a mouse click on mobile.
 
 ## What exists today
 

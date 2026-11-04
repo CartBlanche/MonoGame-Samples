@@ -67,6 +67,30 @@ namespace RacingGame.GameScreens
         }
 
         /// <summary>
+        /// The button artwork of a built-in track (used as its thumbnail in the multiplayer lobby)
+        /// </summary>
+        static public Rectangle TrackButtonGfxRect(int trackNumber)
+        {
+            return ButtonRects[trackNumber % NumberOfButtons];
+        }
+
+        /// <summary>
+        /// How many tracks there are
+        /// </summary>
+        static public int NumberOfTracks
+        {
+            get { return NumberOfButtons; }
+        }
+
+        /// <summary>
+        /// Select a track by number (a client takes the host's choice in multiplayer)
+        /// </summary>
+        static public void SelectTrackNumber(int trackNumber)
+        {
+            selectedButton = trackNumber % NumberOfButtons;
+        }
+
+        /// <summary>
         /// Selected track
         /// </summary>
         /// <returns>Track level</returns>

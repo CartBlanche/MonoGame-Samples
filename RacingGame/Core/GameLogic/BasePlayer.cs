@@ -133,6 +133,18 @@ namespace RacingGame.GameLogic
         public const int StartGameZoomedInTime = 3000;
 
         /// <summary>
+        /// True during a LAN race: the race screen shows the results, nothing is written to the
+        /// single-player highscores or replays, and the end of the race is not a "game over".
+        /// </summary>
+        public bool MultiplayerRace { get; set; }
+
+        /// <summary>
+        /// While true the start countdown does not run (LAN race: every machine waits at the
+        /// start until the host says go, so the lights come on together).
+        /// </summary>
+        public bool HoldCountdown { get; set; }
+
+        /// <summary>
         /// Won or lost?
         /// </summary>
         protected bool victory;
@@ -244,6 +256,8 @@ namespace RacingGame.GameLogic
             victory = false;
             zoomInTime = StartGameZoomTimeMilliseconds;
             firstFrame = true;
+            MultiplayerRace = false;
+            HoldCountdown = false;
         }
 
         /// <summary>
@@ -272,7 +286,7 @@ namespace RacingGame.GameLogic
             }
 
             // Handle zoomInTime at the beginning of a game
-            if (!RacingGameManager.InMenu && zoomInTime > 0)
+            if (!RacingGameManager.InMenu && zoomInTime > 0 && !HoldCountdown)
             {
                 float lastZoomInTime = zoomInTime;
                 zoomInTime -= BaseGame.ElapsedTimeThisFrameInMilliseconds;

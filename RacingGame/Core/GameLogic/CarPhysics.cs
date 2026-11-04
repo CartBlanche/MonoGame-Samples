@@ -273,6 +273,15 @@ namespace RacingGame.GameLogic
         float trackSegmentPercent = 0;
 
         /// <summary>
+        /// How far along the track the car is in the current lap (the track segment number plus
+        /// how far through that segment). Used to rank the cars in a LAN race.
+        /// </summary>
+        public float TrackProgress
+        {
+            get { return trackSegmentNumber + trackSegmentPercent; }
+        }
+
+        /// <summary>
         /// Car render matrix we calculate each frame.
         /// </summary>
         Matrix carRenderMatrix = Matrix.Identity;
@@ -487,7 +496,9 @@ namespace RacingGame.GameLogic
             rotationChange *= 0.95f;
 
             // Left/right changes rotation
-            if (Input.KeyboardLeftPressed ||
+            if (Input.DrivingLocked)
+                rotationChange = 0;
+            else if (Input.KeyboardLeftPressed ||
                 Input.Keyboard.IsKeyDown(Keys.A))
                 rotationChange += effectiveSensitivity *
                     MaxRotationPerSec * moveFactor / 2.5f;
@@ -499,11 +510,11 @@ namespace RacingGame.GameLogic
             else
                 rotationChange = 0;
 
-            if (Input.MouseXMovement != 0)
+            if (!Input.DrivingLocked && Input.MouseXMovement != 0)
                 rotationChange -= effectiveSensitivity *
                     (Input.MouseXMovement / 15.0f) *
                     MaxRotationPerSec * moveFactor;
-            if (Input.IsGamePadConnected)
+            if (!Input.DrivingLocked && Input.IsGamePadConnected)
             {
                 // More dynamic force changing with gamepad (slow, faster, etc.)
                 rotationChange -= effectiveSensitivity *
@@ -585,7 +596,11 @@ namespace RacingGame.GameLogic
             // Up or left mouse button accelerates
             // Also support ASDW (querty) and AOEW (dvorak) shooter like controlling!
             float newAccelerationForce = 0.0f;
-            if (Input.KeyboardUpPressed ||
+            if (Input.DrivingLocked)
+            {
+                // a menu is open: no driving input
+            }
+            else if (Input.KeyboardUpPressed ||
                 Input.Keyboard.IsKeyDown(Keys.W) ||
                 Input.MouseLeftButtonPressed ||
                 Input.GamePadAPressed)

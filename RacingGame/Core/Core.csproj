@@ -8,6 +8,7 @@
     <PackageReference Include="MonoGame.Framework.DesktopGL" Version="3.8.*" >
       <PrivateAssets>All</PrivateAssets>
     </PackageReference>
+    <PackageReference Include="MonoGame.Xna.Framework.Net" Version="1.0.0-preview.1" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\PipelineExtension\PipelineExtension.csproj"
