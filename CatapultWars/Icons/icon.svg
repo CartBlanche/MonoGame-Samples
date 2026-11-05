@@ -1,0 +1,67 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024">
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#2f2766"/>
+      <stop offset=".55" stop-color="#8a76c0"/>
+      <stop offset="1" stop-color="#f0b7a0"/>
+    </linearGradient>
+    <radialGradient id="glow">
+      <stop offset="0" stop-color="#ffb02e" stop-opacity=".55"/>
+      <stop offset="1" stop-color="#ffb02e" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+
+  <!-- dusk sky and sun -->
+  <rect width="1024" height="1024" fill="url(#sky)"/>
+  <circle cx="230" cy="250" r="260" fill="url(#glow)"/>
+  <circle cx="230" cy="250" r="115" fill="#ff9d1c"/>
+
+  <!-- castle -->
+  <g fill="#2a2548">
+    <rect x="720" y="480" width="150" height="320"/>
+    <rect x="670" y="540" width="70" height="260"/>
+    <rect x="850" y="520" width="120" height="280"/>
+    <rect x="720" y="452" width="26" height="30"/><rect x="762" y="452" width="26" height="30"/>
+    <rect x="804" y="452" width="26" height="30"/><rect x="846" y="452" width="24" height="30"/>
+    <rect x="850" y="492" width="26" height="30"/><rect x="892" y="492" width="26" height="30"/>
+    <rect x="934" y="492" width="36" height="30"/>
+    <rect x="670" y="512" width="26" height="30"/><rect x="714" y="512" width="26" height="30"/>
+  </g>
+  <g fill="#ffd24a">
+    <path d="M775 616V578a18 18 0 0 1 36 0v38z"/>
+    <path d="M905 634V606a15 15 0 0 1 30 0v28z"/>
+    <path d="M695 660V636a13 13 0 0 1 26 0v24z"/>
+  </g>
+  <path d="M770 800V740a25 25 0 0 1 50 0v60z" fill="#120e28"/>
+
+  <!-- hill and ground -->
+  <path d="M0 800Q250 740 520 790T1024 770V1024H0Z" fill="#1d1838"/>
+
+  <!-- shot in flight -->
+  <g fill="none" stroke="#fff" stroke-linecap="round">
+    <path d="M600 330Q620 280 640 262" stroke-width="16" opacity=".85"/>
+    <path d="M585 372Q600 330 626 296" stroke-width="11" opacity=".55"/>
+    <path d="M575 408Q585 372 610 330" stroke-width="7" opacity=".3"/>
+  </g>
+  <circle cx="672" cy="240" r="46" fill="#1d1838" stroke="#ff9d1c" stroke-width="8"/>
+  <ellipse cx="656" cy="224" rx="14" ry="9" fill="#fff" opacity=".28" transform="rotate(-35 656 224)"/>
+
+  <!-- catapult -->
+  <g stroke="#1d1838" stroke-linejoin="round" stroke-linecap="round">
+    <rect x="140" y="742" width="350" height="38" rx="12" fill="#a8693a" stroke-width="12"/>
+    <path d="M225 744L300 600H352L425 744Z" fill="#8b5a2b" stroke-width="12"/>
+    <path d="M268 668L560 372" stroke-width="52" fill="none"/>
+    <path d="M268 668L560 372" stroke="#c98a4a" stroke-width="30" fill="none"/>
+    <circle cx="262" cy="676" r="40" fill="#3b3b55" stroke-width="12"/>
+    <ellipse cx="578" cy="356" rx="48" ry="28" transform="rotate(-45 578 356)" fill="#8b5a2b" stroke-width="12"/>
+    <circle cx="326" cy="610" r="18" fill="#ffb02e" stroke-width="8"/>
+    <circle cx="200" cy="826" r="66" fill="#8b5a2b" stroke-width="14"/>
+    <circle cx="430" cy="826" r="66" fill="#8b5a2b" stroke-width="14"/>
+  </g>
+  <g stroke="#1d1838" stroke-width="10" stroke-linecap="round">
+    <path d="M200 770V882M144 826H256M160 786L240 866M240 786L160 866"/>
+    <path d="M430 760V892M364 826H496M384 780L476 872M476 780L384 872"/>
+  </g>
+  <circle cx="200" cy="826" r="18" fill="#ffb02e"/>
+  <circle cx="430" cy="826" r="18" fill="#ffb02e"/>
+</svg>

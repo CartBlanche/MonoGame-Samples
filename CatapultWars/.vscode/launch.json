@@ -25,14 +25,11 @@
         },
         {
             "name": "Launch Android",
-            "type": "coreclr",
-            "request": "launch",
-            "preLaunchTask": "build-android",
-            "program": "${workspaceFolder}/Platforms/Android/bin/Debug/net10.0-android/CatapultNetWars.dll",
-            "args": [],
-            "cwd": "${workspaceFolder}",
-            "console": "internalConsole",
-            "stopAtEntry": false
+            "type": "mono",
+            "request": "attach",
+            "address": "localhost",
+            "port": 10000,
+			"preLaunchTask": "build-android",
         },
         {
             "name": "Launch iOS",

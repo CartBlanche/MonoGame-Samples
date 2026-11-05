@@ -37,6 +37,12 @@ namespace CardsFramework.Core
         /// Gets whether the mouse button is currently pressed down.
         /// Used by MenuEntry to determine if it should show the pressed texture.
         /// </summary>
+        /// <summary>Index of the currently highlighted menu entry (hover or keyboard).</summary>
+        protected int SelectedEntryIndex
+        {
+            get { return selectedEntry; }
+        }
+
         public bool IsMouseDown
         {
             get { return isMouseDown; }

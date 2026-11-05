@@ -17,6 +17,7 @@ namespace CatapultGame
     class BackgroundScreen : GameScreen
     {
         Texture2D background;
+        HalloweenDecor decor;
 
         public BackgroundScreen()
         {
@@ -51,6 +52,20 @@ namespace CatapultGame
             // Draw Background
             spriteBatch.Draw(background, new Vector2(0, 0),
                  new Color(255, 255, 255, TransitionAlpha));
+
+            Theme.Fade((float)gameTime.ElapsedGameTime.TotalSeconds);
+
+            if (Theme.Blend > 0f)
+            {
+                if (decor == null)
+                    decor = new HalloweenDecor(ScreenManager.GraphicsDevice);
+
+                // The theme fades in and out when it is switched on the menu
+                float alpha = TransitionAlpha * Theme.Blend;
+                decor.Update((float)gameTime.ElapsedGameTime.TotalSeconds);
+                decor.DrawTitleOverlay(spriteBatch, alpha);
+                decor.DrawBats(spriteBatch, alpha);
+            }
 
             spriteBatch.End();
         }

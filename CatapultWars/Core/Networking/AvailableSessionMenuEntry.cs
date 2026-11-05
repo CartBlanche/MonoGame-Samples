@@ -54,7 +54,7 @@ namespace CatapultGame
             int totalSlots = session.CurrentGamerCount +
                              session.OpenPublicGamerSlots;
 
-            return string.Format("{0} ({1}/{2})", session.HostGamertag,
+            return string.Format("{0} ({1}/{2})", UIUtility.DisplayName(session.HostGamertag),
                                                   session.CurrentGamerCount,
                                                   totalSlots);
         }

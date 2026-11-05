@@ -76,10 +76,33 @@ namespace CatapultGame
             Offset = Vector2.Zero;
         }
 
+        /// <summary>How many frames play each second.</summary>
+        public float FramesPerSecond { get; set; } = 60f;
+
+        // Time banked towards the next frame
+        float frameClock;
+
         /// <summary>
-        /// Updates the animaton progress
+        /// Updates the animation progress by an amount of time, moving on a frame each time
+        /// a frame's worth has passed. Slower game time gives a slower animation, smoothly.
         /// </summary>
-        public void Update()
+        /// <param name="elapsedSeconds">Game time since the last update</param>
+        public void Update(float elapsedSeconds)
+        {
+            if (!IsActive)
+                return;
+
+            // Never try to catch up on more than a few frames after a long pause
+            frameClock = Math.Min(frameClock + elapsedSeconds, 0.1f);
+            float interval = 1f / FramesPerSecond;
+            while (frameClock >= interval && IsActive)
+            {
+                frameClock -= interval;
+                NextFrame();
+            }
+        }
+
+        void NextFrame()
         {
             if (IsActive)
             {
@@ -146,6 +169,7 @@ namespace CatapultGame
         public void PlayFromFrameIndex(int frameIndex)
         {
             FrameIndex = frameIndex;
+            frameClock = 0f;
             IsActive = true;
         }
     }

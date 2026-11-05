@@ -55,6 +55,7 @@ namespace CatapultGame
 
         Texture2D idleTexture;
         Dictionary<string, Animation> animations;
+        ImpactDust impactDust;
 
         SpriteEffects spriteEffects;
 
@@ -62,16 +63,33 @@ namespace CatapultGame
         Projectile projectile;
 
         string idleTextureName;
+        // isAI really means "stands on the right": it picks the red art and the firing direction.
+        // A person can stand there too, in a LAN game.
         bool isAI;
 
+        /// <summary>
+        /// True only for the computer player, whose catapult pulls back and fires by itself.
+        /// A person on the right, in a LAN game, aims by dragging like the one on the left.
+        /// </summary>
+        public bool AutoAim { get; set; }
+
         // Game constants
-        const float gravity = 500f;
+        const float gravity = Ballistics.Gravity;
+
+                // How long the AI holds its pulled-back catapult before firing, in updates
+                public const float AIStallSeconds = 35f / 60f;
+
+                        /// <summary>
+                        /// Catapult animations play at this many frames a second. The animation sheets list 30, which
+                        /// the game never used: it stepped one frame per update, which is 60 a second.
+                        /// </summary>
+                        public const float AnimationFramesPerSecond = 60f;
 
         // State of the catapult during its last update
         CatapultState lastUpdateState = CatapultState.Idle;
 
         // Used to stall animations
-        int stallUpdateCycles;
+        float stallTime;
 
         // Current state of the Catapult
         CatapultState currentState;
@@ -84,6 +102,7 @@ namespace CatapultGame
         float wind;
         public float Wind
         {
+            get { return wind; }
             set
             {
                 wind = value;
@@ -117,6 +136,65 @@ namespace CatapultGame
             }
         }
 
+        // Shots leave from a point just in front of the catapult's arm
+        Vector2 ProjectileStartFor(Vector2 position)
+        {
+            return position + new Vector2(isAI ? 30 : 35, 8);
+        }
+
+        /// <summary>Moves the catapult, and where its shots start from, to a new spot on the battlefield.</summary>
+        public void Relocate(Vector2 position)
+        {
+            catapultPosition = position;
+            if (projectile != null)
+                projectile.ProjectileStartPosition = ProjectileStartFor(position);
+        }
+
+        /// <summary>The middle of the catapult's frame. Aiming is drawn and measured from here.</summary>
+        public Vector2 Centre
+        {
+            get
+            {
+                var frame = animations["Fire"].FrameSize;
+                return catapultPosition + new Vector2(frame.X / 2f, frame.Y / 2f);
+            }
+        }
+
+        // Slow motion for a direct hit
+        public const float SlowMotionLead = 0.5f; // game seconds before impact that it begins
+        bool directHitPredicted;
+        float predictedImpactTime;
+        Vector2 predictedImpact;
+
+        /// <summary>
+        /// True while a shot that is going to hit a catapult is in its last moments of flight.
+        /// The flight is worked out when the shot is fired, so this is known before the hit happens.
+        /// </summary>
+        public bool DirectHitIncoming
+        {
+            get
+            {
+                return directHitPredicted &&
+                    (currentState & CatapultState.ProjectileFlying) != 0 &&
+                    predictedImpactTime - projectile.FlightTime <= SlowMotionLead;
+            }
+        }
+
+        /// <summary>Where the shot in the air is going to land.</summary>
+        public Vector2 PredictedImpact { get { return predictedImpact; } }
+
+        /// <summary>Where the shot in the air is now.</summary>
+        public Vector2 ProjectilePosition { get { return projectile.ProjectilePosition; } }
+
+        /// <summary>1 when this catapult fires to the right, -1 to the left.</summary>
+        public int FireDirection { get { return isAI ? -1 : 1; } }
+
+        /// <summary>Where shots leave this catapult.</summary>
+        public Vector2 ProjectileStart { get { return projectile.ProjectileStartPosition; } }
+
+        /// <summary>The catapult this one is shooting at.</summary>
+        public Vector2 EnemyCentre { get { return enemy.Catapult.Centre; } }
+
         /// <summary>
         /// Describes how powerful the current shot being fired is. The more powerful
         /// the shot, the further it goes. 0 is the weakest, 1 is the strongest.
@@ -125,12 +203,24 @@ namespace CatapultGame
 
         public float ShotVelocity { get; set; }
 
+        /// <summary>The shot most recently fired, so both players can see what to change.</summary>
+        public bool HasFired { get; private set; }
+        public float LastFiredVelocity { get; private set; }
+        public float LastFiredAngle { get; private set; }
+
+        /// <summary>Raised when a shot reaches the ground, with where and how fast it was going.</summary>
+        public event Action<Vector2, float> GroundImpact;
+
+        /// <summary>
+        /// How steeply the shot leaves the catapult, in radians above the horizon,
+        /// between Ballistics.MinAngle and Ballistics.MaxAngle.
+        /// </summary>
+        public float ShotAngle { get; set; } = Ballistics.DefaultAngle;
+
         /// <summary>
         /// Used to determine whether or not the game is over
         /// </summary>
         public bool GameOver { get; set; }
-
-        const int winScore = 5;
 
         public Catapult(Game game)
             : base(game)
@@ -161,8 +251,9 @@ namespace CatapultGame
             // Define initial state of the catapult
             IsActive = true;
             AnimationRunning = false;
+            impactDust = new ImpactDust(curGame.GraphicsDevice);
             currentState = CatapultState.Idle;
-            stallUpdateCycles = 0;
+            stallTime = 0;
 			
 			// Load multiple animations form XML definition
 			XDocument doc = null;
@@ -211,6 +302,7 @@ namespace CatapultGame
                         int.Parse(animationDefinition.Attribute("Speed").Value));
 
                     Animation animation = new Animation(texture, frameSize, sheetSize);
+                    animation.FramesPerSecond = AnimationFramesPerSecond;
 
                     // If definition has an offset defined - means that it should be rendered relatively
                     // to some element/other animation - load it
@@ -229,11 +321,7 @@ namespace CatapultGame
             idleTexture = curGame.Content.Load<Texture2D>(idleTextureName);
 
             // Initialize the projectile
-            Vector2 projectileStartPosition;
-            if (isAI)
-                projectileStartPosition = new Vector2(630, 340);
-            else
-                projectileStartPosition = new Vector2(175, 340);
+            Vector2 projectileStartPosition = ProjectileStartFor(catapultPosition);
 
             projectile = new Projectile(curGame, spriteBatch, "Textures/Ammo/rock_ammo",
               projectileStartPosition, animations["Fire"].FrameSize.Y, isAI, gravity);
@@ -261,6 +349,10 @@ namespace CatapultGame
                 return;
             }
                 
+            impactDust.Update((float)gameTime.ElapsedGameTime.TotalSeconds);
+
+            float elapsed = (float)gameTime.ElapsedGameTime.TotalSeconds;
+
             switch (currentState)
             {
                 case CatapultState.Idle:
@@ -272,32 +364,32 @@ namespace CatapultGame
                         AudioManager.PlaySound("ropeStretch", true);
 
                         AnimationRunning = true;
-                        if (isAI == true)
+                        if (AutoAim)
                         {
                             animations["Aim"].PlayFromFrameIndex(0);
-                            stallUpdateCycles = 20;
+                            stallTime = AIStallSeconds;
                             startStall = false;
                         }
                     }
 
                     // Progress Aiming "animation"
-                    if (isAI == false)
+                    if (!AutoAim)
                     {
                         UpdateAimAccordingToShotStrength();
                     }
                     else
                     {
-                        animations["Aim"].Update();
+                        animations["Aim"].Update(elapsed);
                         startStall = AimReachedShotStrength();
                         currentState = (startStall) ? 
                             CatapultState.Stalling : CatapultState.Aiming;
                     }
                     break;
                 case CatapultState.Stalling:
-                    if (stallUpdateCycles-- <= 0)
+                    if ((stallTime -= elapsed) <= 0)
                     {
                         // We've finished stalling, fire the projectile
-                        Fire(ShotVelocity);
+                        Fire(ShotVelocity, ShotAngle);
                         postUpdateStateChange = CatapultState.Firing;
                     }
                     break;
@@ -310,11 +402,11 @@ namespace CatapultGame
                         StartFiringFromLastAimPosition();
                     }
 
-                    animations["Fire"].Update();
+                    animations["Fire"].Update(elapsed);
 
                     // If in the "split" point of the animation start 
                     // projectile fire sequence
-                    if (animations["Fire"].FrameIndex == splitFrames["Fire"])
+                    if (animations["Fire"].FrameIndex >= splitFrames["Fire"])
                     {
                         postUpdateStateChange = 
                             currentState | CatapultState.ProjectileFlying;
@@ -324,7 +416,7 @@ namespace CatapultGame
                     break;
                 case CatapultState.Firing | CatapultState.ProjectileFlying:
                     // Progress Fire animation                    
-                    animations["Fire"].Update();
+                    animations["Fire"].Update(elapsed);
 
                     // Update projectile velocity & position in flight
                     projectile.UpdateProjectileFlightData(gameTime, wind, 
@@ -334,7 +426,7 @@ namespace CatapultGame
                     {
                         // Start hit sequence
                         postUpdateStateChange = CatapultState.ProjectileHit;
-                        animations["fireMiss"].PlayFromFrameIndex(0);
+                        StartImpact();
                     }
                     break;
                 case CatapultState.ProjectileFlying:
@@ -345,7 +437,7 @@ namespace CatapultGame
                     {
                         // Start hit sequence
                         postUpdateStateChange = CatapultState.ProjectileHit;
-                        animations["fireMiss"].PlayFromFrameIndex(0);
+                        StartImpact();
                     }
 
                     break;
@@ -363,12 +455,10 @@ namespace CatapultGame
                         }
 
                         // Hit animation finished playing
-                        if (animations["fireMiss"].IsActive == false)
+                        if (!impactDust.IsActive)
                         {
                             postUpdateStateChange = CatapultState.Reset;
                         }
-
-                        animations["fireMiss"].Update();
                     }
                     else
                     {
@@ -385,7 +475,7 @@ namespace CatapultGame
                     if ((animations["Destroyed"].IsActive == false) &&
                         (animations["hitSmoke"].IsActive == false))
                     {
-                        if (enemy.Score >= winScore)
+                        if (enemy.Score >= MatchSettings.WinScore)
                         {
                             GameOver = true;
                             break;
@@ -394,8 +484,8 @@ namespace CatapultGame
                         postUpdateStateChange = CatapultState.Reset;
                     }
 
-                    animations["Destroyed"].Update();
-                    animations["hitSmoke"].Update();
+                    animations["Destroyed"].Update(elapsed);
+                    animations["hitSmoke"].Update(elapsed);
 
                     break;
                 case CatapultState.Reset:
@@ -422,7 +512,7 @@ namespace CatapultGame
         /// false otherwise.</returns>
         private bool AimReachedShotStrength()
         {
-            return (animations["Aim"].FrameIndex ==
+            return (animations["Aim"].FrameIndex >=
                 (Convert.ToInt32(animations["Aim"].FrameCount * ShotStrength) - 1));
         }
 
@@ -431,7 +521,9 @@ namespace CatapultGame
             var aimAnimation = animations["Aim"];
             int frameToDisplay =
                 Convert.ToInt32(aimAnimation.FrameCount * ShotStrength);
-            aimAnimation.FrameIndex = Math.Min(aimAnimation.FrameCount, frameToDisplay);
+            // The last frame is FrameCount - 1. Asking for FrameCount, which a near full pull
+            // used to do, points past the sheet and draws nothing but stray lines.
+            aimAnimation.FrameIndex = Math.Max(0, Math.Min(aimAnimation.FrameCount - 1, frameToDisplay));
         }
 
         /// <summary>
@@ -477,9 +569,6 @@ namespace CatapultGame
                     // Draw the catapult
                     DrawIdleCatapult();
 
-                    // Projectile Hit animation
-                    animations["fireMiss"].Draw(spriteBatch,
-                        projectile.ProjectileHitPosition, spriteEffects);
                     break;
                 case CatapultState.Hit:
                     // Catapult hit animation
@@ -497,6 +586,8 @@ namespace CatapultGame
                     break;
             }
 
+            impactDust.Draw(spriteBatch);
+
             base.Draw(gameTime);
         }
 
@@ -511,9 +602,41 @@ namespace CatapultGame
             currentState = CatapultState.Hit;
         }
 
-        public void Fire(float velocity)
+        void StartImpact()
         {
-            projectile.Fire(velocity, velocity);
+            impactDust.Burst(projectile.ImpactPosition, projectile.ImpactSpeed, projectile.ImpactDirection);
+            if (GroundImpact != null)
+                GroundImpact(projectile.ImpactPosition, projectile.ImpactSpeed);
+        }
+
+        public void Fire(float velocity, float angle)
+        {
+            HasFired = true;
+            LastFiredVelocity = velocity;
+            LastFiredAngle = angle;
+            Vector2 launch = Ballistics.LaunchVelocity(velocity, angle);
+            projectile.Fire(launch.X, launch.Y);
+            directHitPredicted = PredictDirectHit();
+        }
+
+        /// <summary>
+        /// Works out, as the shot leaves, whether it will hit a catapult where it lands.
+        /// </summary>
+        bool PredictDirectHit()
+        {
+            if (!projectile.PredictImpact(wind, gravity, out predictedImpact, out predictedImpactTime))
+                return false;
+
+            var sphere = new BoundingSphere(new Vector3(predictedImpact, 0), projectile.HitRadius);
+            return sphere.Intersects(CatapultBox(catapultPosition)) ||
+                   sphere.Intersects(CatapultBox(enemy.Catapult.Position));
+        }
+
+        BoundingBox CatapultBox(Vector2 position)
+        {
+            var frame = animations["Fire"].FrameSize;
+            return new BoundingBox(new Vector3(position, 0),
+                new Vector3(position + new Vector2(frame.X, frame.Y), 0));
         }
 
         /// <summary>
@@ -526,9 +649,7 @@ namespace CatapultGame
             bool bRes = false;
             // Build a sphere around a projectile
             Vector3 center = new Vector3(projectile.ProjectilePosition, 0);
-            BoundingSphere sphere = new BoundingSphere(center,
-                Math.Max(projectile.ProjectileTexture.Width / 2,
-                projectile.ProjectileTexture.Height / 2));
+            BoundingSphere sphere = new BoundingSphere(center, projectile.HitRadius);
 
             // Check Self-Hit - create a bounding box around self
             Vector3 min = new Vector3(catapultPosition, 0);

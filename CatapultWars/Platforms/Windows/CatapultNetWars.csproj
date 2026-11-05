@@ -7,7 +7,7 @@
     <AssemblyName>CatapultNetWars</AssemblyName>
     <UseWindowsForms>true</UseWindowsForms>
     <UseWPF>false</UseWPF>
-    <ApplicationIcon>..\..\Core\Content\Game.ico</ApplicationIcon>
+    <ApplicationIcon>..\..\Icons\Windows\Icon.ico</ApplicationIcon>
     <PublishReadyToRun>false</PublishReadyToRun>
     <TieredCompilation>false</TieredCompilation>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>

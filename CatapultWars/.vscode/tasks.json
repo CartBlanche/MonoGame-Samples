@@ -44,26 +44,10 @@
             "problemMatcher": "$msCompile"
         },
         {
-            "label": "build-android",
-            "command": "dotnet",
-            "type": "shell",
-            "args": [
-                "build",
-                "${workspaceFolder}/Platforms/Android/CatapultNetWars.csproj",
-                "/property:GenerateFullPaths=true",
-                "/consoleloggerparameters:NoSummary"
-            ],
-            "group": "build",
-            "presentation": {
-                "echo": true,
-                "reveal": "silent",
-                "focus": false,
-                "panel": "shared",
-                "showReuseMessage": true,
-                "clear": false
-            },
-            "problemMatcher": "$msCompile"
-        },
+			"label": "build-android",
+			"type": "shell",
+			"command": "dotnet build -p:Configuration=Debug ${workspaceFolder}/Platforms/Android/CatapultNetWars.csproj \"/t:Install;_Run\" /p:AndroidAttachDebugger=true /p:AndroidSdbHostPort=10000"
+		},
         {
             "label": "build-ios",
             "command": "dotnet",

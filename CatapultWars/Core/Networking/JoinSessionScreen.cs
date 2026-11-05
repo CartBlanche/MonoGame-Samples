@@ -127,6 +127,14 @@ namespace CatapultGame
         /// </summary>
         void BackMenuEntrySelected(object sender, PlayerIndexEventArgs e)
         {
+            OnCancel(e.PlayerIndex);
+        }
+
+        /// <summary>
+        /// Backing out, by the Back entry or Escape, stops the search too.
+        /// </summary>
+        protected override void OnCancel(PlayerIndex playerIndex)
+        {
             availableSessions.Dispose();
 
             ExitScreen();

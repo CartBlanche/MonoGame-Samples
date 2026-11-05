@@ -32,7 +32,7 @@ namespace CatapultGame
 		public MouseState LastMouseState;
 		public readonly List<GestureSample> Gestures = new List<GestureSample>();
 
-		Matrix inputTransformation;
+		Matrix inputTransformation = Matrix.Identity;
 		readonly float baseBufferWidth;
 		readonly float baseBufferHeight;
 
@@ -84,7 +84,7 @@ namespace CatapultGame
 			Gestures.Clear();
 			while (TouchPanel.IsGestureAvailable)
 			{
-				Gestures.Add(TouchPanel.ReadGesture());
+				Gestures.Add(TransformGesture(TouchPanel.ReadGesture()));
 			}
 		}
 
@@ -156,11 +156,8 @@ namespace CatapultGame
 
 		void UpdateMouseStates()
 		{
-			currentMousePosition.X = CurrentMouseState.X;
-			currentMousePosition.Y = CurrentMouseState.Y;
-
-			prevMousePosition.X = LastMouseState.X;
-			prevMousePosition.Y = LastMouseState.Y;
+			currentMousePosition = TransformPosition(new Vector2(CurrentMouseState.X, CurrentMouseState.Y));
+			prevMousePosition = TransformPosition(new Vector2(LastMouseState.X, LastMouseState.Y));
 
 			if (mouseGestureType.HasFlag(MouseGestureType.LeftClick))
 				mouseGestureType = mouseGestureType ^ MouseGestureType.LeftClick;
@@ -353,6 +350,23 @@ namespace CatapultGame
 		public void UpdateInputTransformation(Matrix inputTransformation)
 		{
 			this.inputTransformation = inputTransformation;
+		}
+
+		/// <summary>
+		/// Maps a point in window pixels (touch or mouse) into the 800x480 frame the screens draw in.
+		/// </summary>
+		public Vector2 TransformPosition(Vector2 position)
+		{
+			return Vector2.Transform(position, inputTransformation);
+		}
+
+		GestureSample TransformGesture(GestureSample g)
+		{
+			// Deltas are distances, so they scale but do not shift.
+			return new GestureSample(g.GestureType, g.Timestamp,
+				TransformPosition(g.Position), TransformPosition(g.Position2),
+				Vector2.TransformNormal(g.Delta, inputTransformation),
+				Vector2.TransformNormal(g.Delta2, inputTransformation));
 		}
 	}
 }

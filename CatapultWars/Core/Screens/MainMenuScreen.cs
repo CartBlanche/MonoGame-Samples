@@ -23,19 +23,32 @@ namespace CatapultGame
             IsPopup = true;
 
             // Create our menu entries.
-            MenuEntry startGameMenuEntry = new MenuEntry("Single Player vs AI");
-            MenuEntry startMultiPlayerGameMenuEntry = new MenuEntry("Multi Player on LAN");
+            MenuEntry playMenuEntry = new MenuEntry("Play");
             MenuEntry exitMenuEntry = new MenuEntry("Exit");
+            MenuEntry themeMenuEntry = new MenuEntry(ThemeEntryText());
 
             // Hook up menu event handlers.
-            startGameMenuEntry.Selected += StartGameMenuEntrySelected;
-            startMultiPlayerGameMenuEntry.Selected += StartMultiPlayerGameMenuEntrySelected;
+            playMenuEntry.Selected += PlayMenuEntrySelected;
             exitMenuEntry.Selected += OnCancel;
+            themeMenuEntry.Selected += delegate
+            {
+                Theme.SeasonalEnabled = !Theme.SeasonalEnabled;
+                themeMenuEntry.Text = ThemeEntryText();
+            };
 
             // Add entries to the menu.
-            MenuEntries.Add(startGameMenuEntry);
-            MenuEntries.Add(startMultiPlayerGameMenuEntry);
+            MenuEntries.Add(playMenuEntry);
+
+            // Only offer the switch while a seasonal theme is on offer.
+            if (Theme.SeasonAvailable)
+                MenuEntries.Add(themeMenuEntry);
+
             MenuEntries.Add(exitMenuEntry);
+        }
+
+        static string ThemeEntryText()
+        {
+            return "Seasonal Theme: " + (Theme.SeasonalEnabled ? "On" : "Off");
         }
 
 
@@ -56,14 +69,9 @@ namespace CatapultGame
         /// <summary>
         /// Handles "Play" menu item selection
         /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        void StartGameMenuEntrySelected(object sender, EventArgs e)
+        void PlayMenuEntrySelected(object sender, EventArgs e)
         {
-            // Lets make sure we get rid of our network session
-            // so we can start up clean
-            ScreenManager.Game.Services.RemoveService(typeof(NetworkSession));
-            ScreenManager.AddScreen(new InstructionsScreen(), null);
+            ScreenManager.AddScreen(new PlayMenuScreen(), null);
         }
 
         /// <summary>
@@ -75,31 +83,12 @@ namespace CatapultGame
             ScreenManager.Game.Exit();
         }
 
-        void StartMultiPlayerGameMenuEntrySelected(object sender, PlayerIndexEventArgs e)
-        {
-            CreateOrFindSession(NetworkSessionType.SystemLink, e.PlayerIndex);
-        }
-
         /// <summary>
-        /// Helper method shared by the Live and System Link menu event handlers.
+        /// There is nowhere to go back to from here, and Escape should not close the game by accident.
+        /// Choosing Exit still does.
         /// </summary>
-        void CreateOrFindSession(NetworkSessionType sessionType, PlayerIndex playerIndex)
+        protected override void OnBack(PlayerIndex playerIndex)
         {
-
-            // First, we need to make sure a suitable gamer profile is signed in.
-            ProfileSignInScreen profileSignIn = new ProfileSignInScreen(sessionType);
-
-            // Hook up an event so once the ProfileSignInScreen is happy,
-            // it will activate the CreateOrFindSessionScreen.
-            profileSignIn.ProfileSignedIn += delegate
-                {
-                    GameScreen createOrFind = new CreateOrFindSessionScreen(sessionType);
-
-                    ScreenManager.AddScreen(createOrFind, playerIndex);
-                };
-
-            // Activate the ProfileSignInScreen.
-            ScreenManager.AddScreen(profileSignIn, playerIndex);
         }
     }
 }

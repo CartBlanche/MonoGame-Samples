@@ -149,7 +149,7 @@ namespace CatapultGame
 		{
 			if (notifyWhenPlayersJoinOrLeave) {
 				messageDisplay.ShowMessage (Resources.MessageGamerJoined, 
-					e.Gamer.Gamertag);
+					UIUtility.DisplayName(e.Gamer.Gamertag));
 			}
 		}
 
@@ -162,7 +162,7 @@ namespace CatapultGame
 		{
 			if (notifyWhenPlayersJoinOrLeave) {
 				messageDisplay.ShowMessage (Resources.MessageGamerLeft, 
-					e.Gamer.Gamertag);
+					UIUtility.DisplayName(e.Gamer.Gamertag));
 			}
 		}
 
@@ -386,6 +386,23 @@ namespace CatapultGame
 
 				screenManager.AddScreen (confirmMessageBox, playerIndex);
 			}
+		}
+
+
+		/// <summary>
+		/// Leaves the session without asking, for when a game has finished. Disposes the
+		/// session and returns to the main menu. Returns false if there is no session to leave.
+		/// </summary>
+		public static bool EndSession (ScreenManager screenManager)
+		{
+			NetworkSessionComponent self = FindSessionComponent (screenManager.Game);
+
+			if (self == null)
+				return false;
+
+			self.sessionEndMessage = null;
+			self.LeaveSession ();
+			return true;
 		}
 
 

@@ -71,7 +71,20 @@ namespace CatapultGame
         /// </summary>
         public Vector2 ProjectileHitPosition { get; private set; }
 
+        /// <summary>
+        /// Where the projectile was, and how fast and which way it was moving, when it hit the ground.
+        /// </summary>
+        public Vector2 ImpactPosition { get; private set; }
+        public float ImpactSpeed { get; private set; }
+        public int ImpactDirection { get; private set; }
+
         Texture2D projectileTexture;
+        /// <summary>
+        /// Radius of the hit test. Always sized from the standard rock texture so a
+        /// themed projectile never changes the hit area.
+        /// </summary>
+        public float HitRadius { get; private set; }
+
         public Texture2D ProjectileTexture
         {
             get
@@ -108,6 +121,10 @@ namespace CatapultGame
         {
             // Load a projectile texture
             projectileTexture = curGame.Content.Load<Texture2D>(textureName);
+            HitRadius = Math.Max(projectileTexture.Width / 2, projectileTexture.Height / 2);
+
+            if (Theme.IsHalloween)
+                projectileTexture = HalloweenArt.Get(curGame.GraphicsDevice).Pumpkin;
         }
 
         public override void Draw(GameTime gameTime)
@@ -136,25 +153,34 @@ namespace CatapultGame
             float previousXPosition = projectilePosition.X;
             float previousYPosition = projectilePosition.Y;
 
-            projectilePosition.X = projectileStartPosition.X + 
-                (direction * projectileVelocity.X * flightTime) + 
-                0.5f * (8 * wind * (float)Math.Pow(flightTime, 2));
-
-            projectilePosition.Y = projectileStartPosition.Y -
-                (projectileVelocity.Y * flightTime) +
-                0.5f * (gravity * (float)Math.Pow(flightTime, 2));            
+            projectilePosition = Ballistics.PositionAt(projectileStartPosition, direction,
+                projectileVelocity, wind, gravity, flightTime);
 
             // Calculate the projectile rotation
             projectileRotation += MathHelper.ToRadians(projectileVelocity.X * 0.5f);
 
-            // Check if projectile hit the ground or even passed it 
+            // Check if projectile hit the ground, the hill included, or even passed it
             // (could happen during normal calculation)
-            if (projectilePosition.Y >= 332 + hitOffset)
+            if (projectilePosition.Y >= Terrain.SurfaceY(projectilePosition.X))
             {
+                // Where the flight actually met the ground between the last frame and this one
+                Vector2 previous = new Vector2(previousXPosition, previousYPosition);
+                float above = Terrain.SurfaceY(previous.X) - previous.Y;
+                float below = projectilePosition.Y - Terrain.SurfaceY(projectilePosition.X);
+                float along = above + below > 0.001f ? MathHelper.Clamp(above / (above + below), 0f, 1f) : 0f;
+                Vector2 contact = Vector2.Lerp(previous, projectilePosition, along);
+
                 projectilePosition.X = previousXPosition;
                 projectilePosition.Y = previousYPosition;
 
-                ProjectileHitPosition = new Vector2(previousXPosition, 332);
+                ProjectileHitPosition = new Vector2(previousXPosition, Terrain.SurfaceY(previousXPosition));
+
+                // Velocity now: the wind adds to the horizontal speed, gravity pulls the vertical one down.
+                float vx = direction * projectileVelocity.X + 8 * wind * flightTime;
+                float vy = projectileVelocity.Y - gravity * flightTime;
+                ImpactPosition = contact;
+                ImpactSpeed = (float)Math.Sqrt(vx * vx + vy * vy);
+                ImpactDirection = vx < 0 ? -1 : 1;
 
                 groundHit = true;
             }
@@ -162,6 +188,35 @@ namespace CatapultGame
             {
                 groundHit = false;
             }
+        }
+
+        /// <summary>How long this shot has been in the air, in game seconds.</summary>
+        public float FlightTime { get { return flightTime; } }
+
+        /// <summary>
+        /// Plays the shot forward from the start, the way the real flight will go, and says where and
+        /// when it will reach the ground. position is where the flight stops, as for a real impact.
+        /// </summary>
+        public bool PredictImpact(float wind, float gravity, out Vector2 position, out float time)
+        {
+            int direction = isAI ? -1 : 1;
+            const float step = 1f / 60f;
+            Vector2 previous = projectileStartPosition;
+            position = previous;
+            time = 0f;
+
+            for (float t = step; t < 15f; t += step)
+            {
+                Vector2 p = Ballistics.PositionAt(projectileStartPosition, direction, projectileVelocity, wind, gravity, t);
+                if (p.Y >= Terrain.SurfaceY(p.X))
+                {
+                    position = previous;
+                    time = t;
+                    return true;
+                }
+                previous = p;
+            }
+            return false;
         }
 
         public void Fire(float velocityX, float velocityY)
