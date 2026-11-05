@@ -149,7 +149,7 @@ namespace CatapultGame
 		{
 			if (notifyWhenPlayersJoinOrLeave) {
 				messageDisplay.ShowMessage (Resources.MessageGamerJoined, 
-					e.Gamer.Gamertag);
+					UIUtility.DisplayName(e.Gamer.Gamertag));
 			}
 		}
 
@@ -162,7 +162,7 @@ namespace CatapultGame
 		{
 			if (notifyWhenPlayersJoinOrLeave) {
 				messageDisplay.ShowMessage (Resources.MessageGamerLeft, 
-					e.Gamer.Gamertag);
+					UIUtility.DisplayName(e.Gamer.Gamertag));
 			}
 		}
 

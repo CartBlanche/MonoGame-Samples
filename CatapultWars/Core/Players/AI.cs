@@ -43,6 +43,7 @@ namespace CatapultGame
             Catapult = new Catapult(game, screenSpriteBatch,
                             "Textures/Catapults/Red/redIdle/redIdle",
                             Battlefield.RightCatapult, SpriteEffects.FlipHorizontally, true);
+            Catapult.AutoAim = true;
         }
 
         public override void Initialize()

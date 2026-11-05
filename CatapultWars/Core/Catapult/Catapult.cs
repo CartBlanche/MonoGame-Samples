@@ -63,7 +63,15 @@ namespace CatapultGame
         Projectile projectile;
 
         string idleTextureName;
+        // isAI really means "stands on the right": it picks the red art and the firing direction.
+        // A person can stand there too, in a LAN game.
         bool isAI;
+
+        /// <summary>
+        /// True only for the computer player, whose catapult pulls back and fires by itself.
+        /// A person on the right, in a LAN game, aims by dragging like the one on the left.
+        /// </summary>
+        public bool AutoAim { get; set; }
 
         // Game constants
         const float gravity = Ballistics.Gravity;
@@ -356,7 +364,7 @@ namespace CatapultGame
                         AudioManager.PlaySound("ropeStretch", true);
 
                         AnimationRunning = true;
-                        if (isAI == true)
+                        if (AutoAim)
                         {
                             animations["Aim"].PlayFromFrameIndex(0);
                             stallTime = AIStallSeconds;
@@ -365,7 +373,7 @@ namespace CatapultGame
                     }
 
                     // Progress Aiming "animation"
-                    if (isAI == false)
+                    if (!AutoAim)
                     {
                         UpdateAimAccordingToShotStrength();
                     }

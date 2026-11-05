@@ -185,28 +185,28 @@ namespace CatapultGame
 					{
 						playerOne = new Human(ScreenManager.Game, ScreenManager.SpriteBatch, PlayerSide.Left);
 						playerOne.Initialize();
-						playerOne.Name = NetworkSession.LocalGamers[0].Gamertag + " (host)";
+						playerOne.Name = UIUtility.DisplayName(NetworkSession.LocalGamers[0].Gamertag) + " (host)";
 
 						playerTwo = new Human(ScreenManager.Game, ScreenManager.SpriteBatch, PlayerSide.Right);
 						playerTwo.Initialize();
-						playerTwo.Name = NetworkSession.RemoteGamers[0].Gamertag;
+						playerTwo.Name = UIUtility.DisplayName(NetworkSession.RemoteGamers[0].Gamertag);
 					}
 					else
 					{
 						playerOne = new Human(ScreenManager.Game, ScreenManager.SpriteBatch, PlayerSide.Left);
 						playerOne.Initialize();
-						playerOne.Name = NetworkSession.RemoteGamers[0].Gamertag + " (host)";
+						playerOne.Name = UIUtility.DisplayName(NetworkSession.RemoteGamers[0].Gamertag) + " (host)";
 
 						playerTwo = new Human(ScreenManager.Game, ScreenManager.SpriteBatch, PlayerSide.Right);
 						playerTwo.Initialize();
-						playerTwo.Name = NetworkSession.LocalGamers[0].Gamertag;
+						playerTwo.Name = UIUtility.DisplayName(NetworkSession.LocalGamers[0].Gamertag);
 					}
 				}
 				else
 				{
 					playerOne = new Human(ScreenManager.Game, ScreenManager.SpriteBatch, PlayerSide.Left);
 					playerOne.Initialize();
-					playerOne.Name = NetworkSession.LocalGamers[0].Gamertag + " (host)";
+					playerOne.Name = UIUtility.DisplayName(NetworkSession.LocalGamers[0].Gamertag) + " (host)";
 
 					playerTwo = new Human(ScreenManager.Game, ScreenManager.SpriteBatch, PlayerSide.Right);
 					playerTwo.Initialize();

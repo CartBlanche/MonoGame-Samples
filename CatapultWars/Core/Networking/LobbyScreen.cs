@@ -427,7 +427,7 @@ namespace CatapultGame
 			}
 
 			// Draw the gamertag, normally in white, but yellow for local players.
-			string text = gamer.Gamertag;
+			string text = UIUtility.DisplayName(gamer.Gamertag);
 
 			if (gamer.IsHost)
 				text += Resources.HostSuffix;
