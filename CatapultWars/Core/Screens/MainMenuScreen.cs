@@ -11,7 +11,9 @@ using System.Linq;
 using System.Text;
 
 using Microsoft.Xna.Framework;
+#if !SINGLE_PLAYER
 using Microsoft.Xna.Framework.Net;
+#endif
 
 namespace CatapultGame
 {
@@ -43,7 +45,9 @@ namespace CatapultGame
             if (Theme.SeasonAvailable)
                 MenuEntries.Add(themeMenuEntry);
 
+#if !SINGLE_PLAYER
             MenuEntries.Add(exitMenuEntry);
+#endif
         }
 
         static string ThemeEntryText()
@@ -71,7 +75,13 @@ namespace CatapultGame
         /// </summary>
         void PlayMenuEntrySelected(object sender, EventArgs e)
         {
+#if SINGLE_PLAYER
+            // The browser build is single player only, so there is nothing to choose between
+            MatchSettings.WinScore = MatchSettings.DefaultWinScore;
+            ScreenManager.AddScreen(new InstructionsScreen(), null);
+#else
             ScreenManager.AddScreen(new PlayMenuScreen(), null);
+#endif
         }
 
         /// <summary>

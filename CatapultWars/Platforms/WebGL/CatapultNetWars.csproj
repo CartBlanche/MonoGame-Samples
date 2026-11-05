@@ -1,0 +1,55 @@
+<Project Sdk="Microsoft.NET.Sdk.WebAssembly">
+  <!--
+    The browser (WebGL2) platform, laid out like the MonoGame Web Application template (MonoGame.Templates pull request 72)
+    and like SolidOps/Platforms/WebGL.
+    NOT BUILT YET: the MonoGame.Runtime.Browser.WebGL2 package is not published, so this project will not restore until it is.
+    Needs the WebAssembly tools workload:  dotnet workload install wasm-tools
+
+    SINGLE PLAYER ONLY. A browser cannot open the UDP sockets that LAN play needs, so this project does not reference
+    MonoGame.Xna.Framework.Net or the Core project. It compiles the Core sources itself, with SINGLE_PLAYER defined and
+    the LAN screens (Core/Networking and PlayMenuScreen.cs) left out. The `#if !SINGLE_PLAYER` blocks in Core are the
+    LAN code that this leaves behind; every other platform still builds with it.
+  -->
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net10.0</TargetFramework>
+    <RuntimeIdentifier>browser-wasm</RuntimeIdentifier>
+    <Nullable>disable</Nullable>
+    <WasmBuildNative>true</WasmBuildNative>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <AssemblyName>CatapultNetWars</AssemblyName>
+    <RootNamespace>CatapultGame</RootNamespace>
+    <DefineConstants>$(DefineConstants);SINGLE_PLAYER</DefineConstants>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+  </PropertyGroup>
+
+  <!-- The game itself: all of Core except the LAN code -->
+  <ItemGroup>
+    <Compile Include="..\..\Core\**\*.cs" Exclude="..\..\Core\Networking\**;..\..\Core\Screens\PlayMenuScreen.cs;..\..\Core\obj\**;..\..\Core\bin\**">
+      <Link>Core\%(RecursiveDir)%(Filename)%(Extension)</Link>
+    </Compile>
+    <!-- Same resource name the Core project gives it, which Resources.Designer.cs looks up -->
+    <EmbeddedResource Include="..\..\Core\Resources.resx">
+      <Link>Core\Resources.resx</Link>
+      <LogicalName>CatapultGame.Resources.resources</LogicalName>
+    </EmbeddedResource>
+  </ItemGroup>
+
+  <ItemGroup>
+    <MonoGameContentReference Include="..\..\Core\Content\Content.mgcb">
+      <Link>Content\Content.mgcb</Link>
+      <Platform>WebGL2</Platform>
+    </MonoGameContentReference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="MonoGame.Framework.Native" Version="3.8.*" />
+    <PackageReference Include="MonoGame.Runtime.Browser.WebGL2" Version="3.8.*" />
+    <PackageReference Include="MonoGame.Content.Builder.Task" Version="3.8.*" />
+  </ItemGroup>
+
+  <Target Name="RestoreDotnetTools" BeforeTargets="CollectPackageReferences">
+    <Message Text="Restoring dotnet tools (this might take a while depending on your internet speed and should only happen upon building your project for the first time, or after upgrading MonoGame, or clearing your nuget cache)" Importance="High" />
+    <Exec Command="dotnet tool restore" />
+  </Target>
+</Project>

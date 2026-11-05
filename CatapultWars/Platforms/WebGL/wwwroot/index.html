@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Catapult Wars: Singles Edition</title>
+    <link rel="icon" href="./favicon.ico">
+    <style>
+        html,
+        body {
+            min-width: 100%;
+            min-height: 100%;
+            margin: 0;
+            overscroll-behavior: none;
+        }
+
+        #monogame-host {
+            position: fixed;
+            inset: 0;
+            overflow: hidden;
+        }
+
+        #monogame-host[data-canvas-resize-policy="Project"],
+        #monogame-host[data-canvas-resize-policy="None"] {
+            position: relative;
+            inset: auto;
+            display: inline-block;
+        }
+
+        #canvas {
+            display: block;
+            width: 100%;
+            height: 100%;
+            border: 0;
+            background: #000;
+            touch-action: none;
+            user-select: none;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        #monogame-host[data-canvas-resize-policy="Project"] #canvas,
+        #monogame-host[data-canvas-resize-policy="None"] #canvas {
+            width: auto;
+            height: auto;
+        }
+
+        #monogame-loading,
+        #monogame-error {
+            position: absolute;
+            z-index: 1;
+            inset: 0;
+            display: grid;
+            place-items: center;
+            box-sizing: border-box;
+            padding: 2rem;
+            background: #17161d;
+            color: #f7f5f5;
+        }
+
+        #monogame-loading[hidden],
+        #monogame-error[hidden] {
+            display: none;
+        }
+
+        #monogame-loading {
+            pointer-events: none;
+        }
+
+        .monogame-startup-panel {
+            display: grid;
+            justify-items: center;
+            max-width: 24rem;
+            text-align: center;
+        }
+
+        .monogame-brand {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-family: system-ui, sans-serif;
+            font-size: 1.5rem;
+            font-weight: 700;
+            letter-spacing: 0.04em;
+        }
+
+        .monogame-brand-mark {
+            width: 3rem;
+            height: 3rem;
+        }
+
+        .monogame-brand-logo {
+            display: block;
+            width: min(14rem, calc(100vw - 4rem));
+            height: auto;
+        }
+
+        #monogame-loading-message,
+        #monogame-error-message {
+            margin: 0;
+            font-family: system-ui, sans-serif;
+            line-height: 1.5;
+        }
+
+        #monogame-loading-message {
+            margin-top: 1.5rem;
+        }
+
+        .monogame-loading-indicator {
+            width: min(100%, 16rem);
+            height: 0.25rem;
+            margin-top: 1rem;
+            overflow: hidden;
+            border-radius: 999px;
+            background: #3d3a45;
+        }
+
+        .monogame-loading-indicator::before {
+            display: block;
+            width: 40%;
+            height: 100%;
+            content: "";
+            border-radius: inherit;
+            background: #e73c00;
+            animation: monogame-loading 1.2s ease-in-out infinite;
+        }
+
+        #monogame-error {
+            background: #321d23;
+        }
+
+        #monogame-error-message {
+            margin-top: 1.5rem;
+        }
+
+        #monogame-reload {
+            margin-top: 1.5rem;
+            padding: 0.6rem 1rem;
+            border: 0;
+            border-radius: 0.25rem;
+            background: #e73c00;
+            color: #fff;
+            font: inherit;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        #monogame-reload:focus-visible {
+            outline: 3px solid #fff;
+            outline-offset: 3px;
+        }
+
+        @keyframes monogame-loading {
+            from {
+                transform: translateX(-125%);
+            }
+
+            to {
+                transform: translateX(350%);
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .monogame-loading-indicator::before {
+                animation: none;
+                transform: translateX(75%);
+            }
+        }
+    </style>
+</head>
+<body>
+    <main id="monogame-host">
+        <canvas id="canvas" aria-label="Catapult Wars: Singles Edition game canvas"></canvas>
+        <section id="monogame-loading" aria-label="MonoGame loading">
+            <div class="monogame-startup-panel">
+                <img class="monogame-brand-logo" src="./mglogo.svg" alt="MonoGame">
+                <p id="monogame-loading-message" role="status" aria-live="polite">Starting MonoGame...</p>
+                <div class="monogame-loading-indicator" aria-hidden="true"></div>
+            </div>
+        </section>
+        <section id="monogame-error" hidden role="alert" aria-labelledby="monogame-error-title">
+            <div class="monogame-startup-panel">
+                <div class="monogame-brand">
+                    <img class="monogame-brand-mark" src="./favicon.ico" alt="">
+                    <span id="monogame-error-title">MonoGame could not start</span>
+                </div>
+                <p id="monogame-error-message"></p>
+                <button id="monogame-reload" type="button">Reload page</button>
+            </div>
+        </section>
+    </main>
+    <noscript><p>MonoGame.Web requires JavaScript.</p></noscript>
+    <script type="module">
+        const root = document.getElementById("monogame-host");
+        const canvas = document.getElementById("canvas");
+        const loadingScreen = document.getElementById("monogame-loading");
+        const loadingMessage = document.getElementById("monogame-loading-message");
+        const errorScreen = document.getElementById("monogame-error");
+        const errorMessage = document.getElementById("monogame-error-message");
+        const reloadButton = document.getElementById("monogame-reload");
+
+        reloadButton.addEventListener("click", () => globalThis.location.reload());
+
+        function showError(message) {
+            loadingScreen.remove();
+            errorMessage.textContent = message;
+            errorScreen.hidden = false;
+        }
+
+        try {
+            const { start } = await import("./_monogame/monogame-web-host.js");
+            start({
+                root,
+                canvas,
+                onStatus: ({ message }) => {
+                    loadingMessage.textContent = message;
+                },
+                onFirstFrame: () => {
+                    loadingScreen.remove();
+                },
+                onError: ({ stage, code, message }) => {
+                    showError(`${stage}: ${code} - ${message}`);
+                }
+            });
+        }
+        catch (error) {
+            showError(error instanceof Error ? error.message : "The MonoGame browser host could not start.");
+        }
+    </script>
+</body>
+</html>

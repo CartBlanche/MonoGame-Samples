@@ -35,5 +35,15 @@ namespace CatapultGame
         /// </summary>
         public readonly static bool IsDesktop = OperatingSystem.IsMacOS() || OperatingSystem.IsLinux() || OperatingSystem.IsWindows();
 
+        /// <summary>
+        /// Indicates if the game is running in a web browser (the WebGL build).
+        /// </summary>
+        public readonly static bool IsBrowser = OperatingSystem.IsBrowser();
+
+        /// <summary>
+        /// Phones, tablets and browsers may have no Escape key to hand, so they get an on-screen button to leave a game.
+        /// </summary>
+        public readonly static bool NeedsOnScreenExit = IsMobile || IsBrowser;
+
     }
 }

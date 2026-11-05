@@ -16,7 +16,9 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Input.Touch;
 using Microsoft.Xna.Framework.Media;
+#if !SINGLE_PLAYER
 using Microsoft.Xna.Framework.Net;
+#endif
 
 namespace CatapultGame
 {
@@ -43,8 +45,10 @@ namespace CatapultGame
 
 		public CatapultGame()
 		{
+#if !SINGLE_PLAYER
 			// keeps this game from listing, or joining, sessions of the other games on the network
 			Microsoft.Xna.Framework.Net.NetworkSession.GameId = "CatapultWars";
+#endif
 
 			graphicsDeviceManager = new GraphicsDeviceManager(this);
 			//graphics.SynchronizeWithVerticalRetrace = false;
@@ -57,7 +61,7 @@ namespace CatapultGame
 				graphicsDeviceManager.IsFullScreen = true;
 				IsMouseVisible = false;
 			}
-			else if (UIUtility.IsDesktop)
+			else if (UIUtility.IsDesktop || UIUtility.IsBrowser)
 			{
 				graphicsDeviceManager.IsFullScreen = false;
 				IsMouseVisible = true;
@@ -80,8 +84,10 @@ namespace CatapultGame
 			screenManager.AddScreen(new BackgroundScreen(), null);
 			screenManager.AddScreen(new MainMenuScreen(), null);
 
+#if !SINGLE_PLAYER
 			// Listen for invite notification events.
 			NetworkSession.InviteAccepted += (sender, e) => NetworkSessionComponent.InviteAccepted(screenManager, e);
+#endif
 
 			AudioManager.Initialize(this);
 		}

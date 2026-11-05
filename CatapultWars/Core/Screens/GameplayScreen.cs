@@ -18,13 +18,16 @@ using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Input.Touch;
 
 //using Microsoft.Devices.Sensors;
+#if !SINGLE_PLAYER
 using Microsoft.Xna.Framework.Net;
+#endif
 
 namespace CatapultGame
 {
 	class GameplayScreen : GameScreen
 	{
 
+#if !SINGLE_PLAYER
 		enum MessageType : byte
 		{
 			NewGame = 1,
@@ -37,6 +40,7 @@ namespace CatapultGame
 		internal NetworkSession NetworkSession { get; private set; }
 		PacketReader packetReader = new PacketReader();
 		// Do NOT reuse a single PacketWriter across sends; create a fresh one per packet.
+#endif
 		internal bool IsMultiplayer { get; private set; }
 
 		// Texture Members
@@ -136,9 +140,11 @@ namespace CatapultGame
 			// A fresh battlefield every game
 			Terrain.Reset();
 
+#if !SINGLE_PLAYER
 			NetworkSession = ScreenManager.Game.Services.GetService(typeof(NetworkSession)) as NetworkSession;
 			IsMultiplayer = NetworkSession != null;
 			hadOpponent = IsMultiplayer && NetworkSession.RemoteGamers.Count > 0;
+#endif
 
 			// Load textures
 			foregroundTexture = Load<Texture2D>("Textures/Backgrounds/gameplay_screen");
@@ -166,7 +172,7 @@ namespace CatapultGame
 
 			// Define initial HUD positions
 			playerOneHUDPosition = new Vector2(7, 7);
-			if (UIUtility.IsMobile)
+			if (UIUtility.NeedsOnScreenExit)
 			{
 				// Make room for the exit button
 				playerOneHUDPosition.X += exitButton.Right;
@@ -177,6 +183,7 @@ namespace CatapultGame
 			windArrowPosition = new Vector2(345, 46);
 
 			// Initialize human & other players
+#if !SINGLE_PLAYER
 			if (IsMultiplayer)
 			{
 				if (NetworkSession.RemoteGamers.Count > 0)
@@ -218,6 +225,7 @@ namespace CatapultGame
 				}
 			}
 			else
+#endif
 			{
 				playerOne = new Human(ScreenManager.Game, ScreenManager.SpriteBatch, PlayerSide.Left);
 				playerOne.Initialize();
@@ -254,6 +262,7 @@ namespace CatapultGame
 		{
 			float elapsed = (float)gameTime.ElapsedGameTime.TotalSeconds;
 
+#if !SINGLE_PLAYER
 			// Nobody is left to take the other player's turn, so the game ends and the player who stayed wins
 			if (hadOpponent && !gameOver && NetworkSession.RemoteGamers.Count == 0)
 			{
@@ -263,12 +272,14 @@ namespace CatapultGame
 				return;
 			}
 
+#endif
 			// Check it one of the players reached 5 and stop the game
 			if ((playerOne.Catapult.GameOver || playerTwo.Catapult.GameOver) &&
  				(gameOver == false))
 			{
 
 				gameOver = true;
+#if !SINGLE_PLAYER
 				if (IsMultiplayer)
 				{
 					if (NetworkSession.IsHost)
@@ -295,6 +306,7 @@ namespace CatapultGame
 					}
 				}
 				else
+#endif
 				{
 					if (playerOne.Score > playerTwo.Score)
 					{
@@ -373,7 +385,9 @@ namespace CatapultGame
 			// Updates the cloud positions
 			UpdateClouds(elapsed);
 
+#if !SINGLE_PLAYER
 			UpdateNetworkSession();
+#endif
 
 			base.Update(gameTime, otherScreenHasFocus, coveredByOtherScreen);
 		}
@@ -412,7 +426,7 @@ namespace CatapultGame
 			if (input == null)
 				throw new ArgumentNullException("input");
 
-			if (!gameOver && UIUtility.IsMobile && ExitButtonPressed(input))
+			if (!gameOver && UIUtility.NeedsOnScreenExit && ExitButtonPressed(input))
 			{
 				PauseCurrentGame();
 				return;
@@ -438,6 +452,7 @@ namespace CatapultGame
 
 				return;
 			}
+#if !SINGLE_PLAYER
 			if (NetworkSession != null)
 			{
 				if ((isFirstPlayerTurn && !NetworkSession.IsHost)
@@ -445,6 +460,7 @@ namespace CatapultGame
 					return;
 			}
 
+#endif
 			if (input.IsPauseGame(null))
 			{
 				PauseCurrentGame();
@@ -491,6 +507,7 @@ namespace CatapultGame
 			}
 		}
 
+#if !SINGLE_PLAYER
 		Vector3 catapultInfoVector = Vector3.Zero;
 		void UpdateNetworkSession()
 		{
@@ -575,6 +592,7 @@ namespace CatapultGame
 			}
 		}
 
+#endif
 		/// <summary>
 		/// A shot reached the ground. In a LAN game the machine that fired decides where the crater goes
 		/// and tells the other one, so both battlefields stay identical even if the two flights drift a pixel apart.
@@ -584,6 +602,7 @@ namespace CatapultGame
 			// Every boulder that lands shakes the view a little, harder if it came in fast
 			AddShake(1.5f + 2.5f * MathHelper.Clamp((speed - 200f) / 400f, 0f, 1f));
 
+#if !SINGLE_PLAYER
 			if (IsMultiplayer)
 			{
 				bool firedHere = playerOneFired == NetworkSession.IsHost;
@@ -599,10 +618,12 @@ namespace CatapultGame
 						gamer.SendData(writer, SendDataOptions.ReliableInOrder);
 				}
 			}
+#endif
 
 			Terrain.Carve(position.X, speed);
 		}
 
+#if !SINGLE_PLAYER
 		/// <summary>
 		/// The shot angle, if the sender included it. An older build does not, and always fired at 45 degrees.
 		/// </summary>
@@ -709,6 +730,7 @@ namespace CatapultGame
 				}
 			}
 		}
+#endif
 		// End networking methods
 
 		private void UpdateClouds(float elapsedTime)
@@ -860,7 +882,11 @@ namespace CatapultGame
 				// If the other player walked out, the one who stayed wins whatever the score
 				bool oneWins;
 				if (opponentLeft)
+#if SINGLE_PLAYER
+					oneWins = true;
+#else
 					oneWins = !IsMultiplayer || NetworkSession == null || NetworkSession.IsHost;
+#endif
 				else
 					oneWins = playerOne.Score > playerTwo.Score;
 
@@ -973,6 +999,7 @@ namespace CatapultGame
 			if (gameOver)
 			{
 				Texture2D texture;
+#if !SINGLE_PLAYER
 				if (IsMultiplayer)
 				{
 					if (opponentLeft)
@@ -1013,6 +1040,7 @@ namespace CatapultGame
 					}*/
 				}
 				else
+#endif
 				{
 					if (playerOne.Score > playerTwo.Score)
 					{
@@ -1059,6 +1087,7 @@ namespace CatapultGame
 					text = "NONE";
 					DrawString(hudFont, text, windArrowPosition, Color.Black);
 				}
+#if !SINGLE_PLAYER
 				if (IsMultiplayer)
 				{
 					if (isFirstPlayerTurn)
@@ -1088,6 +1117,7 @@ namespace CatapultGame
 
 				}
 				else
+#endif
 				{
 					if (isFirstPlayerTurn)
 					{
@@ -1174,8 +1204,10 @@ namespace CatapultGame
 			// A LAN game was started through the loading screen, which cleared the menus
 			// away, so there is nothing underneath to return to: end the session and
 			// rebuild the main menu instead.
+#if !SINGLE_PLAYER
 			if (NetworkSession != null && NetworkSessionComponent.EndSession(ScreenManager))
 				return;
+#endif
 
 			ExitScreen();
 		}

@@ -10,7 +10,9 @@ using System.Threading;
 using System.Diagnostics;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+#if !SINGLE_PLAYER
 using Microsoft.Xna.Framework.Net;
+#endif
 
 namespace CatapultGame
 {
@@ -37,7 +39,9 @@ namespace CatapultGame
 		Thread backgroundThread;
 		EventWaitHandle backgroundThreadExit;
 		GraphicsDevice graphicsDevice;
+#if !SINGLE_PLAYER
 		NetworkSession networkSession;
+#endif
 		IMessageDisplay messageDisplay;
 		GameTime loadStartTime;
 		TimeSpan loadAnimationTimer;
@@ -60,6 +64,7 @@ namespace CatapultGame
 			// If this is going to be a slow load operation, create a background
 			// thread that will update the network session and draw the load screen
 			// animation while the load is taking place.
+#if !SINGLE_PLAYER
 			if (loadingIsSlow)
 			{
 				backgroundThread = new Thread(BackgroundWorkerThread);
@@ -75,6 +80,7 @@ namespace CatapultGame
 				messageDisplay = (IMessageDisplay)services.GetService(
 							typeof(IMessageDisplay));
 			}
+#endif
 		}
 
 
@@ -219,7 +225,9 @@ namespace CatapultGame
 
 				//DrawLoadAnimation (gameTime);
 
+#if !SINGLE_PLAYER
 				UpdateNetworkSession();
+#endif
 			}
 		}
 
@@ -278,6 +286,7 @@ namespace CatapultGame
 		}
 
 
+#if !SINGLE_PLAYER
 		/// <summary>
 		/// Updates the network session from the background worker thread, to avoid
 		/// disconnecting due to network timeouts even if loading takes a long time.
@@ -301,5 +310,6 @@ namespace CatapultGame
 				networkSession = null;
 			}
 		}
+#endif
 	}
 }

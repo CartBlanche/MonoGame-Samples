@@ -10,7 +10,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Microsoft.Xna.Framework;
+#if !SINGLE_PLAYER
 using Microsoft.Xna.Framework.Net;
+#endif
 
 namespace CatapultGame
 {
@@ -105,6 +107,7 @@ namespace CatapultGame
 
         protected override void OnCancel(PlayerIndex playerIndex)
         {
+#if !SINGLE_PLAYER
             // Tear down our network session
             NetworkSession session = ScreenManager.Game.Services.GetService(typeof(NetworkSession)) as NetworkSession;
             if (session != null && NetworkSessionComponent.EndSession(ScreenManager))
@@ -123,6 +126,7 @@ namespace CatapultGame
                 session.Dispose();
                 ScreenManager.Game.Services.RemoveService(typeof(NetworkSession));
             }
+#endif
             AudioManager.StopSounds();
             ScreenManager.AddScreen(new MainMenuScreen(), null);
             ExitScreen();
