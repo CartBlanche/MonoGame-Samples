@@ -190,6 +190,35 @@ namespace CatapultGame
             }
         }
 
+        /// <summary>How long this shot has been in the air, in game seconds.</summary>
+        public float FlightTime { get { return flightTime; } }
+
+        /// <summary>
+        /// Plays the shot forward from the start, the way the real flight will go, and says where and
+        /// when it will reach the ground. position is where the flight stops, as for a real impact.
+        /// </summary>
+        public bool PredictImpact(float wind, float gravity, out Vector2 position, out float time)
+        {
+            int direction = isAI ? -1 : 1;
+            const float step = 1f / 60f;
+            Vector2 previous = projectileStartPosition;
+            position = previous;
+            time = 0f;
+
+            for (float t = step; t < 15f; t += step)
+            {
+                Vector2 p = Ballistics.PositionAt(projectileStartPosition, direction, projectileVelocity, wind, gravity, t);
+                if (p.Y >= Terrain.SurfaceY(p.X))
+                {
+                    position = previous;
+                    time = t;
+                    return true;
+                }
+                previous = p;
+            }
+            return false;
+        }
+
         public void Fire(float velocityX, float velocityY)
         {
             // Set initial projectile velocity

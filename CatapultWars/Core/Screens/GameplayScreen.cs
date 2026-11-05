@@ -54,6 +54,14 @@ namespace CatapultGame
 		int lastScoreOne;
 		int lastScoreTwo;
 		bool menToldMatchOver;
+
+		// Slow motion and zoom for a direct hit
+		const float SlowMotionScale = 0.25f;
+		const float MaxZoom = 1.7f;
+		const float SlowMotionHoldAfterHit = 0.9f; // real seconds to stay slow once the shot lands
+		float timeScale = 1f;
+		float slowMotionHold;
+		Vector2 zoomFocus = new Vector2(400, 240);
 		bool wasHit;
 		Texture2D windArrowTexture;
 		Texture2D defeatTexture;
@@ -334,9 +342,11 @@ namespace CatapultGame
 				changeTurn = false;
 			}
 
-			// Update the players
-			playerOne.Update(gameTime);
-			playerTwo.Update(gameTime);
+			// Update the players, in slow motion if a direct hit is about to land
+			UpdateSlowMotion(elapsed);
+			var playTime = new GameTime(gameTime.TotalGameTime, TimeSpan.FromSeconds(elapsed * timeScale));
+			playerOne.Update(playTime);
+			playerTwo.Update(playTime);
 
 			if (decor != null)
 			{
@@ -366,14 +376,17 @@ namespace CatapultGame
 		/// <param name="gameTime">The elapsed time since last Draw</param>
 		public override void Draw(GameTime gameTime)
 		{
-			ScreenManager.SpriteBatch.Begin(SpriteSortMode.Deferred, null, null, null, null, null, ScreenManager.GlobalTransformation);
-
-			// Render all parts of the screen
+			// The battlefield, which zooms in for a direct hit
+			ScreenManager.SpriteBatch.Begin(SpriteSortMode.Deferred, null, null, null, null, null, WorldTransform());
 			DrawBackground();
 			manOne.Draw(ScreenManager.SpriteBatch);
 			manTwo.Draw(ScreenManager.SpriteBatch);
 			DrawComputer(gameTime);
 			DrawPlayer(gameTime);
+			ScreenManager.SpriteBatch.End();
+
+			// The HUD always stays put
+			ScreenManager.SpriteBatch.Begin(SpriteSortMode.Deferred, null, null, null, null, null, ScreenManager.GlobalTransformation);
 			DrawHud();
 			DrawExitButton();
 
@@ -705,6 +718,61 @@ namespace CatapultGame
 				cloud2Position.X = -cloud2Texture.Width * 2.0f;
 			else if (cloud2Position.X < -cloud2Texture.Width * 2.0f)
 				cloud2Position.X = ScreenManager.BASE_BUFFER_WIDTH;
+		}
+
+		/// <summary>
+		/// Eases into slow motion while a shot that will hit a catapult makes its last approach, holds it
+		/// for a moment after the hit, then eases back to normal speed.
+		/// </summary>
+		void UpdateSlowMotion(float realElapsed)
+		{
+			Catapult incoming = null;
+			if (playerOne.Catapult.DirectHitIncoming)
+				incoming = playerOne.Catapult;
+			else if (playerTwo.Catapult.DirectHitIncoming)
+				incoming = playerTwo.Catapult;
+
+			float target = 1f;
+			if (incoming != null && !gameOver)
+			{
+				slowMotionHold = SlowMotionHoldAfterHit;
+				target = SlowMotionScale;
+
+				// Look between the shot and where it is about to land
+				zoomFocus = Vector2.Lerp(incoming.PredictedImpact, incoming.ProjectilePosition, 0.35f);
+			}
+			else if (slowMotionHold > 0f && !gameOver)
+			{
+				slowMotionHold -= realElapsed;
+				target = SlowMotionScale;
+			}
+
+			// Slow down fast, speed up gently
+			float rate = target < timeScale ? 8f : 2f;
+			timeScale = MathHelper.Clamp(target, timeScale - rate * realElapsed, timeScale + rate * realElapsed);
+
+			playerOne.Catapult.TimeScale = timeScale;
+			playerTwo.Catapult.TimeScale = timeScale;
+		}
+
+		/// <summary>
+		/// The view of the battlefield, zoomed in towards the shot in proportion to how slow time is running.
+		/// </summary>
+		Matrix WorldTransform()
+		{
+			float slow = MathHelper.Clamp((1f - timeScale) / (1f - SlowMotionScale), 0f, 1f);
+			float zoom = MathHelper.Lerp(1f, MaxZoom, slow * slow * (3f - 2f * slow));
+			if (zoom <= 1.001f)
+				return ScreenManager.GlobalTransformation;
+
+			// Keep the view inside the battlefield
+			float viewW = ScreenManager.BASE_BUFFER_WIDTH / zoom;
+			float viewH = ScreenManager.BASE_BUFFER_HEIGHT / zoom;
+			float left = MathHelper.Clamp(zoomFocus.X - viewW / 2f, 0f, ScreenManager.BASE_BUFFER_WIDTH - viewW);
+			float top = MathHelper.Clamp(zoomFocus.Y - viewH / 2f, 0f, ScreenManager.BASE_BUFFER_HEIGHT - viewH);
+
+			return Matrix.CreateTranslation(-left, -top, 0f) * Matrix.CreateScale(zoom, zoom, 1f)
+				* ScreenManager.GlobalTransformation;
 		}
 
 		/// <summary>

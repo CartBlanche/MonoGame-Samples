@@ -146,6 +146,39 @@ namespace CatapultGame
             }
         }
 
+        // Slow motion for a direct hit
+        public const float SlowMotionLead = 0.5f; // game seconds before impact that it begins
+        bool directHitPredicted;
+        float predictedImpactTime;
+        Vector2 predictedImpact;
+
+        /// <summary>
+        /// True while a shot that is going to hit a catapult is in its last moments of flight.
+        /// The flight is worked out when the shot is fired, so this is known before the hit happens.
+        /// </summary>
+        public bool DirectHitIncoming
+        {
+            get
+            {
+                return directHitPredicted &&
+                    (currentState & CatapultState.ProjectileFlying) != 0 &&
+                    predictedImpactTime - projectile.FlightTime <= SlowMotionLead;
+            }
+        }
+
+        /// <summary>Where the shot in the air is going to land.</summary>
+        public Vector2 PredictedImpact { get { return predictedImpact; } }
+
+        /// <summary>Where the shot in the air is now.</summary>
+        public Vector2 ProjectilePosition { get { return projectile.ProjectilePosition; } }
+
+        /// <summary>
+        /// Slows this catapult's animations as well as its shot. 1 is normal speed. Animations step by
+        /// frame, not by time, so at a lower speed they step only every so often.
+        /// </summary>
+        public float TimeScale { get; set; } = 1f;
+        float animationDebt;
+
         /// <summary>1 when this catapult fires to the right, -1 to the left.</summary>
         public int FireDirection { get { return isAI ? -1 : 1; } }
 
@@ -310,6 +343,12 @@ namespace CatapultGame
                 
             impactDust.Update((float)gameTime.ElapsedGameTime.TotalSeconds);
 
+            // Whether animations step this update
+            animationDebt += TimeScale;
+            bool tick = animationDebt >= 1f;
+            if (tick)
+                animationDebt -= 1f;
+
             switch (currentState)
             {
                 case CatapultState.Idle:
@@ -336,7 +375,8 @@ namespace CatapultGame
                     }
                     else
                     {
-                        animations["Aim"].Update();
+                        if (tick)
+                            animations["Aim"].Update();
                         startStall = AimReachedShotStrength();
                         currentState = (startStall) ? 
                             CatapultState.Stalling : CatapultState.Aiming;
@@ -359,7 +399,8 @@ namespace CatapultGame
                         StartFiringFromLastAimPosition();
                     }
 
-                    animations["Fire"].Update();
+                    if (tick)
+                        animations["Fire"].Update();
 
                     // If in the "split" point of the animation start 
                     // projectile fire sequence
@@ -373,7 +414,8 @@ namespace CatapultGame
                     break;
                 case CatapultState.Firing | CatapultState.ProjectileFlying:
                     // Progress Fire animation                    
-                    animations["Fire"].Update();
+                    if (tick)
+                        animations["Fire"].Update();
 
                     // Update projectile velocity & position in flight
                     projectile.UpdateProjectileFlightData(gameTime, wind, 
@@ -441,8 +483,11 @@ namespace CatapultGame
                         postUpdateStateChange = CatapultState.Reset;
                     }
 
-                    animations["Destroyed"].Update();
-                    animations["hitSmoke"].Update();
+                    if (tick)
+                    {
+                        animations["Destroyed"].Update();
+                        animations["hitSmoke"].Update();
+                    }
 
                     break;
                 case CatapultState.Reset:
@@ -571,6 +616,27 @@ namespace CatapultGame
             LastFiredAngle = angle;
             Vector2 launch = Ballistics.LaunchVelocity(velocity, angle);
             projectile.Fire(launch.X, launch.Y);
+            directHitPredicted = PredictDirectHit();
+        }
+
+        /// <summary>
+        /// Works out, as the shot leaves, whether it will hit a catapult where it lands.
+        /// </summary>
+        bool PredictDirectHit()
+        {
+            if (!projectile.PredictImpact(wind, gravity, out predictedImpact, out predictedImpactTime))
+                return false;
+
+            var sphere = new BoundingSphere(new Vector3(predictedImpact, 0), projectile.HitRadius);
+            return sphere.Intersects(CatapultBox(catapultPosition)) ||
+                   sphere.Intersects(CatapultBox(enemy.Catapult.Position));
+        }
+
+        BoundingBox CatapultBox(Vector2 position)
+        {
+            var frame = animations["Fire"].FrameSize;
+            return new BoundingBox(new Vector3(position, 0),
+                new Vector3(position + new Vector2(frame.X, frame.Y), 0));
         }
 
         /// <summary>
