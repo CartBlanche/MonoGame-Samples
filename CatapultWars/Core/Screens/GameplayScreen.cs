@@ -48,6 +48,12 @@ namespace CatapultGame
 		Texture2D hudBackgroundTexture;
 		Texture2D ammoTypeTexture;
 		HalloweenDecor decor;
+		// The crew beside each catapult, and the scores they last reacted to
+		CatapultMan manOne;
+		CatapultMan manTwo;
+		int lastScoreOne;
+		int lastScoreTwo;
+		bool menToldMatchOver;
 		bool wasHit;
 		Texture2D windArrowTexture;
 		Texture2D defeatTexture;
@@ -211,6 +217,15 @@ namespace CatapultGame
 			playerOne.Enemy = playerTwo;
 			playerTwo.Enemy = playerOne;
 
+			// The crew stand just outside their catapults, facing the enemy
+			manOne = new CatapultMan(ScreenManager.GraphicsDevice, Battlefield.LeftMan, true, true);
+			manTwo = new CatapultMan(ScreenManager.GraphicsDevice, Battlefield.RightMan, false, false);
+			lastScoreOne = lastScoreTwo = 0;
+			menToldMatchOver = false;
+
+			// A new layout every game. In a LAN game the host's is sent across in the environment update.
+			ApplyLayout(Battlefield.NewSeed());
+
 			// Shots that reach the ground dig craters
 			playerOne.Catapult.GroundImpact += (position, speed) => OnGroundImpact(true, position, speed);
 			playerTwo.Catapult.GroundImpact += (position, speed) => OnGroundImpact(false, position, speed);
@@ -335,6 +350,8 @@ namespace CatapultGame
 				wasHit = hitNow;
 			}
 
+			UpdateMen(elapsed);
+
 			// Updates the cloud positions
 			UpdateClouds(elapsed);
 
@@ -353,6 +370,8 @@ namespace CatapultGame
 
 			// Render all parts of the screen
 			DrawBackground();
+			manOne.Draw(ScreenManager.SpriteBatch);
+			manTwo.Draw(ScreenManager.SpriteBatch);
 			DrawComputer(gameTime);
 			DrawPlayer(gameTime);
 			DrawHud();
@@ -467,6 +486,7 @@ namespace CatapultGame
 					writer.Write(cloud1Position);
 					writer.Write(cloud2Position);
 					writer.Write(MatchSettings.WinScore);
+					writer.Write(Battlefield.Seed);
 
 					// Update our locally controlled catapults, and send their
 					// latest position data to everyone in the session.
@@ -652,6 +672,13 @@ namespace CatapultGame
 						// The host's points-to-win rides along; an older host does not send it
 						if (packetReader.Position < packetReader.Length)
 							MatchSettings.WinScore = packetReader.ReadInt32();
+						// So does the layout of the battlefield; build the host's if it is not the one we have
+						if (packetReader.Position < packetReader.Length)
+						{
+							int seed = packetReader.ReadInt32();
+							if (seed != Battlefield.Seed)
+								ApplyLayout(seed);
+						}
 						// Set new wind value to the players and
 						playerOne.Catapult.Wind = playerTwo.Catapult.Wind = wind.X > 0 ? wind.Y : -wind.Y;
 						break;
@@ -678,6 +705,55 @@ namespace CatapultGame
 				cloud2Position.X = -cloud2Texture.Width * 2.0f;
 			else if (cloud2Position.X < -cloud2Texture.Width * 2.0f)
 				cloud2Position.X = ScreenManager.BASE_BUFFER_WIDTH;
+		}
+
+		/// <summary>
+		/// Sets out the battlefield for a seed: the hill, the catapults and their crews.
+		/// </summary>
+		void ApplyLayout(int seed)
+		{
+			Battlefield.Generate(seed);
+			Terrain.Reset();
+			playerOne.Catapult.Relocate(Battlefield.LeftCatapult);
+			playerTwo.Catapult.Relocate(Battlefield.RightCatapult);
+			manOne.MoveTo(Battlefield.LeftMan);
+			manTwo.MoveTo(Battlefield.RightMan);
+		}
+
+		/// <summary>
+		/// The crew cheer when their side scores and shake their fists when the other side does.
+		/// When the match is over the winner cheers and the loser shakes fists until the screen is dismissed.
+		/// </summary>
+		void UpdateMen(float elapsed)
+		{
+			if (playerOne.Score > lastScoreOne || playerTwo.Score > lastScoreTwo)
+			{
+				bool oneScored = playerOne.Score > lastScoreOne;
+				bool twoScored = playerTwo.Score > lastScoreTwo;
+				lastScoreOne = playerOne.Score;
+				lastScoreTwo = playerTwo.Score;
+
+				if (oneScored && !twoScored) { manOne.Cheer(2.5f); manTwo.ShakeFists(2.5f); }
+				else if (twoScored && !oneScored) { manTwo.Cheer(2.5f); manOne.ShakeFists(2.5f); }
+			}
+
+			if (gameOver && !menToldMatchOver)
+			{
+				menToldMatchOver = true;
+
+				// If the other player walked out, the one who stayed wins whatever the score
+				bool oneWins;
+				if (opponentLeft)
+					oneWins = !IsMultiplayer || NetworkSession == null || NetworkSession.IsHost;
+				else
+					oneWins = playerOne.Score > playerTwo.Score;
+
+				if (oneWins) { manOne.CheerForever(); manTwo.ShakeFistsForever(); }
+				else { manTwo.CheerForever(); manOne.ShakeFistsForever(); }
+			}
+
+			manOne.Update(elapsed);
+			manTwo.Update(elapsed);
 		}
 
 		/// <summary>

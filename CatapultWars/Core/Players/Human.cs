@@ -58,10 +58,10 @@ namespace CatapultGame
 			this.playerSide = playerSide;
 
 			if (playerSide == PlayerSide.Left) {
-				catapultPosition = new Vector2 (140, 332);
+				catapultPosition = Battlefield.LeftCatapult;
 				idleTextureName = "Textures/Catapults/Blue/blueIdle/blueIdle";
 			} else {
-				catapultPosition = new Vector2 (600, 332);
+				catapultPosition = Battlefield.RightCatapult;
 				spriteEffect = SpriteEffects.FlipHorizontally;
 				idleTextureName = "Textures/Catapults/Red/redIdle/redIdle";
 			}

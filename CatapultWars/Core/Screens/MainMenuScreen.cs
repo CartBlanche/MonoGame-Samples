@@ -82,5 +82,13 @@ namespace CatapultGame
         {
             ScreenManager.Game.Exit();
         }
+
+        /// <summary>
+        /// There is nowhere to go back to from here, and Escape should not close the game by accident.
+        /// Choosing Exit still does.
+        /// </summary>
+        protected override void OnBack(PlayerIndex playerIndex)
+        {
+        }
     }
 }

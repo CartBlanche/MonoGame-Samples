@@ -122,6 +122,20 @@ namespace CatapultGame
             }
         }
 
+        // Shots leave from a point just in front of the catapult's arm
+        Vector2 ProjectileStartFor(Vector2 position)
+        {
+            return position + new Vector2(isAI ? 30 : 35, 8);
+        }
+
+        /// <summary>Moves the catapult, and where its shots start from, to a new spot on the battlefield.</summary>
+        public void Relocate(Vector2 position)
+        {
+            catapultPosition = position;
+            if (projectile != null)
+                projectile.ProjectileStartPosition = ProjectileStartFor(position);
+        }
+
         /// <summary>The middle of the catapult's frame. Aiming is drawn and measured from here.</summary>
         public Vector2 Centre
         {
@@ -266,11 +280,7 @@ namespace CatapultGame
             idleTexture = curGame.Content.Load<Texture2D>(idleTextureName);
 
             // Initialize the projectile
-            Vector2 projectileStartPosition;
-            if (isAI)
-                projectileStartPosition = new Vector2(630, 340);
-            else
-                projectileStartPosition = new Vector2(175, 340);
+            Vector2 projectileStartPosition = ProjectileStartFor(catapultPosition);
 
             projectile = new Projectile(curGame, spriteBatch, "Textures/Ammo/rock_ammo",
               projectileStartPosition, animations["Fire"].FrameSize.Y, isAI, gravity);

@@ -71,23 +71,21 @@ namespace CatapultGame
         /// </summary>
         public override void HandleInput(InputState input)
         {
-            // we cancel the current menu screen if the user presses the back button
+            // Escape, or the back button on a gamepad, goes back
             PlayerIndex player;
-            if (input.IsNewButtonPress(Buttons.Back, ControllingPlayer, out player))
+            if (input.IsMenuCancel(ControllingPlayer, out player))
             {
-                OnCancel(player);
+                OnBack(player);
             }
 
-            if (input.IsMenuDown(ControllingPlayer))
+            // The menu wraps round: down from the last entry goes to the first, and up from the first to the last
+            if (menuEntries.Count > 0)
             {
-                if (selectedEntry < menuEntries.Count - 1)
-                    selectedEntry += 1;
-            }
+                if (input.IsMenuDown(ControllingPlayer))
+                    selectedEntry = (selectedEntry + 1) % menuEntries.Count;
 
-            if (input.IsMenuUp(ControllingPlayer))
-            {
-                if (selectedEntry > 0)
-                    selectedEntry -= 1;
+                if (input.IsMenuUp(ControllingPlayer))
+                    selectedEntry = (selectedEntry + menuEntries.Count - 1) % menuEntries.Count;
             }
 
             if (input.IsMenuSelect(ControllingPlayer, out player))
@@ -165,6 +163,15 @@ namespace CatapultGame
         protected virtual void OnSelectEntry(int entryIndex, PlayerIndex playerIndex)
         {
             menuEntries[entryIndex].OnSelectEntry(playerIndex);
+        }
+
+        /// <summary>
+        /// Handler for Escape or the gamepad back button. By default it cancels the menu,
+        /// but a menu where cancelling would be drastic can do something gentler.
+        /// </summary>
+        protected virtual void OnBack(PlayerIndex playerIndex)
+        {
+            OnCancel(playerIndex);
         }
 
         /// <summary>

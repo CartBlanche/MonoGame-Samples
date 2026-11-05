@@ -95,6 +95,14 @@ namespace CatapultGame
         /// Handles "Exit" menu item selection
         /// </summary>
         /// 
+        /// <summary>
+        /// Escape closes the pause menu and carries on playing, rather than quitting the game.
+        /// </summary>
+        protected override void OnBack(PlayerIndex playerIndex)
+        {
+            StartGameMenuEntrySelected(this, EventArgs.Empty);
+        }
+
         protected override void OnCancel(PlayerIndex playerIndex)
         {
             // Tear down our network session

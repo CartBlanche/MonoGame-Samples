@@ -16,11 +16,6 @@ namespace CatapultGame
         /// <summary>The flat ground line, where the catapults stand. Screen y, so bigger is lower.</summary>
         public const float GroundY = 392f;
 
-        // The hill that sits between the two catapults
-        const float HillCentre = 402f;
-        const float HillHalfWidth = 125f;
-        const float HillHeight = 80f;
-
         // The drawn strip. It covers every row a hill or crater can reach.
         const int TopY = 280;
         const int BottomY = 480;
@@ -39,11 +34,7 @@ namespace CatapultGame
         {
             for (int x = 0; x < Width; x++)
             {
-                float d = Math.Abs(x - HillCentre);
-                float height = 0f;
-                if (d < HillHalfWidth)
-                    height = HillHeight * 0.5f * (1f + (float)Math.Cos(Math.PI * d / HillHalfWidth));
-                surface[x] = GroundY - height;
+                surface[x] = GroundY - Battlefield.HillAt(x);
             }
 
             if (texture != null)
@@ -54,8 +45,7 @@ namespace CatapultGame
             dirty = true;
         }
 
-        // Ground under the catapults is never dug out, so they never float
-        static readonly float[][] pads = { new[] { 125f, 230f }, new[] { 590f, 730f } };
+        // Ground under the catapults and their crews is never dug out, so nobody floats
         const float MaxDepth = 36f; // deepest a crater can go below the flat ground line
 
         /// <summary>
@@ -86,10 +76,8 @@ namespace CatapultGame
 
         static bool OnPad(int x)
         {
-        	foreach (var pad in pads)
-        		if (x >= pad[0] && x <= pad[1])
-        			return true;
-        	return false;
+        return (x >= Battlefield.LeftPad.X && x <= Battlefield.LeftPad.Y) ||
+                   (x >= Battlefield.RightPad.X && x <= Battlefield.RightPad.Y);
         }
 
         /// <summary>The ground height at x, smoothed between columns. Off screen it is the flat ground line.</summary>

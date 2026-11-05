@@ -38,7 +38,7 @@ namespace CatapultGame
             return instance;
         }
 
-        delegate bool Shape(float x, float y);
+        internal delegate bool Shape(float x, float y);
 
         HalloweenArt(GraphicsDevice gd)
         {
@@ -202,7 +202,7 @@ namespace CatapultGame
             return pts.ToArray();
         }
 
-        static Shape Ellipse(float cx, float cy, float rx, float ry)
+        internal static Shape Ellipse(float cx, float cy, float rx, float ry)
         {
             return (x, y) =>
             {
@@ -211,12 +211,12 @@ namespace CatapultGame
             };
         }
 
-        static Shape Rect(float x0, float y0, float x1, float y1)
+        internal static Shape Rect(float x0, float y0, float x1, float y1)
         {
             return (x, y) => x >= x0 && x <= x1 && y >= y0 && y <= y1;
         }
 
-        static Shape Poly(params Vector2[] p)
+        internal static Shape Poly(params Vector2[] p)
         {
             return (x, y) =>
             {
@@ -234,7 +234,7 @@ namespace CatapultGame
         /// <summary>
         /// Paints opaque shapes back to front with 3x3 supersampling for smooth edges.
         /// </summary>
-        static Texture2D Render(GraphicsDevice gd, int w, int h, params (Shape shape, Color color)[] layers)
+        internal static Texture2D Render(GraphicsDevice gd, int w, int h, params (Shape shape, Color color)[] layers)
         {
             const int ss = 3;
             Color[] data = new Color[w * h];

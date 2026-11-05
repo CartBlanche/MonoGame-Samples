@@ -42,7 +42,7 @@ namespace CatapultGame
         {
             Catapult = new Catapult(game, screenSpriteBatch,
                             "Textures/Catapults/Red/redIdle/redIdle",
-                            new Vector2(600, 332), SpriteEffects.FlipHorizontally, true);
+                            Battlefield.RightCatapult, SpriteEffects.FlipHorizontally, true);
         }
 
         public override void Initialize()
