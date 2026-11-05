@@ -25,6 +25,7 @@ No MonoGame WebGL binaries are available yet (user is waiting for the `MonoGame.
 - Uncommitted editor work (the one commit): loader, validation, heightmap/checkpoints/author metadata, props keep-out, Custom button on TrackSelection (+ Enter there), custom list preview + paging, LineManager2D limit 64->1024, UIRenderer RenderPanel public + RenderPageArrow, TrackTool, docs, prototype.
 
 ## Other open items
+- **Speed units (km/h and mph), game feature not built.** Work out how best to support both in the UI, probably a setting on the Options screen that toggles between them. It needs an in-game change: the speed is shown in mph in `GameScreen.cs` (HUD, via `CarPhysics.MeterPerSecToMph`) and `CarSelection.cs` (car stats with "mph" text); internally the game uses metres per second. Decide the default (by system region?), and make sure the setting is saved with the other options.
 - Host-only sending of custom tracks to LAN clients (design at the end of `Track-Editor-Plan.md`). Check the LAN work is committed first.
 - Optional extras for the custom list: terrain thumbnail, elevation profile.
 - Lobby screen changes (Back/Ready on shared buttons) were not visually tested; needs two instances.
