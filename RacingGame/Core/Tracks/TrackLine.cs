@@ -574,6 +574,30 @@ namespace RacingGame.Tracks
                 new Vector2(currentRoadUTexValue, 0),
                 points[0].roadWidth));
         }
+        /// <summary>
+        /// Margin (units) kept clear between the road edge and the centre of a prop.
+        /// </summary>
+        const float PropRoadMargin = 2.0f;
+
+        /// <summary>
+        /// Is a prop's position on the road (or within PropRoadMargin of it)?
+        /// Gantries, signs and start/finish scenery belong at the road, so they are exempt.
+        /// </summary>
+        private bool IsOnRoad(string modelName, Vector3 pos)
+        {
+            if (modelName.StartsWith("Banner") || modelName.StartsWith("Sign") ||
+                modelName.StartsWith("StartLight") || modelName == "Goal")
+                return false;
+            for (int num = 0; num < points.Count; num++)
+            {
+                float half = TrackVertex.RoadWidthScale * points[num].roadWidth / 2 + PropRoadMargin;
+                float dx = points[num].pos.X - pos.X, dy = points[num].pos.Y - pos.Y;
+                if (dx * dx + dy * dy < half * half)
+                    return true;
+            }
+            return false;
+        }
+
         private void GenerateTunnelsAndLandscapeObjects(
             List<TrackData.RoadHelper> roadHelpers,
             List<TrackData.NeutralObject> neutralObjects,
@@ -625,11 +649,22 @@ namespace RacingGame.Tracks
                     remType, helperStartedNum, points.Count - 3));
             if (landscape != null)
             {
+                int keptOut = 0;
                 for (int num = 0; num < neutralObjects.Count; num++)
                 {
                     TrackData.NeutralObject obj = neutralObjects[num];
+                    // Custom tracks: never put a prop on the road (hand-written or
+                    // generated files can get this wrong). The built-in tracks
+                    // are left exactly as they were made.
+                    if (landscape.IsCustomTrack && IsOnRoad(obj.modelName, obj.matrix.Translation))
+                    {
+                        keptOut++;
+                        continue;
+                    }
                     landscape.AddObjectToRender(obj.modelName, obj.matrix, false);
                 }
+                if (keptOut > 0)
+                    Log.Write("Custom track: " + keptOut + " prop(s) were on the road and were left out.");
             }
         }
     }

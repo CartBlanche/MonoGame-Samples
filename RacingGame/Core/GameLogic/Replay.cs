@@ -30,6 +30,11 @@ namespace RacingGame.GameLogic
         public const float TrackMatrixIntervals = 0.2f;
 
         /// <summary>
+        /// Speed (units per second) of the default ghost on custom tracks.
+        /// </summary>
+        const float CustomTrackGhostSpeed = 45.0f;
+
+        /// <summary>
         /// Replay filenames for each of the tracks
         /// </summary>
         static readonly string[] ReplayFilenames = new string[]
@@ -209,7 +214,7 @@ namespace RacingGame.GameLogic
             FileHelper.StorageContainerMRE.Set();
 
             // Load if possible
-            if (!replayFileFound && File.Exists(Path.Combine(
+            if (!replayFileFound && trackNum >= 0 && File.Exists(Path.Combine(
                 Directories.ContentDirectory, ReplayFilenames[trackNum])))
             {
                 using (Stream stream = TitleContainer.OpenStream(
@@ -238,7 +243,11 @@ namespace RacingGame.GameLogic
             {
                 // Create new default replay for this track!
                 // Get all track positions based on the current top highscore time!
-                lapTime = Highscores.GetTopLapTime(trackNum);
+                // Custom tracks (trackNum < 0) have no highscores yet: the
+                // ghost drives at a typical speed (~ the built-in default laps)
+                lapTime = trackNum < 0
+                    ? track.Length / CustomTrackGhostSpeed
+                    : Highscores.GetTopLapTime(trackNum);
                 int numOfMatrixValues = 1 + (int)(lapTime / TrackMatrixIntervals);
 
                 float lastTrackPos = 0.0f;
@@ -306,6 +315,10 @@ namespace RacingGame.GameLogic
         /// </summary>
         public void Save()
         {
+            // Custom tracks don't store replays yet
+            if (trackNum < 0)
+                return;
+
             FileHelper.StorageContainerMRE.WaitOne();
             FileHelper.StorageContainerMRE.Reset();
 

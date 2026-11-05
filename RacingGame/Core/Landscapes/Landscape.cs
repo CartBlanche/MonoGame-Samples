@@ -505,6 +505,30 @@ namespace RacingGame.Landscapes
         RacingGameManager.Level level = RacingGameManager.Level.Beginner;
 
         /// <summary>
+        /// True while a custom track (from the Tracks folder) is loaded
+        /// instead of one of the 3 built-in levels.
+        /// </summary>
+        bool isCustomTrack = false;
+        string customTrackName = "";
+
+        /// <summary>
+        /// Is a custom track loaded?
+        /// </summary>
+        public bool IsCustomTrack
+        {
+            get { return isCustomTrack; }
+        }
+
+        /// <summary>
+        /// Highscore/replay slot of the current track: 0-2 for the built-in
+        /// levels, -1 for custom tracks (no stored highscores or replays yet).
+        /// </summary>
+        public int HighscoreLevel
+        {
+            get { return isCustomTrack ? -1 : (int)level; }
+        }
+
+        /// <summary>
         /// Vertices
         /// </summary>
         TangentVertex[] vertices = new TangentVertex[GridWidth * GridHeight];
@@ -617,7 +641,7 @@ namespace RacingGame.Landscapes
             // (not in a LAN race: its laps are not single-player times)
             bool multiplayer = RacingGameManager.Player.MultiplayerRace;
             if (!multiplayer)
-                Highscores.SubmitHighscore((int)level,
+                Highscores.SubmitHighscore(HighscoreLevel,
                     (int)RacingGameManager.Player.GameTimeMilliseconds);
 
             RacingGameManager.Player.AddLapTime(thisLapTime);
@@ -641,7 +665,7 @@ namespace RacingGame.Landscapes
             }
 
             // And start a new replay for this round
-            newReplay = new Replay((int)level, true, track);
+            newReplay = new Replay(HighscoreLevel, true, track);
         }
 
         /// <summary>
@@ -681,7 +705,7 @@ namespace RacingGame.Landscapes
         {
             get
             {
-                return level.ToString();
+                return isCustomTrack ? customTrackName : level.ToString();
             }
         }
 
@@ -816,13 +840,92 @@ namespace RacingGame.Landscapes
         /// <param name="setLevel">Level we want to load</param>
         internal Landscape(RacingGameManager.Level setLevel)
         {
-            byte[] heights = new byte[GridWidth * GridHeight];
+            // The shipped terrain is kept so we can switch back to it after
+            // a custom track with its own heightmap (see ApplyTerrain).
+            defaultHeights = new byte[HeightmapSize];
             using (Stream file = TitleContainer.OpenStream(
                 Path.Combine("Content", "LandscapeHeights.data")))
             {
-                file.ReadExactly(heights, 0, GridWidth * GridHeight);
+                file.ReadExactly(defaultHeights, 0, HeightmapSize);
             }
+            BuildTerrain(defaultHeights);
+            usingDefaultTerrain = true;
 
+            // Load track based on the level selection and set car pos with
+            // help of the ReloadLevel method.
+            ReloadLevel(setLevel);
+            // Just set one giant plane for the whole city!
+            cityPlane = CreateCityPlane();
+        }
+
+        /// <summary>
+        /// One giant ground plane at the first big building, or null.
+        /// </summary>
+        private PlaneRenderer CreateCityPlane()
+        {
+            foreach (LandscapeObject obj in landscapeObjects)
+                if (obj.IsBigBuilding)
+                {
+                    return new PlaneRenderer(
+                        obj.Position,
+                        new Plane(new Vector3(0, 0, 1), 0.1f),
+                        cityMat, Math.Min(obj.Position.X, obj.Position.Y));
+                }
+            return null;
+        }
+        /// <summary>
+        /// Number of bytes in a heightmap (257 x 257, one byte per point,
+        /// index = x + y * 257, height = byte / 255 * 300).
+        /// </summary>
+        public const int HeightmapSize = GridWidth * GridHeight;
+
+        /// <summary>
+        /// The shipped terrain (LandscapeHeights.data).
+        /// </summary>
+        byte[] defaultHeights;
+
+        /// <summary>
+        /// Is the shipped terrain currently active (not a custom heightmap)?
+        /// </summary>
+        bool usingDefaultTerrain = true;
+
+        /// <summary>
+        /// City ground plane of the shipped terrain, kept while a custom
+        /// terrain is active.
+        /// </summary>
+        PlaneRenderer defaultCityPlane = null;
+
+        /// <summary>
+        /// Make the given terrain the active one: null is the shipped terrain.
+        /// Must be called BEFORE the track is loaded, because the road and
+        /// the scenery are placed above the terrain height.
+        /// </summary>
+        private void ApplyTerrain(byte[] heights)
+        {
+            if (heights == null)
+            {
+                if (usingDefaultTerrain)
+                    return;
+                BuildTerrain(defaultHeights);
+                cityPlane = defaultCityPlane;
+                usingDefaultTerrain = true;
+            }
+            else
+            {
+                if (usingDefaultTerrain)
+                    defaultCityPlane = cityPlane;
+                BuildTerrain(heights);
+                // Own terrain: no city ground until a track building defines one
+                cityPlane = null;
+                usingDefaultTerrain = false;
+            }
+        }
+
+        /// <summary>
+        /// Build height grid, normals and the GPU buffers from a heightmap.
+        /// </summary>
+        private void BuildTerrain(byte[] heights)
+        {
             mapHeights = new float[GridWidth, GridHeight];
             // Build our tangent vertices
             for (int x = 0; x < GridWidth; x++)
@@ -902,12 +1005,17 @@ namespace RacingGame.Landscapes
             //    ResourceUsage.WriteOnly,
             //    ResourceManagementMode.Automatic);
             //vertexBuffer.SetData(vertices);
-            vertexBuffer = new VertexBuffer(
-                BaseGame.Device,
-                typeof(TangentVertex),
-                vertices.Length, 
-                BufferUsage.WriteOnly);
+            // (the vertex buffer is created once and refilled for a new terrain)
+            if (vertexBuffer == null)
+                vertexBuffer = new VertexBuffer(
+                    BaseGame.Device,
+                    typeof(TangentVertex),
+                    vertices.Length,
+                    BufferUsage.WriteOnly);
             vertexBuffer.SetData(vertices);
+            // The index buffer is the same for every terrain
+            if (indexBuffer != null)
+                return;
             // Calc index buffer (Note: have to use uint, ushort is not sufficiant
             // in our case because we have MANY vertices ^^)
             uint[] indices = new uint[(GridWidth - 1) * (GridHeight - 1) * 6];
@@ -943,20 +1051,8 @@ namespace RacingGame.Landscapes
                 BufferUsage.WriteOnly);
 
             indexBuffer.SetData(indices);
-            // Load track based on the level selection and set car pos with
-            // help of the ReloadLevel method.
-            ReloadLevel(setLevel);
-            // Just set one giant plane for the whole city!
-            foreach (LandscapeObject obj in landscapeObjects)
-                if (obj.IsBigBuilding)
-                {
-                    cityPlane = new PlaneRenderer(
-                        obj.Position,
-                        new Plane(new Vector3(0, 0, 1), 0.1f),
-                        cityMat, Math.Min(obj.Position.X, obj.Position.Y));
-                    break;
-                }
         }
+
         /// <summary>
         /// Reload level
         /// </summary>
@@ -964,6 +1060,11 @@ namespace RacingGame.Landscapes
         internal void ReloadLevel(RacingGameManager.Level setLevel)
         {
             level = setLevel;
+            isCustomTrack = false;
+            customTrackName = "";
+
+            // Terrain first (the shipped one), the road is placed above it
+            ApplyTerrain(null);
 
             // Load track based on the level selection, do this after
             // we got all the height data because the track might be adjusted.
@@ -972,9 +1073,44 @@ namespace RacingGame.Landscapes
             else
                 track.Reload("Track" + level.ToString(), this);
 
+            FinishTrackLoad();
+        }
+
+        /// <summary>
+        /// Load a custom track (from the user's Tracks folder, see
+        /// CustomTracks) on the existing terrain.
+        /// </summary>
+        internal void ReloadCustomTrack(CustomTrackInfo info)
+        {
+            if (info == null || !info.IsPlayable)
+                throw new ArgumentException("Custom track can't be played: " +
+                    (info == null ? "none" : info.Error));
+            isCustomTrack = true;
+            customTrackName = info.Name;
+
+            // Terrain first: the track's own heightmap, or the shipped one
+            ApplyTerrain(info.Heights);
+
+            if (track == null)
+                track = new Track(info.Data, this);
+            else
+                track.Reload(info.Data, this);
+
+            // A custom terrain gets its city ground from the track's buildings
+            if (!usingDefaultTerrain)
+                cityPlane = CreateCityPlane();
+
+            FinishTrackLoad();
+        }
+
+        /// <summary>
+        /// Everything that follows loading a track, built-in or custom.
+        /// </summary>
+        private void FinishTrackLoad()
+        {
             // Load replay for this track to show best player
-            bestReplay = new Replay((int)level, false, track);
-            newReplay = new Replay((int)level, true, track);
+            bestReplay = new Replay(HighscoreLevel, false, track);
+            newReplay = new Replay(HighscoreLevel, true, track);
 
             // Kill brake tracks
             brakeTracksVertices.Clear();
@@ -1058,7 +1194,8 @@ namespace RacingGame.Landscapes
                 mat, "DiffuseWithDetail20",
                 new BaseGame.RenderHandler(RenderLandscapeVertices));
 
-            cityPlane.Render();
+            if (cityPlane != null)
+                cityPlane.Render();
 
             // Render track
             track.Render();

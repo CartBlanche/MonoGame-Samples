@@ -1,0 +1,30 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!--
+    Command-line tool to create, inspect, validate and edit RacingGame *.Track files
+    (including the embedded heightmap). Shares the track file code with the game
+    (linked sources) so there is exactly one definition of the format.
+    See Documentation/Track-Editor-Plan.md (D11, D12).
+  -->
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net10.0</TargetFramework>
+    <Nullable>disable</Nullable>
+    <ImplicitUsings>disable</ImplicitUsings>
+    <AssemblyName>tracktool</AssemblyName>
+    <RootNamespace>RacingGame.TrackTool</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include="..\Core\Tracks\TrackData.cs" Link="Shared\TrackData.cs" />
+    <Compile Include="..\Core\Tracks\CustomTracks.cs" Link="Shared\CustomTracks.cs" />
+    <Compile Include="..\Core\Helpers\Log.cs" Link="Shared\Log.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="MonoGame.Framework.DesktopGL" Version="3.8.*" />
+    <PackageReference Include="StbImageSharp" Version="2.30.*" />
+    <PackageReference Include="StbImageWriteSharp" Version="1.16.*" />
+  </ItemGroup>
+
+</Project>

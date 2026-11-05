@@ -15,6 +15,8 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using RacingGame.Sounds;
 using RacingGame.Landscapes;
+using RacingGame.Tracks;
+using Microsoft.Xna.Framework.Input;
 
 namespace RacingGame.GameScreens
 {
@@ -36,7 +38,10 @@ namespace RacingGame.GameScreens
                 UIRenderer.TrackTextAdvancedGfxRect,
                 UIRenderer.TrackTextExpertGfxRect,
             };
-        const int NumberOfButtons = 3,
+        // 3 built-in tracks plus a "Custom" button (opens the list of tracks from the Tracks folder)
+        const int NumberOfBuiltIn = 3,
+            NumberOfButtons = NumberOfBuiltIn + 1,
+            CustomButton = NumberOfBuiltIn,
             ActiveButtonWidth = 132,
             InactiveButtonWidth = 108,
             DistanceBetweenButtons = 32;
@@ -55,6 +60,12 @@ namespace RacingGame.GameScreens
         static int selectedButton = 1;
 
         /// <summary>
+        /// The last built-in track that was highlighted (what multiplayer and the
+        /// game use while the Custom button is highlighted).
+        /// </summary>
+        static int lastBuiltIn = 1;
+
+        /// <summary>
         /// Selected track number
         /// </summary>
         /// <returns>Int</returns>
@@ -62,7 +73,7 @@ namespace RacingGame.GameScreens
         {
             get
             {
-                return selectedButton;
+                return selectedButton == CustomButton ? lastBuiltIn : selectedButton;
             }
         }
 
@@ -71,7 +82,7 @@ namespace RacingGame.GameScreens
         /// </summary>
         static public Rectangle TrackButtonGfxRect(int trackNumber)
         {
-            return ButtonRects[trackNumber % NumberOfButtons];
+            return ButtonRects[trackNumber % NumberOfBuiltIn];
         }
 
         /// <summary>
@@ -79,7 +90,7 @@ namespace RacingGame.GameScreens
         /// </summary>
         static public int NumberOfTracks
         {
-            get { return NumberOfButtons; }
+            get { return NumberOfBuiltIn; }
         }
 
         /// <summary>
@@ -87,7 +98,23 @@ namespace RacingGame.GameScreens
         /// </summary>
         static public void SelectTrackNumber(int trackNumber)
         {
-            selectedButton = trackNumber % NumberOfButtons;
+            CustomTrack = null;
+            selectedButton = lastBuiltIn = trackNumber % NumberOfBuiltIn;
+        }
+
+        /// <summary>
+        /// Custom track chosen in the CustomTrackSelection screen, or null to
+        /// play the built-in track given by SelectedTrackNumber.
+        /// </summary>
+        static public CustomTrackInfo CustomTrack = null;
+
+        /// <summary>
+        /// Highscore/replay slot for the track about to be played:
+        /// the built-in track number, or -1 for a custom track.
+        /// </summary>
+        static public int HighscoreLevel
+        {
+            get { return CustomTrack != null ? -1 : SelectedTrackNumber; }
         }
 
         /// <summary>
@@ -98,7 +125,7 @@ namespace RacingGame.GameScreens
         {
             get
             {
-                return (RacingGameManager.Level)selectedButton;
+                return (RacingGameManager.Level)SelectedTrackNumber;
             }
         }
 
@@ -106,7 +133,7 @@ namespace RacingGame.GameScreens
         /// Current button sizes for scaling up/down smooth effect.
         /// </summary>
         float[] currentButtonSizes =
-            new float[NumberOfButtons] { 1, 0, 0 };
+            new float[NumberOfButtons] { 1, 0, 0, 0 };
 
         /// <summary>
         /// Ignore the mouse unless it moves;
@@ -161,8 +188,8 @@ namespace RacingGame.GameScreens
                 InactiveButtonWidth * ButtonRects[0].Height / ButtonRects[0].Width,
                 ButtonRects[0]);
             int totalWidth = activeRect.Width +
-                2 * inactiveRect.Width +
-                2 * BaseGame.XToRes(DistanceBetweenButtons);
+                (NumberOfButtons - 1) * inactiveRect.Width +
+                (NumberOfButtons - 1) * BaseGame.XToRes(DistanceBetweenButtons);
             int xPos = BaseGame.XToRes(512) - totalWidth / 2;
             int yPos = BaseGame.YToRes(258);
             for (int num = 0; num < NumberOfButtons; num++)
@@ -183,8 +210,22 @@ namespace RacingGame.GameScreens
                 Rectangle renderRect = new Rectangle(
                     xPos, yPos - (thisRect.Height - inactiveRect.Height) / 2,
                     thisRect.Width, thisRect.Height);
-                BaseGame.UI.Buttons.RenderOnScreen(renderRect, ButtonRects[num],
-                    selected ? Color.White : new Color(192, 192, 192, 192));
+                if (num == CustomButton)
+                {
+                    // No artwork for this one: a panel with just the label
+                    BaseGame.UI.RenderPanel(renderRect,
+                        selected ? Color.White : new Color(215, 215, 215, 215));
+                    const string customLabel = "Custom";
+                    int labelWidth = TextureFont.GetTextWidth(customLabel);
+                    float labelScale = Math.Min(1.0f, renderRect.Width * 0.82f / labelWidth);
+                    TextureFont.WriteTextCentered(
+                        renderRect.X + renderRect.Width / 2,
+                        renderRect.Y + renderRect.Height / 2,
+                        customLabel, selected ? Color.White : new Color(205, 205, 205), labelScale);
+                }
+                else
+                    BaseGame.UI.Buttons.RenderOnScreen(renderRect, ButtonRects[num],
+                        selected ? Color.White : new Color(192, 192, 192, 192));
 
                 // Add border effect if selected
                 if (selected)
@@ -196,7 +237,7 @@ namespace RacingGame.GameScreens
                     xPos, renderRect.Bottom + BaseGame.YToRes(5),
                     renderRect.Width,
                     renderRect.Height * TextRects[0].Height / ButtonRects[0].Height);
-                if (selected)
+                if (selected && num != CustomButton)
                     BaseGame.UI.Buttons.RenderOnScreen(textRenderRect, TextRects[num],
                         selected ? Color.White : Color.Gray);
 
@@ -208,7 +249,11 @@ namespace RacingGame.GameScreens
             }
 
             if (!ignoreMouse && mouseIsOverButton >= 0)
+            {
                 selectedButton = mouseIsOverButton;
+                if (selectedButton != CustomButton)
+                    lastBuiltIn = selectedButton;
+            }
 
             // Handle GamePad input, and also allow keyboard input
             if (Input.GamePadLeftJustPressed ||
@@ -217,6 +262,8 @@ namespace RacingGame.GameScreens
                 Sound.Play(Sound.Sounds.ButtonClick);
                 selectedButton =
                     (selectedButton + NumberOfButtons - 1) % NumberOfButtons;
+                if (selectedButton != CustomButton)
+                    lastBuiltIn = selectedButton;
                 ignoreMouse = true;
             }
             else if (Input.GamePadRightJustPressed ||
@@ -224,6 +271,8 @@ namespace RacingGame.GameScreens
             {
                 Sound.Play(Sound.Sounds.ButtonClick);
                 selectedButton = (selectedButton + 1) % NumberOfButtons;
+                if (selectedButton != CustomButton)
+                    lastBuiltIn = selectedButton;
                 ignoreMouse = true;
             }
 
@@ -233,10 +282,28 @@ namespace RacingGame.GameScreens
             if ((mouseIsOverButton >= 0 && Input.MouseLeftButtonJustPressed) ||
                 aButtonPressed ||
                 Input.GamePadAJustPressed ||
-                Input.KeyboardSpaceJustPressed)
+                Input.KeyboardSpaceJustPressed ||
+                Input.KeyboardKeyJustPressed(Keys.Enter))
             {
-                // Track selection is handled through SelectedTrackNumber
-                RacingGameManager.AddGameScreen(new GameScreen());
+                if (selectedButton == CustomButton)
+                {
+                    // The Custom button opens the list of tracks from the Tracks folder
+                    Sound.Play(Sound.Sounds.ButtonClick);
+                    RacingGameManager.AddGameScreen(new CustomTrackSelection());
+                }
+                else
+                {
+                    // Track selection is handled through SelectedTrackNumber
+                    CustomTrack = null;
+                    RacingGameManager.AddGameScreen(new GameScreen());
+                }
+            }
+
+            // Hidden shortcut for the Custom button: C (or the gamepad Y button)
+            else if (Input.KeyboardKeyJustPressed(Keys.C) || Input.GamePadYJustPressed)
+            {
+                Sound.Play(Sound.Sounds.ButtonClick);
+                RacingGameManager.AddGameScreen(new CustomTrackSelection());
             }
 
             if (Input.KeyboardEscapeJustPressed ||

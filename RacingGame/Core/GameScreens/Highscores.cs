@@ -158,6 +158,8 @@ namespace RacingGame.GameScreens
         /// <returns>Best lap time</returns>
         public static float GetTopLapTime(int level)
         {
+            if (level < 0)
+                return 0;
             return (float)highscores[level, 0].timeMilliseconds / 1000.0f;
         }
         /// <summary>
@@ -167,6 +169,9 @@ namespace RacingGame.GameScreens
         /// <returns>Array of top 5 times</returns>
         public static int[] GetTop5LapTimes(int level)
         {
+            // Custom tracks (level < 0) have no stored highscores yet
+            if (level < 0)
+                return new int[5];
             return new int[]
                 {
                     highscores[level, 0].timeMilliseconds,
@@ -185,6 +190,8 @@ namespace RacingGame.GameScreens
         /// <returns>Int</returns>
         public static int GetRankFromCurrentTime(int level, int timeMilliseconds)
         {
+            if (level < 0)
+                return NumOfHighscores;
             // Time must be at least 1 second
             if (timeMilliseconds < 1000)
                 // Invalid time, return rank 11 (out of highscore)
@@ -209,6 +216,9 @@ namespace RacingGame.GameScreens
         /// <param name="levelName">Level name</param>
         public static void SubmitHighscore(int level, int timeMilliseconds)
         {
+            // No highscores for custom tracks yet
+            if (level < 0)
+                return;
             // Search which highscore rank we can replace
             for (int num = 0; num < NumOfHighscores; num++)
             {

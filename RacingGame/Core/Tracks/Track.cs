@@ -169,6 +169,12 @@ namespace RacingGame.Tracks
         /// Remember checkpoint segment positions for easier checkpoint checking.
         /// </summary>
         List<int> checkpointSegmentPositions = new List<int>();
+
+        /// <summary>
+        /// Checkpoints from a custom track file (fractions of the lap),
+        /// null for the automatic ones every CheckpointGap units.
+        /// </summary>
+        float[] customCheckpoints = null;
         /// <summary>
         /// Start position
         /// </summary>
@@ -250,6 +256,46 @@ namespace RacingGame.Tracks
             GenerateVerticesAndObjects(landscape);
         }
         /// <summary>
+        /// Create track from already loaded data (custom tracks)
+        /// </summary>
+        public Track(TrackData data, Landscape landscape)
+            : base(CloneData(data), landscape)
+        {
+            customCheckpoints = data.Checkpoints;
+            GenerateVerticesAndObjects(landscape);
+        }
+        /// <summary>
+        /// Reload from already loaded data (custom tracks).
+        /// The helper lists are consumed while the track is built, so a
+        /// private copy is used and the same data can be played again.
+        /// </summary>
+        public void Reload(TrackData data, Landscape landscape)
+        {
+            base.Load(CloneData(data), landscape);
+            customCheckpoints = data.Checkpoints;
+            GenerateVerticesAndObjects(landscape);
+        }
+        /// <summary>
+        /// Copy of the lists TrackLine modifies while loading.
+        /// </summary>
+        public static TrackData CloneData(TrackData data)
+        {
+            TrackData copy = new TrackData(
+                new List<Vector3>(data.TrackPoints),
+                new List<TrackData.WidthHelper>(data.WidthHelpers),
+                new List<TrackData.RoadHelper>(data.RoadHelpers),
+                new List<TrackData.NeutralObject>(data.NeutralsObjects));
+            copy.FormatVersion = data.FormatVersion;
+            copy.Name = data.Name;
+            copy.Author = data.Author;
+            copy.OriginalAuthor = data.OriginalAuthor;
+            copy.Description = data.Description;
+            copy.Created = data.Created;
+            copy.Heightmap = data.Heightmap;
+            copy.Checkpoints = data.Checkpoints;
+            return copy;
+        }
+        /// <summary>
         /// Reload
         /// </summary>
         /// <param name="setTrackName">Track name</param>
@@ -259,6 +305,7 @@ namespace RacingGame.Tracks
             // Do we need to load the base track again?
             // Always reload! Else we might mess up the checkpoints, etc.
             base.Load(TrackData.Load(setTrackName), landscape);
+            customCheckpoints = null;
 
             GenerateVerticesAndObjects(landscape);
         }
@@ -593,6 +640,67 @@ namespace RacingGame.Tracks
 
             GenerateObjectsForTrack(landscape);
         }
+        /// <summary>
+        /// Checkpoints at the fractions of the lap given in the track file, with
+        /// the same margins the automatic ones keep: not near the start line, not
+        /// in the last 60 units, not closer than about 50 units to each other.
+        /// </summary>
+        private void GenerateCustomCheckpoints(Landscape landscape)
+        {
+            int n = points.Count;
+            float[] cumulative = new float[n];
+            float total = 0;
+            for (int i = 1; i < n; i++)
+            {
+                total += Vector3.Distance(points[i].pos, points[i - 1].pos);
+                cumulative[i] = total;
+            }
+            int lastAllowed = n - 25, previous = 0;
+            foreach (float fraction in customCheckpoints)
+            {
+                if (!(fraction > 0 && fraction < 1))
+                    continue;
+                int num = Array.BinarySearch(cumulative, fraction * total);
+                if (num < 0)
+                    num = ~num;
+                if (num < 25 || num > lastAllowed || num < previous + 20)
+                    continue;
+                checkpointSegmentPositions.Add(num);
+                AddCheckpointBanner(landscape, num);
+                previous = num;
+            }
+        }
+
+        /// <summary>
+        /// The banner across the road at a checkpoint (not in loopings).
+        /// </summary>
+        private void AddCheckpointBanner(Landscape landscape, int num)
+        {
+            if (landscape == null)
+                return;
+            Vector3 right = points[num].right;
+            Vector3 dir = points[num].dir;
+            Vector3 up = points[num].up;
+            if (up.Z < +0.05f || dir.Z > 0.65f || dir.Z < -0.65f)
+                return;
+            Matrix pointSpace = Matrix.Identity;
+            pointSpace.Right = right;
+            pointSpace.Up = dir;
+            pointSpace.Forward = -up;
+            int randomNum = RandomHelper.GetRandomInt(6);
+            landscape.AddObjectToRender(
+                randomNum == 0 ? "Banner" :
+                randomNum == 1 ? "Banner2" :
+                randomNum == 2 ? "Banner3" :
+                randomNum == 3 ? "Banner4" :
+                randomNum == 4 ? "Banner5" : "Banner6",
+                Matrix.CreateScale(points[num].roadWidth) *
+                Matrix.CreateTranslation(new Vector3(0, 0, -0.1f)) *
+                pointSpace *
+                Matrix.CreateTranslation(points[num].pos),
+                true);
+        }
+
         private void GenerateObjectsForTrack(Landscape landscape)
         {
             // Auto generate palms and laterns at the side of our road.
@@ -774,6 +882,10 @@ namespace RacingGame.Tracks
             // Make sure we don't reuse any of the old checkpoint positions.
             checkpointSegmentPositions.Clear();
 
+            // Custom tracks can say where their checkpoints are
+            if (customCheckpoints != null)
+                GenerateCustomCheckpoints(landscape);
+
             // Auto generate checkpoints every 500 meters.
             lastGap = CheckpointGap;
             float signGap = SignGap;
@@ -812,7 +924,8 @@ namespace RacingGame.Tracks
                 Vector3 p4 = points[(num + 2) % points.Count].pos;
 
                 // Have we reach or go over the holder gap ?
-                if (lastGap - distance <= 0 &&
+                if (customCheckpoints == null &&
+                    lastGap - distance <= 0 &&
                     landscape != null)
                 {
                     Vector3 objPoint = Vector3.CatmullRom(p1, p2, p3, p4,

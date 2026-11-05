@@ -1,0 +1,1798 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Racing Game's Tarmac Toolbox: track editor</title>
+<meta name="description" content="Design your own race tracks for Racing Game, the MonoGame desktop racer. Free browser editor: draw, check, export a .Track file.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@500;600;700&family=Hanken+Grotesk:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout concept: a pit-wall workbench. Block palette left, top-down map with terrain in the middle
+   (chain of blocks and elevation profile beneath it), inspector / checks / terrain / trace on the right.
+   Dark first, like the game's HUD: graphite panels, one HUD-orange accent, desert terrain. */
+:root{
+  --bg:#12141a; --panel:#1a1e26; --raise:#232833; --sunk:#14171d; --line:#2b313d; --line-2:#3b4252;
+  --fg:#ecebe8; --fg-2:#b7bbc5; --muted:#808999;
+  --accent:#ffa11a; --accent-ink:#1b1100; --accent-soft:rgba(255,161,26,.16);
+  --ok:#56c98b; --warn:#f0bf4a; --bad:#ff6b5f; --trace:#4cc3e8;
+  --road:#3a3f49; --road-edge:#d9dbe0; --map-bg:#0d0f13; --map-grid:rgba(255,255,255,.07);
+  --display:'Chakra Petch','Arial Narrow',system-ui,sans-serif;
+  --body:'Hanken Grotesk',system-ui,-apple-system,'Segoe UI',sans-serif;
+  --mono:'IBM Plex Mono',ui-monospace,Menlo,Consolas,monospace;
+  --shadow:0 10px 30px rgba(0,0,0,.45);
+  color-scheme:dark;
+}
+@media (prefers-color-scheme: light){
+  :root:not([data-theme="dark"]){
+    --bg:#e9ecf1; --panel:#ffffff; --raise:#f3f5f8; --sunk:#eceff4; --line:#d5dae2; --line-2:#c0c7d2;
+    --fg:#1a1d24; --fg-2:#454c5a; --muted:#6a7282;
+    --accent:#d97a00; --accent-ink:#ffffff; --accent-soft:rgba(217,122,0,.13);
+    --ok:#1b8d57; --warn:#9a6a00; --bad:#c4372c; --trace:#0a7fa5;
+    --road:#4a505b; --road-edge:#f5f6f8; --map-bg:#dfe3ea; --map-grid:rgba(0,0,0,.08);
+    --shadow:0 10px 30px rgba(30,40,60,.18);
+    color-scheme:light;
+  }
+}
+:root[data-theme="light"]{
+  --bg:#e9ecf1; --panel:#ffffff; --raise:#f3f5f8; --sunk:#eceff4; --line:#d5dae2; --line-2:#c0c7d2;
+  --fg:#1a1d24; --fg-2:#454c5a; --muted:#6a7282;
+  --accent:#d97a00; --accent-ink:#ffffff; --accent-soft:rgba(217,122,0,.13);
+  --ok:#1b8d57; --warn:#9a6a00; --bad:#c4372c; --trace:#0a7fa5;
+  --road:#4a505b; --road-edge:#f5f6f8; --map-bg:#dfe3ea; --map-grid:rgba(0,0,0,.08);
+  --shadow:0 10px 30px rgba(30,40,60,.18);
+  color-scheme:light;
+}
+:root[data-theme="dark"]{ color-scheme:dark; }
+
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+html,body{height:100%}
+body{margin:0;background:var(--bg);color:var(--fg);font:14px/1.45 var(--body);overflow:hidden}
+button,input,select,textarea{font:inherit;color:inherit}
+button{cursor:pointer}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+h1,h2,h3{font-family:var(--display);margin:0;font-weight:600;letter-spacing:.01em}
+.mono{font-family:var(--mono)}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+
+#app{height:100%;display:grid;gap:12px;padding-block:12px;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));
+  grid-template-columns:240px minmax(0,1fr) 332px;grid-template-rows:auto minmax(0,1fr);
+  grid-template-areas:"top top top" "pal stage side"}
+.panel{background:var(--panel);border:1px solid var(--line);border-radius:14px;min-height:0;min-width:0}
+
+/* top bar */
+.top{grid-area:top;display:flex;align-items:center;gap:14px;flex-wrap:wrap;padding:8px 12px}
+.brand{display:flex;align-items:center;gap:10px;margin-right:6px}
+.brand svg{flex:none}
+.brand b{font-family:var(--display);font-size:19px;font-weight:700;letter-spacing:.02em}
+.brand .tag{font-size:12px;color:var(--muted,#8a8f98);max-width:200px;line-height:1.2}
+@media (max-width:1500px){.brand .tag{display:none}}
+.brand i{font-style:normal;font-family:var(--mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);border:1px solid var(--accent);border-radius:99px;padding:1px 7px}
+.fld{display:flex;align-items:center;gap:8px;min-width:0}
+.fld>span{font-family:var(--display);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+.fld input{background:var(--sunk);border:1px solid var(--line);border-radius:8px;padding:6px 10px;min-width:0;width:150px}
+.fld input:focus{border-color:var(--accent)}
+.fld.about{flex:1 1 220px;min-width:170px}
+.fld.about input{width:100%;flex:1}
+.fld.req input.bad{border-color:var(--bad)}
+.grow{flex:0 0 0}
+.btn{display:inline-flex;align-items:center;gap:7px;border:1px solid var(--line-2);background:var(--raise);border-radius:9px;padding:7px 12px;font-weight:500}
+.btn:hover{border-color:var(--fg-2)}
+.btn.primary{background:var(--accent);color:var(--accent-ink);border-color:var(--accent);font-family:var(--display);font-weight:600;letter-spacing:.03em}
+.btn.primary:hover{filter:brightness(1.08)}
+.btn[disabled]{opacity:.45;cursor:not-allowed}
+.btn.sm{padding:4px 9px;font-size:12.5px;border-radius:8px}
+.hud .btn{background:var(--panel);box-shadow:0 2px 8px rgba(0,0,0,.25)}
+.hud .btn.on{background:color-mix(in srgb,var(--accent) 18%,var(--panel))}
+#flexBox{cursor:default}#flexBox input{width:62px;accent-color:var(--accent);margin:0}#flexBox b{color:var(--accent);font-weight:500;min-width:1ch}
+#map{cursor:grab}
+.btn.on{border-color:var(--accent);background:var(--accent-soft);color:var(--accent)}
+.ibtn{width:34px;height:34px;display:grid;place-items:center;border:1px solid var(--line-2);background:var(--raise);border-radius:9px;padding:0}
+.ibtn:hover{border-color:var(--fg-2)}
+.ibtn[disabled]{opacity:.4;cursor:not-allowed}
+.ibtn svg{width:18px;height:18px}
+
+/* palette */
+.pal{grid-area:pal;overflow:auto;padding:12px 12px 16px}
+.pal h2{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin:18px 2px 8px}
+.pal h2:first-child{margin-top:0}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.blk{display:grid;gap:2px;justify-items:start;text-align:left;padding:8px 9px 8px;border:1px solid var(--line);background:var(--raise);border-radius:11px;cursor:grab;color:var(--fg-2);position:relative}
+.blk svg{width:100%;height:28px;color:var(--fg);margin-bottom:4px}
+.blk .n{font-weight:600;color:var(--fg);font-size:13px;line-height:1.15}
+.blk .m{font-family:var(--mono);font-size:11px;color:var(--muted)}
+.blk:hover{border-color:var(--accent)}
+.blk:hover svg{color:var(--accent)}
+.blk:active{cursor:grabbing}
+.pal .hint{font-size:12px;color:var(--muted);margin:12px 2px 0}
+
+/* stage */
+.stage{grid-area:stage;display:flex;flex-direction:column;gap:12px;min-width:0;min-height:0}
+.mapwrap{position:relative;flex:1;min-height:260px;overflow:hidden;background:var(--map-bg)}
+#map{position:absolute;inset:0;width:100%;height:100%;display:block;touch-action:none}
+.hud{position:absolute;display:flex;gap:8px;flex-wrap:wrap;pointer-events:none}
+.hud>*{pointer-events:auto}
+.hud.tl{left:12px;top:12px;max-width:calc(100% - 140px)}
+.hud.tr{right:12px;top:12px}
+.hud.bl{left:12px;bottom:12px}
+.hud.br{right:12px;bottom:12px;flex-direction:column;align-items:flex-end}
+.stat{display:flex;align-items:baseline;gap:6px;background:color-mix(in srgb,var(--panel) 88%,transparent);border:1px solid var(--line);border-radius:10px;padding:5px 10px;backdrop-filter:blur(6px)}
+.stat b{font-family:var(--display);font-size:17px;font-weight:600;color:var(--accent);font-variant-numeric:tabular-nums}
+.stat span{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+.tip{background:color-mix(in srgb,var(--panel) 90%,transparent);border:1px solid var(--line);border-radius:10px;padding:6px 10px;font-size:12px;color:var(--fg-2);max-width:360px}
+.zoom{display:flex;flex-direction:column;gap:6px}
+.zoom .ibtn{background:color-mix(in srgb,var(--panel) 88%,transparent)}
+.chain{display:flex;align-items:center;gap:6px;overflow-x:auto;padding:8px 10px;min-height:52px}
+.chain::-webkit-scrollbar{height:8px}
+.chip{flex:none;display:inline-flex;align-items:center;gap:6px;border:1px solid var(--line);background:var(--raise);border-radius:9px;padding:4px 9px 4px 6px;font-size:12px;color:var(--fg-2);cursor:pointer;user-select:none}
+.chip svg{width:26px;height:18px}
+.chip .i{font-family:var(--mono);font-size:10px;color:var(--muted)}
+.chip b{font-family:var(--mono);font-weight:500;color:var(--fg);font-size:12px}
+.chip:hover{border-color:var(--fg-2)}
+.chip.sel{border-color:var(--accent);background:var(--accent-soft);color:var(--accent)}
+.chip.sel b{color:var(--accent)}
+.chip.drop{outline:2px dashed var(--accent)}
+.chip .f{width:8px;height:8px;border-radius:50%;background:var(--trace)}
+.chip.start{border-style:dashed}
+.chip.close{border-style:dashed;color:var(--muted)}
+.profile{height:138px;position:relative;overflow:hidden}
+#prof{position:absolute;inset:0;width:100%;height:100%;display:block}
+
+/* side */
+.side{grid-area:side;display:flex;flex-direction:column;min-height:0}
+.tabs{display:flex;border-bottom:1px solid var(--line);padding:6px 8px 0;gap:2px}
+.tab{flex:1;background:none;border:0;border-bottom:2px solid transparent;padding:9px 2px 8px;font-family:var(--display);font-size:12.5px;letter-spacing:.03em;text-transform:uppercase;color:var(--muted);display:flex;gap:6px;align-items:center;justify-content:center}
+.tab:hover{color:var(--fg)}
+.tab[aria-selected="true"]{color:var(--accent);border-bottom-color:var(--accent)}
+.badge{min-width:18px;height:18px;border-radius:9px;background:var(--bad);color:#fff;font-size:11px;font-family:var(--mono);display:inline-grid;place-items:center;padding:0 5px}
+.badge.w{background:var(--warn);color:#1b1500}
+.badge.ok{background:var(--ok);color:#06210f}
+.pane{flex:1;overflow:auto;padding:14px 14px 18px;min-height:0}
+.pane[hidden]{display:none}
+.row{display:grid;grid-template-columns:78px 1fr 64px;gap:10px;align-items:center;margin:0 0 11px}
+.row label{font-size:12px;color:var(--fg-2)}
+.row input[type=range]{width:100%;accent-color:var(--accent);min-width:0}
+.row input[type=number],.num{width:100%;background:var(--sunk);border:1px solid var(--line);border-radius:7px;padding:4px 6px;font-family:var(--mono);font-size:12.5px;min-width:0}
+.row input[type=number]:focus{border-color:var(--accent)}
+.seg{display:grid;grid-auto-flow:column;grid-auto-columns:1fr;border:1px solid var(--line-2);border-radius:9px;overflow:hidden;margin:0 0 12px}
+.seg button{border:0;background:var(--raise);padding:6px 4px;font-size:12px;color:var(--fg-2);border-right:1px solid var(--line)}
+.seg button:last-child{border-right:0}
+.seg button[aria-pressed="true"]{background:var(--accent);color:var(--accent-ink);font-weight:600}
+.h{display:flex;align-items:center;justify-content:space-between;gap:8px;margin:2px 0 12px}
+.h h3{font-size:16px}
+.sub{font-size:12px;color:var(--muted);margin:2px 0 12px}
+.kv{display:grid;grid-template-columns:auto 1fr;gap:4px 14px;font-size:12px;color:var(--muted);margin:6px 0 14px;font-family:var(--mono)}
+.kv b{color:var(--fg);font-weight:500;text-align:right}
+.acts{display:flex;gap:6px;flex-wrap:wrap}
+.hr{height:1px;background:var(--line);margin:14px 0}
+.empty{border:1px dashed var(--line-2);border-radius:12px;padding:16px;color:var(--muted);font-size:13px}
+
+/* checks */
+.chk{display:grid;grid-template-columns:20px 1fr auto;gap:2px 10px;padding:10px 10px;border:1px solid var(--line);border-radius:11px;margin-bottom:8px;background:var(--raise);width:100%;text-align:left}
+.chk[data-loc]{cursor:pointer}
+.chk[data-loc]:hover{border-color:var(--fg-2)}
+.chk .d{width:10px;height:10px;border-radius:50%;margin-top:5px;background:var(--ok)}
+.chk.warn .d{background:var(--warn)}.chk.error .d{background:var(--bad)}
+.chk b{font-weight:600;font-size:13px}
+.chk p{grid-column:2/4;margin:0;font-size:12px;color:var(--fg-2)}
+.chk .fix{grid-column:3;grid-row:1;align-self:start}
+
+/* terrain / trace */
+.card{border:1px solid var(--line);background:var(--raise);border-radius:11px;padding:10px 12px;margin-bottom:10px}
+select.num,textarea.num{width:100%}
+textarea.num{min-height:84px;resize:vertical;font-size:12px}
+.outl{display:grid;gap:6px;margin-bottom:12px}
+.outl button{display:grid;grid-template-columns:54px 1fr;gap:10px;align-items:center;text-align:left;padding:6px 10px 6px 6px;border:1px solid var(--line);background:var(--raise);border-radius:10px}
+.outl button[aria-pressed="true"]{border-color:var(--trace);background:color-mix(in srgb,var(--trace) 12%,transparent)}
+.outl svg{width:54px;height:40px;color:var(--trace)}
+.outl b{font-size:13px;display:block}
+.outl span{font-size:11.5px;color:var(--muted)}
+.cprow{display:grid;grid-template-columns:30px 1fr auto;gap:1px 10px;align-items:center;padding:8px 10px;border:1px solid var(--line);border-radius:10px;background:var(--raise);margin-bottom:6px;cursor:pointer;text-align:left;width:100%}
+.cprow:hover{border-color:var(--fg-2)}
+.cprow.sel{border-color:var(--accent);background:var(--accent-soft)}
+.cprow .n{font-family:var(--display);font-weight:700;font-size:15px;color:var(--accent);text-align:center}
+.cprow b{font-family:var(--mono);font-weight:500;font-size:12.5px}
+.cprow span.m{grid-column:2;font-size:11.5px;color:var(--muted)}
+.cprow .btn{grid-column:3;grid-row:1/3}
+.check{display:flex;gap:8px;align-items:center;font-size:13px;margin:0 0 11px}
+.check input{accent-color:var(--accent);width:16px;height:16px}
+
+/* modal */
+.modal{position:fixed;inset:0;background:rgba(5,7,10,.62);display:grid;place-items:center;padding:16px;z-index:50}
+.modal[hidden]{display:none}
+.sheet{width:min(860px,100%);max-height:calc(100% - 24px);overflow:auto;background:var(--panel);border:1px solid var(--line-2);border-radius:16px;box-shadow:var(--shadow);padding:18px 20px}
+.sheet h2{font-size:22px}
+.cols{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:16px;margin-top:14px}
+.cols>*{min-width:0}
+pre.xml{margin:0;background:var(--sunk);border:1px solid var(--line);border-radius:10px;padding:10px 12px;font:12px/1.5 var(--mono);color:var(--fg-2);max-height:290px;overflow:auto;white-space:pre}
+.plat{display:grid;gap:6px}
+.plat button{display:grid;grid-template-columns:78px 1fr;gap:10px;text-align:left;border:1px solid var(--line);background:var(--raise);border-radius:10px;padding:8px 10px;align-items:start}
+.plat button[aria-pressed="true"]{border-color:var(--accent);background:var(--accent-soft)}
+.plat b{font-family:var(--display);font-size:13px}
+.plat span{font-family:var(--mono);font-size:11.5px;color:var(--fg-2);word-break:break-all}
+.note{font-size:12px;color:var(--muted)}
+.note code{font-family:var(--mono);color:var(--fg-2)}
+.warnbox{border:1px solid var(--bad);background:color-mix(in srgb,var(--bad) 10%,transparent);border-radius:10px;padding:8px 12px;font-size:13px;margin-top:12px}
+.toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);background:var(--fg);color:var(--bg);padding:8px 14px;border-radius:10px;font-size:13px;z-index:60;box-shadow:var(--shadow)}
+.toast[hidden]{display:none}
+
+/* small screens: stack, page scrolls */
+@media (max-width:1020px){
+  body{overflow:auto}
+  #app{height:auto;grid-template-columns:minmax(0,1fr);grid-template-areas:"top" "stage" "pal" "side"}
+  .stage{min-height:0}
+  .mapwrap{flex:none;height:min(62vh,520px)}
+  .pal{overflow:visible}
+  .pal .grid2{grid-template-columns:repeat(auto-fill,minmax(112px,1fr))}
+  .side{min-height:420px}
+  .pane{overflow:visible}
+  .fld.about{flex:1 1 100%}
+  .cols{grid-template-columns:1fr}
+}
+.deskhint{display:none;margin:8px 12px 0;padding:8px 10px;border:1px solid var(--line-2);border-radius:10px;background:var(--raise);font-size:13px;align-items:center;gap:10px}
+.deskhint button{margin-left:auto}
+@media (max-width:1020px),(pointer:coarse){.deskhint:not([hidden]){display:flex}}
+.about h3{font-size:15px;margin:16px 0 4px}
+.about p,.about li{font-size:13.5px}
+.about ol,.about ul{margin:4px 0 0;padding-left:20px}
+.about .ver{font-family:var(--mono);font-size:12px;color:var(--muted)}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style>
+
+</head>
+<body>
+<div class="deskhint" id="deskhint" hidden role="note"><span>Tarmac Toolbox works best on a desktop browser with a mouse. Racing Game custom tracks are for the desktop game.</span><button class="btn sm" id="deskOk">Got it</button></div>
+<div id="app">
+  <header class="top panel">
+    <div class="brand">
+      <svg width="30" height="30" viewBox="0 0 32 32" aria-hidden="true"><rect x="1" y="1" width="30" height="30" rx="8" fill="var(--accent)"/><path d="M7 21c0-7 4-11 9-11s9 4 9 11" fill="none" stroke="var(--accent-ink)" stroke-width="3.2" stroke-linecap="round"/><path d="M12 22h8" stroke="var(--accent-ink)" stroke-width="3.2" stroke-linecap="round"/></svg>
+      <i>Racing Game's</i><b>Tarmac Toolbox</b><span class="tag">Track editor for the Racing Game desktop racer</span>
+    </div>
+    <label class="fld"><span>Track</span><input id="tName" maxlength="40" autocomplete="off" spellcheck="false"></label>
+    <label class="fld req"><span>Author</span><input id="tAuthor" maxlength="40" autocomplete="off" placeholder="Your name (required)"></label>
+    <label class="fld about"><span>About</span><input id="tDesc" class="wide" maxlength="140" autocomplete="off" placeholder="About this track (optional)"></label>
+    <span class="grow"></span>
+    <button class="ibtn" id="undo" title="Undo (Ctrl/Cmd+Z)" aria-label="Undo"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 14 4 9l5-5"/><path d="M4 9h10a6 6 0 0 1 0 12h-3"/></svg></button>
+    <button class="ibtn" id="redo" title="Redo (Shift+Ctrl/Cmd+Z)" aria-label="Redo"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 14 5-5-5-5"/><path d="M20 9H10a6 6 0 0 0 0 12h3"/></svg></button>
+    <button class="ibtn" id="theme" title="Switch theme" aria-label="Switch theme"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg></button>
+    <button class="btn" id="aboutBtn">About</button>
+    <button class="btn" id="reset">Reset sample</button>
+    <button class="btn primary" id="export">Export track</button>
+  </header>
+
+  <aside class="pal panel" id="palette" aria-label="Block palette"></aside>
+
+  <main class="stage">
+    <section class="mapwrap panel" aria-label="Track map">
+      <canvas id="map"></canvas>
+      <div class="hud tl">
+        <div class="stat"><b id="sLen">0</b><span>units</span></div>
+        <div class="stat"><b id="sLap">0:00</b><span>est. lap</span></div>
+        <div class="stat"><b id="sBlk">0</b><span>blocks</span></div>
+        <div class="stat"><b id="sPts">0</b><span>points</span></div>
+      </div>
+      <div class="hud tr"><div class="zoom">
+        <button class="ibtn" id="zin" aria-label="Zoom in"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></button>
+        <button class="ibtn" id="zout" aria-label="Zoom out"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 12h14"/></svg></button>
+        <button class="ibtn" id="zfit" aria-label="Fit track or whole map" title="Fit track / whole map"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/></svg></button>
+      </div></div>
+      <div class="hud bl">
+        <button class="btn sm on" id="autoClose" aria-pressed="true">Auto-close loop</button>
+        <button class="btn sm on" id="shade" aria-pressed="true">Terrain</button>
+        <label class="btn sm" id="flexBox" title="How many blocks either side of your grab point bend when you drag the road. Hold Shift while dragging to move only the block you grabbed."><span>Flex</span><input type="range" id="flex" min="1" max="4" value="2" aria-label="Flex"><b class="mono" id="flexV">2</b></label>
+        <div class="tip" id="tip">Drag the road to reshape it (Shift: only that block). Drag the dots on the selected block to resize it. Drag empty ground, or hold Space, to pan.</div>
+      </div>
+      <div class="hud br"><div class="tip mono" id="coord" aria-live="off">x 0 · y 0</div></div>
+    </section>
+    <section class="chain panel" id="chain" aria-label="Block chain"></section>
+    <section class="profile panel"><canvas id="prof"></canvas></section>
+  </main>
+
+  <aside class="side panel">
+    <div class="tabs" role="tablist" id="tabs">
+      <button class="tab" role="tab" aria-selected="true" data-tab="block">Block</button>
+      <button class="tab" role="tab" aria-selected="false" data-tab="checks">Checks <span class="badge" id="chkBadge">0</span></button>
+      <button class="tab" role="tab" aria-selected="false" data-tab="timing">Timing</button>
+      <button class="tab" role="tab" aria-selected="false" data-tab="terrain">Terrain</button>
+      <button class="tab" role="tab" aria-selected="false" data-tab="trace">Trace</button>
+    </div>
+
+    <section class="pane" id="pane-block" role="tabpanel">
+      <div id="insEmpty" class="empty" hidden>Select a block on the map or in the chain below it to edit its length, curve, climb, width and scenery.</div>
+      <div id="insBody">
+        <div class="h"><h3 id="insTitle">Block</h3><span class="mono sub" id="insIdx" style="margin:0"></span></div>
+        <div id="fStart">
+          <div class="row"><label for="stX">East</label><input type="range" id="stXr" min="120" max="2440" step="10"><input class="num" type="number" id="stX" min="120" max="2440"></div>
+          <div class="row"><label for="stY">North</label><input type="range" id="stYr" min="120" max="2440" step="10"><input class="num" type="number" id="stY" min="120" max="2440"></div>
+          <div class="row"><label for="stH">Heading °</label><input type="range" id="stHr" min="0" max="355" step="5"><input class="num" type="number" id="stH" min="0" max="359"></div>
+          <div class="row"><label for="stZ">Height</label><input type="range" id="stZr" min="10" max="250" step="1"><input class="num" type="number" id="stZ" min="0" max="300"></div>
+          <p class="sub">The start/finish line. Moving it carries the whole track with it.</p>
+        </div>
+        <div id="fBlock">
+          <div class="row" id="rLen"><label for="bLen">Length</label><input type="range" id="bLenr" min="40" max="900" step="10"><input class="num" type="number" id="bLen" min="40" max="900"></div>
+          <div class="row" id="rAng"><label for="bAng">Angle °</label><input type="range" id="bAngr" min="-180" max="180" step="5"><input class="num" type="number" id="bAng" min="-180" max="180"></div>
+          <div class="row" id="rRad"><label for="bRad">Radius</label><input type="range" id="bRadr" min="60" max="900" step="10"><input class="num" type="number" id="bRad" min="60" max="900"></div>
+          <div class="row"><label for="bDz">Climb</label><input type="range" id="bDzr" min="-120" max="120" step="2"><input class="num" type="number" id="bDz" min="-120" max="120"></div>
+          <div class="row"><label for="bW">Road width</label><input type="range" id="bWr" min="0.4" max="2" step="0.05"><input class="num" type="number" id="bW" min="0.25" max="2" step="0.05"></div>
+          <div class="sub" style="margin-bottom:6px">Scenery along this block</div>
+          <div class="seg" id="bFeat" role="group" aria-label="Scenery">
+            <button data-f="none">None</button><button data-f="tunnel">Tunnel</button><button data-f="palms">Palms</button><button data-f="laterns">Lamps</button>
+          </div>
+          <div class="kv" id="insKv"></div>
+          <div class="acts">
+            <button class="btn sm" id="bMirror">Mirror</button>
+            <button class="btn sm" id="bDup">Duplicate</button>
+            <button class="btn sm" id="bDel">Delete</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="pane" id="pane-checks" role="tabpanel" hidden>
+      <div class="sub" id="chkSum"></div>
+      <div id="chkList"></div>
+    </section>
+
+    <section class="pane" id="pane-timing" role="tabpanel" hidden>
+      <div class="h"><h3>Timing</h3></div>
+      <div class="sub">Checkpoints split a lap into sectors, show your time against your best lap, and a lap only counts once you have passed them. Drag the flags on the map or the elevation profile.</div>
+      <div class="seg" id="cpMode" role="group" aria-label="Checkpoints"><button data-m="auto">Automatic</button><button data-m="custom">Custom</button></div>
+      <div class="card" id="cpAuto"></div>
+      <div id="cpCustom" hidden>
+        <div class="acts" style="margin-bottom:12px">
+          <button class="btn sm" id="cpAdd">Add checkpoint</button>
+          <button class="btn sm" id="cpEven">Space evenly</button>
+          <button class="btn sm" id="cpEvery">Every 500 units</button>
+        </div>
+        <div id="cpList"></div>
+        <p class="note" id="cpNote" style="margin-top:8px"></p>
+      </div>
+    </section>
+
+    <section class="pane" id="pane-terrain" role="tabpanel" hidden>
+      <div class="h"><h3>Terrain</h3></div>
+      <div class="sub">The ground the road is laid over. Choose the game's own terrain, or give this track its own heightmap that travels inside the file.</div>
+      <label class="sub" for="tPreset" style="display:block;margin-bottom:6px">Preset</label>
+      <select class="num" id="tPreset" style="margin-bottom:12px">
+        <option value="shipped">Game terrain (preview only)</option>
+        <option value="bowl">Desert bowl (own heightmap)</option>
+        <option value="rolling">Rolling hills</option>
+        <option value="hill">Single hill</option>
+        <option value="flat">Flat plain</option>
+      </select>
+      <div class="row" id="rSeed"><label for="tSeed">Seed</label><input type="range" id="tSeedr" min="1" max="99" step="1"><input class="num" type="number" id="tSeed" min="1" max="99"></div>
+      <div class="hr"></div>
+      <label class="check"><input type="checkbox" id="tFlat"><span>Flatten terrain under the road</span></label>
+      <div class="row"><label for="tMargin">Margin</label><input type="range" id="tMarginr" min="0" max="80" step="2"><input class="num" type="number" id="tMargin" min="0" max="80"></div>
+      <div class="row"><label for="tFall">Falloff</label><input type="range" id="tFallr" min="20" max="220" step="5"><input class="num" type="number" id="tFall" min="20" max="220"></div>
+      <div class="hr"></div>
+      <div class="h" style="margin-bottom:6px"><h3 style="font-size:15px">Sculpt</h3></div>
+      <div class="sub" id="bHelp">Paint the ground on the map with a brush. Only a track's own heightmap can be sculpted.</div>
+      <button class="btn" id="bToggle" aria-pressed="false" style="width:100%;justify-content:center;margin-bottom:10px">Sculpt on the map</button>
+      <div class="seg" id="bMode" role="group" aria-label="Brush">
+        <button data-b="raise">Raise</button><button data-b="lower">Lower</button><button data-b="smooth">Smooth</button><button data-b="level">Level</button>
+      </div>
+      <div class="row"><label for="bSize">Size</label><input type="range" id="bSizer" min="40" max="500" step="10"><input class="num" type="number" id="bSize" min="40" max="500"></div>
+      <div class="row"><label for="bStr">Strength</label><input type="range" id="bStrr" min="5" max="100" step="5"><input class="num" type="number" id="bStr" min="5" max="100"></div>
+      <div class="acts" style="margin-bottom:10px"><button class="btn sm" id="bClear">Clear sculpting</button></div>
+      <div class="card" id="tInfo"></div>
+      <p class="note" id="tNote"></p>
+    </section>
+
+    <section class="pane" id="pane-trace" role="tabpanel" hidden>
+      <div class="h"><h3>Trace a circuit</h3></div>
+      <div class="sub">Lay a stylised outline under the map, then let Tarmac Toolbox turn it into blocks. Outlines are loose sketches with made-up names, not survey data.</div>
+      <div class="acts" style="margin-bottom:10px"><button class="btn sm" id="trOpen">Open file…</button><span class="note" style="align-self:center">GPX, GeoJSON, CSV or an outline .json</span></div>
+      <input type="file" id="trFile" hidden accept=".gpx,.geojson,.json,.csv,.txt,.xml">
+      <div class="outl" id="outlines"></div>
+      <p class="note" id="outlMsg" style="margin:-4px 0 12px"></p>
+      <label class="sub" for="paste" style="display:block;margin-bottom:6px">Or paste your own path (GeoJSON, GPX or “lat, lon” lines)</label>
+      <textarea class="num" id="paste" spellcheck="false" placeholder="52.0720, -1.0150&#10;52.0731, -1.0121&#10;…"></textarea>
+      <div class="acts" style="margin:8px 0 14px"><button class="btn sm" id="pasteGo">Use pasted path</button></div>
+      <div id="traceCtl" hidden>
+        <div class="row"><label for="trLen">Length</label><input type="range" id="trLenr" min="2000" max="11000" step="100"><input class="num" type="number" id="trLen" min="2000" max="11000" step="100"></div>
+        <div class="row"><label for="trRot">Rotate °</label><input type="range" id="trRotr" min="-180" max="180" step="5"><input class="num" type="number" id="trRot" min="-180" max="180"></div>
+        <div class="row"><label for="trOp">Opacity</label><input type="range" id="trOpr" min="0.2" max="1" step="0.05"><input class="num" type="number" id="trOp" min="0.2" max="1" step="0.05"></div>
+        <label class="check"><input type="checkbox" id="trFlip"><span>Mirror left–right</span></label>
+        <div class="acts" style="margin-bottom:12px">
+          <button class="btn sm" id="trFit">Fit and centre</button>
+          <button class="btn sm" id="trMove" aria-pressed="false">Move on map</button>
+          <button class="btn sm" id="trClear">Remove outline</button>
+        </div>
+        <div class="hr"></div>
+        <div class="row"><label for="trFid">Detail</label><input type="range" id="trFidr" min="1" max="5" step="1"><span class="mono" id="trFid" style="font-size:12px;text-align:right">3</span></div>
+        <div class="row"><label for="trName">Save as</label><input class="num" id="trName" maxlength="40" style="grid-column:2/4" placeholder="Outline name"></div>
+        <div class="acts" style="margin-bottom:12px"><button class="btn sm" id="trSave">Save outline file</button></div>
+        <div class="card" id="trInfo"></div>
+        <button class="btn primary" id="trGen" style="width:100%;justify-content:center">Build blocks from outline</button>
+      </div>
+    </section>
+  </aside>
+</div>
+
+<div class="modal" id="modal" hidden role="dialog" aria-modal="true" aria-labelledby="mTitle">
+  <div class="sheet">
+    <div class="h"><h2 id="mTitle">Export track</h2><button class="btn sm" id="mClose">Close</button></div>
+    <div id="mWarn"></div>
+    <div class="cols">
+      <div>
+        <div class="sub" style="margin-bottom:6px">Track file preview</div>
+        <pre class="xml" id="mXml"></pre>
+        <div class="note" id="mInfo" style="margin-top:8px"></div>
+        <div class="acts" style="margin-top:12px">
+          <button class="btn primary" id="mSave">Save track file</button>
+          <button class="btn" id="mCopy">Copy XML</button>
+        </div>
+        <p class="note" style="margin-top:10px">Saves <code id="mName"></code>. Put that file in the Racing Game <b>Tracks</b> folder as it is, without renaming it. It only works with Racing Game (desktop), not with other games.</p>
+      </div>
+      <div>
+        <div class="sub" style="margin-bottom:6px">Save the downloaded file in the Racing Game Tracks folder on your:</div>
+        <div class="plat" id="plat"></div>
+        <p class="note" style="margin-top:10px">Then start Racing Game, choose <b>Play</b>, pick the <b>Custom</b> button on the track selection screen, and your track is in the list. Click a platform above to copy its folder path. If the folder does not exist yet, create it (or run the game once).</p>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal" id="about" hidden role="dialog" aria-modal="true" aria-labelledby="aTitle">
+  <div class="sheet about">
+    <div class="h"><h2 id="aTitle">About Racing Game's Tarmac Toolbox</h2><button class="btn sm" id="aClose">Close</button></div>
+    <p class="ver">Version <span id="aVer"></span></p>
+    <p>A free, in-browser track editor for <b>Racing Game</b>, the desktop racing game. Design a closed-loop circuit, let the checks catch problems, and export a <code>.Track</code> file the game can load. It does not work with other games.</p>
+    <h3>How it works</h3>
+    <ol>
+      <li>Design a track: add blocks, drag the road, shape the terrain, or trace an outline.</li>
+      <li>Fill in your name as Author and press <b>Export track</b>.</li>
+      <li>Save the downloaded <code>.Track</code> file in the game's Tracks folder (the export window shows the path for your system).</li>
+      <li>Start Racing Game, choose Play, then the <b>Custom</b> button on the track selection screen.</li>
+    </ol>
+    <h3>Your work and your tracks</h3>
+    <p>Everything stays in your browser. The editor keeps your current track in this browser's local storage so a reload does not lose it, and nothing is uploaded. Your name is written into the track file as its Author. Use the name you want credited.</p>
+    <h3>Credits and licences</h3>
+    <ul>
+      <li>Tarmac Toolbox: made by Dominique Louis (CartBlanche).</li>
+      <li>Open source: the code for Racing Game and this editor is available on request. Ask in the comments on the itch.io page.</li>
+      <li>The outline library (Trace tab) holds simplified outlines traced from track maps. Each one lists its source and licence in its file, and only the shape is used.</li>
+      <li>If you trace your own GPX, GeoJSON or map data, its licence stays with you. OpenStreetMap data needs the credit "(c) OpenStreetMap contributors" (ODbL).</li>
+      <li>All names in this tool are invented puns. No official circuit, series or brand names are used.</li>
+    </ul>
+  </div>
+</div>
+<div class="toast" id="toast" hidden></div>
+
+<script>
+const APP_VERSION='1.0.0';
+/*CORE-START*/
+const MAP=2560, GRID=257, STEP=24, ROAD_UNIT=13.25, LIFT=4.5, GHOST_SPEED=45;
+const clamp=(v,a,b)=>Math.min(b,Math.max(a,v)), lerp=(a,b,t)=>a+(b-a)*t;
+const rad=d=>d*Math.PI/180, deg=r=>r*180/Math.PI;
+const wrapPi=a=>{while(a>Math.PI)a-=2*Math.PI;while(a<-Math.PI)a+=2*Math.PI;return a};
+const dist=(a,b)=>Math.hypot(a.x-b.x,a.y-b.y);
+const smooth=t=>{t=clamp(t,0,1);return t*t*(3-2*t)};
+function rot(x,y,a){const c=Math.cos(a),s=Math.sin(a);return [x*c-y*s,x*s+y*c];}
+let _uid=1; const uid=()=>'b'+(_uid++);
+
+const mkS=(len,o)=>Object.assign({id:uid(),t:'s',len,ang:0,r:0,dz:0,w:1,feat:'none'},o||{});
+const mkA=(ang,r,o)=>Object.assign({id:uid(),t:'a',len:0,ang,r,dz:0,w:1,feat:'none'},o||{});
+const blockLen=b=>b.t==='s'?b.len:b.r*Math.abs(rad(b.ang));
+
+/* Walk the chain of blocks and return a dense sample list. */
+function buildTrack(st,insert){
+  let blocks=st.blocks;
+  if(insert){blocks=blocks.slice();blocks.splice(insert.index,0,...insert.blocks);}
+  const S=[],ranges=[];
+  let x=st.start.x,y=st.start.y,h=rad(st.start.h),z=st.start.z,s=0;
+  S.push({x,y,z,h,w:1,b:0,s:0});
+  blocks.forEach((b,bi)=>{
+    const L=blockLen(b),n=Math.max(1,Math.ceil(L/STEP)),i0=S.length-1,z0=z;
+    if(b.t==='s'){
+      const dx=Math.cos(h),dy=Math.sin(h);
+      for(let i=1;i<=n;i++){const t=i/n;S.push({x:x+dx*L*t,y:y+dy*L*t,z:z0+b.dz*t,h,w:b.w,b:bi,s:s+L*t});}
+      x+=dx*L;y+=dy*L;
+    }else{
+      const a=rad(b.ang),sg=Math.sign(a)||1,r=b.r;
+      const cx=x-Math.sin(h)*r*sg,cy=y+Math.cos(h)*r*sg,px=x-cx,py=y-cy;
+      for(let i=1;i<=n;i++){const t=i/n,[rx,ry]=rot(px,py,a*t);S.push({x:cx+rx,y:cy+ry,z:z0+b.dz*t,h:h+a*t,w:b.w,b:bi,s:s+L*t});}
+      const [ex,ey]=rot(px,py,a);x=cx+ex;y=cy+ey;h+=a;
+    }
+    z=z0+b.dz;s+=L;
+    ranges.push({i0,i1:S.length-1,s0:s-L,s1:s,bi});
+  });
+  const end={x,y,h:deg(h),z};
+  const gap=Math.hypot(st.start.x-x,st.start.y-y);
+  const herr=deg(wrapPi(rad(st.start.h)-h));
+  let conn=null;
+  if(st.closeAuto&&blocks.length&&(gap>25||Math.abs(wrapPi(rad(st.start.h)-h))>rad(8))){
+    const k=Math.max(60,gap*1.25),n=Math.max(2,Math.ceil((gap*1.1+Math.abs(wrapPi(rad(st.start.h)-h))*110)/STEP));
+    const t0=[Math.cos(h)*k,Math.sin(h)*k],h1=rad(st.start.h),t1=[Math.cos(h1)*k,Math.sin(h1)*k];
+    const bi=blocks.length,i0=S.length-1,sx=st.start.x,sy=st.start.y;
+    let px=x,py=y,acc=s;
+    for(let i=1;i<=n;i++){
+      const t=i/n,t2=t*t,t3=t2*t;
+      const h00=2*t3-3*t2+1,h10=t3-2*t2+t,h01=-2*t3+3*t2,h11=t3-t2;
+      const nx=h00*x+h10*t0[0]+h01*sx+h11*t1[0],ny=h00*y+h10*t0[1]+h01*sy+h11*t1[1];
+      acc+=Math.hypot(nx-px,ny-py);px=nx;py=ny;
+      S.push({x:nx,y:ny,z:lerp(z,st.start.z,t),h:0,w:1,b:bi,s:acc});
+    }
+    for(let i=i0+1;i<S.length;i++){const a=S[i-1],c=S[Math.min(i+1,S.length-1)];S[i].h=Math.atan2(c.y-a.y,c.x-a.x);}
+    ranges.push({i0,i1:S.length-1,s0:s,s1:acc,bi,conn:true});
+    conn={i0,i1:S.length-1,bi};s=acc;
+  }
+  return {samples:S,ranges,conn,end,start:st.start,gap,herr,length:s,blocks};
+}
+
+/* Terrain ---------------------------------------------------------- */
+function hash2(ix,iy,seed){let n=(Math.imul(ix,374761393)+Math.imul(iy,668265263)+Math.imul(seed,1274126177))|0;n=Math.imul(n^(n>>>13),1274126177);n^=n>>>16;return ((n>>>0)&0xFFFFFF)/0x1000000;}
+function vnoise(x,y,seed){const x0=Math.floor(x),y0=Math.floor(y);let fx=x-x0,fy=y-y0;fx=fx*fx*(3-2*fx);fy=fy*fy*(3-2*fy);
+  const a=hash2(x0,y0,seed),b=hash2(x0+1,y0,seed),c=hash2(x0,y0+1,seed),d=hash2(x0+1,y0+1,seed);return lerp(lerp(a,b,fx),lerp(c,d,fx),fy);}
+function fbm(x,y,seed,oct=4){let v=0,a=1,t=0,f=1;for(let o=0;o<oct;o++){v+=a*vnoise(x*f,y*f,seed+o*101);t+=a;a*=.5;f*=2;}return v/t;}
+function genTerrain(preset,seed){
+  const T=new Uint8Array(GRID*GRID);
+  for(let y=0;y<GRID;y++)for(let x=0;x<GRID;x++){
+    let h;
+    if(preset==='flat')h=10;
+    else if(preset==='hill'){const dx=x*10-1280,dy=y*10-1280;h=10+190*Math.exp(-(dx*dx+dy*dy)/(2*430*430));}
+    else if(preset==='rolling'){h=12+85*fbm(x/46,y/46,seed)+10*fbm(x/12,y/12,seed+7);}
+    else{ // bowl, shaped like the game's terrain: high rim, central mountain, flat lowlands
+      const nx=(x-128)/128,ny=(y-128)/128,r=Math.hypot(nx,ny);
+      const base=9+30*fbm(x/52,y/52,seed);
+      const rim=smooth((r-.6)/.42)*(95+115*fbm(x/22,y/22,seed+9));
+      const mount=Math.exp(-Math.pow(r/.3,2))*(120+85*fbm(x/17,y/17,seed+3));
+      h=base+rim+mount+5*(fbm(x/8,y/8,seed+5)-.5);
+    }
+    T[x+y*GRID]=clamp(Math.round(h),0,255);
+  }
+  return blur(T);
+}
+function blur(T){ // one gentle 3x3 pass so the ground reads as hills, not static
+  const o=new Uint8Array(T.length);
+  for(let y=0;y<GRID;y++)for(let x=0;x<GRID;x++){let a=0,n=0;for(let j=-1;j<=1;j++)for(let i=-1;i<=1;i++){const xx=x+i,yy=y+j;if(xx<0||yy<0||xx>=GRID||yy>=GRID)continue;const w=(i===0&&j===0)?4:1;a+=T[xx+yy*GRID]*w;n+=w;}o[x+y*GRID]=Math.round(a/n);}
+  return o;
+}
+function terrAt(T,x,y){
+  const gx=clamp(x/10,0,GRID-1.001),gy=clamp(y/10,0,GRID-1.001),x0=Math.floor(gx),y0=Math.floor(gy),fx=gx-x0,fy=gy-y0;
+  const a=T[x0+y0*GRID],b=T[x0+1+y0*GRID],c=T[x0+(y0+1)*GRID],d=T[x0+1+(y0+1)*GRID];
+  return lerp(lerp(a,b,fx),lerp(c,d,fx),fy)*300/255;
+}
+/* Cut the ground to sit under the road, blend back to the original over `falloff`. */
+function flattenTerrain(base,tr,cfg){
+  const R=cfg.margin,F=cfg.falloff,maxR=ROAD_UNIT*2+R+F;
+  const minD=new Float32Array(GRID*GRID).fill(1e9),tgt=new Float32Array(GRID*GRID),flatR=new Float32Array(GRID*GRID);
+  for(const p of tr.samples){
+    const half=ROAD_UNIT*p.w/2+R,reach=half+F,cr=Math.ceil(reach/10)+1,cx=Math.round(p.x/10),cy=Math.round(p.y/10);
+    for(let gy=Math.max(0,cy-cr);gy<=Math.min(GRID-1,cy+cr);gy++)for(let gx=Math.max(0,cx-cr);gx<=Math.min(GRID-1,cx+cr);gx++){
+      const d=Math.hypot(gx*10-p.x,gy*10-p.y),i=gx+gy*GRID;
+      if(d<reach&&d-half<minD[i]-flatR[i]){minD[i]=d;tgt[i]=p.z-6;flatR[i]=half;}
+    }
+  }
+  const out=new Uint8Array(base);
+  for(let i=0;i<out.length;i++){
+    if(minD[i]>=1e8)continue;
+    const d=minD[i],half=flatR[i],t=d<=half?0:smooth((d-half)/F);
+    const target=clamp(tgt[i],0,300)*255/300;
+    out[i]=clamp(Math.round(lerp(target,base[i],t)),0,255);
+  }
+  return out;
+}
+
+/* Control points like the game expects: spaced 40..~120 units, finer on curves. */
+function controlPoints(tr,spacing=120){
+  const S=tr.samples;if(S.length<2)return [0];
+  const ends=new Set(tr.ranges.map(r=>r.i1)),out=[0];
+  let acc=0,last=0;
+  for(let i=1;i<S.length;i++){
+    acc+=Math.hypot(S[i].x-S[i-1].x,S[i].y-S[i-1].y);
+    const dh=Math.abs(wrapPi(S[i].h-S[last].h));
+    if(acc>=spacing||(acc>=40&&(dh>rad(14)||ends.has(i)))){out.push(i);acc=0;last=i;}
+  }
+  const closed=tr.conn||tr.gap<200;
+  while(out.length>4&&closed&&dist(S[out[out.length-1]],S[0])<40)out.pop();
+  return out;
+}
+
+function liftTrack(tr,T){for(const p of tr.samples)p.zr=Math.max(p.z,terrAt(T,p.x,p.y)+LIFT);}
+
+/* Validation ------------------------------------------------------- */
+function runChecks(st,tr,T){
+  const out=[],S=tr.samples,add=(id,level,title,detail,loc,extra)=>out.push(Object.assign({id,level,title,detail,loc:loc||null},extra||{}));
+  if(!st.meta.author.trim())add('author','error','Author is required','Every track file records who made it. Enter your name at the top.');
+  else add('author','ok','Author: '+st.meta.author.trim(),'Saved in the file; shown in the game’s track list.');
+  if(!st.blocks.length){add('empty','error','No blocks yet','Add a block from the palette.');return out;}
+  // loop
+  if(st.closeAuto){
+    let minR=1e9,at=null;
+    if(tr.conn)for(let i=tr.conn.i0+1;i<tr.conn.i1;i++){const dh=Math.abs(wrapPi(S[i+1].h-S[i-1].h)),ds=Math.hypot(S[i+1].x-S[i-1].x,S[i+1].y-S[i-1].y);if(dh>1e-4&&ds/dh<minR){minR=ds/dh;at=S[i];}}
+    if(tr.conn&&minR<80)add('loop','warn','Closing curve is very tight','The auto-closing connector turns with a radius of about '+Math.round(minR)+' units. Add blocks or move the start so the loop can close more gently.',at);
+    else add('loop','ok','Loop closed',tr.conn?'Auto-close adds a connecting curve of about '+Math.round(tr.conn.i1>tr.conn.i0?S[tr.conn.i1].s-S[tr.conn.i0].s:0)+' units.':'The last block meets the start line.');
+  }else{
+    if(tr.gap<=160&&Math.abs(tr.herr)<=20)add('loop','ok','Loop closed','The end meets the start line, gap '+Math.round(tr.gap)+' units.');
+    else add('loop','error','Loop is open','The end is '+Math.round(tr.gap)+' units from the start line and off by '+Math.round(Math.abs(tr.herr))+'°. Turn on Auto-close or add blocks.',tr.end,{fix:'close'});
+  }
+  // bounds
+  let oob=0,oobAt=null;for(const p of S)if(p.x<40||p.y<40||p.x>MAP-40||p.y>MAP-40){oob++;oobAt=oobAt||p;}
+  if(oob)add('bounds','error','Track leaves the map',oob+' points are outside the 0–'+MAP+' square the terrain covers.',oobAt);
+  else add('bounds','ok','Inside the map','Every point is within the terrain.');
+  // radius
+  const tight=st.blocks.findIndex(b=>b.t==='a'&&b.r<90);
+  if(tight>=0){const r=tr.ranges[tight];add('radius','warn','Very tight corner','Block '+(tight+1)+' turns with a radius of '+st.blocks[tight].r+' units. The car may not make it round.',S[Math.floor((r.i0+r.i1)/2)],{block:tight});}
+  else add('radius','ok','Corners are drivable','Smallest radius is '+Math.round(Math.min(...st.blocks.filter(b=>b.t==='a').map(b=>b.r),9999))+' units.');
+  // accidental loop-the-loop (see format spec 3.2)
+  const cp=controlPoints(tr).map(i=>S[i]);let looped=null;
+  for(let i=1;i<cp.length-3;i++){const a=cp[i],b=cp[i+1],c=cp[i+2],dz1=(b.zr??b.z)-(a.zr??a.z),dz2=(c.zr??c.z)-(b.zr??b.z),xy=Math.hypot(b.x-a.x,b.y-a.y);
+    if(Math.abs(dz1)/2>xy&&Math.abs(dz1+dz2)<Math.abs(dz1)/2){looped=b;break;}}
+  if(looped)add('looping','warn','Steep up-then-down','These points would turn into a loop-the-loop in the game. Soften the climb or lengthen the blocks.',looped);
+  // slope
+  let maxG=0,gAt=null;for(let i=1;i<S.length;i++){const ds=Math.hypot(S[i].x-S[i-1].x,S[i].y-S[i-1].y)||1,g=Math.abs((S[i].zr??S[i].z)-(S[i-1].zr??S[i-1].z))/ds;if(g>maxG){maxG=g;gAt=S[i];}}
+  if(maxG>.3)add('slope','warn','Steep slope','Steepest stretch is '+Math.round(maxG*100)+'%. Keep it under about 30% so the car can climb it.',gAt);
+  else add('slope','ok','Gradients are gentle','Steepest stretch is '+Math.round(maxG*100)+'%.');
+  // buried edges
+  let buried=0,worst=0,bAt=null;
+  for(const p of S){const half=ROAD_UNIT*p.w/2,nx=-Math.sin(p.h),ny=Math.cos(p.h);let w=-1e9;
+    for(const o of [-1,-.5,0,.5,1,1.25,-1.25]){const tz=terrAt(T,p.x+nx*half*o,p.y+ny*half*o)-(p.zr??p.z);if(tz>w)w=tz;}
+    p.buried=w>-.3;if(p.buried){buried++;if(w>worst){worst=w;bAt=p;}}}
+  if(buried)add('buried','warn','Road edges buried in the ground',buried+' stretches have terrain at or above the road surface (worst '+worst.toFixed(1)+' units). Turn on “Flatten terrain under the road”.',bAt,{fix:'flatten'});
+  else add('buried','ok','Road sits clear of the ground','No edge or rail is buried.');
+  // height limits
+  { let zmax=-1e9,zmin=1e9,zAt=null;for(const p of S){if(p.z>zmax){zmax=p.z;zAt=p;}zmin=Math.min(zmin,p.z);}
+    if(zmax>Z_CEIL+.5)add('height','error','Road above the ceiling','The highest point is '+Math.round(zmax)+' units; the terrain scale stops at '+Z_CEIL+'. Lower it.',zAt);
+    else if(zmax>220)add('height','warn','Very high road','The highest point is '+Math.round(zmax)+' units. The built-in tracks peak at about 217.',zAt);
+    else if(zmin<Z_FLOOR_OWN)add('height','warn','Road at the floor','The lowest point is '+Math.round(zmin)+' units. Terrain cannot go lower than about '+Z_FLOOR_OWN+' below a road.');
+    else add('height','ok','Heights in range','The road runs from '+Math.round(zmin)+' to '+Math.round(zmax)+' units.'); }
+  // overlap
+  let hit=null;
+  for(let i=0;i<S.length&&!hit;i++)for(let j=i+1;j<S.length;j++){
+    const ds=S[j].s-S[i].s;if(ds<90||tr.length-ds<90)continue;
+    const dx=S[i].x-S[j].x,dy=S[i].y-S[j].y;if(dx*dx+dy*dy<(ROAD_UNIT*.9)**2){hit=S[i];break;}
+  }
+  if(hit)add('cross','error','Track crosses itself','The road overlaps another part of the track. The game has no bridges or junctions.',hit);
+  else add('cross','ok','No crossings','The road never overlaps itself.');
+  // timing
+  { const cp=tr.cp||[];
+    if(!st.checkpoints)add('timing','ok','Automatic checkpoints',cp.length+' checkpoints, one every 500 units (the game places them).');
+    else if(!cp.length)add('timing','warn','No checkpoints','Laps will not be split into sectors and there is no "ahead or behind" readout. Add some in the Timing tab.');
+    else{const edges=[0].concat(cp,[tr.length]);let longest=0;for(let i=1;i<edges.length;i++)longest=Math.max(longest,edges[i]-edges[i-1]);
+      if(longest>1600)add('timing','warn','A very long sector','The longest stretch between checkpoints is '+Math.round(longest)+' units. Add a checkpoint so splits come more often.');
+      else add('timing','ok',cp.length+' custom checkpoint'+(cp.length>1?'s':''),'Longest sector '+Math.round(longest)+' units.');}
+  }
+  // length
+  const lap=tr.length/GHOST_SPEED,m=Math.floor(lap/60),sec=Math.round(lap%60);
+  if(tr.length<1500)add('length','warn','Very short track','About '+Math.round(tr.length)+' units; laps will be over in seconds.');
+  else if(tr.length>12000)add('length','warn','Very long track','About '+Math.round(tr.length)+' units; the longest built-in track is about 11,000.');
+  else add('length','ok','Length '+Math.round(tr.length).toLocaleString('en')+' units','About '+m+':'+String(sec).padStart(2,'0')+' per lap at the ghost’s pace. Built-in tracks run 3,300–11,200.');
+  return out;
+}
+
+/* Export ------------------------------------------------------------ */
+const f4=n=>(+n.toFixed(4)).toString();
+const esc=s=>String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+function buildXml(st,tr,heightB64){
+  const S=tr.samples,idx=controlPoints(tr),ind='  ',L=[];
+  const vec=(p,tag,pad)=>pad+'<'+tag+'>\n'+pad+ind+'<X>'+f4(p.x)+'</X>\n'+pad+ind+'<Y>'+f4(p.y)+'</Y>\n'+pad+ind+'<Z>'+f4(p.zr??p.z)+'</Z>\n'+pad+'</'+tag+'>';
+  L.push('<?xml version="1.0" encoding="utf-8"?>');
+  L.push('<TrackData xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">');
+  L.push(ind+'<FormatVersion>1</FormatVersion>');
+  L.push(ind+'<Name>'+esc(st.meta.name.trim()||'Untitled')+'</Name>');
+  L.push(ind+'<Author>'+esc(st.meta.author.trim())+'</Author>');
+  if(st.meta.description.trim())L.push(ind+'<Description>'+esc(st.meta.description.trim())+'</Description>');
+  L.push(ind+'<Created>'+new Date().toISOString().slice(0,10)+'</Created>');
+  if(st.checkpoints){const cp=(tr.cp||[]).map(x=>+(x/tr.length).toFixed(5));
+    if(cp.length){L.push(ind+'<Checkpoints>');for(const f of cp)L.push(ind+ind+'<float>'+f+'</float>');L.push(ind+'</Checkpoints>');}else L.push(ind+'<Checkpoints />');}
+  if(heightB64)L.push(ind+'<Heightmap>'+heightB64+'</Heightmap>');
+  L.push(ind+'<TrackPoints>');
+  for(const i of idx)L.push(vec(S[i],'Vector3',ind+ind));
+  L.push(ind+'</TrackPoints>');
+  // width helpers
+  const wh=[];
+  tr.ranges.forEach(r=>{if(r.conn)return;const b=tr.blocks[r.bi];if(Math.abs(b.w-1)<.01)return;
+    const len=r.s1-r.s0,cuts=len>220?[.25,.75]:[.5];
+    for(const c of cuts)wh.push({p:S[Math.round(lerp(r.i0,r.i1,c))],w:b.w});});
+  L.push(wh.length?ind+'<WidthHelpers>':ind+'<WidthHelpers />');
+  for(const h of wh){L.push(ind+ind+'<WidthHelper>');L.push(vec(h.p,'pos',ind+ind+ind));L.push(ind+ind+ind+'<scale>'+f4(h.w)+'</scale>');L.push(ind+ind+'</WidthHelper>');}
+  if(wh.length)L.push(ind+'</WidthHelpers>');
+  // road helpers: a helper opens a region, the next helper closes it (Reset only closes)
+  const rh=[];let open=null;
+  const bl=tr.blocks;
+  tr.ranges.forEach(r=>{
+    if(r.conn)return;const f=bl[r.bi].feat,next=bl[r.bi+1]?bl[r.bi+1].feat:'none';
+    if(f!=='none'){
+      if(open!==f)rh.push({t:{tunnel:'Tunnel',palms:'Palms',laterns:'Laterns'}[f],p:S[r.i0]});
+      open=f;
+      if(next!==f){ if(next==='none'||r.bi+1>=bl.length){rh.push({t:'Reset',p:S[r.i1]});open=null;} }
+    }else open=null;
+  });
+  L.push(rh.length?ind+'<RoadHelpers>':ind+'<RoadHelpers />');
+  for(const h of rh){L.push(ind+ind+'<RoadHelper>');L.push(ind+ind+ind+'<type>'+h.t+'</type>');L.push(vec(h.p,'pos',ind+ind+ind));L.push(ind+ind+'</RoadHelper>');}
+  if(rh.length)L.push(ind+'</RoadHelpers>');
+  L.push(ind+'<NeutralsObjects />');
+  L.push('</TrackData>');
+  return {xml:L.join('\n'),points:idx.length,widthHelpers:wh.length,roadHelpers:rh.length,checkpoints:st.checkpoints?(tr.cp||[]).length:-1};
+}
+
+/* Trace: outline -> world points -> blocks ------------------------------- */
+function catmull(pts,spacing){
+  const n=pts.length,out=[];
+  for(let i=0;i<n;i++){
+    const p0=pts[(i-1+n)%n],p1=pts[i],p2=pts[(i+1)%n],p3=pts[(i+2)%n];
+    const d=Math.hypot(p2[0]-p1[0],p2[1]-p1[1]),m=Math.max(2,Math.ceil(d/spacing));
+    for(let k=0;k<m;k++){const t=k/m,t2=t*t,t3=t2*t;
+      out.push([0.5*((2*p1[0])+(-p0[0]+p2[0])*t+(2*p0[0]-5*p1[0]+4*p2[0]-p3[0])*t2+(-p0[0]+3*p1[0]-3*p2[0]+p3[0])*t3),
+                0.5*((2*p1[1])+(-p0[1]+p2[1])*t+(2*p0[1]-5*p1[1]+4*p2[1]-p3[1])*t2+(-p0[1]+3*p1[1]-3*p2[1]+p3[1])*t3)]);}
+  }
+  return out;
+}
+/* raw outline (any units, y up) -> centred, scaled to `len` perimeter, rotated, flipped, offset */
+function traceWorld(tc){
+  if(!tc||!tc.pts||tc.pts.length<3)return null;
+  const sm=catmull(tc.pts,6);let per=0;for(let i=0;i<sm.length;i++){const a=sm[i],b=sm[(i+1)%sm.length];per+=Math.hypot(a[0]-b[0],a[1]-b[1]);}
+  let cx=0,cy=0;for(const p of sm){cx+=p[0];cy+=p[1];}cx/=sm.length;cy/=sm.length;
+  const k=tc.len/per,a=rad(tc.rot),fl=tc.flip?-1:1;
+  return sm.map(p=>{const [x,y]=rot((p[0]-cx)*k*fl,(p[1]-cy)*k,a);return [1280+tc.ox+x,1280+tc.oy+y];});
+}
+function outlineToBlocks(wp,chunk){
+  const P=[];
+  { // resample evenly at ~10 units
+    const pts=wp.concat([wp[0]]);let acc=0;P.push(pts[0]);
+    for(let i=1;i<pts.length;i++){let a=pts[i-1],b=pts[i],d=Math.hypot(b[0]-a[0],b[1]-a[1]);
+      while(acc+d>=10){const t=(10-acc)/d;a=[a[0]+(b[0]-a[0])*t,a[1]+(b[1]-a[1])*t];P.push(a);d=Math.hypot(b[0]-a[0],b[1]-a[1]);acc=0;}acc+=d;}
+  }
+  const n=P.length,H=P.map((p,i)=>{const a=P[(i-3+n)%n],b=P[(i+3)%n];return Math.atan2(b[1]-a[1],b[0]-a[0]);});
+  const L=n*10,N=Math.max(8,Math.round(L/chunk)),blocks=[];
+  for(let c=0;c<N;c++){
+    const i0=Math.floor(c*n/N),i1=Math.floor((c+1)*n/N);let d=0;
+    for(let i=i0;i<i1;i++)d+=wrapPi(H[(i+1)%n]-H[i]);
+    const len=(i1-i0)*10,ang=deg(d);
+    blocks.push(Math.abs(ang)<3?{t:'s',len,ang:0}:{t:'a',ang,r:len/Math.abs(d)});
+  }
+  const merged=[];
+  for(const b of blocks){const m=merged[merged.length-1];
+    if(m&&m.t==='s'&&b.t==='s')m.len+=b.len;
+    else if(m&&m.t==='a'&&b.t==='a'&&Math.sign(m.ang)===Math.sign(b.ang)&&Math.abs(m.r-b.r)/Math.max(m.r,b.r)<.28){
+      const tl=m.r*Math.abs(rad(m.ang))+b.r*Math.abs(rad(b.ang)),ta=m.ang+b.ang;m.ang=ta;m.r=tl/Math.abs(rad(ta));}
+    else merged.push(Object.assign({},b));}
+  const out=merged.map(b=>b.t==='s'?mkS(Math.round(b.len/10)*10):mkA(Math.round(b.ang),clamp(Math.round(b.r/10)*10,60,900)));
+  return {start:{x:P[0][0],y:P[0][1],h:deg(H[0])},blocks:out.filter(b=>b.t==='a'?Math.abs(b.ang)>=2:b.len>=20)};
+}
+function parseOutline(text){
+  const nums=[];
+  const m=text.matchAll(/(?:lat|y)\s*=\s*"?(-?\d+(?:\.\d+)?)"?[^>]*?(?:lon|lng|x)\s*=\s*"?(-?\d+(?:\.\d+)?)"?/gi);
+  for(const g of m)nums.push([+g[2],+g[1]]); // GPX trkpt: lat, lon
+  if(nums.length<3){
+    nums.length=0;
+    if(/coordinates/i.test(text)){ // GeoJSON [lon, lat]
+      for(const g of text.matchAll(/\[\s*(-?\d+(?:\.\d+)?)\s*,\s*(-?\d+(?:\.\d+)?)(?:\s*,\s*-?\d+(?:\.\d+)?)?\s*\]/g))nums.push([+g[1],+g[2]]);
+    }else{
+      for(const line of text.split(/\r?\n/)){const g=line.match(/(-?\d+(?:\.\d+)?)\s*[,;\t ]\s*(-?\d+(?:\.\d+)?)/);if(g)nums.push([+g[2],+g[1]]);} // lat, lon
+    }
+  }
+  if(nums.length<3)return null;
+  // lon/lat -> local metres (equirectangular), drop a duplicated closing point
+  const lat0=nums.reduce((a,p)=>a+p[1],0)/nums.length,kx=Math.cos(rad(lat0));
+  let pts=nums.map(p=>[p[0]*kx*111320,p[1]*110540]);
+  if(Math.hypot(pts[0][0]-pts.at(-1)[0],pts[0][1]-pts.at(-1)[1])<30)pts.pop();
+  // thin to ~max 120 points so the outline stays light
+  const step=Math.max(1,Math.floor(pts.length/120));pts=pts.filter((_,i)=>i%step===0);
+  return pts.length>=3?pts:null;
+}
+
+/* Elastic drag: forward kinematics of a window of blocks + a small damped least-squares solve ---- */
+function poseAfter(p,b){
+  if(b.t==='s')return {x:p.x+Math.cos(p.h)*b.len,y:p.y+Math.sin(p.h)*b.len,h:p.h};
+  const a=rad(b.ang),sg=Math.sign(a)||1,r=b.r,cx=p.x-Math.sin(p.h)*r*sg,cy=p.y+Math.cos(p.h)*r*sg;
+  const [ex,ey]=rot(p.x-cx,p.y-cy,a);return {x:cx+ex,y:cy+ey,h:p.h+a};
+}
+function pointOnBlock(p,b,t){
+  if(b.t==='s')return {x:p.x+Math.cos(p.h)*b.len*t,y:p.y+Math.sin(p.h)*b.len*t};
+  const a=rad(b.ang),sg=Math.sign(a)||1,r=b.r,cx=p.x-Math.sin(p.h)*r*sg,cy=p.y+Math.cos(p.h)*r*sg;
+  const [ex,ey]=rot(p.x-cx,p.y-cy,a*t);return {x:cx+ex,y:cy+ey};
+}
+function evalWin(pose0,blocks,refIdx,refT){
+  let p={x:pose0.x,y:pose0.y,h:pose0.h},pt=null;
+  for(let i=0;i<blocks.length;i++){if(i===refIdx)pt=pointOnBlock(p,blocks[i],refT);p=poseAfter(p,blocks[i]);}
+  return {pt,end:p};
+}
+function solveLin(A,b){
+  const n=b.length;A=A.map((r,i)=>r.concat([b[i]]));
+  for(let c=0;c<n;c++){let m=c;for(let r=c+1;r<n;r++)if(Math.abs(A[r][c])>Math.abs(A[m][c]))m=r;
+    [A[c],A[m]]=[A[m],A[c]];const d=A[c][c]||1e-12;
+    for(let r=c+1;r<n;r++){const f=A[r][c]/d;for(let k=c;k<=n;k++)A[r][k]-=f*A[c][k];}}
+  const x=new Array(n).fill(0);
+  for(let r=n-1;r>=0;r--){let v=A[r][n];for(let k=r+1;k<n;k++)v-=A[r][k]*x[k];x[r]=v/(A[r][r]||1e-12);}
+  return x;
+}
+/* o: {pose0 {x,y,h(rad)}, blocks (window, copied), refIdx, refT, target {x,y}|null, end0 {x,y,h}|null, wPt, wEnd, iters}
+   Unknowns: straight length, arc angle (sign kept) and radius. Keeps the window's end pose where it was
+   (so the rest of the track and the loop do not move) while moving the reference point to the target.
+   Returns {blocks, lag (units the point is short of the target), endErr (units)} */
+function solveWindow(o){
+  const blocks=o.blocks.map(b=>Object.assign({},b)),init=o.blocks.map(b=>Object.assign({},b));
+  const P=[];blocks.forEach((b,i)=>{if(b.t==='s')P.push({i,k:'len'});else{P.push({i,k:'ang'});P.push({i,k:'r'});}});
+  const n=P.length,sc=P.map(p=>p.k==='len'?10:p.k==='ang'?.05:20),lam=P.map(p=>p.k==='len'?.04:p.k==='ang'?6:.02);
+  const sgn=blocks.map(b=>Math.sign(b.ang)||1);
+  const get=(b,k)=>k==='ang'?rad(b.ang):b[k],set=(b,k,v)=>{if(k==='ang')b.ang=deg(v);else b[k]=v;};
+  const x0=P.map(p=>get(init[p.i],p.k));
+  const lo=P.map(p=>p.k==='len'?1:p.k==='r'?60:.0017),hi=P.map(p=>p.k==='len'?900:p.k==='r'?900:Math.PI);
+  const clampV=v=>v.map((val,j)=>{const p=P[j];if(p.k==='ang'){const s=sgn[p.i];return s*clamp(val*s>0?Math.abs(val):0,lo[j],hi[j]);}return clamp(val,lo[j],hi[j]);});
+  const resid=v=>{P.forEach((p,j)=>set(blocks[p.i],p.k,v[j]));
+    const e=evalWin(o.pose0,blocks,o.refIdx,o.refT),r=[];
+    if(o.target)r.push(o.wPt*(e.pt.x-o.target.x),o.wPt*(e.pt.y-o.target.y));
+    if(o.end0)r.push(o.wEnd*(e.end.x-o.end0.x),o.wEnd*(e.end.y-o.end0.y),o.wEnd*150*wrapPi(e.end.h-o.end0.h));
+    for(let j=0;j<n;j++)r.push(lam[j]*(v[j]-x0[j]));
+    return r;};
+  const sq=r=>r.reduce((a,b)=>a+b*b,0);
+  let x=clampV(P.map(p=>get(blocks[p.i],p.k))),r=resid(x),cost=sq(r),mu=.5;
+  for(let it=0;it<(o.iters||14)&&n;it++){
+    const m=r.length,J=Array.from({length:m},()=>new Array(n));
+    for(let j=0;j<n;j++){const h=sc[j]*.05,hh=x[j]+h>hi[j]?-h:h,xp=x.slice();xp[j]+=hh;const r2=resid(xp);for(let i=0;i<m;i++)J[i][j]=(r2[i]-r[i])/(hh/sc[j]);}
+    const JJ=Array.from({length:n},(_,a)=>Array.from({length:n},(_,b)=>{let t=0;for(let i=0;i<m;i++)t+=J[i][a]*J[i][b];return t;}));
+    const g=Array.from({length:n},(_,a)=>{let t=0;for(let i=0;i<m;i++)t+=J[i][a]*r[i];return -t;});
+    let ok=false;
+    for(let tries=0;tries<8&&!ok;tries++){ // raise the damping until the step helps
+      const d=solveLin(JJ.map((row,a)=>row.map((v,b)=>a===b?v+mu:v)),g),xn=clampV(x.map((v,j)=>v+d[j]*sc[j])),rn=resid(xn),cn=sq(rn);
+      if(cn<cost){x=xn;r=rn;cost=cn;mu=Math.max(mu/3,1e-6);ok=true;}else mu*=5;
+    }
+    if(!ok){resid(x);break;}
+    if(cost<1e-4)break;
+  }
+  r=resid(x);
+  const e=evalWin(o.pose0,blocks,o.refIdx,o.refT);
+  return {blocks,lag:o.target?Math.hypot(e.pt.x-o.target.x,e.pt.y-o.target.y):0,
+          endErr:o.end0?Math.hypot(e.end.x-o.end0.x,e.end.y-o.end0.y):0,endHeadErr:o.end0?Math.abs(deg(wrapPi(e.end.h-o.end0.h))):0};
+}
+/* Split a straight so a point on it can bend: S A S A S (the two arcs start almost straight and cancel).
+   Returns null when the straight is too short or the point too near an end. */
+function splitForFlex(b,t0,sign){
+  const L=b.len,bl=Math.min(.45*L,2*(t0*L-30),2*((1-t0)*L-30));
+  if(L<120||bl<30)return null;
+  const a=t0*L-bl/2,c=L-a-bl,part=len=>Object.assign(mkS(len),{dz:b.dz*len/L,w:b.w,feat:b.feat});
+  return [part(a),mkA(sign*.4,300,{w:b.w,feat:b.feat}),part(bl),mkA(-sign*.4,300,{w:b.w,feat:b.feat}),part(c)];
+}
+/* After a drag: nearly straight arcs become straights, neighbours that make the same road merge (same slope,
+   same feature and width; arcs also same radius and direction), tiny flat pieces vanish. */
+function cleanupWindow(blocks,i0,i1){
+  const win=blocks.slice(i0,i1+1).map(b=>b.t==='a'&&Math.abs(b.ang)<1?Object.assign(mkS(b.r*Math.abs(rad(b.ang))),{dz:b.dz,w:b.w,feat:b.feat,id:b.id}):b);
+  const slope=b=>b.dz/Math.max(1e-6,blockLen(b)),m=[];
+  for(const b of win){const q=m[m.length-1];
+    const same=q&&q.feat===b.feat&&Math.abs(q.w-b.w)<.02&&Math.abs(slope(q)-slope(b))<.002;
+    if(same&&q.t==='s'&&b.t==='s')m[m.length-1]=Object.assign({},q,{id:uid(),len:q.len+b.len,dz:q.dz+b.dz});
+    else if(same&&q.t==='a'&&b.t==='a'&&Math.sign(q.ang)===Math.sign(b.ang)&&Math.abs(q.r-b.r)<1)m[m.length-1]=Object.assign({},q,{id:uid(),ang:q.ang+b.ang,dz:q.dz+b.dz});
+    else m.push(b);}
+  const out=m.filter(b=>!(b.t==='s'&&b.len<25&&Math.abs(b.dz)<1&&m.length>1));
+  return {blocks:blocks.slice(0,i0).concat(out,blocks.slice(i1+1)),i0,i1:i0+out.length-1};
+}
+/* Timing checkpoints. Anchored to a block (id + fraction along it) so they travel with the road when it is
+   edited; `d` remembers the distance so a checkpoint whose block was split or merged can be re-anchored. */
+const CP_MIN_GAP=120, CP_EDGE=80;
+function autoCheckpoints(tr){const out=[];for(let d=500;d<tr.length-60;d+=500)out.push(d);return out;}
+function anchorAt(tr,s){
+  s=clamp(s,0,tr.length);
+  for(const r of tr.ranges)if(s<=r.s1+1e-6){return {id:r.conn?'close':tr.blocks[r.bi].id,t:clamp((s-r.s0)/Math.max(1e-6,r.s1-r.s0),0,1),d:s};}
+  const r=tr.ranges[tr.ranges.length-1];return {id:r.conn?'close':tr.blocks[r.bi].id,t:1,d:s};
+}
+function resolveCheckpoints(st,tr){
+  const L=tr.length,byId=new Map();
+  tr.ranges.forEach(r=>byId.set(r.conn?'close':tr.blocks[r.bi].id,r));
+  const ss=st.checkpoints.map(c=>{const r=byId.get(c.id);return r?r.s0+clamp(c.t,0,1)*(r.s1-r.s0):clamp(c.d||0,0,L);}).sort((a,b)=>a-b);
+  const out=[];for(const x of ss){if(x<CP_EDGE||x>L-CP_EDGE)continue;if(out.length&&x-out[out.length-1]<CP_MIN_GAP)continue;out.push(x);}
+  return {s:out,list:out.map(x=>anchorAt(tr,x))};
+}
+
+/* Elevation drag + terrain sculpting ---------------------------------------------------------------------- */
+const GRADE_MAX=.30, Z_CEIL=300, Z_FLOOR_OWN=6;
+/* Split a block in two without changing the road (the climb is shared in proportion); both halves get new ids. */
+function splitBlockAt(b,t){
+  if(b.t==='s'){const l1=b.len*t;return [Object.assign({},b,{id:uid(),len:l1,dz:b.dz*t}),Object.assign({},b,{id:uid(),len:b.len-l1,dz:b.dz*(1-t)})];}
+  const a1=b.ang*t;return [Object.assign({},b,{id:uid(),ang:a1,dz:b.dz*t}),Object.assign({},b,{id:uid(),ang:b.ang-a1,dz:b.dz*(1-t)})];
+}
+function vertexHeights(st){const z=[st.start.z];for(const b of st.blocks)z.push(z[z.length-1]+b.dz);return z;}
+/* Heights at the vertices between blocks (0..n). Vertex 0 and n are pinned, `grab` is moved to `target`, the others
+   settle so the slope changes as little as possible (cost = length x slope change squared), while every vertex stays
+   within [lo, hi] and every block within +-g slope. Returns the heights and why the target had to be held back. */
+function solveProfile(o){
+  const n=o.lens.length,h=o.z.slice(),g=o.g,k=o.grab,s0=[];
+  for(let i=0;i<n;i++)s0.push((o.z[i+1]-o.z[i])/o.lens[i]);
+  let da=0,db=0;for(let i=0;i<k;i++)da+=o.lens[i];for(let i=k;i<n;i++)db+=o.lens[i];
+  const lo=Math.max(o.lo[k],h[0]-g*da,h[n]-g*db),hi=Math.min(o.hi[k],h[0]+g*da,h[n]+g*db);
+  let want=o.target,reason=null;
+  if(lo>hi){want=(lo+hi)/2;reason='squeezed';}
+  else if(want<lo){want=lo;reason=lo===o.lo[k]?'floor':'slope';}
+  else if(want>hi){want=hi;reason=hi===o.hi[k]?'ceiling':'slope';}
+  h[k]=want;
+  for(let it=0;it<250;it++){
+    let md=0;
+    for(let j=1;j<n;j++){if(j===k)continue;
+      const a=o.lens[j-1],b=o.lens[j];
+      let v=(h[j-1]/a+h[j+1]/b+s0[j-1]-s0[j])/(1/a+1/b);
+      const l=Math.max(o.lo[j],h[j-1]-g*a,h[j+1]-g*b),u=Math.min(o.hi[j],h[j-1]+g*a,h[j+1]+g*b);
+      v=l>u?(l+u)/2:clamp(v,l,u);md=Math.max(md,Math.abs(v-h[j]));h[j]=v;}
+    if(md<1e-4)break;
+  }
+  return {h,limited:!!reason,reason,want};
+}
+/* Terrain edits are a small signed offset per height cell on top of the preset, stored run-length encoded. */
+function rleEncode(a){const out=[];let v=a[0],c=0;for(let i=0;i<a.length;i++){if(a[i]===v)c++;else{out.push(v,c);v=a[i];c=1;}}out.push(v,c);return (out.length===2&&out[0]===0)?null:out;}
+function rleDecode(r,len){const a=new Int8Array(len);if(!r)return a;let p=0;for(let i=0;i<r.length;i+=2){a.fill(r[i],p,p+r[i+1]);p+=r[i+1];}return a;}
+function effectiveTerrain(base,delta){const e=new Uint8Array(base.length);for(let i=0;i<e.length;i++)e[i]=clamp(base[i]+delta[i],0,255);return e;}
+/* One brush dab at world (cx,cy): raise, lower, smooth or level (to o.level, in height bytes). Edits delta and eff in place. */
+function sculptStroke(base,delta,eff,cx,cy,o){
+  const R=o.r/10,gx=cx/10,gy=cy/10,x0=Math.max(0,Math.floor(gx-R)),x1=Math.min(GRID-1,Math.ceil(gx+R)),y0=Math.max(0,Math.floor(gy-R)),y1=Math.min(GRID-1,Math.ceil(gy+R));
+  const src=o.mode==='smooth'?eff.slice():null;
+  for(let y=y0;y<=y1;y++)for(let x=x0;x<=x1;x++){
+    const d=Math.hypot(x-gx,y-gy)/R;if(d>=1)continue;
+    const w=1-d*d,i=x+y*GRID,cur=eff[i];let nv=cur;
+    if(o.mode==='raise')nv=cur+o.s*4*w;
+    else if(o.mode==='lower')nv=cur-o.s*4*w;
+    else if(o.mode==='smooth'){let a=0,m=0;for(let j=-1;j<=1;j++)for(let k=-1;k<=1;k++){const xx=x+k,yy=y+j;if(xx<0||yy<0||xx>=GRID||yy>=GRID)continue;a+=src[xx+yy*GRID];m++;}nv=cur+(a/m-cur)*clamp(o.s*w*.6,0,1);}
+    else nv=cur+(o.level-cur)*clamp(o.s*w*.5,0,1);
+    const dv=clamp(Math.round(nv)-base[i],-127,127);delta[i]=dv;eff[i]=clamp(base[i]+dv,0,255);
+  }
+}
+/*CORE-END*/
+</script>
+<script>
+(()=>{
+'use strict';
+const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
+const NS='http://www.w3.org/2000/svg';
+
+/* ---------------------------------------------------------------- state */
+/* Circuit outlines live in files next to the page (outlines/index.json lists them); see outlines/README.md */
+let OUTLINES=[],outlineMsg='Loading the outline library...';
+async function loadOutlines(){
+  try{
+    const idx=await (await fetch('outlines/index.json',{cache:'no-cache'})).json();
+    const all=await Promise.all((idx.outlines||[]).map(async f=>{try{const o=await (await fetch('outlines/'+f,{cache:'no-cache'})).json();return validOutline(o)?o:null;}catch(e){return null;}}));
+    OUTLINES=all.filter(Boolean);outlineMsg=OUTLINES.length?'':'The outline library is empty. Use Open file to bring your own.';
+  }catch(e){OUTLINES=[];outlineMsg='Could not load the outline library here. Use Open file to bring your own.';}
+  renderOutlines();
+}
+const validOutline=o=>o&&o.format==='tarmac-toolbox-outline'&&Array.isArray(o.points)&&o.points.length>=3&&o.points.every(p=>Array.isArray(p)&&p.length>=2&&isFinite(p[0])&&isFinite(p[1]));
+function sampleState(){
+  return {v:1,
+    meta:{name:'Ova-Achiever',author:'Dominique',description:''},
+    start:{x:1000,y:780,h:0,z:48},closeAuto:true,
+    blocks:[mkS(520,{feat:'laterns'}),mkS(400,{dz:22}),mkA(180,240,{dz:4}),mkS(270,{feat:'tunnel',dz:-8}),mkA(-45,330),mkA(45,330),mkS(180,{feat:'palms',dz:-18,w:1.2}),mkA(180,340)],
+    terrain:{preset:'shipped',seed:7,flatten:true,margin:30,falloff:70},
+    checkpoints:null,
+    trace:null};
+}
+let st=null;
+/* storage key keeps the old name so work saved under it is still found */
+try{const raw=localStorage.getItem('trackforge.v1');if(raw){const o=JSON.parse(raw);if(o&&o.v===1&&Array.isArray(o.blocks)&&o.blocks.length)st=o;}}catch(e){}
+if(!st)st=sampleState();
+st.blocks.forEach(b=>{if(!b.id)b.id=uid();});
+if(!st.terrain)st.terrain={preset:'shipped',seed:7,flatten:true,margin:30,falloff:70};
+if(st.checkpoints===undefined)st.checkpoints=null;
+
+let flex=2,spaceDown=false,hoverH=null,rd=null,dragging=false,selCp=-1,dragProf=-1,pd=null,profGeom=null,brushPos=null;
+const brush={on:false,mode:'raise',r:160,s:.5,level:10};
+let terrRaw=null,terrEff=null,delta=new Int8Array(GRID*GRID),sculptRef=null;
+let tr=null,terrBase=null,terrBaseKey='',terrFlat=null,checks=[],sel=0,hoverB=-1,hoverS=-1,pulse=null,ghost=null,dragKey=null,dragChip=-1,traceMove=false;
+let tw=null; // trace world points
+
+/* history */
+const hist=[],redoS=[];let lastKey='',lastAt=0;
+const snap=()=>JSON.stringify({meta:st.meta,start:st.start,closeAuto:st.closeAuto,blocks:st.blocks,terrain:st.terrain,checkpoints:st.checkpoints});
+function pushHist(key){const now=Date.now();if(key&&key===lastKey&&now-lastAt<700){lastAt=now;return;}lastKey=key||'';lastAt=now;hist.push(snap());if(hist.length>120)hist.shift();redoS.length=0;updUndo();}
+function applySnap(s){const o=JSON.parse(s);Object.assign(st,o);if(sel!=='start'&&sel>=st.blocks.length)sel=st.blocks.length-1;changed(true);syncMeta();}
+function undo(){if(!hist.length)return;redoS.push(snap());applySnap(hist.pop());updUndo();}
+function redo(){if(!redoS.length)return;hist.push(snap());applySnap(redoS.pop());updUndo();}
+function updUndo(){$('#undo').disabled=!hist.length;$('#redo').disabled=!redoS.length;}
+
+/* ------------------------------------------------------------- rebuild */
+function rebuild(light){
+  tr=buildTrack(st);
+  const key=st.terrain.preset+':'+st.terrain.seed;
+  if(key!==terrBaseKey){terrBase=genTerrain(st.terrain.preset==='shipped'?'bowl':st.terrain.preset,st.terrain.preset==='shipped'?7:st.terrain.seed);terrBaseKey=key;terrEff=null;}
+  const sc=st.terrain.preset==='shipped'?null:(st.terrain.sculpt||null);
+  if(sc!==sculptRef){delta=rleDecode(sc,GRID*GRID);sculptRef=sc;terrEff=null;}
+  if(!terrEff)terrEff=effectiveTerrain(terrBase,delta);
+  terrRaw=terrEff;
+  terrFlat=st.terrain.flatten&&st.blocks.length?flattenTerrain(terrRaw,tr,st.terrain):terrRaw;
+  liftTrack(tr,terrFlat);
+  if(st.checkpoints){const r=resolveCheckpoints(st,tr);st.checkpoints=r.list;tr.cp=r.s;if(selCp>=r.s.length)selCp=r.s.length-1;}else{tr.cp=autoCheckpoints(tr);selCp=-1;}
+  if(!light)checks=runChecks(st,tr,terrFlat);
+  tw=traceWorld(st.trace);
+  terrDirty=true;
+}
+let terrDirty=true;const terrCv=document.createElement('canvas');terrCv.width=terrCv.height=257;
+const RAMP=[[0,[184,152,98]],[40,[198,166,107]],[95,[158,124,80]],[160,[124,98,72]],[225,[138,131,121]],[300,[222,219,212]]];
+function ramp(h){for(let i=1;i<RAMP.length;i++)if(h<=RAMP[i][0]){const a=RAMP[i-1],b=RAMP[i],t=(h-a[0])/(b[0]-a[0]);return [lerp(a[1][0],b[1][0],t),lerp(a[1][1],b[1][1],t),lerp(a[1][2],b[1][2],t)];}return RAMP.at(-1)[1];}
+function paintTerrain(){
+  const c=terrCv.getContext('2d'),img=c.createImageData(257,257),T=terrFlat,K=300/255;
+  for(let y=0;y<257;y++)for(let x=0;x<257;x++){
+    const h=T[x+y*257]*K,l=T[Math.max(0,x-1)+y*257]*K,r=T[Math.min(256,x+1)+y*257]*K,u=T[x+Math.max(0,y-1)*257]*K,d=T[x+Math.min(256,y+1)*257]*K;
+    const dzdx=(r-l)/20,dzdy=(d-u)/20; // y grows north
+    const shade=clamp(.86+1.9*(-(dzdx*-.7)-(dzdy*.7)),.6,1.2);
+    const [R,G,B]=ramp(h),o=((256-y)*257+x)*4; // flip so row 0 is the north edge
+    img.data[o]=clamp(R*shade,0,255);img.data[o+1]=clamp(G*shade,0,255);img.data[o+2]=clamp(B*shade,0,255);img.data[o+3]=255;
+  }
+  c.putImageData(img,0,0);terrDirty=false;
+}
+
+/* --------------------------------------------------------------- ui bits */
+const css=n=>getComputedStyle(document.documentElement).getPropertyValue(n).trim();
+function toast(m){const t=$('#toast');t.textContent=m;t.hidden=false;clearTimeout(toast.h);toast.h=setTimeout(()=>t.hidden=true,2400);}
+const fmtN=n=>Math.round(n).toLocaleString('en');
+const lapStr=L=>{const s=L/45;return Math.floor(s/60)+':'+String(Math.round(s%60)).padStart(2,'0');};
+function svgIcon(d,w=40,h=28){const s=document.createElementNS(NS,'svg');s.setAttribute('viewBox','0 0 '+w+' '+h);s.setAttribute('aria-hidden','true');
+  const p=document.createElementNS(NS,'path');p.setAttribute('d',d);p.setAttribute('fill','none');p.setAttribute('stroke','currentColor');p.setAttribute('stroke-width','2.6');p.setAttribute('stroke-linecap','round');p.setAttribute('stroke-linejoin','round');s.appendChild(p);return s;}
+
+/* palette */
+const G={
+  s:'M6 14H34',l45:'M5 22H15C23 22 28 18 34 8',r45:'M5 6H15C23 6 28 10 34 20',l90:'M6 24H16Q30 24 30 6',r90:'M6 4H16Q30 4 30 22',
+  hl:'M6 23H22A7.5 7.5 0 0 0 22 8H6',hr:'M6 5H22A7.5 7.5 0 0 1 22 20H6',sl:'M4 22C16 22 28 20 36 8',sr:'M4 6C16 6 28 8 36 20',
+  up:'M5 22H15L30 8',dn:'M5 8H15L30 22',tun:'M7 23V15A10 10 0 0 1 27 15V23',palm:'M20 23V12M20 12L12 8M20 12L28 8M20 15L13 13M20 15L27 13',lamp:'M11 23V7H24M24 7V12',
+  chl:'M4 21H12C18 21 18 8 24 8H36',chr:'M4 7H12C18 7 18 20 24 20H36'};
+const PAL=[
+  {name:'Straights',items:[
+    {k:'s100',n:'Short',m:'100 u',g:G.s,mk:()=>[mkS(100)]},{k:'s200',n:'Straight',m:'200 u',g:G.s,mk:()=>[mkS(200)]},
+    {k:'s400',n:'Long',m:'400 u',g:G.s,mk:()=>[mkS(400)]},{k:'s700',n:'Straight mile',m:'700 u',g:G.s,mk:()=>[mkS(700)]}]},
+  {name:'Corners',items:[
+    {k:'l45',n:'Bend left',m:'45° · r220',g:G.l45,mk:()=>[mkA(45,220)]},{k:'r45',n:'Bend right',m:'45° · r220',g:G.r45,mk:()=>[mkA(-45,220)]},
+    {k:'l90',n:'Corner left',m:'90° · r220',g:G.l90,mk:()=>[mkA(90,220)]},{k:'r90',n:'Corner right',m:'90° · r220',g:G.r90,mk:()=>[mkA(-90,220)]},
+    {k:'sl',n:'Sweeper left',m:'60° · r420',g:G.sl,mk:()=>[mkA(60,420)]},{k:'sr',n:'Sweeper right',m:'60° · r420',g:G.sr,mk:()=>[mkA(-60,420)]},
+    {k:'hl',n:'Hairpin left',m:'180° · r120',g:G.hl,mk:()=>[mkA(180,120)]},{k:'hr',n:'Hairpin right',m:'180° · r120',g:G.hr,mk:()=>[mkA(-180,120)]},
+    {k:'chl',n:'Chicane left',m:'2 blocks',g:G.chl,mk:()=>[mkA(35,260),mkA(-35,260)]},{k:'chr',n:'Chicane right',m:'2 blocks',g:G.chr,mk:()=>[mkA(-35,260),mkA(35,260)]}]},
+  {name:'Hills',items:[
+    {k:'up',n:'Climb',m:'250 u · +36',g:G.up,mk:()=>[mkS(250,{dz:36})]},{k:'dn',n:'Descent',m:'250 u · −36',g:G.dn,mk:()=>[mkS(250,{dz:-36})]}]},
+  {name:'Scenery',items:[
+    {k:'tun',n:'Tunnel',m:'300 u',g:G.tun,mk:()=>[mkS(300,{feat:'tunnel'})]},{k:'palm',n:'Palm avenue',m:'300 u',g:G.palm,mk:()=>[mkS(300,{feat:'palms'})]},
+    {k:'lamp',n:'Lamp run',m:'300 u',g:G.lamp,mk:()=>[mkS(300,{feat:'laterns'})]}]}
+];
+const PALMAP={};
+function renderPalette(){
+  const el=$('#palette');el.textContent='';
+  PAL.forEach(g=>{
+    const h=document.createElement('h2');h.textContent=g.name;el.appendChild(h);
+    const grid=document.createElement('div');grid.className='grid2';
+    g.items.forEach(it=>{PALMAP[it.k]=it;
+      const b=document.createElement('button');b.className='blk';b.draggable=true;b.dataset.k=it.k;b.title=it.n+' (click to add, or drag onto the track)';
+      b.appendChild(svgIcon(it.g));
+      const n=document.createElement('span');n.className='n';n.textContent=it.n;const m=document.createElement('span');m.className='m';m.textContent=it.m;
+      b.append(n,m);
+      b.addEventListener('click',()=>addBlocks(it,st.blocks.length));
+      b.addEventListener('dragstart',e=>{dragKey=it.k;e.dataTransfer.setData('text/plain','tf:'+it.k);e.dataTransfer.effectAllowed='copy';});
+      b.addEventListener('dragend',()=>{dragKey=null;ghost=null;redraw();});
+      grid.appendChild(b);});
+    el.appendChild(grid);
+  });
+  const p=document.createElement('p');p.className='hint';p.textContent='Blocks snap end to end, so the track is always one continuous road.';el.appendChild(p);
+}
+function addBlocks(it,index){
+  pushHist('add');const nb=it.mk();st.blocks.splice(index,0,...nb);sel=index+nb.length-1;changed(true);
+  if(!tr.conn&&!st.closeAuto)setTimeout(()=>{},0);
+}
+
+/* chain strip */
+function chipLabel(b){return b.t==='s'?Math.round(b.len)+'u':(b.ang>0?'↰ ':'↱ ')+Math.abs(Math.round(b.ang))+'°';}
+function chipGlyph(b){return b.t==='s'?G.s:(b.ang>0?(Math.abs(b.ang)>120?G.hl:Math.abs(b.ang)>60?G.l90:G.l45):(Math.abs(b.ang)>120?G.hr:Math.abs(b.ang)>60?G.r90:G.r45));}
+function renderChain(){
+  const el=$('#chain');el.textContent='';
+  const mk=(cls,label,onclick)=>{const c=document.createElement('div');c.className='chip '+cls;c.tabIndex=0;c.setAttribute('role','button');c.addEventListener('click',onclick);c.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();onclick();}});return c;};
+  const s=mk('start'+(sel==='start'?' sel':''),'',()=>select('start'));
+  s.append(svgIcon('M6 4V24M6 6H22L18 10L22 14H6',28,28));const sb=document.createElement('b');sb.textContent='Start';s.appendChild(sb);el.appendChild(s);
+  st.blocks.forEach((b,i)=>{
+    const c=mk(sel===i?'sel':'','',()=>select(i));
+    c.draggable=true;
+    c.addEventListener('dragstart',e=>{dragChip=i;e.dataTransfer.setData('text/plain','chip:'+i);e.dataTransfer.effectAllowed='move';});
+    c.addEventListener('dragover',e=>{if(dragChip>=0){e.preventDefault();c.classList.add('drop');}});
+    c.addEventListener('dragleave',()=>c.classList.remove('drop'));
+    c.addEventListener('drop',e=>{e.preventDefault();c.classList.remove('drop');if(dragChip>=0&&dragChip!==i){pushHist('move');const [m]=st.blocks.splice(dragChip,1);st.blocks.splice(i,0,m);sel=i;changed(true);}dragChip=-1;});
+    c.addEventListener('dragend',()=>{dragChip=-1;});
+    c.addEventListener('mouseenter',()=>{hoverB=i;redraw();});c.addEventListener('mouseleave',()=>{hoverB=-1;redraw();});
+    const n=document.createElement('span');n.className='i';n.textContent=String(i+1).padStart(2,'0');
+    c.append(n,svgIcon(chipGlyph(b),40,28));
+    const bb=document.createElement('b');bb.textContent=chipLabel(b);c.appendChild(bb);
+    if(b.feat!=='none'){const f=document.createElement('span');f.className='f';f.title={tunnel:'Tunnel',palms:'Palms',laterns:'Lamps'}[b.feat];c.appendChild(f);}
+    el.appendChild(c);
+  });
+  if(st.closeAuto&&st.blocks.length){const c=mk('close','',()=>{});c.draggable=false;c.style.cursor='default';const bb=document.createElement('b');bb.textContent='⟲ auto-close '+Math.round(tr.conn?tr.samples[tr.conn.i1].s-tr.samples[tr.conn.i0].s:0)+'u';c.appendChild(bb);el.appendChild(c);}
+  const sel_=el.querySelector('.sel');if(sel_)sel_.scrollIntoView({block:'nearest',inline:'nearest'});
+}
+
+/* inspector */
+const pair=(id,get,set,key,after)=>{
+  const r=$('#'+id+'r'),n=$('#'+id);
+  const apply=v=>{if(isNaN(v))return;pushHist(key);set(v);r.value=get();n.value=get();changed(false);after&&after();};
+  r.addEventListener('input',()=>apply(+r.value));
+  n.addEventListener('change',()=>apply(+n.value));
+};
+function curB(){return typeof sel==='number'?st.blocks[sel]:null;}
+function setupInspector(){
+  pair('stX',()=>st.start.x,v=>st.start.x=clamp(Math.round(v),120,2440),'sx');
+  pair('stY',()=>st.start.y,v=>st.start.y=clamp(Math.round(v),120,2440),'sy');
+  pair('stH',()=>st.start.h,v=>st.start.h=((Math.round(v)%360)+360)%360,'sh');
+  pair('stZ',()=>st.start.z,v=>st.start.z=clamp(Math.round(v),0,300),'sz');
+  pair('bLen',()=>curB().len,v=>curB().len=clamp(Math.round(v),40,900),'len');
+  pair('bAng',()=>curB().ang,v=>curB().ang=clamp(Math.round(v)||5,-180,180),'ang');
+  pair('bRad',()=>curB().r,v=>curB().r=clamp(Math.round(v),60,900),'rad');
+  pair('bDz',()=>curB().dz,v=>curB().dz=clamp(Math.round(v),-120,120),'dz');
+  pair('bW',()=>curB().w,v=>curB().w=clamp(Math.round(v*20)/20,.25,2),'w');
+  $$('#bFeat button').forEach(b=>b.addEventListener('click',()=>{if(!curB())return;pushHist();curB().feat=b.dataset.f;changed(false);}));
+  $('#bMirror').addEventListener('click',()=>{const b=curB();if(!b||b.t==='s')return;pushHist();b.ang=-b.ang;changed(false);});
+  $('#bDup').addEventListener('click',()=>{const b=curB();if(!b)return;pushHist();st.blocks.splice(sel+1,0,Object.assign({},b,{id:uid()}));sel++;changed(true);});
+  $('#bDel').addEventListener('click',delSel);
+}
+function delSel(){const b=curB();if(!b)return;pushHist();st.blocks.splice(sel,1);sel=st.blocks.length?Math.min(sel,st.blocks.length-1):'start';changed(true);}
+function select(i,noTab){sel=i;if(!noTab)tab('block');renderChain();syncInspector();redraw();}
+function syncInspector(){
+  const isStart=sel==='start',b=curB();
+  $('#fStart').hidden=!isStart;$('#fBlock').hidden=!b;$('#insEmpty').hidden=!!(isStart||b);$('#insBody').hidden=!(isStart||b);
+  if(isStart){$('#insTitle').textContent='Start / finish line';$('#insIdx').textContent='';
+    for(const [id,v] of [['stX',st.start.x],['stY',st.start.y],['stH',st.start.h],['stZ',st.start.z]]){$('#'+id).value=v;$('#'+id+'r').value=v;}return;}
+  if(!b)return;
+  $('#insTitle').textContent=b.t==='s'?'Straight':(b.ang>0?'Curve left':'Curve right');
+  $('#insIdx').textContent='Block '+(sel+1)+' of '+st.blocks.length;
+  $('#rLen').hidden=b.t!=='s';$('#rAng').hidden=b.t==='s';$('#rRad').hidden=b.t==='s';$('#bMirror').hidden=b.t==='s';
+  const vals={bLen:b.len,bAng:b.ang,bRad:b.r,bDz:b.dz,bW:b.w};
+  for(const k in vals){$('#'+k).value=vals[k];$('#'+k+'r').value=vals[k];}
+  $$('#bFeat button').forEach(x=>x.setAttribute('aria-pressed',String(x.dataset.f===b.feat)));
+  const L=blockLen(b),r=tr.ranges[sel],endH=r?tr.samples[r.i1].h:0,grad=L?Math.abs(b.dz)/L*100:0;
+  const kv=$('#insKv');kv.textContent='';
+  const add=(k,v)=>{const a=document.createElement('span');a.textContent=k;const c=document.createElement('b');c.textContent=v;kv.append(a,c);};
+  add('Road length',fmtN(L)+' units');add('Slope',grad.toFixed(1)+' %');add('Heading out',((Math.round(endH*180/Math.PI)%360+360)%360)+'°');
+  add('Road width',(b.w*ROAD_UNIT).toFixed(1)+' units');
+}
+
+/* checks tab */
+function renderChecks(){
+  const errs=checks.filter(c=>c.level==='error').length,warns=checks.filter(c=>c.level==='warn').length;
+  const badge=$('#chkBadge');badge.textContent=errs?errs:warns?warns:'✓';badge.className='badge'+(errs?'':warns?' w':' ok');
+  $('#chkSum').textContent=errs?errs+' problem'+(errs>1?'s':'')+' to fix before the game will accept this track':warns?warns+' thing'+(warns>1?'s':'')+' worth a look. The track will still load.':'All checks pass.';
+  const list=$('#chkList');list.textContent='';
+  const order={error:0,warn:1,ok:2};
+  [...checks].sort((a,b)=>order[a.level]-order[b.level]).forEach(c=>{
+    const e=document.createElement('div');e.className='chk '+c.level;
+    const d=document.createElement('span');d.className='d';const t=document.createElement('b');t.textContent=c.title;
+    e.append(d,t);
+    if(c.fix){const f=document.createElement('button');f.className='btn sm fix';f.textContent=c.fix==='close'?'Auto-close':'Flatten';f.addEventListener('click',ev=>{ev.stopPropagation();pushHist();if(c.fix==='close')st.closeAuto=true;else st.terrain.flatten=true;changed(true);syncTerrainUI();});e.appendChild(f);}
+    const p=document.createElement('p');p.textContent=c.detail;e.appendChild(p);
+    if(c.loc||c.block!=null){e.dataset.loc='1';e.tabIndex=0;e.setAttribute('role','button');
+      const go=()=>{if(c.block!=null)sel=c.block;if(c.loc){pulse={x:c.loc.x,y:c.loc.y,t:performance.now()};focusOn(c.loc.x,c.loc.y);}renderChain();syncInspector();redraw();};
+      e.addEventListener('click',go);e.addEventListener('keydown',ev=>{if(ev.key==='Enter')go();});}
+    list.appendChild(e);
+  });
+}
+
+/* terrain tab */
+let hmBytes=0,hmTimer=0;
+async function deflateRaw(b){if(typeof CompressionStream==='undefined')return null;const cs=new CompressionStream('deflate-raw'),w=cs.writable.getWriter();w.write(b);w.close();return new Uint8Array(await new Response(cs.readable).arrayBuffer());}
+function b64(u8){let s='';for(let i=0;i<u8.length;i+=0x8000)s+=String.fromCharCode.apply(null,u8.subarray(i,i+0x8000));return btoa(s);}
+function syncTerrainUI(){
+  const t=st.terrain;$('#tPreset').value=t.preset;$('#tSeed').value=t.seed;$('#tSeedr').value=t.seed;$('#rSeed').hidden=t.preset==='shipped'||t.preset==='flat'||t.preset==='hill';
+  $('#tFlat').checked=t.flatten;$('#tMargin').value=t.margin;$('#tMarginr').value=t.margin;$('#tFall').value=t.falloff;$('#tFallr').value=t.falloff;
+  const own=t.preset!=='shipped',info=$('#tInfo');info.textContent='';
+  const l1=document.createElement('div');l1.innerHTML=own?'<b>Own heightmap</b> is saved inside the track file.':'<b>Game terrain</b> is used; no heightmap is saved.';
+  const l2=document.createElement('div');l2.className='note';l2.id='hmSize';l2.textContent=own?(hmBytes?'257 × 257 heights, about '+(hmBytes/1024).toFixed(1)+' KB compressed.':'257 × 257 heights.'):'The map shows a stand-in; the game draws its own.';
+  info.append(l1,l2);
+  if(typeof syncBrushUI==='function')syncBrushUI();
+  $('#tNote').textContent=t.flatten?(own?'Flatten reshapes your terrain so the road never sits in a hillside.':'Flatten only changes the preview here: the game’s terrain can’t be edited, so the road will still be lifted over hills. Pick an own-heightmap preset to keep the flattening.'):'';
+}
+function scheduleHmSize(){clearTimeout(hmTimer);hmTimer=setTimeout(async()=>{if(st.terrain.preset==='shipped'){hmBytes=0;return;}const z=await deflateRaw(terrFlat);hmBytes=z?z.length:0;const e=$('#hmSize');if(e&&hmBytes)e.textContent='257 × 257 heights, about '+(hmBytes/1024).toFixed(1)+' KB compressed.';},300);}
+function setupTerrain(){
+  $('#tPreset').addEventListener('change',e=>{pushHist();st.terrain.preset=e.target.value;st.terrain.sculpt=null;changed(true);syncTerrainUI();});
+  pair('tSeed',()=>st.terrain.seed,v=>{st.terrain.seed=clamp(Math.round(v),1,99);st.terrain.sculpt=null;},'seed');
+  $('#tFlat').addEventListener('change',e=>{pushHist();st.terrain.flatten=e.target.checked;changed(true);syncTerrainUI();});
+  pair('tMargin',()=>st.terrain.margin,v=>st.terrain.margin=clamp(Math.round(v),0,80),'margin');
+  pair('tFall',()=>st.terrain.falloff,v=>st.terrain.falloff=clamp(Math.round(v),20,220),'fall');
+}
+
+/* trace tab */
+function renderOutlines(){
+  const el=$('#outlines');el.textContent='';$('#outlMsg').textContent=outlineMsg;
+  OUTLINES.forEach(o=>{
+    const b=document.createElement('button');b.setAttribute('aria-pressed',String(!!(st.trace&&st.trace.id===o.id)));
+    const sv=document.createElementNS(NS,'svg');sv.setAttribute('viewBox','0 0 100 100');sv.setAttribute('preserveAspectRatio','xMidYMid meet');
+    const sm=catmull(o.points,3),p=document.createElementNS(NS,'path');
+    p.setAttribute('d','M'+sm.map(q=>q[0].toFixed(1)+' '+(100-q[1]).toFixed(1)).join('L')+'Z');p.setAttribute('fill','none');p.setAttribute('stroke','currentColor');p.setAttribute('stroke-width','5');p.setAttribute('stroke-linejoin','round');sv.appendChild(p);
+    const t=document.createElement('div'),nm=document.createElement('b'),no=document.createElement('span');nm.textContent=o.name;no.textContent=o.note;t.append(nm,no);
+    b.append(sv,t);b.addEventListener('click',()=>{useOutline({id:o.id,name:o.name,pts:o.points.map(q=>[q[0],q[1]])});});el.appendChild(b);
+  });
+}
+async function saveOutline(){
+  const t=st.trace;if(!t)return;
+  const name=(t.name||'').trim()||'My outline',id=slug(name).toLowerCase().replace(/[^a-z0-9-]/g,'')||'outline';
+  const data={format:'tarmac-toolbox-outline',version:1,id,name,note:'',source:t.id==='paste'||t.id==='file'?'Traced from a file or pasted path: add its source and credit here.':'Loose hand-drawn sketch.',license:'Add who may use this and any credit it needs (OpenStreetMap data needs "(c) OpenStreetMap contributors").',points:t.pts.map(p=>[+p[0].toFixed(3),+p[1].toFixed(3)])};
+  const text=JSON.stringify(data,null,1);
+  try{downloadText(id+'.json',text,'application/json');toast('Downloaded '+id+'.json. Put it in the outlines folder and add it to index.json.');}
+  catch(e){if(navigator.clipboard)navigator.clipboard.writeText(text).then(()=>toast('Download was blocked, so the outline JSON was copied instead.'),()=>toast('Saving is unavailable here.'));}
+}
+function useOutline(o){
+  st.trace=Object.assign({len:5200,rot:0,flip:false,ox:0,oy:0,op:.85,fid:3},o);
+  $('#trName').value=st.trace.name||'';
+  renderOutlines();syncTraceUI();changed(false);tab('trace');fitMode='track';fitView();
+}
+const CHUNK={1:240,2:170,3:120,4:85,5:60};
+function traceBlocks(){if(!tw)return null;return outlineToBlocks(tw,CHUNK[st.trace.fid]);}
+function syncTraceUI(){
+  const t=st.trace;$('#traceCtl').hidden=!t;if(!t)return;
+  for(const [id,v] of [['trLen',t.len],['trRot',t.rot],['trOp',t.op]]){$('#'+id).value=v;$('#'+id+'r').value=v;}
+  $('#trFlip').checked=t.flip;$('#trFidr').value=t.fid;$('#trFid').textContent=['','Coarse','Loose','Balanced','Fine','Faithful'][t.fid];
+  $('#trMove').setAttribute('aria-pressed',String(traceMove));$('#trMove').classList.toggle('on',traceMove);
+  const r=traceBlocks();$('#trInfo').textContent=r?'About '+r.blocks.length+' blocks, '+fmtN(t.len)+' units long. The road will not follow the outline exactly; Auto-close joins the loop.':'';
+}
+function setupTrace(){
+  const upd=()=>{syncTraceUI();};
+  pair('trLen',()=>st.trace.len,v=>st.trace.len=clamp(v,2000,11000),'trlen',upd);
+  pair('trRot',()=>st.trace.rot,v=>st.trace.rot=clamp(v,-180,180),'trrot',upd);
+  pair('trOp',()=>st.trace.op,v=>st.trace.op=clamp(v,.2,1),'trop',upd);
+  $('#trFlip').addEventListener('change',e=>{st.trace.flip=e.target.checked;changed(false);syncTraceUI();});
+  $('#trFidr').addEventListener('input',e=>{st.trace.fid=+e.target.value;syncTraceUI();});
+  $('#trFit').addEventListener('click',()=>{st.trace.ox=0;st.trace.oy=0;st.trace.len=clamp(st.trace.len,2000,8000);changed(false);syncTraceUI();});
+  $('#trMove').addEventListener('click',()=>{traceMove=!traceMove;syncTraceUI();toast(traceMove?'Drag on the map to move the outline':'Outline locked');});
+  $('#trClear').addEventListener('click',()=>{st.trace=null;traceMove=false;renderOutlines();syncTraceUI();changed(false);});
+  $('#trGen').addEventListener('click',()=>{
+    const r=traceBlocks();if(!r||!r.blocks.length){toast('Nothing to build from this outline');return;}
+    pushHist();st.start.x=clamp(Math.round(r.start.x),120,2440);st.start.y=clamp(Math.round(r.start.y),120,2440);st.start.h=((Math.round(r.start.h)%360)+360)%360;
+    st.blocks=r.blocks;st.closeAuto=true;sel=0;changed(true);fitView();toast(r.blocks.length+' blocks built. Check the Checks tab for drift.');
+  });
+  $('#pasteGo').addEventListener('click',()=>{const pts=parseOutline($('#paste').value);if(!pts){toast('Could not read at least 3 coordinates');return;}useOutline({id:'paste',name:'Pasted path',pts});});
+  $('#trOpen').addEventListener('click',()=>$('#trFile').click());
+  $('#trFile').addEventListener('change',async e=>{
+    const f=e.target.files&&e.target.files[0];e.target.value='';if(!f)return;
+    let text='';try{text=await f.text();}catch(err){toast('Could not read that file.');return;}
+    const base=f.name.replace(/\.[^.]+$/,'');
+    let o=null;try{const j=JSON.parse(text);if(validOutline(j))o=j;}catch(err){}
+    if(o){useOutline({id:'file',name:o.name||base,pts:o.points.map(q=>[+q[0],+q[1]])});toast('Loaded outline "'+(o.name||base)+'"');return;}
+    const pts=parseOutline(text);
+    if(!pts){toast('Could not find at least 3 coordinates in '+f.name+'. Try GPX, GeoJSON, CSV or an outline .json file.');return;}
+    useOutline({id:'file',name:base,pts});toast('Loaded '+pts.length+' points from '+f.name);
+  });
+  $('#trName').addEventListener('input',e=>{if(st.trace)st.trace.name=e.target.value;});
+  $('#trSave').addEventListener('click',saveOutline);
+}
+
+/* timing tab */
+const fmtSec=sec=>Math.floor(sec/60)+':'+String(Math.round(sec%60)).padStart(2,'0');
+function setCp(list){st.checkpoints=list.map(x=>anchorAt(tr,x));}
+function renderTiming(){
+  const custom=!!st.checkpoints;
+  $$('#cpMode button').forEach(b=>b.setAttribute('aria-pressed',String((b.dataset.m==='custom')===custom)));
+  $('#cpAuto').hidden=custom;$('#cpCustom').hidden=!custom;
+  const cp=tr.cp||[];
+  if(!custom){$('#cpAuto').textContent='The game places '+cp.length+' checkpoints, one every 500 units, so the sectors are 500 units each. Switch to Custom to place them yourself.';return;}
+  const list=$('#cpList');list.textContent='';
+  const edges=[0].concat(cp,[tr.length]);
+  cp.forEach((x,i)=>{
+    const row=document.createElement('div');row.className='cprow'+(i===selCp?' sel':'');row.tabIndex=0;row.setAttribute('role','button');
+    const n=document.createElement('span');n.className='n';n.textContent=String(i+1);
+    const b=document.createElement('b');b.textContent=fmtN(x)+' u  ·  '+(x/tr.length*100).toFixed(1)+'%';
+    const m=document.createElement('span');m.className='m';const sec=edges[i+1]-edges[i];m.textContent='sector '+(i+1)+': '+fmtN(sec)+' u, about '+fmtSec(sec/GHOST_SPEED);
+    const rm=document.createElement('button');rm.className='btn sm';rm.textContent='Remove';
+    rm.addEventListener('click',e=>{e.stopPropagation();pushHist();st.checkpoints.splice(i,1);selCp=-1;changed(true);});
+    row.append(n,b,m,rm);
+    const go=()=>{selCp=i;const p=tr.samples.find(q=>q.s>=x)||tr.samples.at(-1);pulse={x:p.x,y:p.y,t:performance.now()};focusOn(p.x,p.y);renderTiming();redraw();};
+    row.addEventListener('click',go);row.addEventListener('keydown',e=>{if(e.key==='Enter')go();});
+    list.appendChild(row);
+  });
+  const last=edges[edges.length-1]-edges[edges.length-2];
+  const fin=document.createElement('div');fin.className='note';fin.textContent=(cp.length?'Final sector: ':'Whole lap: ')+fmtN(last)+' u, about '+fmtSec(last/GHOST_SPEED)+'. Times use the ghost pace.';list.appendChild(fin);
+  $('#cpNote').textContent='Checkpoints keep at least '+CP_MIN_GAP+' units apart and '+CP_EDGE+' units from the start line. They are saved as a fraction of the lap, so a small change in the road moves them by the same fraction.';
+}
+function setupTiming(){
+  $$('#cpMode button').forEach(b=>b.addEventListener('click',()=>{
+    if(b.dataset.m==='custom'&&!st.checkpoints){pushHist();setCp(autoCheckpoints(tr));changed(true);toast('Custom checkpoints: drag the flags to move them');}
+    else if(b.dataset.m==='auto'&&st.checkpoints){pushHist();st.checkpoints=null;changed(true);toast('Back to automatic checkpoints. Undo brings yours back.');}
+  }));
+  $('#cpAdd').addEventListener('click',()=>{
+    const cp=tr.cp||[],edges=[0].concat(cp,[tr.length]);let bi=0,bg=0;
+    for(let i=1;i<edges.length;i++){const g=edges[i]-edges[i-1];if(g>bg){bg=g;bi=i;}}
+    if(bg<2*CP_MIN_GAP+(bi===1||bi===edges.length-1?CP_EDGE:0)){toast('No room for another checkpoint');return;}
+    pushHist();setCp(cp.concat([(edges[bi-1]+edges[bi])/2]));
+    selCp=-1;changed(true);selCp=tr.cp.findIndex(x=>Math.abs(x-(edges[bi-1]+edges[bi])/2)<2);renderTiming();redraw();
+  });
+  $('#cpEven').addEventListener('click',()=>{const n=Math.max(1,(tr.cp||[]).length||3);pushHist();setCp(Array.from({length:n},(_,i)=>(i+1)*tr.length/(n+1)));changed(true);});
+  $('#cpEvery').addEventListener('click',()=>{pushHist();setCp(autoCheckpoints(tr));changed(true);});
+}
+/* moving a checkpoint along the road: from the map (nearest road point) or from the profile (distance) */
+function moveCheckpoint(i,s){
+  const cp=tr.cp,lo=i>0?cp[i-1]+CP_MIN_GAP:CP_EDGE,hi=i<cp.length-1?cp[i+1]-CP_MIN_GAP:tr.length-CP_EDGE;
+  st.checkpoints[i]=anchorAt(tr,clamp(s,lo,hi));rebuild(true);renderTiming();redraw();
+}
+function flagAt(sx,sy){
+  if(!st.checkpoints)return -1;
+  for(let i=0;i<tr.cp.length;i++){const p=tr.samples.find(q=>q.s>=tr.cp[i])||tr.samples.at(-1),[x,y]=toS(p.x,p.y);if((x-sx)**2+(y-sy)**2<=14*14)return i;}
+  return -1;
+}
+const profX=s=>40+s/tr.length*(prof.parentElement.getBoundingClientRect().width-54);
+const profS=x=>(x-40)/(prof.parentElement.getBoundingClientRect().width-54)*tr.length;
+
+/* elevation drag ------------------------------------------------------------ */
+const ownTerrain=()=>st.terrain.preset!=='shipped';
+/* lowest legal road height at a place: the game lifts a road to ground + 4.5; when the ground follows the road
+   (own heightmap with flatten on) the floor is just the lowest the terrain can go */
+function floorAt(x,y){return ownTerrain()&&st.terrain.flatten?Z_FLOOR_OWN:terrAt(terrRaw,x,y)+LIFT;}
+const profY=z=>profGeom.padT+profGeom.ph-z/profGeom.maxY*profGeom.ph;
+function beginElev(s,y){
+  const R=tr.ranges,n=st.blocks.length,b0=R.findIndex(r=>!r.conn&&s>=r.s0-1e-6&&s<=r.s1+1e-6);
+  if(b0<0){toast('The closing curve follows the start and end heights, so it cannot be dragged.');return false;}
+  const r=R[b0],len=r.s1-r.s0,t0=clamp((s-r.s0)/len,0,1);
+  const atStart=t0*len<30,atEnd=(1-t0)*len<30;
+  if((atStart&&b0===0)||(atEnd&&b0===n-1)){toast('That is the start or end of the lap. Set its height in the start line settings.');return false;}
+  pushHist();
+  let k;
+  if(atStart)k=b0;else if(atEnd)k=b0+1;else{const [a,b]=splitBlockAt(st.blocks[b0],t0);st.blocks.splice(b0,1,a,b);k=b0+1;rebuild(true);}
+  const nn=st.blocks.length,i0=Math.max(0,k-flex),i1=Math.min(nn-1,k-1+flex),zv=vertexHeights(st),V=j=>j===0?tr.samples[0]:tr.samples[tr.ranges[j-1].i1];
+  const vs=[];for(let j=i0;j<=i1+1;j++)vs.push(j);
+  pd={k,i0,i1,y0:y,maxY:300,limited:false,reason:null,
+    lens:st.blocks.slice(i0,i1+1).map(blockLen),z:vs.map(j=>zv[j]),
+    lo:vs.map(j=>floorAt(V(j).x,V(j).y)),hi:vs.map(()=>Z_CEIL),
+    zr0:V(k).zr,vx:V(k)};
+  dragging=true;return true;
+}
+function moveElev(y){
+  const dz=(pd.y0-y)/profGeom.ph*pd.maxY,res=solveProfile({lens:pd.lens,z:pd.z,grab:pd.k-pd.i0,target:pd.zr0+dz,g:GRADE_MAX,lo:pd.lo,hi:pd.hi});
+  for(let i=0;i<pd.lens.length;i++)st.blocks[pd.i0+i].dz=Math.round((res.h[i+1]-res.h[i])*10)/10;
+  pd.limited=res.limited;pd.reason=res.reason;pd.want=res.want;rebuild(true);updStats();redraw();
+}
+function endElev(){
+  const d=pd;pd=null;dragging=false;
+  const c=cleanupWindow(st.blocks,d.i0,d.i1);st.blocks=c.blocks;
+  rebuild(true);
+  const vtx=tr.samples.findIndex(p=>Math.abs(p.s-d.vx.s)<1);if(vtx>=0&&tr.samples[vtx].b<st.blocks.length)sel=tr.samples[vtx].b;
+  if(d.limited)toast({floor:'Held at the lowest the road can go here.',ceiling:'Held at the 300 unit ceiling.',slope:'Held by the 30% slope limit. Raise Flex to let more blocks share the climb.',squeezed:'These limits cannot all be met here. Raise Flex or soften the limits.'}[d.reason]||'Held by a limit.');
+  changed(true);
+}
+/* terrain brush ------------------------------------------------------------- */
+function strokeAt(wp){
+  sculptStroke(terrBase,delta,terrEff,wp[0],wp[1],{mode:brush.mode,r:brush.r,s:brush.s,level:brush.level});
+  rebuild(true);redraw();
+}
+function endStroke(){dragging=false;sculptRef=st.terrain.sculpt=rleEncode(delta);changed(true);}
+function setBrushOn(on){
+  brush.on=on&&ownTerrain();if(on&&!ownTerrain())toast('Pick an own-heightmap preset first: the game\'s terrain cannot be sculpted.');
+  $('#bToggle').setAttribute('aria-pressed',String(brush.on));$('#bToggle').classList.toggle('on',brush.on);
+  $('#tip').textContent=brush.on?'Sculpting: drag on the map to paint the ground. Hold Space to pan. Press Esc to stop.':TIP_TEXT;
+  map.style.cursor=brush.on?'crosshair':'grab';redraw();
+}
+function setupBrush(){
+  $('#bToggle').addEventListener('click',()=>setBrushOn(!brush.on));
+  $$('#bMode button').forEach(b=>b.addEventListener('click',()=>{brush.mode=b.dataset.b;syncBrushUI();}));
+  const bind=(id,get,set)=>{const r=$('#'+id+'r'),n=$('#'+id);const ap=v=>{if(isNaN(v))return;set(v);r.value=n.value=get();redraw();};r.addEventListener('input',()=>ap(+r.value));n.addEventListener('change',()=>ap(+n.value));};
+  bind('bSize',()=>brush.r,v=>brush.r=clamp(Math.round(v),40,500));
+  bind('bStr',()=>Math.round(brush.s*100),v=>brush.s=clamp(v,5,100)/100);
+  $('#bClear').addEventListener('click',()=>{if(!st.terrain.sculpt){toast('Nothing sculpted yet.');return;}pushHist();st.terrain.sculpt=null;changed(true);toast('Sculpting cleared. Undo brings it back.');});
+}
+function syncBrushUI(){
+  $$('#bMode button').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.b===brush.mode)));
+  $('#bSize').value=$('#bSizer').value=brush.r;$('#bStr').value=$('#bStrr').value=Math.round(brush.s*100);
+  const own=ownTerrain();$('#bToggle').disabled=!own;$('#bClear').disabled=!own;
+  $('#bHelp').textContent=own?'Paint the ground on the map with a brush. Raise and Lower build hills and dips, Smooth softens them, Level flattens to the height where you first press.':'Switch the preset above to an own-heightmap one (bowl, rolling, hill or flat) to sculpt. The game\'s own terrain cannot be changed.';
+  if(!own&&brush.on)setBrushOn(false);
+}
+/* ---------------------------------------------------------------- tabs */
+function tab(n){$$('.tab').forEach(t=>t.setAttribute('aria-selected',String(t.dataset.tab===n)));['block','checks','timing','terrain','trace'].forEach(k=>$('#pane-'+k).hidden=k!==n);}
+
+/* ------------------------------------------------------------- the map */
+const map=$('#map'),mctx=map.getContext('2d'),prof=$('#prof'),pctx=prof.getContext('2d');
+let W=300,H=300,dpr=1,view={cx:1280,cy:1280,k:.3},showTerr=true;
+const toS=(x,y)=>[(x-view.cx)*view.k+W/2,H/2-(y-view.cy)*view.k];
+const toW=(sx,sy)=>[(sx-W/2)/view.k+view.cx,view.cy-(sy-H/2)/view.k];
+let fitMode='track';
+function fitMap(){view.cx=1280;view.cy=1280;view.k=Math.min(W,H)/(MAP*1.05);redraw();}
+function fitTrack(){
+  const pts=tr.samples.map(p=>[p.x,p.y]).concat(tw||[]);
+  let x0=1e9,y0=1e9,x1=-1e9,y1=-1e9;for(const p of pts){x0=Math.min(x0,p[0]);x1=Math.max(x1,p[0]);y0=Math.min(y0,p[1]);y1=Math.max(y1,p[1]);}
+  const bw=Math.max(400,x1-x0)+320,bh=Math.max(400,y1-y0)+320;
+  view.cx=(x0+x1)/2;view.cy=(y0+y1)/2;view.k=clamp(Math.min(W/bw,H/bh),.08,.9);redraw();
+}
+function fitView(){if(fitMode==='track')fitTrack();else fitMap();}
+function focusOn(x,y){view.cx=x;view.cy=y;view.k=Math.max(view.k,.32);}
+function resize(){
+  dpr=Math.min(2,window.devicePixelRatio||1);
+  for(const [c,host] of [[map,map.parentElement],[prof,prof.parentElement]]){const r=host.getBoundingClientRect();c.width=Math.max(1,Math.round(r.width*dpr));c.height=Math.max(1,Math.round(r.height*dpr));}
+  const r=map.parentElement.getBoundingClientRect();W=r.width;H=r.height;redraw();
+}
+let raf=0;function redraw(){if(!raf)raf=requestAnimationFrame(()=>{raf=0;drawMap();drawProfile();if(pulse)redraw();});}
+
+function nearestSample(sx,sy,maxPx){
+  const S=tr.samples;let best=-1,bd=maxPx*maxPx;
+  for(let i=0;i<S.length;i++){const [x,y]=toS(S[i].x,S[i].y),d=(x-sx)**2+(y-sy)**2;if(d<bd){bd=d;best=i;}}
+  return best;
+}
+function drawMap(){
+  const c=mctx;c.setTransform(dpr,0,0,dpr,0,0);
+  const bg=css('--map-bg'),grid=css('--map-grid'),road=css('--road'),edge=css('--road-edge'),acc=css('--accent'),bad=css('--bad'),trace=css('--trace'),fg=css('--fg'),muted=css('--muted');
+  c.fillStyle=bg;c.fillRect(0,0,W,H);
+  if(terrDirty)paintTerrain();
+  // terrain image: north-up, 1 px = 10 units
+  const [x0,y0]=toS(0,MAP+5),k=view.k*10;
+  if(showTerr){c.imageSmoothingEnabled=true;c.imageSmoothingQuality='high';c.drawImage(terrCv,x0-5*view.k,y0,257*k,257*k);}
+  else{c.fillStyle=css('--sunk');const [ax,ay]=toS(0,MAP),[bx,by]=toS(MAP,0);c.fillRect(ax,ay,bx-ax,by-ay);}
+  // grid + frame
+  c.lineWidth=1;c.strokeStyle=grid;c.beginPath();
+  for(let g=0;g<=MAP;g+=320){const [gx,gy]=toS(g,0),[hx,hy]=toS(0,g),[ex,ey]=toS(MAP,g),[fx,fy]=toS(g,MAP);c.moveTo(gx,gy);c.lineTo(fx,fy);c.moveTo(hx,hy);c.lineTo(ex,ey);}
+  c.stroke();
+  c.strokeStyle=css('--line-2');c.strokeRect(...toS(0,MAP),MAP*view.k,MAP*view.k);
+  c.fillStyle=muted;c.font='500 10px '+css('--mono');
+  for(let g=0;g<=MAP;g+=640){const [gx,gy]=toS(g,0);c.fillText(String(g),gx+3,gy-4);const [hx,hy]=toS(0,g);if(g)c.fillText(String(g),hx+4,hy-3);}
+  if(!tr||!tr.samples.length)return;
+  const S=tr.samples,P=S.map(p=>toS(p.x,p.y));
+  const pathR=(i0,i1)=>{c.beginPath();for(let i=i0;i<=i1;i++){i===i0?c.moveTo(P[i][0],P[i][1]):c.lineTo(P[i][0],P[i][1]);}};
+  const wpx=w=>Math.max(3,ROAD_UNIT*w*view.k);
+  c.lineJoin='round';c.lineCap='round';
+  // trace overlay under the road
+  if(tw){c.save();c.globalAlpha=st.trace.op;c.strokeStyle=trace;c.lineWidth=2.5;c.setLineDash([9,7]);c.beginPath();tw.forEach((p,i)=>{const [x,y]=toS(p[0],p[1]);i?c.lineTo(x,y):c.moveTo(x,y);});c.closePath();c.stroke();c.restore();}
+  // selection glow
+  const rngs=tr.ranges;
+  const hi=(bi,col,add)=>{const r=rngs[bi];if(!r)return;pathR(r.i0,r.i1);c.strokeStyle=col;c.lineWidth=wpx(S[r.i0].w)+add;c.stroke();};
+  if(rd&&!rd.pending){c.globalAlpha=.3;for(let bi=rd.i0;bi<=rd.i1&&bi<rngs.length;bi++)hi(bi,acc,14);c.globalAlpha=1;}
+  if(typeof sel==='number')hi(sel,acc,10);
+  if(hoverB>=0&&hoverB!==sel)hi(hoverB,fg,6);
+  // road: edge, asphalt
+  for(const pass of [0,1])rngs.forEach(r=>{const w=r.conn?1:tr.blocks[r.bi].w;pathR(r.i0,r.i1);c.strokeStyle=pass?road:edge;c.lineWidth=wpx(w)+(pass?0:2.5);c.stroke();});
+  // scenery
+  rngs.forEach(r=>{if(r.conn)return;const b=tr.blocks[r.bi];if(b.feat==='none')return;
+    const w=wpx(b.w);
+    if(b.feat==='tunnel'){pathR(r.i0,r.i1);c.strokeStyle='rgba(0,0,0,.55)';c.lineWidth=w;c.stroke();c.setLineDash([4,5]);c.strokeStyle=acc;c.lineWidth=1.5;c.stroke();c.setLineDash([]);}
+    else{c.fillStyle=b.feat==='palms'?'#58b86a':'#ffd36a';
+      for(let i=r.i0;i<=r.i1;i+=3){const p=S[i],nx=-Math.sin(p.h),ny=Math.cos(p.h),off=ROAD_UNIT*b.w*(b.feat==='palms'?.85:.62);
+        for(const sg of [-1,1]){if(b.feat==='palms'&&((i/3|0)+(sg>0?1:0))%2)continue;const [x,y]=toS(p.x+nx*off*sg,p.y+ny*off*sg);c.beginPath();c.arc(x,y,Math.max(1.6,view.k*(b.feat==='palms'?6:3)),0,7);c.fill();}}}
+  });
+  // centre line
+  if(view.k>.1){c.setLineDash([Math.max(4,view.k*18),Math.max(4,view.k*18)]);c.strokeStyle='rgba(255,255,255,.55)';c.lineWidth=Math.max(1,view.k*1.6);
+    rngs.forEach(r=>{pathR(r.i0,r.i1);c.stroke();});c.setLineDash([]);}
+  // connector marker
+  if(tr.conn){pathR(tr.conn.i0,tr.conn.i1);c.setLineDash([2,7]);c.strokeStyle=acc;c.lineWidth=2;c.stroke();c.setLineDash([]);}
+  // open-loop gap
+  if(!st.closeAuto&&st.blocks.length){const [ex,ey]=toS(tr.end.x,tr.end.y),[sx,sy]=toS(st.start.x,st.start.y);c.setLineDash([6,6]);c.strokeStyle=bad;c.lineWidth=2;c.beginPath();c.moveTo(ex,ey);c.lineTo(sx,sy);c.stroke();c.setLineDash([]);
+    c.fillStyle=bad;c.font='600 11px '+css('--mono');c.fillText(Math.round(tr.gap)+'u gap',(ex+sx)/2+6,(ey+sy)/2-6);}
+  // buried edges
+  c.fillStyle=bad;S.forEach((p,i)=>{if(p.buried&&i%2===0){const [x,y]=P[i];c.beginPath();c.arc(x,y,2.4,0,7);c.fill();}});
+  // checkpoints: automatic ones are plain ticks, custom ones are numbered flags you can drag
+  c.font='600 10px '+css('--mono');
+  (tr.cp||[]).forEach((d,ci)=>{let i=S.findIndex(p=>p.s>=d);if(i<1)i=S.length-1;const p=S[i],nx=-Math.sin(p.h),ny=Math.cos(p.h),hw=ROAD_UNIT*p.w*.7;
+    const [ax,ay]=toS(p.x+nx*hw,p.y+ny*hw),[bx,by]=toS(p.x-nx*hw,p.y-ny*hw);
+    if(!st.checkpoints){c.strokeStyle='#fff';c.lineWidth=2;c.beginPath();c.moveTo(ax,ay);c.lineTo(bx,by);c.stroke();return;}
+    const on=ci===selCp,[x,y]=toS(p.x+nx*hw*1.9,p.y+ny*hw*1.9);
+    c.strokeStyle=on?acc:'#fff';c.lineWidth=on?4:3;c.beginPath();c.moveTo(ax,ay);c.lineTo(bx,by);c.stroke();
+    c.strokeStyle=on?acc:'rgba(255,255,255,.85)';c.lineWidth=1.5;c.beginPath();c.moveTo((ax+bx)/2,(ay+by)/2);c.lineTo(x,y);c.stroke();
+    c.fillStyle=on?acc:css('--panel');c.strokeStyle=on?'#fff':acc;c.lineWidth=2;c.beginPath();c.arc(x,y,10,0,7);c.fill();c.stroke();
+    c.fillStyle=on?'#1b1100':fg;c.textAlign='center';c.fillText(String(ci+1),x,y+3.5);c.textAlign='left';});
+  // direction arrows
+  if(view.k>.12){c.fillStyle='rgba(255,255,255,.75)';for(let d=250;d<tr.length;d+=500){const i=S.findIndex(p=>p.s>=d);if(i<0)continue;const [x,y]=P[i],a=-S[i].h,q=Math.max(4,view.k*16);
+    c.save();c.translate(x,y);c.rotate(a);c.beginPath();c.moveTo(q,0);c.lineTo(-q*.6,q*.65);c.lineTo(-q*.6,-q*.65);c.closePath();c.fill();c.restore();}}
+  // start line
+  {const p=S[0],nx=-Math.sin(p.h),ny=Math.cos(p.h),hw=ROAD_UNIT*.62;const [ax,ay]=toS(p.x+nx*hw,p.y+ny*hw),[bx,by]=toS(p.x-nx*hw,p.y-ny*hw);
+    c.strokeStyle='#fff';c.lineWidth=5;c.beginPath();c.moveTo(ax,ay);c.lineTo(bx,by);c.stroke();c.strokeStyle='#111';c.lineWidth=5;c.setLineDash([4,4]);c.stroke();c.setLineDash([]);
+    if(sel==='start'){c.strokeStyle=acc;c.lineWidth=2;c.beginPath();c.arc(P[0][0],P[0][1],14,0,7);c.stroke();}
+    c.fillStyle=fg;c.font='700 11px '+css('--display');c.fillText('START',P[0][0]+10,P[0][1]-12);}
+  // block numbers
+  if(view.k>.16||typeof sel==='number'){c.font='600 10px '+css('--mono');rngs.forEach(r=>{if(r.conn)return;if(view.k<=.16&&r.bi!==sel)return;const p=S[Math.round((r.i0+r.i1)/2)],[x,y]=toS(p.x,p.y);
+    c.fillStyle=r.bi===sel?acc:'rgba(10,12,16,.82)';c.beginPath();c.arc(x,y,9,0,7);c.fill();c.fillStyle=r.bi===sel?'#1b1100':'#fff';c.textAlign='center';c.fillText(r.bi+1,x,y+3.5);c.textAlign='left';});}
+  // sockets + ghost
+  const endP=toS(tr.end.x,tr.end.y);
+  if(!st.closeAuto&&st.blocks.length){c.strokeStyle=acc;c.lineWidth=2;c.beginPath();c.arc(endP[0],endP[1],8,0,7);c.stroke();}
+  if(ghost){
+    const g=ghost.tr,gs=g.samples;
+    c.strokeStyle=acc;c.globalAlpha=.9;c.lineWidth=Math.max(4,ROAD_UNIT*view.k);c.beginPath();let started=false;
+    gs.forEach((p,i)=>{if(p.b>=ghost.index&&p.b<ghost.index+ghost.n&&!p.conn){const [x,y]=toS(p.x,p.y);started?c.lineTo(x,y):c.moveTo(x,y);started=true;}});c.stroke();c.globalAlpha=1;
+    // everything after the insertion shifts: show its new outline faintly
+    c.setLineDash([3,6]);c.strokeStyle=fg;c.globalAlpha=.4;c.lineWidth=1.5;c.beginPath();let st2=false;
+    gs.forEach(p=>{if(p.b>=ghost.index+ghost.n&&!(g.conn&&p.b>=g.blocks.length)){const [x,y]=toS(p.x,p.y);st2?c.lineTo(x,y):c.moveTo(x,y);st2=true;}});c.stroke();c.setLineDash([]);c.globalAlpha=1;
+    if(ghost.snapAt){const [x,y]=toS(ghost.snapAt.x,ghost.snapAt.y);c.strokeStyle=acc;c.lineWidth=3;c.beginPath();c.arc(x,y,13,0,7);c.stroke();c.fillStyle=acc;c.beginPath();c.arc(x,y,4,0,7);c.fill();}
+  }
+  // road drag feedback: pinned ends of the flexing window, the target, and a red line when the road can't reach it
+  if(rd&&!rd.pending&&rd.target){
+    const pin=(q,txt)=>{const [x,y]=toS(q.x,q.y);c.fillStyle=css('--panel');c.strokeStyle=acc;c.lineWidth=2;c.fillRect(x-5,y-5,10,10);c.strokeRect(x-5,y-5,10,10);c.fillStyle=acc;c.font='600 10px '+css('--mono');c.fillText(txt,x+9,y-8);};
+    pin(rd.pose0,'pinned');if(rd.end0)pin(rd.end0,'pinned');
+    const ref=evalWin(rd.pose0,st.blocks.slice(rd.i0,rd.i1+1),rd.refIdx,rd.refT).pt,[rx,ry]=toS(ref.x,ref.y),[tx,ty]=toS(rd.target.x,rd.target.y);
+    if(rd.lag>6){c.setLineDash([5,5]);c.strokeStyle=bad;c.lineWidth=2;c.beginPath();c.moveTo(rx,ry);c.lineTo(tx,ty);c.stroke();c.setLineDash([]);c.strokeStyle=bad;c.beginPath();c.arc(tx,ty,9,0,7);c.stroke();
+      c.fillStyle=bad;c.font='600 11px '+css('--mono');c.fillText('limit',tx+13,ty+4);}
+    c.fillStyle=acc;c.beginPath();c.arc(rx,ry,5,0,7);c.fill();
+  }
+  // handles on the selected block
+  if(!rd){for(const h of handlesFor()){const [x,y]=toS(h.x,h.y),active=drag&&drag.kind==='handle'&&drag.h.kind===h.kind,hot=active||(hoverH&&hoverH.kind===h.kind);
+      c.fillStyle='#fff';c.strokeStyle=acc;c.lineWidth=3;c.beginPath();c.arc(x,y,hot?9:7,0,7);c.fill();c.stroke();
+      if(h.kind==='mid'){c.fillStyle=acc;c.beginPath();c.arc(x,y,2.5,0,7);c.fill();}
+      if(hot){const txt=handleLabel(h);c.font='600 11px '+css('--mono');const tw2=c.measureText(txt).width,lx=x+12+tw2+10>W-8?x-12-tw2-10:x+12;c.fillStyle=css('--panel');c.fillRect(lx,y-20,tw2+10,19);c.fillStyle=fg;c.fillText(txt,lx+5,y-6);}}}
+  // hover marker from the elevation profile
+  if(hoverS>=0){const i=S.findIndex(p=>p.s>=hoverS);if(i>=0){const [x,y]=P[i];c.fillStyle=acc;c.strokeStyle='#fff';c.lineWidth=2;c.beginPath();c.arc(x,y,6,0,7);c.fill();c.stroke();}}
+  // brush
+  if(brush.on&&brushPos){const rr=brush.r*view.k,col={raise:'#7fd37f',lower:'#ff8a7a',smooth:'#7fc7ff',level:'#ffd36a'}[brush.mode];
+    c.strokeStyle=col;c.lineWidth=2;c.setLineDash([6,5]);c.beginPath();c.arc(brushPos[0],brushPos[1],rr,0,7);c.stroke();c.setLineDash([]);
+    c.beginPath();c.moveTo(brushPos[0]-7,brushPos[1]);c.lineTo(brushPos[0]+7,brushPos[1]);c.moveTo(brushPos[0],brushPos[1]-7);c.lineTo(brushPos[0],brushPos[1]+7);c.stroke();}
+  // pulse from the checks list
+  if(pulse){const age=(performance.now()-pulse.t)/1000;if(age>1.8)pulse=null;else{const [x,y]=toS(pulse.x,pulse.y);c.strokeStyle=bad;c.lineWidth=3;c.globalAlpha=1-age/1.8;c.beginPath();c.arc(x,y,12+age*40,0,7);c.stroke();c.globalAlpha=1;}}
+}
+function drawProfile(){
+  const c=pctx,r=prof.parentElement.getBoundingClientRect(),w=r.width,h=r.height;c.setTransform(dpr,0,0,dpr,0,0);c.clearRect(0,0,w,h);
+  const S=tr.samples;if(S.length<2)return;
+  const acc=css('--accent'),bad=css('--bad'),muted=css('--muted'),fg=css('--fg'),line=css('--line');
+  const L=tr.length,padL=40,padR=14,padT=26,padB=20,pw=w-padL-padR,ph=h-padT-padB;
+  let maxY=120;for(const p of S)maxY=Math.max(maxY,p.zr+16,terrAt(terrFlat,p.x,p.y)+10);maxY=Math.ceil(maxY/50)*50;
+  if(pd)maxY=pd.maxY;
+  profGeom={padL,padT,pw,ph,maxY};
+  const X=s=>padL+s/L*pw,Y=z=>padT+ph-z/maxY*ph;
+  c.font='500 10px '+css('--mono');c.fillStyle=muted;c.strokeStyle=line;c.lineWidth=1;
+  for(let z=0;z<=maxY;z+=50){c.beginPath();c.moveTo(padL,Y(z));c.lineTo(w-padR,Y(z));c.stroke();c.fillText(z+'',6,Y(z)+3);}
+  c.fillText('0',padL,h-6);c.fillText(fmtN(L)+' u',w-padR-44,h-6);
+  c.font='600 11px '+css('--display');c.fillStyle=fg;c.fillText('ELEVATION',padL,15);
+  // selected band
+  if(typeof sel==='number'&&tr.ranges[sel]){const r2=tr.ranges[sel];c.fillStyle=css('--accent-soft');c.fillRect(X(r2.s0),padT,X(r2.s1)-X(r2.s0),ph);}
+  // terrain fill
+  c.beginPath();c.moveTo(X(0),Y(0));S.forEach(p=>c.lineTo(X(p.s),Y(terrAt(terrFlat,p.x,p.y))));c.lineTo(X(L),Y(0));c.closePath();c.fillStyle='rgba(190,152,96,.38)';c.fill();
+  c.beginPath();S.forEach((p,i)=>{const x=X(p.s),y=Y(terrAt(terrFlat,p.x,p.y));i?c.lineTo(x,y):c.moveTo(x,y);});c.strokeStyle='rgba(190,152,96,.9)';c.lineWidth=1.5;c.stroke();
+  // block boundaries
+  c.strokeStyle=line;c.lineWidth=1;tr.ranges.forEach(r2=>{c.beginPath();c.moveTo(X(r2.s0),padT);c.lineTo(X(r2.s0),padT+ph);c.stroke();});
+  // limits: the floor the road is held above, and the ceiling
+  c.setLineDash([4,4]);c.lineWidth=1.2;c.strokeStyle='rgba(255,170,90,.55)';
+  c.beginPath();S.forEach((p,i)=>{const x=X(p.s),y=Y(clamp(floorAt(p.x,p.y),0,maxY));i?c.lineTo(x,y):c.moveTo(x,y);});c.stroke();
+  if(maxY>=Z_CEIL){c.strokeStyle=bad;c.globalAlpha=.7;c.beginPath();c.moveTo(padL,Y(Z_CEIL));c.lineTo(w-padR,Y(Z_CEIL));c.stroke();c.globalAlpha=1;c.fillStyle=bad;c.font='500 10px '+css('--mono');c.fillText('ceiling '+Z_CEIL,w-padR-70,Y(Z_CEIL)-3);}
+  c.setLineDash([]);
+  // road
+  c.beginPath();S.forEach((p,i)=>{const x=X(p.s),y=Y(p.zr);i?c.lineTo(x,y):c.moveTo(x,y);});c.strokeStyle=acc;c.lineWidth=2.5;c.stroke();
+  // block joints are where the profile can bend: small markers you can grab
+  c.fillStyle=css('--panel');c.strokeStyle=acc;c.lineWidth=1.5;
+  tr.ranges.forEach(r2=>{if(r2.conn)return;const p=S[r2.i1],x=X(p.s),y=Y(p.zr);c.beginPath();c.arc(x,y,3,0,7);c.fill();c.stroke();});
+  if(pd){const p=pd.vx,x=X(p.s),y=Y(p.zr);c.fillStyle=acc;c.strokeStyle='#fff';c.lineWidth=2;c.beginPath();c.arc(x,y,6,0,7);c.fill();c.stroke();
+    if(pd.limited){const txt={floor:'lowest the road can go here',ceiling:'ceiling',slope:'slope limit',squeezed:'limits clash'}[pd.reason]||'limit';c.font='600 11px '+css('--mono');
+      const tw=c.measureText(txt).width,tx=clamp(x+12,padL,w-padR-tw-10);c.fillStyle=bad;c.fillRect(tx-4,y-24,tw+8,18);c.fillStyle='#fff';c.fillText(txt,tx,y-11);}}
+  // buried
+  c.fillStyle=bad;S.forEach(p=>{if(p.buried)c.fillRect(X(p.s)-1,padT+ph-6,2,6);});
+  // checkpoints
+  (tr.cp||[]).forEach((d,ci)=>{const x=X(d),on=ci===selCp;c.strokeStyle=on?acc:(st.checkpoints?fg:muted);c.globalAlpha=st.checkpoints?1:.55;c.lineWidth=on?2:1;
+    c.setLineDash(st.checkpoints?[]:[3,4]);c.beginPath();c.moveTo(x,padT);c.lineTo(x,padT+ph);c.stroke();c.setLineDash([]);
+    if(st.checkpoints){c.fillStyle=on?acc:css('--panel');c.strokeStyle=on?'#fff':acc;c.lineWidth=2;c.beginPath();c.arc(x,padT-2,8,0,7);c.fill();c.stroke();
+      c.fillStyle=on?'#1b1100':fg;c.font='600 10px '+css('--mono');c.textAlign='center';c.fillText(String(ci+1),x,padT+1.5);c.textAlign='left';}
+    c.globalAlpha=1;});
+  if(hoverS>=0){const i=S.findIndex(p=>p.s>=hoverS),p=S[Math.max(0,i)];c.strokeStyle=fg;c.lineWidth=1;c.beginPath();c.moveTo(X(p.s),padT);c.lineTo(X(p.s),padT+ph);c.stroke();
+    const prev=S[Math.max(0,i-1)],g=Math.abs(p.zr-prev.zr)/(Math.hypot(p.x-prev.x,p.y-prev.y)||1)*100;
+    const txt=fmtN(p.s)+' u   road '+Math.round(p.zr)+'   ground '+Math.round(terrAt(terrFlat,p.x,p.y))+'   slope '+g.toFixed(0)+'%';
+    c.font='500 11px '+css('--mono');const tw2=c.measureText(txt).width,tx=clamp(X(p.s)-tw2/2,padL,w-padR-tw2);c.fillStyle=css('--panel');c.fillRect(tx-4,4,tw2+8,18);c.fillStyle=fg;c.fillText(txt,tx,17);}
+}
+
+/* map interaction: handles on the selected block, elastic road drag, pan */
+const TIP_TEXT=$('#tip').textContent;
+let drag=null;
+function handlesFor(){
+  if(typeof sel!=='number'||!tr.ranges[sel]||tr.ranges[sel].conn)return [];
+  const r=tr.ranges[sel],b=st.blocks[sel],S=tr.samples,out=[{kind:'end',x:S[r.i1].x,y:S[r.i1].y}];
+  if(b.t==='a'){const m=S[Math.round((r.i0+r.i1)/2)];out.push({kind:'mid',x:m.x,y:m.y});}
+  return out;
+}
+function handleAt(sx,sy){for(const h of handlesFor()){const [x,y]=toS(h.x,h.y);if((x-sx)**2+(y-sy)**2<=13*13)return h;}return null;}
+function handleLabel(h){const b=st.blocks[sel];if(!b)return '';return b.t==='s'?Math.round(b.len)+' u':h.kind==='end'?Math.abs(Math.round(b.ang))+'°':'radius '+Math.round(b.r);}
+/* Handles resize one block; everything after it rides along (the auto-closing connector absorbs the change). */
+function dragHandle(h,wp,e){
+  const b=st.blocks[sel],r=tr.ranges[sel],p0=tr.samples[r.i0],snap=!e.altKey;
+  if(b.t==='s'){const d=(wp[0]-p0.x)*Math.cos(p0.h)+(wp[1]-p0.y)*Math.sin(p0.h);b.len=clamp(snap?Math.round(d/10)*10:Math.round(d),40,900);}
+  else if(h.kind==='end'){
+    const sg=Math.sign(b.ang)||1,cx=p0.x-Math.sin(p0.h)*b.r*sg,cy=p0.y+Math.cos(p0.h)*b.r*sg;
+    let d=(Math.atan2(wp[1]-cy,wp[0]-cx)-Math.atan2(p0.y-cy,p0.x-cx))*sg;d=((d%(2*Math.PI))+2*Math.PI)%(2*Math.PI);
+    let m=deg(d);m=m<=180?m:(m>270?0:180);b.ang=sg*clamp(snap?Math.round(m/5)*5:Math.round(m),5,180);
+  }else{
+    const a=rad(b.ang),ch=p0.h+a/4,c=(wp[0]-p0.x)*Math.cos(ch)+(wp[1]-p0.y)*Math.sin(ch),den=2*Math.sin(Math.abs(a)/4);
+    if(den>.02)b.r=clamp(snap?Math.round(c/den/10)*10:Math.round(c/den),60,900);
+  }
+}
+/* Road drag: the blocks around the grab point flex; the ends of that window stay pinned, so the rest of the
+   track (and the closed loop) does not move. A straight that has to bend is split with two flex arcs first. */
+function beginRoadDrag(){
+  const S=tr.samples,R=tr.ranges,i=drag.i,b0=S[i].b,n=st.blocks.length,r=R[b0];
+  const t0=clamp((S[i].s-r.s0)/Math.max(1e-6,r.s1-r.s0),0,1),rigid=drag.shift;
+  const i0=rigid?b0:Math.max(0,b0-flex),i1=rigid?b0:Math.min(n-1,b0+flex);
+  rd={b0,t0,rigid,i0,i1,lag:0,target:null,
+    pose0:{x:S[R[i0].i0].x,y:S[R[i0].i0].y,h:S[R[i0].i0].h},
+    end0:(!rigid&&i1<n-1)?{x:S[R[i1].i1].x,y:S[R[i1].i1].y,h:S[R[i1].i1].h}:null,
+    q0:{x:S[i].x,y:S[i].y},p0:{x:drag.wx,y:drag.wy},pending:!rigid&&st.blocks[b0].t==='s',refIdx:b0-i0,refT:t0};
+  pushHist();dragging=true;map.style.cursor='grabbing';
+}
+function moveRoadDrag(wp){
+  const dx=wp[0]-rd.p0.x,dy=wp[1]-rd.p0.y;
+  if(rd.pending){
+    if(Math.hypot(dx,dy)<10)return;
+    const rr=tr.ranges[rd.b0],h=tr.samples[rr.i0].h,lat=Math.cos(h)*dy-Math.sin(h)*dx;
+    const sp=splitForFlex(st.blocks[rd.b0],rd.t0,lat>=0?1:-1);
+    rd.pending=false;
+    if(sp){
+      st.blocks.splice(rd.b0,1,...sp);rd.i1+=4;rd.refIdx=(rd.b0-rd.i0)+2;rd.refT=.5;
+      rebuild(true);const r2=tr.ranges[rd.b0+2],mid=tr.samples[Math.round((r2.i0+r2.i1)/2)];rd.q0={x:mid.x,y:mid.y};
+    }
+  }
+  const target={x:rd.q0.x+dx,y:rd.q0.y+dy},win=st.blocks.slice(rd.i0,rd.i1+1);
+  const res=solveWindow({pose0:rd.pose0,blocks:win,refIdx:rd.refIdx,refT:rd.refT,target,end0:rd.end0,wPt:1,wEnd:1,iters:8});
+  st.blocks.splice(rd.i0,win.length,...res.blocks);rd.lag=res.lag;rd.target=target;
+  rebuild(true);
+}
+function endRoadDrag(){
+  dragging=false;
+  const d=rd;rd=null;
+  if(!d.pending){
+    const c=cleanupWindow(st.blocks,d.i0,d.i1);st.blocks=c.blocks;
+    if(d.end0){ // tidy-up moved the end a little: pull it back to where it was
+      rebuild(true);const p=tr.samples[tr.ranges[d.i0].i0],win=st.blocks.slice(d.i0,c.i1+1);
+      const rr=solveWindow({pose0:{x:p.x,y:p.y,h:p.h},blocks:win,refIdx:0,refT:0,target:null,end0:d.end0,wPt:0,wEnd:1,iters:40});
+      st.blocks.splice(d.i0,win.length,...rr.blocks);
+    }
+    rebuild(true);
+    if(d.target){let best=0,bd=1e18;tr.samples.forEach((q,i)=>{const dd=(q.x-d.target.x)**2+(q.y-d.target.y)**2;if(dd<bd&&q.b<st.blocks.length){bd=dd;best=q.b;}});sel=best;}
+    if(d.lag>12)toast('That is as far as this stretch will bend. Raise Flex to let more blocks join in.');
+  }
+  changed(true);
+}
+map.addEventListener('pointerdown',e=>{
+  try{map.setPointerCapture(e.pointerId);}catch(_){}
+  const r=map.getBoundingClientRect(),sx=e.clientX-r.left,sy=e.clientY-r.top,wp=toW(sx,sy);
+  drag={x:e.clientX,y:e.clientY,cx:view.cx,cy:view.cy,moved:false,sx,sy,wx:wp[0],wy:wp[1],kind:'pan',shift:e.shiftKey,tx:st.trace?st.trace.ox:0,ty:st.trace?st.trace.oy:0};
+  if(e.button===1||spaceDown||(traceMove&&st.trace))return;
+  if(brush.on&&ownTerrain()&&e.button===0){drag.kind='brush';drag.moved=true;pushHist();dragging=true;brush.level=terrAt(terrEff,wp[0],wp[1])*255/300;brushPos=[sx,sy];strokeAt(wp);return;}
+  const fi=flagAt(sx,sy);
+  if(fi>=0){drag.kind='flag';drag.i=fi;drag.moved=true;selCp=fi;pushHist();dragging=true;renderTiming();redraw();return;}
+  const h=handleAt(sx,sy);
+  if(h){drag.kind='handle';drag.h=h;drag.moved=true;pushHist();dragging=true;return;}
+  const i=nearestSample(sx,sy,Math.max(10,ROAD_UNIT*view.k*.8));
+  if(i>=0&&tr.samples[i].b<st.blocks.length){drag.kind='road';drag.i=i;}
+});
+map.addEventListener('pointermove',e=>{
+  const r=map.getBoundingClientRect(),sx=e.clientX-r.left,sy=e.clientY-r.top,wp=toW(sx,sy),[wx,wy]=wp;
+  $('#coord').textContent='x '+fmtN(wx)+' · y '+fmtN(wy)+' · ground '+Math.round(terrAt(terrFlat,wx,wy));
+  if(drag){
+    const dx=e.clientX-drag.x,dy=e.clientY-drag.y;
+    if(!drag.moved&&Math.abs(dx)+Math.abs(dy)>4){drag.moved=true;if(drag.kind==='road')beginRoadDrag();}
+    if(!drag.moved)return;
+    if(drag.kind==='brush'){brushPos=[sx,sy];strokeAt(wp);}
+    else if(drag.kind==='flag'){const k=nearestSample(drag.sx+dx,drag.sy+dy,260);if(k>=0)moveCheckpoint(drag.i,tr.samples[k].s);}
+    else if(drag.kind==='handle'){dragHandle(drag.h,wp,e);rebuild(true);updStats();redraw();}
+    else if(drag.kind==='road'){moveRoadDrag(wp);updStats();redraw();}
+    else if(traceMove&&st.trace){st.trace.ox=drag.tx+dx/view.k;st.trace.oy=drag.ty-dy/view.k;tw=traceWorld(st.trace);redraw();}
+    else{view.cx=drag.cx-dx/view.k;view.cy=drag.cy+dy/view.k;redraw();}
+    return;
+  }
+  if(brush.on){brushPos=[sx,sy];redraw();return;}
+  const fl=flagAt(sx,sy),h=fl>=0?null:handleAt(sx,sy),i=(h||fl>=0)?-1:nearestSample(sx,sy,Math.max(10,ROAD_UNIT*view.k*.8)),b=i>=0?tr.samples[i].b:-1,nb=b>=0&&b<st.blocks.length?b:-1;
+  const cur=spaceDown?'grab':(h||fl>=0)?'pointer':nb>=0?'move':'grab';
+  if(map.style.cursor!==cur)map.style.cursor=cur;
+  if(nb!==hoverB||h!==hoverH){hoverB=nb;hoverH=h;redraw();}
+});
+function endDrag(){
+  const d=drag;drag=null;if(!d)return;
+  if(d.kind==='brush'){endStroke();return;}
+  if(d.kind==='flag'){dragging=false;changed(true);return;}
+  if(d.kind==='handle'){dragging=false;changed(true);return;}
+  if(d.kind==='road'&&d.moved&&rd){endRoadDrag();return;}
+  if(!d.moved){
+    const i=nearestSample(d.sx,d.sy,Math.max(12,ROAD_UNIT*view.k*.8)),[sx,sy]=toS(st.start.x,st.start.y);
+    if(Math.hypot(sx-d.sx,sy-d.sy)<16)select('start');
+    else if(i>=0&&tr.samples[i].b<st.blocks.length)select(tr.samples[i].b);
+  }else if(traceMove&&st.trace)syncTraceUI();
+}
+map.addEventListener('pointerup',endDrag);
+map.addEventListener('pointerleave',()=>{if(brush.on&&!drag){brushPos=null;redraw();}});
+map.addEventListener('pointercancel',endDrag);
+map.addEventListener('wheel',e=>{e.preventDefault();const r=map.getBoundingClientRect(),sx=e.clientX-r.left,sy=e.clientY-r.top,[wx,wy]=toW(sx,sy);
+  view.k=clamp(view.k*Math.exp(-e.deltaY*.0016),.08,1.6);const [nx,ny]=toW(sx,sy);view.cx+=wx-nx;view.cy+=wy-ny;redraw();},{passive:false});
+function zoomBy(f){const [wx,wy]=[view.cx,view.cy];view.k=clamp(view.k*f,.08,1.6);view.cx=wx;view.cy=wy;redraw();}
+$('#zin').addEventListener('click',()=>zoomBy(1.35));$('#zout').addEventListener('click',()=>zoomBy(1/1.35));$('#zfit').addEventListener('click',()=>{fitMode=fitMode==='track'?'map':'track';fitView();toast(fitMode==='track'?'Fitted to the track':'Showing the whole map');});
+/* drag a palette block onto the map: snap to the nearest block end */
+map.addEventListener('dragover',e=>{
+  if(!dragKey)return;e.preventDefault();e.dataTransfer.dropEffect='copy';
+  const r=map.getBoundingClientRect(),sx=e.clientX-r.left,sy=e.clientY-r.top,it=PALMAP[dragKey];
+  let idx=st.blocks.length,snapAt=null,bd=150*150;
+  const cand=[{i:0,p:st.start}];tr.ranges.forEach(r2=>{if(!r2.conn&&r2.bi<st.blocks.length)cand.push({i:r2.bi+1,p:tr.samples[r2.i1]});});
+  cand.forEach(c2=>{const [x,y]=toS(c2.p.x,c2.p.y),d=(x-sx)**2+(y-sy)**2;if(d<bd){bd=d;idx=c2.i;snapAt=c2.p;}});
+  if(!snapAt&&st.blocks.length)snapAt=tr.end;
+  const nb=it.mk();ghost={index:idx,n:nb.length,snapAt,tr:buildTrack(st,{index:idx,blocks:nb})};redraw();
+});
+map.addEventListener('dragleave',()=>{if(ghost){ghost=null;redraw();}});
+map.addEventListener('drop',e=>{e.preventDefault();if(!dragKey||!ghost)return;const it=PALMAP[dragKey],idx=ghost.index;ghost=null;dragKey=null;addBlocks(it,idx);});
+prof.addEventListener('pointerdown',e=>{
+  const r=prof.getBoundingClientRect(),x=e.clientX-r.left,y=e.clientY-r.top;
+  if(st.checkpoints){const i=tr.cp.findIndex(d=>Math.abs(profX(d)-x)<10);
+    if(i>=0){try{prof.setPointerCapture(e.pointerId);}catch(_){}dragProf=i;selCp=i;pushHist();dragging=true;renderTiming();redraw();return;}}
+  if(!profGeom)return;const s=profS(x);if(s<0||s>tr.length)return;
+  const p=tr.samples.find(q=>q.s>=s)||tr.samples.at(-1);
+  if(Math.abs(profY(p.zr)-y)<=12){try{prof.setPointerCapture(e.pointerId);}catch(_){}if(!beginElev(s,y)){pd=null;dragging=false;}else{pd.pid=e.pointerId;redraw();}}
+});
+prof.addEventListener('pointermove',e=>{
+  const r=prof.getBoundingClientRect(),x=e.clientX-r.left,s=(x-40)/(r.width-54)*tr.length;
+  if(dragProf>=0){moveCheckpoint(dragProf,s);hoverS=clamp(s,0,tr.length);return;}
+  if(pd){moveElev(e.clientY-r.top);return;}
+  hoverS=clamp(s,0,tr.length);
+  const yy=e.clientY-r.top,pp=profGeom&&s>=0&&s<=tr.length?(tr.samples.find(q=>q.s>=s)||tr.samples.at(-1)):null;
+  prof.style.cursor=st.checkpoints&&tr.cp.some(d=>Math.abs(profX(d)-x)<10)?'ew-resize':(pp&&Math.abs(profY(pp.zr)-yy)<=12?'ns-resize':'default');redraw();
+});
+const endProf=()=>{if(dragProf>=0){dragProf=-1;dragging=false;changed(true);}else if(pd)endElev();};
+prof.addEventListener('pointerup',endProf);prof.addEventListener('pointercancel',endProf);
+prof.addEventListener('pointerleave',()=>{hoverS=-1;redraw();});
+
+/* ------------------------------------------------------------- changed */
+let saveT=0;
+function changed(rebuildChain){
+  rebuild();
+  if(rebuildChain!==false)renderChain();else{/* labels only */renderChain();}
+  syncInspector();renderChecks();renderTiming();updStats();redraw();
+  if(!$('#pane-terrain').hidden||true)scheduleHmSize();
+  clearTimeout(saveT);saveT=setTimeout(()=>{try{localStorage.setItem('trackforge.v1',JSON.stringify(Object.assign({},st,{v:1})));}catch(e){}},400);
+  $('#autoClose').setAttribute('aria-pressed',String(st.closeAuto));$('#autoClose').classList.toggle('on',st.closeAuto);
+  $('#tAuthor').classList.toggle('bad',!st.meta.author.trim());
+  if($('#trInfo'))syncTraceUI();
+}
+function updStats(){
+  $('#sLen').textContent=fmtN(tr.length);$('#sLap').textContent=lapStr(tr.length);$('#sBlk').textContent=st.blocks.length;$('#sPts').textContent=controlPoints(tr).length;
+}
+function syncMeta(){$('#tName').value=st.meta.name;$('#tAuthor').value=st.meta.author;$('#tDesc').value=st.meta.description||'';syncTerrainUI();}
+
+/* ---------------------------------------------------------- export */
+let platSel='';
+const PLATS=[['mac','On Mac','~/Library/Application Support/RacingGame/Tracks/'],['win','On Windows','%LOCALAPPDATA%\\RacingGame\\Tracks\\'],['lin','On Linux','~/.local/share/RacingGame/Tracks/'],['and','On Android','Not supported yet: Racing Game custom tracks are for the desktop game (Mac, Windows, Linux).'],['ios','On iPhone / iPad','Not supported yet: Racing Game custom tracks are for the desktop game (Mac, Windows, Linux).']];
+function detectPlat(){const u=navigator.userAgent;return /Android/i.test(u)?'and':/iPhone|iPad|iPod/i.test(u)?'ios':/Mac/i.test(u)?'mac':/Win/i.test(u)?'win':'lin';}
+function renderPlat(){
+  const el=$('#plat');el.textContent='';
+  PLATS.forEach(([k,n,p])=>{const b=document.createElement('button');b.setAttribute('aria-pressed',String(k===platSel));const a=document.createElement('b'),s=document.createElement('span');a.textContent=n;s.textContent=p;b.append(a,s);
+    b.addEventListener('click',()=>{platSel=k;renderPlat();if(navigator.clipboard&&k!=='and'&&k!=='ios')navigator.clipboard.writeText(p).then(()=>toast('Folder path copied'),()=>{});});el.appendChild(b);});
+}
+let lastXml='';
+async function openExport(){
+  $('#modal').hidden=false;platSel=platSel||detectPlat();renderPlat();
+  const errs=checks.filter(c=>c.level==='error');
+  const warn=$('#mWarn');warn.textContent='';
+  if(errs.length){const d=document.createElement('div');d.className='warnbox';d.innerHTML='<b>Fix '+errs.length+' problem'+(errs.length>1?'s':'')+' before exporting:</b> '+errs.map(e=>esc(e.title)).join('; ')+'.';warn.appendChild(d);}
+  $('#mSave').disabled=!!errs.length;
+  let hb=null;
+  if(st.terrain.preset!=='shipped'){const z=await deflateRaw(terrFlat);if(z)hb=b64(z);}
+  const r=buildXml(st,tr,hb);lastXml=r.xml;
+  const lines=r.xml.split('\n').map(l=>l.length>110?l.slice(0,96)+'… ('+l.length+' characters)':l);
+  const head=lines.slice(0,34).join('\n');$('#mXml').textContent=head+(lines.length>34?'\n  … '+(lines.length-34)+' more lines':'');
+  const kb=new Blob([r.xml]).size/1024;
+  $('#mInfo').textContent=r.points+' control points · '+r.widthHelpers+' width helpers · '+r.roadHelpers+' road helpers · '+(r.checkpoints>=0?r.checkpoints+' checkpoints · ':'automatic checkpoints · ')+(hb?'own heightmap · ':'game terrain · ')+kb.toFixed(1)+' KB';
+  $('#mName').textContent=fileName();$('#mSave').textContent='Save '+fileName();
+}
+const slug=s=>(s.trim()||'track').replace(/[^\w\- ]+/g,'').replace(/\s+/g,'-');
+const fileName=()=>slug(st.meta.name)+'.Track';
+function downloadText(name,text,mime){
+  const url=URL.createObjectURL(new Blob([text],{type:mime||'application/octet-stream'}));
+  const a=document.createElement('a');a.href=url;a.download=name;a.rel='noopener';document.body.appendChild(a);a.click();a.remove();
+  setTimeout(()=>URL.revokeObjectURL(url),10000);
+}
+function saveFile(){
+  try{downloadText(fileName(),lastXml,'application/octet-stream');toast('Downloaded '+fileName()+'. Put it in the Racing Game Tracks folder as it is.');}
+  catch(e){copyXml();toast('Download was blocked, so the XML was copied instead');}
+}
+function copyXml(){const done=()=>toast('XML copied');if(navigator.clipboard)navigator.clipboard.writeText(lastXml).then(done,()=>{window.getSelection().selectAllChildren($('#mXml'));toast('Select and copy the preview');});else toast('Select and copy the preview');}
+
+/* --------------------------------------------------------------- boot */
+function wire(){
+  $$('.tab').forEach(t=>t.addEventListener('click',()=>tab(t.dataset.tab)));
+  $('#tName').addEventListener('input',e=>{pushHist('name');st.meta.name=e.target.value;changed(false);});
+  $('#tAuthor').addEventListener('input',e=>{pushHist('author');st.meta.author=e.target.value;changed(false);});
+  $('#tDesc').addEventListener('input',e=>{pushHist('desc');st.meta.description=e.target.value;changed(false);});
+  $('#undo').addEventListener('click',undo);$('#redo').addEventListener('click',redo);
+  $('#reset').addEventListener('click',()=>{pushHist();const k=st.trace;Object.assign(st,sampleState());st.trace=null;sel=0;syncMeta();changed(true);fitView();renderOutlines();syncTraceUI();toast('Sample track restored');});
+  $('#theme').addEventListener('click',()=>{const r=document.documentElement,dark=r.dataset.theme?r.dataset.theme==='dark':!matchMedia('(prefers-color-scheme: light)').matches;r.dataset.theme=dark?'light':'dark';redraw();});
+  $('#autoClose').addEventListener('click',()=>{pushHist();st.closeAuto=!st.closeAuto;changed(true);});
+  $('#shade').addEventListener('click',()=>{showTerr=!showTerr;$('#shade').setAttribute('aria-pressed',String(showTerr));$('#shade').classList.toggle('on',showTerr);redraw();});
+  $('#aVer').textContent=APP_VERSION;
+  $('#aboutBtn').addEventListener('click',()=>$('#about').hidden=false);$('#aClose').addEventListener('click',()=>$('#about').hidden=true);
+  $('#about').addEventListener('click',e=>{if(e.target.id==='about')$('#about').hidden=true;});
+  try{if(!localStorage.getItem('tt.deskhint'))$('#deskhint').hidden=false;}catch(e){$('#deskhint').hidden=false;}
+  $('#deskOk').addEventListener('click',()=>{$('#deskhint').hidden=true;try{localStorage.setItem('tt.deskhint','1');}catch(e){}});
+  $('#export').addEventListener('click',openExport);$('#mClose').addEventListener('click',()=>$('#modal').hidden=true);
+  $('#modal').addEventListener('click',e=>{if(e.target.id==='modal')$('#modal').hidden=true;});
+  $('#mSave').addEventListener('click',saveFile);$('#mCopy').addEventListener('click',copyXml);
+  document.addEventListener('keyup',e=>{if(e.code==='Space'){spaceDown=false;map.style.cursor='grab';}});
+  $('#flex').addEventListener('input',e=>{flex=+e.target.value;$('#flexV').textContent=flex;});
+  document.addEventListener('keydown',e=>{
+    const tag=(e.target.tagName||'').toLowerCase();
+    if(e.code==='Space'&&tag!=='input'&&tag!=='textarea'&&tag!=='select'&&tag!=='button'){spaceDown=true;e.preventDefault();map.style.cursor='grab';}
+    if(e.key==='Escape'&&!$('#about').hidden){$('#about').hidden=true;return;}
+    if(e.key==='Escape'&&!$('#modal').hidden){$('#modal').hidden=true;return;}
+    if(e.key==='Escape'&&brush.on){setBrushOn(false);return;}
+    if((e.metaKey||e.ctrlKey)&&e.key.toLowerCase()==='z'){e.preventDefault();e.shiftKey?redo():undo();return;}
+    if(tag==='input'||tag==='textarea'||tag==='select')return;
+    if(e.key==='Delete'||e.key==='Backspace'){if(curB()){e.preventDefault();delSel();}}
+    if(e.key==='ArrowRight'||e.key==='ArrowLeft'){const n=st.blocks.length;if(!n)return;let i=typeof sel==='number'?sel:-1;i=clamp(i+(e.key==='ArrowRight'?1:-1),0,n-1);select(i,true);}
+  });
+  new ResizeObserver(resize).observe(map.parentElement);new ResizeObserver(resize).observe(prof.parentElement);
+  matchMedia('(prefers-color-scheme: light)').addEventListener('change',redraw);
+}
+if(window.__TF_TEST)window.__tf={get st(){return st;},get tr(){return tr;},toS,toW,select,get sel(){return sel;},get rd(){return rd;},get selCp(){return selCp;},profX,get pd(){return pd;},brush,get terrFlat(){return terrFlat;},get terrRaw(){return terrRaw;},get geom(){return profGeom;},profY};
+renderPalette();setupInspector();setupTerrain();setupTrace();setupTiming();setupBrush();renderOutlines();loadOutlines();wire();syncMeta();
+rebuild();renderChain();syncInspector();renderChecks();renderTiming();updStats();syncTraceUI();updUndo();
+resize();fitView();scheduleHmSize();
+})();
+</script>
+</body>
+</html>

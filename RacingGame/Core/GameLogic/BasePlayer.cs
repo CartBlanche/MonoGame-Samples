@@ -247,7 +247,7 @@ namespace RacingGame.GameLogic
         /// </summary>
         public virtual void Reset()
         {
-            levelNum = TrackSelection.SelectedTrackNumber;
+            levelNum = TrackSelection.HighscoreLevel;
             isGameOver = false;
             alreadyUploadedHighscore = false;
             currentGameTimeMilliseconds = 0;

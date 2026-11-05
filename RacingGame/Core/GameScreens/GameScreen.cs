@@ -28,8 +28,11 @@ namespace RacingGame.GameScreens
         /// </summary>
         public GameScreen()
         {
-            // Load level
-            RacingGameManager.LoadLevel(TrackSelection.SelectedTrack);
+            // Load level (built-in or custom)
+            if (TrackSelection.CustomTrack != null)
+                RacingGameManager.LoadCustomTrack(TrackSelection.CustomTrack);
+            else
+                RacingGameManager.LoadLevel(TrackSelection.SelectedTrack);
 
             // Reset player variables (start new game, reset time and position)
             RacingGameManager.Player.Reset();
@@ -161,7 +164,7 @@ namespace RacingGame.GameScreens
                 // This could be improved
                 0.5f * RacingGameManager.Player.Acceleration,
                 RacingGameManager.Landscape.CurrentTrackName,
-                Highscores.GetTop5LapTimes(TrackSelection.SelectedTrackNumber));
+                Highscores.GetTop5LapTimes(TrackSelection.HighscoreLevel));
 
             if (WantsToLeave())
             {

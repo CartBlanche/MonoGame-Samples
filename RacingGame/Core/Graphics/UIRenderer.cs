@@ -575,6 +575,25 @@ namespace RacingGame.Graphics
         }
 
         /// <summary>
+        /// A "<-" or "->" paging arrow (the one used on the car selection screen)
+        /// centred on x, y (1024 x 640 layout units). Returns true when clicked.
+        /// </summary>
+        public bool RenderPageArrow(int x, int y, bool pointRight)
+        {
+            Rectangle g = SelectionArrowGfxRect;
+            int w = BaseGame.XToRes((int)(g.Width * 1.6f)), h = BaseGame.YToRes((int)(g.Height * 1.6f));
+            Rectangle r = new Rectangle(BaseGame.XToRes(x) - w / 2, BaseGame.YToRes(y) - h / 2, w, h);
+            // generous click area for fingers
+            Rectangle hit = new Rectangle(r.X - w / 2, r.Y - h / 2, w * 2, h * 2);
+            bool over = Input.MouseInBox(hit);
+            if (over)
+                r = new Rectangle(r.X - w / 8, r.Y - h / 8, w + w / 4, h + h / 4);
+            buttons.RenderOnScreen(r, pointRight ? g :
+                new Rectangle(g.X + g.Width, g.Y, -g.Width, g.Height),
+                over ? Color.White : new Color(255, 255, 255, 200));
+            return over && Input.MouseLeftButtonJustPressed;
+        }
+        /// <summary>
         /// Source rectangles in the Ingame texture used to build the laps
         /// panel: a blank rounded panel (cut into 9 slices so it can be any
         /// size) and the straight middle of the orange bar (used as the "/").
@@ -586,7 +605,15 @@ namespace RacingGame.Graphics
         /// <summary>
         /// Draw a panel of any size from the blank panel (9-slice).
         /// </summary>
-        private void RenderPanel(Rectangle r)
+        public void RenderPanel(Rectangle r)
+        {
+            RenderPanel(r, Color.White);
+        }
+
+        /// <summary>
+        /// Same, tinted (the colour also sets the transparency).
+        /// </summary>
+        public void RenderPanel(Rectangle r, Color tint)
         {
             Rectangle s = BlankPanelGfxRect;
             int c = BlankPanelCorner;
@@ -600,7 +627,8 @@ namespace RacingGame.Graphics
                 for (int col = 0; col < 3; col++)
                     ingame.RenderOnScreen(
                         new Rectangle(dx[col], dy[row], dx[col + 1] - dx[col], dy[row + 1] - dy[row]),
-                        new Rectangle(sx[col], sy[row], sx[col + 1] - sx[col], sy[row + 1] - sy[row]));
+                        new Rectangle(sx[col], sy[row], sx[col + 1] - sx[col], sy[row + 1] - sy[row]),
+                        tint);
         }
 
         /// <summary>

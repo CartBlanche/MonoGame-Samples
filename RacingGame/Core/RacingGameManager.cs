@@ -124,6 +124,14 @@ namespace RacingGame
             landscape.ReloadLevel(setNewLevel);
         }
 
+        /// <summary>
+        /// Load a custom track from the Tracks folder
+        /// </summary>
+        public static void LoadCustomTrack(Tracks.CustomTrackInfo info)
+        {
+            landscape.ReloadCustomTrack(info);
+        }
+
         public static event EventHandler<EventArgs> LoadEvent;
         /// <summary>
         /// In menu

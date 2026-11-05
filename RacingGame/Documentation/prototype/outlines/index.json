@@ -1,0 +1,10 @@
+{
+ "format": "tarmac-toolbox-outline-index",
+ "version": 1,
+ "outlines": [
+  "booty.json",
+  "burger.json",
+  "rumble.json",
+  "dose.json"
+ ]
+}

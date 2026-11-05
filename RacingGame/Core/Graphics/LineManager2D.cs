@@ -125,7 +125,7 @@ namespace RacingGame.Graphics
         /// <summary>
         /// Max. number of lines allowed.
         /// </summary>
-        private const int MaxNumOfLines = 64;
+        private const int MaxNumOfLines = 1024;   // was 64, the custom track preview needs more
         /// <summary>
         /// Create LineManager
         /// </summary>

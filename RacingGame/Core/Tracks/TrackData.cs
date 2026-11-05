@@ -31,6 +31,99 @@ namespace RacingGame.Tracks
         /// Extension for the track data files.
         /// </summary>
         public const string Extension = "Track";
+        // Metadata (all optional, so the built-in tracks load unchanged).
+        // Writers should emit these first, in this order (tested: the reader
+        // also accepts them after the lists).
+
+        /// <summary>
+        /// Format version of the file, 1 = first version with metadata.
+        /// </summary>
+        public int FormatVersion;
+        /// <summary>
+        /// Display name of the track (free text). Empty: use the file name.
+        /// </summary>
+        public string Name;
+        /// <summary>
+        /// Who created this track (free text).
+        /// </summary>
+        public string Author;
+        /// <summary>
+        /// Creator of the first version if someone else edited it later.
+        /// </summary>
+        public string OriginalAuthor;
+        /// <summary>
+        /// Short description (free text).
+        /// </summary>
+        public string Description;
+        /// <summary>
+        /// When the track was created (ISO date, e.g. 2026-11-04).
+        /// </summary>
+        public string Created;
+
+        /// <summary>
+        /// Optional timing checkpoints: where along the lap each one is, as a
+        /// fraction of the lap (0..1, increasing, measured from the start line).
+        /// Null: the game puts one every 500 units. An empty list: none.
+        /// </summary>
+        public float[] Checkpoints;
+
+        /// <summary>
+        /// Optional own terrain for this track: the 257 x 257 height bytes
+        /// (same layout as Content/LandscapeHeights.data), deflate compressed.
+        /// XmlSerializer writes this as base64. Null: the shipped terrain.
+        /// Use CompressHeightmap / DecompressHeightmap, don't fill by hand.
+        /// </summary>
+        public byte[] Heightmap;
+
+        /// <summary>
+        /// Size of an uncompressed heightmap (Landscape.HeightmapSize).
+        /// </summary>
+        public const int HeightmapBytes = 257 * 257;
+
+        /// <summary>
+        /// Compress raw heightmap bytes for storing in the Heightmap field.
+        /// </summary>
+        public static byte[] CompressHeightmap(byte[] raw)
+        {
+            if (raw == null || raw.Length != HeightmapBytes)
+                throw new ArgumentException("Heightmap must be " + HeightmapBytes + " bytes");
+            using (MemoryStream ms = new MemoryStream())
+            {
+                using (System.IO.Compression.DeflateStream ds = new System.IO.Compression.DeflateStream(
+                    ms, System.IO.Compression.CompressionLevel.Optimal, true))
+                    ds.Write(raw, 0, raw.Length);
+                return ms.ToArray();
+            }
+        }
+
+        /// <summary>
+        /// Raw heightmap bytes, or null if the track has no own heightmap.
+        /// Throws InvalidDataException if the stored data is not exactly
+        /// 257 x 257 bytes (also protects against decompression bombs).
+        /// </summary>
+        public byte[] DecompressHeightmap()
+        {
+            if (Heightmap == null || Heightmap.Length == 0)
+                return null;
+            byte[] raw = new byte[HeightmapBytes];
+            using (MemoryStream ms = new MemoryStream(Heightmap))
+            using (System.IO.Compression.DeflateStream ds = new System.IO.Compression.DeflateStream(
+                ms, System.IO.Compression.CompressionMode.Decompress))
+            {
+                int read = 0;
+                while (read < raw.Length)
+                {
+                    int n = ds.Read(raw, read, raw.Length - read);
+                    if (n <= 0)
+                        break;
+                    read += n;
+                }
+                if (read != raw.Length || ds.ReadByte() != -1)
+                    throw new InvalidDataException("Heightmap is not " + HeightmapBytes + " bytes");
+            }
+            return raw;
+        }
+
         /// <summary>
         /// Track points
         /// </summary>
@@ -256,6 +349,15 @@ namespace RacingGame.Tracks
                 // Return loaded file
                 return loadedTrack;
             }
+        }
+
+        /// <summary>
+        /// Load track data from any stream (used for custom tracks in the
+        /// user's Tracks folder, see CustomTracks).
+        /// </summary>
+        public static TrackData Load(Stream stream)
+        {
+            return (TrackData)new XmlSerializer(typeof(TrackData)).Deserialize(stream);
         }
 
     }
