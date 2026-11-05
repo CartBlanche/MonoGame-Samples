@@ -72,7 +72,7 @@ namespace CatapultGame
                 Catapult.ShotAngle = shotAngle;
 
                 // About as long as the pull-back animation plus the pause before the shot
-                settleDuration = 18 * finalStrength / 30f + Catapult.AIStallCycles / 60f - 0.05f;
+                settleDuration = 18 * finalStrength / Catapult.AnimationFramesPerSecond + Catapult.AIStallSeconds - 0.05f;
                 settleTime = 0;
                 settling = true;
                 isDragging = true;

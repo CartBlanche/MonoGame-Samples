@@ -62,6 +62,13 @@ namespace CatapultGame
 		float timeScale = 1f;
 		float slowMotionHold;
 		Vector2 zoomFocus = new Vector2(400, 240);
+
+		// Camera shake when a shot lands. Real time, so slow motion does not stretch it.
+		const float ShakeDuration = 0.4f;
+		float shakeLeft;
+		float shakeStrength;
+		float shakeClock;
+		bool wasCatapultHit;
 		bool wasHit;
 		Texture2D windArrowTexture;
 		Texture2D defeatTexture;
@@ -344,6 +351,7 @@ namespace CatapultGame
 
 			// Update the players, in slow motion if a direct hit is about to land
 			UpdateSlowMotion(elapsed);
+			UpdateShake(elapsed);
 			var playTime = new GameTime(gameTime.TotalGameTime, TimeSpan.FromSeconds(elapsed * timeScale));
 			playerOne.Update(playTime);
 			playerTwo.Update(playTime);
@@ -573,6 +581,9 @@ namespace CatapultGame
 		/// </summary>
 		void OnGroundImpact(bool playerOneFired, Vector2 position, float speed)
 		{
+			// Every boulder that lands shakes the view a little, harder if it came in fast
+			AddShake(1.5f + 2.5f * MathHelper.Clamp((speed - 200f) / 400f, 0f, 1f));
+
 			if (IsMultiplayer)
 			{
 				bool firedHere = playerOneFired == NetworkSession.IsHost;
@@ -751,8 +762,35 @@ namespace CatapultGame
 			float rate = target < timeScale ? 8f : 2f;
 			timeScale = MathHelper.Clamp(target, timeScale - rate * realElapsed, timeScale + rate * realElapsed);
 
-			playerOne.Catapult.TimeScale = timeScale;
-			playerTwo.Catapult.TimeScale = timeScale;
+		}
+
+		/// <summary>Starts a shake of the given size in pixels, unless one that big is still going.</summary>
+		void AddShake(float pixels)
+		{
+			shakeStrength = Math.Max(CurrentShake(), pixels);
+			shakeLeft = ShakeDuration;
+		}
+
+		// The size of the shake now: full at the start, dying away smoothly
+		float CurrentShake()
+		{
+			if (shakeLeft <= 0f)
+				return 0f;
+			float k = shakeLeft / ShakeDuration;
+			return shakeStrength * k * k;
+		}
+
+		void UpdateShake(float realElapsed)
+		{
+			shakeClock += realElapsed;
+			shakeLeft = Math.Max(0f, shakeLeft - realElapsed);
+
+			// A catapult being destroyed shakes the ground harder than a boulder landing
+			bool hitNow = playerOne.Catapult.CurrentState == CatapultState.Hit
+				|| playerTwo.Catapult.CurrentState == CatapultState.Hit;
+			if (hitNow && !wasCatapultHit)
+				AddShake(5f);
+			wasCatapultHit = hitNow;
 		}
 
 		/// <summary>
@@ -762,14 +800,24 @@ namespace CatapultGame
 		{
 			float slow = MathHelper.Clamp((1f - timeScale) / (1f - SlowMotionScale), 0f, 1f);
 			float zoom = MathHelper.Lerp(1f, MaxZoom, slow * slow * (3f - 2f * slow));
+
+			// The shake wobbles the view, with just enough zoom to keep the edges of the screen covered
+			float amount = CurrentShake();
+			Vector2 shake = new Vector2(
+				(float)Math.Sin(shakeClock * 71f) * amount,
+				(float)Math.Cos(shakeClock * 53f) * amount);
+			zoom *= 1f + amount * 1.2f / (ScreenManager.BASE_BUFFER_HEIGHT / 2f);
+
 			if (zoom <= 1.001f)
 				return ScreenManager.GlobalTransformation;
 
 			// Keep the view inside the battlefield
 			float viewW = ScreenManager.BASE_BUFFER_WIDTH / zoom;
 			float viewH = ScreenManager.BASE_BUFFER_HEIGHT / zoom;
-			float left = MathHelper.Clamp(zoomFocus.X - viewW / 2f, 0f, ScreenManager.BASE_BUFFER_WIDTH - viewW);
-			float top = MathHelper.Clamp(zoomFocus.Y - viewH / 2f, 0f, ScreenManager.BASE_BUFFER_HEIGHT - viewH);
+			float focusX = slow > 0f ? zoomFocus.X : ScreenManager.BASE_BUFFER_WIDTH / 2f;
+			float focusY = slow > 0f ? zoomFocus.Y : ScreenManager.BASE_BUFFER_HEIGHT / 2f;
+			float left = MathHelper.Clamp(focusX - viewW / 2f + shake.X, 0f, ScreenManager.BASE_BUFFER_WIDTH - viewW);
+			float top = MathHelper.Clamp(focusY - viewH / 2f + shake.Y, 0f, ScreenManager.BASE_BUFFER_HEIGHT - viewH);
 
 			return Matrix.CreateTranslation(-left, -top, 0f) * Matrix.CreateScale(zoom, zoom, 1f)
 				* ScreenManager.GlobalTransformation;

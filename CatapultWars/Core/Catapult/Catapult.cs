@@ -69,13 +69,19 @@ namespace CatapultGame
         const float gravity = Ballistics.Gravity;
 
                 // How long the AI holds its pulled-back catapult before firing, in updates
-                public const int AIStallCycles = 35;
+                public const float AIStallSeconds = 35f / 60f;
+
+                        /// <summary>
+                        /// Catapult animations play at this many frames a second. The animation sheets list 30, which
+                        /// the game never used: it stepped one frame per update, which is 60 a second.
+                        /// </summary>
+                        public const float AnimationFramesPerSecond = 60f;
 
         // State of the catapult during its last update
         CatapultState lastUpdateState = CatapultState.Idle;
 
         // Used to stall animations
-        int stallUpdateCycles;
+        float stallTime;
 
         // Current state of the Catapult
         CatapultState currentState;
@@ -172,13 +178,6 @@ namespace CatapultGame
         /// <summary>Where the shot in the air is now.</summary>
         public Vector2 ProjectilePosition { get { return projectile.ProjectilePosition; } }
 
-        /// <summary>
-        /// Slows this catapult's animations as well as its shot. 1 is normal speed. Animations step by
-        /// frame, not by time, so at a lower speed they step only every so often.
-        /// </summary>
-        public float TimeScale { get; set; } = 1f;
-        float animationDebt;
-
         /// <summary>1 when this catapult fires to the right, -1 to the left.</summary>
         public int FireDirection { get { return isAI ? -1 : 1; } }
 
@@ -246,7 +245,7 @@ namespace CatapultGame
             AnimationRunning = false;
             impactDust = new ImpactDust(curGame.GraphicsDevice);
             currentState = CatapultState.Idle;
-            stallUpdateCycles = 0;
+            stallTime = 0;
 			
 			// Load multiple animations form XML definition
 			XDocument doc = null;
@@ -295,6 +294,7 @@ namespace CatapultGame
                         int.Parse(animationDefinition.Attribute("Speed").Value));
 
                     Animation animation = new Animation(texture, frameSize, sheetSize);
+                    animation.FramesPerSecond = AnimationFramesPerSecond;
 
                     // If definition has an offset defined - means that it should be rendered relatively
                     // to some element/other animation - load it
@@ -343,11 +343,7 @@ namespace CatapultGame
                 
             impactDust.Update((float)gameTime.ElapsedGameTime.TotalSeconds);
 
-            // Whether animations step this update
-            animationDebt += TimeScale;
-            bool tick = animationDebt >= 1f;
-            if (tick)
-                animationDebt -= 1f;
+            float elapsed = (float)gameTime.ElapsedGameTime.TotalSeconds;
 
             switch (currentState)
             {
@@ -363,7 +359,7 @@ namespace CatapultGame
                         if (isAI == true)
                         {
                             animations["Aim"].PlayFromFrameIndex(0);
-                            stallUpdateCycles = AIStallCycles;
+                            stallTime = AIStallSeconds;
                             startStall = false;
                         }
                     }
@@ -375,15 +371,14 @@ namespace CatapultGame
                     }
                     else
                     {
-                        if (tick)
-                            animations["Aim"].Update();
+                        animations["Aim"].Update(elapsed);
                         startStall = AimReachedShotStrength();
                         currentState = (startStall) ? 
                             CatapultState.Stalling : CatapultState.Aiming;
                     }
                     break;
                 case CatapultState.Stalling:
-                    if (stallUpdateCycles-- <= 0)
+                    if ((stallTime -= elapsed) <= 0)
                     {
                         // We've finished stalling, fire the projectile
                         Fire(ShotVelocity, ShotAngle);
@@ -399,12 +394,11 @@ namespace CatapultGame
                         StartFiringFromLastAimPosition();
                     }
 
-                    if (tick)
-                        animations["Fire"].Update();
+                    animations["Fire"].Update(elapsed);
 
                     // If in the "split" point of the animation start 
                     // projectile fire sequence
-                    if (animations["Fire"].FrameIndex == splitFrames["Fire"])
+                    if (animations["Fire"].FrameIndex >= splitFrames["Fire"])
                     {
                         postUpdateStateChange = 
                             currentState | CatapultState.ProjectileFlying;
@@ -414,8 +408,7 @@ namespace CatapultGame
                     break;
                 case CatapultState.Firing | CatapultState.ProjectileFlying:
                     // Progress Fire animation                    
-                    if (tick)
-                        animations["Fire"].Update();
+                    animations["Fire"].Update(elapsed);
 
                     // Update projectile velocity & position in flight
                     projectile.UpdateProjectileFlightData(gameTime, wind, 
@@ -483,11 +476,8 @@ namespace CatapultGame
                         postUpdateStateChange = CatapultState.Reset;
                     }
 
-                    if (tick)
-                    {
-                        animations["Destroyed"].Update();
-                        animations["hitSmoke"].Update();
-                    }
+                    animations["Destroyed"].Update(elapsed);
+                    animations["hitSmoke"].Update(elapsed);
 
                     break;
                 case CatapultState.Reset:
@@ -514,7 +504,7 @@ namespace CatapultGame
         /// false otherwise.</returns>
         private bool AimReachedShotStrength()
         {
-            return (animations["Aim"].FrameIndex ==
+            return (animations["Aim"].FrameIndex >=
                 (Convert.ToInt32(animations["Aim"].FrameCount * ShotStrength) - 1));
         }
 
@@ -523,7 +513,9 @@ namespace CatapultGame
             var aimAnimation = animations["Aim"];
             int frameToDisplay =
                 Convert.ToInt32(aimAnimation.FrameCount * ShotStrength);
-            aimAnimation.FrameIndex = Math.Min(aimAnimation.FrameCount, frameToDisplay);
+            // The last frame is FrameCount - 1. Asking for FrameCount, which a near full pull
+            // used to do, points past the sheet and draws nothing but stray lines.
+            aimAnimation.FrameIndex = Math.Max(0, Math.Min(aimAnimation.FrameCount - 1, frameToDisplay));
         }
 
         /// <summary>
