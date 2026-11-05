@@ -15,6 +15,7 @@ ANDROID_PROJECT="${ROOT_DIR}/Platforms/Android/CatapultNetWars.csproj"
 
 ARTIFACTS_ROOT="${ROOT_DIR}/artifacts"
 PKG_IDENTIFIER="${PKG_IDENTIFIER:-com.cartblanche.catapultnetwars}"
+PKG_BASENAME="${PKG_BASENAME:-CatapultWars}"
 # Signing and notarisation. Identities are auto-detected from the keychain unless set.
 SIGN_APP_IDENTITY="${SIGN_APP_IDENTITY:-}"
 SIGN_PKG_IDENTITY="${SIGN_PKG_IDENTITY:-}"
@@ -34,6 +35,8 @@ Options:
                              (Developer ID Installer). Needs the .pkg step.
   --notarize                 Sign (as --sign), then submit the .pkg to Apple, wait, and staple the ticket.
                              Needs a notarytool keychain profile (see NOTARY_PROFILE).
+  --keep-macos-archive       Keep the macOS .zip/.tar.gz. By default, once the .pkg is signed (or notarised)
+                             the archive is deleted, since the .pkg replaces it.
   --clear                    First delete the artifacts folder and every bin/ and obj/ folder next to a
                              .csproj (Core, Platforms), then carry on. With --skip-desktop --skip-android
                              it only cleans.
@@ -60,6 +63,7 @@ SKIP_ANDROID=0
 SKIP_PKG=0
 SIGN=0
 NOTARIZE=0
+KEEP_MACOS_ARCHIVE=0
 CLEAR=0
 
 while [[ $# -gt 0 ]]; do
@@ -91,6 +95,10 @@ while [[ $# -gt 0 ]]; do
     --notarize)
       SIGN=1
       NOTARIZE=1
+      shift
+      ;;
+    --keep-macos-archive)
+      KEEP_MACOS_ARCHIVE=1
       shift
       ;;
     --clear)
@@ -149,10 +157,14 @@ install_monopack_if_missing() {
 clear_build_output() {
   log "Clearing build output"
 
-  # Only the folder named artifacts under the repo root: never delete anything else
+  # Only the folder named artifacts under the project root: never trust ARTIFACTS_ROOT to be something safe to delete
   if [[ -d "${ARTIFACTS_ROOT}" ]]; then
-    log "Deleting ${ARTIFACTS_ROOT}"
-    rm -rf "${ARTIFACTS_ROOT}"
+    if [[ "${ARTIFACTS_ROOT}" == "${ROOT_DIR}/artifacts" ]]; then
+      log "Deleting ${ARTIFACTS_ROOT}"
+      rm -rf "${ARTIFACTS_ROOT}"
+    else
+      log "ARTIFACTS_ROOT is ${ARTIFACTS_ROOT}, not ${ROOT_DIR}/artifacts: leaving it alone"
+    fi
   fi
 
   # bin/ and obj/ only where a .csproj sits beside them, never inside .git or node_modules
@@ -215,6 +227,11 @@ notarize_pkg() {
 
 # MonoPack leaves the universal .app either as a folder or only inside a macOS archive; find it in either.
 package_macos_pkg() {
+  if [[ "${SKIP_PKG}" -eq 1 ]]; then
+    log "Skipping macOS pkg"
+    return
+  fi
+
   local app_bundle="" archive="" temp_extract_dir="" pkg_path
   app_bundle="$(find "${DESKTOP_OUT_DIR}" -type d -name "*.app" | head -n 1 || true)"
 
@@ -236,7 +253,7 @@ package_macos_pkg() {
     exit 1
   fi
 
-  pkg_path="${DESKTOP_OUT_DIR}/CatapultWars-macos-${BUILD_NUMBER}.pkg"
+  pkg_path="${DESKTOP_OUT_DIR}/${PKG_BASENAME}-macos-${BUILD_NUMBER}.pkg"
 
   local sign_args=()
   if [[ "${SIGN}" -eq 1 ]]; then
@@ -267,6 +284,48 @@ package_macos_pkg() {
     log "The pkg is signed but not notarised (use --notarize)"
   else
     log "The pkg is not signed or notarised: if testers hit Gatekeeper, they can right-click > Open, or run: xattr -d com.apple.quarantine \"${pkg_path}\""
+  fi
+
+  # The signed pkg replaces the unsigned macOS archive, so drop it to save space (reaching here means signing and notarising worked)
+  if [[ "${SIGN}" -eq 1 && "${KEEP_MACOS_ARCHIVE}" -eq 0 ]]; then
+    local old
+    while IFS= read -r old; do
+      log "Removing ${old} (replaced by the signed pkg)"
+      rm -f "${old}"
+    done < <(find "${DESKTOP_OUT_DIR}" -maxdepth 1 -type f \( -name "*osx*.zip" -o -name "*macos*.zip" -o -name "*osx*.tar.gz" -o -name "*macos*.tar.gz" \))
+  fi
+}
+
+check_pkg_prerequisites() {
+  if [[ "${SIGN}" -eq 1 && "${SKIP_PKG}" -eq 1 ]]; then
+    echo "--sign/--notarize work on the .pkg step, so they can't be combined with --skip-pkg." >&2
+    exit 1
+  fi
+  if [[ "${SIGN}" -eq 1 ]]; then
+    require_cmd codesign
+    require_cmd security
+    [[ -n "${SIGN_APP_IDENTITY}" ]] || SIGN_APP_IDENTITY="$(find_identity 'Developer ID Application')"
+    [[ -n "${SIGN_PKG_IDENTITY}" ]] || SIGN_PKG_IDENTITY="$(find_identity 'Developer ID Installer')"
+    if [[ -z "${SIGN_APP_IDENTITY}" || -z "${SIGN_PKG_IDENTITY}" ]]; then
+      echo "Could not find both a Developer ID Application and a Developer ID Installer identity (security find-identity -v)." >&2
+      exit 1
+    fi
+    log "App identity: ${SIGN_APP_IDENTITY}"
+    log "Installer identity: ${SIGN_PKG_IDENTITY}"
+  fi
+  if [[ "${NOTARIZE}" -eq 1 ]]; then
+    require_cmd xcrun
+    if ! xcrun notarytool history --keychain-profile "${NOTARY_PROFILE}" >/dev/null 2>&1; then
+      echo "Notary profile '${NOTARY_PROFILE}' not found or not working. Create it with:" >&2
+      echo "  xcrun notarytool store-credentials \"${NOTARY_PROFILE}\" --apple-id <id> --team-id <team> --password <app-specific-password>" >&2
+      exit 1
+    fi
+  fi
+  if [[ "${SKIP_PKG}" -eq 0 ]]; then
+    require_cmd pkgbuild
+    require_cmd ditto
+    require_cmd tar
+    require_cmd mktemp
   fi
 }
 
@@ -315,11 +374,7 @@ package_desktop() {
   log "Desktop artifacts generated"
   find "${DESKTOP_OUT_DIR}" -type f \( -name "*.zip" -o -name "*.tar.gz" \) | sort || true
 
-  if [[ "${SKIP_PKG}" -eq 0 ]]; then
-    package_macos_pkg
-  else
-    log "Skipping macOS pkg"
-  fi
+  package_macos_pkg
 }
 
 publish_android_release() {
@@ -355,36 +410,7 @@ main() {
   mkdir -p "${ARTIFACTS_ROOT}"
 
   if [[ "${SKIP_DESKTOP}" -eq 0 ]]; then
-    if [[ "${SIGN}" -eq 1 && "${SKIP_PKG}" -eq 1 ]]; then
-      echo "--sign/--notarize work on the .pkg step, so they can't be combined with --skip-pkg." >&2
-      exit 1
-    fi
-    if [[ "${SIGN}" -eq 1 ]]; then
-      require_cmd codesign
-      require_cmd security
-      [[ -n "${SIGN_APP_IDENTITY}" ]] || SIGN_APP_IDENTITY="$(find_identity 'Developer ID Application')"
-      [[ -n "${SIGN_PKG_IDENTITY}" ]] || SIGN_PKG_IDENTITY="$(find_identity 'Developer ID Installer')"
-      if [[ -z "${SIGN_APP_IDENTITY}" || -z "${SIGN_PKG_IDENTITY}" ]]; then
-        echo "Could not find both a Developer ID Application and a Developer ID Installer identity (security find-identity -v)." >&2
-        exit 1
-      fi
-      log "App identity: ${SIGN_APP_IDENTITY}"
-      log "Installer identity: ${SIGN_PKG_IDENTITY}"
-    fi
-    if [[ "${NOTARIZE}" -eq 1 ]]; then
-      require_cmd xcrun
-      if ! xcrun notarytool history --keychain-profile "${NOTARY_PROFILE}" >/dev/null 2>&1; then
-        echo "Notary profile '${NOTARY_PROFILE}' not found or not working. Create it with:" >&2
-        echo "  xcrun notarytool store-credentials \"${NOTARY_PROFILE}\" --apple-id <id> --team-id <team> --password <app-specific-password>" >&2
-        exit 1
-      fi
-    fi
-    if [[ "${SKIP_PKG}" -eq 0 ]]; then
-      require_cmd pkgbuild
-      require_cmd ditto
-      require_cmd tar
-      require_cmd mktemp
-    fi
+    check_pkg_prerequisites
     install_monopack_if_missing
     package_desktop
   else
