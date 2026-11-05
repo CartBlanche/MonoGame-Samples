@@ -14,6 +14,7 @@ DESKTOP_PROJECT="${ROOT_DIR}/Platforms/Desktop/CatapultNetWars.csproj"
 ANDROID_PROJECT="${ROOT_DIR}/Platforms/Android/CatapultNetWars.csproj"
 
 ARTIFACTS_ROOT="${ROOT_DIR}/artifacts"
+PKG_IDENTIFIER="${PKG_IDENTIFIER:-com.cartblanche.catapultnetwars}"
 
 usage() {
   cat <<'EOF'
@@ -23,21 +24,28 @@ Options:
   --build-number <value>     Build number suffix for artifact folders.
   --configuration <value>    Build configuration. Default: Release
   --skip-desktop             Skip Desktop MonoPack packaging.
+  --skip-pkg                 Skip building the macOS .pkg installer from the universal .app.
+  --clear                    First delete the artifacts folder and every bin/ and obj/ folder next to a
+                             .csproj (Core, Platforms), then carry on. With --skip-desktop --skip-android
+                             it only cleans.
   --skip-android             Skip Android release publish.
   --help                     Show this help text.
 
 Environment overrides:
-  BUILD_NUMBER, CONFIGURATION, ANDROID_FRAMEWORK
+  BUILD_NUMBER, CONFIGURATION, ANDROID_FRAMEWORK, PKG_IDENTIFIER, PKG_VERSION
 
 Examples:
   scripts/build-macos-desktop-android.sh
   BUILD_NUMBER=42 scripts/build-macos-desktop-android.sh
   scripts/build-macos-desktop-android.sh --skip-android
+  scripts/build-macos-desktop-android.sh --clear --build-number halloween5
 EOF
 }
 
 SKIP_DESKTOP=0
 SKIP_ANDROID=0
+SKIP_PKG=0
+CLEAR=0
 
 while [[ $# -gt 0 ]]; do
   case "$1" in
@@ -57,6 +65,14 @@ while [[ $# -gt 0 ]]; do
       SKIP_ANDROID=1
       shift
       ;;
+    --skip-pkg)
+      SKIP_PKG=1
+      shift
+      ;;
+    --clear)
+      CLEAR=1
+      shift
+      ;;
     --help|-h)
       usage
       exit 0
@@ -68,6 +84,9 @@ while [[ $# -gt 0 ]]; do
       ;;
   esac
 done
+
+# After the flags, so --build-number is picked up
+PKG_VERSION="${PKG_VERSION:-${BUILD_NUMBER}}"
 
 DESKTOP_NAME="$(basename "${DESKTOP_PROJECT}" .csproj)"
 DESKTOP_OUT_DIR="${ARTIFACTS_ROOT}/${DESKTOP_NAME}.${BUILD_NUMBER}"
@@ -101,6 +120,69 @@ install_monopack_if_missing() {
     echo "MonoPack installed but not in PATH. Add ${HOME}/.dotnet/tools to PATH and rerun." >&2
     exit 1
   fi
+}
+
+clear_build_output() {
+  log "Clearing build output"
+
+  # Only the folder named artifacts under the repo root: never delete anything else
+  if [[ -d "${ARTIFACTS_ROOT}" ]]; then
+    log "Deleting ${ARTIFACTS_ROOT}"
+    rm -rf "${ARTIFACTS_ROOT}"
+  fi
+
+  # bin/ and obj/ only where a .csproj sits beside them, never inside .git or node_modules
+  local dir
+  while IFS= read -r dir; do
+    if compgen -G "$(dirname "${dir}")/*.csproj" >/dev/null; then
+      log "Deleting ${dir}"
+      rm -rf "${dir}"
+    fi
+  done < <(find "${ROOT_DIR}" \( -name .git -o -name node_modules \) -prune -o -type d \( -name bin -o -name obj \) -print -prune)
+}
+
+# MonoPack leaves the universal .app either as a folder or only inside a macOS archive; find it in either.
+package_macos_pkg() {
+  local app_bundle="" archive="" temp_extract_dir="" pkg_path
+  app_bundle="$(find "${DESKTOP_OUT_DIR}" -type d -name "*.app" | head -n 1 || true)"
+
+  if [[ -z "${app_bundle}" ]]; then
+    archive="$(find "${DESKTOP_OUT_DIR}" -type f \( -name "*osx*.zip" -o -name "*macos*.zip" -o -name "*osx*.tar.gz" -o -name "*macos*.tar.gz" \) | head -n 1 || true)"
+    if [[ -n "${archive}" ]]; then
+      temp_extract_dir="$(mktemp -d)"
+      if [[ "${archive}" == *.zip ]]; then
+        ditto -x -k "${archive}" "${temp_extract_dir}"
+      else
+        tar -xzf "${archive}" -C "${temp_extract_dir}"
+      fi
+      app_bundle="$(find "${temp_extract_dir}" -type d -name "*.app" | head -n 1 || true)"
+    fi
+  fi
+
+  if [[ -z "${app_bundle}" ]]; then
+    echo "Unable to locate a macOS .app bundle in ${DESKTOP_OUT_DIR}" >&2
+    exit 1
+  fi
+
+  pkg_path="${DESKTOP_OUT_DIR}/CatapultWars-macos-${BUILD_NUMBER}.pkg"
+
+  log "Building macOS installer package"
+  log "App bundle: ${app_bundle}"
+  log "Output: ${pkg_path}"
+
+  pkgbuild \
+    --component "${app_bundle}" \
+    --install-location "/Applications" \
+    --identifier "${PKG_IDENTIFIER}" \
+    --version "${PKG_VERSION}" \
+    "${pkg_path}"
+
+  if [[ -n "${temp_extract_dir}" && -d "${temp_extract_dir}" ]]; then
+    rm -rf "${temp_extract_dir}"
+  fi
+
+  log "macOS pkg generated"
+  log "The pkg is not signed or notarised: if testers hit Gatekeeper, they can right-click > Open, or run: xattr -d com.apple.quarantine \"${pkg_path}\""
 }
 
 package_desktop() {
@@ -147,6 +229,12 @@ package_desktop() {
 
   log "Desktop artifacts generated"
   find "${DESKTOP_OUT_DIR}" -type f \( -name "*.zip" -o -name "*.tar.gz" \) | sort || true
+
+  if [[ "${SKIP_PKG}" -eq 0 ]]; then
+    package_macos_pkg
+  else
+    log "Skipping macOS pkg"
+  fi
 }
 
 publish_android_release() {
@@ -175,9 +263,19 @@ main() {
   require_cmd dotnet
   require_cmd bash
 
+  if [[ "${CLEAR}" -eq 1 ]]; then
+    clear_build_output
+  fi
+
   mkdir -p "${ARTIFACTS_ROOT}"
 
   if [[ "${SKIP_DESKTOP}" -eq 0 ]]; then
+    if [[ "${SKIP_PKG}" -eq 0 ]]; then
+      require_cmd pkgbuild
+      require_cmd ditto
+      require_cmd tar
+      require_cmd mktemp
+    fi
     install_monopack_if_missing
     package_desktop
   else
