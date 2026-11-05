@@ -31,6 +31,7 @@ namespace CatapultGame
 			CatapultFiring = 2,
 			CatapultAiming = 3,
 			UpdateEnvironment = 4,
+			Crater = 5,
 		}
 
 		internal NetworkSession NetworkSession { get; private set; }
@@ -111,6 +112,9 @@ namespace CatapultGame
 		public void LoadAssets()
 		{
 
+			// A fresh battlefield every game
+			Terrain.Reset();
+
 			NetworkSession = ScreenManager.Game.Services.GetService(typeof(NetworkSession)) as NetworkSession;
 			IsMultiplayer = NetworkSession != null;
 			hadOpponent = IsMultiplayer && NetworkSession.RemoteGamers.Count > 0;
@@ -128,6 +132,9 @@ namespace CatapultGame
 			ammoTypeTexture = Load<Texture2D>("Textures/HUD/ammoType");
 			// Seasonal look, decided once per game
 			decor = Theme.IsHalloween ? new HalloweenDecor(ScreenManager.GraphicsDevice) : null;
+			Terrain.Prepare(foregroundTexture, mountainTexture,
+				decor != null ? HalloweenDecor.ForegroundTint : Color.White,
+				decor != null ? HalloweenDecor.MountainTint : Color.White);
 
 			// Load font
 			hudFont = Load<SpriteFont>("Fonts/HUDFont");
@@ -203,6 +210,10 @@ namespace CatapultGame
 			// Identify enemies
 			playerOne.Enemy = playerTwo;
 			playerTwo.Enemy = playerOne;
+
+			// Shots that reach the ground dig craters
+			playerOne.Catapult.GroundImpact += (position, speed) => OnGroundImpact(true, position, speed);
+			playerTwo.Catapult.GroundImpact += (position, speed) => OnGroundImpact(false, position, speed);
 		}
 
 		/// <summary>
@@ -511,6 +522,8 @@ namespace CatapultGame
 				catapultInfoVector.Y = player.Catapult.ShotVelocity;
 				catapultInfoVector.Z = player.ArrowScale;
 				writer.Write(catapultInfoVector);
+				// The shot angle follows the original three values, so an older build just ignores it
+				writer.Write(player.Catapult.ShotAngle);
 
 				// Update our locally controlled catapults, and send their
 				// latest position data to everyone in the session.
@@ -519,6 +532,41 @@ namespace CatapultGame
 					gamer.SendData(writer, SendDataOptions.ReliableInOrder);
 				}
 			}
+		}
+
+		/// <summary>
+		/// A shot reached the ground. In a LAN game the machine that fired decides where the crater goes
+		/// and tells the other one, so both battlefields stay identical even if the two flights drift a pixel apart.
+		/// </summary>
+		void OnGroundImpact(bool playerOneFired, Vector2 position, float speed)
+		{
+			if (IsMultiplayer)
+			{
+				bool firedHere = playerOneFired == NetworkSession.IsHost;
+				if (!firedHere)
+					return; // the crater arrives in a Crater message
+
+				using (var writer = new PacketWriter())
+				{
+					writer.Write((int)MessageType.Crater);
+					writer.Write(position);
+					writer.Write(speed);
+					foreach (LocalNetworkGamer gamer in NetworkSession.LocalGamers)
+						gamer.SendData(writer, SendDataOptions.ReliableInOrder);
+				}
+			}
+
+			Terrain.Carve(position.X, speed);
+		}
+
+		/// <summary>
+		/// The shot angle, if the sender included it. An older build does not, and always fired at 45 degrees.
+		/// </summary>
+		float ReadShotAngle()
+		{
+			if (packetReader.Position < packetReader.Length)
+				return MathHelper.Clamp(packetReader.ReadSingle(), Ballistics.MinAngle, Ballistics.MaxAngle);
+			return Ballistics.DefaultAngle;
 		}
 
 		/// <summary>
@@ -556,6 +604,7 @@ namespace CatapultGame
 							playerOne.Catapult.ShotStrength = catapultInfoVector.X;
 							playerOne.Catapult.ShotVelocity = catapultInfoVector.Y;
 							playerOne.ArrowScale = catapultInfoVector.Z;
+							playerOne.Catapult.ShotAngle = ReadShotAngle();
 
 						}
 						if (!isFirstPlayerTurn && NetworkSession.IsHost)
@@ -569,6 +618,7 @@ namespace CatapultGame
 							playerTwo.Catapult.ShotStrength = catapultInfoVector.X;
 							playerTwo.Catapult.ShotVelocity = catapultInfoVector.Y;
 							playerTwo.ArrowScale = catapultInfoVector.Z;
+							playerTwo.Catapult.ShotAngle = ReadShotAngle();
 
 						}
 						break;
@@ -577,17 +627,23 @@ namespace CatapultGame
 						if (isFirstPlayerTurn && !NetworkSession.IsHost)
 						{
 							catapultInfoVector = packetReader.ReadVector3();
-							playerOne.Catapult.Fire(catapultInfoVector.Y);
+							playerOne.Catapult.ShotAngle = ReadShotAngle();
+							playerOne.Catapult.Fire(catapultInfoVector.Y, playerOne.Catapult.ShotAngle);
 							playerOne.Catapult.CurrentState = CatapultState.Firing;
 							playerOne.ResetDragState();
 						}
 						if (!isFirstPlayerTurn && NetworkSession.IsHost)
 						{
 							catapultInfoVector = packetReader.ReadVector3();
-							playerTwo.Catapult.Fire(catapultInfoVector.Y);
+							playerTwo.Catapult.ShotAngle = ReadShotAngle();
+							playerTwo.Catapult.Fire(catapultInfoVector.Y, playerTwo.Catapult.ShotAngle);
 							playerTwo.Catapult.CurrentState = CatapultState.Firing;
 							playerTwo.ResetDragState();
 						}
+						break;
+					case MessageType.Crater:
+						Vector2 craterPosition = packetReader.ReadVector2();
+						Terrain.Carve(craterPosition.X, packetReader.ReadSingle());
 						break;
 					case MessageType.UpdateEnvironment:
 						wind = packetReader.ReadVector2();
@@ -657,6 +713,25 @@ namespace CatapultGame
 				ScreenManager.SpriteBatch.Draw(ammoTypeTexture, position, Color.White);
 		}
 
+		/// <summary>
+		/// Angle and power under a player's score. Live while they pull back, otherwise the last shot they fired.
+		/// </summary>
+		void DrawAimReadout(Human player, Vector2 hudPosition)
+		{
+			int angle, power;
+			string angleText = "Angle: --";
+			string powerText = "Power: --";
+			if (player.TryGetReadout(out angle, out power))
+			{
+				angleText = "Angle: " + angle;
+				powerText = "Power: " + power + "%";
+			}
+
+			Color color = player.isDragging ? Color.Yellow : Color.White;
+			DrawString(hudFont, angleText, hudPosition + new Vector2(10, 90), color);
+			DrawString(hudFont, powerText, hudPosition + new Vector2(10, 90 + hudFont.LineSpacing), color);
+		}
+
 		private void DrawBackground()
 		{
 			// Clear the background
@@ -686,6 +761,9 @@ namespace CatapultGame
 			// Draw the Castle, trees, and foreground 
 			ScreenManager.SpriteBatch.Draw(foregroundTexture,
 				Vector2.Zero, night ? HalloweenDecor.ForegroundTint : Color.White);
+
+			// The hill between the catapults
+			Terrain.Draw(ScreenManager.SpriteBatch);
 
 			// Lit windows, lanterns and bats sit behind the catapults and projectiles
 			if (night)
@@ -766,12 +844,14 @@ namespace CatapultGame
 				DrawAmmoIcon(playerOneHUDPosition + new Vector2(33, 35));
 				DrawString(hudFont, playerOne.Score.ToString(), playerOneHUDPosition + new Vector2(123, 35), Color.White);
 				DrawString(hudFont, playerOne.Name, playerOneHUDPosition + new Vector2(40, 1), Color.Blue);
+				DrawAimReadout(playerOne, playerOneHUDPosition);
 
 				// Draw Computer Hud
 				ScreenManager.SpriteBatch.Draw(hudBackgroundTexture, computerHUDPosition, Color.White);
 				DrawAmmoIcon(computerHUDPosition + new Vector2(33, 35));
 				DrawString(hudFont, playerTwo.Score.ToString(), computerHUDPosition + new Vector2(123, 35), Color.White);
 				DrawString(hudFont, playerTwo.Name, computerHUDPosition + new Vector2(40, 1), Color.Red);
+				DrawAimReadout(playerTwo, computerHUDPosition);
 
 				// Draw Wind direction
 				string text = "WIND";

@@ -153,30 +153,32 @@ namespace CatapultGame
             float previousXPosition = projectilePosition.X;
             float previousYPosition = projectilePosition.Y;
 
-            projectilePosition.X = projectileStartPosition.X + 
-                (direction * projectileVelocity.X * flightTime) + 
-                0.5f * (8 * wind * (float)Math.Pow(flightTime, 2));
-
-            projectilePosition.Y = projectileStartPosition.Y -
-                (projectileVelocity.Y * flightTime) +
-                0.5f * (gravity * (float)Math.Pow(flightTime, 2));            
+            projectilePosition = Ballistics.PositionAt(projectileStartPosition, direction,
+                projectileVelocity, wind, gravity, flightTime);
 
             // Calculate the projectile rotation
             projectileRotation += MathHelper.ToRadians(projectileVelocity.X * 0.5f);
 
-            // Check if projectile hit the ground or even passed it 
+            // Check if projectile hit the ground, the hill included, or even passed it
             // (could happen during normal calculation)
-            if (projectilePosition.Y >= 332 + hitOffset)
+            if (projectilePosition.Y >= Terrain.SurfaceY(projectilePosition.X))
             {
+                // Where the flight actually met the ground between the last frame and this one
+                Vector2 previous = new Vector2(previousXPosition, previousYPosition);
+                float above = Terrain.SurfaceY(previous.X) - previous.Y;
+                float below = projectilePosition.Y - Terrain.SurfaceY(projectilePosition.X);
+                float along = above + below > 0.001f ? MathHelper.Clamp(above / (above + below), 0f, 1f) : 0f;
+                Vector2 contact = Vector2.Lerp(previous, projectilePosition, along);
+
                 projectilePosition.X = previousXPosition;
                 projectilePosition.Y = previousYPosition;
 
-                ProjectileHitPosition = new Vector2(previousXPosition, 332);
+                ProjectileHitPosition = new Vector2(previousXPosition, Terrain.SurfaceY(previousXPosition));
 
                 // Velocity now: the wind adds to the horizontal speed, gravity pulls the vertical one down.
                 float vx = direction * projectileVelocity.X + 8 * wind * flightTime;
                 float vy = projectileVelocity.Y - gravity * flightTime;
-                ImpactPosition = projectilePosition;
+                ImpactPosition = contact;
                 ImpactSpeed = (float)Math.Sqrt(vx * vx + vy * vy);
                 ImpactDirection = vx < 0 ? -1 : 1;
 

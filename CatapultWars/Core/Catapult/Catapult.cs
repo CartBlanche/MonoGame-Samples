@@ -66,7 +66,10 @@ namespace CatapultGame
         bool isAI;
 
         // Game constants
-        const float gravity = 500f;
+        const float gravity = Ballistics.Gravity;
+
+                // How long the AI holds its pulled-back catapult before firing, in updates
+                public const int AIStallCycles = 35;
 
         // State of the catapult during its last update
         CatapultState lastUpdateState = CatapultState.Idle;
@@ -85,6 +88,7 @@ namespace CatapultGame
         float wind;
         public float Wind
         {
+            get { return wind; }
             set
             {
                 wind = value;
@@ -118,6 +122,25 @@ namespace CatapultGame
             }
         }
 
+        /// <summary>The middle of the catapult's frame. Aiming is drawn and measured from here.</summary>
+        public Vector2 Centre
+        {
+            get
+            {
+                var frame = animations["Fire"].FrameSize;
+                return catapultPosition + new Vector2(frame.X / 2f, frame.Y / 2f);
+            }
+        }
+
+        /// <summary>1 when this catapult fires to the right, -1 to the left.</summary>
+        public int FireDirection { get { return isAI ? -1 : 1; } }
+
+        /// <summary>Where shots leave this catapult.</summary>
+        public Vector2 ProjectileStart { get { return projectile.ProjectileStartPosition; } }
+
+        /// <summary>The catapult this one is shooting at.</summary>
+        public Vector2 EnemyCentre { get { return enemy.Catapult.Centre; } }
+
         /// <summary>
         /// Describes how powerful the current shot being fired is. The more powerful
         /// the shot, the further it goes. 0 is the weakest, 1 is the strongest.
@@ -125,6 +148,20 @@ namespace CatapultGame
         public float ShotStrength { get; set; }
 
         public float ShotVelocity { get; set; }
+
+        /// <summary>The shot most recently fired, so both players can see what to change.</summary>
+        public bool HasFired { get; private set; }
+        public float LastFiredVelocity { get; private set; }
+        public float LastFiredAngle { get; private set; }
+
+        /// <summary>Raised when a shot reaches the ground, with where and how fast it was going.</summary>
+        public event Action<Vector2, float> GroundImpact;
+
+        /// <summary>
+        /// How steeply the shot leaves the catapult, in radians above the horizon,
+        /// between Ballistics.MinAngle and Ballistics.MaxAngle.
+        /// </summary>
+        public float ShotAngle { get; set; } = Ballistics.DefaultAngle;
 
         /// <summary>
         /// Used to determine whether or not the game is over
@@ -277,7 +314,7 @@ namespace CatapultGame
                         if (isAI == true)
                         {
                             animations["Aim"].PlayFromFrameIndex(0);
-                            stallUpdateCycles = 20;
+                            stallUpdateCycles = AIStallCycles;
                             startStall = false;
                         }
                     }
@@ -299,7 +336,7 @@ namespace CatapultGame
                     if (stallUpdateCycles-- <= 0)
                     {
                         // We've finished stalling, fire the projectile
-                        Fire(ShotVelocity);
+                        Fire(ShotVelocity, ShotAngle);
                         postUpdateStateChange = CatapultState.Firing;
                     }
                     break;
@@ -513,11 +550,17 @@ namespace CatapultGame
         void StartImpact()
         {
             impactDust.Burst(projectile.ImpactPosition, projectile.ImpactSpeed, projectile.ImpactDirection);
+            if (GroundImpact != null)
+                GroundImpact(projectile.ImpactPosition, projectile.ImpactSpeed);
         }
 
-        public void Fire(float velocity)
+        public void Fire(float velocity, float angle)
         {
-            projectile.Fire(velocity, velocity);
+            HasFired = true;
+            LastFiredVelocity = velocity;
+            LastFiredAngle = angle;
+            Vector2 launch = Ballistics.LaunchVelocity(velocity, angle);
+            projectile.Fire(launch.X, launch.Y);
         }
 
         /// <summary>
