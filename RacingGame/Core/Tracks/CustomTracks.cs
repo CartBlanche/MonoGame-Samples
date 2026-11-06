@@ -27,13 +27,19 @@ namespace RacingGame.Tracks
         /// </summary>
         public string Author
         {
-            get { return Data != null && Data.Author != null ? Data.Author.Trim() : ""; }
+            get { return Data != null ? CustomTracks.CleanText(Data.Author, 40) : ""; }
         }
 
         /// <summary>
-        /// Full path of the .Track file.
+        /// Full path of the .Track file (null for a track received from another player).
         /// </summary>
         public string Path;
+
+        /// <summary>
+        /// Identifies the exact file: the SHA-256 of its bytes, in lower case hex. Used to tell
+        /// whether two players have the same track.
+        /// </summary>
+        public string Id;
 
         /// <summary>
         /// Parsed data, null if the file could not be loaded.
@@ -89,6 +95,11 @@ namespace RacingGame.Tracks
         {
             get
             {
+                // RACINGGAME_TRACKS_DIR: another folder, e.g. to test receiving tracks on a
+                // second instance on the same machine
+                string other = Environment.GetEnvironmentVariable("RACINGGAME_TRACKS_DIR");
+                if (!string.IsNullOrWhiteSpace(other))
+                    return other;
                 return System.IO.Path.Combine(Environment.GetFolderPath(
                     Environment.SpecialFolder.LocalApplicationData),
                     "RacingGame", "Tracks");
@@ -188,6 +199,12 @@ namespace RacingGame.Tracks
         }
 
         /// <summary>
+        /// The biggest track file that is shared in a race (the host does not offer a bigger one
+        /// and a client does not accept one). Real tracks are 5 to 30 KB.
+        /// </summary>
+        public const int MaxSharedFileBytes = 256 * 1024;
+
+        /// <summary>
         /// Load and validate one file.
         /// </summary>
         public static CustomTrackInfo Load(string path)
@@ -197,22 +214,110 @@ namespace RacingGame.Tracks
             info.Name = FileDisplayName(path);
             try
             {
-                using (Stream stream = File.OpenRead(path))
-                    info.Data = TrackData.Load(stream);
-                if (!string.IsNullOrWhiteSpace(info.Data.Name))
-                    info.Name = info.Data.Name.Trim();
-                info.Error = Validate(info.Data, out info.Length);
-                if (info.Error == null)
-                    info.Heights = info.Data.DecompressHeightmap();
+                Fill(info, File.ReadAllBytes(path), int.MaxValue);
             }
             catch (Exception ex)
             {
-                info.Data = null;
-                info.Heights = null;
-                info.Error = "Can't read file: " + ex.Message;
+                Fail(info, "Can't read file: " + ex.Message);
                 Log.Write("CustomTracks: " + path + ": " + ex);
             }
             return info;
+        }
+
+        /// <summary>
+        /// Load and validate a track that came from another player (untrusted): a size cap, the
+        /// same validation as a file. Never throws; check IsPlayable.
+        /// </summary>
+        public static CustomTrackInfo FromBytes(byte[] bytes, string fallbackName)
+        {
+            CustomTrackInfo info = new CustomTrackInfo();
+            info.Name = string.IsNullOrWhiteSpace(fallbackName) ? "Shared track" : fallbackName;
+            try
+            {
+                Fill(info, bytes, MaxSharedFileBytes);
+            }
+            catch (Exception ex)
+            {
+                Fail(info, "Can't read the track: " + ex.Message);
+                Log.Write("CustomTracks: received track: " + ex);
+            }
+            return info;
+        }
+
+        static void Fill(CustomTrackInfo info, byte[] bytes, int maxBytes)
+        {
+            if (bytes.Length > maxBytes)
+                throw new InvalidDataException("the file is bigger than " + (maxBytes / 1024) + " KB");
+
+            info.Id = Convert.ToHexString(System.Security.Cryptography.SHA256.HashData(bytes)).ToLowerInvariant();
+            using (Stream stream = new MemoryStream(bytes))
+                info.Data = TrackData.Load(stream);
+            if (!string.IsNullOrWhiteSpace(info.Data.Name))
+                info.Name = CleanText(info.Data.Name, 40);
+            info.Error = Validate(info.Data, out info.Length);
+            if (info.Error == null)
+                info.Heights = info.Data.DecompressHeightmap();
+        }
+
+        static void Fail(CustomTrackInfo info, string error)
+        {
+            info.Data = null;
+            info.Heights = null;
+            info.Error = error;
+        }
+
+        /// <summary>
+        /// Text from a file or another player made safe for showing: control characters
+        /// removed, trimmed, at most maxLength characters.
+        /// </summary>
+        public static string CleanText(string text, int maxLength)
+        {
+            if (text == null)
+                return "";
+            System.Text.StringBuilder sb = new System.Text.StringBuilder();
+            foreach (char c in text)
+                if (!char.IsControl(c))
+                    sb.Append(c);
+            string clean = sb.ToString().Trim();
+            return clean.Length > maxLength ? clean.Substring(0, maxLength).TrimEnd() : clean;
+        }
+
+        /// <summary>
+        /// The playable track with this Id in the Tracks folder (as last scanned), or null.
+        /// </summary>
+        public static CustomTrackInfo FindById(string id)
+        {
+            foreach (CustomTrackInfo info in tracks)
+                if (info.IsPlayable && info.Id == id)
+                    return info;
+            return null;
+        }
+
+        /// <summary>
+        /// Save a track received in a race into the Tracks folder, under a name made from the
+        /// track's own name that does not overwrite anything. Returns the path, or null on failure.
+        /// </summary>
+        public static string SaveReceived(byte[] bytes, string name)
+        {
+            try
+            {
+                EnsureDirectory();
+                System.Text.StringBuilder sb = new System.Text.StringBuilder();
+                foreach (char c in CleanText(name, 40))
+                    sb.Append(char.IsLetterOrDigit(c) || c == '-' || c == '_' ? c : (c == ' ' ? '-' : '_'));
+                string baseName = sb.Length == 0 ? "Shared-Track" : sb.ToString();
+
+                string path = System.IO.Path.Combine(Directory, baseName + "." + TrackData.Extension);
+                for (int i = 2; File.Exists(path); i++)
+                    path = System.IO.Path.Combine(Directory, baseName + "-" + i + "." + TrackData.Extension);
+                File.WriteAllBytes(path, bytes);
+                return path;
+            }
+            catch (Exception ex)
+            {
+                Log.Write("CustomTracks: can't save a shared track: " + ex.Message);
+                return null;
+            }
         }
 
         /// <summary>

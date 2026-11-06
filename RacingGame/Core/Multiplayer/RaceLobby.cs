@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Microsoft.Xna.Framework.Net;
 using RacingGame.GameLogic;
 using RacingGame.GameScreens;
+using RacingGame.Tracks;
 
 namespace RacingGame.Multiplayer
 {
@@ -20,6 +21,11 @@ namespace RacingGame.Multiplayer
         public const int MinLaps = 1;
         public const int MaxLaps = 5;
 
+        /// <summary>
+        /// The track number that means "a custom track" (0 to 2 are the built-in tracks)
+        /// </summary>
+        public const byte CustomTrackNumber = 255;
+
         readonly RaceNetSession net;
         readonly List<RacePlayerInfo> players = new List<RacePlayerInfo>();
         int track;
@@ -31,6 +37,15 @@ namespace RacingGame.Multiplayer
         int localColor;
         bool localReady;
 
+        // the custom track the host has chosen (null: a built-in track)
+        string customId;
+        string customName = "";
+        string customAuthor = "";
+        bool localHasTrack = true;          // a client: the custom track is here (loaded or received)
+        string trackStatus;                 // what to tell the player while it is not
+        readonly HashSet<string> failedTracks = new HashSet<string>();
+        bool synced;                        // a client: the first sync has been handled
+
         public RaceLobby(RaceNetSession net)
         {
             this.net = net;
@@ -39,12 +54,14 @@ namespace RacingGame.Multiplayer
             if (net.IsHost)
             {
                 net.Register(RacePacketType.LobbyUpdate, PacketAudience.FromClient, OnLobbyUpdate);
+                net.Register(RacePacketType.TrackRequest, PacketAudience.FromClient, OnTrackRequest);
                 net.GamerLeft += OnGamerLeft;
             }
             else
             {
                 net.Register(RacePacketType.LobbySync, PacketAudience.FromHost, OnLobbySync);
                 net.Register(RacePacketType.RaceStart, PacketAudience.FromHost, OnRaceStart);
+                net.Register(RacePacketType.TrackFile, PacketAudience.FromHost, OnTrackFile);
             }
         }
 
@@ -53,6 +70,24 @@ namespace RacingGame.Multiplayer
         public int Track { get { return track; } }
         public int Laps { get { return laps; } }
         public bool LocalReady { get { return localReady; } }
+
+        /// <summary>
+        /// Has the host chosen a custom track? Then its id, name and author.
+        /// </summary>
+        public bool IsCustomTrack { get { return customId != null; } }
+        public string CustomTrackId { get { return customId; } }
+        public string CustomTrackName { get { return customName; } }
+        public string CustomTrackAuthor { get { return customAuthor; } }
+
+        /// <summary>
+        /// A client: does this machine have the track (always true for built-in tracks)?
+        /// </summary>
+        public bool LocalHasTrack { get { return localHasTrack; } }
+
+        /// <summary>
+        /// A client without the track yet: what is happening ("Downloading track...", or why it failed)
+        /// </summary>
+        public string TrackStatus { get { return trackStatus; } }
 
         /// <summary>
         /// The race that has been announced (null until it has). A screen reads this and starts it.
@@ -90,7 +125,8 @@ namespace RacingGame.Multiplayer
 
         public void SetLocalReady(bool ready)
         {
-            localReady = ready;
+            // not ready to race without the track
+            localReady = ready && localHasTrack;
             SendLocal();
         }
 
@@ -108,6 +144,7 @@ namespace RacingGame.Multiplayer
                 me.Car = (byte)localCar;
                 me.Color = (byte)localColor;
                 me.Ready = localReady;
+                me.HasTrack = true;
                 Sync();
             }
             else
@@ -116,7 +153,8 @@ namespace RacingGame.Multiplayer
                 {
                     Car = (byte)localCar,
                     Color = (byte)localColor,
-                    Ready = localReady,
+                    Ready = localReady && localHasTrack,
+                    HasTrack = localHasTrack,
                     Name = MultiplayerSessionService.LocalName(net.LocalGamer.Gamertag),
                 }, true);
             }
@@ -131,9 +169,53 @@ namespace RacingGame.Multiplayer
                 return;
 
             int count = TrackSelection.NumberOfTracks;
-            track = (track + count + delta) % count;
+            if (customId != null)
+            {
+                // leaving a custom track: the first (or last) built-in one
+                track = delta > 0 ? 0 : count - 1;
+                customId = null;
+                customName = customAuthor = "";
+            }
+            else
+                track = (track + count + delta) % count;
             TrackSelection.SelectTrackNumber(track);
+            UnreadyEverybody();
             Sync();
+        }
+
+        /// <summary>
+        /// Host: race on a custom track from the Tracks folder. The others get it from this machine
+        /// if they do not have it. Returns null, or why the track can't be used.
+        /// </summary>
+        public string ChooseCustomTrack(CustomTrackInfo info)
+        {
+            if (!net.IsHost)
+                return "Only the host chooses the track.";
+            if (info == null || !info.IsPlayable)
+                return "That track can't be played.";
+
+            SharedTrack shared = SharedTracks.FromInfo(info);
+            if (shared.Bytes == null)
+                return "The track file can't be read.";
+            if (shared.Bytes.Length > CustomTracks.MaxSharedFileBytes)
+                return "That track is too big to share (more than " + (CustomTracks.MaxSharedFileBytes / 1024) + " KB).";
+
+            track = CustomTrackNumber;
+            customId = info.Id;
+            customName = CustomTracks.CleanText(info.Name, 40);
+            customAuthor = info.Author;
+            TrackSelection.CustomTrack = info;
+            UnreadyEverybody();
+            Sync();
+            return null;
+        }
+
+        // another track: everybody confirms again
+        void UnreadyEverybody()
+        {
+            localReady = false;
+            foreach (RacePlayerInfo player in players)
+                player.Ready = false;
         }
 
         /// <summary>
@@ -160,7 +242,7 @@ namespace RacingGame.Multiplayer
                     return false;
 
                 foreach (RacePlayerInfo player in players)
-                    if (!player.Ready)
+                    if (!player.Ready || !player.HasTrack)
                         return false;
                 return true;
             }
@@ -181,6 +263,9 @@ namespace RacingGame.Multiplayer
             {
                 Track = (byte)track,
                 Laps = (byte)laps,
+                CustomId = customId,
+                CustomName = customName,
+                CustomAuthor = customAuthor,
                 Players = new List<RacePlayerInfo>(players),
             };
 
@@ -217,8 +302,24 @@ namespace RacingGame.Multiplayer
 
             info.Car = update.Car;
             info.Color = update.Color;
-            info.Ready = update.Ready;
+            info.HasTrack = update.HasTrack;
+            info.Ready = update.Ready && update.HasTrack;
             Sync();
+        }
+
+        // a client asks for the custom track it does not have: send the file (only the one chosen now)
+        void OnTrackRequest(NetworkGamer sender, System.IO.BinaryReader reader)
+        {
+            TrackRequestPacket request = TrackRequestPacket.Deserialize(reader);
+            if (customId == null || request.Id != customId)
+                return;
+
+            SharedTrack shared = SharedTracks.Get(customId);
+            if (shared == null || shared.Bytes == null)
+                return;
+
+            NetLog.Write("Sending track " + customName + " (" + shared.Bytes.Length + " bytes) to " + sender.Gamertag);
+            net.Send(sender, new TrackFilePacket { Id = customId, Data = shared.Bytes }, true);
         }
 
         void OnGamerLeft(NetworkGamer gamer)
@@ -236,6 +337,9 @@ namespace RacingGame.Multiplayer
             {
                 Track = (byte)track,
                 Laps = (byte)laps,
+                CustomId = customId,
+                CustomName = customName,
+                CustomAuthor = customAuthor,
                 Players = new List<RacePlayerInfo>(players),
             }, true);
 
@@ -249,15 +353,99 @@ namespace RacingGame.Multiplayer
         void OnLobbySync(NetworkGamer sender, System.IO.BinaryReader reader)
         {
             LobbySyncPacket sync = LobbySyncPacket.Deserialize(reader);
+            bool trackChanged = !synced || sync.Track != track || sync.CustomId != customId;
             track = sync.Track;
             laps = sync.Laps;
+            customId = sync.Track == CustomTrackNumber ? sync.CustomId : null;
+            customName = sync.CustomName ?? "";
+            customAuthor = sync.CustomAuthor ?? "";
             players.Clear();
             players.AddRange(sync.Players);
+            synced = true;
 
             RacePlayerInfo me = LocalPlayer;
             if (me != null)
                 localReady = me.Ready;
 
+            if (trackChanged)
+                ResolveTrack();
+
+            RaiseChanged();
+        }
+
+        // a client: the host has chosen a track. Is it here? If not, ask the host for the file.
+        void ResolveTrack()
+        {
+            if (customId == null)
+            {
+                localHasTrack = true;
+                trackStatus = null;
+            }
+            else
+            {
+                SharedTrack shared = SharedTracks.Resolve(customId);
+                if (shared != null)
+                {
+                    localHasTrack = true;
+                    trackStatus = null;
+                    TrackSelection.CustomTrack = shared.Info;
+                }
+                else if (failedTracks.Contains(customId))
+                {
+                    localHasTrack = false;
+                }
+                else
+                {
+                    localHasTrack = false;
+                    trackStatus = "Downloading the track...";
+                    net.SendToHost(new TrackRequestPacket { Id = customId }, true);
+                }
+            }
+
+            // (a track the player is still waiting for, or has just changed, is not "ready")
+            localReady = false;
+            if (LocalPlayer != null)
+                SendLocal();
+        }
+
+        // a client: the file of the custom track has arrived (it is not trusted)
+        void OnTrackFile(NetworkGamer sender, System.IO.BinaryReader reader)
+        {
+            TrackFilePacket file = TrackFilePacket.Deserialize(reader);
+            if (customId == null || file.Id != customId || localHasTrack)
+                return;     // not the track we are waiting for (or a repeat)
+
+            string problem = null;
+            CustomTrackInfo info = null;
+            if (file.Data == null)
+                problem = "The track is too big.";
+            else
+            {
+                info = CustomTracks.FromBytes(file.Data, customName);
+                if (info.Id != customId)
+                    problem = "The track file does not match what the host announced.";
+                else if (!info.IsPlayable)
+                    problem = "The track can't be played: " + info.Error;
+            }
+
+            if (problem != null)
+            {
+                NetLog.Write("Track from the host rejected: " + problem);
+                failedTracks.Add(customId);
+                trackStatus = problem;
+                localHasTrack = false;
+            }
+            else
+            {
+                SharedTrack shared = SharedTracks.AddReceived(file.Data, info);
+                localHasTrack = true;
+                trackStatus = null;
+                TrackSelection.CustomTrack = shared.Info;
+            }
+
+            localReady = false;
+            if (LocalPlayer != null)
+                SendLocal();    // (a client joins the lobby when it has chosen its car, not before)
             RaiseChanged();
         }
 
@@ -284,6 +472,8 @@ namespace RacingGame.Multiplayer
             net.Unregister(RacePacketType.LobbyUpdate);
             net.Unregister(RacePacketType.LobbySync);
             net.Unregister(RacePacketType.RaceStart);
+            net.Unregister(RacePacketType.TrackRequest);
+            net.Unregister(RacePacketType.TrackFile);
             net.GamerLeft -= OnGamerLeft;
             Changed = null;
         }

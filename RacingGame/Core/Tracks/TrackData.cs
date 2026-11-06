@@ -357,7 +357,14 @@ namespace RacingGame.Tracks
         /// </summary>
         public static TrackData Load(Stream stream)
         {
-            return (TrackData)new XmlSerializer(typeof(TrackData)).Deserialize(stream);
+            // no DTDs and no external resources: a track file can come from another player
+            System.Xml.XmlReaderSettings settings = new System.Xml.XmlReaderSettings
+            {
+                DtdProcessing = System.Xml.DtdProcessing.Prohibit,
+                XmlResolver = null,
+            };
+            using (System.Xml.XmlReader reader = System.Xml.XmlReader.Create(stream, settings))
+                return (TrackData)new XmlSerializer(typeof(TrackData)).Deserialize(reader);
         }
 
     }

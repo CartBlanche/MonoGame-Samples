@@ -20,7 +20,10 @@ namespace RacingGame.GameScreens
         const double SearchIntervalSeconds = 3.0;
 
         readonly List<AvailableNetworkSession> sessions = new List<AvailableNetworkSession>();
-        int selection;
+        readonly PanelButtonGroup buttons = new PanelButtonGroup();
+        int selection { get { return buttons.Selection; } set { buttons.Selection = value; } }
+        int firstVisible;
+        const int MaxVisible = 5;
 
         Task<AvailableNetworkSessionCollection> findTask;
         Task<NetworkSession> sessionTask;
@@ -29,7 +32,7 @@ namespace RacingGame.GameScreens
         double nextSearchAt;
         bool launched;      // the race flow has been pushed on top of this screen
         bool leave;
-        bool ignoreMouse = true;
+        int clickedEntry = -1;      // set by Render when a button was clicked this frame
 
         int EntryCount { get { return sessions.Count + 1; } }
         bool IsHostEntry(int index) { return index == 0; }
@@ -146,32 +149,41 @@ namespace RacingGame.GameScreens
             TextureFont.WriteTextCentered(centerX, y, "Multiplayer", Color.White, 1.5f);
             y += BaseGame.YToRes(80);
 
-            if (Input.HasMouseMoved || Input.MouseLeftButtonJustPressed)
-                ignoreMouse = false;
+            // "Host", then a button for each race found (at most MaxVisible show; the list
+            // scrolls to keep the selection in view)
+            if (selection < firstVisible)
+                firstVisible = selection;
+            if (selection >= firstVisible + MaxVisible)
+                firstVisible = selection - MaxVisible + 1;
+            firstVisible = Math.Max(0, Math.Min(firstVisible, Math.Max(0, EntryCount - MaxVisible)));
 
-            int mouseOver = -1;
-            for (int i = 0; i < EntryCount; i++)
+            clickedEntry = -1;
+            int shown = Math.Min(MaxVisible, EntryCount - firstVisible);
+            int buttonWidth = BaseGame.XToRes(460);
+            int buttonHeight = BaseGame.YToRes(52);
+            Rectangle[] rects = new Rectangle[shown];
+            string[] labels = new string[shown];
+            for (int n = 0; n < shown; n++)
             {
-                Rectangle row = new Rectangle(centerX - BaseGame.XToRes(300),
-                    y - BaseGame.YToRes(45) / 2, BaseGame.XToRes(600), BaseGame.YToRes(45));
-                if (Input.MouseInBox(row))
-                    mouseOver = i;
-
-                string text;
+                int i = firstVisible + n;
+                rects[n] = new Rectangle(centerX - buttonWidth / 2, y - buttonHeight / 2, buttonWidth, buttonHeight);
                 if (IsHostEntry(i))
-                    text = "Host";
+                    labels[n] = "Host";
                 else
                 {
                     AvailableNetworkSession s = sessions[i - 1];
-                    text = MultiplayerSessionService.DisplayName(s.HostGamertag) + "'s race  (" + s.CurrentGamerCount + " / " +
-                        (s.CurrentGamerCount + s.OpenPublicGamerSlots) + " players)";
+                    labels[n] = MultiplayerSessionService.DisplayName(s.HostGamertag) + "'s race  (" + s.CurrentGamerCount + " / " +
+                        (s.CurrentGamerCount + s.OpenPublicGamerSlots) + ")";
                 }
-
-                bool selected = i == selection && sessionTask == null;
-                TextureFont.WriteTextCentered(centerX, y, selected ? "> " + text + " <" : text,
-                    selected ? Color.Yellow : Color.White, 1.0f);
-                y += BaseGame.YToRes(45);
+                y += buttonHeight + BaseGame.YToRes(12);
             }
+
+            // the group indexes the visible buttons: translate the selection to it and back
+            buttons.Selection = selection - firstVisible;
+            int clickedVisible = buttons.Render(rects, labels, 1.1f, null, sessionTask == null && !launched);
+            selection = buttons.Selection + firstVisible;
+            if (clickedVisible >= 0 && sessionTask == null && !launched)
+                clickedEntry = clickedVisible + firstVisible;
 
             y += BaseGame.YToRes(25);
             if (busyText != null)
@@ -189,23 +201,21 @@ namespace RacingGame.GameScreens
 
             if (sessionTask == null && !launched)
             {
-                if (!ignoreMouse && mouseOver >= 0)
-                    selection = mouseOver;
-
                 if (Input.KeyboardUpJustPressed || Input.GamePadUpJustPressed)
                 {
-                    selection = (selection + EntryCount - 1) % EntryCount;
-                    ignoreMouse = true;
+                    buttons.Move(-1, EntryCount);
+                    selection = buttons.Selection;
                 }
                 if (Input.KeyboardDownJustPressed || Input.GamePadDownJustPressed)
                 {
-                    selection = (selection + 1) % EntryCount;
-                    ignoreMouse = true;
+                    buttons.Move(1, EntryCount);
+                    selection = buttons.Selection;
                 }
-                if (mouseOver >= 0 && Input.MouseLeftButtonJustPressed)
+
+                // a click (or a tap) selects and confirms in one go
+                if (clickedEntry >= 0)
                 {
-                    // a click (or a tap) selects and confirms in one go
-                    selection = mouseOver;
+                    selection = clickedEntry;
                     Select();
                 }
                 else if (Input.KeyboardSpaceJustPressed || Input.GamePadAJustPressed ||

@@ -166,9 +166,9 @@ namespace RacingGame
         {
             get
             {
-                // Only if not in Game, not in splash screen!
+                // Only if not in Game (unless its menu is open), not in splash screen!
                 return gameScreens.Count > 0 &&
-                    !(gameScreens.Peek() is GameScreen) &&
+                    (!(gameScreens.Peek() is GameScreen) || Input.DrivingLocked) &&
                     gameScreens.Peek().GetType() != typeof(SplashScreen) &&
                     gameScreens.Peek().GetType() != typeof(LoadingScreen);
             }

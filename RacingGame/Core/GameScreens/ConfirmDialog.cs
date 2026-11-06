@@ -27,8 +27,7 @@ namespace RacingGame.GameScreens
         readonly string question;
         readonly string[] labels;
         readonly Action onYes, onNo;
-        int selection;      // 0 = No, 1 = Yes
-        bool ignoreMouse = true;
+        readonly PanelButtonGroup buttons;      // 0 = No, 1 = Yes
 
         /// <param name="title">Heading</param>
         /// <param name="message">The message; use '\n' for several lines</param>
@@ -50,7 +49,7 @@ namespace RacingGame.GameScreens
             this.detail = detail;
             this.question = question;
             labels = new[] { noLabel, yesLabel };
-            selection = defaultYes ? 1 : 0;
+            buttons = new PanelButtonGroup(defaultYes ? 1 : 0);
         }
 
         public void Update(GameTime gameTime)
@@ -123,52 +122,36 @@ namespace RacingGame.GameScreens
             }
             y += BaseGame.YToRes(80);
 
-            // [No] [Yes]: a blank button panel (as the Custom track button) with the orange
-            // selection outline of the bottom buttons (same proportions: 212 x 92)
-            Rectangle[] boxes = new Rectangle[2];
-            int mouseOver = -1;
-            if (Input.HasMouseMoved || Input.MouseLeftButtonJustPressed)
-                ignoreMouse = false;
+            // [No] [Yes]: panel buttons (outline proportions 212 x 92)
             int buttonWidth = BaseGame.XToRes(190);
             int buttonHeight = buttonWidth * 92 / 212;
+            Rectangle[] boxes = new Rectangle[2];
             for (int i = 0; i < 2; i++)
             {
                 int cx = centerX + (i == 0 ? -1 : 1) * BaseGame.XToRes(120);
                 boxes[i] = new Rectangle(cx - buttonWidth / 2, y - buttonHeight / 2, buttonWidth, buttonHeight);
-                if (Input.MouseInBox(boxes[i]))
-                    mouseOver = i;
             }
-            if (!ignoreMouse && mouseOver >= 0)
-                selection = mouseOver;
-            for (int i = 0; i < 2; i++)
-            {
-                BaseGame.UI.RenderPanelButton(boxes[i], labels[i], i == selection, 1.3f);
-            }
+            int clicked = buttons.Render(boxes, labels, 1.3f);
 
             if (Input.KeyboardLeftJustPressed || Input.GamePadLeftJustPressed)
             {
                 Sound.Play(Sound.Sounds.Highlight);
-                selection = 0;
-                ignoreMouse = true;
+                buttons.Select(0);
             }
             if (Input.KeyboardRightJustPressed || Input.GamePadRightJustPressed)
             {
                 Sound.Play(Sound.Sounds.Highlight);
-                selection = 1;
-                ignoreMouse = true;
+                buttons.Select(1);
             }
 
             bool no = Input.KeyboardEscapeJustPressed || Input.GamePadBJustPressed ||
                 Input.GamePadBackJustPressed;
             bool confirm = Input.KeyboardSpaceJustPressed || Input.GamePadAJustPressed ||
                 Input.KeyboardKeyJustPressed(Keys.Enter);
-            if (mouseOver >= 0 && Input.MouseLeftButtonJustPressed)
-            {
-                selection = mouseOver;
+            if (clicked >= 0)
                 confirm = true;
-            }
 
-            if (no || (confirm && selection == 0))
+            if (no || (confirm && buttons.Selection == 0))
             {
                 Sound.Play(Sound.Sounds.ButtonClick);
                 if (onNo != null)

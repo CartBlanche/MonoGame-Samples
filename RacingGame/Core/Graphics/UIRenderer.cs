@@ -633,20 +633,102 @@ namespace RacingGame.Graphics
 
         /// <summary>
         /// A text button on a blank button panel (as the Custom track button), with the orange
-        /// selection outline when selected. Proportions of the outline are 212 x 92: size the
-        /// rectangle like that to avoid stretching it.
+        /// frame around it when selected. Any size works (the frame is 9-sliced); the panel is
+        /// drawn a little smaller than the frame so its corners do not show outside it.
         /// </summary>
-        public void RenderPanelButton(Rectangle r, string label, bool selected, float textScale)
+        /// <param name="labelColor">Label colour; null: white when selected, light grey if not</param>
+        public void RenderPanelButton(Rectangle r, string label, bool selected, float textScale,
+            Color? labelColor = null)
         {
-            // the panel is a little smaller than the outline (the same when selected or not), so its
-            // corners do not show outside the outline's rounded corners
-            int inset = Math.Max(2, (int)Math.Round(r.Height * 0.09f));
+            int inset = Math.Max(2, (int)Math.Round(Math.Min(r.Width, r.Height) * 0.09f));
             Rectangle panel = new Rectangle(r.X + inset, r.Y + inset, r.Width - 2 * inset, r.Height - 2 * inset);
             RenderPanel(panel, selected ? Color.White : new Color(215, 215, 215, 215));
             if (selected)
-                buttons.RenderOnScreen(r, BottomButtonSelectionGfxRect);
-            TextureFont.WriteTextCentered(r.X + r.Width / 2, r.Y + r.Height / 2,
-                label, selected ? Color.White : new Color(205, 205, 205), textScale);
+                RenderFrame(r);
+            TextureFont.WriteTextCentered(r.X + r.Width / 2, r.Y + r.Height / 2, label,
+                labelColor ?? (selected ? Color.White : new Color(205, 205, 205)), textScale);
+        }
+
+        /// <summary>
+        /// A clickable panel button: highlighted while the mouse is over it (or when selected is
+        /// true). Returns true when it was clicked (or tapped) this frame.
+        /// </summary>
+        public bool PanelButton(Rectangle r, string label, float textScale, bool selected = false,
+            Color? labelColor = null)
+        {
+            bool over = Input.MouseInBox(r);
+            RenderPanelButton(r, label, over || selected, textScale, labelColor);
+            return over && Input.MouseLeftButtonJustPressed;
+        }
+
+        /// <summary>
+        /// A light button background like the built-in track buttons (the border and the white of
+        /// the Beginner track tile, cut into 9 slices so it can be any size, without the track
+        /// drawing). The selection outline of the track buttons fits around it.
+        /// </summary>
+        public void RenderLightPanel(Rectangle r, Color tint)
+        {
+            Rectangle tile = TrackButtonBeginnerGfxRect;      // 212 x 352
+            const int c = 40;
+            // The middle is a vertical strip from the left of the tile, beside the track drawing: it
+            // is clean on every row and has the tile's white-to-grey gradient, stretched across.
+            Rectangle plain = new Rectangle(tile.X + 22, tile.Y + c, 40, tile.Height - 2 * c);
+            int dc = Math.Max(4, (int)Math.Round(c * r.Width / (float)tile.Width));
+            dc = Math.Min(dc, Math.Min(r.Width, r.Height) / 2);
+            int[] sx = { tile.X, tile.X + c, tile.Right - c, tile.Right };
+            int[] sy = { tile.Y, tile.Y + c, tile.Bottom - c, tile.Bottom };
+            int[] dx = { r.X, r.X + dc, r.Right - dc, r.Right };
+            int[] dy = { r.Y, r.Y + dc, r.Bottom - dc, r.Bottom };
+            for (int row = 0; row < 3; row++)
+                for (int col = 0; col < 3; col++)
+                {
+                    Rectangle src = (row == 1 && col == 1) ? plain :
+                        new Rectangle(sx[col], sy[row], sx[col + 1] - sx[col], sy[row + 1] - sy[row]);
+                    buttons.RenderOnScreen(
+                        new Rectangle(dx[col], dy[row], dx[col + 1] - dx[col], dy[row + 1] - dy[row]),
+                        src, tint);
+                }
+        }
+
+        static Microsoft.Xna.Framework.Graphics.Texture2D whitePixel;
+
+        static Microsoft.Xna.Framework.Graphics.Texture2D WhitePixel
+        {
+            get
+            {
+                if (whitePixel == null)
+                {
+                    whitePixel = new Microsoft.Xna.Framework.Graphics.Texture2D(BaseGame.Device, 1, 1);
+                    whitePixel.SetData(new[] { Color.White });
+                }
+                return whitePixel;
+            }
+        }
+
+        /// <summary>
+        /// A filled rectangle (drawn in order with the other screen sprites, so it can sit behind
+        /// things drawn after it)
+        /// </summary>
+        public void FillRect(Rectangle r, Color color)
+        {
+            Texture.alphaSprite.Draw(WhitePixel, r, color);
+        }
+
+        /// <summary>
+        /// A line with a thickness in pixels (squared off, extended half the thickness at both ends
+        /// so consecutive segments of a curve join without gaps). Drawn in order with the screen sprites.
+        /// </summary>
+        public void RenderThickLine(Point a, Point b, int thickness, Color color)
+        {
+            Vector2 start = new Vector2(a.X, a.Y), end = new Vector2(b.X, b.Y);
+            Vector2 delta = end - start;
+            float length = delta.Length();
+            Vector2 dir = length > 0.001f ? delta / length : Vector2.UnitX;
+            float rotation = (float)Math.Atan2(dir.Y, dir.X);
+            Vector2 origin = start - dir * (thickness / 2.0f);
+            Texture.alphaSprite.Draw(WhitePixel, origin, null, color, rotation,
+                new Vector2(0, 0.5f), new Vector2(length + thickness, thickness),
+                Microsoft.Xna.Framework.Graphics.SpriteEffects.None, 0);
         }
 
         /// <summary>

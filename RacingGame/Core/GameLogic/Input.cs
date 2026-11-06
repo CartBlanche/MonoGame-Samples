@@ -918,7 +918,8 @@ namespace RacingGame.GameLogic
 
             // If we are in the game and don't show the mouse cursor anyway,
             // reset it to the center to allow moving it around.
-            if (RacingGameManager.InMenu == false &&
+            // (not while the in-race menu is open: then the mouse is free to click its buttons)
+            if (RacingGameManager.InMenu == false && !DrivingLocked &&
                 // App must be active
                 RacingGameManager.IsAppActive)
             {

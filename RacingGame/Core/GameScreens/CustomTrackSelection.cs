@@ -25,8 +25,17 @@ namespace RacingGame.GameScreens
         int selected = 0;
         int firstVisible = 0;
 
-        public CustomTrackSelection()
+        // when set, choosing a track hands it to this instead of starting a single player race
+        readonly Action<CustomTrackInfo> pick;
+        bool picked;
+
+        public CustomTrackSelection() : this(null)
         {
+        }
+
+        public CustomTrackSelection(Action<CustomTrackInfo> pick)
+        {
+            this.pick = pick;
             CustomTracks.Refresh();
             // Start on the first playable track
             for (int i = 0; i < CustomTracks.Tracks.Count; i++)
@@ -124,8 +133,16 @@ namespace RacingGame.GameScreens
                     if (list[selected].IsPlayable)
                     {
                         Sound.Play(Sound.Sounds.ButtonClick);
-                        TrackSelection.CustomTrack = list[selected];
-                        RacingGameManager.AddGameScreen(new GameScreen());
+                        if (pick != null)
+                        {
+                            pick(list[selected]);
+                            picked = true;
+                        }
+                        else
+                        {
+                            TrackSelection.CustomTrack = list[selected];
+                            RacingGameManager.AddGameScreen(new GameScreen());
+                        }
                     }
                 }
             }
@@ -134,17 +151,12 @@ namespace RacingGame.GameScreens
             TextureFont.WriteTextCentered(centerX, BaseGame.YToRes(535),
                 "Folder: " + CustomTracks.Directory, Color.Gray, 0.5f);
 
-            return Input.KeyboardEscapeJustPressed || Input.GamePadBJustPressed ||
+            return picked || Input.KeyboardEscapeJustPressed || Input.GamePadBJustPressed ||
                 Input.GamePadBackJustPressed || BaseGame.UI.backButtonPressed;
         }
 
 
         const int ListWidth = 460;   // 1024 wide layout units
-
-        // Cached outline of the previewed track (rebuilt when the selection changes)
-        CustomTrackInfo previewFor;
-        Vector2[] outline;           // closed Catmull-Rom polyline in world X/Y
-        float[] outlineLength;       // cumulative length at each outline point
 
         /// <summary>
         /// Left aligned text at a scale (the font has no such overload).
@@ -201,120 +213,24 @@ namespace RacingGame.GameScreens
             return lines;
         }
 
-        void BuildOutline(CustomTrackInfo info)
-        {
-            previewFor = info;
-            outline = null;
-            if (!info.IsPlayable)
-                return;
-            var pts = info.Data.TrackPoints;
-            int n = pts.Count;
-            int Steps = Math.Max(3, Math.Min(12, 220 / n));   // keep within the 2D line budget
-            outline = new Vector2[n * Steps + 1];
-            outlineLength = new float[outline.Length];
-            int k = 0;
-            for (int i = 0; i < n; i++)
-            {
-                Vector2 p1 = new Vector2(pts[(i + n - 1) % n].X, pts[(i + n - 1) % n].Y);
-                Vector2 p2 = new Vector2(pts[i].X, pts[i].Y);
-                Vector2 p3 = new Vector2(pts[(i + 1) % n].X, pts[(i + 1) % n].Y);
-                Vector2 p4 = new Vector2(pts[(i + 2) % n].X, pts[(i + 2) % n].Y);
-                for (int s = 0; s < Steps; s++)
-                    outline[k++] = Vector2.CatmullRom(p1, p2, p3, p4, s / (float)Steps);
-            }
-            outline[k] = outline[0];   // close the loop
-            for (int i = 1; i < outline.Length; i++)
-                outlineLength[i] = outlineLength[i - 1] + Vector2.Distance(outline[i - 1], outline[i]);
-        }
-
-        /// <summary>
-        /// Position and direction at a fraction (0..1) of the lap.
-        /// </summary>
-        void PointAt(float fraction, out Vector2 pos, out Vector2 dir)
-        {
-            float target = fraction * outlineLength[outlineLength.Length - 1];
-            int i = 1;
-            while (i < outlineLength.Length - 1 && outlineLength[i] < target)
-                i++;
-            float seg = Math.Max(outlineLength[i] - outlineLength[i - 1], 0.0001f);
-            float t = MathHelper.Clamp((target - outlineLength[i - 1]) / seg, 0, 1);
-            pos = Vector2.Lerp(outline[i - 1], outline[i], t);
-            dir = outline[i] - outline[i - 1];
-            if (dir.LengthSquared() > 0)
-                dir.Normalize();
-        }
-
         /// <summary>
         /// Top-down map and details of the highlighted track.
         /// </summary>
         void RenderPreview(CustomTrackInfo info)
         {
-            if (previewFor != info)
-                BuildOutline(info);
-
             int px = BaseGame.XToRes(520), py = BaseGame.YToRes(195);
             int size = Math.Min(BaseGame.XToRes(250), BaseGame.YToRes(250));
-            Color frame = new Color(192, 192, 192, 128);
-            Point a = new Point(px, py), b = new Point(px + size, py),
-                c = new Point(px + size, py + size), d = new Point(px, py + size);
-            BaseGame.DrawLine(a, b, frame);
-            BaseGame.DrawLine(b, c, frame);
-            BaseGame.DrawLine(c, d, frame);
-            BaseGame.DrawLine(d, a, frame);
 
-            if (outline == null)
+            // a light map card (like the built-in track buttons): white-ish with a grey edge
+            int edge = Math.Max(2, size / 100);
+            BaseGame.UI.FillRect(new Rectangle(px - edge, py - edge, size + 2 * edge, size + 2 * edge),
+                new Color(150, 150, 150));
+            BaseGame.UI.FillRect(new Rectangle(px, py, size, size), new Color(240, 240, 240));
+
+            if (!TrackPreview.Draw(info, new Rectangle(px, py, size, size), 14, Math.Max(3, size / 40)))
             {
                 Text(px + 10, py + 10, Fit(info.Error ?? "", size - 20, 0.6f), Color.Red, 0.6f);
                 return;
-            }
-
-            // Fit the track into the box, keeping its shape (north is up)
-            Vector2 min = outline[0], max = outline[0];
-            foreach (Vector2 v in outline)
-            {
-                min = Vector2.Min(min, v);
-                max = Vector2.Max(max, v);
-            }
-            float margin = 14;
-            float scale = (size - 2 * margin) / Math.Max(Math.Max(max.X - min.X, max.Y - min.Y), 1);
-            Vector2 centre = (min + max) / 2;
-            Func<Vector2, Point> map = v => new Point(
-                px + size / 2 + (int)Math.Round((v.X - centre.X) * scale),
-                py + size / 2 - (int)Math.Round((v.Y - centre.Y) * scale));
-
-            // Road, drawn 2 pixels thick like the highscore separator
-            Color road = Color.White;
-            for (int i = 1; i < outline.Length; i++)
-            {
-                Point p0 = map(outline[i - 1]), p1 = map(outline[i]);
-                BaseGame.DrawLine(p0, p1, road);
-                BaseGame.DrawLine(new Point(p0.X, p0.Y + 1), new Point(p1.X, p1.Y + 1), road);
-            }
-
-            // Custom checkpoints: short ticks across the road
-            if (info.Data.Checkpoints != null)
-                foreach (float f in info.Data.Checkpoints)
-                {
-                    Vector2 pos, dir;
-                    PointAt(f, out pos, out dir);
-                    Point m = map(pos);
-                    int tx = (int)Math.Round(-dir.Y * 5), ty = (int)Math.Round(-dir.X * 5);
-                    BaseGame.DrawLine(new Point(m.X - tx, m.Y - ty), new Point(m.X + tx, m.Y + ty), Color.Cyan);
-                }
-
-            // Start / finish with an arrow in the driving direction
-            {
-                Vector2 pos, dir;
-                PointAt(0, out pos, out dir);
-                Point m = map(pos);
-                Vector2 sd = new Vector2(dir.X, -dir.Y);   // to screen space
-                Vector2 side = new Vector2(-sd.Y, sd.X);
-                Point tip = new Point(m.X + (int)(sd.X * 14), m.Y + (int)(sd.Y * 14));
-                Point l = new Point(m.X + (int)(side.X * 6), m.Y + (int)(side.Y * 6));
-                Point r = new Point(m.X - (int)(side.X * 6), m.Y - (int)(side.Y * 6));
-                BaseGame.DrawLine(l, r, Color.Yellow);
-                BaseGame.DrawLine(l, tip, Color.Yellow);
-                BaseGame.DrawLine(r, tip, Color.Yellow);
             }
 
             // Details to the right of the map

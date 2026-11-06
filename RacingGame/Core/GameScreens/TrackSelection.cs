@@ -119,14 +119,16 @@ namespace RacingGame.GameScreens
 
         /// <summary>
         /// The Custom button: the list of custom tracks, or, when there are none, a question that
-        /// offers to open the Tarmac Toolbox editor page.
+        /// offers to open the Tarmac Toolbox editor page. The multiplayer lobby also uses it, with
+        /// pick, to choose the track for a race.
         /// </summary>
-        static void OpenCustomTracks()
+        internal static void OpenCustomTracks(Action<CustomTrackInfo> pick = null)
         {
             CustomTracks.Refresh();
             if (CustomTracks.Tracks.Count > 0)
             {
-                RacingGameManager.AddGameScreen(new CustomTrackSelection());
+                // (with pick, choosing a track hands it back instead of starting a single player race)
+                RacingGameManager.AddGameScreen(new CustomTrackSelection(pick));
                 return;
             }
 
@@ -234,19 +236,16 @@ namespace RacingGame.GameScreens
                     thisRect.Width, thisRect.Height);
                 if (num == CustomButton)
                 {
-                    // No artwork for this one: a panel with just the label
-                    // (a little smaller than the selection outline, so its corners do not show)
-                    int inset = Math.Max(2, (int)Math.Round(renderRect.Width * 0.04f));
-                    BaseGame.UI.RenderPanel(new Rectangle(renderRect.X + inset, renderRect.Y + inset,
-                        renderRect.Width - 2 * inset, renderRect.Height - 2 * inset),
-                        selected ? Color.White : new Color(215, 215, 215, 215));
+                    // No artwork for this one: a light panel like the other buttons, a black label
+                    BaseGame.UI.RenderLightPanel(renderRect,
+                        selected ? Color.White : new Color(192, 192, 192, 192));
                     const string customLabel = CustomTracks.ButtonLabel;
                     int labelWidth = TextureFont.GetTextWidth(customLabel);
                     float labelScale = Math.Min(1.0f, renderRect.Width * 0.82f / labelWidth);
                     TextureFont.WriteTextCentered(
                         renderRect.X + renderRect.Width / 2,
                         renderRect.Y + renderRect.Height / 2,
-                        customLabel, selected ? Color.White : new Color(205, 205, 205), labelScale);
+                        customLabel, Color.Black, labelScale, 2.5f);
                 }
                 else
                     BaseGame.UI.Buttons.RenderOnScreen(renderRect, ButtonRects[num],

@@ -6,6 +6,7 @@ using Microsoft.Xna.Framework.Net;
 using RacingGame.GameLogic;
 using RacingGame.Graphics;
 using RacingGame.Multiplayer;
+using RacingGame.Tracks;
 
 namespace RacingGame.GameScreens
 {
@@ -57,11 +58,16 @@ namespace RacingGame.GameScreens
         bool leftTheRace;
         string message = "";
 
+        // a custom track received from the host can be saved after the race
+        SharedTrack sharedTrack;
+        Rectangle saveRect = Rectangle.Empty;
+
         public MultiplayerGameScreen(RaceNetSession session, List<RacePlayerInfo> players, RacePlayerInfo localPlayer, int laps)
         {
             net = session;
             me = localPlayer;
             roster = players;
+            sharedTrack = TrackSelection.CustomTrack != null ? SharedTracks.Get(TrackSelection.CustomTrack.Id) : null;
 
             // the base constructor loaded the track and put the car at the start line: move
             // it sideways to its own slot so the cars do not start inside each other
@@ -154,11 +160,16 @@ namespace RacingGame.GameScreens
         int menuSelection;
         bool leaveRequested;
 
+        // The "Menu" button is for touch screens (there is no Esc key); on a computer the mouse steers
+        // the car and is not available, so Esc / the gamepad Back button open the menu there.
+        static readonly bool ShowMenuButton = OperatingSystem.IsAndroid() || OperatingSystem.IsIOS();
+
+        // bottom centre: clear of the lap, time, position and speed panels
         Rectangle MenuButtonRect
         {
             get
             {
-                return new Rectangle(BaseGame.Width - BaseGame.XToRes(140), BaseGame.YToRes(12),
+                return new Rectangle(BaseGame.Width / 2 - BaseGame.XToRes(62), BaseGame.Height - BaseGame.YToRes(62),
                     BaseGame.XToRes(125), BaseGame.YToRes(44));
             }
         }
@@ -174,7 +185,7 @@ namespace RacingGame.GameScreens
         {
             bool toggle = Input.KeyboardEscapeJustPressed || Input.GamePadBackJustPressed ||
                 (menuOpen && Input.GamePadBJustPressed);
-            if (!menuOpen && Input.MouseLeftButtonJustPressed && Input.MouseInBox(MenuButtonRect))
+            if (ShowMenuButton && !menuOpen && Input.MouseLeftButtonJustPressed && Input.MouseInBox(MenuButtonRect))
                 toggle = true;
 
             if (toggle)
@@ -220,22 +231,17 @@ namespace RacingGame.GameScreens
 
         void RenderMenu()
         {
+            // (the clicks are handled in UpdateMenu, with the same rectangles)
             if (!menuOpen)
             {
-                TextureFont.WriteTextCentered(BaseGame.Width - BaseGame.XToRes(77), BaseGame.YToRes(34),
-                    "Menu", Color.White, 0.8f);
+                if (ShowMenuButton)
+                    BaseGame.UI.RenderPanelButton(MenuButtonRect, "Menu", Input.MouseInBox(MenuButtonRect), 0.9f);
                 return;
             }
 
             string[] items = { "Resume", "Leave" };
             for (int i = 0; i < 2; i++)
-            {
-                Rectangle r = MenuItemRect(i);
-                bool selected = i == menuSelection;
-                TextureFont.WriteTextCentered(r.X + r.Width / 2, r.Y + r.Height / 2,
-                    selected ? "> " + items[i] + " <" : items[i],
-                    selected ? Color.Yellow : Color.White, 1.3f);
-            }
+                BaseGame.UI.RenderPanelButton(MenuItemRect(i), items[i], i == menuSelection, 1.3f);
             TextureFont.WriteTextCentered(BaseGame.Width / 2, BaseGame.Height / 2 + BaseGame.YToRes(60),
                 "The race keeps going while this menu is open", Color.Gray, 0.7f);
         }
@@ -502,6 +508,7 @@ namespace RacingGame.GameScreens
 
         public override bool Render()
         {
+            // (saveRect is from the previous frame: WantsToLeave runs inside base.Render)
             bool exit = base.Render();
 
             int centerX = BaseGame.Width / 2;
@@ -576,7 +583,32 @@ namespace RacingGame.GameScreens
                 y += BaseGame.YToRes(40);
             }
 
-            TextureFont.WriteTextCentered(centerX, y + BaseGame.YToRes(20),
+            y += BaseGame.YToRes(20);
+            if (sharedTrack != null && sharedTrack.Received)
+            {
+                // a track from the host: offer to keep it
+                string text = sharedTrack.Saved ? "Saved in your Custom Tracks" : "[ Save this track to your Custom Tracks ]  (S)";
+                float scale = 0.8f;
+                int width = (int)(TextureFont.GetTextWidth(text) * scale);
+                saveRect = new Rectangle(centerX - width / 2 - BaseGame.XToRes(10), y - BaseGame.YToRes(16),
+                    width + BaseGame.XToRes(20), BaseGame.YToRes(32));
+                TextureFont.WriteTextCentered(centerX, y, text,
+                    sharedTrack.Saved ? Color.LightGreen : Input.MouseInBox(saveRect) ? Color.White : Color.Yellow, scale);
+                y += BaseGame.YToRes(40);
+
+                if (!sharedTrack.Saved &&
+                    (Input.KeyboardKeyJustPressed(Microsoft.Xna.Framework.Input.Keys.S) ||
+                    (Input.MouseLeftButtonJustPressed && Input.MouseInBox(saveRect))))
+                {
+                    string path = CustomTracks.SaveReceived(sharedTrack.Bytes, sharedTrack.Info.Name);
+                    if (path != null)
+                        sharedTrack.Saved = true;
+                    else
+                        message = "The track could not be saved.";
+                }
+            }
+
+            TextureFont.WriteTextCentered(centerX, y,
                 "Press Space to leave", Color.Gray, 0.8f);
         }
 
@@ -586,7 +618,8 @@ namespace RacingGame.GameScreens
         {
             return leaveRequested ||
                 (AllResolved && !menuOpen &&
-                (Input.KeyboardSpaceJustPressed || Input.GamePadAJustPressed || Input.MouseLeftButtonJustPressed));
+                (Input.KeyboardSpaceJustPressed || Input.GamePadAJustPressed ||
+                (Input.MouseLeftButtonJustPressed && !Input.MouseInBox(saveRect))));
         }
 
         void LeaveRace()

@@ -5,6 +5,7 @@ using Microsoft.Xna.Framework.Input;
 using RacingGame.GameLogic;
 using RacingGame.Graphics;
 using RacingGame.Multiplayer;
+using RacingGame.Tracks;
 
 namespace RacingGame.GameScreens
 {
@@ -48,7 +49,20 @@ namespace RacingGame.GameScreens
 
             // the race screen takes the session over from the lobby
             LanRace.Lobby.Detach();
-            TrackSelection.SelectTrackNumber(start.Track);
+            if (start.Track == RaceLobby.CustomTrackNumber)
+            {
+                // a custom track: the one in the Tracks folder or received from the host
+                SharedTrack shared = SharedTracks.Resolve(start.CustomId);
+                if (shared == null)
+                {
+                    LanRace.Leave("The race track is missing.");
+                    leave = true;
+                    return;
+                }
+                TrackSelection.CustomTrack = shared.Info;
+            }
+            else
+                TrackSelection.SelectTrackNumber(start.Track);
             raceStarted = true;
             RacingGameManager.AddGameScreen(new MultiplayerGameScreen(LanRace.Net, start.Players, me, start.Laps));
         }
@@ -61,6 +75,13 @@ namespace RacingGame.GameScreens
         }
 
         readonly System.Collections.Generic.List<Thumbnail> thumbnails = new System.Collections.Generic.List<Thumbnail>();
+
+        // a text scale at which the text fits the width (never above maxScale)
+        static float FitScale(string text, float width, float maxScale)
+        {
+            int w = TextureFont.GetTextWidth(text);
+            return w <= 0 ? maxScale : Math.Min(maxScale, width / w);
+        }
 
         static Rectangle Box(int x, int y, int w, int h)
         {
@@ -147,27 +168,53 @@ namespace RacingGame.GameScreens
 
                 TextureFont.WriteText(BaseGame.XToRes(160), BaseGame.YToRes(rowY + 18), name, colour);
                 TextureFont.WriteText(BaseGame.XToRes(160), BaseGame.YToRes(rowY + 50),
-                    player.Ready ? "READY" : "not ready",
-                    player.Ready ? Color.LightGreen : Color.Gray);
+                    !player.HasTrack ? "getting the track..." : player.Ready ? "READY" : "not ready",
+                    !player.HasTrack ? Color.Yellow : player.Ready ? Color.LightGreen : Color.Gray);
 
                 rowY += RowHeight;
             }
 
             // ---- the track and the laps (the track art is a tall picture: keep it small, below the logo)
-            Rectangle trackGfx = TrackSelection.TrackButtonGfxRect(lobby.Track);
-            const int TrackH = 235;
-            Rectangle trackBox = Box(840, 268, (int)(TrackH * trackGfx.Width / (float)trackGfx.Height), TrackH);
-            BaseGame.UI.Buttons.RenderOnScreen(trackBox, trackGfx);
+            const int TrackH = 175, TrackTop = 262, TrackCenterX = 900;
+            Rectangle trackBox;
+            if (lobby.IsCustomTrack)
+            {
+                // the track drawn on a light tile, as in the track selection (the tile's proportions)
+                Rectangle tile = TrackSelection.TrackButtonGfxRect(0);
+                int trackW = (int)(TrackH * tile.Width / (float)tile.Height);
+                trackBox = Box(TrackCenterX - trackW / 2, TrackTop, trackW, TrackH);
+                BaseGame.UI.RenderLightPanel(trackBox, Color.White);
+
+                SharedTrack shared = SharedTracks.Get(lobby.CustomTrackId);
+                if (shared == null || !TrackPreview.Draw(shared.Info, trackBox,
+                    (int)(trackBox.Width * 0.18f), Math.Max(3, trackBox.Width / 20)))
+                    TextureFont.WriteTextCentered(trackBox.X + trackBox.Width / 2, trackBox.Y + trackBox.Height / 2,
+                        "...", Color.Black, 1.0f, 2.5f);     // (the track has not arrived yet)
+            }
+            else
+            {
+                Rectangle trackGfx = TrackSelection.TrackButtonGfxRect(lobby.Track);
+                int trackW = (int)(TrackH * trackGfx.Width / (float)trackGfx.Height);
+                trackBox = Box(TrackCenterX - trackW / 2, TrackTop, trackW, TrackH);
+                BaseGame.UI.Buttons.RenderOnScreen(trackBox, trackGfx);
+            }
 
             Rectangle trackLabel = Box(610, 310, 220, 50);
+            string trackText = "Track: " + (lobby.IsCustomTrack ? lobby.CustomTrackName : ((RacingGameManager.Level)lobby.Track).ToString());
             TextureFont.WriteTextCentered(trackLabel.X + trackLabel.Width / 2, trackLabel.Y + trackLabel.Height / 2,
-                "Track: " + (RacingGameManager.Level)lobby.Track, Color.Yellow, 1.0f);
+                trackText, Color.Yellow, FitScale(trackText, trackLabel.Width, 1.0f));
+            if (lobby.IsCustomTrack && lobby.CustomTrackAuthor.Length > 0)
+            {
+                string by = "by " + lobby.CustomTrackAuthor;
+                TextureFont.WriteTextCentered(trackLabel.X + trackLabel.Width / 2, BaseGame.YToRes(352),
+                    by, Color.LightGray, FitScale(by, trackLabel.Width, 0.7f));
+            }
             Rectangle lapsBox = Box(610, 380, 220, 50);
             TextureFont.WriteTextCentered(lapsBox.X + lapsBox.Width / 2, lapsBox.Y + lapsBox.Height / 2,
                 "Laps: " + lobby.Laps, Color.Yellow, 1.0f);
             if (lobby.IsHost)
-                TextureFont.WriteTextCentered(trackLabel.X + trackLabel.Width / 2, BaseGame.YToRes(440),
-                    "click to change", Color.Gray, 0.7f);
+                TextureFont.WriteTextCentered(trackLabel.X + trackLabel.Width / 2, BaseGame.YToRes(432),
+                    "click to change", Color.Gray, 0.6f);
 
             if (lobby.IsHost)
             {
@@ -177,27 +224,39 @@ namespace RacingGame.GameScreens
                     lobby.ChangeLaps(lobby.Laps >= RaceLobby.MaxLaps ? -(RaceLobby.MaxLaps - RaceLobby.MinLaps) : 1);
             }
 
-            // ---- buttons
-            Rectangle readyBox = Box(60, 470, 240, 50);
-            TextureFont.WriteTextCentered(readyBox.X + readyBox.Width / 2, readyBox.Y + readyBox.Height / 2,
-                lobby.LocalReady ? "[ Ready ]" : "[ Not ready ]",
-                lobby.LocalReady ? Color.LightGreen : Color.White, 1.2f);
-            if (click && Input.MouseInBox(readyBox))
+            // ---- buttons: all on one row. Custom is under the track picture.
+            const int ButtonRowY = 462, ButtonW = 210, ButtonH = 54;
+            if (BaseGame.UI.PanelButton(Box(60, ButtonRowY, ButtonW, ButtonH),
+                lobby.LocalReady ? "Ready" : "Not ready", 1.1f, false,
+                lobby.LocalReady ? Color.LightGreen : Color.White))
                 toggleReady = true;
 
             bool start = false;
             if (lobby.IsHost)
             {
-                Rectangle startBox = Box(340, 470, 240, 50);
-                TextureFont.WriteTextCentered(startBox.X + startBox.Width / 2, startBox.Y + startBox.Height / 2,
-                    "[ Start race ]", lobby.CanStart ? Color.LightGreen : Color.Gray, 1.2f);
-                if (click && Input.MouseInBox(startBox))
+                if (BaseGame.UI.PanelButton(Box(300, ButtonRowY, ButtonW, ButtonH), "Start Race", 1.1f, false,
+                    lobby.CanStart ? Color.LightGreen : Color.Gray))
                     start = true;
+
+                bool pickTrack = BaseGame.UI.PanelButton(
+                    Box(TrackCenterX - ButtonW / 2, ButtonRowY, ButtonW, ButtonH), CustomTracks.ButtonLabel, 1.1f);
+                if (pickTrack || Input.KeyboardKeyJustPressed(Keys.C) || Input.GamePadYJustPressed)
+                {
+                    message = "";
+                    TrackSelection.OpenCustomTracks(info =>
+                    {
+                        string problem = lobby.ChooseCustomTrack(info);
+                        if (problem != null)
+                            message = problem;
+                    });
+                }
             }
 
             int y = BaseGame.YToRes(545);
             if (message.Length > 0)
                 TextureFont.WriteTextCentered(centerX, y, message, Color.Red, 0.9f);
+            else if (!lobby.LocalHasTrack && lobby.TrackStatus != null)
+                TextureFont.WriteTextCentered(centerX, y, lobby.TrackStatus, Color.Yellow, 0.9f);
             else if (lobby.IsHost && lobby.CanStart)
                 TextureFont.WriteTextCentered(centerX, y, "Everyone is ready. Start the race!", Color.LightGreen, 0.9f);
 
@@ -206,7 +265,7 @@ namespace RacingGame.GameScreens
                 toggleReady = true;
             TextureFont.WriteTextCentered(centerX, BaseGame.Height - BaseGame.YToRes(45),
                 lobby.IsHost
-                    ? "Left/Right: track   Up/Down: laps   Space: start"
+                    ? "Left/Right: track   Up/Down: laps   C: custom track   Space: start"
                     : "Click your own entry to get ready",
                 Color.Gray, 0.7f);
 
@@ -217,7 +276,10 @@ namespace RacingGame.GameScreens
             if (toggleReady)
             {
                 message = "";
-                lobby.SetLocalReady(!lobby.LocalReady);
+                if (!lobby.LocalHasTrack)
+                    message = "Wait for the track to arrive first.";
+                else
+                    lobby.SetLocalReady(!lobby.LocalReady);
             }
 
             if (lobby.IsHost)

@@ -29,7 +29,9 @@ namespace RacingGame.Multiplayer
     /// </summary>
     public sealed class RaceNetSession : IDisposable
     {
-        const int ReceiveBufferSize = 2048;
+        // Big enough for the biggest message the library delivers (1 MB: a shared track file is one
+        // message of up to a few hundred KB). A smaller buffer makes the library refuse the read.
+        const int ReceiveBufferSize = 1 << 20;
         const int MaxPacketsPerUpdate = 1000;
 
         struct Entry

@@ -245,6 +245,10 @@ namespace RacingGame.Graphics
             /// </summary>
             public float scale;
             /// <summary>
+            /// Extra space after each letter, in font pixels (1400 wide layout), usually 0
+            /// </summary>
+            public float spacing;
+            /// <summary>
             /// Create font to render
             /// </summary>
             /// <param name="setX">Set x</param>
@@ -336,6 +340,24 @@ namespace RacingGame.Graphics
         }
 
         /// <summary>
+        /// Write text centered with a scale factor and extra space between the letters (in font
+        /// pixels, about 1 to 3 is a visible difference). For dark text on a light background,
+        /// where the font's heavy letters with their built-in outlines would run together.
+        /// </summary>
+        public static void WriteTextCentered(int x, int y, string text,
+            Color color, float scale, float spacing)
+        {
+            float width = TextureFont.GetTextWidth(text) +
+                spacing * text.Length * BaseGame.Width / 1400.0f;
+            FontToRender font = new FontToRender(
+                x - (int)Math.Round(width * scale / 2),
+                y - (int)Math.Round(TextureFont.Height * scale / 2),
+                text, color, scale);
+            font.spacing = spacing;
+            remTexts.Add(font);
+        }
+
+        /// <summary>
         /// Write game time
         /// </summary>
         /// <param name="x">X</param>
@@ -374,10 +396,12 @@ namespace RacingGame.Graphics
             {
                 FontToRender fontText = remTexts[textNum];
 
-                int x = fontText.x;
+                // (positions are worked out in floating point and rounded for each letter's edges,
+                // so the spacing stays even at any scale; rounding each advance was uneven)
+                float xScale = BaseGame.Width / 1400.0f;
+                float fx = fontText.x;
                 int y = fontText.y;
                 Color color = fontText.color;
-                //foreach (char c in fontText.text)
                 char[] chars = fontText.text.ToCharArray();
                 for (int num = 0; num < chars.Length; num++)
                 {
@@ -390,23 +414,20 @@ namespace RacingGame.Graphics
                         // Reduce height to prevent overlapping pixels
                         rect.Y += 1;
                         rect.Height = FontHeight;
-                        Rectangle destRect = new Rectangle(x,
-                            y - BaseGame.YToRes1050(SubRenderHeight),
-                            rect.Width, rect.Height);
 
-                        // Scale destRect (1600x1200 is the base size)
-                        destRect.Width = BaseGame.XToRes1400(
-                            (int)Math.Round(destRect.Width * fontText.scale));
-                        destRect.Height = BaseGame.YToRes1050(
-                            (int)Math.Round(destRect.Height * fontText.scale));
+                        int left = (int)Math.Round(fx);
+                        int right = (int)Math.Round(fx + rect.Width * fontText.scale * xScale);
+                        Rectangle destRect = new Rectangle(left,
+                            y - BaseGame.YToRes1050(SubRenderHeight),
+                            Math.Max(1, right - left),
+                            BaseGame.YToRes1050((int)Math.Round(rect.Height * fontText.scale)));
 
                         // Since we want upscaling, we use the modified destRect
                         fontSprite.Draw(fontTexture.XnaTexture, destRect, rect, color);
 
-                        // Increase x pos by width we use for this character
+                        // Move on by the width we use for this character (kept in the height value)
                         int charWidth = CharRects[charNum - 32].Height;
-                        x += BaseGame.XToRes1400(
-                            (int)Math.Round(charWidth * fontText.scale));
+                        fx += (charWidth + fontText.spacing) * fontText.scale * xScale;
                     }
                 }
             }

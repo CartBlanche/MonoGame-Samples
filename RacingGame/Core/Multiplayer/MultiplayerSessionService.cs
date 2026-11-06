@@ -11,7 +11,7 @@ namespace RacingGame.Multiplayer
     public static class MultiplayerSessionService
     {
         // Bump when packet formats change so mismatched builds do not join each other.
-        public const int ProtocolVersion = 2;
+        public const int ProtocolVersion = 3;
 
         public const int MaxPlayers = 4;
 
@@ -29,7 +29,10 @@ namespace RacingGame.Multiplayer
         /// </summary>
         public static string LocalName(string gamertag)
         {
-            string name = RacingGame.Properties.GameSettings.Default.PlayerName;
+            // RACINGGAME_PLAYER_NAME: a different name per instance when testing on one machine
+            string name = Environment.GetEnvironmentVariable("RACINGGAME_PLAYER_NAME");
+            if (string.IsNullOrWhiteSpace(name))
+                name = RacingGame.Properties.GameSettings.Default.PlayerName;
             if (string.IsNullOrWhiteSpace(name))
                 return DisplayName(gamertag);
             name = name.Trim();
