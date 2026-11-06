@@ -18,6 +18,7 @@ Each `*.json` file here is one circuit outline that appears in the editor's **Tr
 ```
 
 - `points` is a closed loop of `[x, y]` pairs in any units (y up). The editor centres it, scales it to the track length you choose and smooths it, so only the shape matters. Three or more points; about 15 to 120 is plenty.
+- Optional `fid` (1 to 5) sets the starting detail level and `len` the starting length. Outlines that cross themselves (a figure of eight) need `fid` 4 so the crossing is followed cleanly.
 - Give every outline a funny, generic name. Please do not use official circuit names or branding.
 - If the shape was traced from map data, say so in `source` and keep the data's credit in `license` (OpenStreetMap data needs "(c) OpenStreetMap contributors", ODbL).
 
