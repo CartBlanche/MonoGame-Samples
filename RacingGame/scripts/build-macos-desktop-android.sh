@@ -118,7 +118,9 @@ while [[ $# -gt 0 ]]; do
 done
 
 DESKTOP_NAME="$(basename "${DESKTOP_PROJECT}" .csproj)"
-PKG_VERSION="${PKG_VERSION:-${BUILD_NUMBER}}"
+# The game version is Version in the Desktop project (the same number the loading screen shows)
+GAME_VERSION="$(sed -n 's:.*<Version>\(.*\)</Version>.*:\1:p' "${DESKTOP_PROJECT}" | head -n 1)"
+PKG_VERSION="${PKG_VERSION:-${GAME_VERSION:-${BUILD_NUMBER}}}"
 PKG_BASENAME="${PKG_BASENAME:-${DESKTOP_NAME}}"
 DESKTOP_OUT_DIR="${ARTIFACTS_ROOT}/${DESKTOP_NAME}.${BUILD_NUMBER}"
 ANDROID_OUT_DIR="${ARTIFACTS_ROOT}/Android.${BUILD_NUMBER}"
@@ -192,12 +194,30 @@ sign_app() {
     exit 1
   fi
 
+  # codesign treats every file in Contents/MacOS as code and refuses the bundle if one is not
+  # signable (Icon.ico, .pdb, a copy of the .icns). Debug symbols are dropped, other data files
+  # move to Contents/Resources (the icon is also embedded in the executable).
+  mkdir -p "${app}/Contents/Resources"
   while IFS= read -r file; do
-    if file -b "${file}" | grep -q "Mach-O"; then
+    if ! file -b "${file}" | grep -q "Mach-O"; then
+      case "${file}" in
+        *.pdb) rm -f "${file}" ;;
+        *) mv -f "${file}" "${app}/Contents/Resources/" ;;
+      esac
+    fi
+  done < <(find "${app}/Contents/MacOS" -maxdepth 1 -type f)
+
+  # Libraries first, the main executable last: signing the main executable checks that the
+  # other code beside it is already signed with the same identity.
+  local main_exe="${app}/Contents/MacOS/$(basename "${app}" .app)"
+  while IFS= read -r file; do
+    if [[ "${file}" != "${main_exe}" ]] && file -b "${file}" | grep -q "Mach-O"; then
       codesign --force --options runtime --timestamp \
         --entitlements "${ENTITLEMENTS}" --sign "${SIGN_APP_IDENTITY}" "${file}"
     fi
   done < <(find "${app}/Contents" -type f)
+  codesign --force --options runtime --timestamp \
+    --entitlements "${ENTITLEMENTS}" --sign "${SIGN_APP_IDENTITY}" "${main_exe}"
 
   codesign --force --options runtime --timestamp \
     --entitlements "${ENTITLEMENTS}" --sign "${SIGN_APP_IDENTITY}" "${app}"
