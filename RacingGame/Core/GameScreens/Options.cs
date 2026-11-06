@@ -28,11 +28,6 @@ namespace RacingGame.GameScreens
             Line4ArrowGfxRect = new Rectangle(154, 284, 62, 39),
             Line5ArrowGfxRect = new Rectangle(160, 354, 62, 39),
             Line6ArrowGfxRect = new Rectangle(72, 437, 62, 39),
-            Resolution640x480GfxRect = new Rectangle(339, 112, 98, 32),
-            Resolution800x600GfxRect = new Rectangle(454, 112, 98, 32),
-            Resolution1024x768GfxRect = new Rectangle(575, 112, 108, 32),
-            Resolution1280x1024GfxRect = new Rectangle(704, 112, 116, 32),
-            ResolutionAutoGfxRect = new Rectangle(838, 112, 69, 32),
             FullscreenGfxRect = new Rectangle(339, 182, 105, 36),
             PostScreenEffectsGfxRect = new Rectangle(339, 226, 206, 36),
             ShadowsGfxRect = new Rectangle(616, 226, 90, 36),
@@ -49,7 +44,22 @@ namespace RacingGame.GameScreens
         /// </summary>
         string currentPlayerName = GameSettings.Default.PlayerName;
         int currentOptionsNumber = 0;
-        int currentResolution = 4;
+        /// <summary>
+        /// The resolutions that can be picked (windowed mode); the last button is Auto, which
+        /// uses the desktop size. Fullscreen always uses the desktop size.
+        /// </summary>
+        static readonly Point[] ResolutionChoices =
+        {
+            new Point(1280, 720),
+            new Point(1366, 768),
+            new Point(1600, 900),
+            new Point(1920, 1080),
+        };
+        /// <summary>
+        /// Index into ResolutionChoices, ResolutionChoices.Length = Auto, -1 = a saved size that
+        /// is not in the list any more (kept as it is until another one is picked).
+        /// </summary>
+        int currentResolution = ResolutionChoices.Length;
         bool fullscreen = true;
         bool usePostScreenShaders = true;
         bool useShadowMapping = true;
@@ -63,16 +73,18 @@ namespace RacingGame.GameScreens
         /// </summary>
         public Options()
         {
-            // Current resolution:
-            // 0=640x480, 1=800x600, 2=1024x768, 3=1280x1024, 4=auto (default)
-            if (BaseGame.Width == 640 && BaseGame.Height == 480)
-                currentResolution = 0;
-            if (BaseGame.Width == 800 && BaseGame.Height == 600)
-                currentResolution = 1;
-            if (BaseGame.Width == 1024 && BaseGame.Height == 768)
-                currentResolution = 2;
-            if (BaseGame.Width == 1280 && BaseGame.Height == 1024)
-                currentResolution = 3;
+            // Current resolution, from the saved setting (the window may be fullscreen now)
+            int savedW = GameSettings.Default.ResolutionWidth;
+            int savedH = GameSettings.Default.ResolutionHeight;
+            if (savedW <= 0 || savedH <= 0)
+                currentResolution = ResolutionChoices.Length;
+            else
+            {
+                currentResolution = -1;
+                for (int i = 0; i < ResolutionChoices.Length; i++)
+                    if (ResolutionChoices[i].X == savedW && ResolutionChoices[i].Y == savedH)
+                        currentResolution = i;
+            }
 
             // Get graphics detail settings
             fullscreen = BaseGame.Fullscreen;
@@ -133,89 +145,50 @@ namespace RacingGame.GameScreens
             Input.HandleKeyboardInput(ref currentPlayerName);
 
 #if !XBOX360
-            // Select resolution
             // Use inverted color for selection (see below for sprite blend mode)
             Color selColor = new Color(255, 156, 0, 160);
 
-            Rectangle res0Rect = BaseGame.CalcRectangleKeep4To3(
-                Resolution640x480GfxRect);
-            res0Rect.Y += BaseGame.YToRes768(125);
-            bool inRes0Rect = Input.MouseInBox(res0Rect);
-            if (currentResolution == 0)
-                BaseGame.UI.OptionsScreen.RenderOnScreen(
-                    res0Rect, Resolution640x480GfxRect,
-                    selColor, BlendState.AlphaBlend);
-            if (inRes0Rect && Input.MouseLeftButtonJustPressed)
+            // Select resolution: 4 common sizes and Auto. Sizes bigger than the desktop are
+            // dimmed, and everything is dimmed in fullscreen (it always uses the desktop size).
+            Color dimColor = new Color(120, 120, 120);
+            const int resButtonW = 107, resButtonGap = 8;
+            for (int i = 0; i <= ResolutionChoices.Length; i++)
             {
-                Sound.Play(Sound.Sounds.ButtonClick);
-                currentResolution = 0;
+                bool isAuto = i == ResolutionChoices.Length;
+                bool fits = isAuto || BaseGame.WindowedSizeFits(
+                    ResolutionChoices[i].X, ResolutionChoices[i].Y);
+                bool available = fits && !fullscreen;
+                string label = isAuto ? "Auto" :
+                    ResolutionChoices[i].X + "x" + ResolutionChoices[i].Y;
+                Rectangle r = BaseGame.CalcRectangleKeep4To3(new Rectangle(
+                    339 + i * (resButtonW + resButtonGap), 108, resButtonW, 38));
+                r.Y += BaseGame.YToRes768(125);
+                float scale = Math.Min(0.8f, 0.88f * r.Width / Math.Max(1, TextureFont.GetTextWidth(label)));
+                if (available)
+                {
+                    if (BaseGame.UI.PanelButton(r, label, scale, currentResolution == i))
+                    {
+                        Sound.Play(Sound.Sounds.ButtonClick);
+                        currentResolution = i;
+                    }
+                }
+                else
+                    BaseGame.UI.RenderPanelButton(r, label, false, scale, dimColor);
             }
-
-            Rectangle res1Rect = BaseGame.CalcRectangleKeep4To3(
-                Resolution800x600GfxRect);
-            res1Rect.Y += BaseGame.YToRes768(125);
-            bool inRes1Rect = Input.MouseInBox(res1Rect);
-            if (currentResolution == 1)
-                BaseGame.UI.OptionsScreen.RenderOnScreen(
-                    res1Rect, Resolution800x600GfxRect,
-                    selColor, BlendState.AlphaBlend);
-            if (inRes1Rect && Input.MouseLeftButtonJustPressed)
+            if (fullscreen)
             {
-                Sound.Play(Sound.Sounds.ButtonClick);
-                currentResolution = 1;
-            }
-
-            Rectangle res2Rect = BaseGame.CalcRectangleKeep4To3(
-                Resolution1024x768GfxRect);
-            res2Rect.Y += BaseGame.YToRes768(125);
-            bool inRes2Rect = Input.MouseInBox(res2Rect);
-            if (currentResolution == 2)
-                BaseGame.UI.OptionsScreen.RenderOnScreen(
-                    res2Rect, Resolution1024x768GfxRect,
-                    selColor, BlendState.AlphaBlend);
-            if (inRes2Rect && Input.MouseLeftButtonJustPressed)
-            {
-                Sound.Play(Sound.Sounds.ButtonClick);
-                currentResolution = 2;
-            }
-
-            Rectangle res3Rect = BaseGame.CalcRectangleKeep4To3(
-                Resolution1280x1024GfxRect);
-            res3Rect.Y += BaseGame.YToRes768(125);
-            bool inRes3Rect = Input.MouseInBox(res3Rect);
-            if (currentResolution == 3)
-                BaseGame.UI.OptionsScreen.RenderOnScreen(
-                    res3Rect, Resolution1280x1024GfxRect,
-                    selColor, BlendState.AlphaBlend);
-            if (inRes3Rect && Input.MouseLeftButtonJustPressed)
-            {
-                Sound.Play(Sound.Sounds.ButtonClick);
-                currentResolution = 3;
-            }
-
-            Rectangle res4Rect = BaseGame.CalcRectangleKeep4To3(
-                ResolutionAutoGfxRect);
-            res4Rect.Y += BaseGame.YToRes768(125);
-            bool inRes4Rect = Input.MouseInBox(res4Rect);
-            if (currentResolution == 4)
-                BaseGame.UI.OptionsScreen.RenderOnScreen(
-                    res4Rect, ResolutionAutoGfxRect,
-                    selColor, BlendState.AlphaBlend);
-            if (inRes4Rect && Input.MouseLeftButtonJustPressed)
-            {
-                Sound.Play(Sound.Sounds.ButtonClick);
-                currentResolution = 4;
+                Rectangle noteRect = BaseGame.CalcRectangleKeep4To3(new Rectangle(339, 148, 568, 24));
+                noteRect.Y += BaseGame.YToRes768(125);
+                TextureFont.WriteText(noteRect.X, noteRect.Y, "Fullscreen uses the desktop size",
+                    Color.Gray);
             }
 
             Rectangle fsRect = BaseGame.CalcRectangleKeep4To3(
-                FullscreenGfxRect);
+                new Rectangle(339, 182, 150, 38));
             fsRect.Y += BaseGame.YToRes768(125);
-            bool inFsRect = Input.MouseInBox(fsRect);
-            if (fullscreen)
-                BaseGame.UI.OptionsScreen.RenderOnScreen(
-                    fsRect, FullscreenGfxRect,
-                    selColor, BlendState.AlphaBlend);
-            if (inFsRect && Input.MouseLeftButtonJustPressed)
+            if (BaseGame.UI.PanelButton(fsRect, "Fullscreen",
+                Math.Min(0.8f, 0.88f * fsRect.Width / Math.Max(1, TextureFont.GetTextWidth("Fullscreen"))),
+                fullscreen))
             {
                 Sound.Play(Sound.Sounds.ButtonClick);
                 fullscreen = !fullscreen;
@@ -445,30 +418,18 @@ namespace RacingGame.GameScreens
             {
                 // Apply settings, for xbox only set music/sound and sensitivity!
                 GameSettings.Default.PlayerName = currentPlayerName;
-                switch (currentResolution)
+                if (currentResolution >= ResolutionChoices.Length)
                 {
-                    case 0:
-                        GameSettings.Default.ResolutionWidth = 640;
-                        GameSettings.Default.ResolutionHeight = 480;
-                        break;
-                    case 1:
-                        GameSettings.Default.ResolutionWidth = 800;
-                        GameSettings.Default.ResolutionHeight = 600;
-                        break;
-                    case 2:
-                        GameSettings.Default.ResolutionWidth = 1024;
-                        GameSettings.Default.ResolutionHeight = 768;
-                        break;
-                    case 3:
-                        GameSettings.Default.ResolutionWidth = 1280;
-                        GameSettings.Default.ResolutionHeight = 1024;
-                        break;
-                    case 4:
-                        // Try to use best resolution available
-                        GameSettings.Default.ResolutionWidth = 0;
-                        GameSettings.Default.ResolutionHeight = 0;
-                        break;
+                    // Auto: use the best resolution available
+                    GameSettings.Default.ResolutionWidth = 0;
+                    GameSettings.Default.ResolutionHeight = 0;
                 }
+                else if (currentResolution >= 0)
+                {
+                    GameSettings.Default.ResolutionWidth = ResolutionChoices[currentResolution].X;
+                    GameSettings.Default.ResolutionHeight = ResolutionChoices[currentResolution].Y;
+                }
+                // else: a saved size that is not in the list, keep it
                 GameSettings.Default.Fullscreen = fullscreen;
                 GameSettings.Default.PostScreenEffects = usePostScreenShaders;
                 GameSettings.Default.ShadowMapping = useShadowMapping;

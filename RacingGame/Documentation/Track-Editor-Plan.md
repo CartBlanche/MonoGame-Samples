@@ -198,7 +198,7 @@ Recommendation: **v1.x = files only. v1.5 = GitHub-hosted curated gallery. v2 = 
 ┌──────────────────────── RacingGame (C#/MonoGame) ───────────────────────────┐
 │  CustomTrackLoader: file/URL/share-code → TrackData                          │
 │  Landscape: per-track heightmap or flat ground                               │
-│  Track selection: "Custom tracks" entry (replaces fixed 3-value enum use)    │
+│  Track selection: "Custom Tracks" entry (replaces fixed 3-value enum use)    │
 └─────────────────────────────────────────────────────────────────────────────┘
 ```
 
