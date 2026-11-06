@@ -463,9 +463,7 @@ namespace RacingGame
                 // If this was the options screen and the resolution has changed,
                 // apply the changes
                 if (gameScreens.Peek().GetType() == typeof(Options) &&
-                    (BaseGame.Width != GameSettings.Default.ResolutionWidth ||
-                    BaseGame.Height != GameSettings.Default.ResolutionHeight ||
-                    BaseGame.Fullscreen != GameSettings.Default.Fullscreen))
+                    BaseGame.ResolutionSettingsChanged)
                 {
                     BaseGame.ApplyResolutionChange();
                 }

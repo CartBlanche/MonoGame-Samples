@@ -294,6 +294,58 @@ namespace RacingGame.Graphics
         }
 
         private static bool mustApplyDeviceChanges = false;
+
+        /// <summary>
+        /// The window needs room on the desktop for its title bar, the menu bar and the dock or
+        /// taskbar; a window as big as the desktop gets shrunk by the system, and then the game
+        /// draws a back buffer that no longer matches the window (everything is misplaced).
+        /// </summary>
+        const int WindowDecorationHeight = 160;
+
+        /// <summary>
+        /// Can a window with this client size fit on the desktop?
+        /// </summary>
+        internal static bool WindowedSizeFits(int w, int h)
+        {
+            DisplayMode desktop = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode;
+            return w <= desktop.Width && h <= desktop.Height - WindowDecorationHeight;
+        }
+
+        /// <summary>
+        /// The given windowed size, made smaller (same aspect ratio) if it does not fit on the desktop.
+        /// </summary>
+        static Point FitWindowedSize(int w, int h)
+        {
+            DisplayMode desktop = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode;
+            float scale = Math.Min(1.0f, Math.Min(desktop.Width / (float)w,
+                (desktop.Height - WindowDecorationHeight) / (float)h));
+            if (scale >= 1.0f)
+                return new Point(w, h);
+            return new Point((int)(w * scale) & ~1, (int)(h * scale) & ~1);
+        }
+
+        /// <summary>
+        /// True when the saved resolution or fullscreen setting differs from what is applied.
+        /// Auto (0 x 0) means the desktop size, so it only counts as changed when the current
+        /// back buffer is not that size (in fullscreen it always is).
+        /// </summary>
+        internal static bool ResolutionSettingsChanged
+        {
+            get
+            {
+                int w = GameSettings.Default.ResolutionWidth;
+                int h = GameSettings.Default.ResolutionHeight;
+                if (w <= 0 || h <= 0)
+                {
+                    w = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width;
+                    h = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height;
+                }
+                Point expected = FitWindowedSize(w, h);
+                return Fullscreen != GameSettings.Default.Fullscreen ||
+                    (!GameSettings.Default.Fullscreen &&
+                    (Width != expected.X || Height != expected.Y));
+            }
+        }
         internal static void ApplyResolutionChange()
         {
             int resolutionWidth = GameSettings.Default == null ? 0 : 
@@ -318,10 +370,27 @@ namespace RacingGame.Graphics
             graphicsManager.PreferredBackBufferHeight =
                 GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height;
 #else
+            // Fullscreen always renders at the desktop size (a smaller back buffer would be stretched
+            // to the screen with the wrong aspect ratio); the chosen resolution is for windowed mode.
+            bool wantFullscreen = GameSettings.Default == null || GameSettings.Default.Fullscreen;
+            if (wantFullscreen)
+            {
+                resolutionWidth = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width;
+                resolutionHeight = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height;
+            }
+            else
+            {
+                Point fitted = FitWindowedSize(resolutionWidth, resolutionHeight);
+                resolutionWidth = fitted.X;
+                resolutionHeight = fitted.Y;
+            }
             graphicsManager.PreferredBackBufferWidth = resolutionWidth;
             graphicsManager.PreferredBackBufferHeight = resolutionHeight;
-			graphicsManager.IsFullScreen = false;//GameSettings.Default.Fullscreen;
-			graphicsManager.GraphicsDevice.Viewport = new Viewport (0, 0, resolutionWidth, resolutionHeight);
+            // Borderless fullscreen at the desktop size: no display mode switch, so it behaves the
+            // same on macOS, Windows and Linux and alt-tab / Mission Control keep working.
+            graphicsManager.HardwareModeSwitch = false;
+            graphicsManager.IsFullScreen = wantFullscreen;
+            graphicsManager.GraphicsDevice.Viewport = new Viewport (0, 0, resolutionWidth, resolutionHeight);
 
             mustApplyDeviceChanges = true;
 #endif
