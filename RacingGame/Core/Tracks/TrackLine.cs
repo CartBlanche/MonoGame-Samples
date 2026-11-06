@@ -583,14 +583,14 @@ namespace RacingGame.Tracks
         /// Is a prop's position on the road (or within PropRoadMargin of it)?
         /// Gantries, signs and start/finish scenery belong at the road, so they are exempt.
         /// </summary>
-        private bool IsOnRoad(string modelName, Vector3 pos)
+        protected bool IsOnRoad(string modelName, Vector3 pos, float extraMargin = 0.0f)
         {
             if (modelName.StartsWith("Banner") || modelName.StartsWith("Sign") ||
                 modelName.StartsWith("StartLight") || modelName == "Goal")
                 return false;
             for (int num = 0; num < points.Count; num++)
             {
-                float half = TrackVertex.RoadWidthScale * points[num].roadWidth / 2 + PropRoadMargin;
+                float half = TrackVertex.RoadWidthScale * points[num].roadWidth / 2 + PropRoadMargin + extraMargin;
                 float dx = points[num].pos.X - pos.X, dy = points[num].pos.Y - pos.Y;
                 if (dx * dx + dy * dy < half * half)
                     return true;

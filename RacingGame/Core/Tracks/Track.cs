@@ -1145,6 +1145,13 @@ namespace RacingGame.Tracks
                         distance += 20;
                     bool side = RandomHelper.GetRandomInt(2) == 0;
                     float rotation = RandomHelper.GetRandomFloat(0, MathHelper.Pi * 2);
+                    // Custom tracks can pass close to another part of themselves
+                    // (crossings, hairpins): never drop scenery on any road.
+                    if (landscape.IsCustomTrack &&
+                        IsOnRoad(landscape.autoGenerationNames[randomObjNum],
+                            points[num].pos + points[num].right *
+                            (distance * (side ? 1 : -1)), 12.0f))
+                        continue;
                     landscape.AddObjectToRender(
                         landscape.autoGenerationNames[randomObjNum],
                         rotation,
