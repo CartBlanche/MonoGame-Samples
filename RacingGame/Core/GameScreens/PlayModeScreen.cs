@@ -51,27 +51,24 @@ namespace RacingGame.GameScreens
             BaseGame.UI.RenderMenuBackground();
 
             int centerX = BaseGame.Width / 2;
-            int y = BaseGame.Height / 4;
-            TextureFont.WriteTextCentered(centerX, y, "Start Race", Color.White, 1.5f);
-            y += BaseGame.YToRes(100);
+            TextureFont.WriteTextCentered(centerX, BaseGame.YToRes(110), "Start Race", Color.White, 1.5f);
 
             if (Input.HasMouseMoved || Input.MouseLeftButtonJustPressed)
                 ignoreMouse = false;
 
+            // two big buttons (outline proportions 212 x 92), one above the other
             int mouseOver = -1;
-            int rowHeight = BaseGame.YToRes(45);
+            int buttonWidth = BaseGame.XToRes(300);
+            int buttonHeight = buttonWidth * 92 / 212;
+            int y = BaseGame.YToRes(215);
             for (int i = 0; i < Entries.Length; i++)
             {
-                Rectangle row = new Rectangle(centerX - BaseGame.XToRes(250),
-                    y - rowHeight / 2, BaseGame.XToRes(500), rowHeight);
-                if (Input.MouseInBox(row))
+                Rectangle box = new Rectangle(centerX - buttonWidth / 2, y - buttonHeight / 2,
+                    buttonWidth, buttonHeight);
+                if (Input.MouseInBox(box))
                     mouseOver = i;
-
-                bool selected = i == selection;
-                TextureFont.WriteTextCentered(centerX, y,
-                    selected ? "> " + Entries[i] + " <" : Entries[i],
-                    selected ? Color.Yellow : Color.White, 1.2f);
-                y += rowHeight + BaseGame.YToRes(10);
+                BaseGame.UI.RenderPanelButton(box, Entries[i], i == selection, 1.4f);
+                y += buttonHeight + BaseGame.YToRes(30);
             }
 
             if (!ignoreMouse && mouseOver >= 0)

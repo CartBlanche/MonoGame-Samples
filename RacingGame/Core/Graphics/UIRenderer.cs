@@ -632,6 +632,49 @@ namespace RacingGame.Graphics
         }
 
         /// <summary>
+        /// A text button on a blank button panel (as the Custom track button), with the orange
+        /// selection outline when selected. Proportions of the outline are 212 x 92: size the
+        /// rectangle like that to avoid stretching it.
+        /// </summary>
+        public void RenderPanelButton(Rectangle r, string label, bool selected, float textScale)
+        {
+            // the panel is a little smaller than the outline (the same when selected or not), so its
+            // corners do not show outside the outline's rounded corners
+            int inset = Math.Max(2, (int)Math.Round(r.Height * 0.09f));
+            Rectangle panel = new Rectangle(r.X + inset, r.Y + inset, r.Width - 2 * inset, r.Height - 2 * inset);
+            RenderPanel(panel, selected ? Color.White : new Color(215, 215, 215, 215));
+            if (selected)
+                buttons.RenderOnScreen(r, BottomButtonSelectionGfxRect);
+            TextureFont.WriteTextCentered(r.X + r.Width / 2, r.Y + r.Height / 2,
+                label, selected ? Color.White : new Color(205, 205, 205), textScale);
+        }
+
+        /// <summary>
+        /// Draw an orange rounded frame of any size (9-slice of the selection outline of the
+        /// bottom buttons), e.g. as the border of a dialog. Only the border is drawn.
+        /// </summary>
+        public void RenderFrame(Rectangle r)
+        {
+            Rectangle s = BottomButtonSelectionGfxRect;
+            const int c = 30;
+            int cw = Math.Min((int)Math.Round(c * (float)BaseGame.Width / 1024.0f), r.Width / 2);
+            int ch = Math.Min((int)Math.Round(c * (float)BaseGame.Height / 640.0f), r.Height / 2);
+            int[] sx = { s.X, s.X + c, s.Right - c, s.Right };
+            int[] sy = { s.Y, s.Y + c, s.Bottom - c, s.Bottom };
+            int[] dx = { r.X, r.X + cw, r.Right - cw, r.Right };
+            int[] dy = { r.Y, r.Y + ch, r.Bottom - ch, r.Bottom };
+            for (int row = 0; row < 3; row++)
+                for (int col = 0; col < 3; col++)
+                {
+                    if (row == 1 && col == 1)
+                        continue;       // the middle is empty
+                    buttons.RenderOnScreen(
+                        new Rectangle(dx[col], dy[row], dx[col + 1] - dx[col], dy[row + 1] - dy[row]),
+                        new Rectangle(sx[col], sy[row], sx[col + 1] - sx[col], sy[row + 1] - sy[row]));
+                }
+        }
+
+        /// <summary>
         /// Laps panel: "lap/total" in big orange digits with "Laps" below. The
         /// panel grows with the number of digits (1/3 ... 99/99).
         /// </summary>

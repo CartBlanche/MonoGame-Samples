@@ -360,6 +360,9 @@ namespace RacingGame
         {
             base.Initialize();
 
+            // Make sure the Tracks folder for custom tracks exists
+            Tracks.CustomTracks.EnsureDirectory();
+
             // First launch: the Name setting still has its default, so fill it in with the
             // user's name (it can be changed in Options, and is what other players see in a race)
             if (GameSettings.Default.PlayerName == "Player")

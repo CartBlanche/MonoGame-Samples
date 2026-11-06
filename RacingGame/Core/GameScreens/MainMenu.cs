@@ -126,8 +126,26 @@ namespace RacingGame.GameScreens
         /// Render
         /// </summary>
         /// <returns>Bool</returns>
+        /// <summary>
+        /// Set when the player answered Yes to "Are you sure you want to quit?"
+        /// </summary>
+        bool quitConfirmed = false;
+
+        void AskToQuit()
+        {
+            RacingGameManager.AddGameScreen(new ConfirmDialog(
+                "Quit",
+                "Are you sure you want to quit?",
+                () => quitConfirmed = true,
+                defaultYes: true));
+        }
+
         public bool Render()
         {
+            // Yes was chosen in the quit question (shown above this screen): leave the game
+            if (quitConfirmed)
+                return true;
+
             // This starts both menu and in game post screen shader!
 			if(BaseGame.UsePostScreenShaders)
             	BaseGame.UI.PostScreenMenuShader.Start();
@@ -271,14 +289,14 @@ namespace RacingGame.GameScreens
                         RacingGameManager.AddGameScreen(new Help());
                         break;
                     case 4:
-                        // Exit
-                        return true;
+                        AskToQuit();
+                        break;
                 }
             }
 
             if (Input.KeyboardEscapeJustPressed ||
                 Input.GamePadBackJustPressed)
-                return true;
+                AskToQuit();
 
             // If the game sits idle at the menu for too long,
             // return to the splash screen

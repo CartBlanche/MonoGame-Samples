@@ -48,7 +48,7 @@ namespace RacingGame.GameScreens
 
             int centerX = BaseGame.Width / 2;
             int y = BaseGame.YToRes(150);
-            TextureFont.WriteTextCentered(BaseGame.XToRes(30) + ListWidth / 2, y, "Custom tracks", Color.White, 1.5f);
+            TextureFont.WriteTextCentered(BaseGame.XToRes(30) + ListWidth / 2, y, CustomTracks.Title, Color.White, 1.5f);
             y += BaseGame.YToRes(50);
 
             var list = CustomTracks.Tracks;

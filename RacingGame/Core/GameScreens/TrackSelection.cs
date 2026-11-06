@@ -118,6 +118,28 @@ namespace RacingGame.GameScreens
         }
 
         /// <summary>
+        /// The Custom button: the list of custom tracks, or, when there are none, a question that
+        /// offers to open the Tarmac Toolbox editor page.
+        /// </summary>
+        static void OpenCustomTracks()
+        {
+            CustomTracks.Refresh();
+            if (CustomTracks.Tracks.Count > 0)
+            {
+                RacingGameManager.AddGameScreen(new CustomTrackSelection());
+                return;
+            }
+
+            RacingGameManager.AddGameScreen(new ConfirmDialog(
+                CustomTracks.Title,
+                "There are no custom tracks in",
+                () => WebHelper.OpenUrl(CustomTracks.EditorUrl),
+                defaultYes: true,
+                detail: CustomTracks.Directory,
+                question: "Would you like to create some with the Tarmac Toolbox editor?"));
+        }
+
+        /// <summary>
         /// Selected track
         /// </summary>
         /// <returns>Track level</returns>
@@ -213,9 +235,12 @@ namespace RacingGame.GameScreens
                 if (num == CustomButton)
                 {
                     // No artwork for this one: a panel with just the label
-                    BaseGame.UI.RenderPanel(renderRect,
+                    // (a little smaller than the selection outline, so its corners do not show)
+                    int inset = Math.Max(2, (int)Math.Round(renderRect.Width * 0.04f));
+                    BaseGame.UI.RenderPanel(new Rectangle(renderRect.X + inset, renderRect.Y + inset,
+                        renderRect.Width - 2 * inset, renderRect.Height - 2 * inset),
                         selected ? Color.White : new Color(215, 215, 215, 215));
-                    const string customLabel = "Custom";
+                    const string customLabel = CustomTracks.ButtonLabel;
                     int labelWidth = TextureFont.GetTextWidth(customLabel);
                     float labelScale = Math.Min(1.0f, renderRect.Width * 0.82f / labelWidth);
                     TextureFont.WriteTextCentered(
@@ -289,7 +314,7 @@ namespace RacingGame.GameScreens
                 {
                     // The Custom button opens the list of tracks from the Tracks folder
                     Sound.Play(Sound.Sounds.ButtonClick);
-                    RacingGameManager.AddGameScreen(new CustomTrackSelection());
+                    OpenCustomTracks();
                 }
                 else
                 {
@@ -303,7 +328,7 @@ namespace RacingGame.GameScreens
             else if (Input.KeyboardKeyJustPressed(Keys.C) || Input.GamePadYJustPressed)
             {
                 Sound.Play(Sound.Sounds.ButtonClick);
-                RacingGameManager.AddGameScreen(new CustomTrackSelection());
+                OpenCustomTracks();
             }
 
             if (Input.KeyboardEscapeJustPressed ||

@@ -96,6 +96,37 @@ namespace RacingGame.Tracks
         }
 
         /// <summary>
+        /// Heading of the custom tracks screens and dialogs
+        /// </summary>
+        public const string Title = "Custom Tracks";
+
+        /// <summary>
+        /// Label of the Custom button on the track selection screen
+        /// </summary>
+        public const string ButtonLabel = "Custom";
+
+        /// <summary>
+        /// Where the Tarmac Toolbox track editor lives (the Racing Game page on itch.io).
+        /// </summary>
+        public const string EditorUrl = "https://softsavage.itch.io/racing-game";
+
+        /// <summary>
+        /// Create the Tracks folder if it does not exist yet (done at startup, so players find it
+        /// ready to drop exported tracks into). Never throws.
+        /// </summary>
+        public static void EnsureDirectory()
+        {
+            try
+            {
+                System.IO.Directory.CreateDirectory(Directory);
+            }
+            catch (Exception ex)
+            {
+                Log.Write("Could not create " + Directory + ": " + ex.Message);
+            }
+        }
+
+        /// <summary>
         /// Tracks found by the last call to Refresh.
         /// </summary>
         public static IList<CustomTrackInfo> Tracks
