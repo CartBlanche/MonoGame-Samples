@@ -403,7 +403,6 @@ namespace RacingGame
             brakeTrackMaterial = new Material("Track");
 
             LoadEvent("All systems go!", null);
-            Task.Delay(1000).Wait();
         }
         /// <summary>
         /// Add game screen

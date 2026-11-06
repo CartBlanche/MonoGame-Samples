@@ -494,6 +494,14 @@ namespace RacingGame.Graphics
         }
 
         /// <summary>
+        /// Draw the RacingGame logo (as on the main menu) in the given rectangle
+        /// </summary>
+        public void RenderLogo(Rectangle r, Color tint)
+        {
+            background.RenderOnScreen(r, RacingGameLogoGfxRect, tint);
+        }
+
+        /// <summary>
         /// Render menu background
         /// </summary>
         public void RenderMenuBackground()

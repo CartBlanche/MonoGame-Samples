@@ -19,6 +19,10 @@ namespace RacingGame.GameScreens
     /// </summary>
     class SplashScreen : IGameScreen
     {
+        /// <summary>How long the loading card takes to fade away, in seconds</summary>
+        const float CrossFadeTime = 0.45f;
+        float startTime = -1;
+
 		/// <summary>
 		/// Unimplemented
 		/// </summary>
@@ -51,6 +55,13 @@ namespace RacingGame.GameScreens
                     BaseGame.CalcRectangleCenteredWithGivenHeight(
                     512, 518 + 61 / 2, 26, UIRenderer.PressStartGfxRect),
                     UIRenderer.PressStartGfxRect);
+
+            // Fade the loading card away (same card, so it looks like a cross-fade)
+            if (startTime < 0)
+                startTime = BaseGame.TotalTime;
+            float fade = 1 - (BaseGame.TotalTime - startTime) / CrossFadeTime;
+            if (fade > 0)
+                LoadingScreen.RenderCard(fade, 1, null, null, 0);
 
             // Clicking or pressing start will go to the menu
             return Input.MouseLeftButtonJustPressed ||
