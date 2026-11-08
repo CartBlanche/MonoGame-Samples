@@ -10,8 +10,8 @@ Copy these into **Edit game** on itch.io.
 | Classification | Games |
 | Genre | Strategy (alternative: Action) |
 | Pricing | Free / donations (your call) |
-| Cover image | `cover.png` (800x480; itch recommends 630x500, so crop or pad if you want it pixel-perfect) |
-| Screenshots | `screenshot-gameplay.png`, `screenshot-victory.png`, `screenshot-instructions.png` |
+| Cover image | `cover-hit.gif` (630x500, about 1 MB, under itch's 3 MB limit): the shot flies, the camera zooms in and slows, and it hits. The older `cover.png` is the still alternative. |
+| Screenshots (in this order) | `screenshot-gameplay.png`, `screenshot-hit.png`, `screenshot-halloween.png`, `screenshot-lan-lobby.png`, `screenshot-victory.png`, `screenshot-instructions.png` |
 
 ## Tags (max 10)
 `lan`, `local-multiplayer`, `multiplayer`, `2d`, `artillery`, `turn-based`, `family-friendly`, `monogame`, `open-source`, `casual`
@@ -34,3 +34,8 @@ Enable comments and add a topic called **"Challenge your family"** to encourage 
 
 ## Theme (Edit game > Edit theme)
 Use `theme.css` in this folder in the "Custom CSS" box.
+
+## Retaking the screenshots
+The game can take its own: `--screenshots=<folder>` plays a scripted round against the AI and saves 800x480 PNGs
+(`instructions`, `aiming`, `slowmo`, `hit`, `victory`). Add `--clip` to save every 4th frame of one shot instead, and stitch them with ImageMagick (`magick -delay 7 frame*.png ... cover.gif`).. Add `--theme=none` for the plain look or `--theme=halloween`.
+For the lobby shot start two copies: `--screenshots=<folder> --lan=host`, then about 9 seconds later `--screenshots=<other folder> --lan=client --name="Roger Gracie"` (`--name` sets that copy's player name). Add `--play` to both to carry on into a LAN match: the host fires, then the client pulls back on the red side and fires (the client's `lan-client-view.png` is the red-side shot).

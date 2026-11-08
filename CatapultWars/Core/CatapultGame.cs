@@ -78,6 +78,9 @@ namespace CatapultGame
 			Components.Add(screenManager);
 
 			Components.Add(new MessageDisplayComponent(this));
+
+			// Hidden dev switch: --screenshots[=folder] plays a scripted round and saves the frames
+			ScreenshotDirector.AddIfRequested(this, screenManager);
 			// Components.Add (new GamerServicesComponent (this)); // Not available in MonoGame 3.8
 
 			//Add two new screens

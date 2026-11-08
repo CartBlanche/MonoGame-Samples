@@ -236,6 +236,30 @@ namespace CatapultGame
 			return false;
 		}
 
+		/// <summary>
+		/// Dev only (--screenshots): holds the player mid-pull at an angle and strength, as if
+		/// the mouse were down. Call every frame while posing.
+		/// </summary>
+		internal void PoseDrag (float angle, float strength)
+		{
+			if (!IsActive)
+				return;
+			Catapult.CurrentState = CatapultState.Aiming;
+			Catapult.ShotAngle = MathHelper.Clamp (angle, Ballistics.MinAngle, Ballistics.MaxAngle);
+			Catapult.ShotStrength = MathHelper.Clamp (strength, 0.06f, 1f);
+			arrowScale = 0.93f * Catapult.ShotStrength;
+			isDragging = true;
+		}
+
+		/// <summary>Dev only (--screenshots): lets go of a posed pull, firing the shot.</summary>
+		internal void ReleaseDrag ()
+		{
+			Catapult.ShotVelocity = MinShotStrength + Catapult.ShotStrength * (MaxShotStrength - MinShotStrength);
+			Catapult.Fire (Catapult.ShotVelocity, Catapult.ShotAngle);
+			Catapult.CurrentState = CatapultState.Firing;
+			ResetDragState ();
+		}
+
 		// used to set the arrow scale from networking
 		internal float ArrowScale
 		{

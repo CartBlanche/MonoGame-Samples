@@ -109,6 +109,14 @@ namespace CatapultGame
 		// Helper members
 		bool isDragging;
 
+		// Read by the --screenshots dev mode
+		internal Human PlayerOne { get { return playerOne; } }
+		internal Human PlayerTwo { get { return playerTwo; } }
+		internal bool IsPlayerOneTurn { get { return isFirstPlayerTurn; } }
+		internal bool IsGameOver { get { return gameOver; } }
+		internal void SetDragging(bool dragging) { isDragging = dragging; } // the mouse would do this
+		internal bool InSlowMotion { get { return timeScale < 0.6f; } }
+
 		public GameplayScreen()
 		{
 			TransitionOnTime = TimeSpan.FromSeconds(1.5);

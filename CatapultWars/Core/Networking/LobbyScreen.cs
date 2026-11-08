@@ -26,6 +26,7 @@ namespace CatapultGame
 	{
 
 		NetworkSession networkSession;
+		internal NetworkSession Session { get { return networkSession; } } // read by --screenshots
 		Texture2D isReadyTexture;
 		Texture2D hasVoiceTexture;
 		Texture2D isTalkingTexture;
