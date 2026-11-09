@@ -86,7 +86,7 @@ namespace CatapultGame
 						sessionType,
 						NetworkSessionComponent.MaxLocalGamers,
 						NetworkSessionComponent.MaxGamers,
-						1,
+						0, // private slots: none, or the join list counts only the rest ("1/1" instead of "1/2")
 						null);
 
 				// Activate the network busy screen, which will display

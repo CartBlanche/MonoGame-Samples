@@ -24,7 +24,12 @@ namespace CatapultGame
 	class NetworkSessionComponent : GameComponent
 	{
 
-		public const int MaxGamers = 16;
+		// A match is exactly two players: the host on the left and one guest on the right. This used to be
+		// the sample's 16, which made the join list read "1/15" and let a third machine into the lobby with
+		// no catapult. Idea for a future version (perhaps one built on the BTTYEngine voxel engine): four
+		// players in a "+" formation, one catapult at each point. That would raise this to 4 and need a
+		// player per side in GameplayScreen, not just playerOne and playerTwo.
+		public const int MaxGamers = 2;
 		public const int MaxLocalGamers = 4;
 		ScreenManager screenManager;
 		NetworkSession networkSession;

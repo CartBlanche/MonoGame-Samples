@@ -642,9 +642,10 @@ namespace CatapultGame
         }
 
         // Where an entry's text sits, in the 800x480 the game draws in
-        static bool EntryCentre(GameScreen screen, int entry, out Vector2 centre)
+        static bool EntryCentre(GameScreen screen, int entry, out Vector2 centre, out string text)
         {
             centre = Vector2.Zero;
+            text = null;
             var menu = screen as MenuScreen;
             if (menu == null)
                 return false;
@@ -654,6 +655,7 @@ namespace CatapultGame
             if (list == null || entry >= list.Count)
                 return false;
             var e = (MenuEntry)list[entry];
+            text = e.Text;
             centre = e.Position + new Vector2(e.GetWidth(menu) / 2f, e.GetHeight(menu) / 2f + 4f);
             return true;
         }
@@ -697,12 +699,13 @@ namespace CatapultGame
 
                 int entry = EntryFor(top, host);
                 Vector2 at;
-                if (entry >= 0 && top.ScreenState == ScreenState.Active && EntryCentre(top, entry, out at))
+                string entryText;
+                if (entry >= 0 && top.ScreenState == ScreenState.Active && EntryCentre(top, entry, out at, out entryText))
                 {
                     yield return Wait(0.4f);
                     foreach (var step in Click(at))
                         yield return step;
-                    Cue("click " + top.GetType().Name + " entry " + entry);
+                    Cue("click " + top.GetType().Name + " entry " + entry + " \"" + entryText + "\"");
                     Press(top, entry);
                     yield return Wait(1.2f);
                     continue;
