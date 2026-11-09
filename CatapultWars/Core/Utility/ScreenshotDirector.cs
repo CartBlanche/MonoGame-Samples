@@ -59,19 +59,23 @@ namespace CatapultGame
             {
             }
 
+#if !SINGLE_PLAYER
+            // --name="Some Name" works on its own: handy for starting a second copy as another player
+            if (!string.IsNullOrEmpty(name))
+                SetLocalName(name);
+#endif
+
             if (folder == null)
                 return;
 
-            game.Components.Add(new ScreenshotDirector(game, screens, folder, lan, clip, play, name));
+            game.Components.Add(new ScreenshotDirector(game, screens, folder, lan, clip, play));
         }
 
-        ScreenshotDirector(Game game, ScreenManager screens, string folder, string lan, bool clip, bool play, string name)
+        ScreenshotDirector(Game game, ScreenManager screens, string folder, string lan, bool clip, bool play)
             : base(game)
         {
             this.clip = clip;
             this.play = play;
-            if (!string.IsNullOrEmpty(name))
-                SetLocalName(name);
             this.screens = screens;
             this.folder = Path.GetFullPath(folder);
             Directory.CreateDirectory(this.folder);
@@ -300,8 +304,10 @@ namespace CatapultGame
             }
         }
 
+#if !SINGLE_PLAYER
         // The name the network layer uses for this machine's player. Its setter is internal to the
-        // library, and only a screenshot needs a name other than the OS user's.
+        // library, so this reaches it by reflection. Until there is a name field in Settings, this is
+        // the only way to play as someone other than the OS user.
         static void SetLocalName(string name)
         {
             try
@@ -315,6 +321,7 @@ namespace CatapultGame
             {
             }
         }
+#endif
 
 #if !SINGLE_PLAYER
         // ---- two instances meet in a LAN lobby ------------------------------
