@@ -28,6 +28,10 @@ namespace CatapultGame
         public Texture2D Pixel { get; private set; }
         public Texture2D Glow { get; private set; }
 
+        /// <summary>White premultiplied discs for particles: feathered puffs and crisp chunks.</summary>
+        public Texture2D SoftDisc { get; private set; }
+        public Texture2D HardDisc { get; private set; }
+
         public static ThemeArt Get(GraphicsDevice device)
         {
             if (instance == null || instance.device != device)
@@ -40,6 +44,8 @@ namespace CatapultGame
             this.device = device;
             Pixel = ShapeArt.Solid(device, 1, 1, Color.White);
             Glow = ShapeArt.Glow(device, 64);
+            SoftDisc = ShapeArt.Disc(device, 32, soft: true);
+            HardDisc = ShapeArt.Disc(device, 8, soft: false);
         }
 
         public ThemeTextures For(ThemeDefinition theme)

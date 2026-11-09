@@ -43,6 +43,27 @@ namespace CatapultGame
             return t;
         }
 
+        /// <summary>A premultiplied white disc: feathered for puffs, crisp for chunks.</summary>
+        internal static Texture2D Disc(GraphicsDevice gd, int size, bool soft)
+        {
+            Texture2D t = new Texture2D(gd, size, size);
+            Color[] data = new Color[size * size];
+            float half = size / 2f;
+            for (int y = 0; y < size; y++)
+            {
+                for (int x = 0; x < size; x++)
+                {
+                    float d = Vector2.Distance(new Vector2(x + .5f, y + .5f), new Vector2(half, half)) / half;
+                    float a = soft ? MathHelper.Clamp(1f - d, 0f, 1f) : MathHelper.Clamp((1f - d) * half, 0f, 1f);
+                    if (soft)
+                        a = a * a * (3f - 2f * a);
+                    data[y * size + x] = new Color(a, a, a, a);
+                }
+            }
+            t.SetData(data);
+            return t;
+        }
+
         internal static Shape Ellipse(float cx, float cy, float rx, float ry)
         {
             return (x, y) =>
