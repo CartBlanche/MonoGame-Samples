@@ -10,7 +10,7 @@ Copy these into **Edit game** on itch.io.
 | Classification | Games |
 | Genre | Strategy (alternative: Action) |
 | Pricing | Free / donations (your call) |
-| Cover image | `cover-hit.gif` (630x500, about 1 MB, under itch's 3 MB limit): the shot flies, the camera zooms in and slows, and it hits. The older `cover.png` is the still alternative. |
+| Cover image | `cover-none.gif` (630x500, about 1.4 MB, under itch's 3 MB limit): the shot flies, the camera zooms in and slows, and it hits. `cover-halloween.gif` and `cover-winter.gif` are the same shot in the seasonal looks. The older `cover.png` is the still alternative. |
 | Screenshots (in this order) | `screenshot-gameplay.png`, `screenshot-hit.png`, `screenshot-halloween.png`, `screenshot-lan-lobby.png`, `screenshot-victory.png`, `screenshot-instructions.png` |
 
 ## Tags (max 10)
