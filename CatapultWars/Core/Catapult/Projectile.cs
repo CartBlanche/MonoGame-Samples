@@ -123,8 +123,10 @@ namespace CatapultGame
             projectileTexture = curGame.Content.Load<Texture2D>(textureName);
             HitRadius = Math.Max(projectileTexture.Width / 2, projectileTexture.Height / 2);
 
-            if (Theme.IsHalloween)
-                projectileTexture = HalloweenArt.Get(curGame.GraphicsDevice).Pumpkin;
+            // A themed projectile replaces the rock; the textures are built once and shared
+            ThemeDefinition theme = Theme.Active;
+            if (theme.ProjectileArt != null)
+                projectileTexture = ThemeArt.Get(curGame.GraphicsDevice).For(theme).Projectile;
         }
 
         public override void Draw(GameTime gameTime)

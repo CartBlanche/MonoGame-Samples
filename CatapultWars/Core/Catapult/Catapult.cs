@@ -328,7 +328,7 @@ namespace CatapultGame
             projectile.Initialize();
 
             // Initialize randomizer
-            random = new Random();
+            random = Battlefield.MakeRandom();
 
             base.Initialize();
         }

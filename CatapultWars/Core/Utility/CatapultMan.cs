@@ -151,32 +151,32 @@ namespace CatapultGame
             float backArm, float frontArm, Face face)
         {
             float cx = 22f, up = -lift;
-            var layers = new System.Collections.Generic.List<(HalloweenArt.Shape, Color)>();
+            var layers = new System.Collections.Generic.List<(ShapeArt.Shape, Color)>();
 
             // Legs and boots
             layers.Add((Capsule(new Vector2(cx - 3, 34 + up), new Vector2(cx - 4, 44), 2.7f), Trousers));
             layers.Add((Capsule(new Vector2(cx + 3, 34 + up), new Vector2(cx + 4, 44), 2.7f), Trousers));
-            layers.Add((HalloweenArt.Ellipse(cx - 4, 45, 3.6f, 1.8f), Ink));
-            layers.Add((HalloweenArt.Ellipse(cx + 5, 45, 3.6f, 1.8f), Ink));
+            layers.Add((ShapeArt.Ellipse(cx - 4, 45, 3.6f, 1.8f), Ink));
+            layers.Add((ShapeArt.Ellipse(cx + 5, 45, 3.6f, 1.8f), Ink));
 
             // Arms sit behind the body so raised ones read as coming from the shoulders
             AddArm(layers, new Vector2(cx - 7, 24 + up), backArm, tunic, face == Face.Angry);
             AddArm(layers, new Vector2(cx + 7, 24 + up), frontArm, tunic, face == Face.Angry);
 
             // Tunic and belt
-            layers.Add((HalloweenArt.Ellipse(cx, 28 + up, 8.5f, 9f), tunic));
-            layers.Add((HalloweenArt.Rect(cx - 8, 32 + up, cx + 8, 34 + up), belt));
+            layers.Add((ShapeArt.Ellipse(cx, 28 + up, 8.5f, 9f), tunic));
+            layers.Add((ShapeArt.Rect(cx - 8, 32 + up, cx + 8, 34 + up), belt));
 
             // Head, with a leather cap
-            layers.Add((HalloweenArt.Ellipse(cx, 14 + up, 7f, 7f), Skin));
-            var cap = HalloweenArt.Ellipse(cx, 11.5f + up, 7.8f, 6.2f);
+            layers.Add((ShapeArt.Ellipse(cx, 14 + up, 7f, 7f), Skin));
+            var cap = ShapeArt.Ellipse(cx, 11.5f + up, 7.8f, 6.2f);
             float capBottom = 12f + up;
             layers.Add(((x, y) => y <= capBottom && cap(x, y), Cap));
 
             // Face
             Color ink = Ink;
-            layers.Add((HalloweenArt.Ellipse(cx - 2.5f, 14.5f + up, 0.95f, 1.1f), ink));
-            layers.Add((HalloweenArt.Ellipse(cx + 3f, 14.5f + up, 0.95f, 1.1f), ink));
+            layers.Add((ShapeArt.Ellipse(cx - 2.5f, 14.5f + up, 0.95f, 1.1f), ink));
+            layers.Add((ShapeArt.Ellipse(cx + 3f, 14.5f + up, 0.95f, 1.1f), ink));
             switch (face)
             {
                 case Face.Smile:
@@ -185,7 +185,7 @@ namespace CatapultGame
                 case Face.Cheer:
                 {
                     // Open, laughing mouth
-                    var mouth = HalloweenArt.Ellipse(cx + 0.5f, 17.2f + up, 3f, 2.6f);
+                    var mouth = ShapeArt.Ellipse(cx + 0.5f, 17.2f + up, 3f, 2.6f);
                     float top = 17.2f + up;
                     layers.Add(((x, y) => y >= top && mouth(x, y), new Color(150, 40, 40)));
                     break;
@@ -194,26 +194,26 @@ namespace CatapultGame
                     // Slanted brows and a shouting mouth
                     layers.Add((Capsule(new Vector2(cx - 4.5f, 11.8f + up), new Vector2(cx - 1f, 13.2f + up), 0.7f), ink));
                     layers.Add((Capsule(new Vector2(cx + 1.5f, 13.2f + up), new Vector2(cx + 5f, 11.4f + up), 0.7f), ink));
-                    layers.Add((HalloweenArt.Ellipse(cx + 0.5f, 18.3f + up, 2.4f, 1.8f), new Color(150, 40, 40)));
+                    layers.Add((ShapeArt.Ellipse(cx + 0.5f, 18.3f + up, 2.4f, 1.8f), new Color(150, 40, 40)));
                     break;
             }
 
-            var list = new (HalloweenArt.Shape, Color)[layers.Count];
+            var list = new (ShapeArt.Shape, Color)[layers.Count];
             layers.CopyTo(list);
-            return HalloweenArt.Render(gd, Width, Height, list);
+            return ShapeArt.Render(gd, Width, Height, list);
         }
 
-        static void AddArm(System.Collections.Generic.List<(HalloweenArt.Shape, Color)> layers,
+        static void AddArm(System.Collections.Generic.List<(ShapeArt.Shape, Color)> layers,
             Vector2 shoulder, float degrees, Color sleeve, bool fist)
         {
             float a = MathHelper.ToRadians(degrees);
             Vector2 hand = shoulder + new Vector2((float)Math.Sin(a), (float)Math.Cos(a)) * 11f;
             layers.Add((Capsule(shoulder, hand, 2.5f), sleeve));
-            layers.Add((HalloweenArt.Ellipse(hand.X, hand.Y, fist ? 3.4f : 2.6f, fist ? 3.4f : 2.6f), Skin));
+            layers.Add((ShapeArt.Ellipse(hand.X, hand.Y, fist ? 3.4f : 2.6f, fist ? 3.4f : 2.6f), Skin));
         }
 
         /// <summary>A thick line with round ends.</summary>
-        static HalloweenArt.Shape Capsule(Vector2 a, Vector2 b, float radius)
+        static ShapeArt.Shape Capsule(Vector2 a, Vector2 b, float radius)
         {
             Vector2 ab = b - a;
             float len2 = Math.Max(ab.LengthSquared(), 0.0001f);

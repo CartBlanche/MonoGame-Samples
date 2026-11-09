@@ -54,9 +54,40 @@ namespace CatapultGame
             Build(0, 407.5f, 230f, 125f, 80f, HillShape.Round, false, 0f);
         }
 
+        /// <summary>
+        /// Dev aid: <c>--seed=N</c> (or the CATAPULT_SEED variable) makes every new game use layout N,
+        /// so screenshots of two builds can be compared. Never set in normal play.
+        /// </summary>
+        static readonly int? devSeed = ParseDevSeed();
+
+        static int? ParseDevSeed()
+        {
+            string value = Environment.GetEnvironmentVariable("CATAPULT_SEED");
+            try
+            {
+                foreach (string arg in Environment.GetCommandLineArgs())
+                {
+                    if (arg.StartsWith("--seed=", StringComparison.OrdinalIgnoreCase))
+                        value = arg.Substring("--seed=".Length);
+                }
+            }
+            catch (Exception)
+            {
+            }
+
+            int seed;
+            return int.TryParse(value, out seed) && seed > 0 ? seed : (int?)null;
+        }
+
+        /// <summary>A random source that repeats itself under the dev seed, so test runs play out the same.</summary>
+        public static Random MakeRandom()
+        {
+            return devSeed.HasValue ? new Random(devSeed.Value) : new Random();
+        }
+
         public static int NewSeed()
         {
-            return new Random().Next(1, int.MaxValue);
+            return devSeed ?? new Random().Next(1, int.MaxValue);
         }
 
         /// <summary>Builds the layout for a seed. The same seed always gives the same battlefield.</summary>

@@ -4,7 +4,7 @@ using System.IO;
 namespace CatapultGame
 {
     /// <summary>
-    /// Seasonal looks. Only Halloween has art so far; more seasons slot in here later.
+    /// Seasonal looks. Each one has a <see cref="ThemeDefinition"/> registered in <see cref="Themes"/>.
     /// </summary>
     public enum Season
     {
@@ -17,7 +17,7 @@ namespace CatapultGame
     /// machine: nothing about them is sent over the network.
     /// </summary>
     /// <remarks>
-    /// Override for testing with <c>--theme=halloween</c> (or <c>--theme=none</c>) on the
+    /// Override for testing with <c>--theme=halloween</c> (or <c>--theme=none</c>; any name in <see cref="Themes"/>) on the
     /// command line, or the CATAPULT_THEME environment variable.
     /// </remarks>
     public static class Theme
@@ -33,13 +33,19 @@ namespace CatapultGame
         {
             LoadSetting();
             ParseOverride();
-            Blend = IsHalloween ? 1f : 0f;
+            shown = Active;
+            Blend = Active.IsStyled ? 1f : 0f;
         }
+
+        static ThemeDefinition shown;
+        static long dateCheckedAt;
+        static bool dateChecked;
+        static ThemeDefinition dateTheme = Themes.Classic;
 
         const float FadeSeconds = .6f;
 
         /// <summary>
-        /// How much of the Halloween look to show on screens that can change live (the title
+        /// How much of the themed look to show on screens that can change live (the title
         /// screen): 0 is classic, 1 is fully themed. Eases toward the current setting.
         /// </summary>
         public static float Blend { get; private set; }
@@ -49,9 +55,20 @@ namespace CatapultGame
         /// </summary>
         public static void Fade(float elapsed)
         {
-            float target = IsHalloween ? 1f : 0f;
+            if (Active.IsStyled)
+                shown = Active;
+            float target = Active.IsStyled ? 1f : 0f;
             float step = elapsed / FadeSeconds;
             Blend = Blend < target ? Math.Min(target, Blend + step) : Math.Max(target, Blend - step);
+        }
+
+        /// <summary>
+        /// The styled theme the title screen is showing or fading out. Stays on the last styled
+        /// theme while the blend eases back to classic.
+        /// </summary>
+        public static ThemeDefinition Shown
+        {
+            get { return shown; }
         }
 
         /// <summary>
@@ -72,7 +89,26 @@ namespace CatapultGame
         /// </summary>
         public static Season DateSeason
         {
-            get { return FromDate(DateTime.Now); }
+            get { return DateTheme.Id; }
+        }
+
+        /// <summary>
+        /// The theme the system date falls in. The date is looked up at most once a second, since
+        /// the title screen asks every frame.
+        /// </summary>
+        public static ThemeDefinition DateTheme
+        {
+            get
+            {
+                long now = Environment.TickCount64;
+                if (!dateChecked || now - dateCheckedAt >= 1000)
+                {
+                    dateTheme = Themes.ForDate(DateTime.Now);
+                    dateCheckedAt = now;
+                    dateChecked = true;
+                }
+                return dateTheme;
+            }
         }
 
         /// <summary>
@@ -83,9 +119,12 @@ namespace CatapultGame
             get { return forced ?? (seasonalEnabled ? DateSeason : Season.None); }
         }
 
-        public static bool IsHalloween
+        /// <summary>
+        /// The definition of the look the game should have right now.
+        /// </summary>
+        public static ThemeDefinition Active
         {
-            get { return Current == Season.Halloween; }
+            get { return Themes.For(Current); }
         }
 
         /// <summary>
@@ -98,16 +137,7 @@ namespace CatapultGame
 
         public static Season FromDate(DateTime d)
         {
-            return InWindow(d, 10, 24, 11, 1) ? Season.Halloween : Season.None;
-        }
-
-        /// <summary>
-        /// Inclusive month/day window. A window may run over the new year.
-        /// </summary>
-        static bool InWindow(DateTime d, int m1, int d1, int m2, int d2)
-        {
-            int n = d.Month * 100 + d.Day, a = m1 * 100 + d1, b = m2 * 100 + d2;
-            return a <= b ? n >= a && n <= b : n >= a || n <= b;
+            return Themes.ForDate(d).Id;
         }
 
         static void ParseOverride()
@@ -130,12 +160,9 @@ namespace CatapultGame
             if (string.IsNullOrWhiteSpace(value))
                 return;
 
-            Season season;
-            if (Enum.TryParse(value.Trim(), true, out season))
-                forced = season;
-            else if (value.Trim().Equals("classic", StringComparison.OrdinalIgnoreCase)
-                || value.Trim().Equals("default", StringComparison.OrdinalIgnoreCase))
-                forced = Season.None;
+            ThemeDefinition theme;
+            if (Themes.TryParse(value, out theme))
+                forced = theme.Id;
         }
 
         static void LoadSetting()

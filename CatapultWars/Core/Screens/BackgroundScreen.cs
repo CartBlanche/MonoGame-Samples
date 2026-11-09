@@ -17,7 +17,8 @@ namespace CatapultGame
     class BackgroundScreen : GameScreen
     {
         Texture2D background;
-        HalloweenDecor decor;
+        ThemeDecor decor;
+        ThemeDefinition decorTheme;
 
         public BackgroundScreen()
         {
@@ -27,7 +28,13 @@ namespace CatapultGame
 
         public override void LoadContent()
         {
-            background = Load<Texture2D>("Textures/Backgrounds/title_screen");           
+            background = Load<Texture2D>("Textures/Backgrounds/title_screen");
+
+            // Build the art for the current look and the seasonal one now, so switching the theme
+            // on the menu later does not stall a frame generating textures
+            ThemeArt art = ThemeArt.Get(ScreenManager.GraphicsDevice);
+            art.For(Theme.Active);
+            art.For(Theme.DateTheme);
         }
 
         /// <summary>
@@ -55,16 +62,19 @@ namespace CatapultGame
 
             Theme.Fade((float)gameTime.ElapsedGameTime.TotalSeconds);
 
-            if (Theme.Blend > 0f)
+            if (Theme.Blend > 0f && Theme.Shown.IsStyled)
             {
-                if (decor == null)
-                    decor = new HalloweenDecor(ScreenManager.GraphicsDevice);
+                if (decor == null || decorTheme != Theme.Shown)
+                {
+                    decorTheme = Theme.Shown;
+                    decor = new ThemeDecor(ScreenManager.GraphicsDevice, decorTheme);
+                }
 
                 // The theme fades in and out when it is switched on the menu
                 float alpha = TransitionAlpha * Theme.Blend;
                 decor.Update((float)gameTime.ElapsedGameTime.TotalSeconds);
                 decor.DrawTitleOverlay(spriteBatch, alpha);
-                decor.DrawBats(spriteBatch, alpha);
+                decor.DrawFlyers(spriteBatch, alpha);
             }
 
             spriteBatch.End();

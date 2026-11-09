@@ -51,7 +51,8 @@ namespace CatapultGame
 		Texture2D skyTexture;
 		Texture2D hudBackgroundTexture;
 		Texture2D ammoTypeTexture;
-		HalloweenDecor decor;
+		ThemeDefinition theme;
+		ThemeDecor decor;
 		// The crew beside each catapult, and the scores they last reacted to
 		CatapultMan manOne;
 		CatapultMan manTwo;
@@ -126,7 +127,7 @@ namespace CatapultGame
 					GestureType.DragComplete |
 					GestureType.Tap;
 
-			random = new Random();
+			random = Battlefield.MakeRandom();
         }
 
 		/// <summary>
@@ -166,10 +167,9 @@ namespace CatapultGame
 			windArrowTexture = Load<Texture2D>("Textures/HUD/windArrow");
 			ammoTypeTexture = Load<Texture2D>("Textures/HUD/ammoType");
 			// Seasonal look, decided once per game
-			decor = Theme.IsHalloween ? new HalloweenDecor(ScreenManager.GraphicsDevice) : null;
-			Terrain.Prepare(foregroundTexture, mountainTexture,
-				decor != null ? HalloweenDecor.ForegroundTint : Color.White,
-				decor != null ? HalloweenDecor.MountainTint : Color.White);
+			theme = Theme.Active;
+			decor = theme.IsStyled ? new ThemeDecor(ScreenManager.GraphicsDevice, theme) : null;
+			Terrain.Prepare(foregroundTexture, mountainTexture, theme);
 
 			// Load font
 			hudFont = Load<SpriteFont>("Fonts/HUDFont");
@@ -931,8 +931,8 @@ namespace CatapultGame
 		/// </summary>
 		private void DrawAmmoIcon(Vector2 position)
 		{
-			if (decor != null)
-				ScreenManager.SpriteBatch.Draw(decor.Pumpkin,
+			if (decor != null && decor.ProjectileArt != null)
+				ScreenManager.SpriteBatch.Draw(decor.ProjectileArt,
 					new Rectangle((int)position.X, (int)position.Y, ammoTypeTexture.Width, ammoTypeTexture.Height), Color.White);
 			else
 				ScreenManager.SpriteBatch.Draw(ammoTypeTexture, position, Color.White);
@@ -962,8 +962,8 @@ namespace CatapultGame
 			// Clear the background
 			ScreenManager.Game.GraphicsDevice.Clear(Color.Black);
 
-			bool night = decor != null;
-			Color cloudTint = night ? HalloweenDecor.CloudTint : Color.White;
+			bool night = decor != null && theme.HasCustomSky;
+			Color cloudTint = theme.CloudTint;
 
 			// Draw the Sky
 			if (night)
@@ -977,7 +977,7 @@ namespace CatapultGame
 
 			// Draw the Mountain
 			ScreenManager.SpriteBatch.Draw(mountainTexture,
-				Vector2.Zero, night ? HalloweenDecor.MountainTint : Color.White);
+				Vector2.Zero, theme.MountainTint);
 
 			// Draw Cloud #2
 			ScreenManager.SpriteBatch.Draw(cloud2Texture,
@@ -985,16 +985,16 @@ namespace CatapultGame
 
 			// Draw the Castle, trees, and foreground 
 			ScreenManager.SpriteBatch.Draw(foregroundTexture,
-				Vector2.Zero, night ? HalloweenDecor.ForegroundTint : Color.White);
+				Vector2.Zero, theme.ForegroundTint);
 
 			// The hill between the catapults
 			Terrain.Draw(ScreenManager.SpriteBatch);
 
 			// Lit windows, lanterns and bats sit behind the catapults and projectiles
-			if (night)
+			if (decor != null)
 			{
 				decor.DrawGameLights(ScreenManager.SpriteBatch);
-				decor.DrawBats(ScreenManager.SpriteBatch, 1f);
+				decor.DrawFlyers(ScreenManager.SpriteBatch, 1f);
 			}
 		}
 

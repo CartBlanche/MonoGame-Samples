@@ -113,6 +113,7 @@ namespace CatapultGame
         // Seasonal tint for the earth, and what shows through a crater in each column
         static Color tint = Color.White;
         static Color[] cavity;
+        static Color[] rebuildBuffer;
 
         // A row just above the ground band, where the background is hillside, sampled for crater colour
         const int SampleRow = 376;
@@ -121,15 +122,24 @@ namespace CatapultGame
         /// Looks up what the background shows just above the ground in every column, so a crater
         /// reveals the same hillside as the ground either side of it instead of a flat colour.
         /// </summary>
-        public static void Prepare(Texture2D foreground, Texture2D mountain, Color foregroundTint, Color mountainTint)
+        public static void Prepare(Texture2D foreground, Texture2D mountain, ThemeDefinition theme)
         {
+            Color foregroundTint = theme.ForegroundTint, mountainTint = theme.MountainTint;
             tint = foregroundTint;
+            cavity = new Color[Width];
+            if (theme.CraterColor.HasValue)
+            {
+                for (int x = 0; x < Width; x++)
+                    cavity[x] = theme.CraterColor.Value;
+                dirty = true;
+                return;
+            }
+
             var fg = new Color[foreground.Width * foreground.Height];
             var mt = new Color[mountain.Width * mountain.Height];
             foreground.GetData(fg);
             mountain.GetData(mt);
 
-            cavity = new Color[Width];
             for (int x = 0; x < Width; x++)
             {
                 Color f = Multiply(fg[SampleRow * foreground.Height / 480 * foreground.Width + x * foreground.Width / Width], foregroundTint);
@@ -157,7 +167,10 @@ namespace CatapultGame
         static void Rebuild()
         {
             int h = BottomY - TopY;
-            var pixels = new Color[Width * h];
+            // One buffer reused for every rebuild: a new array each crater is large enough to
+            // land on the large object heap and invite a collection mid-game
+            var pixels = rebuildBuffer ??= new Color[Width * h];
+            Array.Clear(pixels, 0, pixels.Length);
 
             for (int x = 0; x < Width; x++)
             {

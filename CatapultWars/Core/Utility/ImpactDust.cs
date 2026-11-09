@@ -26,7 +26,7 @@ namespace CatapultGame
         static GraphicsDevice textureDevice;
         static Texture2D softTexture, hardTexture;
 
-        readonly List<Particle> particles = new List<Particle>();
+        readonly List<Particle> particles = new List<Particle>(64);
         readonly GraphicsDevice device;
 
         public ImpactDust(GraphicsDevice device)
@@ -131,21 +131,13 @@ namespace CatapultGame
         }
 
         /// <summary>
-        /// Puff and chunk colours for the current look. A Christmas case returns white here.
+        /// Puff and chunk colours for the current look.
         /// </summary>
         static void Palette(out Color puff, out Color chunk)
         {
-            switch (Theme.Current)
-            {
-                case Season.Halloween:
-                    puff = new Color(255, 140, 40);
-                    chunk = new Color(210, 85, 15);
-                    break;
-                default:
-                    puff = new Color(165, 165, 165);
-                    chunk = new Color(105, 105, 105);
-                    break;
-            }
+            ThemeDefinition theme = Theme.Active;
+            puff = theme.ImpactPuff;
+            chunk = theme.ImpactChunk;
         }
 
         static float Next()

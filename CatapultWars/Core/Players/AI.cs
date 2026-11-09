@@ -49,7 +49,7 @@ namespace CatapultGame
         public override void Initialize()
         {
             //Initialize randomizer
-            random = new Random();
+            random = Battlefield.MakeRandom();
 			IsAI = true;
             //Catapult.Initialize();
 
