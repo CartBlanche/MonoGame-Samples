@@ -174,6 +174,34 @@ namespace CatapultGame
                 spriteBatch.Draw(art.Glow, nose, null, theme.MascotGlow * pulse, 0f,
                     new Vector2(32, 32), theme.MascotGlowSize / 64f, SpriteEffects.None, 0f);
             }
+
+            DrawMascotFlames(spriteBatch, frame);
+        }
+
+        // Flames burning at the antler tips: a glow, then a flame that wavers, each tip on its own beat
+        void DrawMascotFlames(SpriteBatch spriteBatch, int frame)
+        {
+            if (theme.MascotFlames == null || textures.MascotFlame == null || frame >= theme.MascotFlames.Length)
+                return;
+
+            Vector2[] tips = theme.MascotFlames[frame];
+            float cos = (float)Math.Cos(theme.MascotRotation), sin = (float)Math.Sin(theme.MascotRotation);
+            Texture2D flame = textures.MascotFlame;
+            Vector2 flameOrigin = new Vector2(flame.Width / 2f, flame.Height - 1.5f);
+
+            for (int i = 0; i < tips.Length; i++)
+            {
+                float flicker = .85f + .2f * (float)Math.Sin(time * 11f + i * 2.3f) + .1f * (float)Math.Sin(time * 17.3f + i);
+                Vector2 o = tips[i] * theme.MascotScale;
+                Vector2 tip = theme.MascotFeet + new Vector2(o.X * cos - o.Y * sin, o.X * sin + o.Y * cos);
+
+                spriteBatch.Draw(art.Glow, tip + new Vector2(0f, -4f), null, theme.MascotFlameGlow * (.5f * flicker), 0f,
+                    new Vector2(32, 32), 26f / 64f, SpriteEffects.None, 0f);
+                // The flame rises straight up whatever the tilt of the hill, swaying a little
+                float sway = (float)Math.Sin(time * 7f + i * 1.7f) * .12f;
+                spriteBatch.Draw(flame, tip, null, Color.White, sway, flameOrigin,
+                    new Vector2(.46f * (2f - flicker), .46f * flicker * 1.2f), SpriteEffects.None, 0f);
+            }
         }
 
         /// <summary>

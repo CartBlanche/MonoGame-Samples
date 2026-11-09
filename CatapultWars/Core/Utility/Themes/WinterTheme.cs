@@ -80,7 +80,7 @@ namespace CatapultGame
 
             // A red-nosed reindeer on the far hillside, out of the way of the shots. It stands on the
             // skyline of the angled hill (which rises about 15 degrees to the right) and leans to match.
-            MascotArt = BuildReindeer,
+            MascotArt = gd => ReindeerArt.Build(gd, ReindeerArt.RedNosed),
             MascotFeet = new Vector2(520, 311),
             MascotOrigin = new Vector2(28, 48),
             MascotScale = .75f,
@@ -118,70 +118,6 @@ namespace CatapultGame
                 (Ellipse(40 - 38 * .3f, 40 - 38 * .2f, 38 * .22f, 38 * .22f), crater),
                 (Ellipse(40 + 38 * .25f, 40 + 38 * .15f, 38 * .3f, 38 * .3f), crater),
                 (Ellipse(40 - 38 * .05f, 40 + 38 * .45f, 38 * .14f, 38 * .14f), crater));
-        }
-
-        // The reindeer faces left. Frame 0 has its head up, frame 1 bends down to graze.
-        static Texture2D[] BuildReindeer(GraphicsDevice gd)
-        {
-            return new[] { Reindeer(gd, false), Reindeer(gd, true) };
-        }
-
-        static Texture2D Reindeer(GraphicsDevice gd, bool grazing)
-        {
-            Color fur = new Color(150, 102, 62), dark = new Color(112, 76, 46), belly = new Color(214, 178, 138);
-            Color horn = new Color(222, 196, 150), nose = new Color(226, 34, 34), ink = new Color(40, 26, 18);
-
-            var layers = new System.Collections.Generic.List<(Shape, Color)>();
-
-            // Legs, then the body over them
-            layers.Add((Capsule(new Vector2(22, 32), new Vector2(21, 46), 1.5f), dark));
-            layers.Add((Capsule(new Vector2(26.5f, 33), new Vector2(26.5f, 46), 1.5f), dark));
-            layers.Add((Capsule(new Vector2(35, 33), new Vector2(36, 46), 1.5f), dark));
-            layers.Add((Capsule(new Vector2(39, 32), new Vector2(40, 46), 1.5f), dark));
-            layers.Add((Ellipse(30.5f, 28, 13.5f, 7.5f), fur));
-            layers.Add((Ellipse(30.5f, 31.5f, 9.5f, 3.6f), belly));
-            layers.Add((Ellipse(44, 24, 2.6f, 2.2f), Color.White));
-
-            Vector2 head;
-            if (!grazing)
-            {
-                head = new Vector2(9, 13.5f);
-                layers.Add((Capsule(new Vector2(20, 25), new Vector2(12, 15), 3.4f), fur));
-                layers.Add((Ellipse(head.X, head.Y, 5.4f, 3.5f), fur));
-                layers.Add((Ellipse(13.5f, 9.6f, 1.6f, 2.4f), dark));
-                layers.Add((Ellipse(8.6f, 12.2f, .9f, .9f), ink));
-                layers.Add((Capsule(new Vector2(11.5f, 10), new Vector2(15, 2), .9f), horn));
-                layers.Add((Capsule(new Vector2(13.4f, 6), new Vector2(9.5f, 3), .8f), horn));
-                layers.Add((Capsule(new Vector2(14.6f, 3.4f), new Vector2(18.5f, 1), .8f), horn));
-            }
-            else
-            {
-                head = new Vector2(8.5f, 34);
-                layers.Add((Capsule(new Vector2(20, 25), new Vector2(12, 31), 3.4f), fur));
-                layers.Add((Ellipse(head.X, head.Y, 5.4f, 3.5f), fur));
-                layers.Add((Ellipse(13f, 30.6f, 1.6f, 2.4f), dark));
-                layers.Add((Ellipse(8.2f, 32.6f, .9f, .9f), ink));
-                layers.Add((Capsule(new Vector2(12.5f, 29), new Vector2(17, 21.5f), .9f), horn));
-                layers.Add((Capsule(new Vector2(14.5f, 25.5f), new Vector2(10.5f, 22.5f), .8f), horn));
-            }
-
-            // The nose, with a little shine
-            Vector2 tip = head + new Vector2(-5f, 1.3f);
-            layers.Add((Ellipse(tip.X, tip.Y, 2.3f, 2.3f), nose));
-            layers.Add((Ellipse(tip.X - .7f, tip.Y - .8f, .7f, .7f), new Color(255, 170, 160)));
-            return Render(gd, 56, 50, layers.ToArray());
-        }
-
-        // A thick line with round ends
-        static Shape Capsule(Vector2 a, Vector2 b, float radius)
-        {
-            Vector2 ab = b - a;
-            float len2 = System.Math.Max(ab.LengthSquared(), 0.0001f);
-            return (x, y) =>
-            {
-                float t = MathHelper.Clamp(Vector2.Dot(new Vector2(x, y) - a, ab) / len2, 0f, 1f);
-                return Vector2.DistanceSquared(new Vector2(x, y), a + ab * t) <= radius * radius;
-            };
         }
 
         // A packed snowball: blue-grey shading underneath, a bright lit side and a few hand marks

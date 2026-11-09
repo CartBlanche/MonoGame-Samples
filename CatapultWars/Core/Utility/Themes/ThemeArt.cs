@@ -10,7 +10,7 @@ namespace CatapultGame
     /// </summary>
     public sealed class ThemeTextures
     {
-        public Texture2D Sky, TitleShade, Body, Projectile, Prop, WindParticle;
+        public Texture2D Sky, TitleShade, Body, Projectile, Prop, WindParticle, MascotFlame;
         public Texture2D[] Flyers, Mascot;
     }
 
@@ -120,6 +120,8 @@ namespace CatapultGame
                 t.Flyers = d.FlyerArt(device);
             if (d.MascotArt != null)
                 t.Mascot = d.MascotArt(device);
+            if (d.MascotFlameArt != null)
+                t.MascotFlame = d.MascotFlameArt(device);
             if (d.WindParticles != null && d.WindParticles.Art != null)
                 t.WindParticle = d.WindParticles.Art(device);
             return t;

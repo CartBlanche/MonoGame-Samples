@@ -14,6 +14,13 @@ namespace CatapultGame
             Id = Season.None,
             Name = "none",
 
+            // A plain reindeer on the far hill, the same one every theme gives its own look
+            MascotArt = gd => ReindeerArt.Build(gd, ReindeerArt.Natural),
+            MascotFeet = new Vector2(520, 311),
+            MascotOrigin = new Vector2(28, 48),
+            MascotScale = .75f,
+            MascotRotation = MathHelper.ToRadians(-15f),
+
             // A few leaves tumbling across the battlefield, in the greens and golds of the trees
             WindParticles = new WindParticleSpec
             {

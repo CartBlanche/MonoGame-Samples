@@ -115,6 +115,10 @@ namespace CatapultGame
         public Vector2[] MascotGlowOffsets { get; init; }
         public Color MascotGlow { get; init; }
         public float MascotGlowSize { get; init; }
+        /// <summary>Flames burning at points of the mascot, per frame (measured like the glow offsets), and their sprite.</summary>
+        public Vector2[][] MascotFlames { get; init; }
+        public Func<GraphicsDevice, Texture2D> MascotFlameArt { get; init; }
+        public Color MascotFlameGlow { get; init; }
 
         /// <summary>Things carried on the wind (snow, leaves, embers). Null means none.</summary>
         public WindParticleSpec WindParticles { get; init; }

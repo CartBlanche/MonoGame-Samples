@@ -82,10 +82,39 @@ namespace CatapultGame
                 },
             },
 
+            // The same reindeer on the far hill, gone dusky, with its antlers on fire
+            MascotArt = gd => ReindeerArt.Build(gd, ReindeerArt.Haunted),
+            MascotFeet = new Vector2(520, 311),
+            MascotOrigin = new Vector2(28, 48),
+            MascotScale = .75f,
+            MascotRotation = MathHelper.ToRadians(-15f),
+            MascotFlameArt = BuildFlame,
+            MascotFlameGlow = new Color(255, 120, 30, 0),
+            // Antler tips, measured from the origin of each frame: head up has three, grazing has two
+            MascotFlames = new[]
+            {
+                new[] { new Vector2(-13f, -46f), new Vector2(-18.5f, -45f), new Vector2(-9.5f, -47f) },
+                new[] { new Vector2(-11f, -26.5f), new Vector2(-17.5f, -25.5f) },
+            },
+
             FlyerArt = BuildBats,
             FlyerOrigin = BatOrigin,
             FlyerCount = 9,
         };
+
+        // A small teardrop flame: orange outside, gold inside and a white-hot heart. Its base is at the bottom.
+        static Texture2D BuildFlame(GraphicsDevice gd)
+        {
+            return Render(gd, 12, 18,
+                (Union(Ellipse(6, 12.2f, 5f, 5.6f), Poly(new Vector2(1.3f, 10.5f), new Vector2(6.4f, .2f), new Vector2(10.7f, 10.5f))), new Color(255, 104, 18)),
+                (Union(Ellipse(6, 13f, 3.3f, 4f), Poly(new Vector2(3f, 12f), new Vector2(6.2f, 4.5f), new Vector2(9f, 12f))), new Color(255, 186, 52)),
+                (Ellipse(6, 14.2f, 1.8f, 2.5f), new Color(255, 244, 180)));
+        }
+
+        static Shape Union(Shape a, Shape b)
+        {
+            return (x, y) => a(x, y) || b(x, y);
+        }
 
         static Texture2D BuildMoon(GraphicsDevice gd)
         {

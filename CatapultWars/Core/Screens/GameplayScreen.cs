@@ -178,7 +178,7 @@ namespace CatapultGame
 				mountainTexture = art.Frost(theme, mountainTexture, theme.FrostMountain);
 				foregroundTexture = art.Frost(theme, foregroundTexture, theme.FrostForeground);
 			}
-			decor = theme.IsStyled ? new ThemeDecor(ScreenManager.GraphicsDevice, theme) : null;
+			decor = theme.IsStyled || theme.MascotArt != null ? new ThemeDecor(ScreenManager.GraphicsDevice, theme) : null;
 			windEffect = theme.WindParticles != null ? new WindEffect(ScreenManager.GraphicsDevice, theme) : null;
 			Terrain.Prepare(foregroundTexture, mountainTexture, theme);
 
