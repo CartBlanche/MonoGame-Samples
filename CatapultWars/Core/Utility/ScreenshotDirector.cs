@@ -28,6 +28,8 @@ namespace CatapultGame
         // --clip: saves every Nth frame of one shot (flight, slow-motion zoom, hit) to stitch into a GIF
         bool clip;
         bool play;      // --play: carry on from the lobby into a real LAN match
+        bool video;     // --video: the scripted LAN match recorded for the YouTube video (needs --lan)
+        bool mute;      // --mute: with --video, keeps this instance silent so two copies do not double up
         bool recording;
         int drawCount, savedFrames;
         const int RecordEvery = 4; // 60 fps / 4 = 15 frames a second
@@ -35,8 +37,9 @@ namespace CatapultGame
         public static void AddIfRequested(Game game, ScreenManager screens)
         {
             string folder = null, lan = null;
-            bool clip = false, play = false;
-            string name = null;
+            bool clip = false, play = false, video = false, mute = false;
+            string name = null, pos = null;
+            float lead = 6f;
             try
             {
                 foreach (string arg in Environment.GetCommandLineArgs())
@@ -49,6 +52,15 @@ namespace CatapultGame
                         clip = true;
                     else if (arg.Equals("--play", StringComparison.OrdinalIgnoreCase))
                         play = true;
+                    else if (arg.Equals("--video", StringComparison.OrdinalIgnoreCase))
+                        video = true;
+                    else if (arg.Equals("--mute", StringComparison.OrdinalIgnoreCase))
+                        mute = true;
+                    else if (arg.StartsWith("--lead=", StringComparison.OrdinalIgnoreCase))
+                        float.TryParse(arg.Substring("--lead=".Length), System.Globalization.NumberStyles.Float,
+                            System.Globalization.CultureInfo.InvariantCulture, out lead);
+                    else if (arg.StartsWith("--pos=", StringComparison.OrdinalIgnoreCase))
+                        pos = arg.Substring("--pos=".Length);
                     else if (arg.StartsWith("--name=", StringComparison.OrdinalIgnoreCase))
                         name = arg.Substring("--name=".Length);
                     else if (arg.StartsWith("--lan=", StringComparison.OrdinalIgnoreCase))
@@ -65,17 +77,28 @@ namespace CatapultGame
                 SetLocalName(name);
 #endif
 
+            if (folder == null && video)
+                folder = "video";
             if (folder == null)
                 return;
 
-            game.Components.Add(new ScreenshotDirector(game, screens, folder, lan, clip, play));
+            game.Components.Add(new ScreenshotDirector(game, screens, folder, lan, clip, play, video, mute, lead, pos));
         }
 
-        ScreenshotDirector(Game game, ScreenManager screens, string folder, string lan, bool clip, bool play)
+        ScreenshotDirector(Game game, ScreenManager screens, string folder, string lan, bool clip, bool play, bool video, bool mute, float lead, string pos)
             : base(game)
         {
+#if !SINGLE_PLAYER
+            leadIn = lead;
+            string[] xy = pos == null ? null : pos.Split(',');
+            int px, py;
+            if (xy != null && xy.Length == 2 && int.TryParse(xy[0], out px) && int.TryParse(xy[1], out py))
+                windowPos = new Point(px, py);
+#endif
             this.clip = clip;
             this.play = play;
+            this.video = video;
+            this.mute = mute;
             this.screens = screens;
             this.folder = Path.GetFullPath(folder);
             Directory.CreateDirectory(this.folder);
@@ -83,14 +106,26 @@ namespace CatapultGame
             UpdateOrder = 1000;
             DrawOrder = 1000; // after everything else, so the frame is complete
 
-            // Quiet while it plays itself
-            SoundEffect.MasterVolume = 0f;
-            try { MediaPlayer.Volume = 0f; } catch (Exception) { }
+            // Quiet while it plays itself. The video wants the sound, unless this copy is muted.
+            if (!video || mute)
+            {
+                SoundEffect.MasterVolume = 0f;
+                try { MediaPlayer.Volume = 0f; } catch (Exception) { }
+            }
 
 #if !SINGLE_PLAYER
             if (lan == "host" || lan == "client")
             {
-                script = LanScript(lan == "host");
+                if (video)
+                {
+                    cueFile = Path.Combine(this.folder, "cues-" + lan + ".csv");
+                    File.WriteAllText(cueFile, "seconds,event\n0.00,clock started at unix ms " +
+                        DateTimeOffset.UtcNow.ToUnixTimeMilliseconds() + "\n");
+                    cueClock = System.Diagnostics.Stopwatch.StartNew();
+                    script = VideoScript(lan == "host");
+                }
+                else
+                    script = LanScript(lan == "host");
                 return;
             }
 #endif
@@ -100,6 +135,10 @@ namespace CatapultGame
         public override void Update(GameTime gameTime)
         {
             clock += (float)gameTime.ElapsedGameTime.TotalSeconds;
+#if !SINGLE_PLAYER
+            if (video)
+                WatchCues();
+#endif
 
             if (waiting == null || waiting())
             {
@@ -114,6 +153,10 @@ namespace CatapultGame
 
         public override void Draw(GameTime gameTime)
         {
+#if !SINGLE_PLAYER
+            if (video)
+                DrawCursor(gameTime);
+#endif
             if (recording && drawCount++ % RecordEvery == 0)
             {
                 pendingShot = "frame" + (savedFrames++).ToString("D4");
@@ -455,25 +498,339 @@ namespace CatapultGame
             }
         }
 
+        // ---- the YouTube video ----------------------------------------------
+        // Each theme is recorded as its own run of the same match (same --seed, same plans), so the
+        // runs can be cut together in post. Dean (the guest) wins; Dominique lands two hits.
+        // A plan entry is: 0 = a hit, HillShot = into the hill, anything else = pixels short of the enemy.
+        const float HillShot = -1f;
+        static readonly float[] HostPlan = { HillShot, 230f, 0f, 170f, 0f, 200f, 120f };
+        static readonly float[] GuestPlan = { 230f, 0f, 0f, 170f, 0f, 0f, 0f };
+
+        float leadIn = 6f;       // --lead=N: seconds on the main menu before it starts, to press record
+        Point? windowPos;        // --pos=x,y: where the window goes, so two copies sit side by side
+        bool windowPlaced;
+
+        // Cue log: what happened when, in wall-clock seconds since the script started, for the edit
+        string cueFile;
+        System.Diagnostics.Stopwatch cueClock;
+        CatapultState lastStateOne, lastStateTwo;
+        int lastScoreOne, lastScoreTwo;
+        bool lastGameOver;
+
+        void Cue(string text)
+        {
+            if (cueFile == null)
+                return;
+            try
+            {
+                File.AppendAllText(cueFile, cueClock.Elapsed.TotalSeconds.ToString("F2",
+                    System.Globalization.CultureInfo.InvariantCulture) + "," + text + "\n");
+            }
+            catch (Exception)
+            {
+            }
+        }
+
+        void WatchCues()
+        {
+            if (!windowPlaced && windowPos.HasValue)
+            {
+                windowPlaced = true;
+                try { Game.Window.Position = windowPos.Value; } catch (Exception) { }
+            }
+
+            var gp = Gameplay();
+            if (gp == null || gp.PlayerOne == null || gp.PlayerTwo == null)
+                return;
+
+            Watch(gp.PlayerOne, ref lastStateOne, ref lastScoreOne);
+            Watch(gp.PlayerTwo, ref lastStateTwo, ref lastScoreTwo);
+            if (gp.IsGameOver != lastGameOver)
+            {
+                lastGameOver = gp.IsGameOver;
+                if (lastGameOver)
+                    Cue("game over");
+            }
+        }
+
+        void Watch(Human p, ref CatapultState last, ref int lastScore)
+        {
+            if (p.Catapult.CurrentState != last)
+            {
+                last = p.Catapult.CurrentState;
+                Cue(p.Name + " " + last);
+            }
+            if (p.Score != lastScore)
+            {
+                lastScore = p.Score;
+                Cue(p.Name + " score " + lastScore);
+            }
+        }
+
+        // -- the on-screen mouse cursor, so the menu walk looks like someone clicking through it
+
+        SpriteBatch cursorBatch;
+        Texture2D cursorTexture;
+        Vector2 cursor = new Vector2(430f, 455f);
+        bool cursorVisible;
+        float rippleAt = -10f;
+
+        void DrawCursor(GameTime gameTime)
+        {
+            if (!cursorVisible)
+                return;
+
+            if (cursorBatch == null)
+            {
+                cursorBatch = new SpriteBatch(GraphicsDevice);
+                Vector2[] arrow = { new Vector2(0, 0), new Vector2(0, 17), new Vector2(4, 13), new Vector2(7, 19.5f),
+                    new Vector2(9.6f, 18.4f), new Vector2(6.6f, 12.2f), new Vector2(12, 12) };
+                var layers = new List<(ShapeArt.Shape, Color)>();
+                foreach (Vector2 o in new[] { new Vector2(-1, 0), new Vector2(1, 0), new Vector2(0, -1), new Vector2(0, 1),
+                    new Vector2(-1, -1), new Vector2(1, 1), new Vector2(-1, 1), new Vector2(1, -1) })
+                    layers.Add((ShapeArt.Poly(Offset(arrow, o + Vector2.One)), Color.Black));
+                layers.Add((ShapeArt.Poly(Offset(arrow, Vector2.One)), Color.White));
+                cursorTexture = ShapeArt.Render(GraphicsDevice, 16, 24, layers.ToArray());
+            }
+
+            cursorBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.LinearClamp,
+                null, null, null, screens.GlobalTransformation);
+
+            float t = clock - rippleAt;
+            if (t >= 0f && t < .45f)
+            {
+                float k = t / .45f;
+                Texture2D disc = ThemeArt.Get(GraphicsDevice).SoftDisc;
+                float size = 16f + 48f * k;
+                cursorBatch.Draw(disc, cursor, null, Color.White * (.7f * (1f - k)), 0f,
+                    new Vector2(disc.Width / 2f, disc.Height / 2f), size / disc.Width, SpriteEffects.None, 0f);
+            }
+            cursorBatch.Draw(cursorTexture, cursor - Vector2.One, Color.White);
+            cursorBatch.End();
+        }
+
+        static Vector2[] Offset(Vector2[] points, Vector2 by)
+        {
+            var result = new Vector2[points.Length];
+            for (int i = 0; i < points.Length; i++)
+                result[i] = points[i] + by;
+            return result;
+        }
+
+        IEnumerable<Func<bool>> MoveCursor(Vector2 to, float seconds)
+        {
+            cursorVisible = true;
+            Vector2 from = cursor;
+            float start = clock;
+            while (clock < start + seconds)
+            {
+                float k = (clock - start) / seconds;
+                k = k * k * (3f - 2f * k);
+                cursor = Vector2.Lerp(from, to, k);
+                yield return () => true;
+            }
+            cursor = to;
+        }
+
+        IEnumerable<Func<bool>> Click(Vector2 at)
+        {
+            foreach (var step in MoveCursor(at, 0.9f))
+                yield return step;
+            yield return Wait(0.25f);
+            rippleAt = clock;
+            yield return Wait(0.2f);
+        }
+
+        // Where an entry's text sits, in the 800x480 the game draws in
+        static bool EntryCentre(GameScreen screen, int entry, out Vector2 centre)
+        {
+            centre = Vector2.Zero;
+            var menu = screen as MenuScreen;
+            if (menu == null)
+                return false;
+            var list = typeof(MenuScreen).GetField("menuEntries",
+                System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)
+                .GetValue(menu) as System.Collections.IList;
+            if (list == null || entry >= list.Count)
+                return false;
+            var e = (MenuEntry)list[entry];
+            centre = e.Position + new Vector2(e.GetWidth(menu) / 2f, e.GetHeight(menu) / 2f + 4f);
+            return true;
+        }
+
+        static Vector2 ReadyButtonCentre()
+        {
+            Rectangle r = new Rectangle(470, 412, 150, 52);
+            try
+            {
+                var field = typeof(LobbyScreen).GetField("readyButton",
+                    System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Static);
+                if (field != null)
+                    r = (Rectangle)field.GetValue(null);
+            }
+            catch (Exception)
+            {
+            }
+            return new Vector2(r.Center.X, r.Center.Y + 4f);
+        }
+
+        // Main menu to the lobby with a visible cursor, then the match, then the victory screen
+        IEnumerator<Func<bool>> VideoScript(bool host)
+        {
+            yield return Wait(leadIn);
+            Cue("start");
+
+            float deadline = clock + 150f;
+            while (clock < deadline)
+            {
+                var top = screens.GetScreens().Last();
+                var lobby = screens.GetScreens().OfType<LobbyScreen>().FirstOrDefault();
+
+                if (lobby != null)
+                {
+                    foreach (var step in VideoLobby(lobby))
+                        yield return step;
+                    foreach (var step in VideoMatch(host))
+                        yield return step;
+                    yield break;
+                }
+
+                int entry = EntryFor(top, host);
+                Vector2 at;
+                if (entry >= 0 && top.ScreenState == ScreenState.Active && EntryCentre(top, entry, out at))
+                {
+                    yield return Wait(0.4f);
+                    foreach (var step in Click(at))
+                        yield return step;
+                    Cue("click " + top.GetType().Name + " entry " + entry);
+                    Press(top, entry);
+                    yield return Wait(1.2f);
+                    continue;
+                }
+                yield return Wait(0.3f);
+            }
+        }
+
+        // Waits for both players to be in, lets the names be read, then clicks Ready
+        IEnumerable<Func<bool>> VideoLobby(LobbyScreen lobby)
+        {
+            yield return Until(() => lobby.Session != null && lobby.Session.AllGamers.Count >= 2 &&
+                lobby.ScreenState == ScreenState.Active, 150f);
+            Cue("both in the lobby");
+            yield return Wait(2.5f);
+
+            foreach (var step in Click(ReadyButtonCentre()))
+                yield return step;
+            Cue("ready");
+            if (lobby.Session != null)
+            {
+                foreach (var gamer in lobby.Session.LocalGamers)
+                    gamer.IsReady = true;
+            }
+            yield return Wait(0.4f);
+            cursorVisible = false;
+        }
+
+        IEnumerable<Func<bool>> VideoMatch(bool host)
+        {
+            GameplayScreen gp = null;
+            yield return Until(() =>
+            {
+                gp = Gameplay();
+                return gp != null && gp.ScreenState == ScreenState.Active && gp.PlayerOne != null;
+            }, 90f);
+            if (gp == null)
+                yield break;
+
+            Human me = host ? gp.PlayerOne : gp.PlayerTwo;
+            Cue("match start; battlefield seed " + Battlefield.Seed + ", hill " + Battlefield.HillCentre +
+                ", wind " + me.Catapult.Wind + ", enemy x " + me.Catapult.EnemyCentre.X);
+            float[] plan = host ? HostPlan : GuestPlan;
+
+            for (int shot = 0; ; shot++)
+            {
+                yield return Until(() => gp.IsGameOver || (host == gp.IsPlayerOneTurn && me.IsActive &&
+                    me.Catapult.CurrentState == CatapultState.Idle), 240f);
+                if (gp.IsGameOver)
+                    break;
+
+                // The plan wins the match in the shots it lists. If it has run out and nobody has
+                // won, a shot that should have hit did not: this take has diverged, so end it
+                // (exit code 3) rather than play on, and let the recording script retake it.
+                if (shot >= plan.Length)
+                {
+                    Cue("DIVERGED: the plan is used up and the match is not over");
+                    Environment.ExitCode = 3;
+                    yield break;
+                }
+                yield return Wait(0.8f);
+                if (gp.IsGameOver)
+                    break;
+
+                Catapult c = me.Catapult;
+                float miss = plan[shot];
+                float enemyX = c.EnemyCentre.X;
+                float target, preferred;
+                if (miss == HillShot) { target = Battlefield.HillCentre; preferred = 50f; }
+                else if (miss > 0f) { target = enemyX + (host ? -miss : miss); preferred = 40f; }
+                else { target = enemyX; preferred = 58f; }
+
+                float angle, speed;
+                Solve(c, target, preferred, out speed, out angle);
+                float strength = (speed - Player.MinShotStrength) / (Player.MaxShotStrength - Player.MinShotStrength);
+                Cue(me.Name + " shot " + (shot + 1) + (miss == 0f ? " aims to hit" : " aims to miss"));
+
+                // Pull back slowly so the arrow and readouts can be read, then hold
+                const float pull = 1.8f, hold = 0.6f;
+                float start = clock;
+                while (clock < start + pull + hold)
+                {
+                    float k = MathHelper.Clamp((clock - start) / pull, 0f, 1f);
+                    k = k * k * (3f - 2f * k);
+                    me.PoseDrag(MathHelper.Lerp(angle - .17f, angle, k), MathHelper.Lerp(.08f, strength, k));
+                    gp.SetDragging(true);
+                    yield return () => true;
+                }
+                me.PoseDrag(angle, strength);
+                yield return () => true;
+                me.ReleaseDrag();
+                gp.SetDragging(false);
+                yield return Wait(0.5f);
+            }
+
+            // The victory screen, for the recording to hold on before the game quits
+            yield return Wait(9f);
+            Cue("end");
+        }
+
+        // Which entry to press on whichever menu is showing, or -1
+        static int EntryFor(GameScreen top, bool host)
+        {
+            int entry = -1;
+            if (top is MainMenuScreen) entry = 0;                    // Play
+            else if (top is PlayMenuScreen) entry = 1;               // Multi Player on LAN
+            else if (top is CreateOrFindSessionScreen) entry = host ? 0 : 1; // Create / Find
+            else if (top is JoinSessionScreen) entry = 0;            // first game found
+            return top is MenuScreen ? entry : -1;
+        }
+
+        static void Press(GameScreen top, int entry)
+        {
+            var method = typeof(MenuScreen).GetMethod("OnSelectEntry",
+                System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance,
+                null, new[] { typeof(int), typeof(PlayerIndex) }, null);
+            method.Invoke(top, new object[] { entry, PlayerIndex.One });
+        }
+
         // Presses the right menu entry on whichever menu is showing
         void Select(GameScreen top, bool host)
         {
             if (top.ScreenState != ScreenState.Active)
                 return;
 
-            int entry = -1;
-            if (top is MainMenuScreen) entry = 0;                    // Play
-            else if (top is PlayMenuScreen) entry = 1;               // Multi Player on LAN
-            else if (top is CreateOrFindSessionScreen) entry = host ? 0 : 1; // Create / Find
-            else if (top is JoinSessionScreen) entry = 0;            // first game found
-
-            if (entry < 0 || !(top is MenuScreen))
-                return;
-
-            var method = typeof(MenuScreen).GetMethod("OnSelectEntry",
-                System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance,
-                null, new[] { typeof(int), typeof(PlayerIndex) }, null);
-            method.Invoke(top, new object[] { entry, PlayerIndex.One });
+            int entry = EntryFor(top, host);
+            if (entry >= 0)
+                Press(top, entry);
         }
 #endif
     }
