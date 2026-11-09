@@ -78,11 +78,13 @@ namespace CatapultGame
                 Bobble = new Color(246, 248, 252),
             },
 
-            // A red-nosed reindeer in the woods, to the right of the middle
+            // A red-nosed reindeer on the far hillside, out of the way of the shots. It stands on the
+            // skyline of the angled hill (which rises about 15 degrees to the right) and leans to match.
             MascotArt = BuildReindeer,
-            MascotFeet = new Vector2(548, 384),
+            MascotFeet = new Vector2(520, 311),
             MascotOrigin = new Vector2(28, 48),
-            MascotScale = .85f,
+            MascotScale = .75f,
+            MascotRotation = MathHelper.ToRadians(-15f),
             MascotGlowOffsets = new[] { new Vector2(-23.5f, -33.5f), new Vector2(-24f, -13f) },
             MascotGlow = new Color(255, 40, 30, 0),
             MascotGlowSize = 26f,

@@ -161,13 +161,16 @@ namespace CatapultGame
 
             // Head up most of the time, bending to graze now and then
             int frame = (time % 8f) > 6f && textures.Mascot.Length > 1 ? 1 : 0;
-            spriteBatch.Draw(textures.Mascot[frame], theme.MascotFeet, null, Color.White, 0f,
+            spriteBatch.Draw(textures.Mascot[frame], theme.MascotFeet, null, Color.White, theme.MascotRotation,
                 theme.MascotOrigin, theme.MascotScale, SpriteEffects.None, 0f);
 
             if (theme.MascotGlowOffsets != null && frame < theme.MascotGlowOffsets.Length)
             {
                 float pulse = .65f + .35f * (float)Math.Sin(time * 3.2f);
-                Vector2 nose = theme.MascotFeet + theme.MascotGlowOffsets[frame] * theme.MascotScale;
+                // The glow offset is measured on the upright sprite, so it tilts with it
+                Vector2 o = theme.MascotGlowOffsets[frame] * theme.MascotScale;
+                float cos = (float)Math.Cos(theme.MascotRotation), sin = (float)Math.Sin(theme.MascotRotation);
+                Vector2 nose = theme.MascotFeet + new Vector2(o.X * cos - o.Y * sin, o.X * sin + o.Y * cos);
                 spriteBatch.Draw(art.Glow, nose, null, theme.MascotGlow * pulse, 0f,
                     new Vector2(32, 32), theme.MascotGlowSize / 64f, SpriteEffects.None, 0f);
             }

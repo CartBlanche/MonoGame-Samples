@@ -110,6 +110,8 @@ namespace CatapultGame
         public Vector2 MascotFeet { get; init; }
         public Vector2 MascotOrigin { get; init; }
         public float MascotScale { get; init; } = 1f;
+        /// <summary>Tilt in radians about the feet, to lie along a slope (negative leans the head down to the left).</summary>
+        public float MascotRotation { get; init; }
         public Vector2[] MascotGlowOffsets { get; init; }
         public Color MascotGlow { get; init; }
         public float MascotGlowSize { get; init; }
