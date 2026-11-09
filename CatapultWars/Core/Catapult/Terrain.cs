@@ -21,6 +21,11 @@ namespace CatapultGame
         const int BottomY = 480;
 
         static readonly float[] surface = new float[Width];
+
+        // Snow lying on the ground (themes with a snow cap): thickness per column, dug away by craters
+        static readonly float[] snow = new float[Width];
+        static Color snowColor;
+        static float snowThickness;
         static Texture2D texture;
         static bool dirty = true;
 
@@ -37,12 +42,20 @@ namespace CatapultGame
                 surface[x] = GroundY - Battlefield.HillAt(x);
             }
 
+            ResetSnow();
+
             if (texture != null)
             {
                 texture.Dispose();
                 texture = null;
             }
             dirty = true;
+        }
+
+        static void ResetSnow()
+        {
+            for (int x = 0; x < Width; x++)
+                snow[x] = snowThickness;
         }
 
         // Ground under the catapults and their crews is never dug out, so nobody floats
@@ -70,6 +83,10 @@ namespace CatapultGame
 
         		float dig = depth * 0.5f * (1f + (float)Math.Cos(Math.PI * d / radius));
         		surface[i] = Math.Min(surface[i] + dig, GroundY + MaxDepth);
+
+        		// The middle of a crater is bare earth; towards its edge the snow stays as a rim
+        		if (snowThickness > 0f)
+        			snow[i] *= 1f - MathHelper.Clamp(dig / (depth * 0.45f), 0f, 1f);
         	}
         	dirty = true;
         }
@@ -114,6 +131,7 @@ namespace CatapultGame
         static Color tint = Color.White;
         static Color[] cavity;
         static Color[] rebuildBuffer;
+        static Color? craterColor; // earth that shows in the middle of a crater, instead of the hillside
 
         // A row just above the ground band, where the background is hillside, sampled for crater colour
         const int SampleRow = 376;
@@ -126,14 +144,11 @@ namespace CatapultGame
         {
             Color foregroundTint = theme.ForegroundTint, mountainTint = theme.MountainTint;
             tint = foregroundTint;
+            snowThickness = theme.SnowCap.HasValue ? theme.SnowCapThickness : 0f;
+            snowColor = theme.SnowCap ?? Color.White;
+            ResetSnow();
+            craterColor = theme.CraterColor;
             cavity = new Color[Width];
-            if (theme.CraterColor.HasValue)
-            {
-                for (int x = 0; x < Width; x++)
-                    cavity[x] = theme.CraterColor.Value;
-                dirty = true;
-                return;
-            }
 
             var fg = new Color[foreground.Width * foreground.Height];
             var mt = new Color[mountain.Width * mountain.Height];
@@ -164,6 +179,16 @@ namespace CatapultGame
             return new Color(c.R * t.R / 255, c.G * t.G / 255, c.B * t.B / 255, (int)c.A);
         }
 
+        // Colour of the ground at row y: earth, or snow within cap pixels of the surface s
+        static Color Surface(int y, float s, float cap)
+        {
+            Color earth = Multiply(Earth, tint);
+            if (cap <= 0f)
+                return earth;
+            float k = MathHelper.Clamp(s + cap - (y + .5f) + .5f, 0f, 1f);
+            return Color.Lerp(earth, snowColor, k);
+        }
+
         static void Rebuild()
         {
             int h = BottomY - TopY;
@@ -175,17 +200,25 @@ namespace CatapultGame
             for (int x = 0; x < Width; x++)
             {
                 float s = surface[x];
+                float cap = snowThickness > 0f ? snow[x] : 0f;
                 if (Math.Abs(s - GroundY) < 0.25f)
-                    continue; // flat ground, the background art already draws it
+                {
+                    // Flat ground: the background art already draws it, apart from any snow on top
+                    for (int y = (int)s; cap > 0f && y <= (int)(s + cap) + 1 && y < BottomY; y++)
+                    {
+                        float coverage = MathHelper.Clamp(y + 1 - s, 0f, 1f);
+                        pixels[(y - TopY) * Width + x] = Surface(y, s, cap) * coverage;
+                    }
+                    continue;
+                }
 
                 if (s < GroundY)
                 {
-                    // Raised ground: plain earth, with a soft edge at the top
+                    // Raised ground: plain earth under any snow, with a soft edge at the top
                     for (int y = (int)s; y < BottomY; y++)
                     {
                         float coverage = MathHelper.Clamp(y + 1 - s, 0f, 1f);
-                                                Color c = Multiply(Earth, tint);
-                        pixels[(y - TopY) * Width + x] = c * coverage;
+                        pixels[(y - TopY) * Width + x] = Surface(y, s, cap) * coverage;
                     }
                 }
                 else
@@ -196,7 +229,15 @@ namespace CatapultGame
                         // Premultiplied blend of earth over cavity along the soft edge
                         float coverage = MathHelper.Clamp(y + 1 - s, 0f, 1f);
                         Color back = cavity != null ? cavity[x] : Cavity;
-                        Color e = Multiply(Earth, tint) * coverage, c = back * (1f - coverage);
+                        if (craterColor.HasValue)
+                        {
+                            // Brown earth in the bare middle of the crater, fading to the hillside at its
+                            // rim and towards the top, so the hole has no hard edges
+                            float bare = snowThickness > 0f ? 1f - snow[x] / snowThickness : 1f;
+                            float down = MathHelper.Clamp((y - (GroundY - 12f)) / 12f, 0f, 1f);
+                            back = Color.Lerp(back, craterColor.Value, bare * down);
+                        }
+                        Color e = Surface(y, s, cap) * coverage, c = back * (1f - coverage);
                         pixels[(y - TopY) * Width + x] = new Color(e.R + c.R, e.G + c.G, e.B + c.B, 255);
                     }
                 }

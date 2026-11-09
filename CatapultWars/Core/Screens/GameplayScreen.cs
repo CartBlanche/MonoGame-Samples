@@ -53,6 +53,7 @@ namespace CatapultGame
 		Texture2D ammoTypeTexture;
 		ThemeDefinition theme;
 		ThemeDecor decor;
+		WindEffect windEffect;
 		// The crew beside each catapult, and the scores they last reacted to
 		CatapultMan manOne;
 		CatapultMan manTwo;
@@ -168,7 +169,17 @@ namespace CatapultGame
 			ammoTypeTexture = Load<Texture2D>("Textures/HUD/ammoType");
 			// Seasonal look, decided once per game
 			theme = Theme.Active;
+			if (theme.FrostForeground > 0f || theme.FrostMountain > 0f || theme.FrostClouds > 0f)
+			{
+				// Snowy layers are built once from the daytime art and shared
+				ThemeArt art = ThemeArt.Get(ScreenManager.GraphicsDevice);
+				cloud1Texture = art.Frost(theme, cloud1Texture, theme.FrostClouds);
+				cloud2Texture = art.Frost(theme, cloud2Texture, theme.FrostClouds);
+				mountainTexture = art.Frost(theme, mountainTexture, theme.FrostMountain);
+				foregroundTexture = art.Frost(theme, foregroundTexture, theme.FrostForeground);
+			}
 			decor = theme.IsStyled ? new ThemeDecor(ScreenManager.GraphicsDevice, theme) : null;
+			windEffect = theme.WindParticles != null ? new WindEffect(ScreenManager.GraphicsDevice, theme) : null;
 			Terrain.Prepare(foregroundTexture, mountainTexture, theme);
 
 			// Load font
@@ -387,6 +398,9 @@ namespace CatapultGame
 					decor.Scatter();
 				wasHit = hitNow;
 			}
+
+			if (windEffect != null)
+				windEffect.Update(elapsed, playerOne.Catapult.Wind);
 
 			UpdateMen(elapsed);
 
@@ -987,6 +1001,10 @@ namespace CatapultGame
 			ScreenManager.SpriteBatch.Draw(foregroundTexture,
 				Vector2.Zero, theme.ForegroundTint);
 
+			// Anything standing in the woods sits behind the hill
+			if (decor != null)
+				decor.DrawBackdrop(ScreenManager.SpriteBatch);
+
 			// The hill between the catapults
 			Terrain.Draw(ScreenManager.SpriteBatch);
 
@@ -996,6 +1014,9 @@ namespace CatapultGame
 				decor.DrawGameLights(ScreenManager.SpriteBatch);
 				decor.DrawFlyers(ScreenManager.SpriteBatch, 1f);
 			}
+
+			if (windEffect != null)
+				windEffect.Draw(ScreenManager.SpriteBatch);
 		}
 
 		/// <summary>

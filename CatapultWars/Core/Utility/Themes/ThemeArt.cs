@@ -11,7 +11,7 @@ namespace CatapultGame
     public sealed class ThemeTextures
     {
         public Texture2D Sky, TitleShade, Body, Projectile, Prop, WindParticle;
-        public Texture2D[] Flyers;
+        public Texture2D[] Flyers, Mascot;
     }
 
     /// <summary>
@@ -59,6 +59,50 @@ namespace CatapultGame
             return t;
         }
 
+        readonly Dictionary<(ThemeDefinition, Texture2D), Texture2D> frosted =
+            new Dictionary<(ThemeDefinition, Texture2D), Texture2D>();
+
+        /// <summary>
+        /// A copy of a daytime layer with its bright parts washed toward the theme's frost colour.
+        /// Built once per source texture (the screens ask while loading) and then shared.
+        /// </summary>
+        public Texture2D Frost(ThemeDefinition theme, Texture2D source, float amount)
+        {
+            if (amount <= 0f)
+                return source;
+
+            Texture2D result;
+            if (frosted.TryGetValue((theme, source), out result))
+                return result;
+
+            Color[] data = new Color[source.Width * source.Height];
+            source.GetData(data);
+            float sr = theme.FrostColor.R, sg = theme.FrostColor.G, sb = theme.FrostColor.B;
+
+            for (int i = 0; i < data.Length; i++)
+            {
+                Color c = data[i];
+                if (c.A == 0)
+                    continue;
+
+                // Work on the straight colour: the textures are premultiplied
+                float a = c.A / 255f;
+                float r = c.R / a, g = c.G / a, b = c.B / a;
+                float lum = (.3f * r + .59f * g + .11f * b) / 255f;
+                float t = MathHelper.Clamp((lum - .38f) / .28f, 0f, 1f);
+                float k = amount * t * t * (3f - 2f * t);
+
+                r += (sr - r) * k; g += (sg - g) * k; b += (sb - b) * k;
+                data[i] = new Color((int)Math.Min(255f, r * a), (int)Math.Min(255f, g * a),
+                    (int)Math.Min(255f, b * a), (int)c.A);
+            }
+
+            result = new Texture2D(device, source.Width, source.Height);
+            result.SetData(data);
+            frosted[(theme, source)] = result;
+            return result;
+        }
+
         ThemeTextures Build(ThemeDefinition d)
         {
             var t = new ThemeTextures();
@@ -74,8 +118,10 @@ namespace CatapultGame
                 t.Prop = d.PropArt == d.ProjectileArt && t.Projectile != null ? t.Projectile : d.PropArt(device);
             if (d.FlyerArt != null)
                 t.Flyers = d.FlyerArt(device);
-            if (d.WindParticleArt != null)
-                t.WindParticle = d.WindParticleArt(device);
+            if (d.MascotArt != null)
+                t.Mascot = d.MascotArt(device);
+            if (d.WindParticles != null && d.WindParticles.Art != null)
+                t.WindParticle = d.WindParticles.Art(device);
             return t;
         }
 

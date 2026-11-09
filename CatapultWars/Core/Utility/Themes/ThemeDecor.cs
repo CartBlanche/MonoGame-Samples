@@ -37,6 +37,16 @@ namespace CatapultGame
             new Vector2(665, 348), new Vector2(735, 384),
         };
 
+        // Where the foliage clumps of the trees in the gameplay foreground are, for strings of lights
+        static readonly Vector2[] GameTreeLights =
+        {
+            new Vector2(80, 118), new Vector2(70, 166), new Vector2(52, 200), new Vector2(92, 240),
+            new Vector2(38, 278), new Vector2(98, 302),
+            new Vector2(618, 90), new Vector2(598, 150), new Vector2(660, 166), new Vector2(654, 196),
+            new Vector2(612, 230), new Vector2(698, 256), new Vector2(618, 292), new Vector2(664, 322),
+            new Vector2(790, 116), new Vector2(774, 180), new Vector2(758, 236), new Vector2(788, 214),
+        };
+
         class Star { public Vector2 Position; public float Size; public float Phase; }
         class Flyer { public float X, BaseY, Scale, Speed, Phase, Amplitude, Flee, Up; }
 
@@ -142,11 +152,53 @@ namespace CatapultGame
         }
 
         /// <summary>
+        /// Behind the hills: the creature in the woods, if the theme has one.
+        /// </summary>
+        public void DrawBackdrop(SpriteBatch spriteBatch)
+        {
+            if (textures.Mascot == null)
+                return;
+
+            // Head up most of the time, bending to graze now and then
+            int frame = (time % 8f) > 6f && textures.Mascot.Length > 1 ? 1 : 0;
+            spriteBatch.Draw(textures.Mascot[frame], theme.MascotFeet, null, Color.White, 0f,
+                theme.MascotOrigin, theme.MascotScale, SpriteEffects.None, 0f);
+
+            if (theme.MascotGlowOffsets != null && frame < theme.MascotGlowOffsets.Length)
+            {
+                float pulse = .65f + .35f * (float)Math.Sin(time * 3.2f);
+                Vector2 nose = theme.MascotFeet + theme.MascotGlowOffsets[frame] * theme.MascotScale;
+                spriteBatch.Draw(art.Glow, nose, null, theme.MascotGlow * pulse, 0f,
+                    new Vector2(32, 32), theme.MascotGlowSize / 64f, SpriteEffects.None, 0f);
+            }
+        }
+
+        /// <summary>
         /// Flickering windows and lanterns for the battlefield.
         /// </summary>
         public void DrawGameLights(SpriteBatch spriteBatch)
         {
             DrawLights(spriteBatch, GameWindows, GameLanterns, 1f);
+            DrawTreeLights(spriteBatch);
+        }
+
+        // Coloured bulbs that swell and dim in turn, so the string seems to chase along the trees
+        void DrawTreeLights(SpriteBatch spriteBatch)
+        {
+            Color[] colors = theme.TreeLightColors;
+            if (colors == null || colors.Length == 0)
+                return;
+
+            for (int i = 0; i < GameTreeLights.Length; i++)
+            {
+                float twinkle = .55f + .45f * (float)Math.Sin(time * 2.4f + i * 1.9f);
+                Color c = colors[i % colors.Length];
+                Vector2 p = GameTreeLights[i];
+
+                spriteBatch.Draw(art.Glow, p, null, new Color((int)c.R, (int)c.G, (int)c.B, 0) * (.9f * twinkle), 0f,
+                    new Vector2(32, 32), 24f / 64f, SpriteEffects.None, 0f);
+                spriteBatch.Draw(art.Pixel, new Rectangle((int)p.X - 1, (int)p.Y - 1, 3, 3), c * (.55f + .45f * twinkle));
+            }
         }
 
         /// <summary>

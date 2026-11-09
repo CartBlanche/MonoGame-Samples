@@ -14,7 +14,7 @@ namespace CatapultGame
             Name = "none",
         };
 
-        public static readonly ThemeDefinition[] All = { Classic, HalloweenTheme.Definition };
+        public static readonly ThemeDefinition[] All = { Classic, HalloweenTheme.Definition, WinterTheme.Definition };
 
         public static ThemeDefinition For(Season season)
         {

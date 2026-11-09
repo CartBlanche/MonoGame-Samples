@@ -13,6 +13,7 @@ namespace CatapultGame
         public enum Mood { Idle, Cheer, Fist }
 
         readonly Texture2D[][] frames;   // [mood][frame]
+        readonly Vector2 origin;
         Vector2 feet;
         readonly SpriteEffects effects;
 
@@ -26,7 +27,9 @@ namespace CatapultGame
         /// <param name="facingRight">Which way he looks: towards the enemy.</param>
         public CatapultMan(GraphicsDevice device, Vector2 feet, bool blueTeam, bool facingRight)
         {
-            frames = CatapultMenArt.Get(device).Frames(blueTeam);
+            CatapultMenArt art = CatapultMenArt.Get(device);
+            frames = art.Frames(blueTeam);
+            origin = art.Feet;
             this.feet = feet;
             effects = facingRight ? SpriteEffects.None : SpriteEffects.FlipHorizontally;
         }
@@ -71,7 +74,7 @@ namespace CatapultGame
             float rate = mood == Mood.Idle ? 1.5f : mood == Mood.Cheer ? 5f : 9f;
             Texture2D[] set = frames[(int)mood];
             Texture2D frame = set[(int)(clock * rate) % set.Length];
-            spriteBatch.Draw(frame, feet, null, Color.White, 0f, CatapultMenArt.Feet, 1f, effects, 0f);
+            spriteBatch.Draw(frame, feet, null, Color.White, 0f, origin, 1f, effects, 0f);
         }
     }
 
@@ -82,10 +85,16 @@ namespace CatapultGame
     class CatapultMenArt
     {
         public const int Width = 44;
-        public const int Height = 48;
+        const int BaseHeight = 48;
+
+        // A hat that stands above the head needs room above the figure
+        const int HatRoom = 8;
+
+        readonly int pad;
+        public int Height { get { return BaseHeight + pad; } }
 
         /// <summary>The point in each texture that sits on the ground.</summary>
-        public static readonly Vector2 Feet = new Vector2(22, 46);
+        public Vector2 Feet { get { return new Vector2(22, 46 + pad); } }
 
         static readonly Color Skin = new Color(238, 196, 146);
         static readonly Color Cap = new Color(150, 98, 52);
@@ -97,13 +106,17 @@ namespace CatapultGame
 
         static CatapultMenArt instance;
         static GraphicsDevice instanceDevice;
+        static CrewHat instanceHat;
 
+        /// <summary>The crew in the current theme's hat. Built once, and again if the theme changes.</summary>
         public static CatapultMenArt Get(GraphicsDevice device)
         {
-            if (instance == null || instanceDevice != device)
+            CrewHat hat = Theme.Active.CrewHat;
+            if (instance == null || instanceDevice != device || instanceHat != hat)
             {
-                instance = new CatapultMenArt(device);
+                instance = new CatapultMenArt(device, hat);
                 instanceDevice = device;
+                instanceHat = hat;
             }
             return instance;
         }
@@ -113,41 +126,42 @@ namespace CatapultGame
             return teams[blueTeam ? 0 : 1];
         }
 
-        CatapultMenArt(GraphicsDevice gd)
+        CatapultMenArt(GraphicsDevice gd, CrewHat hat)
         {
-            teams[0] = Build(gd, new Color(52, 100, 206), new Color(30, 62, 140));
-            teams[1] = Build(gd, new Color(208, 62, 52), new Color(140, 36, 30));
+            pad = hat != null ? HatRoom : 0;
+            teams[0] = Build(gd, new Color(52, 100, 206), new Color(30, 62, 140), hat, pad);
+            teams[1] = Build(gd, new Color(208, 62, 52), new Color(140, 36, 30), hat, pad);
         }
 
         // Arm angles are measured from hanging straight down: 90 points forward, 180 straight up.
-        static Texture2D[][] Build(GraphicsDevice gd, Color tunic, Color belt)
+        static Texture2D[][] Build(GraphicsDevice gd, Color tunic, Color belt, CrewHat hat, int pad)
         {
             return new[]
             {
                 // Idle: standing about, drawing breath
                 new[]
                 {
-                    Figure(gd, tunic, belt, 0f, -24f, 24f, Face.Smile),
-                    Figure(gd, tunic, belt, 1f, -18f, 18f, Face.Smile),
+                    Figure(gd, hat, pad, tunic, belt, 0f, -24f, 24f, Face.Smile),
+                    Figure(gd, hat, pad, tunic, belt, 1f, -18f, 18f, Face.Smile),
                 },
                 // Cheer: both arms up, bouncing
                 new[]
                 {
-                    Figure(gd, tunic, belt, 3f, -150f, 150f, Face.Cheer),
-                    Figure(gd, tunic, belt, 0f, -172f, 172f, Face.Cheer),
+                    Figure(gd, hat, pad, tunic, belt, 3f, -150f, 150f, Face.Cheer),
+                    Figure(gd, hat, pad, tunic, belt, 0f, -172f, 172f, Face.Cheer),
                 },
                 // Fist: both fists raised and shaking, scowling
                 new[]
                 {
-                    Figure(gd, tunic, belt, 0f, -112f, 142f, Face.Angry),
-                    Figure(gd, tunic, belt, 1f, -140f, 112f, Face.Angry),
+                    Figure(gd, hat, pad, tunic, belt, 0f, -112f, 142f, Face.Angry),
+                    Figure(gd, hat, pad, tunic, belt, 1f, -140f, 112f, Face.Angry),
                 },
             };
         }
 
         enum Face { Smile, Cheer, Angry }
 
-        static Texture2D Figure(GraphicsDevice gd, Color tunic, Color belt, float lift,
+        static Texture2D Figure(GraphicsDevice gd, CrewHat hat, int pad, Color tunic, Color belt, float lift,
             float backArm, float frontArm, Face face)
         {
             float cx = 22f, up = -lift;
@@ -169,9 +183,23 @@ namespace CatapultGame
 
             // Head, with a leather cap
             layers.Add((ShapeArt.Ellipse(cx, 14 + up, 7f, 7f), Skin));
-            var cap = ShapeArt.Ellipse(cx, 11.5f + up, 7.8f, 6.2f);
-            float capBottom = 12f + up;
-            layers.Add(((x, y) => y <= capBottom && cap(x, y), Cap));
+            if (hat == null)
+            {
+                var cap = ShapeArt.Ellipse(cx, 11.5f + up, 7.8f, 6.2f);
+                float capBottom = 12f + up;
+                layers.Add(((x, y) => y <= capBottom && cap(x, y), Cap));
+            }
+            else
+            {
+                // A pointed hat with a fluffy brim; the tip flops back over the shoulder
+                layers.Add((ShapeArt.Poly(
+                    new Vector2(cx - 7.2f, 9.8f + up), new Vector2(cx + 6.8f, 9.8f + up),
+                    new Vector2(cx + 3.5f, 1.5f + up), new Vector2(cx - 2f, -3.5f + up),
+                    new Vector2(cx - 8.8f, -2.8f + up), new Vector2(cx - 8.4f, 0.2f + up),
+                    new Vector2(cx - 5f, 3.2f + up)), hat.Body));
+                layers.Add((Capsule(new Vector2(cx - 7.4f, 10.2f + up), new Vector2(cx + 7f, 10.2f + up), 1.9f), hat.Trim));
+                layers.Add((ShapeArt.Ellipse(cx - 9f, -2.8f + up, 2.3f, 2.3f), hat.Bobble));
+            }
 
             // Face
             Color ink = Ink;
@@ -200,7 +228,17 @@ namespace CatapultGame
 
             var list = new (ShapeArt.Shape, Color)[layers.Count];
             layers.CopyTo(list);
-            return ShapeArt.Render(gd, Width, Height, list);
+
+            // Make room above for a hat by moving the whole figure down
+            if (pad > 0)
+            {
+                for (int i = 0; i < list.Length; i++)
+                {
+                    ShapeArt.Shape shape = list[i].Item1;
+                    list[i].Item1 = (x, y) => shape(x, y - pad);
+                }
+            }
+            return ShapeArt.Render(gd, Width, BaseHeight + pad, list);
         }
 
         static void AddArm(System.Collections.Generic.List<(ShapeArt.Shape, Color)> layers,

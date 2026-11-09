@@ -37,6 +37,23 @@ namespace CatapultGame
         public Color MountainTint { get; init; } = Color.White;
         public Color ForegroundTint { get; init; } = Color.White;
 
+        /// <summary>
+        /// Frost: how far the bright parts of a daytime layer (hills, castle, clouds) are washed toward
+        /// <see cref="FrostColor"/>, 0 to 1. Dark parts, such as the ground band, are left alone.
+        /// </summary>
+        public Color FrostColor { get; init; } = Color.White;
+        public float FrostClouds { get; init; }
+        public float FrostMountain { get; init; }
+        public float FrostForeground { get; init; }
+        public float FrostTitle { get; init; }
+
+        /// <summary>
+        /// Snow lying on the ground: a cap of this colour and thickness (pixels) on every column of
+        /// the terrain. Craters dig it away and leave a rim. Null means no snow.
+        /// </summary>
+        public Color? SnowCap { get; init; }
+        public float SnowCapThickness { get; init; }
+
         /// <summary>When set, craters show this colour instead of the hillside behind the ground.</summary>
         public Color? CraterColor { get; init; }
 
@@ -82,7 +99,30 @@ namespace CatapultGame
         public Vector2 FlyerOrigin { get; init; }
         public int FlyerCount { get; init; }
 
-        /// <summary>Sprite for particles blown by the wind. Not used yet.</summary>
-        public Func<GraphicsDevice, Texture2D> WindParticleArt { get; init; }
+        /// <summary>Coloured lights on the trees that twinkle in turn. Null or empty means none.</summary>
+        public Color[] TreeLightColors { get; init; }
+
+        /// <summary>A hat for the catapult crews. Null keeps the leather cap.</summary>
+        public CrewHat CrewHat { get; init; }
+
+        // A little creature standing in the woods behind the battlefield (frames: head up, head down)
+        public Func<GraphicsDevice, Texture2D[]> MascotArt { get; init; }
+        public Vector2 MascotFeet { get; init; }
+        public Vector2 MascotOrigin { get; init; }
+        public float MascotScale { get; init; } = 1f;
+        public Vector2[] MascotGlowOffsets { get; init; }
+        public Color MascotGlow { get; init; }
+        public float MascotGlowSize { get; init; }
+
+        /// <summary>Things carried on the wind (snow, leaves, embers). Null means none.</summary>
+        public WindParticleSpec WindParticles { get; init; }
+    }
+
+    /// <summary>A hat for the crews, as colours; the crew art draws the shape.</summary>
+    public sealed class CrewHat
+    {
+        public Color Body { get; init; }
+        public Color Trim { get; init; }
+        public Color Bobble { get; init; }
     }
 }

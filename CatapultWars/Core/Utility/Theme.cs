@@ -10,6 +10,7 @@ namespace CatapultGame
     {
         None,
         Halloween,
+        Winter,
     }
 
     /// <summary>

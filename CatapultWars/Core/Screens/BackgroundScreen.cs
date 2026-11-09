@@ -35,6 +35,8 @@ namespace CatapultGame
             ThemeArt art = ThemeArt.Get(ScreenManager.GraphicsDevice);
             art.For(Theme.Active);
             art.For(Theme.DateTheme);
+            art.Frost(Theme.Active, background, Theme.Active.FrostTitle);
+            art.Frost(Theme.DateTheme, background, Theme.DateTheme.FrostTitle);
         }
 
         /// <summary>
@@ -61,6 +63,15 @@ namespace CatapultGame
                  new Color(255, 255, 255, TransitionAlpha));
 
             Theme.Fade((float)gameTime.ElapsedGameTime.TotalSeconds);
+
+            // A snowy title is the frosted art fading in over the daytime one
+            if (Theme.Blend > 0f && Theme.Shown.FrostTitle > 0f)
+            {
+                Texture2D snowy = ThemeArt.Get(ScreenManager.GraphicsDevice)
+                    .Frost(Theme.Shown, background, Theme.Shown.FrostTitle);
+                spriteBatch.Draw(snowy, new Vector2(0, 0),
+                    new Color(255, 255, 255, TransitionAlpha) * Theme.Blend);
+            }
 
             if (Theme.Blend > 0f && Theme.Shown.IsStyled)
             {
