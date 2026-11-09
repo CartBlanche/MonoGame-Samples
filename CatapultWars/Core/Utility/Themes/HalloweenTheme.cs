@@ -62,6 +62,26 @@ namespace CatapultGame
             PropGlow = new Color(255, 170, 50, 0),
             PropGlowSize = 92f,
 
+            // Embers drifting up from the ground, pushed along by the wind
+            WindParticles = new WindParticleSpec
+            {
+                Rate = 14f,
+                WindPush = 10f,
+                Layers = new[]
+                {
+                    new WindParticleLayer
+                    {
+                        Share = 1f, Size = 3f, SizeRandom = 2f, Gravity = -24f, Opacity = .85f,
+                        Tint = new Color(255, 150, 50), Life = 10f, LifeRandom = 4f, Additive = true,
+                    },
+                    new WindParticleLayer
+                    {
+                        Share = .35f, Size = 7f, SizeRandom = 3f, Gravity = -16f, Opacity = .28f,
+                        Tint = new Color(255, 110, 30), Life = 9f, LifeRandom = 3f, Additive = true,
+                    },
+                },
+            },
+
             FlyerArt = BuildBats,
             FlyerOrigin = BatOrigin,
             FlyerCount = 9,

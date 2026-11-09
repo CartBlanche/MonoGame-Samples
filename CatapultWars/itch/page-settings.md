@@ -37,5 +37,5 @@ Use `theme.css` in this folder in the "Custom CSS" box.
 
 ## Retaking the screenshots
 The game can take its own: `--screenshots=<folder>` plays a scripted round against the AI and saves 800x480 PNGs
-(`instructions`, `aiming`, `slowmo`, `hit`, `victory`). Add `--clip` to save every 4th frame of one shot instead, and stitch them with ImageMagick (`magick -delay 7 frame*.png ... cover.gif`).. Add `--theme=none` for the plain look or `--theme=halloween`.
+(`instructions`, `aiming`, `slowmo`, `hit`, `victory`). Add `--clip` to save every 4th frame of one shot instead, and stitch them with ImageMagick. `itch/make-cover.sh <theme> [--seed N]` does all of it and writes `itch/cover-<theme>.gif` (630x500, 128 colours, thinned automatically to stay under 3 MB).. Add `--theme=none` for the plain look or `--theme=halloween`.
 For the lobby shot start two copies: `--screenshots=<folder> --lan=host`, then about 9 seconds later `--screenshots=<other folder> --lan=client --name="Roger Gracie"` (`--name` sets that copy's player name). Add `--play` to both to carry on into a LAN match: the host fires, then the client pulls back on the red side and fires (the client's `lan-client-view.png` is the red-side shot).

@@ -1,5 +1,6 @@
 using System;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace CatapultGame
 {
@@ -12,7 +13,39 @@ namespace CatapultGame
         {
             Id = Season.None,
             Name = "none",
+
+            // A few leaves tumbling across the battlefield, in the greens and golds of the trees
+            WindParticles = new WindParticleSpec
+            {
+                Art = BuildLeaf,
+                Rate = 5f,
+                WindPush = 10f,
+                Layers = new[]
+                {
+                    Leaf(new Color(150, 188, 72)),
+                    Leaf(new Color(196, 204, 84)),
+                    Leaf(new Color(206, 152, 72)),
+                },
+            },
         };
+
+        static WindParticleLayer Leaf(Color tint)
+        {
+            return new WindParticleLayer
+            {
+                Size = 11f, SizeRandom = 5f, Gravity = 30f, WindInfluence = 1.2f, Opacity = .92f,
+                Tint = tint, Life = 13f, LifeRandom = 3f, Spin = -1.6f, SpinRandom = 3.2f,
+            };
+        }
+
+        // A pointed leaf with a pale vein, white so the layer's tint colours it
+        static Texture2D BuildLeaf(GraphicsDevice gd)
+        {
+            return ShapeArt.Render(gd, 16, 10,
+                (ShapeArt.Poly(new Vector2(.5f, 5f), new Vector2(4.5f, 1.4f), new Vector2(10, 1.6f),
+                    new Vector2(15.5f, 5f), new Vector2(10, 8.4f), new Vector2(4.5f, 8.6f)), Color.White),
+                (ShapeArt.Rect(2f, 4.6f, 14f, 5.4f), new Color(205, 205, 205)));
+        }
 
         public static readonly ThemeDefinition[] All = { Classic, HalloweenTheme.Definition, WinterTheme.Definition };
 

@@ -19,8 +19,9 @@ namespace CatapultGame
         public Color Tint { get; init; } = Color.White;
         public float Life { get; init; } = 10f;
         public float LifeRandom { get; init; }
-        /// <summary>Spin in radians per second.</summary>
+        /// <summary>Spin in radians per second, plus a random extra of up to SpinRandom (a negative Spin lets it go either way).</summary>
         public float Spin { get; init; }
+        public float SpinRandom { get; init; }
         public bool Additive { get; init; }
     }
 
@@ -78,6 +79,7 @@ namespace CatapultGame
                     SizeRandom = l.SizeRandom,
                     AngleRandom = MathHelper.TwoPi,
                     AngleInc = l.Spin,
+                    AngleIncRandom = l.SpinRandom,
                     Tint = l.Tint,
                     Opacity = l.Opacity,
                     LifeTime = l.Life,
