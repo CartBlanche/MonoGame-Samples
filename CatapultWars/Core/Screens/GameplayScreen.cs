@@ -911,8 +911,8 @@ namespace CatapultGame
 		/// </summary>
 		void DrawPlayer(GameTime gameTime)
 		{
-			if (!gameOver)
-				playerOne.Draw(gameTime);
+			// Still drawn when the match is over, so the victory screen has its catapults
+			playerOne.Draw(gameTime);
 		}
 
 		/// <summary>
@@ -920,8 +920,7 @@ namespace CatapultGame
 		/// </summary>
 		void DrawComputer(GameTime gameTime)
 		{
-			if (!gameOver)
-				playerTwo.Draw(gameTime);
+			playerTwo.Draw(gameTime);
 		}
 
 		/// <summary>
@@ -1071,14 +1070,14 @@ namespace CatapultGame
 				ScreenManager.SpriteBatch.Draw(hudBackgroundTexture, playerOneHUDPosition, Color.White);
 				DrawAmmoIcon(playerOneHUDPosition + new Vector2(33, 35));
 				DrawString(hudFont, playerOne.Score.ToString(), playerOneHUDPosition + new Vector2(123, 35), Color.White);
-				DrawString(hudFont, playerOne.Name, playerOneHUDPosition + new Vector2(40, 1), Color.Blue);
+				DrawName(playerOne.Name, playerOneHUDPosition + new Vector2(NameOffsetX, 1), Color.Blue);
 				DrawAimReadout(playerOne, playerOneHUDPosition);
 
 				// Draw Computer Hud
 				ScreenManager.SpriteBatch.Draw(hudBackgroundTexture, computerHUDPosition, Color.White);
 				DrawAmmoIcon(computerHUDPosition + new Vector2(33, 35));
 				DrawString(hudFont, playerTwo.Score.ToString(), computerHUDPosition + new Vector2(123, 35), Color.White);
-				DrawString(hudFont, playerTwo.Name, computerHUDPosition + new Vector2(40, 1), Color.Red);
+				DrawName(playerTwo.Name, computerHUDPosition + new Vector2(NameOffsetX, 1), Color.Red);
 				DrawAimReadout(playerTwo, computerHUDPosition);
 
 				// Draw Wind direction
@@ -1145,6 +1144,35 @@ namespace CatapultGame
 							 ScreenManager.BASE_BUFFER_HEIGHT - size.Y),
 							Color.Green);
 			}
+		}
+
+		/// <summary>
+		/// Draws a player's name on the HUD scroll. A name that is too long is shrunk a little, and if
+		/// it still does not fit it is cut short with "..." where it was shortened.
+		/// </summary>
+		// Names start this far into the HUD scroll
+		const float NameOffsetX = 20f;
+
+		void DrawName(string name, Vector2 position, Color color)
+		{
+			// The far end of the scroll needs a small margin
+			float room = hudBackgroundTexture.Width - NameOffsetX - 6;
+			const float smallest = 0.8f;
+
+			float scale = Math.Min(1f, room / hudFont.MeasureString(name).X);
+			if (scale < smallest)
+			{
+				scale = smallest;
+				while (name.Length > 1 && hudFont.MeasureString(name + "...").X * scale > room)
+					name = name.Substring(0, name.Length - 1);
+				name = name.TrimEnd() + "...";
+			}
+
+			// Keep the middle of the line where it was, however small the name is drawn
+			position.Y += (1f - scale) * hudFont.LineSpacing / 2f;
+			SpriteBatch batch = ScreenManager.SpriteBatch;
+			batch.DrawString(hudFont, name, position + new Vector2(1, 1), Color.Black, 0f, Vector2.Zero, scale, SpriteEffects.None, 0f);
+			batch.DrawString(hudFont, name, position, color, 0f, Vector2.Zero, scale, SpriteEffects.None, 0f);
 		}
 
 		/// <summary>
