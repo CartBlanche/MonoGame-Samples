@@ -3,9 +3,9 @@
 <plist version="1.0">
 <dict>
     <key>CFBundleName</key>
-    <string>CatapultNetWars</string>
+    <string>Catapult Wars</string>
     <key>CFBundleDisplayName</key>
-    <string>CatapultNetWars</string>
+    <string>Catapult Wars</string>
     <key>CFBundleIdentifier</key>
     <string>com.cartblanche.catapultnetwars</string>
     <key>CFBundleVersion</key>

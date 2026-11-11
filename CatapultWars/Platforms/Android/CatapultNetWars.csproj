@@ -5,6 +5,8 @@
     <OutputType>Exe</OutputType>
     <RootNamespace>CatapultGame</RootNamespace>
     <AssemblyName>CatapultNetWars</AssemblyName>
+    <Product>Catapult Wars</Product>
+    <AssemblyTitle>Catapult Wars</AssemblyTitle>
     <AndroidApplication>true</AndroidApplication>
     <AndroidResgenFile>Resources\Resource.designer.cs</AndroidResgenFile>
     <AndroidResgenClass>Resource</AndroidResgenClass>

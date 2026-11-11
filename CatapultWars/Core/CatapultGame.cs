@@ -51,6 +51,9 @@ namespace CatapultGame
 #endif
 
 			graphicsDeviceManager = new GraphicsDeviceManager(this);
+
+			// Otherwise the window takes the assembly name, "CatapultNetWars"
+			Window.Title = "Catapult Wars";
 			//graphics.SynchronizeWithVerticalRetrace = false;
 
 			graphicsDeviceManager.PreferredBackBufferWidth = ScreenManager.BASE_BUFFER_WIDTH;

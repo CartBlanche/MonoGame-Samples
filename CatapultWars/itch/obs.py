@@ -116,7 +116,7 @@ class Obs:
 
 SCENE = "CatapultWars LAN"
 HOST_SOURCE, GUEST_SOURCE = "Dominique window", "Dean window"
-WINDOW_TITLE = "[CatapultNetWars] CatapultNetWars"
+WINDOW_TITLE = "[CatapultNetWars] Catapult Wars"   # [process] window title
 TITLE_BAR = 56          # capture pixels of title bar (28 points at 2x Retina), cropped off the top
 SCALE = 0.6             # 1600 px wide capture -> 960, so two fit the 1920 canvas
 

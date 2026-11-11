@@ -5,6 +5,8 @@
     <OutputType>Exe</OutputType>
     <RootNamespace>CatapultGame</RootNamespace>
     <AssemblyName>CatapultNetWars</AssemblyName>
+    <Product>Catapult Wars</Product>
+    <AssemblyTitle>Catapult Wars</AssemblyTitle>
     <SupportedOSPlatformVersion>12.2</SupportedOSPlatformVersion>
     <MonoGamePlatform>iOS</MonoGamePlatform>
   </PropertyGroup>
