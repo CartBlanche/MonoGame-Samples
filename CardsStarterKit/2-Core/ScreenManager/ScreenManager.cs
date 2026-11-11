@@ -247,7 +247,7 @@ namespace CardsFramework.Core
 
         /// <summary>
         /// Reloads the fonts for the given language via the active IFontProvider.
-        /// Uses CJK fonts for Japanese and Chinese, regular fonts for other languages.
+        /// Uses CJK fonts for Chinese, Japanese and Korean, regular fonts for other languages.
         /// NOTE: This only reloads fonts. Call RefreshScreensAfterLanguageChange() after
         /// to rebuild screen content, or use ApplyLanguageChange() to do both atomically.
         /// </summary>

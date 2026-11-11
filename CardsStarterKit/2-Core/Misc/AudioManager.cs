@@ -38,6 +38,8 @@ namespace CardsFramework.Core
 
         // Audio Data
         Dictionary<string, SoundEffectInstance> soundBank;
+        // Source effects, kept so short sounds can overlap (see PlaySoundOverlapped).
+        Dictionary<string, SoundEffect> effectBank;
         Dictionary<string, Song> musicBank;
 
         // Playlist state
@@ -69,6 +71,7 @@ namespace CardsFramework.Core
         {
             audioManager = new AudioManager(game);
             audioManager.soundBank = new Dictionary<string, SoundEffectInstance>();
+            audioManager.effectBank = new Dictionary<string, SoundEffect>();
             audioManager.musicBank = new Dictionary<string, Song>();
             audioManager.soundVolumeProvider = getSoundVolume ?? (() => 1.0f);
             audioManager.musicVolumeProvider = getMusicVolume ?? (() => 1.0f);
@@ -92,6 +95,9 @@ namespace CardsFramework.Core
         {
             SoundEffect soundEffect = audioManager.Game.Content.Load<SoundEffect>(Path.Combine(soundAssetLocation, contentName));
             SoundEffectInstance soundEffectInstance = soundEffect.CreateInstance();
+
+            if (!audioManager.effectBank.ContainsKey(alias) || replaceExisting)
+                audioManager.effectBank[alias] = soundEffect;
 
             if (audioManager.soundBank.ContainsKey(alias))
             {
@@ -223,6 +229,28 @@ namespace CardsFramework.Core
                 sound.Pan = MathHelper.Clamp(pan, -1.0f, 1.0f);
 
                 sound.Play();
+            }
+        }
+
+        /// <summary>
+        /// Plays a sound without cutting off earlier plays of the same alias, so short effects
+        /// (card landings, chip ticks, rising-pitch combo hits) can overlap. Fire-and-forget:
+        /// it cannot be stopped with <see cref="StopSound"/>.
+        /// </summary>
+        /// <param name="soundName">The alias the sound was loaded with.</param>
+        /// <param name="volume">Relative volume (0.0 to 1.0), multiplied by the user's sound volume setting.</param>
+        /// <param name="pitch">Pitch adjustment (-1.0 to 1.0).</param>
+        /// <param name="pan">Stereo panning (-1.0 to 1.0).</param>
+        public static void PlaySoundOverlapped(string soundName, float volume = 1f, float pitch = 0f, float pan = 0f)
+        {
+            if (audioManager?.effectBank == null) return;
+
+            if (audioManager.effectBank.TryGetValue(soundName, out SoundEffect effect))
+            {
+                float vol = MathHelper.Clamp(volume, 0f, 1f) * audioManager.soundVolumeProvider();
+                effect.Play(MathHelper.Clamp(vol, 0f, 1f),
+                            MathHelper.Clamp(pitch, -1f, 1f),
+                            MathHelper.Clamp(pan, -1f, 1f));
             }
         }
 
