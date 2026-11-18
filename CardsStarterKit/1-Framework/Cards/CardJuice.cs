@@ -30,7 +30,8 @@ namespace CardsFramework
         public float LiftedShadowDistance = 14f;
 
         private Spring lift = new Spring(260f, 22f);           // slightly underdamped: soft overshoot
-        private Spring tiltX = new Spring(220f, 18f);
+        private const float TiltStiffness = 220f, TiltDamping = 18f;
+        private Spring tiltX = new Spring(TiltStiffness, TiltDamping);
         private Spring tiltY = new Spring(220f, 18f);
         private Spring roll = new Spring(170f, 7f);            // underdamped: swings back when released
         private Spring squash = new Spring(420f, 14f, 1f);     // overshoots past 1 on landing
@@ -102,7 +103,11 @@ namespace CardsFramework
         public void SetHover(Vector2? offsetFromCentre)
         {
             hovered = offsetFromCentre.HasValue;
-            if (hovered)
+            if (shockHeld)
+            {
+                // A shockwave is pressing this card: leave the tilt alone until it is released.
+            }
+            else if (hovered)
             {
                 tiltX.Target = MathHelper.Clamp(offsetFromCentre.Value.X, -1f, 1f);
                 tiltY.Target = MathHelper.Clamp(offsetFromCentre.Value.Y, -1f, 1f);
@@ -152,11 +157,48 @@ namespace CardsFramework
             lift.Impulse(-strength * 2f);
         }
 
+        private bool shockHeld;
+        private const float LooseStiffness = 260f, LooseDamping = 7f;   // underdamped on purpose: the see-saw after a release
+
+        /// <summary>
+        /// An invisible pointer presses down on the card: holds the 3D tilt at <paramref name="direction"/> (same convention
+        /// as <see cref="SetHover"/>: +X presses the right edge back, +Y the bottom edge back; each component -1..1), so the far
+        /// edge rises. Used when a shockwave first reaches the card. Pair with <see cref="ReleaseTilt"/>.
+        /// </summary>
+        public void PressTilt(Vector2 direction)
+        {
+            shockHeld = true;
+            tiltX.Stiffness = tiltY.Stiffness = TiltStiffness;
+            tiltX.Damping = tiltY.Damping = TiltDamping;
+            tiltX.Target = MathHelper.Clamp(direction.X, -1f, 1f);
+            tiltY.Target = MathHelper.Clamp(direction.Y, -1f, 1f);
+        }
+
+        /// <summary>
+        /// The invisible pointer lets go: the pressed edge springs up past flat (to its highest point), then see-saws
+        /// back to rest on a loose spring. <paramref name="kick"/> adds velocity along <paramref name="direction"/>
+        /// (the direction that was pressed, so the kick sends the pressed edge up).
+        /// </summary>
+        public void ReleaseTilt(Vector2 direction, float kick)
+        {
+            shockHeld = false;
+            tiltX.Stiffness = tiltY.Stiffness = LooseStiffness;
+            tiltX.Damping = tiltY.Damping = LooseDamping;
+            tiltX.Target = tiltY.Target = 0f;
+            tiltX.Impulse(-direction.X * kick);
+            tiltY.Impulse(-direction.Y * kick);
+        }
+
         public void Update(float dt)
         {
             lift.Update(dt);
             tiltX.Update(dt);
             tiltY.Update(dt);
+            if (!shockHeld && tiltX.Stiffness != TiltStiffness && tiltX.IsAtRest() && tiltY.IsAtRest())
+            {
+                tiltX.Stiffness = tiltY.Stiffness = TiltStiffness;   // the see-saw has settled: back to the normal firm spring
+                tiltX.Damping = tiltY.Damping = TiltDamping;
+            }
             roll.Update(dt);
             squash.Update(dt);
         }
@@ -166,6 +208,9 @@ namespace CardsFramework
         {
             hovered = grabbed = false;
             lift.Snap(0f);
+            shockHeld = false;
+            tiltX.Stiffness = tiltY.Stiffness = TiltStiffness;
+            tiltX.Damping = tiltY.Damping = TiltDamping;
             tiltX.Snap(0f);
             tiltY.Snap(0f);
             roll.Snap(0f);
