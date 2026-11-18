@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- PT Sans Bold (OFL, tps-demo-master/menu/font). Size is in points: 16.5 pt = 22 px at 96 dpi. -->
+<XnaContent xmlns:Graphics="Microsoft.Xna.Framework.Content.Pipeline.Graphics">
+  <Asset Type="Graphics:FontDescription">
+    <FontName>PT_Sans-Web-Bold</FontName>
+    <Size>16.5</Size>
+    <Spacing>0</Spacing>
+    <UseKerning>true</UseKerning>
+    <Style>Regular</Style>
+    <CharacterRegions>
+      <CharacterRegion><Start>&#32;</Start><End>&#126;</End></CharacterRegion>
+    </CharacterRegions>
+  </Asset>
+</XnaContent>

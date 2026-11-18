@@ -1,0 +1,38 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Launch Desktop",
+            "type": "coreclr",
+            "request": "launch",
+            "preLaunchTask": "build-desktop",
+            "program": "${workspaceFolder}/Desktop/bin/Release/net10.0/ThirdPersonShooter.dll",
+            "args": [],
+            "cwd": "${workspaceFolder}/Desktop",
+            "console": "internalConsole",
+            "stopAtEntry": false
+        },
+        {
+            "name": "Launch Desktop (free-fly camera)",
+            "type": "coreclr",
+            "request": "launch",
+            "preLaunchTask": "build-desktop",
+            "program": "${workspaceFolder}/Desktop/bin/Release/net10.0/ThirdPersonShooter.dll",
+            "args": ["--fly"],
+            "cwd": "${workspaceFolder}/Desktop",
+            "console": "internalConsole",
+            "stopAtEntry": false
+        },
+        {
+            "name": "Run physics self-test",
+            "type": "coreclr",
+            "request": "launch",
+            "preLaunchTask": "build-desktop",
+            "program": "${workspaceFolder}/Desktop/bin/Release/net10.0/ThirdPersonShooter.dll",
+            "args": ["--test-physics"],
+            "cwd": "${workspaceFolder}/Desktop",
+            "console": "internalConsole",
+            "stopAtEntry": false
+        }
+    ]
+}

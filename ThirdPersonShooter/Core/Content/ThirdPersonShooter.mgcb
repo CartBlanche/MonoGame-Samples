@@ -1,0 +1,1035 @@
+
+#----------------------------- Global Properties ----------------------------#
+
+/outputDir:bin/$(Platform)
+/intermediateDir:obj/$(Platform)
+/platform:DesktopGL
+/config:
+/profile:HiDef
+/compress:False
+
+#-------------------------------- References --------------------------------#
+
+/reference:../../PipelineExtension/bin/Release/net8.0/PipelineExtension.dll
+
+#---------------------------------- Content ---------------------------------#
+
+#begin Models/lights.xnb
+/importer:GlbImporter
+/processor:GodotStaticModelProcessor
+/build:../../tps-demo-master/level/geometry/models/lights.glb;Models/lights
+
+#begin Models/structure.xnb
+/importer:GlbImporter
+/processor:GodotStaticModelProcessor
+/build:../../tps-demo-master/level/geometry/models/structure.glb;Models/structure
+
+#begin Models/core.xnb
+/importer:GlbImporter
+/processor:GodotStaticModelProcessor
+/build:../../tps-demo-master/level/geometry/models/core.glb;Models/core
+
+#begin Models/props.xnb
+/importer:GlbImporter
+/processor:GodotStaticModelProcessor
+/build:../../tps-demo-master/level/geometry/models/props.glb;Models/props
+
+#begin Models/flying_forklift.xnb
+/importer:GlbImporter
+/processor:GodotStaticModelProcessor
+/build:../../tps-demo-master/level/forklift/flying_forklift.glb;Models/flying_forklift
+
+#begin Data/Materials.json
+/copy:../../Tools/GodotExtract/out/Materials.json;Data/Materials.json
+
+#begin Data/level.scene.json
+/copy:../../Tools/GodotExtract/out/level.scene.json;Data/level.scene.json
+
+#begin Effects/PbrLit.fx
+/importer:EffectImporter
+/processor:EffectProcessor
+/processorParam:DebugMode=Auto
+/build:Effects/PbrLit.fx
+
+#begin Effects/SimpleLit.fx
+/importer:EffectImporter
+/processor:EffectProcessor
+/processorParam:DebugMode=Auto
+/build:Effects/SimpleLit.fx
+
+#begin Effects/PostTonemap.fx
+/importer:EffectImporter
+/processor:EffectProcessor
+/processorParam:DebugMode=Auto
+/build:Effects/PostTonemap.fx
+
+#begin Effects/PostBloom.fx
+/importer:EffectImporter
+/processor:EffectProcessor
+/processorParam:DebugMode=Auto
+/build:Effects/PostBloom.fx
+
+#begin Effects/Glow.fx
+/importer:EffectImporter
+/processor:EffectProcessor
+/processorParam:DebugMode=Auto
+/build:Effects/Glow.fx
+
+#begin Effects/Fx.fx
+/importer:EffectImporter
+/processor:EffectProcessor
+/processorParam:DebugMode=Auto
+/build:Effects/Fx.fx
+
+#begin Textures/Fx/blue_myst.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:PremultiplyAlpha=False
+/processorParam:GenerateMipmaps=True
+/build:Textures/Fx/blue_myst.png
+
+#begin Textures/Fx/BarrelSmokeTexture.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:PremultiplyAlpha=False
+/processorParam:GenerateMipmaps=True
+/build:Textures/Fx/BarrelSmokeTexture.png
+
+#begin Effects/BlobShadow.fx
+/importer:EffectImporter
+/processor:EffectProcessor
+/processorParam:DebugMode=Auto
+/build:Effects/BlobShadow.fx
+
+#begin Data/lights.json
+/copy:../../Tools/GodotExtract/out/lights.json;Data/lights.json
+
+#--- BEGIN GENERATED TEXTURES (Tools/ContentGen) ---
+#begin Textures/level_forklift_flying_forklift_albedo.xnb
+/importer:TextureImporter
+/processor:GodotTextureProcessor
+/processorParam:MaxSize=2048
+/processorParam:GenerateMipmaps=True
+/processorParam:TextureFormat=DxtCompressed
+/build:../../tps-demo-master/level/forklift/flying_forklift_albedo.png;Textures/level_forklift_flying_forklift_albedo
+
+#begin Textures/level_forklift_flying_forklift_emission.xnb
+/importer:TextureImporter
+/processor:GodotTextureProcessor
+/processorParam:MaxSize=2048
+/processorParam:GenerateMipmaps=True
+/processorParam:TextureFormat=DxtCompressed
+/build:../../tps-demo-master/level/forklift/flying_forklift_emission.png;Textures/level_forklift_flying_forklift_emission
+
+#begin Textures/level_forklift_flying_forklift_normal.xnb
+/importer:TextureImporter
+/processor:GodotTextureProcessor
+/processorParam:MaxSize=2048
+/processorParam:GenerateMipmaps=True
+/processorParam:TextureFormat=DxtCompressed
+/build:../../tps-demo-master/level/forklift/flying_forklift_normal.png;Textures/level_forklift_flying_forklift_normal
+
+#begin Textures/level_forklift_flying_forklift_orm.xnb
+/importer:TextureImporter
+/processor:GodotTextureProcessor
+/processorParam:MaxSize=2048
+/processorParam:GenerateMipmaps=True
+/processorParam:TextureFormat=DxtCompressed
+/build:../../tps-demo-master/level/forklift/flying_forklift_orm.png;Textures/level_forklift_flying_forklift_orm
+
+#begin Textures/level_textures_car_scificar_albedo.xnb
+/importer:TextureImporter
+/processor:GodotTextureProcessor
+/processorParam:MaxSize=2048
+/processorParam:GenerateMipmaps=True
+/processorParam:TextureFormat=DxtCompressed
+/build:../../tps-demo-master/level/textures/car/scificar_albedo.png;Textures/level_textures_car_scificar_albedo
+
+#begin Textures/level_textures_car_scificar_emissive.xnb
+/importer:TextureImporter
+/processor:GodotTextureProcessor
+/processorParam:MaxSize=2048
+/processorParam:GenerateMipmaps=True
+/processorParam:TextureFormat=DxtCompressed
+/build:../../tps-demo-master/level/textures/car/scificar_emissive.png;Textures/level_textures_car_scificar_emissive
+
+#begin Textures/level_textures_car_scificar_normal.xnb
+/importer:TextureImporter
+/processor:GodotTextureProcessor
+/processorParam:MaxSize=2048
+/processorParam:GenerateMipmaps=True
+/processorParam:TextureFormat=DxtCompressed
+/build:../../tps-demo-master/level/textures/car/scificar_normal.png;Textures/level_textures_car_scificar_normal
+
+#begin Textures/level_textures_car_scificar_orm.xnb
+/importer:TextureImporter
+/processor:GodotTextureProcessor
+/processorParam:MaxSize=2048
+/processorParam:GenerateMipmaps=True
+/processorParam:TextureFormat=DxtCompressed
+/build:../../tps-demo-master/level/textures/car/scificar_orm.png;Textures/level_textures_car_scificar_orm
+
+#begin Textures/level_textures_props_container2_albedo.xnb
+/importer:TextureImporter
+/processor:GodotTextureProcessor
+/processorParam:MaxSize=2048
+/processorParam:GenerateMipmaps=True
+/processorParam:TextureFormat=DxtCompressed
+/build:../../tps-demo-master/level/textures/props/container2_albedo.png;Textures/level_textures_props_container2_albedo
+
+#begin Textures/level_textures_props_container2_normal.xnb
+/importer:TextureImporter
+/processor:GodotTextureProcessor
+/processorParam:MaxSize=2048
+/processorParam:GenerateMipmaps=True
+/processorParam:TextureFormat=DxtCompressed
+/build:../../tps-demo-master/level/textures/props/container2_normal.png;Textures/level_textures_props_container2_normal
+
+#begin Textures/level_textures_props_container2_orm.xnb
+/importer:TextureImporter
+/processor:GodotTextureProcessor
+/processorParam:MaxSize=2048
+/processorParam:GenerateMipmaps=True
+/processorParam:TextureFormat=DxtCompressed
+/build:../../tps-demo-master/level/textures/props/container2_orm.png;Textures/level_textures_props_container2_orm
+
+#begin Textures/level_textures_props_container3_albedo.xnb
+/importer:TextureImporter
+/processor:GodotTextureProcessor
+/processorParam:MaxSize=2048
+/processorParam:GenerateMipmaps=True
+/processorParam:TextureFormat=DxtCompressed
+/build:../../tps-demo-master/level/textures/props/container3_albedo.png;Textures/level_textures_props_container3_albedo
+
+#begin Textures/level_textures_props_container3_normal.xnb
+/importer:TextureImporter
+/processor:GodotTextureProcessor
+/processorParam:MaxSize=2048
+/processorParam:GenerateMipmaps=True
+/processorParam:TextureFormat=DxtCompressed
+/build:../../tps-demo-master/level/textures/props/container3_normal.png;Textures/level_textures_props_container3_normal
+
+#begin Textures/level_textures_props_container3_orm.xnb
+/importer:TextureImporter
+/processor:GodotTextureProcessor
+/processorParam:MaxSize=2048
+/processorParam:GenerateMipmaps=True
+/processorParam:TextureFormat=DxtCompressed
+/build:../../tps-demo-master/level/textures/props/container3_orm.png;Textures/level_textures_props_container3_orm
+
+#begin Textures/level_textures_props_container4_albedo.xnb
+/importer:TextureImporter
+/processor:GodotTextureProcessor
+/processorParam:MaxSize=2048
+/processorParam:GenerateMipmaps=True
+/processorParam:TextureFormat=DxtCompressed
+/build:../../tps-demo-master/level/textures/props/container4_albedo.png;Textures/level_textures_props_container4_albedo
+
+#begin Textures/level_textures_props_container4_normal.xnb
+/importer:TextureImporter
+/processor:GodotTextureProcessor
+/processorParam:MaxSize=2048
+/processorParam:GenerateMipmaps=True
+/processorParam:TextureFormat=DxtCompressed
+/build:../../tps-demo-master/level/textures/props/container4_normal.png;Textures/level_textures_props_container4_normal
+
+#begin Textures/level_textures_props_container4_orm.xnb
+/importer:TextureImporter
+/processor:GodotTextureProcessor
+/processorParam:MaxSize=2048
+/processorParam:GenerateMipmaps=True
+/processorParam:TextureFormat=DxtCompressed
+/build:../../tps-demo-master/level/textures/props/container4_orm.png;Textures/level_textures_props_container4_orm
+
+#begin Textures/level_textures_props_door_albedo.xnb
+/importer:TextureImporter
+/processor:GodotTextureProcessor
+/processorParam:MaxSize=2048
+/processorParam:GenerateMipmaps=True
+/processorParam:TextureFormat=DxtCompressed
+/build:../../tps-demo-master/level/textures/props/door_albedo.png;Textures/level_textures_props_door_albedo
+
+#begin Textures/level_textures_props_door_emission.xnb
+/importer:TextureImporter
+/processor:GodotTextureProcessor
+/processorParam:MaxSize=2048
+/processorParam:GenerateMipmaps=True
+/processorParam:TextureFormat=DxtCompressed
+/build:../../tps-demo-master/level/textures/props/door_emission.png;Textures/level_textures_props_door_emission
+
+#begin Textures/level_textures_props_door_normal.xnb
+/importer:TextureImporter
+/processor:GodotTextureProcessor
+/processorParam:MaxSize=2048
+/processorParam:GenerateMipmaps=True
+/processorParam:TextureFormat=DxtCompressed
+/build:../../tps-demo-master/level/textures/props/door_normal.png;Textures/level_textures_props_door_normal
+
+#begin Textures/level_textures_props_door_orm.xnb
+/importer:TextureImporter
+/processor:GodotTextureProcessor
+/processorParam:MaxSize=2048
+/processorParam:GenerateMipmaps=True
+/processorParam:TextureFormat=DxtCompressed
+/build:../../tps-demo-master/level/textures/props/door_orm.png;Textures/level_textures_props_door_orm
+
+#begin Textures/level_textures_props_door_reactor_albedo.xnb
+/importer:TextureImporter
+/processor:GodotTextureProcessor
+/processorParam:MaxSize=2048
+/processorParam:GenerateMipmaps=True
+/processorParam:TextureFormat=DxtCompressed
+/build:../../tps-demo-master/level/textures/props/door_reactor_albedo.png;Textures/level_textures_props_door_reactor_albedo
+
+#begin Textures/level_textures_props_door_reactor_emission.xnb
+/importer:TextureImporter
+/processor:GodotTextureProcessor
+/processorParam:MaxSize=2048
+/processorParam:GenerateMipmaps=True
+/processorParam:TextureFormat=DxtCompressed
+/build:../../tps-demo-master/level/textures/props/door_reactor_emission.png;Textures/level_textures_props_door_reactor_emission
+
+#begin Textures/level_textures_props_door_reactor_normal.xnb
+/importer:TextureImporter
+/processor:GodotTextureProcessor
+/processorParam:MaxSize=2048
+/processorParam:GenerateMipmaps=True
+/processorParam:TextureFormat=DxtCompressed
+/build:../../tps-demo-master/level/textures/props/door_reactor_normal.png;Textures/level_textures_props_door_reactor_normal
+
+#begin Textures/level_textures_props_door_reactor_orm.xnb
+/importer:TextureImporter
+/processor:GodotTextureProcessor
+/processorParam:MaxSize=2048
+/processorParam:GenerateMipmaps=True
+/processorParam:TextureFormat=DxtCompressed
+/build:../../tps-demo-master/level/textures/props/door_reactor_orm.png;Textures/level_textures_props_door_reactor_orm
+
+#begin Textures/level_textures_props_mid_cargo_box_albedo.xnb
+/importer:TextureImporter
+/processor:GodotTextureProcessor
+/processorParam:MaxSize=2048
+/processorParam:GenerateMipmaps=True
+/processorParam:TextureFormat=DxtCompressed
+/build:../../tps-demo-master/level/textures/props/mid_cargo_box_albedo.png;Textures/level_textures_props_mid_cargo_box_albedo
+
+#begin Textures/level_textures_props_mid_cargo_box_normal.xnb
+/importer:TextureImporter
+/processor:GodotTextureProcessor
+/processorParam:MaxSize=2048
+/processorParam:GenerateMipmaps=True
+/processorParam:TextureFormat=DxtCompressed
+/build:../../tps-demo-master/level/textures/props/mid_cargo_box_normal.png;Textures/level_textures_props_mid_cargo_box_normal
+
+#begin Textures/level_textures_props_mid_cargo_box_orm.xnb
+/importer:TextureImporter
+/processor:GodotTextureProcessor
+/processorParam:MaxSize=2048
+/processorParam:GenerateMipmaps=True
+/processorParam:TextureFormat=DxtCompressed
+/build:../../tps-demo-master/level/textures/props/mid_cargo_box_orm.png;Textures/level_textures_props_mid_cargo_box_orm
+
+#begin Textures/level_textures_props_reactor_cylinder_albedo.xnb
+/importer:TextureImporter
+/processor:GodotTextureProcessor
+/processorParam:MaxSize=2048
+/processorParam:GenerateMipmaps=True
+/processorParam:TextureFormat=DxtCompressed
+/build:../../tps-demo-master/level/textures/props/reactor_cylinder_albedo.png;Textures/level_textures_props_reactor_cylinder_albedo
+
+#begin Textures/level_textures_props_reactor_cylinder_emissive.xnb
+/importer:TextureImporter
+/processor:GodotTextureProcessor
+/processorParam:MaxSize=2048
+/processorParam:GenerateMipmaps=True
+/processorParam:TextureFormat=DxtCompressed
+/build:../../tps-demo-master/level/textures/props/reactor_cylinder_emissive.png;Textures/level_textures_props_reactor_cylinder_emissive
+
+#begin Textures/level_textures_props_reactor_cylinder_normal.xnb
+/importer:TextureImporter
+/processor:GodotTextureProcessor
+/processorParam:MaxSize=2048
+/processorParam:GenerateMipmaps=True
+/processorParam:TextureFormat=DxtCompressed
+/build:../../tps-demo-master/level/textures/props/reactor_cylinder_normal.png;Textures/level_textures_props_reactor_cylinder_normal
+
+#begin Textures/level_textures_props_reactor_cylinder_orm.xnb
+/importer:TextureImporter
+/processor:GodotTextureProcessor
+/processorParam:MaxSize=2048
+/processorParam:GenerateMipmaps=True
+/processorParam:TextureFormat=DxtCompressed
+/build:../../tps-demo-master/level/textures/props/reactor_cylinder_orm.png;Textures/level_textures_props_reactor_cylinder_orm
+
+#begin Textures/level_textures_structure_column_albedo.xnb
+/importer:TextureImporter
+/processor:GodotTextureProcessor
+/processorParam:MaxSize=2048
+/processorParam:GenerateMipmaps=True
+/processorParam:TextureFormat=DxtCompressed
+/build:../../tps-demo-master/level/textures/structure/column_albedo.png;Textures/level_textures_structure_column_albedo
+
+#begin Textures/level_textures_structure_column_normal.xnb
+/importer:TextureImporter
+/processor:GodotTextureProcessor
+/processorParam:MaxSize=2048
+/processorParam:GenerateMipmaps=True
+/processorParam:TextureFormat=DxtCompressed
+/build:../../tps-demo-master/level/textures/structure/column_normal.png;Textures/level_textures_structure_column_normal
+
+#begin Textures/level_textures_structure_column_orm.xnb
+/importer:TextureImporter
+/processor:GodotTextureProcessor
+/processorParam:MaxSize=2048
+/processorParam:GenerateMipmaps=True
+/processorParam:TextureFormat=DxtCompressed
+/build:../../tps-demo-master/level/textures/structure/column_orm.png;Textures/level_textures_structure_column_orm
+
+#begin Textures/level_textures_structure_floor_grate_wholes_albedo.xnb
+/importer:TextureImporter
+/processor:GodotTextureProcessor
+/processorParam:MaxSize=2048
+/processorParam:GenerateMipmaps=True
+/processorParam:TextureFormat=DxtCompressed
+/build:../../tps-demo-master/level/textures/structure/floor_grate_wholes_albedo.png;Textures/level_textures_structure_floor_grate_wholes_albedo
+
+#begin Textures/level_textures_structure_floor_grate_wholes_normal.xnb
+/importer:TextureImporter
+/processor:GodotTextureProcessor
+/processorParam:MaxSize=2048
+/processorParam:GenerateMipmaps=True
+/processorParam:TextureFormat=DxtCompressed
+/build:../../tps-demo-master/level/textures/structure/floor_grate_wholes_normal.png;Textures/level_textures_structure_floor_grate_wholes_normal
+
+#begin Textures/level_textures_structure_floor_grate_wholes_orm.xnb
+/importer:TextureImporter
+/processor:GodotTextureProcessor
+/processorParam:MaxSize=2048
+/processorParam:GenerateMipmaps=True
+/processorParam:TextureFormat=DxtCompressed
+/build:../../tps-demo-master/level/textures/structure/floor_grate_wholes_orm.png;Textures/level_textures_structure_floor_grate_wholes_orm
+
+#begin Textures/level_textures_structure_reactor_emitter_albedo.xnb
+/importer:TextureImporter
+/processor:GodotTextureProcessor
+/processorParam:MaxSize=2048
+/processorParam:GenerateMipmaps=True
+/processorParam:TextureFormat=DxtCompressed
+/build:../../tps-demo-master/level/textures/structure/reactor_emitter_albedo.png;Textures/level_textures_structure_reactor_emitter_albedo
+
+#begin Textures/level_textures_structure_reactor_emitter_normal.xnb
+/importer:TextureImporter
+/processor:GodotTextureProcessor
+/processorParam:MaxSize=2048
+/processorParam:GenerateMipmaps=True
+/processorParam:TextureFormat=DxtCompressed
+/build:../../tps-demo-master/level/textures/structure/reactor_emitter_normal.png;Textures/level_textures_structure_reactor_emitter_normal
+
+#begin Textures/level_textures_structure_reactor_emitter_orm.xnb
+/importer:TextureImporter
+/processor:GodotTextureProcessor
+/processorParam:MaxSize=2048
+/processorParam:GenerateMipmaps=True
+/processorParam:TextureFormat=DxtCompressed
+/build:../../tps-demo-master/level/textures/structure/reactor_emitter_orm.png;Textures/level_textures_structure_reactor_emitter_orm
+
+#begin Textures/level_textures_structure_set_asphalt_albedo.xnb
+/importer:TextureImporter
+/processor:GodotTextureProcessor
+/processorParam:MaxSize=2048
+/processorParam:GenerateMipmaps=True
+/processorParam:TextureFormat=DxtCompressed
+/build:../../tps-demo-master/level/textures/structure/set_asphalt_albedo.png;Textures/level_textures_structure_set_asphalt_albedo
+
+#begin Textures/level_textures_structure_set_asphalt_normal.xnb
+/importer:TextureImporter
+/processor:GodotTextureProcessor
+/processorParam:MaxSize=2048
+/processorParam:GenerateMipmaps=True
+/processorParam:TextureFormat=DxtCompressed
+/build:../../tps-demo-master/level/textures/structure/set_asphalt_normal.png;Textures/level_textures_structure_set_asphalt_normal
+
+#begin Textures/level_textures_structure_set_asphalt_orm.xnb
+/importer:TextureImporter
+/processor:GodotTextureProcessor
+/processorParam:MaxSize=2048
+/processorParam:GenerateMipmaps=True
+/processorParam:TextureFormat=DxtCompressed
+/build:../../tps-demo-master/level/textures/structure/set_asphalt_orm.png;Textures/level_textures_structure_set_asphalt_orm
+
+#begin Textures/level_textures_structure_tile_anti_slip_albedo.xnb
+/importer:TextureImporter
+/processor:GodotTextureProcessor
+/processorParam:MaxSize=2048
+/processorParam:GenerateMipmaps=True
+/processorParam:TextureFormat=DxtCompressed
+/build:../../tps-demo-master/level/textures/structure/tile_anti_slip_albedo.png;Textures/level_textures_structure_tile_anti_slip_albedo
+
+#begin Textures/level_textures_structure_tile_anti_slip_metal_normal.xnb
+/importer:TextureImporter
+/processor:GodotTextureProcessor
+/processorParam:MaxSize=2048
+/processorParam:GenerateMipmaps=True
+/processorParam:TextureFormat=DxtCompressed
+/build:../../tps-demo-master/level/textures/structure/tile_anti_slip_metal_normal.png;Textures/level_textures_structure_tile_anti_slip_metal_normal
+
+#begin Textures/level_textures_structure_tile_anti_slip_metal_orm.xnb
+/importer:TextureImporter
+/processor:GodotTextureProcessor
+/processorParam:MaxSize=2048
+/processorParam:GenerateMipmaps=True
+/processorParam:TextureFormat=DxtCompressed
+/build:../../tps-demo-master/level/textures/structure/tile_anti_slip_metal_orm.png;Textures/level_textures_structure_tile_anti_slip_metal_orm
+
+#begin Textures/level_textures_structure_tile_carbon_fiber_albedo.xnb
+/importer:TextureImporter
+/processor:GodotTextureProcessor
+/processorParam:MaxSize=2048
+/processorParam:GenerateMipmaps=True
+/processorParam:TextureFormat=DxtCompressed
+/build:../../tps-demo-master/level/textures/structure/tile_carbon_fiber_albedo.png;Textures/level_textures_structure_tile_carbon_fiber_albedo
+
+#begin Textures/level_textures_structure_tile_carbon_fiber_normal.xnb
+/importer:TextureImporter
+/processor:GodotTextureProcessor
+/processorParam:MaxSize=2048
+/processorParam:GenerateMipmaps=True
+/processorParam:TextureFormat=DxtCompressed
+/build:../../tps-demo-master/level/textures/structure/tile_carbon_fiber_normal.png;Textures/level_textures_structure_tile_carbon_fiber_normal
+
+#begin Textures/level_textures_structure_tile_carbon_fiber_orm.xnb
+/importer:TextureImporter
+/processor:GodotTextureProcessor
+/processorParam:MaxSize=2048
+/processorParam:GenerateMipmaps=True
+/processorParam:TextureFormat=DxtCompressed
+/build:../../tps-demo-master/level/textures/structure/tile_carbon_fiber_orm.png;Textures/level_textures_structure_tile_carbon_fiber_orm
+
+#begin Textures/level_textures_structure_tile_default_metal_albedo.xnb
+/importer:TextureImporter
+/processor:GodotTextureProcessor
+/processorParam:MaxSize=2048
+/processorParam:GenerateMipmaps=True
+/processorParam:TextureFormat=DxtCompressed
+/build:../../tps-demo-master/level/textures/structure/tile_default_metal_albedo.png;Textures/level_textures_structure_tile_default_metal_albedo
+
+#begin Textures/level_textures_structure_tile_default_metal_normal.xnb
+/importer:TextureImporter
+/processor:GodotTextureProcessor
+/processorParam:MaxSize=2048
+/processorParam:GenerateMipmaps=True
+/processorParam:TextureFormat=DxtCompressed
+/build:../../tps-demo-master/level/textures/structure/tile_default_metal_normal.png;Textures/level_textures_structure_tile_default_metal_normal
+
+#begin Textures/level_textures_structure_tile_default_metal_orm.xnb
+/importer:TextureImporter
+/processor:GodotTextureProcessor
+/processorParam:MaxSize=2048
+/processorParam:GenerateMipmaps=True
+/processorParam:TextureFormat=DxtCompressed
+/build:../../tps-demo-master/level/textures/structure/tile_default_metal_orm.png;Textures/level_textures_structure_tile_default_metal_orm
+
+#begin Textures/level_textures_structure_tile_glass_albedo.xnb
+/importer:TextureImporter
+/processor:GodotTextureProcessor
+/processorParam:MaxSize=2048
+/processorParam:GenerateMipmaps=True
+/processorParam:TextureFormat=DxtCompressed
+/build:../../tps-demo-master/level/textures/structure/tile_glass_albedo.png;Textures/level_textures_structure_tile_glass_albedo
+
+#begin Textures/level_textures_structure_tile_glass_emission.xnb
+/importer:TextureImporter
+/processor:GodotTextureProcessor
+/processorParam:MaxSize=2048
+/processorParam:GenerateMipmaps=True
+/processorParam:TextureFormat=DxtCompressed
+/build:../../tps-demo-master/level/textures/structure/tile_glass_emission.png;Textures/level_textures_structure_tile_glass_emission
+
+#begin Textures/level_textures_structure_tile_glass_normal.xnb
+/importer:TextureImporter
+/processor:GodotTextureProcessor
+/processorParam:MaxSize=2048
+/processorParam:GenerateMipmaps=True
+/processorParam:TextureFormat=DxtCompressed
+/build:../../tps-demo-master/level/textures/structure/tile_glass_normal.png;Textures/level_textures_structure_tile_glass_normal
+
+#begin Textures/level_textures_structure_tile_glass_orm.xnb
+/importer:TextureImporter
+/processor:GodotTextureProcessor
+/processorParam:MaxSize=2048
+/processorParam:GenerateMipmaps=True
+/processorParam:TextureFormat=DxtCompressed
+/build:../../tps-demo-master/level/textures/structure/tile_glass_orm.png;Textures/level_textures_structure_tile_glass_orm
+
+#begin Textures/level_textures_structure_tile_metal_pillars_albedo.xnb
+/importer:TextureImporter
+/processor:GodotTextureProcessor
+/processorParam:MaxSize=2048
+/processorParam:GenerateMipmaps=True
+/processorParam:TextureFormat=DxtCompressed
+/build:../../tps-demo-master/level/textures/structure/tile_metal_pillars_albedo.png;Textures/level_textures_structure_tile_metal_pillars_albedo
+
+#begin Textures/level_textures_structure_tile_metal_pillars_normal.xnb
+/importer:TextureImporter
+/processor:GodotTextureProcessor
+/processorParam:MaxSize=2048
+/processorParam:GenerateMipmaps=True
+/processorParam:TextureFormat=DxtCompressed
+/build:../../tps-demo-master/level/textures/structure/tile_metal_pillars_normal.png;Textures/level_textures_structure_tile_metal_pillars_normal
+
+#begin Textures/level_textures_structure_tile_metal_pillars_orm.xnb
+/importer:TextureImporter
+/processor:GodotTextureProcessor
+/processorParam:MaxSize=2048
+/processorParam:GenerateMipmaps=True
+/processorParam:TextureFormat=DxtCompressed
+/build:../../tps-demo-master/level/textures/structure/tile_metal_pillars_orm.png;Textures/level_textures_structure_tile_metal_pillars_orm
+
+#begin Textures/level_textures_structure_tile_painted_gun_metal_albedo.xnb
+/importer:TextureImporter
+/processor:GodotTextureProcessor
+/processorParam:MaxSize=2048
+/processorParam:GenerateMipmaps=True
+/processorParam:TextureFormat=DxtCompressed
+/build:../../tps-demo-master/level/textures/structure/tile_painted_gun_metal_albedo.png;Textures/level_textures_structure_tile_painted_gun_metal_albedo
+
+#begin Textures/level_textures_structure_tile_painted_gun_metal_normal.xnb
+/importer:TextureImporter
+/processor:GodotTextureProcessor
+/processorParam:MaxSize=2048
+/processorParam:GenerateMipmaps=True
+/processorParam:TextureFormat=DxtCompressed
+/build:../../tps-demo-master/level/textures/structure/tile_painted_gun_metal_normal.png;Textures/level_textures_structure_tile_painted_gun_metal_normal
+
+#begin Textures/level_textures_structure_tile_painted_gun_metal_orm.xnb
+/importer:TextureImporter
+/processor:GodotTextureProcessor
+/processorParam:MaxSize=2048
+/processorParam:GenerateMipmaps=True
+/processorParam:TextureFormat=DxtCompressed
+/build:../../tps-demo-master/level/textures/structure/tile_painted_gun_metal_orm.png;Textures/level_textures_structure_tile_painted_gun_metal_orm
+
+#begin Textures/level_textures_structure_tile_rivet_panels_albedo.xnb
+/importer:TextureImporter
+/processor:GodotTextureProcessor
+/processorParam:MaxSize=2048
+/processorParam:GenerateMipmaps=True
+/processorParam:TextureFormat=DxtCompressed
+/build:../../tps-demo-master/level/textures/structure/tile_rivet_panels_albedo.png;Textures/level_textures_structure_tile_rivet_panels_albedo
+
+#begin Textures/level_textures_structure_tile_rivet_panels_normal.xnb
+/importer:TextureImporter
+/processor:GodotTextureProcessor
+/processorParam:MaxSize=2048
+/processorParam:GenerateMipmaps=True
+/processorParam:TextureFormat=DxtCompressed
+/build:../../tps-demo-master/level/textures/structure/tile_rivet_panels_normal.png;Textures/level_textures_structure_tile_rivet_panels_normal
+
+#begin Textures/level_textures_structure_tile_rivet_panels_orm.xnb
+/importer:TextureImporter
+/processor:GodotTextureProcessor
+/processorParam:MaxSize=2048
+/processorParam:GenerateMipmaps=True
+/processorParam:TextureFormat=DxtCompressed
+/build:../../tps-demo-master/level/textures/structure/tile_rivet_panels_orm.png;Textures/level_textures_structure_tile_rivet_panels_orm
+
+#begin Textures/level_textures_structure_tile_scifi_floor_panel_albedo.xnb
+/importer:TextureImporter
+/processor:GodotTextureProcessor
+/processorParam:MaxSize=2048
+/processorParam:GenerateMipmaps=True
+/processorParam:TextureFormat=DxtCompressed
+/build:../../tps-demo-master/level/textures/structure/tile_scifi_floor_panel_albedo.png;Textures/level_textures_structure_tile_scifi_floor_panel_albedo
+
+#begin Textures/level_textures_structure_tile_scifi_floor_panel_normal.xnb
+/importer:TextureImporter
+/processor:GodotTextureProcessor
+/processorParam:MaxSize=2048
+/processorParam:GenerateMipmaps=True
+/processorParam:TextureFormat=DxtCompressed
+/build:../../tps-demo-master/level/textures/structure/tile_scifi_floor_panel_normal.png;Textures/level_textures_structure_tile_scifi_floor_panel_normal
+
+#begin Textures/level_textures_structure_tile_scifi_floor_panel_orm.xnb
+/importer:TextureImporter
+/processor:GodotTextureProcessor
+/processorParam:MaxSize=2048
+/processorParam:GenerateMipmaps=True
+/processorParam:TextureFormat=DxtCompressed
+/build:../../tps-demo-master/level/textures/structure/tile_scifi_floor_panel_orm.png;Textures/level_textures_structure_tile_scifi_floor_panel_orm
+
+#begin Textures/level_textures_structure_tile_simple_floor_albedo.xnb
+/importer:TextureImporter
+/processor:GodotTextureProcessor
+/processorParam:MaxSize=2048
+/processorParam:GenerateMipmaps=True
+/processorParam:TextureFormat=DxtCompressed
+/build:../../tps-demo-master/level/textures/structure/tile_simple_floor_albedo.png;Textures/level_textures_structure_tile_simple_floor_albedo
+
+#begin Textures/level_textures_structure_tile_simple_floor_normal.xnb
+/importer:TextureImporter
+/processor:GodotTextureProcessor
+/processorParam:MaxSize=2048
+/processorParam:GenerateMipmaps=True
+/processorParam:TextureFormat=DxtCompressed
+/build:../../tps-demo-master/level/textures/structure/tile_simple_floor_normal.png;Textures/level_textures_structure_tile_simple_floor_normal
+
+#begin Textures/level_textures_structure_tile_simple_floor_orm.xnb
+/importer:TextureImporter
+/processor:GodotTextureProcessor
+/processorParam:MaxSize=2048
+/processorParam:GenerateMipmaps=True
+/processorParam:TextureFormat=DxtCompressed
+/build:../../tps-demo-master/level/textures/structure/tile_simple_floor_orm.png;Textures/level_textures_structure_tile_simple_floor_orm
+
+#begin Textures/level_textures_structure_tile_tech_panels_albedo.xnb
+/importer:TextureImporter
+/processor:GodotTextureProcessor
+/processorParam:MaxSize=2048
+/processorParam:GenerateMipmaps=True
+/processorParam:TextureFormat=DxtCompressed
+/build:../../tps-demo-master/level/textures/structure/tile_tech_panels_albedo.png;Textures/level_textures_structure_tile_tech_panels_albedo
+
+#begin Textures/level_textures_structure_tile_tech_panels_color_albedo.xnb
+/importer:TextureImporter
+/processor:GodotTextureProcessor
+/processorParam:MaxSize=2048
+/processorParam:GenerateMipmaps=True
+/processorParam:TextureFormat=DxtCompressed
+/build:../../tps-demo-master/level/textures/structure/tile_tech_panels_color_albedo.png;Textures/level_textures_structure_tile_tech_panels_color_albedo
+
+#begin Textures/level_textures_structure_tile_tech_panels_color_orm.xnb
+/importer:TextureImporter
+/processor:GodotTextureProcessor
+/processorParam:MaxSize=2048
+/processorParam:GenerateMipmaps=True
+/processorParam:TextureFormat=DxtCompressed
+/build:../../tps-demo-master/level/textures/structure/tile_tech_panels_color_orm.png;Textures/level_textures_structure_tile_tech_panels_color_orm
+
+#begin Textures/level_textures_structure_tile_tech_panels_normal.xnb
+/importer:TextureImporter
+/processor:GodotTextureProcessor
+/processorParam:MaxSize=2048
+/processorParam:GenerateMipmaps=True
+/processorParam:TextureFormat=DxtCompressed
+/build:../../tps-demo-master/level/textures/structure/tile_tech_panels_normal.png;Textures/level_textures_structure_tile_tech_panels_normal
+
+#begin Textures/level_textures_structure_tile_tech_panels_orm.xnb
+/importer:TextureImporter
+/processor:GodotTextureProcessor
+/processorParam:MaxSize=2048
+/processorParam:GenerateMipmaps=True
+/processorParam:TextureFormat=DxtCompressed
+/build:../../tps-demo-master/level/textures/structure/tile_tech_panels_orm.png;Textures/level_textures_structure_tile_tech_panels_orm
+
+#begin Textures/level_textures_structure_train_texture_albedo.xnb
+/importer:TextureImporter
+/processor:GodotTextureProcessor
+/processorParam:MaxSize=2048
+/processorParam:GenerateMipmaps=True
+/processorParam:TextureFormat=DxtCompressed
+/build:../../tps-demo-master/level/textures/structure/train_texture_albedo.png;Textures/level_textures_structure_train_texture_albedo
+
+#begin Textures/level_textures_structure_train_texture_normal.xnb
+/importer:TextureImporter
+/processor:GodotTextureProcessor
+/processorParam:MaxSize=2048
+/processorParam:GenerateMipmaps=True
+/processorParam:TextureFormat=DxtCompressed
+/build:../../tps-demo-master/level/textures/structure/train_texture_normal.png;Textures/level_textures_structure_train_texture_normal
+
+#begin Textures/level_textures_structure_train_texture_orm.xnb
+/importer:TextureImporter
+/processor:GodotTextureProcessor
+/processorParam:MaxSize=2048
+/processorParam:GenerateMipmaps=True
+/processorParam:TextureFormat=DxtCompressed
+/build:../../tps-demo-master/level/textures/structure/train_texture_orm.png;Textures/level_textures_structure_train_texture_orm
+
+#begin Textures/level_textures_structure_trim_emission_lights_albedo.xnb
+/importer:TextureImporter
+/processor:GodotTextureProcessor
+/processorParam:MaxSize=2048
+/processorParam:GenerateMipmaps=True
+/processorParam:TextureFormat=DxtCompressed
+/build:../../tps-demo-master/level/textures/structure/trim_emission_lights_albedo.png;Textures/level_textures_structure_trim_emission_lights_albedo
+
+#begin Textures/level_textures_structure_trim_emission_lights_emission.xnb
+/importer:TextureImporter
+/processor:GodotTextureProcessor
+/processorParam:MaxSize=2048
+/processorParam:GenerateMipmaps=True
+/processorParam:TextureFormat=DxtCompressed
+/build:../../tps-demo-master/level/textures/structure/trim_emission_lights_emission.png;Textures/level_textures_structure_trim_emission_lights_emission
+
+#begin Textures/level_textures_structure_trim_emission_lights_normal.xnb
+/importer:TextureImporter
+/processor:GodotTextureProcessor
+/processorParam:MaxSize=2048
+/processorParam:GenerateMipmaps=True
+/processorParam:TextureFormat=DxtCompressed
+/build:../../tps-demo-master/level/textures/structure/trim_emission_lights_normal.png;Textures/level_textures_structure_trim_emission_lights_normal
+
+#begin Textures/level_textures_structure_trim_emission_lights_orm.xnb
+/importer:TextureImporter
+/processor:GodotTextureProcessor
+/processorParam:MaxSize=2048
+/processorParam:GenerateMipmaps=True
+/processorParam:TextureFormat=DxtCompressed
+/build:../../tps-demo-master/level/textures/structure/trim_emission_lights_orm.png;Textures/level_textures_structure_trim_emission_lights_orm
+
+#begin Textures/level_textures_structure_trim_misc_1_albedo.xnb
+/importer:TextureImporter
+/processor:GodotTextureProcessor
+/processorParam:MaxSize=2048
+/processorParam:GenerateMipmaps=True
+/processorParam:TextureFormat=DxtCompressed
+/build:../../tps-demo-master/level/textures/structure/trim_misc_1_albedo.png;Textures/level_textures_structure_trim_misc_1_albedo
+
+#begin Textures/level_textures_structure_trim_misc_1_normal.xnb
+/importer:TextureImporter
+/processor:GodotTextureProcessor
+/processorParam:MaxSize=2048
+/processorParam:GenerateMipmaps=True
+/processorParam:TextureFormat=DxtCompressed
+/build:../../tps-demo-master/level/textures/structure/trim_misc_1_normal.png;Textures/level_textures_structure_trim_misc_1_normal
+
+#begin Textures/level_textures_structure_trim_misc_1_orm.xnb
+/importer:TextureImporter
+/processor:GodotTextureProcessor
+/processorParam:MaxSize=2048
+/processorParam:GenerateMipmaps=True
+/processorParam:TextureFormat=DxtCompressed
+/build:../../tps-demo-master/level/textures/structure/trim_misc_1_orm.png;Textures/level_textures_structure_trim_misc_1_orm
+
+#begin Textures/level_textures_structure_trim_misc_2_albedo.xnb
+/importer:TextureImporter
+/processor:GodotTextureProcessor
+/processorParam:MaxSize=2048
+/processorParam:GenerateMipmaps=True
+/processorParam:TextureFormat=DxtCompressed
+/build:../../tps-demo-master/level/textures/structure/trim_misc_2_albedo.png;Textures/level_textures_structure_trim_misc_2_albedo
+
+#begin Textures/level_textures_structure_trim_misc_2_normal.xnb
+/importer:TextureImporter
+/processor:GodotTextureProcessor
+/processorParam:MaxSize=2048
+/processorParam:GenerateMipmaps=True
+/processorParam:TextureFormat=DxtCompressed
+/build:../../tps-demo-master/level/textures/structure/trim_misc_2_normal.png;Textures/level_textures_structure_trim_misc_2_normal
+
+#begin Textures/level_textures_structure_trim_misc_2_orm.xnb
+/importer:TextureImporter
+/processor:GodotTextureProcessor
+/processorParam:MaxSize=2048
+/processorParam:GenerateMipmaps=True
+/processorParam:TextureFormat=DxtCompressed
+/build:../../tps-demo-master/level/textures/structure/trim_misc_2_orm.png;Textures/level_textures_structure_trim_misc_2_orm
+
+#--- END GENERATED TEXTURES ---
+
+#--- PLAYER (hand-added, skinned player; outside the generated block) ---
+#begin Models/player.xnb
+/importer:GlbImporter
+/processor:GodotSkinnedModelProcessor
+/build:../../tps-demo-master/player/model/player.glb;Models/player
+
+#begin Textures/player_textures_player_robot_albedo.xnb
+/importer:TextureImporter
+/processor:GodotTextureProcessor
+/processorParam:MaxSize=2048
+/processorParam:GenerateMipmaps=True
+/processorParam:TextureFormat=DxtCompressed
+/build:../../tps-demo-master/player/textures/player_robot_albedo.png;Textures/player_textures_player_robot_albedo
+
+#begin Textures/player_textures_player_robot_emissive.xnb
+/importer:TextureImporter
+/processor:GodotTextureProcessor
+/processorParam:MaxSize=2048
+/processorParam:GenerateMipmaps=True
+/processorParam:TextureFormat=DxtCompressed
+/build:../../tps-demo-master/player/textures/player_robot_emissive.png;Textures/player_textures_player_robot_emissive
+
+#begin Textures/player_textures_player_robot_normal.xnb
+/importer:TextureImporter
+/processor:GodotTextureProcessor
+/processorParam:MaxSize=2048
+/processorParam:GenerateMipmaps=True
+/processorParam:TextureFormat=DxtCompressed
+/build:../../tps-demo-master/player/textures/player_robot_normal.png;Textures/player_textures_player_robot_normal
+
+#begin Textures/player_textures_player_robot_orm.xnb
+/importer:TextureImporter
+/processor:GodotTextureProcessor
+/processorParam:MaxSize=2048
+/processorParam:GenerateMipmaps=True
+/processorParam:TextureFormat=DxtCompressed
+/build:../../tps-demo-master/player/textures/player_robot_orm.png;Textures/player_textures_player_robot_orm
+
+#begin Effects/ShadowDepth.fx
+/importer:EffectImporter
+/processor:EffectProcessor
+/processorParam:DebugMode=Auto
+/build:Effects/ShadowDepth.fx
+
+#begin Effects/MenuFloor.fx
+/importer:EffectImporter
+/processor:EffectProcessor
+/processorParam:DebugMode=Auto
+/build:Effects/MenuFloor.fx
+
+#begin Effects/PbrLitSkinned.fx
+/importer:EffectImporter
+/processor:EffectProcessor
+/processorParam:DebugMode=Auto
+/build:Effects/PbrLitSkinned.fx
+
+#--- RED ROBOT (hand-added, skinned enemy, reuses GodotSkinnedModelProcessor; root bone MASTER, clip whitelist per plan 04) ---
+#begin Models/red_robot.xnb
+/importer:GlbImporter
+/processor:GodotSkinnedModelProcessor
+/processorParam:ClipWhitelist=Idle,TurnLeft,TurnRight,Walk,Cannon-N,Cannon-L,Cannon-R,Cannon-U,Cannon-D,Damage_take1,Damage_take2,Damage_heavy
+/processorParam:ForceKeepBones=MASTER,CannonAnimRecoil,Cannon_TrackElevation,Cannon-TrackTurret
+/build:../../tps-demo-master/enemies/red_robot/model/red_robot.glb;Models/red_robot
+
+#--- RED ROBOT DEBRIS (hand-added, static meshes of the Death/Part* RigidBody3D parts, plan J1) ---
+#begin Models/part_head.xnb
+/importer:GlbImporter
+/processor:GodotStaticModelProcessor
+/build:../../tps-demo-master/enemies/red_robot/parts/part_head.glb;Models/part_head
+
+#begin Models/part_shield.xnb
+/importer:GlbImporter
+/processor:GodotStaticModelProcessor
+/build:../../tps-demo-master/enemies/red_robot/parts/part_shield.glb;Models/part_shield
+
+#begin Textures/enemies_red_robot_textures_red_robot_albedo.xnb
+/importer:TextureImporter
+/processor:GodotTextureProcessor
+/processorParam:MaxSize=2048
+/processorParam:GenerateMipmaps=True
+/processorParam:TextureFormat=DxtCompressed
+/build:../../tps-demo-master/enemies/red_robot/textures/red_robot_albedo.png;Textures/enemies_red_robot_textures_red_robot_albedo
+
+#begin Textures/enemies_red_robot_textures_red_robot_emission.xnb
+/importer:TextureImporter
+/processor:GodotTextureProcessor
+/processorParam:MaxSize=2048
+/processorParam:GenerateMipmaps=True
+/processorParam:TextureFormat=DxtCompressed
+/build:../../tps-demo-master/enemies/red_robot/textures/red_robot_emission.png;Textures/enemies_red_robot_textures_red_robot_emission
+
+#begin Textures/enemies_red_robot_textures_red_robot_normal.xnb
+/importer:TextureImporter
+/processor:GodotTextureProcessor
+/processorParam:MaxSize=2048
+/processorParam:GenerateMipmaps=True
+/processorParam:TextureFormat=DxtCompressed
+/build:../../tps-demo-master/enemies/red_robot/textures/red_robot_normal.png;Textures/enemies_red_robot_textures_red_robot_normal
+
+#begin Textures/enemies_red_robot_textures_red_robot_orm.xnb
+/importer:TextureImporter
+/processor:GodotTextureProcessor
+/processorParam:MaxSize=2048
+/processorParam:GenerateMipmaps=True
+/processorParam:TextureFormat=DxtCompressed
+/build:../../tps-demo-master/enemies/red_robot/textures/red_robot_orm.png;Textures/enemies_red_robot_textures_red_robot_orm
+
+
+#begin Fonts/Font30.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/build:Fonts/Font30.spritefont
+
+#begin Fonts/Font22.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/build:Fonts/Font22.spritefont
+
+#begin Fonts/Font44.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/build:Fonts/Font44.spritefont
+
+#begin Textures/Menu/tps_demo.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyEnabled=False
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:TextureFormat=Color
+/build:Textures/Menu/tps_demo.png;Textures/Menu/tps_demo
+
+#begin Textures/Hud/crosshair.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyEnabled=False
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:TextureFormat=Color
+/build:../../tps-demo-master/player/crosshair.png;Textures/Hud/crosshair
+
+#begin Textures/Menu/floor.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyEnabled=False
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=False
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:TextureFormat=Color
+/build:Textures/Menu/floor.png;Textures/Menu/floor
+
+#begin Audio/Music/menu_music.xnb
+/importer:OggImporter
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:../../tps-demo-master/menu/menu_intro_music.ogg;Audio/Music/menu_music
+
+#begin Audio/Music/level_music.xnb
+/importer:OggImporter
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:../../tps-demo-master/level/level_music.ogg;Audio/Music/level_music
+
+#begin Audio/Sfx/player_step.xnb
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:../../tps-demo-master/player/audio/step.wav;Audio/Sfx/player_step
+
+#begin Audio/Sfx/player_jump.xnb
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:../../tps-demo-master/player/audio/jump.wav;Audio/Sfx/player_jump
+
+#begin Audio/Sfx/player_land.xnb
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:../../tps-demo-master/player/audio/land.wav;Audio/Sfx/player_land
+
+#begin Audio/Sfx/player_shoot.xnb
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:../../tps-demo-master/player/audio/shoot.wav;Audio/Sfx/player_shoot
+
+#begin Audio/Sfx/bullet_explode.wav
+/copy:../../tps-demo-master/player/bullet/bullet_explode.wav;Audio/Sfx/bullet_explode.wav
+
+#begin Audio/Sfx/robot_charge.wav
+/copy:../../tps-demo-master/enemies/red_robot/audio/charge.wav;Audio/Sfx/robot_charge.wav
+
+#begin Audio/Sfx/robot_shoot.wav
+/copy:../../tps-demo-master/enemies/red_robot/audio/shoot.wav;Audio/Sfx/robot_shoot.wav
+
+#begin Audio/Sfx/robot_explosion.wav
+/copy:../../tps-demo-master/enemies/red_robot/audio/explosion.wav;Audio/Sfx/robot_explosion.wav
+
+#begin Audio/Sfx/robot_walk.wav
+/copy:../../tps-demo-master/enemies/red_robot/audio/walk.wav;Audio/Sfx/robot_walk.wav
+
+#begin Audio/Sfx/robot_hit.wav
+/copy:../../tps-demo-master/enemies/red_robot/audio/hit.wav;Audio/Sfx/robot_hit.wav

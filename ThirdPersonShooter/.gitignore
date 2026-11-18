@@ -1,0 +1,14 @@
+bin/
+obj/
+artifacts/
+shots/
+*.DS_Store
+*.user
+.vs/
+.idea/
+
+# Original Godot project: kept locally as the extraction source, not committed (clone godotengine/tps-demo into this folder)
+tps-demo-master/
+
+# Scratch tuning renders, kept locally only (milestone shots live in Documentation/reference/mono-NN-*.png)
+Documentation/reference/_tuning/
