@@ -115,7 +115,10 @@ class Obs:
 
 
 SCENE = "CatapultWars LAN"
-HOST_SOURCE, GUEST_SOURCE = "Dominique window", "Dean window"
+# OBS source names are global to the whole OBS, not per scene, so these are deliberately specific:
+# another scene (a racing game's LAN recording, say) may well have "Dominique window" and "window-list".
+HOST_SOURCE, GUEST_SOURCE = "CatapultWars host window", "CatapultWars guest window"
+LISTER = "CatapultWars window-list"
 WINDOW_TITLE = "[CatapultNetWars] Catapult Wars"   # [process] window title
 TITLE_BAR = 56          # capture pixels of title bar (28 points at 2x Retina), cropped off the top
 SCALE = 0.6             # 1600 px wide capture -> 960, so two fit the 1920 canvas
@@ -125,15 +128,15 @@ def bind(obs):
     # A dedicated, disabled window-capture source lists the windows. Its settings are forced to window
     # mode each time, because a source left in another mode has no "window" property to list.
     existing = {i["inputName"] for i in obs.request("GetInputList")["inputs"]}
-    if "window-list" not in existing:
-        obs.request("CreateInput", {"sceneName": SCENE, "inputName": "window-list", "inputKind": "screen_capture",
+    if LISTER not in existing:
+        obs.request("CreateInput", {"sceneName": SCENE, "inputName": LISTER, "inputKind": "screen_capture",
                                     "inputSettings": {"type": 1}, "sceneItemEnabled": False})
-    obs.request("SetInputSettings", {"inputName": "window-list", "inputSettings": {"type": 1}})
+    obs.request("SetInputSettings", {"inputName": LISTER, "inputSettings": {"type": 1}})
     items = None
     for _ in range(10):
         try:
             items = obs.request("GetInputPropertiesListPropertyItems",
-                                {"inputName": "window-list", "propertyName": "window"})["propertyItems"]
+                                {"inputName": LISTER, "propertyName": "window"})["propertyItems"]
             break
         except RuntimeError:
             time.sleep(0.5)
