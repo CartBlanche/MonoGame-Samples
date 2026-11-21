@@ -8,8 +8,10 @@
 	<string>Catapult Wars</string>
 	<key>CFBundleDisplayName</key>
 	<string>Catapult Wars</string>
+	<key>CFBundleShortVersionString</key>
+	<string>1.1</string>
 	<key>CFBundleVersion</key>
-	<string>1</string>
+	<string>2</string>
 	<key>LSMinimumSystemVersion</key>
 	<string>10.6</string>
 	<key>NSPrincipalClass</key>
