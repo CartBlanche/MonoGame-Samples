@@ -177,3 +177,7 @@ paket-files/
 .fake/
 .idea/
 *.sln.iml
+
+# Video recordings are large and never belong in the repo (OBS records .mov)
+*.mov
+*.MOV
