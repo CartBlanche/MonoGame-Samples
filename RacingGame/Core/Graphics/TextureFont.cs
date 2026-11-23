@@ -213,7 +213,7 @@ namespace RacingGame.Graphics
         {
             int width = 0;
             //foreach (char c in text)
-            char[] chars = text.ToCharArray();
+            string chars = text;   // read only: no copy (this runs for every text every frame)
             for (int num = 0; num < chars.Length; num++)
             {
                 int charNum = (int)chars[num];
@@ -367,17 +367,37 @@ namespace RacingGame.Graphics
         public static void WriteGameTime(int x, int y, int timeMilliseconds,
             Color col)
         {
-            WriteText(x, y,
+            WriteText(x, y, GameTimeText(timeMilliseconds), col);
+        }
+
+        /// <summary>
+        /// "m:ss.hh" text of a time. The HUD writes 7 times every frame, and all but the running
+        /// time are the same from frame to frame (best and top 5 laps), and the running time only
+        /// changes every 10 ms, so strings are cached by sign and hundredths of a second.
+        /// </summary>
+        static string GameTimeText(int timeMilliseconds)
+        {
+            int abs = Math.Abs(timeMilliseconds);
+            int key = (abs / 10) * 2 + (timeMilliseconds < 0 ? 1 : 0);
+            string text;
+            if (gameTimeTexts.TryGetValue(key, out text))
+                return text;
+            // Bounded: a long session visits at most a few hundred thousand distinct values
+            if (gameTimeTexts.Count >= 2048)
+                gameTimeTexts.Clear();
+            text =
                 // negative?
                 (timeMilliseconds < 0 ? "-" : "") +
                 // Minutes
-                ((Math.Abs(timeMilliseconds) / 1000) / 60) + ":" +
+                ((abs / 1000) / 60) + ":" +
                 // Seconds
-                ((Math.Abs(timeMilliseconds) / 1000) % 60).ToString("00") + "." +
+                ((abs / 1000) % 60).ToString("00") + "." +
                 // Milliseconds
-                ((Math.Abs(timeMilliseconds) / 10) % 100).ToString("00"),
-                col);
+                ((abs / 10) % 100).ToString("00");
+            gameTimeTexts[key] = text;
+            return text;
         }
+        static readonly Dictionary<int, string> gameTimeTexts = new Dictionary<int, string>();
         /// <summary>
         /// Write all
 		/// Draws the added texts to the screen.
@@ -402,7 +422,7 @@ namespace RacingGame.Graphics
                 float fx = fontText.x;
                 int y = fontText.y;
                 Color color = fontText.color;
-                char[] chars = fontText.text.ToCharArray();
+                string chars = fontText.text;   // read only: no copy per text per frame
                 for (int num = 0; num < chars.Length; num++)
                 {
                     int charNum = (int)chars[num];

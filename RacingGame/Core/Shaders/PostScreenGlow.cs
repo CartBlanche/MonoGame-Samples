@@ -161,6 +161,11 @@ namespace RacingGame.Shaders
                 -(0.0025f + RacingGameManager.Player.Speed * 0.005f /
                 Player.DefaultMaxSpeed);
 
+            // Time of day glow (equals the FxDefaultValues at Day)
+            effect.Parameters["GlowIntensity"]?.SetValue(BaseGame.Lighting.GlowIntensity);
+            effect.Parameters["HighlightIntensity"]?.SetValue(BaseGame.Lighting.GlowHighlight);
+            effect.Parameters["HighlightThreshold"]?.SetValue(BaseGame.Lighting.GlowThreshold);
+
             effect.CurrentTechnique = effect.Techniques["ScreenGlow20"];
 
             // We must have exactly 5 passes!

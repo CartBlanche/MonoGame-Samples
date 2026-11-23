@@ -1,0 +1,31 @@
+diff --git a/RacingGame/Core/Graphics/UIRenderer.cs b/RacingGame/Core/Graphics/UIRenderer.cs
+index 35fb87a7..f4eba849 100644
+--- a/RacingGame/Core/Graphics/UIRenderer.cs
++++ b/RacingGame/Core/Graphics/UIRenderer.cs
+@@ -471,7 +471,7 @@ namespace RacingGame.Graphics
+         public void UpdateCarInMenu()
+         {
+             // Advance menu car preview time
+-            carMenuTime += BaseGame.ElapsedTimeThisFrameInMilliseconds / 1000.0f;
++            carMenuTime += BaseGame.ElapsedTimeThisFrameInMilliseconds / 1000.0f * RacingGame.Helpers.Rig.DemoSpeed;
+             if (carMenuTime > RacingGameManager.Landscape.BestReplay.LapTime)
+                 carMenuTime -= RacingGameManager.Landscape.BestReplay.LapTime;
+ 
+diff --git a/RacingGame/Core/Helpers/Rig.cs b/RacingGame/Core/Helpers/Rig.cs
+index fcd28464..01142fc4 100644
+--- a/RacingGame/Core/Helpers/Rig.cs
++++ b/RacingGame/Core/Helpers/Rig.cs
+@@ -99,9 +99,12 @@ namespace RacingGame.Helpers
+             BaseGame.ViewMatrix = Microsoft.Xna.Framework.Matrix.CreateLookAt(eye, pos + up * 0.7f, up);
+         }
+ 
++        static readonly bool menuCap = E("RACINGGAME_MENUCAP") == "1";
++        public static readonly float DemoSpeed = float.TryParse(E("RACINGGAME_DEMOSPEED"), out float ds) ? ds : 1.0f;
+         public static void UpdateHook()
+         {
+-            if (started) { updates++; DumpTunnels(); Teleport(); }
++            if (menuCap) started = true;
++            if (started) { updates++; if (!menuCap) { DumpTunnels(); Teleport(); } }
+         }
+ 
+         public static void DrawBegin() { if (Timing && started) drawWatch.Restart(); }

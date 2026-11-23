@@ -1,0 +1,107 @@
+diff --git a/RacingGame/Core/Core.csproj b/RacingGame/Core/Core.csproj
+index 5d118964..c0e889cc 100644
+--- a/RacingGame/Core/Core.csproj
++++ b/RacingGame/Core/Core.csproj
+@@ -1,5 +1,6 @@
+ <Project Sdk="Microsoft.NET.Sdk">
+   <PropertyGroup>
++    <DefineConstants Condition="'$(DevShots)' == 'true'">$(DefineConstants);DEVSHOTS;DEVSHOTS_OLD</DefineConstants>
+     <TargetFramework>net10.0</TargetFramework>
+     <Platforms>AnyCPU;x64</Platforms>
+     <RootNamespace>RacingGame</RootNamespace>
+diff --git a/RacingGame/Core/GameScreens/SplashScreen.cs b/RacingGame/Core/GameScreens/SplashScreen.cs
+index 31ccd294..7cf33809 100644
+--- a/RacingGame/Core/GameScreens/SplashScreen.cs
++++ b/RacingGame/Core/GameScreens/SplashScreen.cs
+@@ -36,6 +36,10 @@ namespace RacingGame.GameScreens
+         /// </summary>
+         public bool Render()
+         {
++#if DEVSHOTS
++            if (RacingGame.Helpers.DevShots.Active)
++                RacingGame.Helpers.DevShots.Splash(startTime < 0 ? 0.0f : BaseGame.TotalTime - startTime);
++#endif
+             BaseGame.UI.UpdateCarInMenu();
+ 
+             ShadowMapShader.PrepareGameShadows();
+@@ -43,14 +47,20 @@ namespace RacingGame.GameScreens
+             // Render background and black bar
+             BaseGame.UI.RenderGameBackground();
+             BaseGame.UI.RenderMenuTrackBackground();
+-            BaseGame.UI.RenderBlackBar(518, 61);
++#if DEVSHOTS
++            bool videoShot = RacingGame.Helpers.DevShots.Active;   // the video wants the clean demo
++#else
++            const bool videoShot = false;
++#endif
++            if (!videoShot)
++                BaseGame.UI.RenderBlackBar(518, 61);
+ 
+             // Show shadows we calculated above
+             if (BaseGame.AllowShadowMapping)
+                 ShaderEffect.shadowMapping.ShowShadows();
+ 
+             // Show Press Start to continue. 
+-            if ((int)(BaseGame.TotalTime / 0.375f) % 3 != 0)
++            if (!videoShot && (int)(BaseGame.TotalTime / 0.375f) % 3 != 0)
+                 BaseGame.UI.Headers.RenderOnScreen(
+                     BaseGame.CalcRectangleCenteredWithGivenHeight(
+                     512, 518 + 61 / 2, 26, UIRenderer.PressStartGfxRect),
+@@ -62,6 +72,9 @@ namespace RacingGame.GameScreens
+             float fade = 1 - (BaseGame.TotalTime - startTime) / CrossFadeTime;
+             if (fade > 0)
+                 LoadingScreen.RenderCard(fade, 1, null, null, 0);
++#if DEVSHOTS
++            RacingGame.Helpers.DevShots.RenderOverlay();
++#endif
+ 
+             // Clicking or pressing start will go to the menu
+             return Input.MouseLeftButtonJustPressed ||
+diff --git a/RacingGame/Core/Graphics/UIRenderer.cs b/RacingGame/Core/Graphics/UIRenderer.cs
+index de89a9e5..6451a3c4 100644
+--- a/RacingGame/Core/Graphics/UIRenderer.cs
++++ b/RacingGame/Core/Graphics/UIRenderer.cs
+@@ -462,7 +462,17 @@ namespace RacingGame.Graphics
+         {
+             // Advance menu car preview time
+             carMenuTime += BaseGame.ElapsedTimeThisFrameInMilliseconds / 1000.0f;
+-            if (carMenuTime > RacingGameManager.Landscape.BestReplay.LapTime)
++#if DEVSHOTS
++            // The video harness locks the demo to the wall clock so two copies stay in step,
++            // and shows the same car in both
++            if (RacingGame.Helpers.DevShots.Active)
++            {
++                carMenuTime = RacingGame.Helpers.DevShots.DemoSeconds;
++                randomCarNumber = RacingGame.Helpers.DevShots.CarNumber;
++                randomCarColor = RacingGame.Helpers.DevShots.CarColor;
++            }
++#endif
++            while (carMenuTime > RacingGameManager.Landscape.BestReplay.LapTime)
+                 carMenuTime -= RacingGameManager.Landscape.BestReplay.LapTime;
+ 
+             // Use data from replay
+diff --git a/RacingGame/Core/RacingGameManager.cs b/RacingGame/Core/RacingGameManager.cs
+index f61f8051..b0413c8d 100644
+--- a/RacingGame/Core/RacingGameManager.cs
++++ b/RacingGame/Core/RacingGameManager.cs
+@@ -329,6 +329,9 @@ namespace RacingGame
+         public RacingGameManager()
+             : base("RacingGame")
+         {
++#if DEVSHOTS
++            RacingGame.Helpers.DevShots.Init(this);
++#endif
+             Sound.Initialize();
+             // Start playing the menu music
+             //Sound.Play(Sound.Sounds.MenuMusic);
+diff --git a/RacingGame/Desktop/RacingGame.csproj b/RacingGame/Desktop/RacingGame.csproj
+index 9da0c827..8cceaa45 100644
+--- a/RacingGame/Desktop/RacingGame.csproj
++++ b/RacingGame/Desktop/RacingGame.csproj
+@@ -1,5 +1,6 @@
+ <Project Sdk="Microsoft.NET.Sdk">
+   <PropertyGroup>
++    <DefineConstants Condition="'$(DevShots)' == 'true'">$(DefineConstants);DEVSHOTS;DEVSHOTS_OLD</DefineConstants>
+     <OutputType>WinExe</OutputType>
+     <TargetFramework>net10.0</TargetFramework>
+     <RollForward>Major</RollForward>

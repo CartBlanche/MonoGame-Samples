@@ -68,6 +68,12 @@ namespace RacingGame.Tracks
         public float[] Checkpoints;
 
         /// <summary>
+        /// Optional time of day of this track: 0 = noon (the default when the
+        /// element is absent), 0.35 golden hour, 0.65 dusk, 1 = night.
+        /// </summary>
+        public float TimeOfDay;
+
+        /// <summary>
         /// Optional own terrain for this track: the 257 x 257 height bytes
         /// (same layout as Content/LandscapeHeights.data), deflate compressed.
         /// XmlSerializer writes this as base64. Null: the shipped terrain.

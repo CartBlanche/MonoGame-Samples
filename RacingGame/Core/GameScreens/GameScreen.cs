@@ -37,6 +37,9 @@ namespace RacingGame.GameScreens
             // Reset player variables (start new game, reset time and position)
             RacingGameManager.Player.Reset();
 
+            // Lighting setting and time of day of this race (the track's own or the override)
+            BaseGame.Lighting.BeginRace(TrackLighting.RaceTimeOfDay());
+
             // Fix light direction (was changed by CarSelection screen!)
             // LightDirection will normalize
             BaseGame.LightDirection = LensFlare.DefaultLightPos;
@@ -87,36 +90,11 @@ namespace RacingGame.GameScreens
 		{
 
 		}
-		/// <summary>
-        /// Render game screen. Called each frame.
+        /// <summary>
+        /// The shadow car (best replay), once the game has started.
         /// </summary>
-        public virtual bool Render()
+        void RenderGhostCar()
         {
-            ShadowMapShader.PrepareGameShadows();
-
-            // This starts both menu and in game post screen shader!
-			if( BaseGame.UsePostScreenShaders)
-            	BaseGame.UI.PostScreenGlowShader.Start();
-
-            // Render background sky and lensflare.
-            BaseGame.UI.RenderGameBackground();
-
-            // Render landscape with track and all objects
-            RacingGameManager.Landscape.Render();
-
-            // Render car with matrix we got from CarPhysics
-            RacingGameManager.CarModel.RenderCar(
-                RacingGameManager.currentCarNumber,
-                RacingGameManager.CarColor,
-                false,
-                RacingGameManager.Player.CarRenderMatrix);
-
-            // Other players' cars (multiplayer)
-            RenderOtherCars();
-
-            // And flush all models to be rendered
-            BaseGame.MeshRenderManager.Render();
-
             // Use data from best replay for the shadow car
             Matrix bestReplayCarMatrix =
                 RacingGameManager.Landscape.BestReplay.GetCarMatrixAtTime(
@@ -133,10 +111,26 @@ namespace RacingGame.GameScreens
                 RacingGameManager.CarModel.RenderCar(
                     0, RacingGameManager.CarColor,
                     true, bestReplayCarMatrix);
+        }
 
-            // Show shadows we calculated above
-            if (BaseGame.AllowShadowMapping)
-                ShaderEffect.shadowMapping.ShowShadows();
+		/// <summary>
+        /// Render game screen. Called each frame.
+        /// </summary>
+        public virtual bool Render()
+        {
+            // Lighting and shadow maps, then the scene shared with the menu demo
+            BaseGame.UI.PrepareScene(true);
+
+            // This starts both menu and in game post screen shader!
+			if( BaseGame.UsePostScreenShaders)
+            	BaseGame.UI.PostScreenGlowShader.Start();
+
+            BaseGame.UI.RenderScene(
+                RacingGameManager.currentCarNumber,
+                RacingGameManager.CarColor,
+                // Other players' cars (multiplayer)
+                RenderOtherCars,
+                RenderGhostCar);
 
             // Apply post screen shader here before doing the UI
 			if (BaseGame.UsePostScreenShaders)
@@ -173,6 +167,9 @@ namespace RacingGame.GameScreens
 
                 // Play menu music again
                 Sound.Play(Sound.Sounds.MenuMusic);
+
+                // Menus use the day look again
+                BaseGame.Lighting.EndGame();
 
                 // Return to menu
                 return true;

@@ -117,6 +117,18 @@ namespace RacingGame.Graphics
         }
 
         /// <summary>
+        /// Text of a number. The in-game HUD writes the same few numbers (speed, gear, laps) every
+        /// frame, so small ones are cached instead of allocating a new string each time.
+        /// </summary>
+        static string IntToString(int number)
+        {
+            if (number < 0 || number >= smallNumbers.Length)
+                return number.ToString();
+            return smallNumbers[number] ?? (smallNumbers[number] = number.ToString());
+        }
+        static readonly string[] smallNumbers = new string[1000];
+
+        /// <summary>
         /// Write number
         /// </summary>
         /// <param name="x">X</param>
@@ -126,12 +138,12 @@ namespace RacingGame.Graphics
         public static int WriteNumber(int x, int y, int number)
         {
             // Convert to string
-            string numberText = number.ToString();
+            string numberText = IntToString(number);
             int width = 0;
 
             // And now process every letter
             //foreach (char numberChar in numberText.ToCharArray())
-            char[] chars = numberText.ToCharArray();
+            string chars = numberText;
             for (int num = 0; num < chars.Length; num++)
             {
                 width += WriteDigit(x + width, y, (int)chars[num] - (int)'0');
@@ -156,7 +168,7 @@ namespace RacingGame.Graphics
             float resScalingX = (float)BaseGame.Width / 1600.0f;
             float scaleFactor = height / (float)BigNumberRects[0].Height;
             int width = 0;
-            foreach (char c in number.ToString())
+            foreach (char c in IntToString(number))
             {
                 int digit = c - '0';
                 if (digit < 0)
@@ -171,12 +183,12 @@ namespace RacingGame.Graphics
         public static int WriteNumber(int x, int y, int number, float alpha)
         {
             // Convert to string
-            string numberText = number.ToString();
+            string numberText = IntToString(number);
             int width = 0;
 
             // And now process every letter
             //foreach (char numberChar in numberText.ToCharArray())
-            char[] chars = numberText.ToCharArray();
+            string chars = numberText;
             for (int num = 0; num < chars.Length; num++)
             {
                 width += WriteDigit(
@@ -197,12 +209,12 @@ namespace RacingGame.Graphics
         public static int WriteNumber(int x, int y, int height, int number)
         {
             // Convert to string
-            string numberText = number.ToString();
+            string numberText = IntToString(number);
             int width = 0;
 
             // And now process every letter
             //foreach (char numberChar in numberText.ToCharArray())
-            char[] chars = numberText.ToCharArray();
+            string chars = numberText;
             for (int num = 0; num < chars.Length; num++)
             {
                 width += WriteDigit(
@@ -221,7 +233,7 @@ namespace RacingGame.Graphics
         public static void WriteNumberCentered(int x, int y, int number)
         {
             WriteNumber(
-                (int)(x - (number.ToString().Length * BigNumberRects[0].Width / 2) *
+                (int)(x - (IntToString(number).Length * BigNumberRects[0].Width / 2) *
                 ((float)BaseGame.Width / 1600.0f)),
                 y, number);
         }
@@ -236,7 +248,7 @@ namespace RacingGame.Graphics
         public static void WriteNumberCentered(int x, int y, int number, float alpha)
         {
             WriteNumber(
-                (int)(x - (number.ToString().Length * BigNumberRects[0].Width / 2) *
+                (int)(x - (IntToString(number).Length * BigNumberRects[0].Width / 2) *
                 ((float)BaseGame.Width / 1600.0f)),
                 y, number, alpha);
         }

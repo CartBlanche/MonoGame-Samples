@@ -177,6 +177,23 @@ namespace RacingGame.Graphics
         /// <param name="info">Info string</param>
         public static string TechniqueNameFromPartInfo(string info)
         {
+            // Called for every mesh part every frame by Model.RenderCar: parse each distinct
+            // tag string once (the result only depends on the string and the loaded effect).
+            string cached;
+            if (techniqueNameCache.TryGetValue(info, out cached))
+                return cached;
+            cached = ParseTechniqueNameFromPartInfo(info);
+            techniqueNameCache[info] = cached;
+            return cached;
+        }
+
+        static readonly System.Collections.Generic.Dictionary<string, string> techniqueNameCache =
+            new System.Collections.Generic.Dictionary<string, string>();
+        static readonly System.Collections.Generic.Dictionary<string, bool> glassPartInfoCache =
+            new System.Collections.Generic.Dictionary<string, bool>();
+
+        static string ParseTechniqueNameFromPartInfo(string info)
+        {
             int technique = -1;
             string effect = "";
             foreach (string pair in info.Split(new[] { ';' },
@@ -205,7 +222,13 @@ namespace RacingGame.Graphics
         /// </summary>
         public static bool IsGlassPartInfo(string info)
         {
-            return info.Contains("effect=ReflectionSimpleGlass;");
+            bool glass;
+            if (glassPartInfoCache.TryGetValue(info, out glass) == false)
+            {
+                glass = info.Contains("effect=ReflectionSimpleGlass;");
+                glassPartInfoCache[info] = glass;
+            }
+            return glass;
         }
 
         /// <summary>
@@ -213,6 +236,14 @@ namespace RacingGame.Graphics
         /// a mask, set for models that start with "Alpha".
         /// </summary>
         public bool useAlpha = false;
+
+        /// <summary>
+        /// True for banners and signs: they do not receive integrated shadows (same test as
+        /// Landscape.LandscapeObject.IsBanner; classic excludes them from the receive pass).
+        /// Part of the material identity in MeshRenderManager, so they never share a material
+        /// with receiving objects.
+        /// </summary>
+        public bool noShadowReceive = false;
 
         /// <summary>
         /// Set the material values from the info string the content pipeline

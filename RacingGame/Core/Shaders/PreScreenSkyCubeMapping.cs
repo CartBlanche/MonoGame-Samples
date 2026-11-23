@@ -34,6 +34,16 @@ namespace RacingGame.Shaders
         const string SkyCubeMapFilename = "SkyCubeMap";
 
         /// <summary>
+        /// Stars-only night sky cube map (added on top of the day sky, see the shader).
+        /// </summary>
+        const string NightSkyCubeMapFilename = "NightSkyCubeMap";
+        private TextureCube nightSkyCubeMapTexture = null;
+        private EffectParameter nightSkyParameter = null;
+        private EffectParameter moonDirParameter = null, moonParamsParameter = null;
+        // angular radius of the (enlarged) moon in degrees
+        const float MoonRadiusDegrees = 3.2f;
+
+        /// <summary>
         /// Default sky color
         /// </summary>
         static readonly Color DefaultSkyColor = new Color(232, 232, 232);
@@ -90,9 +100,34 @@ namespace RacingGame.Shaders
                 skyCubeMapTexture = null;
             }
 
+            // Night stars layer; optional, the sky simply has no stars if it fails to load.
+            nightSkyParameter = effect.Parameters["NightSky"];
+            moonDirParameter = effect.Parameters["MoonDir"];
+            moonParamsParameter = effect.Parameters["MoonParams"];
+            try
+            {
+                nightSkyCubeMapTexture = BaseGame.Content.Load<TextureCube>(
+                    Path.Combine(Directories.ContentDirectory,
+                    "Textures", NightSkyCubeMapFilename));
+                effect.Parameters["nightTexture"]?.SetValue(nightSkyCubeMapTexture);
+            }
+            catch (Exception ex)
+            {
+                Log.Write("NightSkyCubeMap load failed: " + ex.Message);
+                nightSkyCubeMapTexture = null;
+            }
+
             // Set sky color to nearly white
             AmbientColor = DefaultSkyColor;
         }
+        /// <summary>
+        /// The sky has its own tint (TrackLighting.Sky), not the material tints.
+        /// </summary>
+        protected override bool TintColors
+        {
+            get { return false; }
+        }
+
         /// <summary>
         /// Render sky with help of shader.
         /// </summary>
@@ -114,7 +149,21 @@ namespace RacingGame.Shaders
             BaseGame.Device.BlendState = BlendState.Opaque;
 
             // Set effect parameters
-            AmbientColor = setSkyColor;
+            AmbientColor = BaseGame.Lighting.Sky(setSkyColor);
+            if (nightSkyParameter != null)
+                nightSkyParameter.SetValue(new Vector4(
+                    nightSkyCubeMapTexture != null ? BaseGame.Lighting.StarBlend : 0.0f,
+                    1.0f, 0.08f, 0.25f));
+            if (moonDirParameter != null && moonParamsParameter != null)
+            {
+                // game up is +Z, the cube map's up is +Y (same swap as the sky shader's texCoord)
+                Vector3 l = Vector3.Normalize(BaseGame.Lighting.LightPos);
+                moonDirParameter.SetValue(new Vector4(
+                    l.X, l.Z, l.Y,
+                    1.0f - (float)Math.Cos(MathHelper.ToRadians(MoonRadiusDegrees))));
+                moonParamsParameter.SetValue(new Vector4(
+                    BaseGame.Lighting.StarBlend, 0.45f, 7.0f, 0.0f));
+            }
             effect.Parameters["view"].SetValue(BaseGame.ViewMatrix);
             ProjectionMatrix = BaseGame.ProjectionMatrix;
 
@@ -134,7 +183,7 @@ namespace RacingGame.Shaders
         /// </summary>
         public void RenderSky()
         {
-            RenderSky(lastUsedAmbientColor);
+            RenderSky(DefaultSkyColor);
         }
     }
 }

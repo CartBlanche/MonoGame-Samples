@@ -27,7 +27,7 @@ Today the game is single player with a **ghost car** (a replay of your best lap)
 
 **Code** (`RacingGame/Core`)
 
-- `Multiplayer/RacePackets.cs`: packet ids 70 to 75 and 80 (LobbyUpdate, LobbySync, RaceStart, Ready, Go, PlayerFinished, CarState), `RacePlayerInfo`.
+- `Multiplayer/RacePackets.cs`: packet ids 70 to 75 and 80 (LobbyUpdate, LobbySync, RaceStart, Ready, Go, PlayerFinished, CarState; CarState ends with a `Flags` byte, bit 0 = braking, others reserved; old and new builds must not be mixed on one LAN), `RacePlayerInfo`.
 - `Multiplayer/MultiplayerSessionService.cs`: create, find and join; `GameId` "RacingGame", `ProtocolVersion` 2, `MaxPlayers` 4, name helpers.
 - `Multiplayer/RaceNetSession.cs`: the session wrapper (packet dispatch with an audience filter, `Send`/`SendToHost`/`Broadcast`/`Relay`, join and leave events), and a small log written to `$TMPDIR/RacingGame-net.log`.
 - `Multiplayer/RaceLobby.cs`: the lobby state, and `LanRace`, the session shared by the screens.

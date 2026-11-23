@@ -282,6 +282,7 @@ namespace RacingGame.GameScreens
                 Speed = player.Speed,
                 Lap = (byte)Math.Max(0, Math.Min(255, player.CurrentLap)),
                 Progress = player.TrackProgress,
+                Flags = player.IsBraking ? CarStatePacket.FlagBraking : (byte)0,
             }, false);
         }
 
@@ -489,7 +490,8 @@ namespace RacingGame.GameScreens
             {
                 Matrix matrix;
                 float wheelPos;
-                if (!car.Sample(Now, out matrix, out wheelPos))
+                bool braking;
+                if (!car.Sample(Now, out matrix, out wheelPos, out braking))
                     continue;
 
                 int color = car.Info.Color;
@@ -497,6 +499,9 @@ namespace RacingGame.GameScreens
                     car.Info.Car,
                     RacingGameManager.CarColors[color % RacingGameManager.CarColors.Count],
                     false, matrix, wheelPos, color != 0);
+                // Same global on/off as the local car, own matrix, glow sprites only
+                // (the 2 headlight slots belong to the local car; braking comes in CarStatePacket.Flags)
+                BaseGame.Lighting.AddCarSprites(matrix, false, braking ? 1.0f : 0.0f);
 
                 string text = car.Info.Name;
                 Result result;

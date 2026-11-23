@@ -293,6 +293,7 @@ namespace RacingGame.Tracks
             copy.Created = data.Created;
             copy.Heightmap = data.Heightmap;
             copy.Checkpoints = data.Checkpoints;
+            copy.TimeOfDay = data.TimeOfDay;
             return copy;
         }
         /// <summary>
@@ -639,6 +640,7 @@ namespace RacingGame.Tracks
             columns = new TrackColumns(points, landscape);
 
             GenerateObjectsForTrack(landscape);
+            GenerateTunnelLamps();
         }
         /// <summary>
         /// Checkpoints at the fractions of the lap given in the track file, with
@@ -699,6 +701,57 @@ namespace RacingGame.Tracks
                 pointSpace *
                 Matrix.CreateTranslation(points[num].pos),
                 true);
+        }
+
+        /// <summary>
+        /// Tunnel lamps on the fixtures that are painted into RoadTunnel.tga. The texture shows 3
+        /// fixtures per repeat in a band near the top of each wall (texture x about 0.13, 0.495 and
+        /// 0.86; the left wall band is at v 0.2 and the right one at v 0.78 of the texture, see the
+        /// uv set-up of roadTunnelVertices: u runs along the road at RoadTunnelTextureWidthFactor,
+        /// the left wall covers v 0 to RoadTunnelSideTextureHeight and the right wall the same
+        /// range at the other end), so the lights and glows sit exactly on the painted lamps
+        /// instead of floating on the centre line.
+        /// </summary>
+        private void GenerateTunnelLamps()
+        {
+            float[] fixturePhase = { 0.13f, 0.495f, 0.86f };
+            const float LeftHeight = 6.05f, RightHeight = 6.65f, Inset = 0.25f;
+            int total = 0;
+            foreach (RoadHelperPosition tunnelPos in helperPositions)
+            {
+                if (tunnelPos.type != TrackData.RoadHelper.HelperType.Tunnel)
+                    continue;
+                int last = Math.Min(tunnelPos.endNum, points.Count - 1);
+                for (int num = Math.Max(tunnelPos.startNum, 0); num < last; num++)
+                {
+                    TrackVertex a = points[num], b = points[num + 1];
+                    float ua = a.uv.X * RoadTunnelTextureWidthFactor;
+                    float ub = b.uv.X * RoadTunnelTextureWidthFactor;
+                    if (!(ub > ua))
+                        continue;
+                    Vector3 aL = a.LeftTangentVertex.pos, bL = b.LeftTangentVertex.pos;
+                    Vector3 aR = a.RightTangentVertex.pos, bR = b.RightTangentVertex.pos;
+                    for (int p = 0; p < fixturePhase.Length; p++)
+                    {
+                        for (float val = (float)Math.Ceiling(ua - fixturePhase[p]) + fixturePhase[p];
+                            val < ub; val += 1.0f)
+                        {
+                            float f = (val - ua) / (ub - ua);
+                            Vector3 up = Vector3.Normalize(Vector3.Lerp(a.up, b.up, f));
+                            Vector3 right = Vector3.Normalize(Vector3.Lerp(a.right, b.right, f));
+                            BaseGame.Lighting.AddTunnelLamp(
+                                Vector3.Lerp(aL, bL, f) + up * LeftHeight + right * Inset);
+                            BaseGame.Lighting.AddTunnelLamp(
+                                Vector3.Lerp(aR, bR, f) + up * RightHeight - right * Inset);
+                            total += 2;
+                        }
+                    }
+                }
+                Log.Write("Tunnel segments " + tunnelPos.startNum + " to " +
+                    tunnelPos.endNum);
+            }
+            if (total > 0)
+                Log.Write("Tunnel lamps: " + total);
         }
 
         private void GenerateObjectsForTrack(Landscape landscape)
@@ -1193,6 +1246,9 @@ namespace RacingGame.Tracks
                 columns.Dispose();
             }
         }
+        // Cached once: creating these delegates every frame allocated garbage.
+        BaseGame.RenderHandler renderRoadHandler, renderRoadBackHandler, renderRoadTunnelHandler;
+
         /// <summary>
         /// Render
         /// </summary>
@@ -1218,7 +1274,7 @@ namespace RacingGame.Tracks
                 BaseGame.HighDetail ?
                 "SpecularRoad20" :
                 "Specular20",
-                new BaseGame.RenderHandler(RenderRoadVertices));
+                renderRoadHandler ?? (renderRoadHandler = RenderRoadVertices));
 
             // Render the road back hull
             ShaderEffect.normalMapping.Render(
@@ -1227,7 +1283,7 @@ namespace RacingGame.Tracks
                 BaseGame.HighDetail ?
                 "SpecularRoad20" :
                 "Specular20",
-                new BaseGame.RenderHandler(RenderRoadBackVertices));
+                renderRoadBackHandler ?? (renderRoadBackHandler = RenderRoadBackVertices));
 
             // Render all tunnels (culling off)
             if (roadTunnelVb != null)
@@ -1235,7 +1291,7 @@ namespace RacingGame.Tracks
                 ShaderEffect.normalMapping.Render(
                     roadTunnelMaterial,
                     "Diffuse20",
-                    new BaseGame.RenderHandler(RenderRoadTunnelVertices));
+                    renderRoadTunnelHandler ?? (renderRoadTunnelHandler = RenderRoadTunnelVertices));
             }
 
             // Render all guard rails

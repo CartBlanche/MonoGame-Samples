@@ -1,5 +1,6 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
+    <DefineConstants Condition="'$(DevShots)' == 'true'">$(DefineConstants);DEVSHOTS</DefineConstants>
     <TargetFramework>net10.0</TargetFramework>
     <Platforms>AnyCPU;x64</Platforms>
     <RootNamespace>RacingGame</RootNamespace>

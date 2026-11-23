@@ -133,6 +133,59 @@ BEGIN_TECHNIQUE(GenerateShadowMap20)
 END_TECHNIQUE
 
 //-------------------------------------------------------------------
+// Alpha tested caster (integrated shadows only): same depth as GenerateShadowMap20, but
+// pixels whose diffuse texture alpha is below 0.5 are discarded, so palm fronds and
+// dead trees cast leaf shaped shadows instead of solid cards.
+
+BEGIN_DECLARE_TEXTURE_TARGET (casterTexture, Diffuse)
+    AddressU  = Wrap;
+    AddressV  = Wrap;
+    AddressW  = Wrap;
+    MinFilter = Linear;
+    MagFilter = Linear;
+    MipFilter = Linear;
+END_DECLARE_TEXTURE;
+
+struct VertexInputAlpha
+{
+    float3 pos      : POSITION;
+    float2 texCoord : TEXCOORD0;
+};
+
+struct VB_GenerateShadowMapAlpha20
+{
+    float4 pos      : SV_POSITION;
+    float2 depth    : TEXCOORD0;
+    float2 texCoord : TEXCOORD1;
+};
+
+VB_GenerateShadowMapAlpha20 VS_GenerateShadowMapAlpha20(VertexInputAlpha In)
+{
+    VB_GenerateShadowMapAlpha20 Out = (VB_GenerateShadowMapAlpha20) 0;
+    Out.pos = TransformPosition(In.pos);
+    float internalNearPlane = farPlane / 10;
+    Out.depth = float2(
+        (Out.pos.w - internalNearPlane),
+        (farPlane - internalNearPlane));
+    Out.texCoord = In.texCoord;
+    return Out;
+}
+
+float4 PS_GenerateShadowMapAlpha20(VB_GenerateShadowMapAlpha20 In) : SV_TARGET
+{
+    float alpha = SAMPLE_TEXTURE(casterTexture, In.texCoord).a;
+    clip(alpha - 0.5);
+    return (In.depth.x/In.depth.y) + shadowMapDepthBias;
+}
+
+BEGIN_TECHNIQUE(GenerateShadowMapAlpha20)
+    BEGIN_PASS(P0)
+        CullMode = None;
+        SHADERS(VS_GenerateShadowMapAlpha20,PS_GenerateShadowMapAlpha20)
+    END_PASS
+END_TECHNIQUE
+
+//-------------------------------------------------------------------
 
 BEGIN_DECLARE_TEXTURE_TARGET (ShadowMap, Diffuse)
     AddressU  = Clamp;

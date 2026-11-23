@@ -181,3 +181,8 @@ paket-files/
 # Video recordings are large and never belong in the repo (OBS records .mov)
 *.mov
 *.MOV
+
+## Dev log screenshots for blog posts and videos (local only)
+RacingGame/Documentation/devlog-screenshots/
+RacingGame/video/
+__pycache__/

@@ -65,9 +65,37 @@ namespace RacingGame.GameScreens
         bool useShadowMapping = true;
         bool useHighDetail = true;
         bool useWave = false;
+        LightingQuality lightingQuality = LightingQuality.High;
+        TimeOfDayMode timeOfDayMode = TimeOfDayMode.TrackDefault;
+        static readonly string[] LightingNames = { "Off", "Low", "High" };
+        static readonly string[] TimeOfDayNames = { "Track", "Day", "Dusk", "Night" };
         float currentMusicVolume = 1.0f;
         float currentSoundVolume = 1.0f;
         float currentSensitivity = 1.0f;
+        /// <summary>
+        /// A label followed by one panel button per choice, laid out from x to the right
+        /// (x is moved past the group). Returns the (possibly new) choice.
+        /// </summary>
+        int ChoiceGroup(ref int x, int y, int height, string label, string[] names, int current)
+        {
+            const float scale = 0.7f;
+            Color labelColor = new Color(215, 215, 215);
+            TextureFont.WriteText(x, y + height / 4, label, labelColor);
+            x += TextureFont.GetTextWidth(label) + 6;
+            for (int i = 0; i < names.Length; i++)
+            {
+                int w = (int)(TextureFont.GetTextWidth(names[i]) * scale) + height / 4;
+                Rectangle r = new Rectangle(x, y, w, height);
+                if (BaseGame.UI.PanelButton(r, names[i], scale, current == i))
+                {
+                    Sound.Play(Sound.Sounds.ButtonClick);
+                    current = i;
+                }
+                x += w + 2;
+            }
+            return current;
+        }
+
         /// <summary>
         /// Create options
         /// </summary>
@@ -92,6 +120,8 @@ namespace RacingGame.GameScreens
             useShadowMapping = BaseGame.AllowShadowMapping;
             useHighDetail = BaseGame.HighDetail;
             useWave = GameSettings.Default.WaveEffect;
+            lightingQuality = GameSettings.Default.Lighting;
+            timeOfDayMode = GameSettings.Default.TimeOfDayMode;
 
             // Get music and sound volume
             currentMusicVolume = GameSettings.Default.MusicVolume;
@@ -192,6 +222,20 @@ namespace RacingGame.GameScreens
             {
                 Sound.Play(Sound.Sounds.ButtonClick);
                 fullscreen = !fullscreen;
+            }
+
+            // Lighting and time of day: two button groups right of the Fullscreen button (the
+            // painted background has no free line and no painted label for them). They take
+            // effect when the next race starts.
+            {
+                Rectangle at = BaseGame.CalcRectangleKeep4To3(new Rectangle(488, 182, 100, 38));
+                at.Y += BaseGame.YToRes768(125);
+                int x = at.X;
+                lightingQuality = (LightingQuality)ChoiceGroup(ref x, at.Y, at.Height,
+                    "Lighting", LightingNames, (int)lightingQuality);
+                x += 6;
+                timeOfDayMode = (TimeOfDayMode)ChoiceGroup(ref x, at.Y, at.Height,
+                    "Time of day", TimeOfDayNames, (int)timeOfDayMode);
             }
 
             Rectangle pseRect = BaseGame.CalcRectangleKeep4To3(
@@ -435,6 +479,8 @@ namespace RacingGame.GameScreens
                 GameSettings.Default.ShadowMapping = useShadowMapping;
                 GameSettings.Default.HighDetail = useHighDetail;
                 GameSettings.Default.WaveEffect = useWave;
+                GameSettings.Default.Lighting = lightingQuality;
+                GameSettings.Default.TimeOfDayMode = timeOfDayMode;
                 GameSettings.Default.MusicVolume = currentMusicVolume;
                 GameSettings.Default.SoundVolume = currentSoundVolume;
                 GameSettings.Default.ControllerSensitivity = currentSensitivity;

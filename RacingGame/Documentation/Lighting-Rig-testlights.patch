@@ -1,0 +1,178 @@
+diff --git b/RacingGame/Core/Graphics/TrackLighting.Headlights.cs a/RacingGame/Core/Graphics/TrackLighting.Headlights.cs
+index d4d256a3..bd1bba04 100644
+--- b/RacingGame/Core/Graphics/TrackLighting.Headlights.cs
++++ a/RacingGame/Core/Graphics/TrackLighting.Headlights.cs
+@@ -15,16 +15,25 @@ namespace RacingGame.Graphics
+     /// </summary>
+     public sealed partial class TrackLighting
+     {
+-        // Tuning (tuned from frames; the env-var tuning hooks were removed, see Lighting-Rig-testlights.patch)
+-        static readonly float HeadInner = MathHelper.ToRadians(12);
+-        static readonly float HeadOuter = MathHelper.ToRadians(30);
+-        const float HeadRange = 80.0f;
+-        const float HeadIntensity = 5.0f;
++        // Tuning (env RACINGGAME_LIGHT_* only for tuning, see Lighting-Plan.md)
++        static float HeadInner = MathHelper.ToRadians(EnvF("RACINGGAME_LIGHT_INNER", 12));
++        static float HeadOuter = MathHelper.ToRadians(EnvF("RACINGGAME_LIGHT_OUTER", 30));
++        static float HeadRange = EnvF("RACINGGAME_LIGHT_RANGE", 80);
++        static float HeadIntensity = EnvF("RACINGGAME_LIGHT_INTENSITY", 5.0f);
+         static readonly Vector3 HeadColor = new Vector3(1.0f, 0.92f, 0.75f);
+         static readonly Vector3 TailColor = new Vector3(1.0f, 0.06f, 0.03f);
++        // Optional small red point light behind the car (uses one light slot, so off by default)
++        static readonly bool TailPointLight = Env("RACINGGAME_TAILLIGHT") == "1";
+         static readonly bool headDebugKeys = Env("RACINGGAME_DEBUGKEYS") == "1";
+ 
+         const float FadeSeconds = 0.3f;
++        static readonly bool forceBrake = Env("RACINGGAME_LIGHT_BRAKE") == "1";
++
++        static float EnvF(string name, float def)
++        {
++            float v = ParseFloat(Env(name));
++            return v > 0 ? v : def;
++        }
+ 
+         /// <summary>Glow billboards shared by headlights, tail lights and (WS4) lamps.</summary>
+         public readonly LightSprites Sprites = new LightSprites();
+@@ -64,7 +73,7 @@ namespace RacingGame.Graphics
+             headFade = target > headFade ? Math.Min(target, headFade + step) : Math.Max(target, headFade - step);
+ 
+             // Brake lights follow the same keys CarPhysics uses to brake (read only)
+-            bool braking = inGame && RacingGameManager.Player.IsBraking;
++            bool braking = inGame && (forceBrake || RacingGameManager.Player.IsBraking);
+             float bt = braking ? 1.0f : 0.0f;
+             float bs = dt / 0.08f;
+             brakeFade = bt > brakeFade ? Math.Min(bt, brakeFade + bs) : Math.Max(bt, brakeFade - bs);
+@@ -81,6 +90,19 @@ namespace RacingGame.Graphics
+             Vector3 color = HeadColor * (HeadIntensity * headFade);
+             list.Add(HeadSpot(Vector3.Transform(Model.HeadlightLeftLocal, m), dir, color));
+             list.Add(HeadSpot(Vector3.Transform(Model.HeadlightRightLocal, m), dir, color));
++
++            if (TailPointLight && Quality == LightingQuality.High)
++            {
++                Vector3 back = Vector3.Transform(
++                    (Model.TailLightLeftLocal + Model.TailLightRightLocal) * 0.5f, m);
++                list.Add(new Light
++                {
++                    Position = back + Vector3.TransformNormal(new Vector3(0, 0.2f, -1.0f), m),
++                    Color = TailColor * ((0.4f + 1.2f * brakeFade) * headFade),
++                    Range = 9.0f,
++                    Spot = false,
++                });
++            }
+         }
+ 
+         static Light HeadSpot(Vector3 pos, Vector3 dir, Vector3 color)
+diff --git b/RacingGame/Core/Graphics/TrackLighting.Lights.cs a/RacingGame/Core/Graphics/TrackLighting.Lights.cs
+index 650d44af..e942eba4 100644
+--- b/RacingGame/Core/Graphics/TrackLighting.Lights.cs
++++ a/RacingGame/Core/Graphics/TrackLighting.Lights.cs
+@@ -31,6 +31,17 @@ namespace RacingGame.Graphics
+         internal readonly Vector4[] LCol = new Vector4[MaxLights];
+         internal readonly Vector4[] LDir = new Vector4[MaxLights];
+ 
++        static readonly bool testLightEnv =
++            Environment.GetEnvironmentVariable("RACINGGAME_TESTLIGHT") == "1";
++        // RACINGGAME_TESTLIGHT=2: omni point light instead of the spot
++        // RACINGGAME_TESTLIGHT=4: the same, but 4 lights (cost test)
++        static readonly bool testPointEnv =
++            Environment.GetEnvironmentVariable("RACINGGAME_TESTLIGHT") == "2" ||
++            Environment.GetEnvironmentVariable("RACINGGAME_TESTLIGHT") == "4";
++        static readonly bool testFourEnv =
++            Environment.GetEnvironmentVariable("RACINGGAME_TESTLIGHT") == "4";
++        static readonly float testFogDensity = ParseFloat(
++            Environment.GetEnvironmentVariable("RACINGGAME_TESTFOG"));
+         int lastLightUpdateFrame = -1;
+ 
+         // Light producers (contract between the workstreams, see Lighting-Plan.md):
+@@ -43,6 +54,12 @@ namespace RacingGame.Graphics
+         readonly List<Light> collectedLights = new List<Light>(MaxLights * 2);
+         readonly Light[] collectedArray = new Light[MaxLights];
+ 
++        static float ParseFloat(string s)
++        {
++            float v;
++            return float.TryParse(s, System.Globalization.NumberStyles.Float,
++                System.Globalization.CultureInfo.InvariantCulture, out v) ? v : 0.0f;
++        }
+ 
+         /// <summary>
+         /// Replace the active light list (up to MaxLights are used) and switch to
+@@ -77,15 +94,40 @@ namespace RacingGame.Graphics
+             LightingMode = n > 0 ? 1.0f : 0.0f;
+         }
+ 
++        /// <summary>Debug: one spot light in front of the player car.</summary>
++        public void SetTestLights(float range, float intensity)
++        {
++            Vector3 fwd = RacingGameManager.Player.CarDirection;
++            Vector3 pos = RacingGameManager.Player.LookAtPos + fwd * 8.0f + new Vector3(0, 0, 9.0f);
++            Vector3 dir = fwd + new Vector3(0, 0, -0.55f);
++            SetLights(new Light
++            {
++                Position = pos,
++                Direction = dir,
++                Color = new Vector3(1.0f, 0.95f, 0.8f) * intensity,
++                Range = range,
++                Spot = true,
++                InnerAngle = MathHelper.ToRadians(25),
++                OuterAngle = MathHelper.ToRadians(55),
++            });
++        }
++
+         /// <summary>
+         /// Called once per frame from the first effect that uploads lighting
+-        /// parameters: rebuilds the light list from the producers.
++        /// parameters. Env var RACINGGAME_TESTLIGHT=1 places the test spot
++        /// (safe to leave in: it does nothing when unset).
+         /// </summary>
+         internal void UpdateLightsOncePerFrame()
+         {
+             if (lastLightUpdateFrame == BaseGame.TotalFrames)
+                 return;
+             lastLightUpdateFrame = BaseGame.TotalFrames;
++            // RACINGGAME_TESTFOG=<density>: exponential fog, start 30, bluish colour
++            if (testFogDensity > 0)
++            {
++                Current.Fog = new Vector2(testFogDensity, 30.0f);
++                Current.FogColor = new Vector3(0.62f, 0.74f, 0.9f);
++            }
+             // Rebuild the list from the producers (no allocation after start-up)
+             collectedLights.Clear();
+             CollectHeadlights(collectedLights);
+@@ -94,6 +136,36 @@ namespace RacingGame.Graphics
+             for (int i = 0; i < collected; i++)
+                 collectedArray[i] = collectedLights[i];
+             SetLights(collectedArray, collected);
++            // Debug test lights replace the list when their env var is set
++            if (testLightEnv)
++                SetTestLights(80.0f, 3.0f);
++            else if (testPointEnv)
++            {
++                // Omni test light 25 units ahead of the car, 6 up: lights terrain and palms too
++                Vector3 p = RacingGameManager.Player.LookAtPos +
++                    RacingGameManager.Player.CarDirection * 25.0f + new Vector3(0, 0, 6.0f);
++                Light l = new Light
++                {
++                    Position = p,
++                    Color = new Vector3(1.0f, 0.9f, 0.7f) * 4.0f,
++                    Range = 70.0f,
++                    Spot = false,
++                };
++                if (testFourEnv)
++                {
++                    // Cost test: 4 lights (2 points, 2 spots) in the shader
++                    Light l2 = l, l3 = l, l4 = l;
++                    l2.Position += new Vector3(8, 0, 0);
++                    l3.Position -= new Vector3(8, 0, 0);
++                    l3.Spot = l4.Spot = true;
++                    l3.Direction = l4.Direction = new Vector3(0, 0, -1);
++                    l3.InnerAngle = l4.InnerAngle = MathHelper.ToRadians(30);
++                    l3.OuterAngle = l4.OuterAngle = MathHelper.ToRadians(60);
++                    SetLights(l, l2, l3, l4);
++                }
++                else
++                    SetLights(l);
++            }
+         }
+     }
+ }

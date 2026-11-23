@@ -1,4 +1,5 @@
 #include "Macros.fxh"
+#include "TrackLighting.fxh"
 string description = "Reflection shader for glass materials in RacingGame";
 
 // Variables that are provided by the application.
@@ -107,6 +108,7 @@ struct VertexOutput20
     float3 normal   : TEXCOORD0;
     float3 viewVec  : TEXCOORD1;
     float3 halfVec  : TEXCOORD2;
+    float3 worldPos : TEXCOORD3;
 };
 
 // vertex shader
@@ -117,6 +119,7 @@ VertexOutput20 VS_ReflectionSpecular20(VertexInput In)
     Out.normal = CalcNormalVector(In.normal);
     Out.viewVec = normalize(GetCameraPos() - GetWorldPos(In.pos));
     Out.halfVec = normalize(Out.viewVec + lightDir);
+    Out.worldPos = GetWorldPos(In.pos);
     return Out;
 }
 
@@ -143,11 +146,21 @@ float4 PS_ReflectionSpecular20(VertexOutput20 In) : SV_TARGET
     
     // Output the colors
     float4 diffAmbColor = ambientColor + diff * diffuseColor;
+    float3 lspec = 0;
+    if (LightingMode > 0.5)
+    {
+        float3 ldiff;
+        TL_Lights(In.worldPos, N, V, shininess, ldiff, lspec);
+        diffAmbColor.rgb = ambientColor.rgb * TL_Hemi(N) +
+            (diff + 0.0) * diffuseColor.rgb + ldiff * diffuseColor.rgb;
+    }
     float4 ret;
     ret.rgb = reflColor * reflectionAmount * fresnel * 1.5f +
         diffAmbColor;
     ret.a = alphaFactor;
     ret += spec * specularColor;
+    ret.rgb += lspec * specularColor.rgb;
+    ret.rgb = TL_Fog(ret.rgb, In.worldPos, GetCameraPos());
     return ret;
 }
 

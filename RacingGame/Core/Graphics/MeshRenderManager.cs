@@ -368,7 +368,7 @@ namespace RacingGame.Graphics
         /// <returns>Renderable mesh</returns>
         public RenderableMesh Add(VertexBuffer vertexBuffer,
             IndexBuffer indexBuffer, ModelMeshPart part, Effect effect,
-            bool useAlpha = false)
+            bool useAlpha = false, bool noShadowReceive = false)
         {
             string techniqueName = effect.CurrentTechnique.Name;
 
@@ -419,6 +419,7 @@ namespace RacingGame.Graphics
             if (part.Tag is string partInfo)
                 material.SetFromPartInfo(partInfo);
             material.useAlpha = useAlpha;
+            material.noShadowReceive = noShadowReceive;
 
             // If the effect is a BasicEffect (MonoGame XImporter fallback), extract
             // the texture from it since Material(Effect) only reads NormalMapping params.
@@ -443,7 +444,8 @@ namespace RacingGame.Graphics
                     innerList.material.diffuseColor == material.diffuseColor &&
                     innerList.material.specularColor == material.specularColor &&
                     innerList.material.specularPower == material.specularPower &&
-                    innerList.material.useAlpha == material.useAlpha)
+                    innerList.material.useAlpha == material.useAlpha &&
+                    innerList.material.noShadowReceive == material.noShadowReceive)
                 {
                     // Reuse this material and quit this search
                     material = innerList.material;
@@ -491,6 +493,8 @@ namespace RacingGame.Graphics
                 if (list != null && list.NumberOfRenderMatrices > 0)
                     list.Render(effect);
             }
+            // The car and glass are drawn on the same effect outside of this manager: receive again
+            ShaderEffect.normalMapping.SetShadowSkip(false);
         }
     }
 }

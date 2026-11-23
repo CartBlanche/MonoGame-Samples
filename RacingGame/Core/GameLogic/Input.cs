@@ -54,7 +54,7 @@ namespace RacingGame.GameLogic
         /// <summary>
         /// Keys pressed last frame, for comparison if a key was just pressed.
         /// </summary>
-        private static List<Keys> keysPressedLastFrame = new List<Keys>();
+        private static KeyboardState keyboardStateLastFrame;
 
         /// <summary>
         /// GamePad state, set every frame in the Update method.
@@ -458,7 +458,7 @@ namespace RacingGame.GameLogic
             // Go through all pressed keys
             foreach (Keys pressedKey in keyboardState.GetPressedKeys())
                 // Only process if it was not pressed last frame
-                if (keysPressedLastFrame.Contains(pressedKey) == false)
+                if (keyboardStateLastFrame.IsKeyUp(pressedKey))
                 {
                     // No special key?
                     if (IsSpecialKey(pressedKey) == false &&
@@ -485,7 +485,7 @@ namespace RacingGame.GameLogic
         public static bool KeyboardKeyJustPressed(Keys key)
         {
             return keyboardState.IsKeyDown(key) &&
-                keysPressedLastFrame.Contains(key) == false;
+                keyboardStateLastFrame.IsKeyUp(key);
         }
 
         /// <summary>
@@ -497,7 +497,7 @@ namespace RacingGame.GameLogic
             get
             {
                 return keyboardState.IsKeyDown(Keys.Space) &&
-                    keysPressedLastFrame.Contains(Keys.Space) == false;
+                    keyboardStateLastFrame.IsKeyUp(Keys.Space);
             }
         }
 
@@ -510,7 +510,7 @@ namespace RacingGame.GameLogic
             get
             {
                 return keyboardState.IsKeyDown(Keys.F1) &&
-                    keysPressedLastFrame.Contains(Keys.F1) == false;
+                    keyboardStateLastFrame.IsKeyUp(Keys.F1);
             }
         }
 
@@ -523,7 +523,7 @@ namespace RacingGame.GameLogic
             get
             {
                 return keyboardState.IsKeyDown(Keys.Escape) &&
-                    keysPressedLastFrame.Contains(Keys.Escape) == false;
+                    keyboardStateLastFrame.IsKeyUp(Keys.Escape);
             }
         }
 
@@ -536,7 +536,7 @@ namespace RacingGame.GameLogic
             get
             {
                 return keyboardState.IsKeyDown(Keys.Left) &&
-                    keysPressedLastFrame.Contains(Keys.Left) == false;
+                    keyboardStateLastFrame.IsKeyUp(Keys.Left);
             }
         }
 
@@ -549,7 +549,7 @@ namespace RacingGame.GameLogic
             get
             {
                 return keyboardState.IsKeyDown(Keys.Right) &&
-                    keysPressedLastFrame.Contains(Keys.Right) == false;
+                    keyboardStateLastFrame.IsKeyUp(Keys.Right);
             }
         }
 
@@ -562,7 +562,7 @@ namespace RacingGame.GameLogic
             get
             {
                 return keyboardState.IsKeyDown(Keys.Up) &&
-                    keysPressedLastFrame.Contains(Keys.Up) == false;
+                    keyboardStateLastFrame.IsKeyUp(Keys.Up);
             }
         }
 
@@ -575,7 +575,7 @@ namespace RacingGame.GameLogic
             get
             {
                 return keyboardState.IsKeyDown(Keys.Down) &&
-                    keysPressedLastFrame.Contains(Keys.Down) == false;
+                    keyboardStateLastFrame.IsKeyUp(Keys.Down);
             }
         }
 
@@ -923,8 +923,14 @@ namespace RacingGame.GameLogic
                 // App must be active
                 RacingGameManager.IsAppActive)
             {
+                // Re-centre the mouse only when it moved: Mouse.SetPosition is a window system call
+                // that takes 2 to 5 ms in about 1 percent of frames (measured on macOS), and when the
+                // mouse is already at the centre (gamepad or keyboard play, or a still mouse) the next
+                // frame's movement is measured from the same point either way.
+                int centerX = BaseGame.Width / 2, centerY = BaseGame.Height / 2;
+                if (mouseState.X != centerX || mouseState.Y != centerY)
                 Microsoft.Xna.Framework.Input.Mouse.SetPosition(
-                    BaseGame.Width / 2, BaseGame.Height / 2);
+                    centerX, centerY);
                 // Also use this for the current mouse pos for next frame,
                 // else the mouseXMovement is messed up!
                 mouseState = Microsoft.Xna.Framework.Input.Mouse.GetState();
@@ -941,7 +947,7 @@ namespace RacingGame.GameLogic
 #endif
 
             // Handle keyboard input
-            keysPressedLastFrame = new List<Keys>(keyboardState.GetPressedKeys());
+            keyboardStateLastFrame = keyboardState;
             keyboardState = Microsoft.Xna.Framework.Input.Keyboard.GetState();
 
             // And finally catch the XBox Controller input (only use 1 player here)

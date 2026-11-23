@@ -1,4 +1,5 @@
 #include "Macros.fxh"
+#include "TrackLighting.fxh"
 string description = "Normal mapping shaders for RacingGame";
 
 // Shader techniques in this file, all shaders work with vs/ps 1.1, shaders not
@@ -113,6 +114,10 @@ END_DECLARE_TEXTURE;
 
 //----------------------------------------------------
 
+// Integrated shadows: after the texture declarations so the sampler order of the
+// existing textures is unchanged
+#include "TrackShadows.fxh"
+
 // Vertex input structure (used for ALL techniques here!)
 struct VertexInput
 {
@@ -129,6 +134,9 @@ struct VertexOutput
     float2 diffTexCoord : TEXCOORD0;
     float2 normTexCoord : TEXCOORD1;
     float3 lightVec     : COLOR0;
+    float3 worldPos     : TEXCOORD2;
+    float3 worldNormal  : TEXCOORD3;
+    float3 worldTangent : TEXCOORD4;
 };
 
 //----------------------------------------------------
@@ -191,6 +199,11 @@ VertexOutput VS_Diffuse(VertexInput In)
     Out.lightVec = 0.5 + 0.5 *
         normalize(mul(worldToTangentSpace, GetLightDir()));
 
+    // World space data for the per-pixel lights and fog (TrackLighting.fxh)
+    Out.worldPos = GetWorldPos(In.pos);
+    Out.worldNormal = mul(In.normal, (float3x3)world);
+    Out.worldTangent = mul(In.tangent, (float3x3)world);
+
     // And pass everything to the pixel shader
     return Out;
 }
@@ -213,10 +226,25 @@ float4 PS_Diffuse(VertexOutput In) : SV_TARGET
     // Compute the angle to the light
     float bump = saturate(dot(normalVector, lightVector));
     
-    float4 ambDiffColor = ambientColor + bump * diffuseColor;
     if (UseAlpha)
         clip(diffusePixel.a - alphaTestRef);
-    float4 ret = diffusePixel * ambDiffColor;
+    float4 ret;
+    if (LightingMode > 0.5)
+    {
+        float3 Nw = TL_WorldNormal(normalVector, In.worldNormal, In.worldTangent);
+        float3 Vw = normalize(GetCameraPos() - In.worldPos);
+        float3 ldiff, lspec;
+        TL_Lights(In.worldPos, Nw, Vw, shininess, ldiff, lspec);
+        ret.rgb = diffusePixel.rgb * (ambientColor.rgb * TL_Hemi(Nw) +
+            bump * diffuseColor.rgb + ldiff);
+        ret.a = diffusePixel.a * ambientColor.a;
+    }
+    else
+    {
+        float4 ambDiffColor = ambientColor + bump * diffuseColor;
+        ret = diffusePixel * ambDiffColor;
+    }
+    ret.rgb = TL_Fog(ret.rgb, In.worldPos, GetCameraPos());
     if (!UseAlpha)
         ret.a = 1.0f;
     return ret;
@@ -315,6 +343,9 @@ struct VertexOutput_Specular20
     float2 normTexCoord : TEXCOORD1;
     float3 lightVec     : TEXCOORD2;
     float3 viewVec      : TEXCOORD3;
+    float3 worldPos     : TEXCOORD4;
+    float3 worldNormal  : TEXCOORD5;
+    float3 worldTangent : TEXCOORD6;
 };
 
 // Vertex shader function
@@ -335,6 +366,11 @@ VertexOutput_Specular20 VS_Specular20(VertexInput In)
 
     Out.lightVec = mul(worldToTangentSpace, GetLightDir());
     Out.viewVec = mul(worldToTangentSpace, worldEyePos - worldVertPos);
+
+    // World space data for the per-pixel lights and fog (TrackLighting.fxh)
+    Out.worldPos = worldVertPos;
+    Out.worldNormal = mul(In.normal, (float3x3)world);
+    Out.worldTangent = mul(In.tangent, (float3x3)world);
 
     // And pass everything to the pixel shader
     return Out;
@@ -359,20 +395,41 @@ float4 PS_Specular20(VertexOutput_Specular20 In) : SV_TARGET
     // Specular factor
     float3 reflect = normalize(2 * bump * normalVector - lightVector);
     float spec = pow(saturate(dot(reflect, viewVector)), shininess);
+    // Integrated shadows: sun term only (ShadowMode 0 leaves lit = 1, shadeTint = 1)
+    float lit;
+    float3 shadeTint;   // ambient fill kept in shadow (not the point lights)
+    TL_ShadowTerms(In.worldPos, In.worldNormal, lit, shadeTint);
+    float sunBump = bump * lit;
 
-    float4 ambDiffColor = ambientColor + bump * diffuseColor;
     if (UseAlpha)
-    {
         // Alpha test like the original (reference alpha 128)
         clip(diffusePixel.a - alphaTestRef);
-        return diffusePixel * ambDiffColor +
-            bump * spec * specularColor * diffusePixel.a;
+    float4 ret;
+    if (LightingMode > 0.5)
+    {
+        float3 Nw = TL_WorldNormal(normalVector, In.worldNormal, In.worldTangent);
+        float3 Vw = normalize(GetCameraPos() - In.worldPos);
+        float3 ldiff, lspec;
+        TL_Lights(In.worldPos, Nw, Vw, shininess, ldiff, lspec);
+        float sa = UseAlpha ? diffusePixel.a : 1.0f;
+        ret.rgb = diffusePixel.rgb * (ambientColor.rgb * TL_Hemi(Nw) * shadeTint + sunBump * diffuseColor.rgb + ldiff) +
+            (sunBump * spec + lspec) * specularColor.rgb * sa;
+        ret.a = diffusePixel.a * ambientColor.a + sunBump * spec * specularColor.a * diffusePixel.a;
     }
     else
     {
-        return float4(diffusePixel.rgb * ambDiffColor +
-            bump * spec * specularColor, 1.0f);
+        float4 ambDiffColor = float4(ambientColor.rgb * shadeTint, ambientColor.a) + sunBump * diffuseColor;
+        if (UseAlpha)
+            ret = diffusePixel * ambDiffColor +
+                sunBump * spec * specularColor * diffusePixel.a;
+        else
+            ret = float4(diffusePixel.rgb * ambDiffColor +
+                sunBump * spec * specularColor, 1.0f);
     }
+    ret.rgb = TL_Fog(ret.rgb, In.worldPos, GetCameraPos());
+    if (!UseAlpha)
+        ret.a = 1.0f;
+    return ret;
 }
 
 //----------------------------------------
@@ -396,11 +453,32 @@ float4 PS_DiffuseSpecular20(VertexOutput_Specular20 In) : SV_TARGET
 	// Specular factor
 	float3 reflect = normalize(2 * bump * normalVector - lightVector);
 	float spec = pow(saturate(dot(reflect, viewVector)), shininess);
+	// Integrated shadows (sun term only, see TrackShadows.fxh)
+	float lit;
+	float3 shadeTint;
+	TL_ShadowTerms(In.worldPos, In.worldNormal, lit, shadeTint);
+	float sunBump = bump * lit;
 
 	if (UseAlpha)
 		clip(diffusePixel.a - alphaTestRef);
-	float4 ret = diffusePixel * (ambientColor +
-		bump * (diffuseColor + spec * specularColor));
+	float4 ret;
+	if (LightingMode > 0.5)
+	{
+		float3 Nw = TL_WorldNormal(normalVector, In.worldNormal, In.worldTangent);
+		float3 Vw = normalize(GetCameraPos() - In.worldPos);
+		float3 ldiff, lspec;
+		TL_Lights(In.worldPos, Nw, Vw, shininess, ldiff, lspec);
+		ret.rgb = diffusePixel.rgb * (ambientColor.rgb * TL_Hemi(Nw) * shadeTint +
+			sunBump * (diffuseColor.rgb + spec * specularColor.rgb) + ldiff +
+			lspec * specularColor.rgb);
+		ret.a = diffusePixel.a * ambientColor.a;
+	}
+	else
+	{
+		ret = diffusePixel * (float4(ambientColor.rgb * shadeTint, ambientColor.a) +
+			sunBump * (diffuseColor + spec * specularColor));
+	}
+	ret.rgb = TL_Fog(ret.rgb, In.worldPos, GetCameraPos());
 	if (!UseAlpha)
 		ret.a = 1.0f;
 	return ret;
@@ -464,6 +542,9 @@ struct VertexOutput_SpecularWithReflection20
 	float3 lightVec     : TEXCOORD1;
 	float3 viewVec      : TEXCOORD2;
 	float3 cubeTexCoord : TEXCOORD3;
+	float3 worldPos     : TEXCOORD4;
+	float3 worldNormal  : TEXCOORD5;
+	float3 worldTangent : TEXCOORD6;
 };
 
 // Vertex shader function
@@ -494,6 +575,9 @@ VS_SpecularWithReflection20(VertexInput In)
 	float3 viewVec = normalize(worldEyePos - worldVertPos.xyz);
 	float3 R = reflect(-viewVec, normal);
 	Out.cubeTexCoord = R;
+	Out.worldPos = worldVertPos.xyz;
+	Out.worldNormal = mul(In.normal, (float3x3)world);
+	Out.worldTangent = mul(In.tangent, (float3x3)world);
 
 	// And pass everything to the pixel shader
 	return Out;
@@ -516,15 +600,34 @@ float4 PS_SpecularWithReflection20(VertexOutput_SpecularWithReflection20 In) : S
 	// Specular factor
 	float3 reflect = normalize(2 * bump * normalVector - lightVector);
 	float spec = pow(saturate(dot(reflect, viewVector)), shininess);
+	// Integrated shadows (sun term only, see TrackShadows.fxh)
+	float lit;
+	float3 shadeTint;
+	TL_ShadowTerms(In.worldPos, In.worldNormal, lit, shadeTint);
+	float sunBump = bump * lit;
 
 	// Darken down bump factor on back faces
 	float4 reflection = SAMPLE_CUBE(reflectionCubeTexture,
 		In.cubeTexCoord);
-	float4 ambDiffColor = ambientColor + bump * diffuseColor;
 	float4 ret;
-	ret.rgb = diffusePixel.rgb * ambDiffColor.rgb +
-		bump * spec * specularColor.rgb * diffusePixel.a;
+	if (LightingMode > 0.5)
+	{
+		float3 Nw = TL_WorldNormal(normalVector, In.worldNormal, In.worldTangent);
+		float3 Vw = normalize(GetCameraPos() - In.worldPos);
+		float3 ldiff, lspec;
+		TL_Lights(In.worldPos, Nw, Vw, shininess, ldiff, lspec);
+		ret.rgb = diffusePixel.rgb * (ambientColor.rgb * TL_Hemi(Nw) * shadeTint +
+			sunBump * diffuseColor.rgb + ldiff) +
+			(sunBump * spec + lspec) * specularColor.rgb * diffusePixel.a;
+	}
+	else
+	{
+		float4 ambDiffColor = float4(ambientColor.rgb * shadeTint, ambientColor.a) + sunBump * diffuseColor;
+		ret.rgb = diffusePixel.rgb * ambDiffColor.rgb +
+			sunBump * spec * specularColor.rgb * diffusePixel.a;
+	}
 	ret.rgb *= (0.85f + reflection.rgb * 0.75f);
+	ret.rgb = TL_Fog(ret.rgb, In.worldPos, GetCameraPos());
 	// Apply color
 	ret.a = 1.0f;
 	return ret;
@@ -639,19 +742,36 @@ float4 PS_ReflectionSpecular20(VertexOutput20 In) : SV_TARGET
     float facing = 1.0 - max(dot(E, -N), 0);
     float fresnel = fresnelBias + (1.0-fresnelBias)*pow(facing, fresnelPower);
 
+    // World position from the unnormalized view vector (eye - pos)
+    float3 worldPos = GetCameraPos() - In.viewVec;
+    // Integrated shadows (sun term only, see TrackShadows.fxh)
+    float lit;
+    float3 shadeTint;
+    TL_ShadowTerms(worldPos, N, lit, shadeTint);
+
     // Diffuse factor
-    float diff = saturate(dot(N, lightDir));
+    float diff = saturate(dot(N, lightDir)) * lit;
 
     // Specular factor
-    float spec = pow(saturate(dot(N, hV)), shininess);
+    float spec = pow(saturate(dot(N, hV)), shininess) * lit;
     
     // Output the colors
-    float4 diffAmbColor = ambientColor + diff * diffuseColor;
+    float4 diffAmbColor = float4(ambientColor.rgb * shadeTint, ambientColor.a) + diff * diffuseColor;
+    float3 lspec = 0;
+    if (LightingMode > 0.5)
+    {
+        float3 ldiff;
+        TL_Lights(worldPos, N, V, shininess, ldiff, lspec);
+        diffAmbColor.rgb = ambientColor.rgb * TL_Hemi(N) * shadeTint +
+            diff * diffuseColor.rgb + ldiff * diffuseColor.rgb;
+    }
     float4 ret;
     ret.rgb = reflColor * reflectionAmount * fresnel * 1.5f +
         diffAmbColor;
     ret.a = alphaFactor;
     ret += spec * specularColor;
+    ret.rgb += lspec * specularColor.rgb;
+    ret.rgb = TL_Fog(ret.rgb, worldPos, GetCameraPos());
     return ret;
 }
 
@@ -666,6 +786,9 @@ struct VertexOutput_SpecularWithReflectionForCar20
     float3 lightVec     : TEXCOORD1;
     float3 viewVec      : TEXCOORD2;
     float3 cubeTexCoord : TEXCOORD3;
+    float3 worldPos     : TEXCOORD4;
+    float3 worldNormal  : TEXCOORD5;
+    float3 worldTangent : TEXCOORD6;
 };
 
 // Vertex shader function
@@ -694,6 +817,9 @@ VertexOutput_SpecularWithReflectionForCar20
     float3 viewVec = normalize(worldEyePos - worldVertPos.xyz);
     float3 R = reflect(-viewVec, normal);
     Out.cubeTexCoord = R;
+    Out.worldPos = worldVertPos.xyz;
+    Out.worldNormal = mul(In.normal, (float3x3)world);
+    Out.worldTangent = mul(In.tangent, (float3x3)world);
     
     // And pass everything to the pixel shader
     return Out;
@@ -719,15 +845,34 @@ float4 PS_SpecularWithReflectionForCar20(
     // Specular factor
     float3 reflect = normalize(2 * bump * normalVector - lightVector);
     float spec = pow(saturate(dot(reflect, viewVector)), shininess);
+    // Integrated shadows (sun term only, see TrackShadows.fxh)
+    float lit;
+    float3 shadeTint;
+    TL_ShadowTerms(In.worldPos, In.worldNormal, lit, shadeTint);
+    float sunBump = bump * lit;
 
     // Darken down bump factor on back faces
     float4 reflection = SAMPLE_CUBE(reflectionCubeTexture,
         In.cubeTexCoord);
-    float4 ambDiffColor = ambientColor + bump * diffuseColor;
     float4 ret;
-    ret.rgb = diffusePixel.rgb * ambDiffColor.rgb +
-        bump * spec * specularColor.rgb * diffusePixel.a;
+    if (LightingMode > 0.5)
+    {
+        float3 Nw = TL_WorldNormal(normalVector, In.worldNormal, In.worldTangent);
+        float3 Vw = normalize(GetCameraPos() - In.worldPos);
+        float3 ldiff, lspec;
+        TL_Lights(In.worldPos, Nw, Vw, shininess, ldiff, lspec);
+        ret.rgb = diffusePixel.rgb * (ambientColor.rgb * TL_Hemi(Nw) * shadeTint +
+            sunBump * diffuseColor.rgb + ldiff) +
+            (sunBump * spec + lspec) * specularColor.rgb * diffusePixel.a;
+    }
+    else
+    {
+        float4 ambDiffColor = float4(ambientColor.rgb * shadeTint, ambientColor.a) + sunBump * diffuseColor;
+        ret.rgb = diffusePixel.rgb * ambDiffColor.rgb +
+            sunBump * spec * specularColor.rgb * diffusePixel.a;
+    }
     ret.rgb *= (0.85f + reflection.rgb * 0.75f);
+    ret.rgb = TL_Fog(ret.rgb, In.worldPos, GetCameraPos());
 
     // Apply color
     ret.a = 1.0f;
@@ -780,10 +925,35 @@ float4 PS_SpecularRoad20(VertexOutput_Specular20 In) : SV_TARGET
 	// Specular factor
 	float3 reflect = normalize(2 * bump * normalVector - lightVector);
 	float spec = pow(saturate(dot(reflect, viewVector)), shininess);
+	// Integrated shadows: sun term only (ShadowMode 0 leaves it at 1.0)
+	float sunBump = bump;
+	float3 shadeTint = float3(1.0, 1.0, 1.0);   // ambient fill kept in shadow (sun term removed by sunBump); not the point lights
+	if (ShadowMode > 0.5)
+	{
+		float lit = TL_Shadow(In.worldPos, In.worldNormal);
+		sunBump = bump * lit;
+		shadeTint = lerp(ShadowTint.rgb, float3(1.0, 1.0, 1.0), lit);   // ambient kept in shadow (environment fill)
+	}
 
-	float4 ambDiffColor = ambientColor + bump * diffuseColor;
-	float4 ret = diffusePixel * ambDiffColor +
-		bump * spec * specularColor * diffusePixel.a;
+	float4 ret;
+	if (LightingMode > 0.5)
+	{
+		float3 Nw = TL_WorldNormal(normalVector, In.worldNormal, In.worldTangent);
+		float3 Vw = normalize(GetCameraPos() - In.worldPos);
+		float3 ldiff, lspec;
+		TL_Lights(In.worldPos, Nw, Vw, shininess, ldiff, lspec);
+		float3 amb = ambientColor.rgb * TL_Hemi(Nw);
+		ret.rgb = diffusePixel.rgb * (amb * shadeTint + sunBump * diffuseColor.rgb + ldiff) +
+			(sunBump * spec + lspec) * specularColor.rgb * diffusePixel.a;
+		ret.a = diffusePixel.a * ambientColor.a + sunBump * spec * specularColor.a * diffusePixel.a;
+	}
+	else
+	{
+		float4 ambDiffColor = float4(ambientColor.rgb * shadeTint, ambientColor.a) + sunBump * diffuseColor;
+		ret = diffusePixel * ambDiffColor +
+			sunBump * spec * specularColor * diffusePixel.a;
+	}
+	ret.rgb = TL_Fog(ret.rgb, In.worldPos, GetCameraPos());
 	if (!UseAlpha)
 		ret.a = 1.0f;
 	return ret;

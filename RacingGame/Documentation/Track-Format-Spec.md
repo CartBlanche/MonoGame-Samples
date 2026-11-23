@@ -1,4 +1,4 @@
-# RacingGame Track Format and Loading Behaviour — Phase 0 Findings
+# RacingGame Track Format and Loading Behaviour - Phase 0 Findings
 
 Part 1 of Phase 0 in [Track-Editor-Plan.md](Track-Editor-Plan.md). Derived from reading `Core/Tracks/*`, `Core/Landscapes/Landscape.cs`, `Core/GameLogic/Replay.cs` and measuring the three shipped `.Track` files. Everything here comes from the source and the files; **nothing was run**. Items marked **(unverified)** need a test.
 
@@ -24,6 +24,8 @@ XML, `XmlSerializer` of `TrackData`, root `<TrackData>`, four lists:
 | `NeutralsObjects` | `NeutralObject` | `modelName`, `matrix` |
 
 **Checkpoints (implemented 2026-11-05):** optional `Checkpoints` element, a list of `<float>` fractions of the lap (0..1, increasing, measured from the start line along the road, each between 2% and 98% and at least 1% apart). Absent: the game places one every 500 units (as before). Present but empty: no checkpoints. The game keeps the automatic margins (not within about 60 units of the start or finish, not closer than about 50 units together) and puts a banner across the road at each (not in loopings). They split the lap time, drive the best-lap comparison, and a lap counts only after all but one were passed.
+
+**TimeOfDay (implemented 2026-11-23):** optional `TimeOfDay` element, a float 0..1 on the lighting scale: 0 = noon (the default when absent), 0.35 golden hour, 0.65 dusk, 1 = night. Fixed for the whole race; the game turns it into sky tint, stars and moon, headlights and street and tunnel lamps. The shipped tracks have no element (the game assigns Beginner 0, Advanced 0.65, Expert 1.0 in code). It travels inside the file, so LAN track sharing needs no protocol change. A player's own Lighting and Time of day options can override or switch it off for their own view only. Values outside 0..1 are clamped. The track editor (TrackTool) does not write it yet.
 
 **Heightmap (D11, implemented):** optional `Heightmap` element, deflate-compressed 257×257 bytes (`byte[]`, base64 in XML). `TrackData.CompressHeightmap/DecompressHeightmap`; wrong size is rejected. Missing: shipped terrain.
 

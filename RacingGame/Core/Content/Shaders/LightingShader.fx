@@ -1,4 +1,5 @@
 #include "Macros.fxh"
+#include "TrackLighting.fxh"
 // Simple shader for RacingGame
 BEGIN_CONSTANTS
 float4x4 worldViewProj : WorldViewProjection;

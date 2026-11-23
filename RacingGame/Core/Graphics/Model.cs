@@ -52,6 +52,27 @@ namespace RacingGame.Graphics
             Matrix.CreateRotationX(MathHelper.Pi / 2.0f);
 
         /// <summary>
+        /// Car light anchor points in the car model's local space (the space
+        /// the car is drawn in: x across, y up, front is +z after import).
+        /// Used by TrackLighting.Headlights. Transform with <see cref="CarLightMatrix"/>.
+        /// </summary>
+        public static readonly Vector3
+            HeadlightLeftLocal = new Vector3(-0.62f, 0.70f, 2.70f),
+            HeadlightRightLocal = new Vector3(0.62f, 0.70f, 2.70f),
+            TailLightLeftLocal = new Vector3(-0.60f, 0.78f, -3.20f),
+            TailLightRightLocal = new Vector3(0.60f, 0.78f, -3.20f);
+
+        /// <summary>Headlight forward direction in car local space (about 7 degrees down).</summary>
+        public static readonly Vector3 HeadlightDirLocal =
+            Vector3.Normalize(new Vector3(0.0f, -0.12f, 1.0f));
+
+        /// <summary>Matrix from car local light anchors to world (same chain RenderCar uses).</summary>
+        public static Matrix CarLightMatrix(Matrix carRenderMatrix)
+        {
+            return objectMatrix * carRenderMatrix;
+        }
+
+        /// <summary>
         /// Transform matrices for this model, used in all Render methods,
         /// build once in the constructor, it never changes and none of our
         /// models are animated.
@@ -207,6 +228,10 @@ namespace RacingGame.Graphics
             //name.StartsWith("StartLight");
 
             isCar = (name.ToLower() == "car");
+            // Banners and signs do not receive integrated shadows (same test as
+            // Landscape.LandscapeObject.IsBanner)
+            bool noShadowReceive = name.ToLower().Contains("banner") ||
+                name.ToLower().Contains("sign");
 
             // Go through all meshes in the model
             for (int meshNum = 0; meshNum < xnaModel.Meshes.Count; meshNum++)
@@ -254,7 +279,7 @@ namespace RacingGame.Graphics
                     // For BasicEffect fallback, identify glass by mesh name.
                     cachedIsReflectionSpecularTechnique.Add(
                         (effect is BasicEffect)
-                            ? mesh.Name.ToLower().StartsWith("glass")
+                            ? mesh.Name.StartsWith("glass", StringComparison.OrdinalIgnoreCase)
                             : effect.CurrentTechnique.Name.Contains("ReflectionSpecular"));
 
                     // Increase ambient value to 0.5, 0.5, 0.5 for signs and banners!
@@ -267,7 +292,7 @@ namespace RacingGame.Graphics
                     // alpha, for everything else it is just a mask.
                     if (effect.Parameters["UseAlpha"] != null)
                         effect.Parameters["UseAlpha"].SetValue(
-                            hasAlpha || mesh.Name.ToLower().StartsWith("glass"));
+                            hasAlpha || mesh.Name.StartsWith("glass", StringComparison.OrdinalIgnoreCase));
 
                     // Get technique from meshName
                     int techniqueIndex = -1;
@@ -321,7 +346,7 @@ namespace RacingGame.Graphics
                     // Also add this to our own dictionary for rendering.
                     renderableMeshes.Add(part, BaseGame.MeshRenderManager.Add(
                         part.VertexBuffer, part.IndexBuffer, part, part.Effect,
-                        hasAlpha));
+                        hasAlpha, noShadowReceive));
                 }
             }
 
@@ -500,6 +525,11 @@ namespace RacingGame.Graphics
             // times here.
             renderMatrix = objectMatrix * renderMatrix;
 
+            // The car is drawn with the shared NormalMapping effect (BasicEffect
+            // fallback) or the model's own effects, so refresh the shared lighting
+            // parameters (lights, fog, hemisphere ambient) before drawing.
+            ShaderEffect.normalMapping.ApplyLighting();
+
             // Do we just want to render the shadow car? Then do this in a
             // simpified way here instead of messing with the already complicated
             // code below.
@@ -645,9 +675,9 @@ namespace RacingGame.Graphics
 
                             // Also set color
                             cachedEffectParameters[effectParameterIndex++].SetValue(
-                                ambientColor.ToVector4());
+                                BaseGame.Lighting.Ambient(ambientColor.ToVector4()));
                             cachedEffectParameters[effectParameterIndex++].SetValue(
-                                diffuseColor.ToVector4());
+                                BaseGame.Lighting.Diffuse(diffuseColor.ToVector4()));
 
                             // Change shader to SpecularWithReflectionForCar20 if we changed the color.
                             if (useCarColor &&
@@ -698,7 +728,7 @@ namespace RacingGame.Graphics
 						// Set light direction
 						if (cachedEffectParameters [effectParameterIndex] != null) {
 							cachedEffectParameters [effectParameterIndex++].SetValue (
-								BaseGame.LightDirection);
+								BaseGame.Lighting.SunDirection(BaseGame.LightDirection));
 						}
 						else {
 							effectParameterIndex++;
@@ -713,7 +743,7 @@ namespace RacingGame.Graphics
                         {
                             Effect shared = ShaderEffect.normalMapping.Effect;
                             shared.Parameters["UseAlpha"]?.SetValue(
-                                hasAlpha || mesh.Name.ToLower().StartsWith("glass"));
+                                hasAlpha || mesh.Name.StartsWith("glass", StringComparison.OrdinalIgnoreCase));
                             shared.Parameters["alphaTestRef"]?.SetValue(
                                 hasAlpha ? 0.5f : 0.0f);
                             for (int partNum = 0; partNum < mesh.MeshParts.Count; partNum++)
@@ -783,6 +813,33 @@ namespace RacingGame.Graphics
         /// <param name="renderMatrix">Render matrix</param>
         public void GenerateShadow(Matrix renderMatrix)
         {
+            GenerateShadow(renderMatrix, false);
+        }
+
+        /// <summary>
+        /// Alpha tested shadow casting (integrated shadows): palms, dead trees and Alpha*
+        /// models have cut-out leaf textures.
+        /// </summary>
+        bool CastsCutOut
+        {
+            get
+            {
+                string n = name.ToLower();
+                return hasAlpha || n.Contains("palm") || n.Contains("deadtree");
+            }
+        }
+
+        /// <summary>
+        /// Generate shadow. integratedSelected = the caller (Landscape) already selected this
+        /// object against the shadow light frustum, so the classic distance cut is skipped
+        /// and cut-out models use the alpha tested caster.
+        /// </summary>
+        public void GenerateShadow(Matrix renderMatrix, bool integratedSelected)
+        {
+            bool cutOut = integratedSelected && CastsCutOut;
+            int flatPart = 0;
+            if (integratedSelected == false)
+            {
             // Find out how far the object is away from the shadow,
             // we can ignore it if it is outside of the shadow generation range.
             // Everything smaller than 0.5 meter can be ignored. 
@@ -794,6 +851,7 @@ namespace RacingGame.Graphics
                 maxDistance * maxDistance)
                 // Don't render, too far away!
                 return;
+            }
 
             // Multiply object matrix by render matrix.
             renderMatrix = objectMatrix * renderMatrix;
@@ -823,6 +881,16 @@ namespace RacingGame.Graphics
                 for (int partNum = 0; partNum < mesh.MeshParts.Count; partNum++)
                 {
                     ModelMeshPart part = mesh.MeshParts[partNum];
+                    if (integratedSelected)
+                    {
+                        Texture2D casterTex = null;
+                        if (cutOut && flatPart < cachedPartMaterials.Count &&
+                            cachedPartMaterials[flatPart] != null &&
+                            cachedPartMaterials[flatPart].diffuseTexture != null)
+                            casterTex = cachedPartMaterials[flatPart].diffuseTexture.XnaTexture;
+                        ShaderEffect.shadowMapping.SetGenerateCaster(casterTex);
+                    }
+                    flatPart++;
                     // Render just the vertices, do not use the shaders of our model.
                     // This is the same code as ModelMeshPart.Draw() uses, but
                     // this method is internal and can't be used by us :(

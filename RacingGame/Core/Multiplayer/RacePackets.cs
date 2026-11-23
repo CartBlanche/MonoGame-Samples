@@ -314,6 +314,10 @@ namespace RacingGame.Multiplayer
         public float Speed { get; set; }
         public byte Lap { get; set; }           // laps completed
         public float Progress { get; set; }     // how far along the track in this lap
+        /// <summary>Bit flags, see FlagBraking. Other bits are reserved (send 0).</summary>
+        public byte Flags { get; set; }
+        /// <summary>Flags bit 0: the brakes are applied (brake lights).</summary>
+        public const byte FlagBraking = 1;
 
         public void Serialize(BinaryWriter writer)
         {
@@ -325,6 +329,7 @@ namespace RacingGame.Multiplayer
             writer.Write(Speed);
             writer.Write(Lap);
             writer.Write(Progress);
+            writer.Write(Flags);
         }
 
         public static CarStatePacket Deserialize(BinaryReader reader)
@@ -339,6 +344,7 @@ namespace RacingGame.Multiplayer
                 Speed = reader.ReadSingle(),
                 Lap = reader.ReadByte(),
                 Progress = reader.ReadSingle(),
+                Flags = reader.ReadByte(),
             };
         }
     }

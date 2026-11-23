@@ -19,6 +19,12 @@ using Serializable = System.Runtime.Serialization.DataContractAttribute;
 
 namespace RacingGame.Properties
 {
+    /// <summary>Lighting quality (time of day, headlights, lamps, tunnels).</summary>
+    public enum LightingQuality { Off, Low, High }
+
+    /// <summary>Which time of day a race uses.</summary>
+    public enum TimeOfDayMode { TrackDefault, Day, Dusk, Night }
+
     /// <summary>
     /// Game settings, stored in a custom xml file. The reason for this is
     /// we want to be able to store our game data on the Xbox360 too.
@@ -442,6 +448,35 @@ namespace RacingGame.Properties
                 if (controllerSensitivity != value)
                     needSave = true;
                 controllerSensitivity = value;
+            }
+        }
+
+        LightingQuality lighting = LightingQuality.High;
+        /// <summary>
+        /// Lighting quality: Off is the plain day look, Low has time of day, tunnel
+        /// darkening and two headlights, High adds the lamp lights and the tail light.
+        /// </summary>
+        public LightingQuality Lighting
+        {
+            get { return lighting; }
+            set
+            {
+                if (lighting != value)
+                    needSave = true;
+                lighting = value;
+            }
+        }
+
+        TimeOfDayMode timeOfDayMode = TimeOfDayMode.TrackDefault;
+        /// <summary>Time of day of the race: the track's own, or a fixed one (own view only).</summary>
+        public TimeOfDayMode TimeOfDayMode
+        {
+            get { return timeOfDayMode; }
+            set
+            {
+                if (timeOfDayMode != value)
+                    needSave = true;
+                timeOfDayMode = value;
             }
         }
     }

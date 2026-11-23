@@ -1,0 +1,44 @@
+diff --git a/RacingGame/Core/GameScreens/GameScreen.cs b/RacingGame/Core/GameScreens/GameScreen.cs
+index 6a31e95e..2b9de8e4 100644
+--- a/RacingGame/Core/GameScreens/GameScreen.cs
++++ b/RacingGame/Core/GameScreens/GameScreen.cs
+@@ -93,6 +93,7 @@ namespace RacingGame.GameScreens
+         public virtual bool Render()
+         {
+             // Time of day (render time only): sets sun, tints, flare, shadow colour
++            RacingGame.Helpers.Rig.CamHook();
+             BaseGame.Lighting.UpdateForGame(
+                 BaseGame.ElapsedTimeThisFrameInMilliseconds / 1000.0f);
+ 
+diff --git a/RacingGame/Core/Helpers/Rig.cs b/RacingGame/Core/Helpers/Rig.cs
+index 970c7f19..9df1ddcf 100644
+--- a/RacingGame/Core/Helpers/Rig.cs
++++ b/RacingGame/Core/Helpers/Rig.cs
+@@ -6,6 +6,7 @@ using System.IO;
+ using Microsoft.Xna.Framework;
+ using Microsoft.Xna.Framework.Graphics;
+ using RacingGame.GameScreens;
++using RacingGame.Graphics;
+ 
+ namespace RacingGame.Helpers
+ {
+@@ -74,6 +75,19 @@ namespace RacingGame.Helpers
+                 Console.WriteLine("[rig] helper " + h.type + " " + h.startNum + " " + h.endNum);
+         }
+ 
++        // RACINGGAME_CAM=front | 34 : view the car from in front (rig only)
++        static readonly string cam = E("RACINGGAME_CAM");
++        public static void CamHook()
++        {
++            if (cam == null || !started) return;
++            var p = RacingGameManager.Player;
++            Microsoft.Xna.Framework.Vector3 pos = p.LookAtPos, fwd = p.CarDirection, up = p.CarUpVector;
++            Microsoft.Xna.Framework.Vector3 right = Microsoft.Xna.Framework.Vector3.Cross(fwd, up);
++            Microsoft.Xna.Framework.Vector3 eye = cam == "front" ? pos + fwd * 9.0f + up * 1.3f
++                : pos + fwd * 6.5f + right * 4.5f + up * 1.6f;
++            BaseGame.ViewMatrix = Microsoft.Xna.Framework.Matrix.CreateLookAt(eye, pos + up * 0.7f, up);
++        }
++
+         public static void UpdateHook()
+         {
+             if (started) { updates++; DumpTunnels(); Teleport(); }

@@ -324,11 +324,24 @@ namespace RacingGame
             }
         }
         /// <summary>
+        /// Window title: "Racing Game". For tests that run two builds or settings side by side,
+        /// the environment variable RACINGGAME_TITLE_SUFFIX is appended (for example "- Old").
+        /// </summary>
+        static string WindowTitleText()
+        {
+            string suffix = Environment.GetEnvironmentVariable("RACINGGAME_TITLE_SUFFIX");
+            return string.IsNullOrWhiteSpace(suffix) ? "Racing Game" : "Racing Game " + suffix.Trim();
+        }
+
+        /// <summary>
         /// Create Racing game
         /// </summary>
         public RacingGameManager()
-            : base("RacingGame")
+            : base(WindowTitleText())
         {
+#if DEVSHOTS
+            RacingGame.Helpers.DevShots.Init(this);
+#endif
             Sound.Initialize();
             // Start playing the menu music
             //Sound.Play(Sound.Sounds.MenuMusic);

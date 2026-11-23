@@ -67,6 +67,20 @@ namespace RacingGame.Shaders
         /// <summary>
         /// Effect handles for shaders.
         /// </summary>
+        /// <summary>
+        /// Apply the time-of-day tint to material colours set through the
+        /// AmbientColor/DiffuseColor/SpecularColor properties. Effects that are
+        /// not lit by materials (the sky cube) override this to false.
+        /// </summary>
+        protected virtual bool TintColors
+        {
+            get { return true; }
+        }
+
+        /// <summary>
+        /// Lighting parameters (TrackLighting.fxh) of this effect, resolved in GetParameters.
+        /// </summary>
+        protected TrackLighting.EffectHandles lightingHandles;
         protected EffectParameter worldViewProj,
             viewProj,
             world,
@@ -78,6 +92,7 @@ namespace RacingGame.Shaders
             specularColor,
             specularPower,
             alphaFactor,
+            shadowSkip,
             scale,
             diffuseTexture,
             normalTexture,
@@ -356,7 +371,7 @@ namespace RacingGame.Shaders
             }
             set
             {
-                SetValue(ambientColor, ref lastUsedAmbientColor, value);
+                SetValue(ambientColor, ref lastUsedAmbientColor, TintColors ? BaseGame.Lighting.Ambient(value) : value);
             }
         }
 
@@ -374,7 +389,7 @@ namespace RacingGame.Shaders
             }
             set
             {
-                SetValue(diffuseColor, ref lastUsedDiffuseColor, value);
+                SetValue(diffuseColor, ref lastUsedDiffuseColor, TintColors ? BaseGame.Lighting.Diffuse(value) : value);
             }
         }
 
@@ -392,7 +407,7 @@ namespace RacingGame.Shaders
             }
             set
             {
-                SetValue(specularColor, ref lastUsedSpecularColor, value);
+                SetValue(specularColor, ref lastUsedSpecularColor, TintColors ? BaseGame.Lighting.Specular(value) : value);
             }
         }
 
@@ -724,6 +739,7 @@ namespace RacingGame.Shaders
             specularColor = effect.Parameters["specularColor"];
             specularPower = effect.Parameters["specularPower"] ?? effect.Parameters["shininess"];
             alphaFactor = effect.Parameters["alphaFactor"];
+            shadowSkip = effect.Parameters["ShadowSkip"];
             // Default alpha factor to 1.0f for hotels and stuff
             AlphaFactor = 1.0f;
             scale = effect.Parameters["scale"];
@@ -734,6 +750,7 @@ namespace RacingGame.Shaders
             detailTexture = effect.Parameters["detailTexture"];
             parallaxAmount = effect.Parameters["parallaxAmount"];
             carHueColorChange = effect.Parameters["carHueColorChange"] ?? effect.Parameters["carHueColor"];
+            lightingHandles = new TrackLighting.EffectHandles(effect);
         }
         /// <summary>
         /// Set parameters, this overload sets all material parameters too.
@@ -754,7 +771,9 @@ namespace RacingGame.Shaders
                     viewInverse.SetValue(BaseGame.InverseViewMatrix.Translation);
             }
             if (lightDir != null)
-                lightDir.SetValue(BaseGame.LightDirection);
+                lightDir.SetValue(BaseGame.Lighting.SunDirection(BaseGame.LightDirection));
+            if (lightingHandles != null && lightingHandles.Any)
+                lightingHandles.Apply(BaseGame.Lighting);
 
             // Set the reflection cube texture only once
             if (lastUsedReflectionCubeTexture == null &&
@@ -789,6 +808,12 @@ namespace RacingGame.Shaders
         /// <summary>
         /// Set parameters, this overload sets all material parameters too.
         /// </summary>
+        public void ApplyLighting()
+        {
+            if (lightingHandles != null && lightingHandles.Any)
+                lightingHandles.Apply(BaseGame.Lighting);
+        }
+
         public virtual void SetParametersOptimizedGeneral()
         {
             if (worldViewProj != null)
@@ -800,7 +825,9 @@ namespace RacingGame.Shaders
             if (viewInverse != null)
 				viewInverse.SetValue(BaseGame.InverseViewMatrix.Translation);
             if (lightDir != null)
-                lightDir.SetValue(BaseGame.LightDirection);
+                lightDir.SetValue(BaseGame.Lighting.SunDirection(BaseGame.LightDirection));
+            if (lightingHandles != null && lightingHandles.Any)
+                lightingHandles.Apply(BaseGame.Lighting);
 
             // Set the reflection cube texture only once
             if (lastUsedReflectionCubeTexture == null &&
@@ -833,13 +860,28 @@ namespace RacingGame.Shaders
 
             // Only update ambient, diffuse, specular and the textures, the rest
             // will not change for a material change in MeshRenderManager.
-            ambientColor.SetValue(setMat.ambientColor.ToVector4());
-            diffuseColor.SetValue(setMat.diffuseColor.ToVector4());
-            specularColor.SetValue(setMat.specularColor.ToVector4());
+            ambientColor.SetValue(BaseGame.Lighting.Ambient(setMat.ambientColor.ToVector4()));
+            diffuseColor.SetValue(BaseGame.Lighting.Diffuse(setMat.diffuseColor.ToVector4()));
+            specularColor.SetValue(BaseGame.Lighting.Specular(setMat.specularColor.ToVector4()));
             if (setMat.diffuseTexture != null)
                 diffuseTexture.SetValue(setMat.diffuseTexture.XnaTexture);
             if (setMat.normalTexture != null)
                 normalTexture.SetValue(setMat.normalTexture.XnaTexture);
+            // Banners and signs do not receive integrated shadows (TrackShadows.fxh)
+            SetShadowSkip(setMat.noShadowReceive);
+        }
+
+        float lastShadowSkip = -1.0f;
+        /// <summary>
+        /// Per material: true = no integrated shadow on this surface (ShadowSkip, default 0 = receive).
+        /// </summary>
+        public void SetShadowSkip(bool skip)
+        {
+            float v = skip ? 1.0f : 0.0f;
+            if (shadowSkip == null || v == lastShadowSkip)
+                return;
+            lastShadowSkip = v;
+            shadowSkip.SetValue(v);
         }
         /// <summary>
         /// Update

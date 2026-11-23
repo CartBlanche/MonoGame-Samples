@@ -1,0 +1,24 @@
+--- a/RacingGame/Core/Helpers/Rig.cs
++++ b/RacingGame/Core/Helpers/Rig.cs
+@@ -41,10 +41,21 @@
+ 
+         public static void SplashHook()
+         {
++            if (E("RACINGGAME_SCREEN") == "options" && !started)
++            {
++                started = true;
++                RacingGameManager.AddGameScreen(new Options());
++                return;
++            }
+             if (!AutoStart || started) return;
+             started = true;
+             if (int.TryParse(E("RACINGGAME_TRACK"), out int t))
+                 TrackSelection.SelectTrackForRig(t);
++            if (E("RACINGGAME_CUSTOM") == "1")
++            {
++                RacingGame.Tracks.CustomTracks.Refresh();
++                TrackSelection.CustomTrack = RacingGame.Tracks.CustomTracks.Tracks[0];
++            }
+             RacingGameManager.AddGameScreen(new GameScreen());
+         }
+ 

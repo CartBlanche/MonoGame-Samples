@@ -36,21 +36,27 @@ namespace RacingGame.GameScreens
         /// </summary>
         public bool Render()
         {
+#if DEVSHOTS
+            if (RacingGame.Helpers.DevShots.Active)
+                RacingGame.Helpers.DevShots.Splash(startTime < 0 ? 0.0f : BaseGame.TotalTime - startTime);
+#endif
             BaseGame.UI.UpdateCarInMenu();
 
-            ShadowMapShader.PrepareGameShadows();
+            // The demo scene: sky, track, car, glows and shadows
+            BaseGame.UI.RenderDemoScene();
 
-            // Render background and black bar
-            BaseGame.UI.RenderGameBackground();
-            BaseGame.UI.RenderMenuTrackBackground();
-            BaseGame.UI.RenderBlackBar(518, 61);
-
-            // Show shadows we calculated above
-            if (BaseGame.AllowShadowMapping)
-                ShaderEffect.shadowMapping.ShowShadows();
+            // Black bar and clock
+#if DEVSHOTS
+            bool videoShot = RacingGame.Helpers.DevShots.Active;   // the video wants the clean demo
+#else
+            const bool videoShot = false;
+#endif
+            if (!videoShot)
+                BaseGame.UI.RenderBlackBar(518, 61);
+            BaseGame.UI.RenderDemoClock();
 
             // Show Press Start to continue. 
-            if ((int)(BaseGame.TotalTime / 0.375f) % 3 != 0)
+            if (!videoShot && (int)(BaseGame.TotalTime / 0.375f) % 3 != 0)
                 BaseGame.UI.Headers.RenderOnScreen(
                     BaseGame.CalcRectangleCenteredWithGivenHeight(
                     512, 518 + 61 / 2, 26, UIRenderer.PressStartGfxRect),
@@ -62,6 +68,9 @@ namespace RacingGame.GameScreens
             float fade = 1 - (BaseGame.TotalTime - startTime) / CrossFadeTime;
             if (fade > 0)
                 LoadingScreen.RenderCard(fade, 1, null, null, 0);
+#if DEVSHOTS
+            RacingGame.Helpers.DevShots.RenderOverlay();
+#endif
 
             // Clicking or pressing start will go to the menu
             return Input.MouseLeftButtonJustPressed ||

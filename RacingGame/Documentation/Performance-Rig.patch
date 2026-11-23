@@ -1,0 +1,247 @@
+diff --git a/RacingGame/Core/GameScreens/GameScreen.cs b/RacingGame/Core/GameScreens/GameScreen.cs
+index 3cba8c3..cc73b10 100644
+--- a/RacingGame/Core/GameScreens/GameScreen.cs
++++ b/RacingGame/Core/GameScreens/GameScreen.cs
+@@ -100,7 +100,9 @@ namespace RacingGame.GameScreens
+             BaseGame.Lighting.UpdateForGame(
+                 BaseGame.ElapsedTimeThisFrameInMilliseconds / 1000.0f);
+ 
++            RacingGame.Helpers.Rig.Mark("g0 lighting");
+             ShadowMapShader.PrepareGameShadows();
++            RacingGame.Helpers.Rig.Mark("g1 shadowPrep");
+ 
+             // This starts both menu and in game post screen shader!
+ 			if( BaseGame.UsePostScreenShaders)
+@@ -110,7 +112,9 @@ namespace RacingGame.GameScreens
+             BaseGame.UI.RenderGameBackground();
+ 
+             // Render landscape with track and all objects
++            RacingGame.Helpers.Rig.Mark("g2 sky");
+             RacingGameManager.Landscape.Render();
++            RacingGame.Helpers.Rig.Mark("g3 landscape");
+ 
+             // Render car with matrix we got from CarPhysics
+             RacingGameManager.CarModel.RenderCar(
+@@ -120,6 +124,7 @@ namespace RacingGame.GameScreens
+                 RacingGameManager.Player.CarRenderMatrix);
+ 
+             // Other players' cars (multiplayer)
++            RacingGame.Helpers.Rig.Mark("g4 car");
+             RenderOtherCars();
+ 
+             // Headlight and tail light glows of the local car (nothing while the lights are off)
+@@ -127,7 +132,9 @@ namespace RacingGame.GameScreens
+             BaseGame.Lighting.AddCarSprites(RacingGameManager.Player.CarRenderMatrix, true);
+ 
+             // And flush all models to be rendered
++            RacingGame.Helpers.Rig.Mark("g5 glowsAdd");
+             BaseGame.MeshRenderManager.Render();
++            RacingGame.Helpers.Rig.Mark("g6 meshMgr");
+ 
+             // Use data from best replay for the shadow car
+             Matrix bestReplayCarMatrix =
+@@ -149,6 +156,7 @@ namespace RacingGame.GameScreens
+             // Depth tested additive glows for car lights (after all cars, before shadows and glow post)
+             BaseGame.Lighting.Sprites.Flush();
+ 
++            RacingGame.Helpers.Rig.Mark("g7 ghost+sprites");
+             // Show shadows we calculated above
+             if (BaseGame.AllowShadowMapping)
+                 ShaderEffect.shadowMapping.ShowShadows();
+@@ -157,6 +165,7 @@ namespace RacingGame.GameScreens
+ 			if (BaseGame.UsePostScreenShaders)
+             	BaseGame.UI.PostScreenGlowShader.Show();
+ 
++            RacingGame.Helpers.Rig.Mark("g8 shadow+post");
+             // Play motor sound
+             Sound.UpdateGearSound(RacingGameManager.Player.Speed,
+                 RacingGameManager.Player.Acceleration);
+@@ -181,6 +190,7 @@ namespace RacingGame.GameScreens
+                 RacingGameManager.Landscape.CurrentTrackName,
+                 Highscores.GetTop5LapTimes(TrackSelection.HighscoreLevel));
+ 
++            RacingGame.Helpers.Rig.Mark("g9 gameUI");
+             if (WantsToLeave())
+             {
+                 // Stop motor sound
+diff --git a/RacingGame/Core/Graphics/BaseGame.cs b/RacingGame/Core/Graphics/BaseGame.cs
+index 78aa245..c3d731e 100644
+--- a/RacingGame/Core/Graphics/BaseGame.cs
++++ b/RacingGame/Core/Graphics/BaseGame.cs
+@@ -1363,6 +1363,7 @@ namespace RacingGame.Graphics
+ 
+             // Update all input states
+             Input.Update();
++            RacingGame.Helpers.Rig.Mark("ub0 input");
+ 
+             lastFrameTotalTimeMs = totalTimeMs;
+             elapsedTimeThisFrameInMs =
+@@ -1410,7 +1411,9 @@ namespace RacingGame.Graphics
+             }
+ 
+             // Update sound and music
++            RacingGame.Helpers.Rig.Mark("ub1 fps");
+             Sound.Update();
++            RacingGame.Helpers.Rig.Mark("ub2 sound");
+         }
+         // Check if app is currently active
+         static bool isAppActive = true;
+@@ -1463,6 +1466,7 @@ namespace RacingGame.Graphics
+ 				// we don't have the z buffer cleared (some issues with line
+ 				// rendering might happen else). Performance drop is not significant!
+ 				ClearBackground();
++				RacingGame.Helpers.Rig.Mark("d0 clear");
+ 
+ 				// Get our sprites ready to draw...
+ 				Texture.additiveSprite.Begin(SpriteSortMode.Deferred, BlendState.Additive);
+@@ -1470,16 +1474,20 @@ namespace RacingGame.Graphics
+ 
+ 				// Handle custom user render code
+ 				Render();
++				RacingGame.Helpers.Rig.Mark("d1 Render()");
+ 
+ 				// Render all models we remembered this frame.
+ 				meshRenderManager.Render();
++				RacingGame.Helpers.Rig.Mark("d2 meshMgr");
+ 
+ 				// Render all 3d lines
+ 				lineManager3D.Render();
++				RacingGame.Helpers.Rig.Mark("d3 lines3d");
+ 
+ 				// Render UI and font texts, this also handles all collected
+ 				// screen sprites (on top of 3d game code)
+ 				UIRenderer.Render(lineManager2D);
++				RacingGame.Helpers.Rig.Mark("d4 UIRender");
+ 
+ 				PostUIRender();
+ 
+@@ -1518,7 +1526,9 @@ namespace RacingGame.Graphics
+ 					Texture.alphaSprite.End();
+ 				}
+ 
++				RacingGame.Helpers.Rig.Mark("d5 postUI+trophy");
+ 				ui.RenderTextsAndMouseCursor();
++				RacingGame.Helpers.Rig.Mark("d6 texts");
+ 				RacingGame.Helpers.Rig.DrawEnd(Device);
+ 			}
+ 			// Only catch exceptions here in release mode, when debugging
+diff --git a/RacingGame/Core/Helpers/Rig.cs b/RacingGame/Core/Helpers/Rig.cs
+index fcd2846..13a9bc0 100644
+--- a/RacingGame/Core/Helpers/Rig.cs
++++ b/RacingGame/Core/Helpers/Rig.cs
+@@ -104,11 +104,81 @@ namespace RacingGame.Helpers
+             if (started) { updates++; DumpTunnels(); Teleport(); }
+         }
+ 
+-        public static void DrawBegin() { if (Timing && started) drawWatch.Restart(); }
++        // ---- RACINGGAME_PERF=1: Update/Draw/frame-time/allocation/GC summary ----
++        static readonly bool Perf = E("RACINGGAME_PERF") == "1";
++        static readonly int perfN = int.TryParse(E("RACINGGAME_PERFN"), out int pn) ? pn : 1500;
++        const int PerfSkip = 300;
++        static System.Collections.Generic.List<double> pUpd = new System.Collections.Generic.List<double>(), pDraw = new System.Collections.Generic.List<double>(), pFrame = new System.Collections.Generic.List<double>();
++        static System.Collections.Generic.List<long> pAlloc = new System.Collections.Generic.List<long>(), pAllocUpd = new System.Collections.Generic.List<long>(), pAllocDraw = new System.Collections.Generic.List<long>();
++        static long tUpd, tDraw, tPrevFrame, aUpd, aDraw, aPrevFrame, tStart; static int g0, g1, g2; static bool recording, haveUpdSample;
++        static double Ms(long ticks) { return ticks * 1000.0 / Stopwatch.Frequency; }
++        public static void PerfUpdBegin()
++        {
++            if (!Perf || !started) return;
++            long now = Stopwatch.GetTimestamp(); long a = GC.GetAllocatedBytesForCurrentThread();
++            if (recording && tPrevFrame != 0) { pFrame.Add(Ms(now - tPrevFrame)); pAlloc.Add(a - aPrevFrame); }
++            tPrevFrame = now; aPrevFrame = a;
++            if (!recording && updates >= PerfSkip) { recording = true; tStart = now; g0 = GC.CollectionCount(0); g1 = GC.CollectionCount(1); g2 = GC.CollectionCount(2); tPrevFrame = 0; }
++            tUpd = now; aUpd = a; lastMarkA = a; lastMarkT = now;
++        }
++        public static void PerfUpdEnd()
++        {
++            if (!Perf || !started || !recording) return;
++            pUpd.Add(Ms(Stopwatch.GetTimestamp() - tUpd)); pAllocUpd.Add(GC.GetAllocatedBytesForCurrentThread() - aUpd);
++            if (pFrame.Count >= perfN) PerfReport();
++        }
++        static double Pct(System.Collections.Generic.List<double> s, double p) { return s[Math.Min(s.Count - 1, (int)(p * s.Count))]; }
++        static string Stat(System.Collections.Generic.List<double> l)
++        {
++            var s = new System.Collections.Generic.List<double>(l); s.Sort(); double m = 0; foreach (var v in s) m += v; m /= s.Count;
++            return m.ToString("F3") + "/" + Pct(s, 0.50).ToString("F3") + "/" + Pct(s, 0.95).ToString("F3") + "/" + Pct(s, 0.99).ToString("F3") + "/" + s[s.Count - 1].ToString("F3");
++        }
++        static void PerfReport()
++        {
++            double secs = Ms(Stopwatch.GetTimestamp() - tStart) / 1000.0;
++            var af = new System.Collections.Generic.List<double>(); foreach (var v in pAlloc) af.Add(v);
++            var au = new System.Collections.Generic.List<double>(); foreach (var v in pAllocUpd) au.Add(v);
++            var ad = new System.Collections.Generic.List<double>(); foreach (var v in pAllocDraw) ad.Add(v);
++            double tot = 0; foreach (var v in pAlloc) tot += v;
++            int worst = 0; for (int i = 1; i < pFrame.Count; i++) if (pFrame[i] > pFrame[worst]) worst = i;
++            var fs = new System.Collections.Generic.List<double>(pFrame); fs.Sort();
++            int over2 = 0, over16 = 0; foreach (var v in pFrame) { if (v > 2 * Pct(fs, 0.5)) over2++; if (v > 16.7) over16++; }
++            Console.WriteLine("[perf] n=" + pFrame.Count + " secs=" + secs.ToString("F1") + " fps=" + (pFrame.Count / secs).ToString("F0")
++                + " | ms mean/p50/p95/p99/max: upd " + Stat(pUpd) + " draw " + Stat(pDraw) + " frame " + Stat(pFrame)
++                + " | worstFrame#" + worst + " | >2xp50=" + over2 + " >16.7ms=" + over16
++                + " | allocB/frame mean/p50/p95/p99/max: total " + Stat(af) + " upd " + Stat(au) + " draw " + Stat(ad)
++                + " | alloc KB/s=" + (tot / 1024.0 / secs).ToString("F0")
++                + " | GC0/1/2=" + (GC.CollectionCount(0) - g0) + "/" + (GC.CollectionCount(1) - g1) + "/" + (GC.CollectionCount(2) - g2)
++                + " per " + secs.ToString("F1") + "s | bb=" + BaseGame.Width + "x" + BaseGame.Height + " light=" + RacingGame.Graphics.BaseGame.Lighting.Quality + " tod=" + RacingGame.Graphics.BaseGame.Lighting.TimeOfDay.ToString("F2"));
++            if (mN > 0) Console.WriteLine("[metrics/frame] draws=" + (mDraw / (double)mN).ToString("F1") + " prims=" + (mPrim / (double)mN).ToString("F0") + " textureSets=" + (mTex / (double)mN).ToString("F1") + " rtSets=" + (mTgt / (double)mN).ToString("F1") + " sprites=" + (mSpr / (double)mN).ToString("F0") + " clears=" + (mClr / (double)mN).ToString("F1") + " psSets=" + (mPS / (double)mN).ToString("F1") + " vsSets=" + (mVS / (double)mN).ToString("F1"));
++            foreach (var kv in markA) Console.WriteLine("[mark] " + kv.Key + " allocB/frame=" + (kv.Value / (double)pDraw.Count).ToString("F0") + " ms/frame=" + (Ms(markT[kv.Key]) / pDraw.Count).ToString("F3") + " maxMs=" + Ms(markMax[kv.Key]).ToString("F3"));
++            Environment.Exit(0);
++        }
++
++        static readonly System.Collections.Generic.SortedDictionary<string, long> markA = new System.Collections.Generic.SortedDictionary<string, long>();
++        static readonly System.Collections.Generic.SortedDictionary<string, long> markT = new System.Collections.Generic.SortedDictionary<string, long>();
++        static readonly System.Collections.Generic.SortedDictionary<string, long> markMax = new System.Collections.Generic.SortedDictionary<string, long>();
++        static long lastMarkA, lastMarkT; static bool metricsOn; static long mDraw, mPrim, mTex, mTgt, mSpr, mClr, mPS, mVS, mN;
++        public static void Mark(string id)
++        {
++            if (!Perf || !recording) return;
++            long a = GC.GetAllocatedBytesForCurrentThread(), t = Stopwatch.GetTimestamp();
++            if (lastMarkT != 0) { markA.TryGetValue(id, out long x); markA[id] = x + a - lastMarkA; markT.TryGetValue(id, out long y); markT[id] = y + t - lastMarkT; markMax.TryGetValue(id, out long z); if (t - lastMarkT > z) markMax[id] = t - lastMarkT; }
++            lastMarkA = a; lastMarkT = t;
++        }
++        public static void DrawBegin()
++        {
++            if (Perf && recording) { lastMarkA = GC.GetAllocatedBytesForCurrentThread(); lastMarkT = Stopwatch.GetTimestamp(); }
++            if (Perf && started && recording) { tDraw = Stopwatch.GetTimestamp(); aDraw = GC.GetAllocatedBytesForCurrentThread(); }
++            if (Timing && started) drawWatch.Restart();
++        }
+ 
+         public static void DrawEnd(GraphicsDevice device)
+         {
+             if (!started) return;
++            if (Perf && !metricsOn) { device.Metrics = new GraphicsMetrics(); metricsOn = true; }
++            if (Perf && recording && metricsOn) { var m = device.Metrics; mDraw += m.DrawCount; mPrim += m.PrimitiveCount; mTex += m.TextureCount; mTgt += m.TargetCount; mSpr += m.SpriteCount; mClr += m.ClearCount; mPS += m.PixelShaderCount; mVS += m.VertexShaderCount; mN++; }
++            if (Perf && recording && tDraw != 0) { pDraw.Add(Ms(Stopwatch.GetTimestamp() - tDraw)); pAllocDraw.Add(GC.GetAllocatedBytesForCurrentThread() - aDraw); tDraw = 0; }
+             if (Timing && updates > 300)
+             {
+                 drawWatch.Stop(); drawMs += drawWatch.Elapsed.TotalMilliseconds; drawN++;
+diff --git a/RacingGame/Core/RacingGameManager.cs b/RacingGame/Core/RacingGameManager.cs
+index f61f805..fc0ea33 100644
+--- a/RacingGame/Core/RacingGameManager.cs
++++ b/RacingGame/Core/RacingGameManager.cs
+@@ -421,11 +421,14 @@ namespace RacingGame
+         /// </summary>
+         protected override void Update(GameTime gameTime)
+         {
++            RacingGame.Helpers.Rig.PerfUpdBegin();
+             // Update game engine
+             base.Update(gameTime);
++            RacingGame.Helpers.Rig.Mark("u1 base");
+ 
+             // Pump the LAN race session, if we are in one
+             Multiplayer.LanRace.Update();
++            RacingGame.Helpers.Rig.Mark("u2 lan");
+ 
+             if (gameScreens.Count > 0)
+             {
+@@ -434,10 +437,13 @@ namespace RacingGame
+                     // Update player and game logic
+                     player.Update();
+                 }
++                RacingGame.Helpers.Rig.Mark("u3 player");
+ 
+                 //Update the game screen
+                 gameScreens.Peek().Update(gameTime);
++                RacingGame.Helpers.Rig.Mark("u4 screen");
+             }
++            RacingGame.Helpers.Rig.PerfUpdEnd();
+         }
+         /// <summary>
+         /// Render

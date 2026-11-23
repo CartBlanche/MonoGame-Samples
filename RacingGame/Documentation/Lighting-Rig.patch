@@ -1,0 +1,177 @@
+diff --git a/RacingGame/Core/GameLogic/CarPhysics.cs b/RacingGame/Core/GameLogic/CarPhysics.cs
+index 214fd8e7..3a81cc65 100644
+--- a/RacingGame/Core/GameLogic/CarPhysics.cs
++++ b/RacingGame/Core/GameLogic/CarPhysics.cs
+@@ -614,7 +614,7 @@ namespace RacingGame.GameLogic
+             {
+                 // a menu is open: no driving input
+             }
+-            else if (Input.KeyboardUpPressed ||
++            else if (RacingGame.Helpers.Rig.Throttle || Input.KeyboardUpPressed ||
+                 Input.Keyboard.IsKeyDown(Keys.W) ||
+                 Input.MouseLeftButtonPressed ||
+                 Input.GamePadAPressed)
+diff --git a/RacingGame/Core/GameScreens/SplashScreen.cs b/RacingGame/Core/GameScreens/SplashScreen.cs
+index 31ccd294..ae32a507 100644
+--- a/RacingGame/Core/GameScreens/SplashScreen.cs
++++ b/RacingGame/Core/GameScreens/SplashScreen.cs
+@@ -36,6 +36,7 @@ namespace RacingGame.GameScreens
+         /// </summary>
+         public bool Render()
+         {
++            RacingGame.Helpers.Rig.SplashHook();
+             BaseGame.UI.UpdateCarInMenu();
+ 
+             ShadowMapShader.PrepareGameShadows();
+diff --git a/RacingGame/Core/GameScreens/TrackSelection.cs b/RacingGame/Core/GameScreens/TrackSelection.cs
+index 04849f35..7516082f 100644
+--- a/RacingGame/Core/GameScreens/TrackSelection.cs
++++ b/RacingGame/Core/GameScreens/TrackSelection.cs
+@@ -69,6 +69,7 @@ namespace RacingGame.GameScreens
+         /// Selected track number
+         /// </summary>
+         /// <returns>Int</returns>
++        internal static void SelectTrackForRig(int t) { CustomTrack = null; selectedButton = t; lastBuiltIn = t; }
+         static public int SelectedTrackNumber
+         {
+             get
+diff --git a/RacingGame/Core/Graphics/BaseGame.cs b/RacingGame/Core/Graphics/BaseGame.cs
+index 6e83c46f..03df7861 100644
+--- a/RacingGame/Core/Graphics/BaseGame.cs
++++ b/RacingGame/Core/Graphics/BaseGame.cs
+@@ -1065,6 +1065,7 @@ namespace RacingGame.Graphics
+             // The whole game is designed this way, if you remove this line
+             // the car will not behave normal anymore!
+             this.IsFixedTimeStep = false;
++            if (RacingGame.Helpers.Rig.NoVsync) graphicsManager.SynchronizeWithVerticalRetrace = false;
+ 
+             // Init content manager
+             BaseGame.content = base.Content;
+@@ -1359,7 +1360,8 @@ namespace RacingGame.Graphics
+ 
+             lastFrameTotalTimeMs = totalTimeMs;
+             elapsedTimeThisFrameInMs =
+-                (float)gameTime.ElapsedGameTime.TotalMilliseconds;
++                RacingGame.Helpers.Rig.Dt((float)gameTime.ElapsedGameTime.TotalMilliseconds);
++            RacingGame.Helpers.Rig.UpdateHook();
+             totalTimeMs += elapsedTimeThisFrameInMs;
+ 
+             // Make sure elapsedTimeThisFrameInMs is never 0
+@@ -1450,6 +1452,7 @@ namespace RacingGame.Graphics
+         {
+ 			try
+ 			{
++				RacingGame.Helpers.Rig.DrawBegin();
+ 				// Clear anyway, makes unit tests easier and fixes problems if
+ 				// we don't have the z buffer cleared (some issues with line
+ 				// rendering might happen else). Performance drop is not significant!
+@@ -1510,6 +1513,7 @@ namespace RacingGame.Graphics
+ 				}
+ 
+ 				ui.RenderTextsAndMouseCursor();
++				RacingGame.Helpers.Rig.DrawEnd(Device);
+ 			}
+ 			// Only catch exceptions here in release mode, when debugging
+ 			// we want to see the source of the error. In release mode
+diff --git a/RacingGame/Core/Helpers/RandomHelper.cs b/RacingGame/Core/Helpers/RandomHelper.cs
+index b5c4ecd8..e251b4d6 100644
+--- a/RacingGame/Core/Helpers/RandomHelper.cs
++++ b/RacingGame/Core/Helpers/RandomHelper.cs
+@@ -31,7 +31,7 @@ namespace RacingGame.Helpers
+         public static Random GenerateNewRandomGenerator()
+         {
+             globalRandomGenerator =
+-                new Random((int)DateTime.Now.Ticks);
++                new Random(RacingGame.Helpers.Rig.FramesDir != null ? 12345 : (int)DateTime.Now.Ticks);
+             //needs Interop: (int)WindowsHelper.GetPerformanceCounter());
+             return globalRandomGenerator;
+         }
+diff --git a/RacingGame/Core/Helpers/Rig.cs b/RacingGame/Core/Helpers/Rig.cs
+new file mode 100644
+index 00000000..af2779e0
+--- /dev/null
++++ b/RacingGame/Core/Helpers/Rig.cs
+@@ -0,0 +1,83 @@
++// TEMPORARY test rig for Documentation/Lighting-Plan.md (section 7). Never commit
++// outside Documentation/Lighting-Rig.patch.
++using System;
++using System.Diagnostics;
++using System.IO;
++using Microsoft.Xna.Framework;
++using Microsoft.Xna.Framework.Graphics;
++using RacingGame.GameScreens;
++
++namespace RacingGame.Helpers
++{
++    /// <summary>
++    /// Env vars: RACINGGAME_AUTOSTART=1 starts a race from the splash screen,
++    /// RACINGGAME_THROTTLE=1 holds the accelerator, RACINGGAME_TRACK=0..2 picks the
++    /// built-in track, RACINGGAME_FRAMES=dir captures frames_NNNN.png every
++    /// RACINGGAME_EVERY (default 180) updates and fixes the time step to 1/60 s so
++    /// runs are repeatable, RACINGGAME_NOVSYNC=1 turns vsync off, RACINGGAME_TIMING=1
++    /// logs the average Draw time. RACINGGAME_EXIT=N quits after N captured frames.
++    /// </summary>
++    public static class Rig
++    {
++        static string E(string n) { return Environment.GetEnvironmentVariable(n); }
++        public static readonly bool AutoStart = E("RACINGGAME_AUTOSTART") == "1";
++        public static readonly bool Throttle = E("RACINGGAME_THROTTLE") == "1";
++        public static readonly string FramesDir = E("RACINGGAME_FRAMES");
++        public static readonly bool NoVsync = E("RACINGGAME_NOVSYNC") == "1";
++        public static readonly bool Timing = E("RACINGGAME_TIMING") == "1";
++        static readonly int every = int.TryParse(E("RACINGGAME_EVERY"), out int e) ? e : 180;
++        static readonly int exitAfter = int.TryParse(E("RACINGGAME_EXIT"), out int x) ? x : 0;
++        static bool started;
++        static int updates, captured;
++        static readonly Stopwatch drawWatch = new Stopwatch();
++        static double drawMs; static int drawN;
++
++        /// <summary>Fixed 1/60 s step when capturing so every run is identical.</summary>
++        public static float Dt(float realMs)
++        {
++            return FramesDir != null ? 1000.0f / 60.0f : realMs;
++        }
++
++        public static void SplashHook()
++        {
++            if (!AutoStart || started) return;
++            started = true;
++            if (int.TryParse(E("RACINGGAME_TRACK"), out int t))
++                TrackSelection.SelectTrackForRig(t);
++            RacingGameManager.AddGameScreen(new GameScreen());
++        }
++
++        public static void UpdateHook()
++        {
++            if (started) updates++;
++        }
++
++        public static void DrawBegin() { if (Timing && started) drawWatch.Restart(); }
++
++        public static void DrawEnd(GraphicsDevice device)
++        {
++            if (!started) return;
++            if (Timing && updates > 300)
++            {
++                drawWatch.Stop(); drawMs += drawWatch.Elapsed.TotalMilliseconds; drawN++;
++                if (drawN % 300 == 0)
++                    Console.WriteLine("[rig] avg Draw CPU ms over " + drawN + " frames: " + (drawMs / drawN).ToString("F3"));
++            }
++            if (FramesDir == null || updates == 0 || updates % every != 0) return;
++            string path = Path.Combine(FramesDir, "frame_" + updates.ToString("D5") + ".png");
++            if (File.Exists(path)) return;
++            Directory.CreateDirectory(FramesDir);
++            int w = device.PresentationParameters.BackBufferWidth, h = device.PresentationParameters.BackBufferHeight;
++            Color[] px = new Color[w * h];
++            device.GetBackBufferData(px);
++            for (int i = 0; i < px.Length; i++) px[i].A = 255;
++            using (Texture2D tex = new Texture2D(device, w, h))
++            {
++                tex.SetData(px);
++                using (FileStream fs = File.Create(path)) tex.SaveAsPng(fs, w, h);
++            }
++            Console.WriteLine("[rig] wrote " + path);
++            if (exitAfter > 0 && ++captured >= exitAfter) Environment.Exit(0);
++        }
++    }
++}

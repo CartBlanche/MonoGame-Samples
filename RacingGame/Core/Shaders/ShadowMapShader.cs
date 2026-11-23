@@ -231,6 +231,45 @@ namespace RacingGame.Shaders
         /// <summary>
         /// Calc simple directional shadow mapping matrix
         /// </summary>
+        /// <summary>
+        /// How much wider the shadow map reaches than the classic one (1 = classic). Integrated
+        /// shadows only. Default 1: widening to 2x or 3x was tried (2026-11-23) and showed no
+        /// visible gain (no extra palm or rock shadows, only coarser edges), so it stays a test
+        /// option: env RACINGGAME_SHADOWCOVER=1..6.
+        /// </summary>
+        public static float ShadowCoverage
+        {
+            get
+            {
+                if (RacingGame.Graphics.TrackLighting.IntegratedShadows == false)
+                    return 1.0f;
+                return shadowCoverageValue;
+            }
+        }
+        static readonly float shadowCoverageValue = ParseCoverage();
+        static float ParseCoverage()
+        {
+            float v;
+            return float.TryParse(Environment.GetEnvironmentVariable("RACINGGAME_SHADOWCOVER"),
+                System.Globalization.NumberStyles.Float, System.Globalization.CultureInfo.InvariantCulture,
+                out v) && v >= 1.0f && v <= 6.0f ? v : 1.0f;
+        }
+
+        // Feedback round 1 switches (integrated only; env RACINGGAME_SHADOWAHEAD / SHADOWSQ / SHADOWSNAP)
+        static readonly float LookAheadUnits = EnvF("RACINGGAME_SHADOWAHEAD", 35.0f);
+        // Integrated map size per unit of light distance (width and height), 0 = classic proportions.
+        static readonly float MapSize = EnvF("RACINGGAME_SHADOWMAPSIZE", 0.85f);
+        // Distance (units) the car keeps from the usable border of the map.
+        static readonly float ShadowCarMargin = EnvF("RACINGGAME_SHADOWCARMARGIN", 14.0f);
+        static readonly bool SnapTexels = EnvF("RACINGGAME_SHADOWSNAP", 1.0f) > 0.5f;
+        static float EnvF(string n, float def)
+        {
+            float v;
+            return float.TryParse(Environment.GetEnvironmentVariable(n),
+                System.Globalization.NumberStyles.Float, System.Globalization.CultureInfo.InvariantCulture,
+                out v) ? v : def;
+        }
+
         private void CalcSimpleDirectionalShadowMappingMatrix()
         {
             // Put light for directional mode away from origin (create virutal point
@@ -239,18 +278,61 @@ namespace RacingGame.Shaders
                 virtualVisibleRange, virtualLightDistance);
 
             // Set projection matrix for light
+            // Integrated shadows can cover a wider area (ShadowCoverage > 1, the same map stretched
+            // over more world); classic keeps the original size exactly.
+            bool integrated = RacingGame.Graphics.TrackLighting.IntegratedShadows;
+            float cover = ShadowCoverage;
+            // Integrated: the map is wider than the classic one (classic width was only 0.645 of
+            // its height, so a car driving across the sun saw shadows only about 58 units ahead)
+            // and a little less tall (the sun axis had more reach than needed).
+            float widthFactor = 1.0f, heightFactor = 1.0f;
+            if (integrated && MapSize > 0)
+            {
+                widthFactor = MapSize / virtualFieldOfView;
+                heightFactor = MapSize;
+            }
             lightProjectionMatrix = Matrix.CreatePerspective(
                 // Don't use graphics fov and aspect ratio in directional lighting mode
-                virtualFieldOfView,
-                1.0f,
+                virtualFieldOfView * cover * widthFactor,
+                1.0f * cover * heightFactor,
                 shadowNearPlane,
                 shadowFarPlane);
 
+            // Light view plane axes (the light looks along -LightDirection, up is world z)
+            Vector3 lf = -BaseGame.LightDirection;
+            Vector3 lr = Vector3.Normalize(Vector3.Cross(lf, new Vector3(0, 0, 1)));
+            Vector3 lu = Vector3.Cross(lr, lf);
+
             // Calc light look pos, put it a little bit in front of our car
+            // (integrated: further ahead, a racing game sees the shadows coming from afar, but never
+            // so far that the car itself gets near the border of the map)
+            Vector3 carDir = RacingGameManager.Player.CarDirection;
+            float lookAhead = virtualVisibleRange / 6;
+            if (integrated)
+            {
+                lookAhead = LookAheadUnits;
+                float hx = 0.44f * virtualFieldOfView * cover * widthFactor * virtualVisibleRange - ShadowCarMargin;
+                float hy = 0.44f * cover * heightFactor * virtualVisibleRange - ShadowCarMargin;
+                float ar = Math.Abs(Vector3.Dot(carDir, lr)), au = Math.Abs(Vector3.Dot(carDir, lu));
+                if (ar > 0.001f) lookAhead = Math.Min(lookAhead, hx / ar);
+                if (au > 0.001f) lookAhead = Math.Min(lookAhead, hy / au);
+                lookAhead = Math.Max(lookAhead, 0.0f);
+            }
             Vector3 lightLookPos =
                 RacingGameManager.InMenu ? RacingGameManager.Player.CarPosition :
-                RacingGameManager.Player.CarPosition +
-                RacingGameManager.Player.CarDirection * virtualVisibleRange / 6;
+                RacingGameManager.Player.CarPosition + carDir * lookAhead;
+
+            if (integrated && SnapTexels && shadowMapTexture != null)
+            {
+                // Snap the look-at point to whole texels of the light view plane (at the depth of
+                // the look-at point), so the texel grid stays fixed in the world while the car
+                // moves (no swimming, no crawling edges).
+                float tx = virtualVisibleRange * virtualFieldOfView * cover * widthFactor / shadowMapTexture.Width;
+                float ty = virtualVisibleRange * 1.0f * cover * heightFactor / shadowMapTexture.Height;
+                float a = Vector3.Dot(lightLookPos, lr);
+                float b = Vector3.Dot(lightLookPos, lu);
+                lightLookPos += lr * ((float)Math.Round(a / tx) * tx - a) + lu * ((float)Math.Round(b / ty) * ty - b);
+            }
 
             // Well, this is how directional lights are done:
             lightViewMatrix = Matrix.CreateLookAt(
@@ -264,6 +346,65 @@ namespace RacingGame.Shaders
             Matrix invView = Matrix.Invert(lightViewMatrix);
             shadowLightPos = new Vector3(invView.M41, invView.M42, invView.M43);
         }
+        /// <summary>
+        /// Integrated shadows: is a sphere inside (or touching) the shadow light frustum?
+        /// A caster outside this frustum cannot put anything into the map, because the
+        /// projection runs along the light rays; this is the exact selection radius.
+        /// Allocation free: one view transform and a few compares.
+        /// </summary>
+        internal bool IsInShadowFrustum(Vector3 center, float radius)
+        {
+            Matrix v = lightViewMatrix;
+            float x = center.X * v.M11 + center.Y * v.M21 + center.Z * v.M31 + v.M41;
+            float y = center.X * v.M12 + center.Y * v.M22 + center.Z * v.M32 + v.M42;
+            float z = center.X * v.M13 + center.Y * v.M23 + center.Z * v.M33 + v.M43;
+            float d = -z;
+            if (d < -radius || d > shadowFarPlane + radius)
+                return false;
+            Matrix p = lightProjectionMatrix;
+            // Half extents of the frustum at depth d: d / M11 and d / M22
+            float hx = d / p.M11 + radius;
+            float hy = d / p.M22 + radius;
+            return x >= -hx && x <= hx && y >= -hy && y <= hy;
+        }
+
+        bool alphaGenerate = false;
+        Texture2D lastCasterTexture = null;
+        EffectParameter casterTextureParam = null;
+
+        /// <summary>
+        /// Integrated shadows: switch the generate pass between the plain depth technique
+        /// (tex null) and the alpha tested one (cut-out leaves) with the given texture.
+        /// </summary>
+        internal void SetGenerateCaster(Texture2D tex)
+        {
+            if (effect == null)
+                return;
+            if (tex == null)
+            {
+                if (alphaGenerate == false)
+                    return;
+                alphaGenerate = false;
+                effect.CurrentTechnique = effect.Techniques["GenerateShadowMap20"];
+            }
+            else
+            {
+                if (casterTextureParam == null)
+                    casterTextureParam = effect.Parameters["casterTexture"];
+                if (alphaGenerate == false)
+                {
+                    alphaGenerate = true;
+                    effect.CurrentTechnique = effect.Techniques["GenerateShadowMapAlpha20"];
+                }
+                if (lastCasterTexture != tex)
+                {
+                    lastCasterTexture = tex;
+                    casterTextureParam?.SetValue(tex);
+                }
+            }
+            effect.CurrentTechnique.Passes[0].Apply();
+        }
+
         /// <summary>
         /// Update shadow world matrix.
         /// Calling this function is important to keep the shaders
@@ -307,6 +448,8 @@ namespace RacingGame.Shaders
             shadowMapTexture.Clear(Color.White);
 
             effect.CurrentTechnique = effect.Techniques["GenerateShadowMap20"];
+            alphaGenerate = false;
+            lastCasterTexture = null;
 
             // Render shadows with help of the GenerateShadowMap shader
             RenderSinglePassShader(renderObjects);
@@ -348,6 +491,24 @@ namespace RacingGame.Shaders
             effect.CurrentTechnique.Passes[0].Apply();
         }
 
+        BaseGame.RenderHandler pendingReceiveObjects, receiveShadowsHandler;
+
+        /// <summary>The shadow receive pass drawn into the shadow blur's scene map.</summary>
+        void RenderReceivePass()
+        {
+            effect.CurrentTechnique = effect.Techniques["UseShadowMap20"];
+
+            // This method sets all required shader variables.
+            this.SetParameters(null);
+
+            // Use the shadow map texture here which was generated in
+            // GenerateShadows().
+            shadowMap?.SetValue(shadowMapTexture.XnaTexture);
+
+            // Render shadows with help of the UseShadowMap shader
+            RenderSinglePassShader(pendingReceiveObjects);
+        }
+
         /// <summary>
         /// Calc shadows with help of generated light depth map,
         /// all objects have to be rendered again for comparing.
@@ -368,22 +529,12 @@ namespace RacingGame.Shaders
             // Make sure z buffer and writing z buffer is on
             BaseGame.Device.DepthStencilState = DepthStencilState.Default;
 
-            // Render shadows into our shadowMapBlur render target
+            // Render shadows into our shadowMapBlur render target. The pass is a cached delegate
+            // (a closure here allocated every frame); the objects to draw wait in a field.
+            pendingReceiveObjects = renderObjects;
             shadowMapBlur.RenderShadows(
-                delegate
-                {
-                    effect.CurrentTechnique = effect.Techniques["UseShadowMap20"];
-
-                    // This method sets all required shader variables.
-                    this.SetParameters(null);
-
-                    // Use the shadow map texture here which was generated in
-                    // GenerateShadows().
-                    shadowMap?.SetValue(shadowMapTexture.XnaTexture);
-
-                    // Render shadows with help of the UseShadowMap shader
-                    RenderSinglePassShader(renderObjects);
-                });
+                receiveShadowsHandler ?? (receiveShadowsHandler = RenderReceivePass));
+            pendingReceiveObjects = null;
 
             // Start rendering the shadow map blur (pass 1, which messes up our
             // background), pass 2 can be done below without any render targets.
@@ -408,6 +559,14 @@ namespace RacingGame.Shaders
                             RacingGameManager.Player.CarRenderMatrix);
                     });
 
+                // Integrated shadows (prototype): the lit shaders look the map up themselves,
+                // so the receive pass, the blur and the composite are skipped.
+                if (TrackLighting.IntegratedShadows)
+                {
+                    ShaderEffect.shadowMapping.PublishIntegratedShadows();
+                    return;
+                }
+
                 // Render shadows
                 ShaderEffect.shadowMapping.RenderShadows(
                     delegate
@@ -417,7 +576,17 @@ namespace RacingGame.Shaders
                             RacingGameManager.Player.CarRenderMatrix);
                     });
             }
+            else if (TrackLighting.IntegratedShadows)
+                BaseGame.Lighting.PublishShadowsOff();
         }
+        /// <summary>Publish the shadow map to the terrain and road shaders (integrated mode).</summary>
+        internal void PublishIntegratedShadows()
+        {
+            BaseGame.Lighting.PublishShadows(
+                lightViewMatrix * lightProjectionMatrix * texScaleBiasMatrix,
+                shadowMapTexture.XnaTexture, texelWidth);
+        }
+
         /// <summary>
         /// Show Shadows
         /// </summary>

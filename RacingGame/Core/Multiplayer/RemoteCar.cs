@@ -23,6 +23,7 @@ namespace RacingGame.Multiplayer
             public Quaternion Rotation;
             public float WheelPos;
             public float Speed;
+            public byte Flags;
         }
 
         readonly Snapshot[] buffer = new Snapshot[Capacity];
@@ -92,6 +93,7 @@ namespace RacingGame.Multiplayer
                 Rotation = Quaternion.Normalize(state.Rotation),
                 WheelPos = state.WheelPos,
                 Speed = state.Speed,
+                Flags = state.Flags,
             };
             return true;
         }
@@ -101,6 +103,16 @@ namespace RacingGame.Multiplayer
         /// </summary>
         public bool Sample(double now, out Matrix renderMatrix, out float wheelPos)
         {
+            bool braking;
+            return Sample(now, out renderMatrix, out wheelPos, out braking);
+        }
+
+        /// <summary>
+        /// Same, plus the braking flag of the state at or just before the sample time (not interpolated)
+        /// </summary>
+        public bool Sample(double now, out Matrix renderMatrix, out float wheelPos, out bool braking)
+        {
+            braking = false;
             renderMatrix = Matrix.Identity;
             wheelPos = 0;
             if (count == 0)
@@ -108,6 +120,12 @@ namespace RacingGame.Multiplayer
 
             double t = now - Delay;
             Snapshot newest = buffer[count - 1];
+            {
+                int f = count - 1;
+                while (f > 0 && buffer[f].Time > t)
+                    f--;
+                braking = (buffer[f].Flags & CarStatePacket.FlagBraking) != 0;
+            }
             Vector3 position;
             Quaternion rotation;
 

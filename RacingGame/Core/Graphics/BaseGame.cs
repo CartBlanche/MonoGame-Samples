@@ -126,6 +126,12 @@ namespace RacingGame.Graphics
             projectionMatrix;
 
         /// <summary>
+        /// Owner of all light state (time of day, fog, headlights, lamps).
+        /// See Documentation/Lighting-Plan.md.
+        /// </summary>
+        public static readonly TrackLighting Lighting = new TrackLighting();
+
+        /// <summary>
         /// Light direction, please read matrices info above for more details.
         /// The same things apply here.
         /// </summary>

@@ -1,4 +1,5 @@
 #include "Macros.fxh"
+#include "TrackLighting.fxh"
 string description = "Normal mapping shaders for RacingGame";
 
 // Shader techniques in this file, all shaders work with vs/ps 1.1, shaders not
@@ -101,6 +102,10 @@ MipFilter = None;
 END_DECLARE_TEXTURE;
 
 //----------------------------------------------------
+
+// Integrated shadows: after the texture declarations so the sampler order of the
+// existing textures is unchanged
+#include "TrackShadows.fxh"
 
 // Vertex input structure (used for ALL techniques here!)
 struct VertexInput
@@ -470,6 +475,9 @@ struct VertexOutput_Detail
     float2 normTexCoord   : TEXCOORD1;
     float2 detailTexCoord : TEXCOORD2;
     float3 lightVec       : COLOR0;
+    float3 worldPos       : TEXCOORD3;
+    float3 worldNormal    : TEXCOORD4;
+    float3 worldTangent   : TEXCOORD5;
 };
 
 // Vertex shader function
@@ -489,6 +497,11 @@ VertexOutput_Detail VS_DiffuseWithDetail(VertexInput In)
     // Transform light vector and pass it as a color (clamped from 0 to 1)
     Out.lightVec = 0.5 + 0.5 *
         normalize(mul(worldToTangentSpace, GetLightDir()));
+
+    // World space data for the per-pixel lights and fog (TrackLighting.fxh)
+    Out.worldPos = GetWorldPos(In.pos);
+    Out.worldNormal = mul(In.normal, (float3x3)world);
+    Out.worldTangent = mul(In.tangent, (float3x3)world);
 
     // And pass everything to the pixel shader
     return Out;
@@ -514,9 +527,35 @@ float4 PS_DiffuseWithDetail(VertexOutput_Detail In) : SV_TARGET
 
     // Compute the angle to the light
     float bump = saturate(dot(normalVector, lightVector));
-    
-    float4 ambDiffColor = ambientColor + bump * diffuseColor;
-    return diffusePixel * ambDiffColor * detailPixel;
+    // Integrated shadows: sun term only (ShadowMode 0 leaves it at 1.0)
+    float sunBump = bump;
+    float3 shadeTint = float3(1.0, 1.0, 1.0);   // ambient fill kept in shadow (sun term removed by sunBump); not the point lights
+    if (ShadowMode > 0.5)
+    {
+        float lit = TL_Shadow(In.worldPos, In.worldNormal);
+        sunBump = bump * lit;
+        shadeTint = lerp(ShadowTint.rgb, float3(1.0, 1.0, 1.0), lit);   // ambient kept in shadow (environment fill)
+    }
+
+    float4 ret;
+    if (LightingMode > 0.5)
+    {
+        float3 Nw = TL_WorldNormal(normalVector, In.worldNormal, In.worldTangent);
+        float3 V = normalize(GetCameraPos() - In.worldPos);
+        float3 ldiff, lspec;
+        TL_Lights(In.worldPos, Nw, V, shininess, ldiff, lspec);
+        float3 amb = ambientColor.rgb * TL_Hemi(Nw);
+        ret.rgb = diffusePixel.rgb * (amb * shadeTint + sunBump * diffuseColor.rgb + ldiff) *
+            detailPixel.rgb;
+        ret.a = diffusePixel.a * ambientColor.a * detailPixel.a;
+    }
+    else
+    {
+        float4 ambDiffColor = float4(ambientColor.rgb * shadeTint, ambientColor.a) + sunBump * diffuseColor;
+        ret = diffusePixel * ambDiffColor * detailPixel;
+    }
+    ret.rgb = TL_Fog(ret.rgb, In.worldPos, GetCameraPos());
+    return ret;
 }
 
 // Techniques

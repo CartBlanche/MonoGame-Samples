@@ -254,6 +254,9 @@ namespace RacingGame.GameLogic
         /// </summary>
         protected bool isCarOnGround = false;
 
+        /// <summary>True while the brakes are applied on the ground and the car moves (brake lights).</summary>
+        public bool IsBraking { get; private set; }
+
         /// <summary>
         /// Helper variables to keep track of our car position on the current
         /// track. Always start with 0 (start pos) and update each frame!
@@ -703,6 +706,7 @@ namespace RacingGame.GameLogic
             if (speed < noFrictionSpeed - 1 * frameScale)
                 speed = noFrictionSpeed - 1 * frameScale;
 
+            IsBraking = false;
             if (isCarOnGround)
             {
                 bool downPressed =
@@ -732,6 +736,8 @@ namespace RacingGame.GameLogic
 
                     // Remember that we slowed down for generating tracks.
                     downPressed = true;
+                    // Read-only flag for the brake lights (visual only)
+                    IsBraking = speed > 0.5f;
                 }
 
                 // Calculate pitch depending on the force

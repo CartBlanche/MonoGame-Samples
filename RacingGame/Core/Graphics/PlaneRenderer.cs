@@ -43,6 +43,8 @@ namespace RacingGame.Graphics
         /// <summary>
         /// Draw plane vertices
         /// </summary>
+        BaseGame.RenderHandler drawPlaneHandler;
+
         private void DrawPlaneVertices()
         {
             // Calculate right and dir vectors for constructing the plane.
@@ -86,7 +88,7 @@ namespace RacingGame.Graphics
             ShaderEffect.normalMapping.Render(
                 material,
                 "DiffuseSpecular20",
-                new BaseGame.RenderHandler(DrawPlaneVertices));
+                drawPlaneHandler ?? (drawPlaneHandler = DrawPlaneVertices));
             BaseGame.WorldMatrix = Matrix.Identity;
         }
 

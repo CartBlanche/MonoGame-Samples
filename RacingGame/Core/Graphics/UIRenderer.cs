@@ -427,8 +427,9 @@ namespace RacingGame.Graphics
             skyCube.RenderSky();
 
             // Render lens flare on top of 3d stuff
-            if (Track.disableLensFlareInTunnel == false)
-                lensFlare.Render(Color.White);
+            if (Track.disableLensFlareInTunnel == false &&
+                BaseGame.Lighting.FlareAlpha * (1.0f - BaseGame.Lighting.TunnelBlend) > 0.01f)
+                lensFlare.Render(BaseGame.Lighting.FlareColor);
         }
         private Vector3 oldCarForward = Vector3.Zero;
         private Vector3 oldCarUp = Vector3.Zero;
@@ -437,22 +438,96 @@ namespace RacingGame.Graphics
         private int randomCarNumber = RandomHelper.GetRandomInt(3);
         private Color randomCarColor = RandomHelper.RandomColor;
 
-        /// <summary>
-        /// Render menu track background
-        /// </summary>
-        public void RenderMenuTrackBackground()
-        {
-            // Only render track if we are not doing any 3d data on the screen
-            if (RacingGameManager.InCarSelectionScreen == false)
-            {
-                RacingGameManager.Landscape.Render();
+        // The 3d scene (shared by the race and the menu demo) -----------------------------
 
-                RacingGameManager.CarModel.RenderCar(
-                    randomCarNumber,
-                    randomCarColor,
-                    false,
-                    RacingGameManager.Player.CarRenderMatrix);
+        // True when the scene being drawn has the time of day lighting (glows are drawn)
+        private bool sceneLit;
+
+        /// <summary>
+        /// First half of the shared scene render path: update the lighting, then render the shadow
+        /// maps. Call before anything of the frame is drawn. The race (GameScreen.Render) and the
+        /// menu demo (splash screen and all menu backgrounds) both use PrepareScene and
+        /// <see cref="RenderScene"/>, so a lighting or shadow feature only needs to be added once.
+        /// </summary>
+        /// <param name="race">True for the race (its own clock), false for the rolling demo.</param>
+        public void PrepareScene(bool race)
+        {
+            float elapsedSeconds = BaseGame.ElapsedTimeThisFrameInMilliseconds / 1000.0f;
+            if (race)
+            {
+                // Time of day (render time only): sets sun, tints, flare, shadow colour
+                BaseGame.Lighting.UpdateForGame(elapsedSeconds);
+                sceneLit = true;
             }
+            else
+            {
+                // The demo runs its own day (and the tunnel and car light logic like a race), but
+                // not behind a menu opened during a race (the race lighting is still current)
+                sceneLit = RacingGameManager.InGame == false &&
+                    BaseGame.Lighting.UpdateForDemo(elapsedSeconds);
+            }
+
+            // No 3d track is shown in the car selection (it has its own lighting)
+            if (race || RacingGameManager.InCarSelectionScreen == false)
+                ShadowMapShader.PrepareGameShadows();
+        }
+
+        /// <summary>
+        /// Second half of the shared scene render path: sky and lens flare, landscape with the
+        /// track, the car, lamp and car light glows, flush of all models, and the shadow
+        /// composite. Callers do their own post effects, UI and extras through the two callbacks.
+        /// </summary>
+        /// <param name="carNumber">Car model</param>
+        /// <param name="carColor">Car colour</param>
+        /// <param name="beforeFlush">Extra models queued before the flush (other players), or null.</param>
+        /// <param name="afterFlush">Extra models drawn after the flush (the ghost car), or null.</param>
+        public void RenderScene(int carNumber, Color carColor,
+            Action beforeFlush, Action afterFlush)
+        {
+            // Background sky and lensflare
+            RenderGameBackground();
+
+            // Nothing 3d in the car selection screen
+            if (RacingGameManager.InCarSelectionScreen)
+                return;
+
+            // Landscape with track and all objects
+            RacingGameManager.Landscape.Render();
+
+            // Car with the matrix we got from CarPhysics (or the demo replay)
+            RacingGameManager.CarModel.RenderCar(carNumber, carColor, false,
+                RacingGameManager.Player.CarRenderMatrix);
+
+            if (beforeFlush != null)
+                beforeFlush();
+
+            // Headlight and tail light glows of the car (nothing while the lights are off)
+            if (sceneLit)
+            {
+                BaseGame.Lighting.AddLampGlows();
+                BaseGame.Lighting.AddCarSprites(RacingGameManager.Player.CarRenderMatrix, true);
+            }
+
+            // Flush all models to be rendered
+            BaseGame.MeshRenderManager.Render();
+
+            if (afterFlush != null)
+                afterFlush();
+
+            // Depth tested additive glows (after all cars, before shadows and glow post)
+            if (sceneLit)
+                BaseGame.Lighting.Sprites.Flush();
+
+            // Show the shadows calculated in PrepareScene
+            if (BaseGame.AllowShadowMapping && !TrackLighting.IntegratedShadows)
+                ShaderEffect.shadowMapping.ShowShadows();
+        }
+
+        /// <summary>The rolling demo scene (random car on the best replay of the track).</summary>
+        public void RenderDemoScene()
+        {
+            PrepareScene(false);
+            RenderScene(randomCarNumber, randomCarColor, null, null);
         }
 
         /// <summary>
@@ -462,7 +537,17 @@ namespace RacingGame.Graphics
         {
             // Advance menu car preview time
             carMenuTime += BaseGame.ElapsedTimeThisFrameInMilliseconds / 1000.0f;
-            if (carMenuTime > RacingGameManager.Landscape.BestReplay.LapTime)
+#if DEVSHOTS
+            // The video harness locks the demo to the wall clock so two copies stay in step,
+            // and shows the same car in both
+            if (RacingGame.Helpers.DevShots.Active)
+            {
+                carMenuTime = RacingGame.Helpers.DevShots.DemoSeconds;
+                randomCarNumber = RacingGame.Helpers.DevShots.CarNumber;
+                randomCarColor = RacingGame.Helpers.DevShots.CarColor;
+            }
+#endif
+            while (carMenuTime > RacingGameManager.Landscape.BestReplay.LapTime)
                 carMenuTime -= RacingGameManager.Landscape.BestReplay.LapTime;
 
             // Use data from replay
@@ -506,13 +591,14 @@ namespace RacingGame.Graphics
         /// </summary>
         public void RenderMenuBackground()
         {
+            // The 3d car selection has its own lighting: no time of day look from the demo there
+            if (RacingGameManager.InCarSelectionScreen)
+                BaseGame.Lighting.EndDemoLook();
+
             BaseGame.UI.UpdateCarInMenu();
 
-            // Render game background
-            RenderGameBackground();
-
-            // And show track
-            RenderMenuTrackBackground();
+            // The demo scene: sky, track, car, glows and shadows
+            RenderDemoScene();
 
             // Render background with transparency
             // The background itself should be rendered before this ^^
@@ -527,6 +613,39 @@ namespace RacingGame.Graphics
             background.RenderOnScreen(
                 BaseGame.CalcRectangleWithBounce(362, 36, 601, 218, bounceSize),
                 RacingGameLogoGfxRect);
+
+        }
+
+        /// <summary>
+        /// The time of day clock of the rolling demo, top right (nothing when the demo is not
+        /// running its day, for example with Lighting Off). Only the splash screen shows it; the
+        /// clock keeps running behind the menus but is not drawn there.
+        /// </summary>
+        public void RenderDemoClock()
+        {
+            TrackLighting lighting = BaseGame.Lighting;
+            if (lighting.DemoClockVisible == false)
+                return;
+            const float scale = 1.5f, captionScale = 0.8f;
+            string time = lighting.DemoClockText;
+            string caption = lighting.DemoClockCaption;
+            int timeWidth = (int)(TextureFont.GetTextWidth(time) * scale);
+            int captionWidth = (int)(TextureFont.GetTextWidth(caption) * captionScale);
+            int timeHeight = (int)(TextureFont.Height * scale);
+            int captionHeight = (int)(TextureFont.Height * captionScale);
+            int margin = BaseGame.Width / 60;
+            int pad = BaseGame.Width / 100;
+            // A small HUD style panel (like the laps panel) so the clock stays readable over the
+            // bouncing logo and the menu graphics
+            int panelWidth = Math.Max(timeWidth, captionWidth) + 2 * pad;
+            int panelHeight = timeHeight + captionHeight + 2 * pad;
+            Rectangle panel = new Rectangle(
+                BaseGame.Width - margin - panelWidth, margin, panelWidth, panelHeight);
+            RenderPanel(panel);
+            int cx = panel.X + panelWidth / 2;
+            TextureFont.WriteTextCentered(cx, panel.Y + pad + timeHeight / 2, time, Color.White, scale);
+            TextureFont.WriteTextCentered(cx, panel.Y + pad + timeHeight + captionHeight / 2 + pad / 4,
+                caption, new Color(255, 185, 80), captionScale);
         }
         /// <summary>
         /// Render black bar

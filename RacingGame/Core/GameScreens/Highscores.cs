@@ -170,17 +170,18 @@ namespace RacingGame.GameScreens
         public static int[] GetTop5LapTimes(int level)
         {
             // Custom tracks (level < 0) have no stored highscores yet
+            // Called every frame by the in-game UI: reuse one array (the callers only read it).
             if (level < 0)
-                return new int[5];
-            return new int[]
-                {
-                    highscores[level, 0].timeMilliseconds,
-                    highscores[level, 1].timeMilliseconds,
-                    highscores[level, 2].timeMilliseconds,
-                    highscores[level, 3].timeMilliseconds,
-                    highscores[level, 4].timeMilliseconds,
-                };
+            {
+                for (int i = 0; i < top5Times.Length; i++)
+                    top5Times[i] = 0;
+                return top5Times;
+            }
+            for (int i = 0; i < top5Times.Length; i++)
+                top5Times[i] = highscores[level, i].timeMilliseconds;
+            return top5Times;
         }
+        static readonly int[] top5Times = new int[5];
         /// <summary>
         /// Get rank from current time.
         /// Used in game to determinate rank while flying around ^^

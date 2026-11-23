@@ -1,0 +1,42 @@
+diff --git a/RacingGame/Core/Helpers/Rig.cs b/RacingGame/Core/Helpers/Rig.cs
+index af2779e..970c7f1 100644
+--- a/RacingGame/Core/Helpers/Rig.cs
++++ b/RacingGame/Core/Helpers/Rig.cs
+@@ -47,9 +47,36 @@ namespace RacingGame.Helpers
+             RacingGameManager.AddGameScreen(new GameScreen());
+         }
+ 
++        static readonly int campos = int.TryParse(E("RACINGGAME_CAMPOS"), out int cp) ? cp : -1;
++        static bool teleported;
++        // RACINGGAME_CAMPOS=<segment>: teleport the player car to that track segment
++        // (update 30), facing along the track, so tunnels are reached at once.
++        static void Teleport()
++        {
++            if (campos < 0 || teleported || updates < 30 || !RacingGameManager.InGame) return;
++            teleported = true;
++            var m = RacingGameManager.Landscape.GetTrackPositionMatrix(campos, 0.2f, out float w, out float nw);
++            var car = RacingGameManager.Player;
++            car.SetCarPosition(m.Translation + m.Up * 0.6f, m.Forward, m.Up);
++            var f = typeof(RacingGame.GameLogic.CarPhysics).GetField("trackSegmentNumber",
++                System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
++            f.SetValue(car, campos);
++            Console.WriteLine("[rig] teleported to segment " + campos);
++        }
++
++        static void DumpTunnels()
++        {
++            if (updates != 10) return;
++            var bf = System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Instance;
++            object track = typeof(RacingGame.Landscapes.Landscape).GetField("track", bf).GetValue(RacingGameManager.Landscape);
++            var hp = (System.Collections.IEnumerable)typeof(RacingGame.Tracks.TrackLine).GetField("helperPositions", bf).GetValue(track);
++            foreach (RacingGame.Tracks.TrackLine.RoadHelperPosition h in hp)
++                Console.WriteLine("[rig] helper " + h.type + " " + h.startNum + " " + h.endNum);
++        }
++
+         public static void UpdateHook()
+         {
+-            if (started) updates++;
++            if (started) { updates++; DumpTunnels(); Teleport(); }
+         }
+ 
+         public static void DrawBegin() { if (Timing && started) drawWatch.Restart(); }

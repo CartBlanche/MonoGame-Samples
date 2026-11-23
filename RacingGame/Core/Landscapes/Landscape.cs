@@ -147,6 +147,12 @@ namespace RacingGame.Landscapes
                 model.GenerateShadow(matrix);
             }
 
+            /// <summary>Integrated shadows: already selected against the light frustum.</summary>
+            public void GenerateShadows(bool integratedSelected)
+            {
+                model.GenerateShadow(matrix, integratedSelected);
+            }
+
             /// <summary>
             /// Use shadows
             /// </summary>
@@ -204,6 +210,7 @@ namespace RacingGame.Landscapes
             landscapeObjects.Clear();
             nearTrackObjects.Clear();
             startLightObject = null;
+            BaseGame.Lighting.ClearLamps();
         }
 
         /// <summary>
@@ -421,6 +428,11 @@ namespace RacingGame.Landscapes
 
                 // Add
                 landscapeObjects.Add(newObject);
+
+                // Street lamps also become lights for the night (TrackLighting.Lamps.cs)
+                if (modelName == "Laterne")
+                    BaseGame.Lighting.AddStreetLamp(
+                        Matrix.CreateScale(1.2f) * renderMatrix);
 
                 // Add again to the nearTrackObjects list if near the track
                 if (isNearTrackForShadowGeneration)
@@ -1182,6 +1194,9 @@ namespace RacingGame.Landscapes
         /// <summary>
         /// Render landscape (just at the origin)
         /// </summary>
+        // Cached once: creating these delegates every frame allocated garbage.
+        BaseGame.RenderHandler renderLandscapeHandler, brakeTracksHandler;
+
         public void Render()
         {
             // Make sure z buffer is on
@@ -1192,7 +1207,7 @@ namespace RacingGame.Landscapes
             // Render landscape (pretty easy with all the data we got here)
             ShaderEffect.landscapeNormalMapping.Render(
                 mat, "DiffuseWithDetail20",
-                new BaseGame.RenderHandler(RenderLandscapeVertices));
+                renderLandscapeHandler ?? (renderLandscapeHandler = RenderLandscapeVertices));
 
             if (cityPlane != null)
                 cityPlane.Render();
@@ -1228,6 +1243,27 @@ namespace RacingGame.Landscapes
 
             // Just generate shadows for the road.
             track.GenerateShadow();
+
+            // Integrated shadows: every landscape object whose bounds touch the shadow light
+            // frustum casts (palms, buildings, rocks, ...), selected per frame. Only which
+            // objects are drawn into the shadow map changes, not how they are rendered.
+            if (TrackLighting.IntegratedShadows && TrackLighting.NearCastersOnly == false)
+            {
+                for (int num = 0; num < landscapeObjects.Count; num++)
+                {
+                    LandscapeObject obj = landscapeObjects[num];
+                    // Banners, billboards and signs cast like the classic shadows (they just do not
+                    // receive, see Material.noShadowReceive).
+                    // Bounding sphere radius of mesh 0 (centre is above the origin for
+                    // trees), scaled by the 1.2 object scale; generous on purpose.
+                    float r = obj.Size * 1.5f;
+                    Vector3 c = obj.Position;
+                    c.Z += r;
+                    if (ShaderEffect.shadowMapping.IsInShadowFrustum(c, r))
+                        obj.GenerateShadows(true);
+                }
+                return;
+            }
 
             // Render shadow all landscape objects that near our road
             for (int num = 0; num < nearTrackObjects.Count; num++)
@@ -1294,6 +1330,15 @@ namespace RacingGame.Landscapes
             return track.GetTrackPositionMatrix(
                 trackSegmentNum, trackSegmentPercent,
                 out roadWidth, out nextRoadWidth);
+        }
+
+        /// <summary>
+        /// Is the given track segment inside a tunnel (checked every frame by
+        /// TrackLighting for the tunnel blend).
+        /// </summary>
+        public bool IsTunnel(int trackSegment)
+        {
+            return track != null && track.IsTunnel(trackSegment);
         }
 
         /// <summary>
@@ -1403,13 +1448,15 @@ namespace RacingGame.Landscapes
             ShaderEffect.lighting.Render(
                 RacingGameManager.BrakeTrackMaterial,
                 "Diffuse20",
-                delegate
-                {
-                    // Draw the vertices
-                    BaseGame.Device.DrawUserPrimitives(
-                        PrimitiveType.TriangleList,
-                        brakeTracksVerticesArray, 0, brakeTracksVerticesArray.Length / 3);
-                });
+                brakeTracksHandler ?? (brakeTracksHandler = DrawBrakeTracks));
+        }
+
+        private void DrawBrakeTracks()
+        {
+            // Draw the vertices
+            BaseGame.Device.DrawUserPrimitives(
+                PrimitiveType.TriangleList,
+                brakeTracksVerticesArray, 0, brakeTracksVerticesArray.Length / 3);
         }
     }
 }
